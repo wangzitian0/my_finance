@@ -5,7 +5,7 @@ import sqlite3
 import yfinance as yf
 from datetime import datetime
 
-from get_data.common import (
+from common import (
     get_db_path,
     can_fetch,
     update_fetch_time,

@@ -1,7 +1,7 @@
 # get_data/init_schema.py
 
 import sqlite3
-from get_data.common import get_db_path
+from common import get_db_path
 
 def init_db_schema():
     """
