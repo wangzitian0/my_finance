@@ -3,70 +3,86 @@
 import os
 import sqlite3
 from datetime import datetime, timedelta
+import traceback
 
 DB_FOLDER = "data"
 DB_NAME = "yfinance_data.db"
 
 def get_db_path() -> str:
-    """返回数据库的完整路径，默认放在 data/ 目录下。"""
+    """
+    返回数据库的完整路径，默认放在 data/ 目录下。
+    """
     if not os.path.exists(DB_FOLDER):
         os.makedirs(DB_FOLDER)
     return os.path.join(DB_FOLDER, DB_NAME)
 
-def ensure_fetch_log_table():
+def ensure_common_tables():
     """
-    确保数据库中存在 fetch_log 表，用于记录 ticker + dimension 的最后拉取时间。
+    初始化与抓取过程相关的公共表:
+    1) fetch_log: 记录上次拉取时间(控制冷却)
+    2) fetch_attempt_log: 记录这次抓取是成功还是失败
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    create_table_sql = """
+    # fetch_log: 用于 cooldown 机制
+    create_fetch_log_sql = """
     CREATE TABLE IF NOT EXISTS fetch_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
-        dimension TEXT NOT NULL,
+        dimension TEXT NOT NULL,   -- 比如 'HISTORICAL_1d', 'INFO', 'Q_BALANCE' ...
         last_fetch_time TEXT NOT NULL,
         UNIQUE(ticker, dimension)
     )
     """
-    cursor.execute(create_table_sql)
+    cursor.execute(create_fetch_log_sql)
+
+    # fetch_attempt_log: 记录本次请求是否成功
+    create_attempt_log_sql = """
+    CREATE TABLE IF NOT EXISTS fetch_attempt_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        ticker TEXT NOT NULL,
+        dimension TEXT NOT NULL,
+        attempt_time TEXT NOT NULL,
+        success INTEGER NOT NULL,  -- 1=成功, 0=失败
+        message TEXT
+    )
+    """
+    cursor.execute(create_attempt_log_sql)
+
     conn.commit()
     conn.close()
 
 def can_fetch(ticker: str, dimension: str, cooldown_minutes=60) -> bool:
     """
-    检查 fetch_log 表，看某个 ticker + dimension 是否超过 cooldown_minutes 未拉取。
-    如果距离上次拉取 < cooldown_minutes，则返回 False, 否则 True。
+    查询 fetch_log 表, 看 ticker+dimension 是否在 cooldown 时间内(默认1小时).
+    若上次拉取 < 1 小时前, 返回 True; 否则 False.
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    select_sql = """
-    SELECT last_fetch_time 
-    FROM fetch_log 
+    sel_sql = """
+    SELECT last_fetch_time FROM fetch_log
     WHERE ticker=? AND dimension=?
     """
-    cursor.execute(select_sql, (ticker, dimension))
+    cursor.execute(sel_sql, (ticker, dimension))
     row = cursor.fetchone()
     conn.close()
 
     if not row:
-        # 从未拉取过，可以拉
+        # 从未拉取过, 可以拉
         return True
-    
-    last_fetch_str = row[0]
-    last_fetch_dt = datetime.strptime(last_fetch_str, "%Y-%m-%d %H:%M:%S")
+
+    last_str = row[0]
+    last_dt = datetime.strptime(last_str, "%Y-%m-%d %H:%M:%S")
     now = datetime.now()
 
-    if now - last_fetch_dt < timedelta(minutes=cooldown_minutes):
-        # 上次拉取时间在指定冷却期内
-        return False
-    else:
-        return True
+    # 如果 now - last_dt >= cooldown_minutes, 说明超过冷却期, 可以拉
+    return (now - last_dt) >= timedelta(minutes=cooldown_minutes)
 
 def update_fetch_time(ticker: str, dimension: str):
     """
-    成功拉取后，更新/插入最后拉取时间为当前时间。
+    在 fetch_log 中更新/插入 last_fetch_time= now
     """
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     conn = sqlite3.connect(get_db_path())
@@ -79,4 +95,41 @@ def update_fetch_time(ticker: str, dimension: str):
     cursor.execute(upsert_sql, (ticker, dimension, now_str))
     conn.commit()
     conn.close()
+
+def log_attempt(ticker: str, dimension: str, success: bool, message=""):
+    """
+    在 fetch_attempt_log 表记录一次抓取尝试结果.
+    """
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    conn = sqlite3.connect(get_db_path())
+    cursor = conn.cursor()
+
+    ins_sql = """
+    INSERT INTO fetch_attempt_log (ticker, dimension, attempt_time, success, message)
+    VALUES (?, ?, ?, ?, ?)
+    """
+    cursor.execute(ins_sql, (ticker, dimension, now_str, int(success), message))
+    conn.commit()
+    conn.close()
+
+def safe_call(func, *args, **kwargs):
+    """
+    封装一次安全调用, 如果 func 出错, log_attempt(success=0), 并返回 False;
+    如果成功, log_attempt(success=1), 返回 True.
+    要求func里要返回(ticker, dimension, message), 以便log.
+    """
+    try:
+        ticker, dimension, msg = func(*args, **kwargs)
+        # 成功
+        log_attempt(ticker, dimension, True, msg)
+        return True
+    except Exception as e:
+        # 失败
+        err_msg = f"Exception: {repr(e)}\nTraceback: {traceback.format_exc()}"
+        # 如果能从func参数中提取出ticker/dimension, 也可以手动指定
+        # 这里假设func里抛出前不会返回(ticker, dimension, msg), 
+        # 所以 dimension 就写个 "UNKNOWN"
+        # 你也可以在 func 里捕获异常再抛出. 这里仅作示例.
+        log_attempt("UNKNOWN", "UNKNOWN", False, err_msg)
+        return False
 

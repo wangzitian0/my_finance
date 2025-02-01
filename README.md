@@ -5,7 +5,7 @@ try use script to get stock data
 ## init
 ```bash
 pipenv shell
-python get_data/init_db.py
+./run.sh
 ```
 ## data ui
 ```bash

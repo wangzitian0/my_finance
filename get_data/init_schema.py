@@ -5,24 +5,28 @@ from get_data.common import get_db_path
 
 def init_db_schema():
     """
-    初始化数据库表结构：行情表、info表、以及季度财务相关表等。
+    建立或更新主要业务表:
+      - stock_price: 行情
+      - stock_info: 最新info
+      - quarterly_balance_sheet: 季度财务示例 (可扩展更多)
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    create_price_table_sql = """
+    # 1) 行情表
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS stock_price (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
         trade_date TEXT NOT NULL,
         open REAL, high REAL, low REAL, close REAL, adj_close REAL,
-        volume INTEGER, dividends REAL, stock_splits REAL,
+        volume INTEGER,
         UNIQUE(ticker, trade_date)
     )
-    """
-    cursor.execute(create_price_table_sql)
+    """)
 
-    create_info_table_sql = """
+    # 2) info表
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS stock_info (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
@@ -30,10 +34,10 @@ def init_db_schema():
         last_update TEXT NOT NULL,
         UNIQUE(ticker)
     )
-    """
-    cursor.execute(create_info_table_sql)
+    """)
 
-    create_q_balance_sql = """
+    # 3) 季度财务 (演示)
+    cursor.execute("""
     CREATE TABLE IF NOT EXISTS quarterly_balance_sheet (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
@@ -42,14 +46,8 @@ def init_db_schema():
         value REAL,
         UNIQUE(ticker, statement_date, item_name)
     )
-    """
-    cursor.execute(create_q_balance_sql)
-
-    # 其它季度财务表例如 quarterly_cashflow, quarterly_financials, quarterly_earnings
-    # 可以在这里一并建表
-    # ...
+    """)
 
     conn.commit()
     conn.close()
-
 

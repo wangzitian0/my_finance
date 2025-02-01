@@ -4,40 +4,44 @@ import json
 import sqlite3
 import yfinance as yf
 from datetime import datetime
-from get_data.common import get_db_path, can_fetch, update_fetch_time
 
-DIMENSION = "INFO"
+from get_data.common import (
+    get_db_path,
+    can_fetch,
+    update_fetch_time,
+)
 
-def run(ticker_symbol: str):
+def fetch_info(ticker_symbol: str, cooldown_minutes=60):
     """
-    拉取并存储 ticker.info。若 1 小时内拉取过，则跳过。
+    拉取 ticker.info, 存入 stock_info 表. 带冷却判断. 
+    返回 (ticker, dimension, message).
     """
-    if not can_fetch(ticker_symbol, DIMENSION, cooldown_minutes=60):
-        print(f"[SKIP] {ticker_symbol}'s info: fetched within 1 hour.")
-        return
-
-    print(f"[INFO] Fetch info for {ticker_symbol}")
+    dimension = "INFO"
+    if not can_fetch(ticker_symbol, dimension, cooldown_minutes):
+        msg = f"Skip {ticker_symbol} info, in cooldown."
+        return (ticker_symbol, dimension, msg)
 
     ticker = yf.Ticker(ticker_symbol)
     info_dict = ticker.info
     if not info_dict:
-        print(f"[WARN] No info data for {ticker_symbol}")
-        return
+        msg = f"No info for {ticker_symbol}"
+        return (ticker_symbol, dimension, msg)
 
     info_json = json.dumps(info_dict, ensure_ascii=False)
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
-
-    insert_sql = """
+    upsert_sql = """
     INSERT OR REPLACE INTO stock_info (ticker, info_json, last_update)
     VALUES (?, ?, ?)
     """
-    cursor.execute(insert_sql, (ticker_symbol, info_json, now_str))
+    cursor.execute(upsert_sql, (ticker_symbol, info_json, now_str))
     conn.commit()
     conn.close()
 
-    print(f"[INFO] Updated info for {ticker_symbol}")
-    update_fetch_time(ticker_symbol, DIMENSION)
+    update_fetch_time(ticker_symbol, dimension)
+
+    msg = f"Fetched info for {ticker_symbol}"
+    return (ticker_symbol, dimension, msg)
 

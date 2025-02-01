@@ -2,36 +2,45 @@
 
 import sqlite3
 import yfinance as yf
-from get_data.common import get_db_path, can_fetch, update_fetch_time
+from datetime import datetime
 
-DIMENSION = "HISTORICAL"  # 表示拉取历史行情
+from get_data.common import (
+    get_db_path,
+    can_fetch,
+    update_fetch_time,
+)
 
-def run(ticker_symbol: str, period="1y"):
+def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60):
     """
-    拉取 ticker_symbol 的历史行情，并存储到 stock_price 表。
-    如果 1 小时内拉取过，就跳过。
-    """
-    if not can_fetch(ticker_symbol, DIMENSION, cooldown_minutes=60):
-        print(f"[SKIP] {ticker_symbol}'s historical: fetched within 1 hour.")
-        return
+    拉取ticker_symbol指定 period + interval 的行情, 存入 stock_price 表.
+    带1小时(或自定义)冷却检查. 
+    如果过冷却期才能拉, 否则直接return, 不报错.
     
-    print(f"[INFO] Fetch historical data for {ticker_symbol}, period={period}")
+    返回 (ticker, dimension, message) 供 safe_call() 记录日志.
+    """
+    dimension = f"HISTORICAL_{interval}"
 
+    # 冷却检查
+    if not can_fetch(ticker_symbol, dimension, cooldown_minutes=cooldown_minutes):
+        msg = f"Skip fetch {ticker_symbol}, dimension={dimension}, still in cooldown."
+        return (ticker_symbol, dimension, msg)
+
+    # 开始拉取
     ticker = yf.Ticker(ticker_symbol)
-    df = ticker.history(period=period)
+    df = ticker.history(period=period, interval=interval)
+
     if df.empty:
-        print(f"[WARN] No historical data fetched for {ticker_symbol}")
-        return
+        msg = f"No data for {ticker_symbol}, {interval}, period={period}"
+        return (ticker_symbol, dimension, msg)
 
     df.reset_index(inplace=True)
-    
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
     insert_sql = """
     INSERT OR REPLACE INTO stock_price
-    (ticker, trade_date, open, high, low, close, adj_close, volume, dividends, stock_splits)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (ticker, trade_date, open, high, low, close, adj_close, volume)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """
 
     row_count = 0
@@ -45,9 +54,7 @@ def run(ticker_symbol: str, period="1y"):
             row.get("Low", None),
             row.get("Close", None),
             row.get("Adj Close", None),
-            int(row.get("Volume", 0)),
-            float(row.get("Dividends", 0.0)),
-            float(row.get("Stock Splits", 0.0))
+            int(row.get("Volume", 0))
         )
         cursor.execute(insert_sql, data_tuple)
         row_count += 1
@@ -55,8 +62,9 @@ def run(ticker_symbol: str, period="1y"):
     conn.commit()
     conn.close()
 
-    print(f"[INFO] Inserted/Updated {row_count} rows of historical for {ticker_symbol}")
+    # 更新 fetch_log
+    update_fetch_time(ticker_symbol, dimension)
 
-    # 更新拉取时间
-    update_fetch_time(ticker_symbol, DIMENSION)
+    msg = f"Fetched {row_count} rows for {ticker_symbol} {interval}, period={period}"
+    return (ticker_symbol, dimension, msg)
 
