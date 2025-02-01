@@ -1,4 +1,5 @@
 # Not commit the data
+gg.patch
 data/*
 !data/.gitkeep
 
