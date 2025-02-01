@@ -1,3 +1,7 @@
+# Not commit the data
+data/*
+!data/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -8,7 +12,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-data/
 build/
 develop-eggs/
 dist/
