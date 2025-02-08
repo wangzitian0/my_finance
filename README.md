@@ -4,7 +4,8 @@ try use script to get stock data
 # how to run
 ## init
 ```bash
-ansible-playbook init/install-neo4j.yml
+ansible-playbook init/install_neo4j.yml
+ansible-playbook init/set_env.yml
 
 ```
 ## run
