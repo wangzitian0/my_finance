@@ -18,7 +18,7 @@ def main():
     for idx, cf in enumerate(config_files, start=1):
         print(f"{idx}. {os.path.basename(cf)}")
 
-    # 如果运行时传入参数则使用对应文件，否则默认使用第一个
+    # 若运行时传入配置文件名参数则使用该文件，否则默认使用第一个
     if len(sys.argv) > 1:
         chosen = sys.argv[1]
         config_file = os.path.join(config_dir, chosen)
