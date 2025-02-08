@@ -1,0 +1,77 @@
+---
+- name: 安装并配置 Neo4j 社区版（适用于 Ubuntu/WSL）
+  hosts: localhost
+  become: yes
+  vars:
+    neo4j_version: "5.18.0"
+    neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
+    # 下载链接（若下载失败，请前往 Neo4j 官网获取最新链接）
+    neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
+    install_dir: "/opt/neo4j"
+  tasks:
+    - name: 更新系统软件包
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: 安装 OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: 检查 Java 版本
+      command: java -version
+      register: java_version
+      ignore_errors: yes
+
+    - name: 显示 Java 版本信息
+      debug:
+        var: java_version.stderr_lines
+
+    - name: 创建 Neo4j 安装目录
+      file:
+        path: "{{ install_dir }}"
+        state: directory
+
+    - name: 下载 Neo4j tarball 文件
+      get_url:
+        url: "{{ neo4j_download_url }}"
+        dest: "/tmp/{{ neo4j_tarball }}"
+        mode: '0644'
+
+    - name: 解压 Neo4j tarball 到安装目录
+      unarchive:
+        src: "/tmp/{{ neo4j_tarball }}"
+        dest: "{{ install_dir }}"
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+
+    - name: 配置 Neo4j监听地址为 0.0.0.0
+      lineinfile:
+        path: "{{ install_dir }}/conf/neo4j.conf"
+        regexp: '^#?dbms\.default_listen_address='
+        line: 'dbms.default_listen_address=0.0.0.0'
+        state: present
+
+    - name: 启动 Neo4j 服务
+      command: "{{ install_dir }}/bin/neo4j start"
+      register: neo4j_start
+      # 如果错误信息中包含 "Neo4j is already running"，则不认为任务失败
+      failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
+
+    - name: 检查 Neo4j 服务状态
+      command: "{{ install_dir }}/bin/neo4j status"
+      register: neo4j_status
+      changed_when: false
+
+    - name: 显示 Neo4j 服务状态
+      debug:
+        var: neo4j_status.stdout_lines
+
+    - name: 提示下一步操作
+      debug:
+        msg: >
+          如果显示服务正在运行，请打开浏览器访问 http://localhost:7474，
+          使用默认账户（neo4j/neo4j）登录后按照提示修改密码，
+          即可确认整个环境已经构建成功。你也可以用命令
+          "{{ install_dir }}/bin/neo4j status" 查看服务状态。
