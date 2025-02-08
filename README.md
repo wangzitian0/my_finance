@@ -35,4 +35,7 @@ pipenv install xxx
 ```bash
 # get the Magnificent 7 data
 python run_job.py
+
+# or param of file name inside the data/config/yfinance_nasdaq100.yml
+python run_job.py yfinance_nasdaq100.yml
 ```
