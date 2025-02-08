@@ -1,5 +1,5 @@
 ---
-- name: Initial Environment Setup - Bootstrap system, install dependencies, Neo4j, and data repository
+- name: Initial Environment Setup - Bootstrap system, install dependencies, Neo4j, and update submodules
   hosts: localhost
   become: yes
   gather_facts: yes
@@ -13,12 +13,8 @@
     # Main repository (my_finance) is assumed to be the current directory.
     branch: "main"
 
-    # Data repository (my_finance_data) configuration:
-    # 将数据仓库克隆到与 my_finance 同级目录，即 llm/my_finance_data
-    data_repo_url: "git@github.com:wangzitian0/my_finance_data.git"
-
   tasks:
-    - name: Set current directory variable using lookup('env','PWD')
+    - name: Set current directory variable using lookup('env', 'PWD')
       set_fact:
         current_dir: "{{ lookup('env', 'PWD') }}"
       become: false
@@ -101,46 +97,12 @@
         var: neo4j_status.stdout_lines
 
     # -------------------------
-    # Data repository handling
+    # Update submodules (data repository)
     # -------------------------
-    # 目标：将数据仓库克隆到 llm/my_finance_data，并在 my_finance 中建立符号链接 data 指向 ../my_finance_data
-    - name: Set sibling directory variable for data repository
-      set_fact:
-        data_repo_dest: "{{ current_dir | dirname }}/my_finance_data"
-      become: false
-
-    - name: Check if sibling directory my_finance_data exists
-      stat:
-        path: "{{ data_repo_dest }}"
-      register: sibling_stat
-      become: false
-
-    - name: Clone data repository (my_finance_data) using SSH
-      git:
-        repo: "{{ data_repo_url }}"
-        dest: "{{ data_repo_dest }}"
-        version: "{{ branch }}"
-      become: false
-      when: not sibling_stat.stat.exists
-
-    - name: Check if local "data" directory exists in my_finance
-      stat:
-        path: "{{ current_dir }}/data"
-      register: local_data_stat
-      become: false
-
-    - name: Remove existing "data" directory in my_finance (if any)
-      file:
-        path: "{{ current_dir }}/data"
-        state: absent
-      become: false
-      when: local_data_stat.stat.exists
-
-    - name: Create symlink "data" in my_finance pointing to sibling my_finance_data
-      file:
-        src: "../my_finance_data"
-        dest: "{{ current_dir }}/data"
-        state: link
+    - name: Update git submodules (data) in my_finance
+      command: git submodule update --init --recursive
+      args:
+        chdir: "{{ current_dir }}"
       become: false
 
     # -------------------------
