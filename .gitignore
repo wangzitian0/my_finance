@@ -1,7 +1,5 @@
 # Not commit the data
 gg.patch
-data/*
-!data/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
