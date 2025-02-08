@@ -1,0 +1,1573 @@
+{
+  "ticker": "CRWD",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:47:50.282864",
+  "info": {
+    "address1": "206 East 9th Street",
+    "address2": "Suite 1400",
+    "city": "Austin",
+    "state": "TX",
+    "zip": "78701",
+    "country": "United States",
+    "phone": "888 512 8906",
+    "website": "https://www.crowdstrike.com",
+    "industry": "Software - Infrastructure",
+    "industryKey": "software-infrastructure",
+    "industryDisp": "Software - Infrastructure",
+    "sector": "Technology",
+    "sectorKey": "technology",
+    "sectorDisp": "Technology",
+    "longBusinessSummary": "CrowdStrike Holdings, Inc. provides cybersecurity solutions in the United States and internationally. Its unified platform offers cloud-delivered protection of endpoints, cloud workloads, identity, and data. The company offers corporate endpoint and cloud workload security, managed security, security and vulnerability management, IT operations management, identity protection, SIEM and log management, threat intelligence, data protection, security orchestration, automation and response and AI powered workflow automation, and securing generative AI workload services. It primarily sells subscriptions to its Falcon platform and cloud modules. The company was incorporated in 2011 and is headquartered in Austin, Texas.",
+    "fullTimeEmployees": 9219,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. George R. Kurtz",
+        "age": 52,
+        "title": "Founder, CEO & Director",
+        "yearBorn": 1971,
+        "fiscalYear": 2024,
+        "totalPay": 2893818,
+        "exercisedValue": 0,
+        "unexercisedValue": 99039144
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Michael  Sentonas",
+        "age": 49,
+        "title": "President",
+        "yearBorn": 1974,
+        "fiscalYear": 2024,
+        "totalPay": 1296231,
+        "exercisedValue": 0,
+        "unexercisedValue": 2362975
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Burt W. Podbere CPA",
+        "age": 57,
+        "title": "Chief Financial Officer",
+        "yearBorn": 1966,
+        "fiscalYear": 2024,
+        "totalPay": 1310655,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Shawn  Henry",
+        "age": 60,
+        "title": "Chief Security Officer",
+        "yearBorn": 1963,
+        "fiscalYear": 2024,
+        "totalPay": 876121,
+        "exercisedValue": 327500,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Dmitri  Alperovitch",
+        "age": 42,
+        "title": "Co-Founder",
+        "yearBorn": 1981,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Anurag  Saha",
+        "age": 44,
+        "title": "Chief Accounting Officer & Principal Accounting Officer",
+        "yearBorn": 1979,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Elia  Zaitsev",
+        "title": "Chief Technology Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Maria  Riley",
+        "title": "Vice President of Investor Relations",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Cathleen Garrigan Anderson J.D.",
+        "title": "Chief Legal Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Jennifer L. Johnson",
+        "age": 48,
+        "title": "Chief Marketing Officer",
+        "yearBorn": 1975,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 5,
+    "boardRisk": 10,
+    "compensationRisk": 10,
+    "shareHolderRightsRisk": 10,
+    "overallRisk": 10,
+    "governanceEpochDate": 1730419200,
+    "compensationAsOfEpochDate": 1735603200,
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 420.51,
+    "open": 424.0,
+    "dayLow": 419.32,
+    "dayHigh": 431.3252,
+    "regularMarketPreviousClose": 420.51,
+    "regularMarketOpen": 424.0,
+    "regularMarketDayLow": 419.32,
+    "regularMarketDayHigh": 431.3252,
+    "beta": 1.102,
+    "trailingPE": 826.6471,
+    "forwardPE": 96.00399,
+    "volume": 3486140,
+    "regularMarketVolume": 3486140,
+    "averageVolume": 3517935,
+    "averageVolume10days": 3766080,
+    "averageDailyVolume10Day": 3766080,
+    "bid": 421.04,
+    "ask": 422.57,
+    "bidSize": 100,
+    "askSize": 100,
+    "marketCap": 103842258944,
+    "fiftyTwoWeekLow": 200.81,
+    "fiftyTwoWeekHigh": 431.3252,
+    "priceToSalesTrailing12Months": 29.532045,
+    "fiftyDayAverage": 368.4745,
+    "twoHundredDayAverage": 324.7828,
+    "currency": "USD",
+    "enterpriseValue": 86090670080,
+    "profitMargins": 0.0484,
+    "floatShares": 229641784,
+    "sharesOutstanding": 246311008,
+    "sharesShort": 8324750,
+    "sharesShortPriorMonth": 8944988,
+    "sharesShortPreviousMonthDate": 1728950400,
+    "dateShortInterest": 1731628800,
+    "sharesPercentSharesOut": 0.034,
+    "heldPercentInsiders": 0.01043,
+    "heldPercentInstitutions": 0.75681,
+    "shortRatio": 2.58,
+    "shortPercentOfFloat": 0.036199998,
+    "impliedSharesOutstanding": 246311008,
+    "bookValue": 9.526,
+    "priceToBook": 44.25677,
+    "lastFiscalYearEnd": 1706659200,
+    "nextFiscalYearEnd": 1738281600,
+    "mostRecentQuarter": 1722384000,
+    "earningsQuarterlyGrowth": 4.549,
+    "netIncomeToCommon": 170196992,
+    "trailingEps": 0.51,
+    "forwardEps": 4.27,
+    "enterpriseToRevenue": 24.484,
+    "enterpriseToEbitda": 459.175,
+    "52WeekChange": 0.31217897,
+    "SandP52WeekChange": 0.19995654,
+    "exchange": "NMS",
+    "quoteType": "EQUITY",
+    "symbol": "CRWD",
+    "underlyingSymbol": "CRWD",
+    "shortName": "CrowdStrike Holdings, Inc.",
+    "longName": "CrowdStrike Holdings, Inc.",
+    "firstTradeDateEpochUtc": 1560346200,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "91e696a0-f87a-3aaf-b2cd-1bd49fbc1d92",
+    "messageBoardId": "finmb_420347413",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 421.59,
+    "targetHighPrice": 540.0,
+    "targetLowPrice": 185.0,
+    "targetMeanPrice": 381.8198,
+    "targetMedianPrice": 388.0,
+    "recommendationMean": 1.84615,
+    "recommendationKey": "buy",
+    "numberOfAnalystOpinions": 45,
+    "totalCash": 4038535936,
+    "totalCashPerShare": 16.475,
+    "ebitda": 187490000,
+    "totalDebt": 791972992,
+    "quickRatio": 1.723,
+    "currentRatio": 1.899,
+    "totalRevenue": 3516257024,
+    "debtToEquity": 27.398,
+    "revenuePerShare": 14.55,
+    "returnOnAssets": 0.00525,
+    "returnOnEquity": 0.07334,
+    "grossProfits": 2650277120,
+    "freeCashflow": 1209105920,
+    "operatingCashflow": 1330402944,
+    "earningsGrowth": 5.333,
+    "revenueGrowth": 0.317,
+    "grossMargins": 0.75372005,
+    "ebitdaMargins": 0.053319998,
+    "operatingMargins": 0.01417,
+    "financialCurrency": "USD",
+    "trailingPegRatio": 1.8991
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 431.32501220703125,
+    "dayLow": 419.32000732421875,
+    "exchange": "NMS",
+    "fiftyDayAverage": 368.47449951171876,
+    "lastPrice": 421.5899963378906,
+    "lastVolume": 3496400,
+    "marketCap": 103842256960.70215,
+    "open": 424.0,
+    "previousClose": 424.5,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 420.510009765625,
+    "shares": 246311008,
+    "tenDayAverageVolume": 3766080,
+    "threeMonthAverageVolume": 3506914,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 324.782799911499,
+    "yearChange": 0.28010566899185524,
+    "yearHigh": 431.32501220703125,
+    "yearLow": 200.80999755859375
+  },
+  "history": {
+    "Open": [
+      69.0999984741211,
+      90.06999969482422,
+      80.8499984741211,
+      58.29999923706055,
+      49.939998626708984,
+      58.5,
+      50.029998779296875,
+      61.130001068115234,
+      60.20000076293945,
+      54.0,
+      66.27999877929688,
+      90.55999755859375,
+      100.0,
+      114.4800033569336,
+      134.44000244140625,
+      139.5,
+      124.55000305175781,
+      153.5,
+      209.9600067138672,
+      216.55999755859375,
+      220.81900024414062,
+      188.76699829101562,
+      209.0,
+      223.22999572753906,
+      251.0,
+      254.25999450683594,
+      273.2200012207031,
+      246.64999389648438,
+      275.5409851074219,
+      220.68800354003906,
+      205.0,
+      182.00999450683594,
+      201.3300018310547,
+      225.3000030517578,
+      198.5,
+      163.00999450683594,
+      168.24000549316406,
+      180.77999877929688,
+      178.4499969482422,
+      166.6300048828125,
+      165.0,
+      118.63999938964844,
+      107.5,
+      105.9000015258789,
+      120.2300033569336,
+      135.5,
+      118.55999755859375,
+      146.72000122070312,
+      147.17999267578125,
+      161.0,
+      163.1199951171875,
+      168.0,
+      178.1199951171875,
+      235.72000122070312,
+      251.47000122070312,
+      296.1400146484375,
+      319.25,
+      321.0,
+      290.44000244140625,
+      319.3699951171875,
+      385.2799987792969,
+      232.0,
+      275.7799987792969,
+      282.260009765625,
+      296.7900085449219,
+      344.8999938964844,
+      346.5199890136719,
+      386.94500732421875
+    ],
+    "High": [
+      96.19000244140625,
+      101.87999725341797,
+      87.7699966430664,
+      69.69999694824219,
+      60.0,
+      58.599998474121094,
+      64.04000091552734,
+      67.55999755859375,
+      60.970001220703125,
+      75.0,
+      88.0,
+      108.33599853515625,
+      118.58000183105469,
+      126.55000305175781,
+      153.10000610351562,
+      153.89999389648438,
+      155.0,
+      227.36000061035156,
+      238.5399932861328,
+      251.27999877929688,
+      231.16000366210938,
+      227.1999969482422,
+      225.9250030517578,
+      260.82000732421875,
+      272.6300048828125,
+      289.239990234375,
+      285.45001220703125,
+      297.3999938964844,
+      298.4800109863281,
+      225.60000610351562,
+      205.5749969482422,
+      197.25,
+      232.35000610351562,
+      242.0,
+      207.8300018310547,
+      188.67999267578125,
+      194.85000610351562,
+      205.72999572753906,
+      195.2899932861328,
+      181.83999633789062,
+      168.47999572753906,
+      125.55000305175781,
+      109.01000213623047,
+      123.23999786376953,
+      138.3300018310547,
+      140.2100067138672,
+      161.7949981689453,
+      162.25,
+      163.41000366210938,
+      166.99000549316406,
+      172.63999938964844,
+      191.99000549316406,
+      238.47999572753906,
+      261.80999755859375,
+      307.54998779296875,
+      338.4530029296875,
+      365.0,
+      325.989990234375,
+      358.8399963378906,
+      394.6400146484375,
+      398.3269958496094,
+      285.7300109863281,
+      302.1579895019531,
+      323.94000244140625,
+      377.4200134277344,
+      389.0,
+      411.29998779296875,
+      431.3251953125
+    ],
+    "Low": [
+      61.72100067138672,
+      78.88999938964844,
+      51.61000061035156,
+      44.58100128173828,
+      44.79999923706055,
+      46.31999969482422,
+      48.790000915527344,
+      54.345001220703125,
+      31.950000762939453,
+      53.529998779296875,
+      65.80000305175781,
+      88.87000274658203,
+      97.05999755859375,
+      93.37000274658203,
+      115.25,
+      120.44999694824219,
+      118.0999984741211,
+      138.24000549316406,
+      193.86000061035156,
+      198.16200256347656,
+      168.6699981689453,
+      184.72000122070312,
+      177.28700256347656,
+      204.52999877929688,
+      239.7100067138672,
+      227.25,
+      238.57000732421875,
+      235.6300048828125,
+      216.49000549316406,
+      185.7100067138672,
+      150.02000427246094,
+      153.5,
+      155.36000061035156,
+      197.8000030517578,
+      130.0,
+      150.6300048828125,
+      167.47000122070312,
+      178.38499450683594,
+      157.05999755859375,
+      142.36000061035156,
+      108.88999938964844,
+      98.69999694824219,
+      92.25,
+      105.0999984741211,
+      118.1500015258789,
+      119.41999816894531,
+      115.66999816894531,
+      141.35000610351562,
+      139.3699951171875,
+      140.52000427246094,
+      157.58999633789062,
+      160.86000061035156,
+      174.80999755859375,
+      229.8000030517578,
+      238.61000061035156,
+      273.1600036621094,
+      289.79998779296875,
+      280.8800048828125,
+      288.54998779296875,
+      303.5050048828125,
+      226.22000122070312,
+      200.80999755859375,
+      242.25,
+      272.6700134277344,
+      295.0799865722656,
+      336.55999755859375,
+      335.54998779296875,
+      384.239990234375
+    ],
+    "Close": [
+      89.06999969482422,
+      81.27999877929688,
+      58.310001373291016,
+      49.90999984741211,
+      58.0,
+      49.869998931884766,
+      61.09000015258789,
+      59.63999938964844,
+      55.68000030517578,
+      67.66000366210938,
+      87.80999755859375,
+      100.29000091552734,
+      113.19999694824219,
+      125.7300033569336,
+      137.32000732421875,
+      123.83999633789062,
+      153.27999877929688,
+      211.82000732421875,
+      215.8000030517578,
+      216.0,
+      182.50999450683594,
+      208.50999450683594,
+      222.14999389648438,
+      251.30999755859375,
+      253.61000061035156,
+      281.0,
+      245.77999877929688,
+      281.79998779296875,
+      217.13999938964844,
+      204.75,
+      180.63999938964844,
+      195.2100067138672,
+      227.0800018310547,
+      198.75999450683594,
+      159.99000549316406,
+      168.55999755859375,
+      183.60000610351562,
+      182.61000061035156,
+      164.80999755859375,
+      161.1999969482422,
+      117.6500015258789,
+      105.29000091552734,
+      105.9000015258789,
+      120.69000244140625,
+      137.25999450683594,
+      120.05000305175781,
+      160.1300048828125,
+      146.8699951171875,
+      161.66000366210938,
+      163.02999877929688,
+      167.3800048828125,
+      176.77000427246094,
+      236.99000549316406,
+      255.32000732421875,
+      292.5,
+      324.1499938964844,
+      320.5899963378906,
+      292.5400085449219,
+      313.6700134277344,
+      383.19000244140625,
+      231.9600067138672,
+      277.2799987792969,
+      280.4700012207031,
+      296.8699951171875,
+      345.9700012207031,
+      342.1600036621094,
+      398.07000732421875,
+      421.5899963378906
+    ],
+    "Volume": [
+      63810700,
+      43819900,
+      70192200,
+      61400100,
+      35727100,
+      103276300,
+      147417900,
+      87428800,
+      130467000,
+      101310500,
+      84512400,
+      208024100,
+      117832800,
+      86049000,
+      168310000,
+      90515600,
+      70044000,
+      135716400,
+      77823200,
+      62969500,
+      114699300,
+      72162900,
+      67099900,
+      96538900,
+      56161700,
+      90602700,
+      75809300,
+      53436900,
+      81789700,
+      89359200,
+      106770000,
+      72139600,
+      144921700,
+      79713600,
+      117586400,
+      96495000,
+      62404300,
+      82647900,
+      68524100,
+      56984700,
+      124625800,
+      100571700,
+      110875200,
+      83314000,
+      135786800,
+      68157900,
+      87801600,
+      91607700,
+      66900000,
+      84998800,
+      60208700,
+      66158800,
+      75243500,
+      55352800,
+      71577700,
+      68120700,
+      103697600,
+      46197600,
+      63310400,
+      167064700,
+      250900800,
+      142680500,
+      87583700,
+      78637400,
+      76783800,
+      71464700,
+      65594800,
+      18925340
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 13,
+      "1": 13,
+      "2": 13,
+      "3": 13
+    },
+    "buy": {
+      "0": 26,
+      "1": 27,
+      "2": 27,
+      "3": 28
+    },
+    "hold": {
+      "0": 10,
+      "1": 9,
+      "2": 9,
+      "3": 9
+    },
+    "sell": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "strongSell": {
+      "0": 1,
+      "1": 1,
+      "2": 1,
+      "3": 1
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.01043
+    },
+    {
+      "Value": 0.75681
+    },
+    {
+      "Value": 0.76478994
+    },
+    {
+      "Value": 2163.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.071100004,
+      "Shares": 16070200,
+      "Value": 2360230274
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0644,
+      "Shares": 14566817,
+      "Value": 2139428412
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Voya Investment Management LLC",
+      "pctHeld": 0.0235,
+      "Shares": 5311499,
+      "Value": 780099858
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "T. Rowe Price Investment Management, Inc.",
+      "pctHeld": 0.0224,
+      "Shares": 5069172,
+      "Value": 744509291
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Jennison Associates LLC",
+      "pctHeld": 0.021300001,
+      "Shares": 4822690,
+      "Value": 708308480
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0194,
+      "Shares": 4392861,
+      "Value": 645179495
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "JP Morgan Chase & Company",
+      "pctHeld": 0.0177,
+      "Shares": 4010133,
+      "Value": 588968233
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "ClearBridge Investments, LLC",
+      "pctHeld": 0.0147,
+      "Shares": 3327904,
+      "Value": 488769260
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.014099999,
+      "Shares": 3194073,
+      "Value": 469113501
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Renaissance Technologies, LLC",
+      "pctHeld": 0.0127,
+      "Shares": 2861329,
+      "Value": 420243390
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 17.75,
+      "environmentScore": 0.97,
+      "socialScore": 10.4,
+      "governanceScore": 6.38,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 2.0,
+      "peerCount": 605,
+      "esgPerformance": "LAG_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Customer Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 20.740710743801657,
+        "max": 32.73
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.76223076923077,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 9.812038461538451,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 2.9947307692307694,
+        "max": 6.87
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6528925619834711,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-05-16",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-08-15",
+    "2025-09-19",
+    "2025-11-21",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-06-18",
+    "2026-09-18",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "4db73e62-83d0-3009-a8c1-b770c6dc5b8f",
+      "content": {
+        "id": "4db73e62-83d0-3009-a8c1-b770c6dc5b8f",
+        "contentType": "STORY",
+        "title": "Better Cybersecurity Stock: Palo Alto Networks or CrowdStrike?",
+        "description": "",
+        "summary": "Two of the top providers of this type of software are CrowdStrike (NASDAQ: CRWD) and Palo Alto Networks (NASDAQ: PANW).  While both offer a wide range of products, they compete head-to-head in the most important area: endpoint protection, which defends network access points like laptops from external threats.  If a security provider can win a customer over with its endpoint protection solution, it'll have lots of chances to sell that customer on add-on services.",
+        "pubDate": "2025-02-08T11:30:00Z",
+        "displayTime": "2025-02-08T11:30:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/199c362e6df51199f5022643c08ed853",
+          "originalWidth": 687,
+          "originalHeight": 760,
+          "caption": "Endpoint protection Magic Quadrant.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/V40X7DkgvVMDdxzipHbxQg--~B/aD03NjA7dz02ODc7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/199c362e6df51199f5022643c08ed853",
+              "width": 687,
+              "height": 760,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/SOqvaeLWKEzB.fcvfd03lw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/199c362e6df51199f5022643c08ed853",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/02/08/better-cybersecurity-stock-palo-alto-networks-or/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=0af5e20d-ff85-478f-8ba7-736a75883a89",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/better-cybersecurity-stock-palo-alto-113000169.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "d5e774d4-cbbe-3adb-b9a1-491d09e26ef7",
+      "content": {
+        "id": "d5e774d4-cbbe-3adb-b9a1-491d09e26ef7",
+        "contentType": "STORY",
+        "title": "Should I Buy Palo Alto Networks Stock?",
+        "description": "",
+        "summary": "Palo Alto Networks (NASDAQ: PANW) is one of the leading cybersecurity companies.  Unfortunately for Palo Alto, the competitive nature of the online security industry means organizations have numerous choices when it comes to providers.  Amid that competition, the question for investors is whether Palo Alto stock can drive outsize returns, or whether they should look to other cybersecurity stocks.",
+        "pubDate": "2025-02-08T11:05:00Z",
+        "displayTime": "2025-02-08T11:05:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/47e86163ec73258caa93128456204b6e",
+          "originalWidth": 720,
+          "originalHeight": 524,
+          "caption": "PANW PS Ratio Chart",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/SAvmdITYm9ICllF7KtOU1g--~B/aD01MjQ7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/47e86163ec73258caa93128456204b6e",
+              "width": 720,
+              "height": 524,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/5ROFTvFB.uLOygb2xrVh0A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/47e86163ec73258caa93128456204b6e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/02/08/should-i-buy-palo-alto-networks-stock/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=0a24d801-546e-4430-9273-71c7c2c06f0d",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/buy-palo-alto-networks-stock-110500391.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "84380ad3-497f-3903-8124-c88ae204c086",
+      "content": {
+        "id": "84380ad3-497f-3903-8124-c88ae204c086",
+        "contentType": "STORY",
+        "title": "CrowdStrike Holdings (CRWD) – AI-Driven Defense Against Cyber Threats",
+        "description": "",
+        "summary": "We recently published a list of 10 Must-Watch AI Stocks Dominating Headlines. In this article, we are going to take a look at where CrowdStrike Holdings, Inc. (NASDAQ:CRWD) stands against other must-watch AI stocks dominating headlines. The artificial intelligence story continues to grow more compelling with each passing day. In the latest news, a top […]",
+        "pubDate": "2025-02-07T08:42:42Z",
+        "displayTime": "2025-02-07T08:42:42Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "CrowdStrike Holdings, Inc. (CRWD) - AI-Driven Defense Against Cyber Threats",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/eSXzRwwyPBRoXDSfsjazwA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/inliqkC4utnxJbNKxl_h6w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-ai-driven-084242143.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-ai-driven-084242143.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "e2b3c12d-4bd1-34e2-9fcf-134d026a7c30",
+      "content": {
+        "id": "e2b3c12d-4bd1-34e2-9fcf-134d026a7c30",
+        "contentType": "STORY",
+        "title": "CrowdStrike Holdings (CRWD) Laps the Stock Market: Here's Why",
+        "description": "",
+        "summary": "CrowdStrike Holdings (CRWD) concluded the recent trading session at $420.51, signifying a +0.79% move from its prior day's close.",
+        "pubDate": "2025-02-06T22:45:21Z",
+        "displayTime": "2025-02-06T22:45:21Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/39dfb058875b6e691de9136bc97a47b4",
+          "originalWidth": 900,
+          "originalHeight": 900,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/hYDVEF34jJNULlluFRTwjg--~B/aD05MDA7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/39dfb058875b6e691de9136bc97a47b4",
+              "width": 900,
+              "height": 900,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/TKhE1QXt8L12yJAimuSXOg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/39dfb058875b6e691de9136bc97a47b4",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-laps-stock-224521951.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-laps-stock-224521951.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "599431fe-de7c-3ca3-8776-abbef195d0ee",
+      "content": {
+        "id": "599431fe-de7c-3ca3-8776-abbef195d0ee",
+        "contentType": "STORY",
+        "title": "Jim Cramer on CrowdStrike Holdings, Inc. (CRWD): ‘I Do Think That This Is The Time To Own CrowdStrike And To Own What George Kurtz Has Built’",
+        "description": "",
+        "summary": "We recently compiled a list of the Jim Cramer Highlighted Buying Opportunities in 13 Stocks. In this article, we are going to take a look at where CrowdStrike Holdings, Inc. (NASDAQ:CRWD) stands against the other stocks Jim Cramer recently talked about. Jim Cramer, the host of Mad Money, took a moment on Wednesday to reflect on […]",
+        "pubDate": "2025-02-06T17:43:30Z",
+        "displayTime": "2025-02-06T17:43:30Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "CrowdStrike Holdings, Inc. (CRWD) - AI-Driven Defense Against Cyber Threats",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/eSXzRwwyPBRoXDSfsjazwA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/inliqkC4utnxJbNKxl_h6w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-crowdstrike-holdings-inc-174330465.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-crowdstrike-holdings-inc-174330465.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0f2f3000-3d5a-3276-989b-2d10ec0e948d",
+      "content": {
+        "id": "0f2f3000-3d5a-3276-989b-2d10ec0e948d",
+        "contentType": "STORY",
+        "title": "CrowdStrike Stock Is Now Worth Over $100 Billion, Joining Elite Company. What Could This Mean for Investors Today?",
+        "description": "",
+        "summary": "In late January, cloud-based cybersecurity company CrowdStrike (NASDAQ: CRWD) surpassed a $100 billion market cap valuation for the very first time in its history.  Palo Alto Networks (NASDAQ: PANW) is the only other pure-play cybersecurity stock that's achieved a $100 billion market cap.  Palo Alto Networks was founded in 2005 and passed a $100 billion valuation in late 2024.",
+        "pubDate": "2025-02-06T10:24:00Z",
+        "displayTime": "2025-02-06T10:24:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/f479b738a1d14069f0843442f841cc71",
+          "originalWidth": 720,
+          "originalHeight": 456,
+          "caption": "CRWD Free Cash Flow Per Share Chart",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Mr0.6A0lEATS0ar9OZYVSg--~B/aD00NTY7dz03MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/f479b738a1d14069f0843442f841cc71",
+              "width": 720,
+              "height": 456,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/UNd1SUIKXibgicKklnO5Lw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/f479b738a1d14069f0843442f841cc71",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/02/06/crowdstrike-stock-is-now-worth-over-100-billion-jo/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=fce2ca11-a0b4-480e-bc95-a13f29bd0343",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-stock-now-worth-over-102400085.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "8815c5cd-7e78-3733-9a68-985aa10df6ac",
+      "content": {
+        "id": "8815c5cd-7e78-3733-9a68-985aa10df6ac",
+        "contentType": "STORY",
+        "title": "CrowdStrike Holdings (CRWD) Downgraded by Baird Despite Strong AI-Driven Cybersecurity Demand",
+        "description": "",
+        "summary": "We recently compiled a list of the 10 AI News Updates Making Headlines Right Now. In this article, we are going to take a look at where CrowdStrike Holdings, Inc. (NASDAQ:CRWD) stands against the other AI stocks that are making headlines. Nowadays, barely a day goes by without a huge headline touching artificial intelligence (AI). Three […]",
+        "pubDate": "2025-02-05T22:00:22Z",
+        "displayTime": "2025-02-05T22:00:22Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "CrowdStrike Holdings, Inc. (CRWD): Pioneering AI-Driven Cybersecurity Through Strategic Partnership with Cognizant",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/eSXzRwwyPBRoXDSfsjazwA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/inliqkC4utnxJbNKxl_h6w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-downgraded-baird-220022677.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-crwd-downgraded-baird-220022677.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0aedbb66-283c-39a6-a908-3d2f0dc25218",
+      "content": {
+        "id": "0aedbb66-283c-39a6-a908-3d2f0dc25218",
+        "contentType": "STORY",
+        "title": "Meta Is Just One Of A Huge Barrage Of Breakouts. Here's The Rest.",
+        "description": "",
+        "summary": "As the Nasdaq weathers the Trump tariffs, Meta stock, Axon and CrowdStrike lead this barrage of breakout stocks.",
+        "pubDate": "2025-02-05T20:38:22Z",
+        "displayTime": "2025-02-05T20:38:22Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/0aedbb66-283c-39a6-a908-3d2f0dc25218/meta-is-just-one-of-a-huge.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+          "originalWidth": 1000,
+          "originalHeight": 563,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/0WdszMP1XEaLf407yl_nNw--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+              "width": 1000,
+              "height": 563,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/5B4Yv.jiDugiUjT89YM3lw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/research/breakout-stocks-technical-analysis/meta-stock-axon-crowdtrike-samsara-trump-tariffs/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "1ec3d46b-f8ba-3e34-aa77-74a79579cfbc",
+      "content": {
+        "id": "1ec3d46b-f8ba-3e34-aa77-74a79579cfbc",
+        "contentType": "STORY",
+        "title": "‘You’ll be free too’: Kevin O’Leary says you’ll be a ‘multimillionaire’ if you can do 1 crucial thing",
+        "description": "",
+        "summary": "O'Leary says the money came second to this one thing that drove his passion forward.",
+        "pubDate": "2025-02-05T16:46:00Z",
+        "displayTime": "2025-02-05T16:46:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/moneywise_327/bca762916dfb0456ee2feb27e43f68f2",
+          "originalWidth": 728,
+          "originalHeight": 400,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_OxtVoLxDxTcigf.JwnKow--~B/aD00MDA7dz03Mjg7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/moneywise_327/bca762916dfb0456ee2feb27e43f68f2",
+              "width": 728,
+              "height": 400,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/r34EnyYaAQpmqPN8CCFGRg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/moneywise_327/bca762916dfb0456ee2feb27e43f68f2",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Moneywise",
+          "url": "https://moneywise.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/ll-free-too-kevin-o-120100829.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/ll-free-too-kevin-o-120100829.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "6af54ada-25ec-3e40-bf69-1ceba31c41ae",
+      "content": {
+        "id": "6af54ada-25ec-3e40-bf69-1ceba31c41ae",
+        "contentType": "STORY",
+        "title": "CrowdStrike Holdings, Inc. (CRWD): Among the Best Low Risk High Growth Stocks To Invest In Now",
+        "description": "",
+        "summary": "We recently compiled a list of the 12 Best Low Risk High Growth Stocks to Invest In. In this article, we are going to take a look at where CrowdStrike Holdings, Inc. (NASDAQ:CRWD) stands against the other low risk high growth stocks. In the past few days, the reintroduction of tariffs by the US government has […]",
+        "pubDate": "2025-02-05T15:09:49Z",
+        "displayTime": "2025-02-05T15:09:49Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "CrowdStrike Holdings, Inc. (CRWD): Pioneering AI-Driven Cybersecurity Through Strategic Partnership with Cognizant",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/eSXzRwwyPBRoXDSfsjazwA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/inliqkC4utnxJbNKxl_h6w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/f19224defcc7729b058ac2b2e8bb6d1b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-inc-crwd-among-150949304.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crowdstrike-holdings-inc-crwd-among-150949304.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,1662 @@
+{
+  "ticker": "DOCU",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:47:55.810682",
+  "info": {
+    "address1": "221 Main Street",
+    "address2": "Suite 1550",
+    "city": "San Francisco",
+    "state": "CA",
+    "zip": "94105",
+    "country": "United States",
+    "phone": "415 489 4940",
+    "website": "https://www.DocuSign.com",
+    "industry": "Software - Application",
+    "industryKey": "software-application",
+    "industryDisp": "Software - Application",
+    "sector": "Technology",
+    "sectorKey": "technology",
+    "sectorDisp": "Technology",
+    "longBusinessSummary": "DocuSign, Inc. provides electronic signature solution in the United States and internationally. The company provides e-signature solution that enables sending and signing of agreements on various devices; Contract Lifecycle Management (CLM), which automates workflows across the entire agreement process; Document Generation streamlines the process of generating new, custom agreements; and Gen for Salesforce, which allows sales representatives to automatically generate agreements with a few clicks from within Salesforce. It also provides Identify, a signer-identification option for checking government-issued IDs; Standards-Based Signatures, which support signatures that involve digital certificates; Monitor that uses advanced analytics to track DocuSign eSignature web, mobile, and API account; Notary which enables notaries public to conduct remote online notarization transactions; and Web Forms, a web forms that quickly draft agreements using pre-populated data from completed forms or external systems via APIs. In addition, the company offers Rooms for Real Estate that provides a way for brokers and agents to manage the entire real estate transaction digitally. Signature and CLM are FedRAMP, an authorized version of DocuSign eSignature for U.S. federal government agencies; and life sciences modules that support compliance with the electronic signature practices. The company sells its products through direct and partner-assisted sales, and digital self-service purchasing. DocuSign, Inc. was incorporated in 2003 and is headquartered in San Francisco, California.",
+    "fullTimeEmployees": 6840,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Allan C. Thygesen",
+        "age": 60,
+        "title": "President, CEO & Director",
+        "yearBorn": 1963,
+        "fiscalYear": 2024,
+        "totalPay": 1916942,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Robert  Chatwani",
+        "age": 47,
+        "title": "President & GM of Growth",
+        "yearBorn": 1976,
+        "fiscalYear": 2024,
+        "totalPay": 1967835,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Blake Jeffrey Grayson",
+        "age": 49,
+        "title": "Executive VP & CFO",
+        "yearBorn": 1974,
+        "fiscalYear": 2024,
+        "totalPay": 1647614,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Paula  Hansen",
+        "age": 52,
+        "title": "President & Chief Revenue Officer",
+        "yearBorn": 1971,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Anwar  Akram",
+        "title": "Chief Operating Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Sagnik  Nandy",
+        "title": "Chief Technology Officer & Executive VP of Engineering",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Shanthi  Iyer",
+        "title": "Chief Information Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Heather Kalista Harwood",
+        "title": "Head of Investor Relations",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. James P. Shaughnessy Esq.",
+        "age": 68,
+        "title": "Chief Legal Officer",
+        "yearBorn": 1955,
+        "fiscalYear": 2024,
+        "totalPay": 694066,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Jennifer  Christie",
+        "title": "Chief People Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 2,
+    "boardRisk": 5,
+    "compensationRisk": 10,
+    "shareHolderRightsRisk": 5,
+    "overallRisk": 8,
+    "governanceEpochDate": 1733011200,
+    "compensationAsOfEpochDate": 1735603200,
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 93.85,
+    "open": 94.34,
+    "dayLow": 90.36,
+    "dayHigh": 94.36,
+    "regularMarketPreviousClose": 93.85,
+    "regularMarketOpen": 94.34,
+    "regularMarketDayLow": 90.36,
+    "regularMarketDayHigh": 94.36,
+    "beta": 0.898,
+    "trailingPE": 18.771784,
+    "forwardPE": 24.345749,
+    "volume": 2191335,
+    "regularMarketVolume": 2191335,
+    "averageVolume": 3119251,
+    "averageVolume10days": 2352820,
+    "averageDailyVolume10Day": 2352820,
+    "bid": 86.51,
+    "ask": 95.5,
+    "bidSize": 100,
+    "askSize": 100,
+    "marketCap": 18279043072,
+    "fiftyTwoWeekLow": 48.7,
+    "fiftyTwoWeekHigh": 107.86,
+    "priceToSalesTrailing12Months": 6.3946857,
+    "fiftyDayAverage": 91.9202,
+    "twoHundredDayAverage": 68.1291,
+    "currency": "USD",
+    "enterpriseValue": 16179828736,
+    "profitMargins": 0.34564,
+    "floatShares": 200838097,
+    "sharesOutstanding": 202023008,
+    "sharesShort": 13572947,
+    "sharesShortPriorMonth": 15393402,
+    "sharesShortPreviousMonthDate": 1728950400,
+    "dateShortInterest": 1731628800,
+    "sharesPercentSharesOut": 0.0669,
+    "heldPercentInsiders": 0.01008,
+    "heldPercentInstitutions": 0.82504,
+    "shortRatio": 5.25,
+    "shortPercentOfFloat": 0.0756,
+    "impliedSharesOutstanding": 209548000,
+    "bookValue": 5.503,
+    "priceToBook": 16.441942,
+    "lastFiscalYearEnd": 1706659200,
+    "nextFiscalYearEnd": 1738281600,
+    "mostRecentQuarter": 1722384000,
+    "earningsQuarterlyGrowth": 119.11,
+    "netIncomeToCommon": 988017024,
+    "trailingEps": 4.82,
+    "forwardEps": 3.69,
+    "enterpriseToRevenue": 5.66,
+    "enterpriseToEbitda": 84.815,
+    "52WeekChange": 0.7545084,
+    "SandP52WeekChange": 0.19995654,
+    "exchange": "NMS",
+    "quoteType": "EQUITY",
+    "symbol": "DOCU",
+    "underlyingSymbol": "DOCU",
+    "shortName": "DocuSign, Inc.",
+    "longName": "DocuSign, Inc.",
+    "firstTradeDateEpochUtc": 1524835800,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "5e06079f-4384-398e-ac3f-8ccc76c252b4",
+    "messageBoardId": "finmb_9817309",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 90.48,
+    "targetHighPrice": 124.0,
+    "targetLowPrice": 70.0,
+    "targetMeanPrice": 95.92222,
+    "targetMedianPrice": 98.8,
+    "recommendationMean": 3.0,
+    "recommendationKey": "hold",
+    "numberOfAnalystOpinions": 18,
+    "totalCash": 938353024,
+    "totalCashPerShare": 4.624,
+    "ebitda": 190767008,
+    "totalDebt": 135600992,
+    "quickRatio": 0.785,
+    "currentRatio": 0.836,
+    "totalRevenue": 2858473984,
+    "debtToEquity": 6.913,
+    "revenuePerShare": 13.937,
+    "returnOnAssets": 0.02437,
+    "returnOnEquity": 0.70342004,
+    "grossProfits": 2294061056,
+    "freeCashflow": 1143059456,
+    "operatingCashflow": 1009908992,
+    "earningsGrowth": 116.349,
+    "revenueGrowth": 0.07,
+    "grossMargins": 0.80254996,
+    "ebitdaMargins": 0.06674,
+    "operatingMargins": 0.07934,
+    "financialCurrency": "USD",
+    "trailingPegRatio": 0.5508
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 94.36000061035156,
+    "dayLow": 90.36000061035156,
+    "exchange": "NMS",
+    "fiftyDayAverage": 91.92020004272462,
+    "lastPrice": 90.4800033569336,
+    "lastVolume": 2228000,
+    "marketCap": 18959903743.43872,
+    "open": 94.33999633789062,
+    "previousClose": 93.88,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 93.8499984741211,
+    "shares": 209548000,
+    "tenDayAverageVolume": 2352820,
+    "threeMonthAverageVolume": 3111704,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 68.12909992218017,
+    "yearChange": 0.7678781324232122,
+    "yearHigh": 107.86000061035156,
+    "yearLow": 48.70000076293945
+  },
+  "history": {
+    "Open": [
+      38.70000076293945,
+      50.279998779296875,
+      52.459999084472656,
+      54.29999923706055,
+      62.79999923706055,
+      52.97999954223633,
+      42.13999938964844,
+      42.720001220703125,
+      39.27000045776367,
+      49.33000183105469,
+      55.90999984741211,
+      52.45000076293945,
+      57.099998474121094,
+      56.0,
+      50.529998779296875,
+      51.72999954223633,
+      46.56999969482422,
+      62.029998779296875,
+      66.77999877929688,
+      72.44000244140625,
+      74.30999755859375,
+      79.0999984741211,
+      87.38999938964844,
+      90.81999969482422,
+      103.19000244140625,
+      142.35000610351562,
+      171.25,
+      218.72000122070312,
+      240.67999267578125,
+      218.8000030517578,
+      204.2100067138672,
+      222.0,
+      222.38999938964844,
+      233.25,
+      233.3699951171875,
+      205.3000030517578,
+      224.02999877929688,
+      202.10000610351562,
+      278.6300048828125,
+      299.79998779296875,
+      296.3429870605469,
+      257.0,
+      277.2699890136719,
+      248.0800018310547,
+      152.35000610351562,
+      127.58999633789062,
+      117.55000305175781,
+      107.0,
+      80.7300033569336,
+      85.31999969482422,
+      58.0,
+      63.310001373291016,
+      57.18000030517578,
+      51.369998931884766,
+      49.72999954223633,
+      46.66999816894531,
+      56.435001373291016,
+      61.0,
+      60.790000915527344,
+      57.29999923706055,
+      49.20000076293945,
+      56.09000015258789,
+      51.130001068115234,
+      53.369998931884766,
+      50.709999084472656,
+      41.939998626708984,
+      38.810001373291016,
+      43.13999938964844,
+      58.88999938964844,
+      61.150001525878906,
+      53.0,
+      59.31999969482422,
+      56.36000061035156,
+      54.88999938964844,
+      53.619998931884766,
+      55.439998626708984,
+      59.209999084472656,
+      62.09000015258789,
+      69.87000274658203,
+      79.58999633789062,
+      90.5199966430664,
+      93.06199645996094
+    ],
+    "High": [
+      51.20100021362305,
+      66.80000305175781,
+      57.5,
+      68.3499984741211,
+      65.87000274658203,
+      53.0,
+      45.150001525878906,
+      43.349998474121094,
+      50.029998779296875,
+      56.22999954223633,
+      59.619998931884766,
+      58.369998931884766,
+      57.41999816894531,
+      56.099998474121094,
+      54.779998779296875,
+      53.0,
+      65.06999969482422,
+      68.16999816894531,
+      73.22000122070312,
+      76.27999877929688,
+      80.26000213623047,
+      92.55000305175781,
+      98.37999725341797,
+      111.36000061035156,
+      141.42999267578125,
+      180.4510040283203,
+      217.6999969482422,
+      229.8300018310547,
+      290.2300109863281,
+      246.8000030517578,
+      246.0,
+      256.0,
+      263.0,
+      275.4599914550781,
+      246.11000061035156,
+      236.10699462890625,
+      224.02999877929688,
+      286.510009765625,
+      310.5060119628906,
+      314.760009765625,
+      314.70001220703125,
+      288.5,
+      288.135009765625,
+      249.63999938964844,
+      157.3699951171875,
+      131.90699768066406,
+      123.5,
+      113.66999816894531,
+      88.58000183105469,
+      92.04000091552734,
+      68.94999694824219,
+      77.23999786376953,
+      67.3499984741211,
+      56.625,
+      54.32500076293945,
+      61.599998474121094,
+      61.27000045776367,
+      69.44999694824219,
+      66.9800033569336,
+      58.689998626708984,
+      56.97999954223633,
+      64.70999908447266,
+      55.279998779296875,
+      53.52000045776367,
+      53.400001525878906,
+      43.06999969482422,
+      44.33000183105469,
+      64.76000213623047,
+      64.69999694824219,
+      62.689998626708984,
+      60.47999954223633,
+      61.46500015258789,
+      61.13999938964844,
+      54.900001525878906,
+      58.09600067138672,
+      59.779998779296875,
+      63.369998931884766,
+      73.80000305175781,
+      86.75,
+      107.86000061035156,
+      99.08999633789062,
+      99.30000305175781
+    ],
+    "Low": [
+      37.849998474121094,
+      49.7599983215332,
+      50.060001373291016,
+      54.19499969482422,
+      51.119998931884766,
+      38.279998779296875,
+      35.060001373291016,
+      36.249000549316406,
+      38.79999923706055,
+      48.209999084472656,
+      51.13999938964844,
+      50.91999816894531,
+      50.02000045776367,
+      45.67499923706055,
+      49.52000045776367,
+      43.130001068115234,
+      45.52000045776367,
+      59.77000045776367,
+      64.25,
+      66.97000122070312,
+      70.55000305175781,
+      76.18000030517578,
+      64.87999725341797,
+      78.72000122070312,
+      101.87999725341797,
+      131.25999450683594,
+      170.8000030517578,
+      189.1199951171875,
+      187.2100067138672,
+      200.22999572753906,
+      185.35899353027344,
+      209.11000061035156,
+      216.5,
+      219.14999389648438,
+      188.91000366210938,
+      202.3000030517578,
+      179.49000549316406,
+      193.66000366210938,
+      270.4100036621094,
+      281.2799987792969,
+      253.02999877929688,
+      241.95199584960938,
+      233.3300018310547,
+      131.50999450683594,
+      108.05999755859375,
+      100.0,
+      71.0,
+      80.63099670410156,
+      64.83999633789062,
+      55.86000061035156,
+      57.0,
+      56.91999816894531,
+      51.119998931884766,
+      42.130001068115234,
+      39.56999969482422,
+      40.7599983215332,
+      52.16999816894531,
+      58.060001373291016,
+      47.779998779296875,
+      47.810001373291016,
+      46.79999923706055,
+      49.310001373291016,
+      48.7400016784668,
+      46.65999984741211,
+      40.595001220703125,
+      38.11000061035156,
+      38.20000076293945,
+      42.7599983215332,
+      54.2400016784668,
+      49.119998931884766,
+      51.119998931884766,
+      54.63999938964844,
+      53.5,
+      48.70000076293945,
+      51.58000183105469,
+      48.79999923706055,
+      54.314998626708984,
+      60.599998474121094,
+      69.27999877929688,
+      79.05999755859375,
+      87.08000183105469,
+      90.36000061035156
+    ],
+    "Close": [
+      49.810001373291016,
+      52.95000076293945,
+      53.900001525878906,
+      62.439998626708984,
+      52.56999969482422,
+      41.939998626708984,
+      41.7599983215332,
+      40.08000183105469,
+      49.45000076293945,
+      55.150001525878906,
+      51.84000015258789,
+      56.66999816894531,
+      56.060001373291016,
+      49.709999084472656,
+      51.720001220703125,
+      46.689998626708984,
+      61.91999816894531,
+      66.19000244140625,
+      71.20999908447266,
+      74.11000061035156,
+      78.51000213623047,
+      86.30999755859375,
+      92.4000015258789,
+      104.75,
+      139.74000549316406,
+      172.2100067138672,
+      216.8300018310547,
+      223.0,
+      215.24000549316406,
+      202.25,
+      227.8800048828125,
+      222.3000030517578,
+      232.88999938964844,
+      226.66000366210938,
+      202.4499969482422,
+      222.94000244140625,
+      201.6199951171875,
+      279.57000732421875,
+      298.0400085449219,
+      296.239990234375,
+      257.42999267578125,
+      278.2900085449219,
+      246.36000061035156,
+      152.30999755859375,
+      125.7699966430664,
+      118.43000030517578,
+      107.12000274658203,
+      81.0,
+      83.91000366210938,
+      57.380001068115234,
+      63.97999954223633,
+      58.220001220703125,
+      53.470001220703125,
+      48.29999923706055,
+      47.06999969482422,
+      55.41999816894531,
+      60.63999938964844,
+      61.349998474121094,
+      58.29999923706055,
+      49.439998626708984,
+      56.400001525878906,
+      51.09000015258789,
+      53.81999969482422,
+      50.29999923706055,
+      42.0,
+      38.880001068115234,
+      43.099998474121094,
+      59.45000076293945,
+      60.91999816894531,
+      53.27000045776367,
+      59.54999923706055,
+      56.599998474121094,
+      54.7400016784668,
+      53.5,
+      55.47999954223633,
+      59.209999084472656,
+      62.09000015258789,
+      69.37999725341797,
+      79.69000244140625,
+      89.94000244140625,
+      96.7300033569336,
+      90.4800033569336
+    ],
+    "Volume": [
+      20699100,
+      53726000,
+      27967400,
+      25478200,
+      46709400,
+      57796900,
+      35619600,
+      66857300,
+      50019300,
+      38734500,
+      56620800,
+      37954000,
+      38160500,
+      81566500,
+      36941700,
+      41462700,
+      110025400,
+      56592700,
+      35906600,
+      44149100,
+      41361500,
+      34275400,
+      88709000,
+      70328100,
+      73063500,
+      136450500,
+      115534400,
+      69337200,
+      208479300,
+      78849400,
+      71956600,
+      94463700,
+      60933800,
+      58771300,
+      85761500,
+      44333000,
+      53790200,
+      87766800,
+      44008300,
+      33106600,
+      62728600,
+      39879900,
+      36277000,
+      236916600,
+      102490300,
+      65824900,
+      193898300,
+      79003600,
+      92732400,
+      161964000,
+      70606200,
+      69265400,
+      140779000,
+      97241700,
+      94518300,
+      177054100,
+      84361800,
+      70602100,
+      123245200,
+      59839800,
+      55587000,
+      131587400,
+      50637700,
+      47803500,
+      109928400,
+      58773900,
+      55955900,
+      150846900,
+      78729400,
+      78269300,
+      76208100,
+      32940200,
+      31809800,
+      73487900,
+      37914200,
+      35180800,
+      60914700,
+      108500700,
+      49411100,
+      96706600,
+      42613900,
+      14217035
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "buy": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "hold": {
+      "0": 15,
+      "1": 15,
+      "2": 16,
+      "3": 16
+    },
+    "sell": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 1
+    },
+    "strongSell": {
+      "0": 2,
+      "1": 2,
+      "2": 1,
+      "3": 1
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.01008
+    },
+    {
+      "Value": 0.82504
+    },
+    {
+      "Value": 0.83344
+    },
+    {
+      "Value": 1004.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.1009,
+      "Shares": 20499915,
+      "Value": 1047340657
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.060700003,
+      "Shares": 12334562,
+      "Value": 630172772
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Polen Capital Management, LLC",
+      "pctHeld": 0.0417,
+      "Shares": 8474014,
+      "Value": 432937375
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.028299998,
+      "Shares": 5747057,
+      "Value": 293617142
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Capital International Investors",
+      "pctHeld": 0.0225,
+      "Shares": 4574429,
+      "Value": 233707577
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0214,
+      "Shares": 4349341,
+      "Value": 222207831
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Capital World Investors",
+      "pctHeld": 0.0212,
+      "Shares": 4300075,
+      "Value": 219690831
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Newlands Management Operations LLC",
+      "pctHeld": 0.020299999,
+      "Shares": 4122708,
+      "Value": 210629151
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "American Century Companies, Inc.",
+      "pctHeld": 0.019199999,
+      "Shares": 3903919,
+      "Value": 199451221
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Two Sigma Advisers, LP",
+      "pctHeld": 0.0188,
+      "Shares": 3830300,
+      "Value": 195690027
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 16.96,
+      "environmentScore": 4.03,
+      "socialScore": 7.23,
+      "governanceScore": 5.7,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 1.0,
+      "peerCount": 605,
+      "esgPerformance": "LAG_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Governance Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 20.740710743801657,
+        "max": 32.73
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.76223076923077,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 9.812038461538451,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 2.9947307692307694,
+        "max": 6.87
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6528925619834711,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-06-20",
+    "2025-09-19",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-06-18",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "464a46f3-d47c-346e-b6c7-0ca2c23968f8",
+      "content": {
+        "id": "464a46f3-d47c-346e-b6c7-0ca2c23968f8",
+        "contentType": "STORY",
+        "title": "Why This 1 Growth Stock Could Be a Great Addition to Your Portfolio",
+        "description": "",
+        "summary": "Wondering how to pick strong, market-beating stocks for your investment portfolio? Look no further than the Zacks Style Scores.",
+        "pubDate": "2025-02-07T14:45:05Z",
+        "displayTime": "2025-02-07T14:45:05Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/5ecaf2a9bf082a5f3a554e6526b34be0",
+          "originalWidth": 900,
+          "originalHeight": 601,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/w.ILboV799eZj6zbyZJ3SQ--~B/aD02MDE7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/5ecaf2a9bf082a5f3a554e6526b34be0",
+              "width": 900,
+              "height": 601,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/v4kFsert0DI2EO2PVwipuA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/5ecaf2a9bf082a5f3a554e6526b34be0",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/why-1-growth-stock-could-144505061.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-1-growth-stock-could-144505061.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "12f2043e-df67-3a83-a915-2915ddaf8cdf",
+      "content": {
+        "id": "12f2043e-df67-3a83-a915-2915ddaf8cdf",
+        "contentType": "STORY",
+        "title": "3 Software Stocks in the Penalty Box",
+        "description": "",
+        "summary": "From commerce to culture, software is digitizing every aspect of our lives. This secular theme has materialized in superior earnings growth and stock price performance for most SaaS companies, and over the last six months, the industry’s 42.4% return has topped the S&P 500 by 26.5 percentage points.",
+        "pubDate": "2025-02-06T00:15:36Z",
+        "displayTime": "2025-02-06T00:15:36Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/stockstory_922/419b5b99c438c89b284dddba4d14e2f5",
+          "originalWidth": 4637,
+          "originalHeight": 2613,
+          "caption": "JAMF Cover Image",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/E2cOufU8neZrNu7mLY6obg--~B/aD0yNjEzO3c9NDYzNzthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/stockstory_922/419b5b99c438c89b284dddba4d14e2f5",
+              "width": 4637,
+              "height": 2613,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/TD.PhL1i8NryDSWrPe21_A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/stockstory_922/419b5b99c438c89b284dddba4d14e2f5",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "StockStory",
+          "url": "https://stockstory.org/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/3-software-stocks-penalty-box-001536401.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/3-software-stocks-penalty-box-001536401.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0aedbb66-283c-39a6-a908-3d2f0dc25218",
+      "content": {
+        "id": "0aedbb66-283c-39a6-a908-3d2f0dc25218",
+        "contentType": "STORY",
+        "title": "Meta Is Just One Of A Huge Barrage Of Breakouts. Here's The Rest.",
+        "description": "",
+        "summary": "As the Nasdaq weathers the Trump tariffs, Meta stock, Axon and CrowdStrike lead this barrage of breakout stocks.",
+        "pubDate": "2025-02-05T20:38:22Z",
+        "displayTime": "2025-02-05T20:38:22Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/0aedbb66-283c-39a6-a908-3d2f0dc25218/meta-is-just-one-of-a-huge.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+          "originalWidth": 1000,
+          "originalHeight": 563,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/0WdszMP1XEaLf407yl_nNw--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+              "width": 1000,
+              "height": 563,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/5B4Yv.jiDugiUjT89YM3lw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/89ea471d98ea486bca5bde2c65b3d927",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/research/breakout-stocks-technical-analysis/meta-stock-axon-crowdtrike-samsara-trump-tariffs/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "969d25b8-c022-3b6c-87de-e4fc504aa283",
+      "content": {
+        "id": "969d25b8-c022-3b6c-87de-e4fc504aa283",
+        "contentType": "STORY",
+        "title": "DocuSign (DOCU) Stock Moves -0.24%: What You Should Know",
+        "description": "",
+        "summary": "In the closing of the recent trading day, DocuSign (DOCU) stood at $96.50, denoting a -0.24% change from the preceding trading day.",
+        "pubDate": "2025-02-03T22:45:22Z",
+        "displayTime": "2025-02-03T22:45:22Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/71afbbc0512eb3c471136d93f39079c9",
+          "originalWidth": 900,
+          "originalHeight": 600,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/ZVGBNd2_.kAicju5mLde7g--~B/aD02MDA7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/71afbbc0512eb3c471136d93f39079c9",
+              "width": 900,
+              "height": 600,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/1_jHMuW6SvnOrEW0N10GTQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/71afbbc0512eb3c471136d93f39079c9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-docu-stock-moves-0-224522279.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-docu-stock-moves-0-224522279.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "d9c01132-ef41-3bae-a8a6-769def4fae25",
+      "content": {
+        "id": "d9c01132-ef41-3bae-a8a6-769def4fae25",
+        "contentType": "STORY",
+        "title": "DocuSign (NASDAQ:DOCU) Is Looking To Continue Growing Its Returns On Capital",
+        "description": "",
+        "summary": "If you're looking for a multi-bagger, there's a few things to keep an eye out for. Amongst other things, we'll want to...",
+        "pubDate": "2025-02-03T13:42:25Z",
+        "displayTime": "2025-02-03T13:42:25Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/3wFOxca.gMo3EgB9BjBM9g--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/vD4pRO4kEaxH8LXMGMHNtw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-nasdaq-docu-looking-continue-134225401.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-nasdaq-docu-looking-continue-134225401.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "8967ed51-44a2-34a8-b559-afd0a9fcd320",
+      "content": {
+        "id": "8967ed51-44a2-34a8-b559-afd0a9fcd320",
+        "contentType": "STORY",
+        "title": "Docusign Inc. (DOCU) is Attracting Investor Attention: Here is What You Should Know",
+        "description": "",
+        "summary": "DocuSign (DOCU) has received quite a bit of attention from Zacks.com users lately. Therefore, it is wise to be aware of the facts that can impact the stock's prospects.",
+        "pubDate": "2025-01-29T14:00:18Z",
+        "displayTime": "2025-01-29T14:00:18Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/2a50596f066181e48e4ae0ad6be00462",
+          "originalWidth": 900,
+          "originalHeight": 600,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/F3nzpi36wi9juoO_v9PrEA--~B/aD02MDA7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/2a50596f066181e48e4ae0ad6be00462",
+              "width": 900,
+              "height": 600,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/KYn_AObIuLKFqfbaX8Kxcg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/2a50596f066181e48e4ae0ad6be00462",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-inc-docu-attracting-investor-140018000.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-inc-docu-attracting-investor-140018000.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "49cb98ab-15e8-3b14-a947-226d917f78fc",
+      "content": {
+        "id": "49cb98ab-15e8-3b14-a947-226d917f78fc",
+        "contentType": "STORY",
+        "title": "DocuSign (DOCU) Rises As Market Takes a Dip: Key Facts",
+        "description": "",
+        "summary": "In the most recent trading session, DocuSign (DOCU) closed at $92.26, indicating a +0.72% shift from the previous trading day.",
+        "pubDate": "2025-01-27T22:45:18Z",
+        "displayTime": "2025-01-27T22:45:18Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/737ffb82e07dc8bffb77e72d153c91f2",
+          "originalWidth": 900,
+          "originalHeight": 469,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/T44Iwg7RbRrkaTIYz_liyQ--~B/aD00Njk7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/737ffb82e07dc8bffb77e72d153c91f2",
+              "width": 900,
+              "height": 469,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/EYRUzXGjRyiee50fz6.x3Q--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/737ffb82e07dc8bffb77e72d153c91f2",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-docu-rises-market-takes-224518064.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-docu-rises-market-takes-224518064.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "67f8e42e-c672-3bfa-a857-8b8fbea2ab02",
+      "content": {
+        "id": "67f8e42e-c672-3bfa-a857-8b8fbea2ab02",
+        "contentType": "STORY",
+        "title": "3 Reasons to Avoid DOCU and 1 Stock to Buy Instead",
+        "description": "",
+        "summary": "What a time it’s been for DocuSign. In the past six months alone, the company’s stock price has increased by a massive 60.5%, reaching $89.52 per share. This was partly due to its solid quarterly results, and the run-up might have investors contemplating their next move.",
+        "pubDate": "2025-01-27T09:09:22Z",
+        "displayTime": "2025-01-27T09:09:22Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/stockstory_922/3a7a8e59338d9831c9230186dc44b7be",
+          "originalWidth": 1400,
+          "originalHeight": 700,
+          "caption": "DOCU Cover Image",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/vf7ppbJk_gGzqIMwDv70Dw--~B/aD03MDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/stockstory_922/3a7a8e59338d9831c9230186dc44b7be",
+              "width": 1400,
+              "height": 700,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/0ml4gwarttNwFvQnYDzNBQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/stockstory_922/3a7a8e59338d9831c9230186dc44b7be",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "StockStory",
+          "url": "https://stockstory.org/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/3-reasons-avoid-docu-1-090922801.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/3-reasons-avoid-docu-1-090922801.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "41fa92f3-6873-368e-84b7-d015d9a59a93",
+      "content": {
+        "id": "41fa92f3-6873-368e-84b7-d015d9a59a93",
+        "contentType": "STORY",
+        "title": "Is DocuSign, Inc. (DOCU) the Best SaaS Stock to Invest In?",
+        "description": "",
+        "summary": "We recently published a list of 10 Best SaaS Stocks to Invest In. In this article, we are going to take a look at where DocuSign, Inc. (NASDAQ:DOCU) stands against other best SaaS stocks to invest in. Mobile devices are now running more sophisticated and complicated software applications, which supports improving demand for SaaS solutions […]",
+        "pubDate": "2025-01-26T17:42:22Z",
+        "displayTime": "2025-01-26T17:42:22Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/d4fbf6df296ae9c452a77732cdb5079b",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is DocuSign, Inc. (DOCU) the Best SaaS Stock to Invest In?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/uqG579gnD2tPe9s0Wz1H3Q--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/d4fbf6df296ae9c452a77732cdb5079b",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Ehj8LVL88no58kCp2ksTjg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/d4fbf6df296ae9c452a77732cdb5079b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-inc-docu-best-saas-174222875.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/docusign-inc-docu-best-saas-174222875.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "ba5a67b2-d740-3ae2-a409-03e168218681",
+      "content": {
+        "id": "ba5a67b2-d740-3ae2-a409-03e168218681",
+        "contentType": "STORY",
+        "title": "Here's Why DocuSign Stock is a Great Pick for Investors Now",
+        "description": "",
+        "summary": "DOCU's revenue growth is significantly driven by sustained customer demand for its eSignature solution within a vast addressable market.",
+        "pubDate": "2025-01-23T17:08:00Z",
+        "displayTime": "2025-01-23T17:08:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/8e13e9f086aa9c1bb3bdbdb41ab2923b",
+          "originalWidth": 635,
+          "originalHeight": 400,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/AXUZeqz_z3LWcSkycTYAIQ--~B/aD00MDA7dz02MzU7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/8e13e9f086aa9c1bb3bdbdb41ab2923b",
+              "width": 635,
+              "height": 400,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Mn1AGiNE_JH8Y31aSNiXSA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/8e13e9f086aa9c1bb3bdbdb41ab2923b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/heres-why-docusign-stock-great-170800713.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/heres-why-docusign-stock-great-170800713.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

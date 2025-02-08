@@ -1,0 +1,1701 @@
+{
+  "ticker": "MDB",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:48:22.201409",
+  "info": {
+    "address1": "1633 Broadway",
+    "address2": "38th Floor",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10019",
+    "country": "United States",
+    "phone": "646 727 4092",
+    "website": "https://www.mongodb.com",
+    "industry": "Software - Infrastructure",
+    "industryKey": "software-infrastructure",
+    "industryDisp": "Software - Infrastructure",
+    "sector": "Technology",
+    "sectorKey": "technology",
+    "sectorDisp": "Technology",
+    "longBusinessSummary": "MongoDB, Inc., together with its subsidiaries, provides general purpose database platform worldwide. The company provides MongoDB Atlas, a hosted multi-cloud database-as-a-service solution; MongoDB Enterprise Advanced, a commercial database server for enterprise customers to run in the cloud, on-premises, or in a hybrid environment; and Community Server, a free-to-download version of its database, which includes the functionality that developers need to get started with MongoDB. It offers professional services comprising consulting and training. The company was formerly known as 10gen, Inc. and changed its name to MongoDB, Inc. in August 2013. MongoDB, Inc. was incorporated in 2007 and is headquartered in New York, New York.",
+    "fullTimeEmployees": 5360,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Dev C. Ittycheria",
+        "age": 56,
+        "title": "President, CEO & Director",
+        "yearBorn": 1967,
+        "fiscalYear": 2024,
+        "totalPay": 431886,
+        "exercisedValue": 179622928,
+        "unexercisedValue": 40992264
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Dwight A. Merriman",
+        "age": 54,
+        "title": "Co-Founder & Director",
+        "yearBorn": 1969,
+        "fiscalYear": 2024,
+        "totalPay": 30000,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Michael Lawrence Gordon",
+        "age": 53,
+        "title": "COO & CFO",
+        "yearBorn": 1970,
+        "fiscalYear": 2024,
+        "totalPay": 358430,
+        "exercisedValue": 23743860,
+        "unexercisedValue": 62593624
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Cedric  Pech",
+        "age": 50,
+        "title": "Chief Revenue Officer",
+        "yearBorn": 1973,
+        "fiscalYear": 2024,
+        "totalPay": 1047139,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Jim  Scharf",
+        "title": "Chief Technology Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Mindy  Lieberman",
+        "title": "Chief Information Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Andrew  Stephens",
+        "title": "General Counsel & Corporate Secretary",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Peder  Ulander",
+        "title": "Chief Marketing & Strategy Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Harsha  Jalihal",
+        "title": "Chief People Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Ronnen  Miller",
+        "title": "Executive Vice President of Global Technical Services",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 1,
+    "boardRisk": 5,
+    "compensationRisk": 7,
+    "shareHolderRightsRisk": 6,
+    "overallRisk": 4,
+    "governanceEpochDate": 1733011200,
+    "compensationAsOfEpochDate": 1735603200,
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 278.1,
+    "open": 279.01,
+    "dayLow": 275.86,
+    "dayHigh": 283.8,
+    "regularMarketPreviousClose": 278.1,
+    "regularMarketOpen": 279.01,
+    "regularMarketDayLow": 275.86,
+    "regularMarketDayHigh": 283.8,
+    "beta": 1.153,
+    "forwardPE": 81.80949,
+    "volume": 1117980,
+    "regularMarketVolume": 1117980,
+    "averageVolume": 2107221,
+    "averageVolume10days": 1779520,
+    "averageDailyVolume10Day": 1779520,
+    "bid": 259.65,
+    "ask": 278.2,
+    "bidSize": 200,
+    "askSize": 100,
+    "marketCap": 22266722304,
+    "fiftyTwoWeekLow": 212.74,
+    "fiftyTwoWeekHigh": 509.62,
+    "priceToSalesTrailing12Months": 12.237085,
+    "fiftyDayAverage": 274.0006,
+    "twoHundredDayAverage": 277.62915,
+    "currency": "USD",
+    "enterpriseValue": 20448743424,
+    "profitMargins": -0.12084,
+    "floatShares": 71394827,
+    "sharesOutstanding": 80133600,
+    "sharesShort": 4598880,
+    "sharesShortPriorMonth": 4292310,
+    "sharesShortPreviousMonthDate": 1730332800,
+    "dateShortInterest": 1732838400,
+    "sharesPercentSharesOut": 0.0618,
+    "heldPercentInsiders": 0.03195,
+    "heldPercentInstitutions": 0.94725,
+    "shortRatio": 3.08,
+    "shortPercentOfFloat": 0.0639,
+    "impliedSharesOutstanding": 80199904,
+    "bookValue": 14.696,
+    "priceToBook": 18.907866,
+    "lastFiscalYearEnd": 1706659200,
+    "nextFiscalYearEnd": 1738281600,
+    "mostRecentQuarter": 1722384000,
+    "netIncomeToCommon": -219879008,
+    "trailingEps": -2.75,
+    "forwardEps": 3.24,
+    "enterpriseToRevenue": 11.238,
+    "enterpriseToEbitda": -77.38,
+    "52WeekChange": -0.43058258,
+    "SandP52WeekChange": 0.19995654,
+    "exchange": "NGM",
+    "quoteType": "EQUITY",
+    "symbol": "MDB",
+    "underlyingSymbol": "MDB",
+    "shortName": "MongoDB, Inc.",
+    "longName": "MongoDB, Inc.",
+    "firstTradeDateEpochUtc": 1508419800,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "6c152faa-4bbc-39a0-87fc-7c608b6583a5",
+    "messageBoardId": "finmb_46952162",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 277.87,
+    "targetHighPrice": 520.0,
+    "targetLowPrice": 180.0,
+    "targetMeanPrice": 364.34,
+    "targetMedianPrice": 382.5,
+    "recommendationMean": 1.78947,
+    "recommendationKey": "buy",
+    "numberOfAnalystOpinions": 36,
+    "totalCash": 2264834048,
+    "totalCashPerShare": 30.66,
+    "ebitda": -264264992,
+    "totalDebt": 1224952960,
+    "quickRatio": 4.76,
+    "currentRatio": 5.03,
+    "totalRevenue": 1819609984,
+    "debtToEquity": 89.869,
+    "revenuePerShare": 25.057,
+    "returnOnAssets": -0.06182,
+    "returnOnEquity": -0.19561,
+    "grossProfits": 1346961024,
+    "freeCashflow": 290878752,
+    "operatingCashflow": 155264000,
+    "revenueGrowth": 0.128,
+    "grossMargins": 0.74025,
+    "ebitdaMargins": -0.14523,
+    "operatingMargins": -0.14942001,
+    "financialCurrency": "USD",
+    "trailingPegRatio": null
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 283.9599914550781,
+    "dayLow": 275.8599853515625,
+    "exchange": "NGM",
+    "fiftyDayAverage": 274.0005990600586,
+    "lastPrice": 277.8699951171875,
+    "lastVolume": 1286100,
+    "marketCap": 22266723040.722656,
+    "open": 279.010009765625,
+    "previousClose": 280.26,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 278.1000061035156,
+    "shares": 80133600,
+    "tenDayAverageVolume": 1779520,
+    "threeMonthAverageVolume": 2087236,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 277.62914970397946,
+    "yearChange": -0.4452585376261516,
+    "yearHigh": 509.6199951171875,
+    "yearLow": 212.74000549316406
+  },
+  "history": {
+    "Open": [
+      30.3700008392334,
+      28.530000686645508,
+      29.93000030517578,
+      26.739999771118164,
+      33.099998474121094,
+      43.0099983215332,
+      35.709999084472656,
+      47.13999938964844,
+      49.400001525878906,
+      54.0,
+      73.12000274658203,
+      81.51000213623047,
+      81.5,
+      86.0,
+      81.4000015258789,
+      91.0199966430664,
+      100.94000244140625,
+      148.75,
+      141.27999877929688,
+      140.3000030517578,
+      155.32000732421875,
+      142.92999267578125,
+      150.6999969482422,
+      119.83000183105469,
+      127.01000213623047,
+      147.17999267578125,
+      130.17999267578125,
+      163.4199981689453,
+      152.5,
+      127.08999633789062,
+      154.89999389648438,
+      229.02000427246094,
+      223.02000427246094,
+      225.57000732421875,
+      235.1199951171875,
+      232.22999572753906,
+      227.0,
+      282.010009765625,
+      344.9599914550781,
+      368.5799865722656,
+      391.0299987792969,
+      271.2900085449219,
+      298.5,
+      291.739990234375,
+      360.6199951171875,
+      359.1000061035156,
+      390.8999938964844,
+      474.010009765625,
+      521.989990234375,
+      502.0,
+      515.0,
+      406.70001220703125,
+      382.8699951171875,
+      443.05999755859375,
+      350.29998779296875,
+      241.80999755859375,
+      263.7200012207031,
+      308.0299987792969,
+      266.94000244140625,
+      199.00999450683594,
+      189.80999755859375,
+      153.9199981689453,
+      199.4499969482422,
+      214.5500030517578,
+      209.69000244140625,
+      228.3300018310547,
+      237.0,
+      285.7300109863281,
+      406.7799987792969,
+      420.0,
+      395.010009765625,
+      342.3900146484375,
+      345.2099914550781,
+      420.0299987792969,
+      404.45001220703125,
+      404.92999267578125,
+      449.1199951171875,
+      363.1400146484375,
+      379.1499938964844,
+      243.14999389648438,
+      253.0,
+      246.47000122070312,
+      290.7900085449219,
+      272.0400085449219,
+      270.3999938964844,
+      323.0,
+      234.08999633789062,
+      266.0
+    ],
+    "High": [
+      31.110000610351562,
+      30.489999771118164,
+      30.079999923706055,
+      32.75,
+      46.2599983215332,
+      45.939998626708984,
+      47.38999938964844,
+      59.540000915527344,
+      62.0099983215332,
+      73.70999908447266,
+      85.25,
+      84.5,
+      85.77999877929688,
+      93.2300033569336,
+      92.62000274658203,
+      109.97000122070312,
+      154.8000030517578,
+      149.3800048828125,
+      148.0,
+      184.77999877929688,
+      166.41000366210938,
+      158.25599670410156,
+      160.41000366210938,
+      140.32400512695312,
+      152.3300018310547,
+      147.17999267578125,
+      169.0,
+      182.57000732421875,
+      162.92999267578125,
+      165.63999938964844,
+      232.86000061035156,
+      243.9199981689453,
+      238.3300018310547,
+      235.25,
+      258.04998779296875,
+      273.010009765625,
+      289.7900085449219,
+      399.0,
+      390.3599853515625,
+      428.9649963378906,
+      399.95001220703125,
+      324.25,
+      299.9800109863281,
+      393.6300048828125,
+      375.19500732421875,
+      402.7900085449219,
+      518.3400268554688,
+      525.0,
+      590.0,
+      570.5800170898438,
+      519.5399780273438,
+      464.7300109863281,
+      455.67999267578125,
+      471.9599914550781,
+      366.8999938964844,
+      313.66900634765625,
+      323.8900146484375,
+      390.8399963378906,
+      278.6700134277344,
+      208.99000549316406,
+      194.5,
+      221.1999969482422,
+      224.89500427246094,
+      248.14999389648438,
+      233.2100067138672,
+      243.72999572753906,
+      298.3699951171875,
+      418.70001220703125,
+      439.0,
+      424.9700012207031,
+      414.0,
+      374.6700134277344,
+      442.8399963378906,
+      440.80999755859375,
+      426.510009765625,
+      509.6199951171875,
+      449.1199951171875,
+      385.8599853515625,
+      387.19000244140625,
+      252.11000061035156,
+      271.6600036621094,
+      293.2799987792969,
+      300.0,
+      297.67999267578125,
+      353.54998779296875,
+      370.0,
+      286.8299865722656,
+      286.489990234375
+    ],
+    "Low": [
+      28.40999984741211,
+      24.6200008392334,
+      26.780000686645508,
+      25.15999984741211,
+      32.88999938964844,
+      32.349998474121094,
+      35.224998474121094,
+      46.099998474121094,
+      48.33000183105469,
+      53.4900016784668,
+      69.7699966430664,
+      62.29800033569336,
+      65.62000274658203,
+      70.0999984741211,
+      70.66000366210938,
+      88.3499984741211,
+      95.30000305175781,
+      123.40599822998047,
+      127.13999938964844,
+      129.60000610351562,
+      140.0,
+      134.3209991455078,
+      112.30999755859375,
+      110.61000061035156,
+      121.58499908447266,
+      123.37000274658203,
+      126.08000183105469,
+      141.50999450683594,
+      93.80999755859375,
+      117.70999908447266,
+      153.61000061035156,
+      188.3699951171875,
+      198.02999877929688,
+      186.27000427246094,
+      200.5,
+      223.9600067138672,
+      219.50999450683594,
+      260.7749938964844,
+      330.4700012207031,
+      352.5799865722656,
+      250.7949981689453,
+      271.25,
+      238.00999450683594,
+      270.1300048828125,
+      324.9700012207031,
+      347.3399963378906,
+      387.9700012207031,
+      434.45001220703125,
+      482.3299865722656,
+      417.2149963378906,
+      340.25,
+      331.79998779296875,
+      272.5,
+      352.6400146484375,
+      213.38999938964844,
+      231.33999633789062,
+      256.54998779296875,
+      302.04998779296875,
+      188.1699981689453,
+      166.61000061035156,
+      135.14999389648438,
+      142.02000427246094,
+      164.58999633789062,
+      203.3699951171875,
+      189.58999633789062,
+      198.72000122070312,
+      215.55999755859375,
+      275.760009765625,
+      376.489990234375,
+      342.010009765625,
+      323.010009765625,
+      321.0,
+      323.30999755859375,
+      373.2300109863281,
+      360.1000061035156,
+      399.8800048828125,
+      340.3500061035156,
+      321.7699890136719,
+      225.25,
+      214.74000549316406,
+      237.36000061035156,
+      212.74000549316406,
+      265.7300109863281,
+      250.25999450683594,
+      264.17498779296875,
+      229.39999389648438,
+      234.08999633789062,
+      262.0899963378906
+    ],
+    "Close": [
+      28.530000686645508,
+      29.68000030517578,
+      27.110000610351562,
+      32.209999084472656,
+      43.400001525878906,
+      35.9900016784668,
+      47.130001068115234,
+      49.630001068115234,
+      54.11000061035156,
+      71.95999908447266,
+      81.55000305175781,
+      81.5,
+      82.9000015258789,
+      83.73999786376953,
+      92.36000061035156,
+      101.55999755859375,
+      147.02000427246094,
+      140.9199981689453,
+      140.33999633789062,
+      152.08999633789062,
+      143.22000122070312,
+      152.30999755859375,
+      120.4800033569336,
+      127.7699966430664,
+      148.6999969482422,
+      131.61000061035156,
+      163.91000366210938,
+      152.5,
+      136.5399932861328,
+      162.1300048828125,
+      232.11000061035156,
+      226.33999633789062,
+      229.0800018310547,
+      233.8000030517578,
+      231.50999450683594,
+      228.47000122070312,
+      287.30999755859375,
+      359.0400085449219,
+      369.6099853515625,
+      385.92999267578125,
+      267.42999267578125,
+      297.4599914550781,
+      291.94000244140625,
+      361.5199890136719,
+      358.9200134277344,
+      391.8299865722656,
+      471.510009765625,
+      521.2899780273438,
+      498.1000061035156,
+      529.3499755859375,
+      405.1099853515625,
+      381.989990234375,
+      443.5899963378906,
+      354.92999267578125,
+      237.14999389648438,
+      259.5,
+      312.4700012207031,
+      322.8599853515625,
+      198.55999755859375,
+      183.02999877929688,
+      152.69000244140625,
+      196.83999633789062,
+      214.2100067138672,
+      209.52000427246094,
+      233.1199951171875,
+      239.9600067138672,
+      293.7900085449219,
+      410.989990234375,
+      423.3999938964844,
+      381.29998779296875,
+      345.8599853515625,
+      344.5899963378906,
+      415.739990234375,
+      408.8500061035156,
+      400.5199890136719,
+      447.5799865722656,
+      358.6400146484375,
+      365.17999267578125,
+      236.05999755859375,
+      249.9600067138672,
+      252.36000061035156,
+      290.7900085449219,
+      270.3500061035156,
+      270.3999938964844,
+      322.489990234375,
+      232.80999755859375,
+      273.32000732421875,
+      277.8699951171875
+    ],
+    "Volume": [
+      5012700,
+      7828800,
+      3626100,
+      3300300,
+      16780400,
+      18375800,
+      16836400,
+      25951400,
+      18854300,
+      14797800,
+      21296900,
+      25694100,
+      25613700,
+      29405300,
+      29543000,
+      16601900,
+      42753100,
+      29489900,
+      26495900,
+      40115100,
+      34720100,
+      22661100,
+      43485100,
+      29797800,
+      15230600,
+      30192400,
+      27593700,
+      22692700,
+      35699000,
+      19244700,
+      20236000,
+      28371800,
+      17384800,
+      15609900,
+      23636500,
+      14055900,
+      13152000,
+      26885900,
+      13854900,
+      12190800,
+      26457700,
+      15777600,
+      14221300,
+      22644000,
+      12018800,
+      11485000,
+      26586400,
+      14140400,
+      13883200,
+      22898200,
+      28601600,
+      18350500,
+      38171000,
+      19871100,
+      43239400,
+      39871800,
+      31487300,
+      24889600,
+      51292700,
+      40336000,
+      42790000,
+      53912600,
+      32622800,
+      26442400,
+      45862800,
+      28509800,
+      38773800,
+      51748300,
+      27449000,
+      29747600,
+      27744200,
+      21900900,
+      28052300,
+      44970200,
+      26952600,
+      25038800,
+      34589500,
+      27588200,
+      35377400,
+      41503300,
+      31407800,
+      31593200,
+      21298600,
+      28554200,
+      31011300,
+      61654900,
+      32982200,
+      7578680
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-01-31 00:00:00": null,
+    "2023-01-31 00:00:00": null,
+    "2022-01-31 00:00:00": null,
+    "2021-01-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m"
+    },
+    "strongBuy": {
+      "0": 8,
+      "1": 10,
+      "2": 10
+    },
+    "buy": {
+      "0": 21,
+      "1": 18,
+      "2": 17
+    },
+    "hold": {
+      "0": 7,
+      "1": 7,
+      "2": 6
+    },
+    "sell": {
+      "0": 2,
+      "1": 1,
+      "2": 1
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.03195
+    },
+    {
+      "Value": 0.94725
+    },
+    {
+      "Value": 0.97850996
+    },
+    {
+      "Value": 1028.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.093,
+      "Shares": 6631675,
+      "Value": 2725552108
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0784,
+      "Shares": 5590068,
+      "Value": 2297462047
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.075,
+      "Shares": 5347220,
+      "Value": 2197653947
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.0706,
+      "Shares": 5034326,
+      "Value": 2069057642
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "JP Morgan Chase & Company",
+      "pctHeld": 0.0469,
+      "Shares": 3344255,
+      "Value": 1374455362
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Capital World Investors",
+      "pctHeld": 0.029000001,
+      "Shares": 2065841,
+      "Value": 849039992
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Wellington Management Group, LLP",
+      "pctHeld": 0.0287,
+      "Shares": 2044400,
+      "Value": 840227956
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Jennison Associates LLC",
+      "pctHeld": 0.0279,
+      "Shares": 1988733,
+      "Value": 817349375
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Franklin Resources, Inc.",
+      "pctHeld": 0.023699999,
+      "Shares": 1692443,
+      "Value": 695577148
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.019199999,
+      "Shares": 1369653,
+      "Value": 562913686
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 17.18,
+      "environmentScore": 1.42,
+      "socialScore": 9.44,
+      "governanceScore": 6.33,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 0.0,
+      "peerCount": 605,
+      "esgPerformance": "LAG_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Social Supply Chain Incidents;Business Ethics Incidents;Product & Service Incidents;Employee Incidents;Public Policy Incidents;Environmental Supply Chain Incidents;Customer Incidents;Society & Community Incidents;Operations Incidents;Governance Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 20.740710743801657,
+        "max": 32.73
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.76223076923077,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 9.812038461538451,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 2.9947307692307694,
+        "max": 6.87
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6528925619834711,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-05-16",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-08-15",
+    "2025-09-19",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "d096a3e6-cf35-396c-acdc-3d1cd5e609ae",
+      "content": {
+        "id": "d096a3e6-cf35-396c-acdc-3d1cd5e609ae",
+        "contentType": "STORY",
+        "title": "MongoDB, Inc. (MDB) One of the Hot Tech Stocks to Buy Right Now",
+        "description": "",
+        "summary": "We recently published a list of 15 Hot Tech Stocks to Buy Right Now. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ: MDB) stands against other hot tech stocks to buy right now. In 2024, the S&P 500 IT Sector Index outperformed the broader S&P 500 Index, rising […]",
+        "pubDate": "2025-02-07T10:55:51Z",
+        "displayTime": "2025-02-07T10:55:51Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is MongoDB Inc. (MDB) the Hot Tech Stock to Buy Right Now?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-one-hot-105551245.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-one-hot-105551245.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "2b4e6d4a-b399-3301-8212-c12da75a13e0",
+      "content": {
+        "id": "2b4e6d4a-b399-3301-8212-c12da75a13e0",
+        "contentType": "STORY",
+        "title": "Jim Cramer on MongoDB, Inc. (MDB): ‘I Think It’s Worth A Stab, I Really Do’",
+        "description": "",
+        "summary": "We recently compiled a list of the Jim Cramer Shed Light on These 8 Stocks Recently. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against the other stocks. Jim Cramer, the host of Mad Money, on Tuesday, took a close look at President Donald Trump’s recent actions and […]",
+        "pubDate": "2025-02-05T20:44:39Z",
+        "displayTime": "2025-02-05T20:44:39Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "MongoDB (MDB) Powers Lombard Odier’s AI-Driven Banking Transformation",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-mongodb-inc-mdb-204439288.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-mongodb-inc-mdb-204439288.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "36d5311d-f6c6-30aa-94c4-81a55ec06591",
+      "content": {
+        "id": "36d5311d-f6c6-30aa-94c4-81a55ec06591",
+        "contentType": "STORY",
+        "title": "MongoDB (MDB) Powers Lombard Odier’s AI-Driven Banking Transformation",
+        "description": "",
+        "summary": "We recently published a list of Top 10 AI Stocks Trending On Wall Street. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against other top AI stocks trending on Wall Street. The tech world may be steering in a new direction with the emergence of DeepSeek and […]",
+        "pubDate": "2025-02-05T14:35:16Z",
+        "displayTime": "2025-02-05T14:35:16Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "MongoDB (MDB) Powers Lombard Odier’s AI-Driven Banking Transformation",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-mdb-powers-lombard-odier-143516952.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-mdb-powers-lombard-odier-143516952.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "cc821966-67b0-3dd9-a284-3fe1d5b8383b",
+      "content": {
+        "id": "cc821966-67b0-3dd9-a284-3fe1d5b8383b",
+        "contentType": "STORY",
+        "title": "Crisis Averted! Jim Cramer on MongoDB’s (MDB) Wild Ride",
+        "description": "",
+        "summary": "We recently published a list of Jim Cramer’s Bold Predictions About These 10 Tech Stocks. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against other stocks about which Jim Cramer has made bold predictions. The DeepSeek selloff which occurred earlier this week gave Jim Cramer plenty to […]",
+        "pubDate": "2025-02-03T20:40:02Z",
+        "displayTime": "2025-02-03T20:40:02Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Crisis Averted! Jim on MongoDB’s (MDB) Wild Ride",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/crisis-averted-jim-cramer-mongodb-204002487.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/crisis-averted-jim-cramer-mongodb-204002487.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "06b37096-18c8-3af3-8e19-0ab699ecf0ae",
+      "content": {
+        "id": "06b37096-18c8-3af3-8e19-0ab699ecf0ae",
+        "contentType": "STORY",
+        "title": "MongoDB, Inc. (MDB): Positioned to Benefit from Rising AI-Driven Database Demand",
+        "description": "",
+        "summary": "We recently published a list of 10 AI News Investors Probably Missed. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against other AI news investors probably missed. The world of AI is shifting fast, and DeepSeek is at the center of the latest shake-up. A small Chinese […]",
+        "pubDate": "2025-01-31T07:27:26Z",
+        "displayTime": "2025-01-31T07:27:26Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "MongoDB, Inc. (MDB): Positioned to Benefit from Rising AI-Driven Database Demand",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-positioned-benefit-072726931.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-positioned-benefit-072726931.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "8e69719b-13ac-395a-8ce2-45e69713fbd4",
+      "content": {
+        "id": "8e69719b-13ac-395a-8ce2-45e69713fbd4",
+        "contentType": "STORY",
+        "title": "Is MongoDB (MDB) Among the Most Promising Growth Stocks According to Wall Street Analysts?",
+        "description": "",
+        "summary": "We recently published a list of 12 Most Promising Growth Stocks According to Wall Street Analysts. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against other most promising growth stocks according to Wall Street analysts. Strategist Believes the Street is Underestimating the Tech Sector The new regulatory […]",
+        "pubDate": "2025-01-28T20:05:01Z",
+        "displayTime": "2025-01-28T20:05:01Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is MongoDB, Inc. (MDB) the Most Promising Growth Stock According to Wall Street Analysts?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-mdb-among-most-promising-200501826.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-mdb-among-most-promising-200501826.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "af7877a6-7c9e-3be4-b554-95a7f860b851",
+      "content": {
+        "id": "af7877a6-7c9e-3be4-b554-95a7f860b851",
+        "contentType": "STORY",
+        "title": "Why Software Stocks MongoDB, Salesforce, and GitLab Were Moving Higher",
+        "description": "",
+        "summary": "After tech investors licked their wounds yesterday on the launch of the Chinese artificial intelligence (AI) chatbot DeepSeek, today they saw an opportunity from the upheaval.  Among the winners today were MongoDB (NASDAQ: MDB), Salesforce (NYSE: CRM), and GitLab (NASDAQ: GTLB).  MongoDB is a provider of NoSQL database software, and AI has huge potential applications in the database sector.",
+        "pubDate": "2025-01-28T18:56:54Z",
+        "displayTime": "2025-01-28T18:56:54Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/06b30855b0ebe997e6b10bf308c60c38",
+          "originalWidth": 1400,
+          "originalHeight": 787,
+          "caption": "A digital cloud inside a globe with arrows coming out of it. ",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Rz8bNbCtiRO.XuK8EP_kMw--~B/aD03ODc7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/06b30855b0ebe997e6b10bf308c60c38",
+              "width": 1400,
+              "height": 787,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/m1kbY8RkXcsZnRIHuR6cyA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/06b30855b0ebe997e6b10bf308c60c38",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/01/28/why-software-stocks-mongodb-salesforce-and-gitlab/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=ffd38503-cbca-441b-9c90-de6f602dcca4",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-software-stocks-mongodb-salesforce-185654315.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "2c618fc4-31c0-3293-bd6f-18dfcc1434a7",
+      "content": {
+        "id": "2c618fc4-31c0-3293-bd6f-18dfcc1434a7",
+        "contentType": "STORY",
+        "title": "Is MongoDB, Inc. (MDB) the Most Promising AI Stock According to Wall Street Analysts?",
+        "description": "",
+        "summary": "We recently published a list of 12 Most Promising AI Stocks According to Wall Street Analysts. In this article, we are going to take a look at where MongoDB, Inc. (NASDAQ:MDB) stands against other most promising AI stocks according to Wall Street analysts. Artificial intelligence (AI) continues to accelerate rapidly, moving from emerging technologies to influencing […]",
+        "pubDate": "2025-01-25T15:47:30Z",
+        "displayTime": "2025-01-25T15:47:30Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is MongoDB, Inc. (MDB) the Most Promising AI Stock According to Wall Street Analysts?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/_kf_yk.iqhIA2oFQZlqGmQ--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/At9fszNLxNmZ0YdwuXaBmg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/2459cdaba2d90dcf22a8e279d6c3859d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-most-promising-154730060.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongodb-inc-mdb-most-promising-154730060.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "502cd0b6-a891-3802-a8f4-d4c0ff3dc7b4",
+      "content": {
+        "id": "502cd0b6-a891-3802-a8f4-d4c0ff3dc7b4",
+        "contentType": "STORY",
+        "title": "Is MongoD (MDB) Poised to Benefit from AI?",
+        "description": "",
+        "summary": "Montaka Global Investments, an investment management company, released its fourth quarter 2024 investor letter. A copy of the letter can be downloaded here. All of the companies in Motaka’s portfolio have significant and growing competitive advantages, which aligns with the firm’s investment strategy. All of them are situated within advantageous tailwinds and structural changes. Furthermore, they […]",
+        "pubDate": "2025-01-23T13:21:42Z",
+        "displayTime": "2025-01-23T13:21:42Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/79c003e404eabe68b4ea79665ccd1d2e",
+          "originalWidth": 768,
+          "originalHeight": 430,
+          "caption": "MongoDB, Inc. (MDB) Upgraded to Overweight on Strong AI-Driven Demand",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/nDPClQhg4wZqp1TX3__aBA--~B/aD00MzA7dz03Njg7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/79c003e404eabe68b4ea79665ccd1d2e",
+              "width": 768,
+              "height": 430,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/CcfnyhRGNNPQXZ40SMLDSw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/79c003e404eabe68b4ea79665ccd1d2e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/mongod-mdb-poised-benefit-ai-132142885.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/mongod-mdb-poised-benefit-ai-132142885.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "9244e54e-e154-3461-a188-2300645a00b4",
+      "content": {
+        "id": "9244e54e-e154-3461-a188-2300645a00b4",
+        "contentType": "STORY",
+        "title": "Morgan Stanley Says Emerging Software Cycles Will Drive 2025 Growth — Here Are 3 Stocks to Bank on It",
+        "description": "",
+        "summary": "It’s been just over two years since ChatGPT introduced the world to the capabilities – and the potential – of generative AI. It caught our attention, and our imaginations, and AI has been booming ever since. GenAI has found new uses, and spawned a raft of new applications. The tech brings the promise of lowered costs and higher efficiency for the software industry, reducing input times while increasing capabilities. The research team at Morgan Stanley has been watching this evolving situation ca",
+        "pubDate": "2025-01-23T11:16:21Z",
+        "displayTime": "2025-01-23T11:16:21Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/tipranks_452/b8ccac84a0df48d990ef63131ef5962b",
+          "originalWidth": 1024,
+          "originalHeight": 549,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/gwAnOAPWyBCFlb4FQSi6HA--~B/aD01NDk7dz0xMDI0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/tipranks_452/b8ccac84a0df48d990ef63131ef5962b",
+              "width": 1024,
+              "height": 549,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/yhu_LuTGYzitkXjF5plGtw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/b8ccac84a0df48d990ef63131ef5962b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "TipRanks",
+          "url": "https://www.tipranks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/morgan-stanley-says-emerging-software-111621207.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/morgan-stanley-says-emerging-software-111621207.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

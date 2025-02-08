@@ -1,0 +1,1537 @@
+{
+  "ticker": "DDOG",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:47:52.056027",
+  "info": {
+    "address1": "620 8th Avenue",
+    "address2": "45th Floor",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10018",
+    "country": "United States",
+    "phone": "866 329 4466",
+    "website": "https://www.datadoghq.com",
+    "industry": "Software - Application",
+    "industryKey": "software-application",
+    "industryDisp": "Software - Application",
+    "sector": "Technology",
+    "sectorKey": "technology",
+    "sectorDisp": "Technology",
+    "longBusinessSummary": "Datadog, Inc. operates an observability and security platform for cloud applications in North America and internationally. The company's products comprise infrastructure and application performance monitoring, log management, digital experience monitoring, continuous profiler, database monitoring, data streams and universal service monitoring, network monitoring, incident management, workflow automation, observability pipelines, cloud cost and cloud security management, application security management, cloud SIEM, sensitive data scanner, and CI visibility. Datadog, Inc. was incorporated in 2010 and is headquartered in New York, New York.",
+    "fullTimeEmployees": 5200,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Olivier  Pomel",
+        "age": 47,
+        "title": "Co-Founder, CEO & Director",
+        "yearBorn": 1977,
+        "fiscalYear": 2023,
+        "totalPay": 735996,
+        "exercisedValue": 161394512,
+        "unexercisedValue": 649501120
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Alexis  Le-Quoc",
+        "age": 49,
+        "title": "Co-Founder, CTO & Director",
+        "yearBorn": 1975,
+        "fiscalYear": 2023,
+        "totalPay": 737996,
+        "exercisedValue": 157513168,
+        "unexercisedValue": 565957376
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. David M. Obstler",
+        "age": 64,
+        "title": "Chief Financial Officer",
+        "yearBorn": 1960,
+        "fiscalYear": 2023,
+        "totalPay": 737526,
+        "exercisedValue": 24664382,
+        "unexercisedValue": 36847724
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Sean Michael Walters",
+        "age": 51,
+        "title": "Chief Revenue Officer",
+        "yearBorn": 1973,
+        "fiscalYear": 2023,
+        "totalPay": 704752,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Adam  Blitzer",
+        "age": 43,
+        "title": "Chief Operating Officer",
+        "yearBorn": 1981,
+        "fiscalYear": 2023,
+        "totalPay": 914284,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Kerry S. Acocella J.D.",
+        "age": 43,
+        "title": "General Counsel & Secretary",
+        "yearBorn": 1981,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Sara  Varni",
+        "title": "Chief Marketing Officer",
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. David C. Galloreese",
+        "age": 44,
+        "title": "Chief People Officer",
+        "yearBorn": 1980,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Emilio  Escobar",
+        "title": "Chief Information Security Officer",
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Dr. Yanbing  Li Ph.D.",
+        "age": 53,
+        "title": "Chief Product Officer",
+        "yearBorn": 1971,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 1,
+    "boardRisk": 9,
+    "compensationRisk": 7,
+    "shareHolderRightsRisk": 10,
+    "overallRisk": 9,
+    "governanceEpochDate": 1738368000,
+    "compensationAsOfEpochDate": 1703980800,
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 144.85,
+    "open": 145.01,
+    "dayLow": 141.85,
+    "dayHigh": 145.76,
+    "regularMarketPreviousClose": 144.85,
+    "regularMarketOpen": 145.01,
+    "regularMarketDayLow": 141.85,
+    "regularMarketDayHigh": 145.76,
+    "beta": 1.095,
+    "trailingPE": 254.73213,
+    "forwardPE": 71.913246,
+    "volume": 4449644,
+    "regularMarketVolume": 4449644,
+    "averageVolume": 4847990,
+    "averageVolume10days": 5370790,
+    "averageDailyVolume10Day": 5370790,
+    "bid": 137.27,
+    "ask": 150.71,
+    "bidSize": 100,
+    "askSize": 100,
+    "marketCap": 48461484032,
+    "fiftyTwoWeekLow": 98.8,
+    "fiftyTwoWeekHigh": 170.08,
+    "priceToSalesTrailing12Months": 19.107933,
+    "fiftyDayAverage": 147.9453,
+    "twoHundredDayAverage": 127.2696,
+    "currency": "USD",
+    "enterpriseValue": 46231785472,
+    "profitMargins": 0.07576,
+    "floatShares": 306365648,
+    "sharesOutstanding": 313214016,
+    "sharesShort": 15037463,
+    "sharesShortPriorMonth": 15406510,
+    "sharesShortPreviousMonthDate": 1734048000,
+    "dateShortInterest": 1736899200,
+    "sharesPercentSharesOut": 0.044299997,
+    "heldPercentInsiders": 0.0328,
+    "heldPercentInstitutions": 0.83622,
+    "shortRatio": 4.67,
+    "shortPercentOfFloat": 0.0496,
+    "impliedSharesOutstanding": 344961984,
+    "bookValue": 7.765,
+    "priceToBook": 18.370895,
+    "lastFiscalYearEnd": 1703980800,
+    "nextFiscalYearEnd": 1735603200,
+    "mostRecentQuarter": 1727654400,
+    "earningsQuarterlyGrowth": 1.284,
+    "netIncomeToCommon": 192144992,
+    "trailingEps": 0.56,
+    "forwardEps": 2.03,
+    "enterpriseToRevenue": 18.229,
+    "enterpriseToEbitda": 399.062,
+    "52WeekChange": 0.057842016,
+    "SandP52WeekChange": 0.19995654,
+    "exchange": "NMS",
+    "quoteType": "EQUITY",
+    "symbol": "DDOG",
+    "underlyingSymbol": "DDOG",
+    "shortName": "Datadog, Inc.",
+    "longName": "Datadog, Inc.",
+    "firstTradeDateEpochUtc": 1568899800,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "085d3cdc-4322-3ea5-9645-762cfc47ec54",
+    "messageBoardId": "finmb_134521275",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 142.65,
+    "targetHighPrice": 230.0,
+    "targetLowPrice": 128.0,
+    "targetMeanPrice": 161.66049,
+    "targetMedianPrice": 160.0,
+    "recommendationMean": 1.58696,
+    "recommendationKey": "buy",
+    "numberOfAnalystOpinions": 41,
+    "totalCash": 3198953984,
+    "totalCashPerShare": 9.416,
+    "ebitda": 115851000,
+    "totalDebt": 969244032,
+    "quickRatio": 2.07,
+    "currentRatio": 2.129,
+    "totalRevenue": 2536197120,
+    "debtToEquity": 36.865,
+    "revenuePerShare": 7.609,
+    "returnOnAssets": 0.011109999,
+    "returnOnEquity": 0.08663999,
+    "grossProfits": 2060481024,
+    "freeCashflow": 666849152,
+    "operatingCashflow": 825601024,
+    "earningsGrowth": 1.333,
+    "revenueGrowth": 0.26,
+    "grossMargins": 0.81242996,
+    "ebitdaMargins": 0.045679998,
+    "operatingMargins": 0.02939,
+    "financialCurrency": "USD",
+    "trailingPegRatio": 0.8996
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 145.77000427246094,
+    "dayLow": 141.85000610351562,
+    "exchange": "NMS",
+    "fiftyDayAverage": 147.94530029296874,
+    "lastPrice": 142.64999389648438,
+    "lastVolume": 4474600,
+    "marketCap": 49208824912.11914,
+    "open": 145.00999450683594,
+    "previousClose": 145.1,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 144.85000610351562,
+    "shares": 344961984,
+    "tenDayAverageVolume": 5370790,
+    "threeMonthAverageVolume": 4865316,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 127.26959995269776,
+    "yearChange": 0.057371507110475624,
+    "yearHigh": 170.0800018310547,
+    "yearLow": 98.80000305175781
+  },
+  "history": {
+    "Open": [
+      34.25,
+      33.70000076293945,
+      41.11000061035156,
+      38.220001220703125,
+      46.619998931884766,
+      45.0,
+      34.83000183105469,
+      44.0,
+      70.61000061035156,
+      87.19000244140625,
+      95.81999969482422,
+      83.98999786376953,
+      101.43000030517578,
+      91.77999877929688,
+      98.5999984741211,
+      98.69000244140625,
+      103.47000122070312,
+      96.77999877929688,
+      86.94999694824219,
+      86.33000183105469,
+      91.3499984741211,
+      103.51000213623047,
+      110.8499984741211,
+      138.0800018310547,
+      142.02000427246094,
+      167.4600067138672,
+      182.85000610351562,
+      178.75,
+      147.88999938964844,
+      160.24000549316406,
+      150.97999572753906,
+      119.94000244140625,
+      96.83999633789062,
+      95.25,
+      99.80000305175781,
+      101.87999725341797,
+      89.61000061035156,
+      83.23999786376953,
+      75.20500183105469,
+      75.19499969482422,
+      76.16000366210938,
+      76.83999633789062,
+      71.61499786376953,
+      66.77999877929688,
+      93.0,
+      98.0999984741211,
+      115.0,
+      97.7300033569336,
+      92.54000091552734,
+      82.0199966430664,
+      117.29000091552734,
+      119.2249984741211,
+      125.66999816894531,
+      131.75,
+      123.86499786376953,
+      127.0199966430664,
+      111.0,
+      129.0399932861328,
+      115.01000213623047,
+      114.87000274658203,
+      117.44999694824219,
+      124.43000030517578,
+      152.4499969482422,
+      145.0,
+      140.802001953125
+    ],
+    "High": [
+      37.970001220703125,
+      44.09000015258789,
+      41.31999969482422,
+      47.2599983215332,
+      50.119998931884766,
+      48.119998931884766,
+      45.279998779296875,
+      75.0,
+      93.0,
+      98.98999786376953,
+      96.66999816894531,
+      107.98999786376953,
+      118.12999725341797,
+      103.94999694824219,
+      111.48999786376953,
+      112.29000091552734,
+      119.43299865722656,
+      98.6500015258789,
+      96.3499984741211,
+      94.38999938964844,
+      107.4000015258789,
+      114.19999694824219,
+      139.17300415039062,
+      150.6699981689453,
+      168.72999572753906,
+      199.6750030517578,
+      186.27999877929688,
+      180.27999877929688,
+      184.6999969482422,
+      166.99000549316406,
+      159.0,
+      124.43000030517578,
+      116.62000274658203,
+      112.58000183105469,
+      120.75,
+      104.94999694824219,
+      97.31400299072266,
+      86.87999725341797,
+      85.44000244140625,
+      78.62999725341797,
+      90.01000213623047,
+      78.18000030517578,
+      72.66999816894531,
+      97.4000015258789,
+      103.80000305175781,
+      118.0199966430664,
+      115.94999694824219,
+      102.0,
+      94.80000305175781,
+      120.26000213623047,
+      124.69000244140625,
+      136.0749969482422,
+      138.61000061035156,
+      131.94000244140625,
+      132.89999389648438,
+      129.6199951171875,
+      131.12899780273438,
+      134.8000030517578,
+      118.72000122070312,
+      118.37999725341797,
+      131.83999633789062,
+      157.47999572753906,
+      170.0800018310547,
+      153.4199981689453,
+      146.47000122070312
+    ],
+    "Low": [
+      27.549999237060547,
+      30.260000228881836,
+      33.060001373291016,
+      35.95800018310547,
+      41.720001220703125,
+      28.8799991607666,
+      33.040000915527344,
+      43.132999420166016,
+      67.18000030517578,
+      81.54100036621094,
+      72.5999984741211,
+      75.55000305175781,
+      90.54000091552734,
+      79.76000213623047,
+      90.12999725341797,
+      89.83200073242188,
+      92.80999755859375,
+      74.52999877929688,
+      81.69999694824219,
+      69.7300033569336,
+      87.0999984741211,
+      101.37999725341797,
+      109.11000061035156,
+      131.38999938964844,
+      134.6300048828125,
+      160.64999389648438,
+      152.82000732421875,
+      119.19000244140625,
+      135.11000061035156,
+      113.88999938964844,
+      117.86000061035156,
+      82.1500015258789,
+      81.12000274658203,
+      84.45999908447266,
+      97.625,
+      85.83999633789062,
+      75.53500366210938,
+      66.4469985961914,
+      67.33000183105469,
+      61.34000015258789,
+      75.30999755859375,
+      62.9900016784668,
+      62.59700012207031,
+      63.0,
+      90.87999725341797,
+      95.30999755859375,
+      83.87000274658203,
+      85.29000091552734,
+      79.37000274658203,
+      77.80999755859375,
+      112.25,
+      110.69499969482422,
+      123.43299865722656,
+      118.4000015258789,
+      118.45999908447266,
+      108.08000183105469,
+      107.30000305175781,
+      113.58000183105469,
+      98.80000305175781,
+      105.44000244140625,
+      113.08000183105469,
+      120.77999877929688,
+      142.44000244140625,
+      134.71499633789062,
+      140.24000549316406
+    ],
+    "Close": [
+      33.59000015258789,
+      40.77000045776367,
+      37.779998779296875,
+      46.209999084472656,
+      45.150001525878906,
+      35.97999954223633,
+      45.119998931884766,
+      71.2699966430664,
+      86.94999694824219,
+      93.86000061035156,
+      83.55000305175781,
+      102.16000366210938,
+      90.75,
+      98.91999816894531,
+      98.44000244140625,
+      102.75,
+      95.41000366210938,
+      83.33999633789062,
+      85.7699966430664,
+      91.05000305175781,
+      104.08000183105469,
+      110.69999694824219,
+      137.8000030517578,
+      141.35000610351562,
+      167.0500030517578,
+      178.2899932861328,
+      178.11000061035156,
+      146.11000061035156,
+      161.11000061035156,
+      151.47000122070312,
+      120.77999877929688,
+      95.38999938964844,
+      95.23999786376953,
+      102.01000213623047,
+      104.94999694824219,
+      88.77999877929688,
+      80.51000213623047,
+      75.77999877929688,
+      73.5,
+      74.80999755859375,
+      76.5199966430664,
+      72.66000366210938,
+      67.37999725341797,
+      94.91000366210938,
+      98.37999725341797,
+      116.72000122070312,
+      96.4800033569336,
+      91.08999633789062,
+      81.47000122070312,
+      116.56999969482422,
+      121.37999725341797,
+      124.44000244140625,
+      131.4600067138672,
+      123.5999984741211,
+      125.5,
+      110.18000030517578,
+      129.69000244140625,
+      116.44000244140625,
+      116.26000213623047,
+      115.05999755859375,
+      125.44000244140625,
+      152.75,
+      142.88999938964844,
+      142.7100067138672,
+      142.64999389648438
+    ],
+    "Volume": [
+      40023400,
+      40308800,
+      56300300,
+      49816900,
+      62598100,
+      107821200,
+      53895600,
+      136485700,
+      113067500,
+      72531200,
+      105862100,
+      122030800,
+      96268600,
+      94301400,
+      69849100,
+      63361000,
+      67516700,
+      98845700,
+      59825500,
+      77143000,
+      56943500,
+      31860900,
+      74674900,
+      56462000,
+      50649100,
+      71552000,
+      87437400,
+      93035400,
+      101168700,
+      100437200,
+      72005900,
+      145663600,
+      120349900,
+      95290400,
+      98602000,
+      87961800,
+      89784900,
+      110339600,
+      83183500,
+      96667600,
+      108142100,
+      125427500,
+      90421400,
+      129402900,
+      86371700,
+      80629700,
+      123898500,
+      63414000,
+      80726700,
+      124454800,
+      60478200,
+      96142300,
+      104360600,
+      62926800,
+      70444700,
+      102429600,
+      78227400,
+      74379700,
+      77046400,
+      56046100,
+      71087100,
+      118413300,
+      97700400,
+      84169300,
+      25744644
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 11,
+      "1": 11,
+      "2": 12,
+      "3": 12
+    },
+    "buy": {
+      "0": 27,
+      "1": 27,
+      "2": 29,
+      "3": 29
+    },
+    "hold": {
+      "0": 8,
+      "1": 8,
+      "2": 5,
+      "3": 4
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.0328
+    },
+    {
+      "Value": 0.83622
+    },
+    {
+      "Value": 0.86458
+    },
+    {
+      "Value": 1317.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0847,
+      "Shares": 25333133,
+      "Value": 2492273624
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0523,
+      "Shares": 15642084,
+      "Value": 1538868223
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Baillie Gifford and Company",
+      "pctHeld": 0.0347,
+      "Shares": 10391637,
+      "Value": 1022329248
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "ICONIQ Capital, LLC",
+      "pctHeld": 0.026099999,
+      "Shares": 7816902,
+      "Value": 769026818
+    },
+    {
+      "Date Reported": "2023-09-30 00:00:00",
+      "Holder": "WCM Investment Management, LLC",
+      "pctHeld": 0.021,
+      "Shares": 6292305,
+      "Value": 573166062
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.020299999,
+      "Shares": 6077463,
+      "Value": 597900809
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Voya Investment Management LLC",
+      "pctHeld": 0.0188,
+      "Shares": 5618308,
+      "Value": 552729141
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0179,
+      "Shares": 5353178,
+      "Value": 526645651
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Sands Capital Management, LLC",
+      "pctHeld": 0.0152,
+      "Shares": 4554589,
+      "Value": 448080465
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Public Investment Fund",
+      "pctHeld": 0.015,
+      "Shares": 4498845,
+      "Value": 442596371
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 16.12,
+      "environmentScore": 1.33,
+      "socialScore": 8.02,
+      "governanceScore": 6.77,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 0.0,
+      "peerCount": 605,
+      "esgPerformance": "LAG_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Customer Incidents;Business Ethics Incidents;Product & Service Incidents;Social Supply Chain Incidents;Employee Incidents;Operations Incidents;Society & Community Incidents;Public Policy Incidents;Environmental Supply Chain Incidents;Governance Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 20.740710743801657,
+        "max": 32.73
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.76223076923077,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 9.812038461538451,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 2.9947307692307694,
+        "max": 6.87
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6528925619834711,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-05-16",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-09-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "5cc6c0be-c4c3-329d-8c49-787302638de7",
+      "content": {
+        "id": "5cc6c0be-c4c3-329d-8c49-787302638de7",
+        "contentType": "STORY",
+        "title": "3 Cloud and AI Stocks to Buy Hand Over Fist in February",
+        "description": "",
+        "summary": "Microsoft, Datadog, and Oracle are all still promising long-term investments.",
+        "pubDate": "2025-02-08T09:55:00Z",
+        "displayTime": "2025-02-08T09:55:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/f7dc0ab660c9deecaba652421379d8cc",
+          "originalWidth": 1400,
+          "originalHeight": 700,
+          "caption": "An illustration of a digital brain on a motherboard.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/sSu4vTNObgLLX_0.wSLm1g--~B/aD03MDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/f7dc0ab660c9deecaba652421379d8cc",
+              "width": 1400,
+              "height": 700,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/sHjPKdka9YO1XPOVFiU71A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/f7dc0ab660c9deecaba652421379d8cc",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/02/08/cloud-ai-stocks-buy-hand-over-fist-february/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=5959638b-d107-43a8-a441-b349ac5c8ba5",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/3-cloud-ai-stocks-buy-095500370.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "a362ed58-6729-3c85-a22b-e77fe3a0d481",
+      "content": {
+        "id": "a362ed58-6729-3c85-a22b-e77fe3a0d481",
+        "contentType": "STORY",
+        "title": "Datadog (DDOG) Flat As Market Gains: What You Should Know",
+        "description": "",
+        "summary": "In the latest trading session, Datadog (DDOG) closed at $144.85, marking no change from the previous day.",
+        "pubDate": "2025-02-06T22:45:21Z",
+        "displayTime": "2025-02-06T22:45:21Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+          "originalWidth": 900,
+          "originalHeight": 600,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/HIalcDlt7JZPKSITVlxPuw--~B/aD02MDA7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+              "width": 900,
+              "height": 600,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/09MA9PjN.OtW0qNf1bvwTg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-ddog-flat-market-gains-224521722.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-ddog-flat-market-gains-224521722.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "eaebc39f-00d3-3fd0-8c78-1e74bc3ea0f3",
+      "content": {
+        "id": "eaebc39f-00d3-3fd0-8c78-1e74bc3ea0f3",
+        "contentType": "STORY",
+        "title": "Analysts Estimate Datadog (DDOG) to Report a Decline in Earnings: What to Look Out for",
+        "description": "",
+        "summary": "Datadog (DDOG) doesn't possess the right combination of the two key ingredients for a likely earnings beat in its upcoming report. Get prepared with the key expectations.",
+        "pubDate": "2025-02-06T15:01:06Z",
+        "displayTime": "2025-02-06T15:01:06Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/105b2acef7bf0873f24b78932b1fdc3c",
+          "originalWidth": 900,
+          "originalHeight": 675,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/apbC75v0joJeGGZArvqIvw--~B/aD02NzU7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/105b2acef7bf0873f24b78932b1fdc3c",
+              "width": 900,
+              "height": 675,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/z5iKhiHFMinKDahxZz7KRQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/105b2acef7bf0873f24b78932b1fdc3c",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/analysts-estimate-datadog-ddog-report-150106429.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/analysts-estimate-datadog-ddog-report-150106429.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "961ba7ee-f9be-3645-baa8-9396d81d7ec2",
+      "content": {
+        "id": "961ba7ee-f9be-3645-baa8-9396d81d7ec2",
+        "contentType": "STORY",
+        "title": "Has Datadog, Inc.'s (NASDAQ:DDOG) Impressive Stock Performance Got Anything to Do With Its Fundamentals?",
+        "description": "",
+        "summary": "Datadog's (NASDAQ:DDOG) stock is up by a considerable 12% over the past three months. As most would know, fundamentals...",
+        "pubDate": "2025-02-06T13:00:12Z",
+        "displayTime": "2025-02-06T13:00:12Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/3wFOxca.gMo3EgB9BjBM9g--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/vD4pRO4kEaxH8LXMGMHNtw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/41bdd0c670f621394929d5266c5d6c72",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-inc-nasdaq-ddog-impressive-130012569.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-inc-nasdaq-ddog-impressive-130012569.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "272327f7-f9be-3fb8-9a2d-017b032ac64f",
+      "content": {
+        "id": "272327f7-f9be-3fb8-9a2d-017b032ac64f",
+        "contentType": "STORY",
+        "title": "Datadog, Inc. (DDOG): Riding the Wave of AI-Driven Cloud Monitoring and Cybersecurity Growth",
+        "description": "",
+        "summary": "We recently published a list of Stay Ahead: 9 Key AI News Updates You Need to See. In this article, we are going to take a look at where Datadog, Inc. (NASDAQ:DDOG) stands against other key AI news updates you need to see. A very adaptable tool, generative artificial intelligence has been used in various […]",
+        "pubDate": "2025-01-31T22:54:36Z",
+        "displayTime": "2025-01-31T22:54:36Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Datadog Inc. (DDOG): Riding the Wave of AI-Driven Cloud Monitoring and Cybersecurity Growth",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/dKLyUjM6fXJyNGu5VYCLEg--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/LKLdN9huWwFQ4ELD0xpl2A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-inc-ddog-riding-wave-225436744.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-inc-ddog-riding-wave-225436744.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "6500cc9b-937c-3274-ab53-9c0c0a633caf",
+      "content": {
+        "id": "6500cc9b-937c-3274-ab53-9c0c0a633caf",
+        "contentType": "STORY",
+        "title": "Datadog (DDOG) Gains As Market Dips: What You Should Know",
+        "description": "",
+        "summary": "In the closing of the recent trading day, Datadog (DDOG) stood at $142.70, denoting a +0.06% change from the preceding trading day.",
+        "pubDate": "2025-01-31T22:45:18Z",
+        "displayTime": "2025-01-31T22:45:18Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+          "originalWidth": 900,
+          "originalHeight": 600,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/HIalcDlt7JZPKSITVlxPuw--~B/aD02MDA7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+              "width": 900,
+              "height": 600,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/09MA9PjN.OtW0qNf1bvwTg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c2fdcaac033e049c74f38d188afcc9f9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-ddog-gains-market-dips-224518266.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/datadog-ddog-gains-market-dips-224518266.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "41f28178-8975-35e2-84fd-bd00ce244628",
+      "content": {
+        "id": "41f28178-8975-35e2-84fd-bd00ce244628",
+        "contentType": "STORY",
+        "title": "BofA cuts rating on PagerDuty stock to 'underperform' on slowing growth",
+        "description": "",
+        "summary": "Investing.com -- Bank of America downgraded Pagerduty Inc (NYSE:PD) to \"Underperform\" from \"Buy\" on slowing revenue growth and rising competition in the incident management software space. The brokerage also lowered its price target to $18 from $23.",
+        "pubDate": "2025-01-30T15:02:50Z",
+        "displayTime": "2025-01-30T15:02:50Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": null,
+        "provider": {
+          "displayName": "Investing.com",
+          "url": "https://www.investing.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/bofa-cuts-rating-pagerduty-stock-150250940.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/bofa-cuts-rating-pagerduty-stock-150250940.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "fa84d2ef-770c-355f-a577-65cd07524207",
+      "content": {
+        "id": "fa84d2ef-770c-355f-a577-65cd07524207",
+        "contentType": "STORY",
+        "title": "Here's Why Datadog (DDOG) is a Strong Momentum Stock",
+        "description": "",
+        "summary": "Whether you're a value, growth, or momentum investor, finding strong stocks becomes easier with the Zacks Style Scores, a top feature of the Zacks Premium research service.",
+        "pubDate": "2025-01-30T14:50:08Z",
+        "displayTime": "2025-01-30T14:50:08Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/1154d43aaeb65735a640003549116295",
+          "originalWidth": 900,
+          "originalHeight": 506,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/wbCMwMtKIoXj_iQA0ego4g--~B/aD01MDY7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/1154d43aaeb65735a640003549116295",
+              "width": 900,
+              "height": 506,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/42pZWjS9iYkwe9U3zMypmA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/1154d43aaeb65735a640003549116295",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/heres-why-datadog-ddog-strong-145008133.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/heres-why-datadog-ddog-strong-145008133.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "4c0a1a9b-234e-3a75-a498-2479f4860d79",
+      "content": {
+        "id": "4c0a1a9b-234e-3a75-a498-2479f4860d79",
+        "contentType": "STORY",
+        "title": "Why Datadog (DDOG) Declined on Wednesday?",
+        "description": "",
+        "summary": "We recently published a list of These 10 Stocks Were Wednesday’s Worst Performers. In this article, we are going to take a look at where Datadog, Inc. (NASDAQ:DDOG) stands among Wednesday’s worst-performing stocks. The stock market declined on Wednesday, with all major indices finishing in the red, driven by losses in technology stocks. The Nasdaq […]",
+        "pubDate": "2025-01-30T11:45:04Z",
+        "displayTime": "2025-01-30T11:45:04Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Why DataDog (DDOG) is Crashing?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/dKLyUjM6fXJyNGu5VYCLEg--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/LKLdN9huWwFQ4ELD0xpl2A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/fc8267a09951e992b7da4a3578e65f1c",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/why-datadog-ddog-declined-wednesday-114504500.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-datadog-ddog-declined-wednesday-114504500.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "2d6f0091-9dc7-3972-9c12-3afb3711035b",
+      "content": {
+        "id": "2d6f0091-9dc7-3972-9c12-3afb3711035b",
+        "contentType": "STORY",
+        "title": "Why Datadog Stock Is Sinking Today",
+        "description": "",
+        "summary": "Datadog (NASDAQ: DDOG) stock is losing ground in Wednesday's trading.  The company's share price was down 4.9% as of 2:30 p.m. ET.  At the same point in the day's trading, the S&P 500 index was down 0.9%, and the Nasdaq Composite index had declined 1.2%.",
+        "pubDate": "2025-01-29T19:40:44Z",
+        "displayTime": "2025-01-29T19:40:44Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/ae5d85acccdd17f656dcd9ba588a4b42",
+          "originalWidth": 6667,
+          "originalHeight": 5000,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/HUCPMFIDflGYXKkILtJHww--~B/aD01MDAwO3c9NjY2NzthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/ae5d85acccdd17f656dcd9ba588a4b42",
+              "width": 6667,
+              "height": 5000,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/teSr0VbHf4ZCOi17IbWqnw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/ae5d85acccdd17f656dcd9ba588a4b42",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/01/29/why-datadog-stock-is-sinking-today/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=71a52fd4-f719-484c-8047-2ea82e2a0549",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-datadog-stock-sinking-today-194044372.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

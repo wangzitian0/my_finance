@@ -1,0 +1,1281 @@
+{
+  "ticker": "GEHC",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:48:01.332827",
+  "info": {
+    "address1": "500 West Monroe Street",
+    "city": "Chicago",
+    "state": "IL",
+    "zip": "60661",
+    "country": "United States",
+    "phone": "833 735 1139",
+    "website": "https://www.gehealthcare.com",
+    "industry": "Health Information Services",
+    "industryKey": "health-information-services",
+    "industryDisp": "Health Information Services",
+    "sector": "Healthcare",
+    "sectorKey": "healthcare",
+    "sectorDisp": "Healthcare",
+    "longBusinessSummary": "GE HealthCare Technologies Inc. engages in the development, manufacture, and marketing of products, services, and complementary digital solutions used in the diagnosis, treatment, and monitoring of patients in the United States, Canada, and internationally. The company operates through four segments: Imaging, Ultrasound, Patient Care Solutions, and Pharmaceutical Diagnostics. The Imaging segment offers molecular imaging, computed tomography (CT) scanning, magnetic resonance (MR) imaging, image-guided therapy, X-ray systems, and women's health products. The Ultrasound segment provides medical devices and solutions for screening, diagnosis, treatment, and monitoring of certain diseases in clinical areas, such as radiology and primary care, women's health, cardiovascular, and point of care and handheld ultrasound solutions, as well as surgical visualization and guidance products. The Patient Care Solutions segment provides medical devices, consumables, services, and digital solutions. Its portfolio includes patient monitoring solutions, anesthesia delivery and respiratory care products, electrocardiogram solutions, maternal infant care products, and consumables and services. The Pharmaceutical Diagnostics supplies diagnostic agents, including CT, angiography and X-ray, MR, single-photon emission computed tomography, positron emission tomography, and ultrasound to the radiology and nuclear medicine industry. The segment also provides contrast media pharmaceuticals that are administered to a patient prior to certain diagnostic scans to increase the visibility of tissues or structures during imaging exams; and molecular imaging agents or radiopharmaceuticals, which are molecular tracers labeled with radioisotopes. It has an AI collaboration with Mass General Brigham. The company was formerly known as GE Healthcare Holding LLC and changed its name to GE HealthCare Technologies Inc. in December 2022. The company was incorporated in 2022 and is headquartered in Chicago, Illinois.",
+    "fullTimeEmployees": 51000,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Peter J. Arduini",
+        "age": 59,
+        "title": "President, CEO & Director",
+        "yearBorn": 1965,
+        "fiscalYear": 2023,
+        "totalPay": 4290318,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. James K. Saccaro",
+        "age": 51,
+        "title": "VP & CFO",
+        "yearBorn": 1973,
+        "fiscalYear": 2023,
+        "totalPay": 1518917,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Dr. Taha  Kass-Hout M.D., M.S.",
+        "age": 52,
+        "title": "Chief Science & Technology Officer",
+        "yearBorn": 1972,
+        "fiscalYear": 2023,
+        "totalPay": 4608372,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Frank R. Jimenez Esq.",
+        "age": 59,
+        "title": "VP, General Counsel & Corporate Secretary",
+        "yearBorn": 1965,
+        "fiscalYear": 2023,
+        "totalPay": 2058017,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. George Andrew Newcomb",
+        "age": 57,
+        "title": "Controller & Chief Accounting Officer",
+        "yearBorn": 1967,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Jahid  Khandaker",
+        "title": "Chief Information Officer",
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Carolynne  Borders",
+        "title": "Chief Investor Relations Officer",
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Rana  Strellis",
+        "title": "Chief Corporate Marketing & Communications Officer",
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Adam  Holton",
+        "age": 53,
+        "title": "Chief People Officer",
+        "yearBorn": 1971,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Thomas J. Westrick",
+        "age": 55,
+        "title": "President & CEO of Patient Care Solutions",
+        "yearBorn": 1969,
+        "fiscalYear": 2023,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 9,
+    "boardRisk": 6,
+    "compensationRisk": 6,
+    "shareHolderRightsRisk": 5,
+    "overallRisk": 7,
+    "governanceEpochDate": 1738368000,
+    "compensationAsOfEpochDate": 1703980800,
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 88.55,
+    "open": 88.8,
+    "dayLow": 87.4977,
+    "dayHigh": 89.36,
+    "regularMarketPreviousClose": 88.55,
+    "regularMarketOpen": 88.8,
+    "regularMarketDayLow": 87.4977,
+    "regularMarketDayHigh": 89.36,
+    "dividendRate": 0.14,
+    "dividendYield": 0.0016,
+    "exDividendDate": 1736812800,
+    "payoutRatio": 0.032899998,
+    "trailingPE": 24.010958,
+    "forwardPE": 18.866056,
+    "volume": 1625432,
+    "regularMarketVolume": 1625432,
+    "averageVolume": 2963645,
+    "averageVolume10days": 2141610,
+    "averageDailyVolume10Day": 2141610,
+    "bid": 87.63,
+    "ask": 94.66,
+    "bidSize": 200,
+    "askSize": 200,
+    "marketCap": 40040349696,
+    "fiftyTwoWeekLow": 74.51,
+    "fiftyTwoWeekHigh": 94.55,
+    "priceToSalesTrailing12Months": 2.0471573,
+    "fiftyDayAverage": 83.3975,
+    "twoHundredDayAverage": 83.55847,
+    "trailingAnnualDividendRate": 0.12,
+    "trailingAnnualDividendYield": 0.0013551665,
+    "currency": "USD",
+    "enterpriseValue": 47418347520,
+    "profitMargins": 0.08564,
+    "floatShares": 442522599,
+    "sharesOutstanding": 456872992,
+    "sharesShort": 12755443,
+    "sharesShortPriorMonth": 9238871,
+    "sharesShortPreviousMonthDate": 1734048000,
+    "dateShortInterest": 1736899200,
+    "sharesPercentSharesOut": 0.0279,
+    "heldPercentInsiders": 0.03291,
+    "heldPercentInstitutions": 0.85931,
+    "shortRatio": 3.91,
+    "shortPercentOfFloat": 0.0356,
+    "impliedSharesOutstanding": 456872992,
+    "bookValue": 18.205,
+    "priceToBook": 4.814062,
+    "lastFiscalYearEnd": 1703980800,
+    "nextFiscalYearEnd": 1735603200,
+    "mostRecentQuarter": 1727654400,
+    "earningsQuarterlyGrowth": 0.253,
+    "netIncomeToCommon": 1675000064,
+    "trailingEps": 3.65,
+    "forwardEps": 4.67,
+    "enterpriseToRevenue": 2.424,
+    "enterpriseToEbitda": 13.279,
+    "52WeekChange": 0.05374539,
+    "SandP52WeekChange": 0.19995654,
+    "lastDividendValue": 0.035,
+    "lastDividendDate": 1736812800,
+    "exchange": "NMS",
+    "quoteType": "EQUITY",
+    "symbol": "GEHC",
+    "underlyingSymbol": "GEHC",
+    "shortName": "GE HealthCare Technologies Inc.",
+    "longName": "GE HealthCare Technologies Inc.",
+    "firstTradeDateEpochUtc": 1671114600,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "5049484e-cf95-3e3c-a4f5-8fcbdec47bf1",
+    "messageBoardId": "finmb_1804385326",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 87.64,
+    "targetHighPrice": 110.0,
+    "targetLowPrice": 74.0,
+    "targetMeanPrice": 96.507,
+    "targetMedianPrice": 97.0,
+    "recommendationMean": 1.90476,
+    "recommendationKey": "buy",
+    "numberOfAnalystOpinions": 20,
+    "totalCash": 3550000128,
+    "totalCashPerShare": 7.77,
+    "ebitda": 3571000064,
+    "totalDebt": 10732999680,
+    "quickRatio": 0.883,
+    "currentRatio": 1.227,
+    "totalRevenue": 19559000064,
+    "debtToEquity": 126.093,
+    "revenuePerShare": 42.916,
+    "returnOnAssets": 0.05637,
+    "returnOnEquity": 0.21853,
+    "grossProfits": 8086000128,
+    "freeCashflow": 1817750016,
+    "operatingCashflow": 2088000000,
+    "earningsGrowth": 0.242,
+    "revenueGrowth": 0.009,
+    "grossMargins": 0.41342,
+    "ebitdaMargins": 0.18258,
+    "operatingMargins": 0.16059999,
+    "financialCurrency": "USD",
+    "trailingPegRatio": 2.3144
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 89.36000061035156,
+    "dayLow": 87.49800109863281,
+    "exchange": "NMS",
+    "fiftyDayAverage": 83.39750030517578,
+    "lastPrice": 87.63999938964844,
+    "lastVolume": 1671400,
+    "marketCap": 40456112897.13135,
+    "open": 88.80000305175781,
+    "previousClose": 88.7,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 88.55000305175781,
+    "shares": 461616992,
+    "tenDayAverageVolume": 2141610,
+    "threeMonthAverageVolume": 3082118,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 83.55847511291503,
+    "yearChange": 0.07745270881974556,
+    "yearHigh": 94.55000305175781,
+    "yearLow": 74.51000213623047
+  },
+  "history": {
+    "Open": [
+      60.49448666829069,
+      68.78905466983193,
+      75.13957115050061,
+      81.74929437008062,
+      80.83210628607567,
+      79.51631507651564,
+      81.19181124268111,
+      77.65986216864732,
+      70.50646441462588,
+      67.84264582865116,
+      66.6261732868883,
+      68.22321241960103,
+      76.4379430996245,
+      73.25274054171736,
+      90.91687140629857,
+      91.17648098058882,
+      76.43503110818206,
+      77.9733247783281,
+      78.26300039159311,
+      84.03774911889636,
+      84.4974081690558,
+      93.75055128499937,
+      87.17424460723142,
+      82.85600927805461,
+      78.88764233198248,
+      87.41000366210938
+    ],
+    "High": [
+      73.72391367842488,
+      76.74466173049204,
+      82.33749077887548,
+      87.56147163672694,
+      81.47911648387205,
+      82.95706551924826,
+      82.92215415240393,
+      77.85441821480856,
+      70.85565297554531,
+      68.83035280575172,
+      74.0423903333943,
+      78.17970773748786,
+      77.51594148739905,
+      93.82162165306835,
+      94.36182383224363,
+      91.3262631691447,
+      83.90672889122595,
+      80.01106060857973,
+      88.15200917763093,
+      85.8763911472677,
+      94.48001928706198,
+      93.75055128499937,
+      89.96310167428628,
+      83.29583129079401,
+      89.76318660059945,
+      90.73999786376953
+    ],
+    "Low": [
+      53.336437384254495,
+      67.3235475055469,
+      73.81363558498332,
+      77.3228667287831,
+      74.04292213791548,
+      75.98779543454523,
+      76.04563725300324,
+      67.45354028320023,
+      63.5885119098346,
+      62.20571858671673,
+      65.87756459827159,
+      66.87571812959058,
+      71.1777148797057,
+      72.4139647489474,
+      86.42345122381079,
+      75.96875506979427,
+      76.41505666879507,
+      74.42727104162726,
+      75.59596692878151,
+      78.72168719525891,
+      83.07846105050199,
+      84.83715596928886,
+      80.52696945826693,
+      76.85946869616038,
+      77.68813736177519,
+      86.30000305175781
+    ],
+    "Close": [
+      69.30745697021484,
+      75.76765441894531,
+      81.77920532226562,
+      81.09130859375,
+      79.26690673828125,
+      81.02226257324219,
+      77.79094696044922,
+      70.2869644165039,
+      67.88255310058594,
+      66.41595458984375,
+      68.33300018310547,
+      77.17657470703125,
+      73.22391510009766,
+      91.14653778076172,
+      90.7770767211914,
+      76.1285171508789,
+      77.91339111328125,
+      77.83348083496094,
+      84.53602600097656,
+      84.75721740722656,
+      93.78053283691406,
+      87.28533935546875,
+      83.18588256835938,
+      78.14794158935547,
+      88.26380157470703,
+      87.63999938964844
+    ],
+    "Volume": [
+      114969000,
+      43608700,
+      45387100,
+      37567400,
+      43217700,
+      105627800,
+      60708000,
+      60753300,
+      68111900,
+      56987300,
+      57464000,
+      46703000,
+      55079300,
+      90517200,
+      75080900,
+      65078500,
+      53991300,
+      56445400,
+      61569300,
+      40599900,
+      83066400,
+      53659500,
+      74252300,
+      60955200,
+      54031100,
+      13527632
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.03,
+      0.0,
+      0.0,
+      0.035,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 3,
+      "1": 3,
+      "2": 3,
+      "3": 3
+    },
+    "buy": {
+      "0": 11,
+      "1": 11,
+      "2": 10,
+      "3": 10
+    },
+    "hold": {
+      "0": 6,
+      "1": 6,
+      "2": 6,
+      "3": 6
+    },
+    "sell": {
+      "0": 1,
+      "1": 1,
+      "2": 1,
+      "3": 1
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.03291
+    },
+    {
+      "Value": 0.85931
+    },
+    {
+      "Value": 0.88855004
+    },
+    {
+      "Value": 1673.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "General Electric Company",
+      "pctHeld": 0.1354,
+      "Shares": 61581302,
+      "Value": 5002864974
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Capital Research Global Investors",
+      "pctHeld": 0.109,
+      "Shares": 49569789,
+      "Value": 4027049658
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0854,
+      "Shares": 38838158,
+      "Value": 3155211955
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.063200004,
+      "Shares": 28737818,
+      "Value": 2334660334
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.041500002,
+      "Shares": 18861270,
+      "Value": 1532289574
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Dodge & Cox Inc",
+      "pctHeld": 0.038,
+      "Shares": 17305424,
+      "Value": 1405892645
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.0347,
+      "Shares": 15776949,
+      "Value": 1281719336
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.021,
+      "Shares": 9548534,
+      "Value": 775722902
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.0163,
+      "Shares": 7421967,
+      "Value": 602960599
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Newport Trust Company, LLC",
+      "pctHeld": 0.0115,
+      "Shares": 5248436,
+      "Value": 426382940
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 21.46,
+      "environmentScore": 2.74,
+      "socialScore": 14.21,
+      "governanceScore": 4.51,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 2.0,
+      "peerCount": 306,
+      "esgPerformance": "AVG_PERF",
+      "peerGroup": "Healthcare",
+      "relatedControversy": [
+        "Business Ethics Incidents;Customer Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 8.44,
+        "avg": 23.609477124183005,
+        "max": 36.09
+      },
+      "peerGovernancePerformance": {
+        "min": 3.18,
+        "avg": 6.289572649572649,
+        "max": 10.56
+      },
+      "peerSocialPerformance": {
+        "min": 2.57,
+        "avg": 12.402136752136753,
+        "max": 22.35
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.04,
+        "avg": 2.635213675213674,
+        "max": 6.17
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.8071895424836601,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": true,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-09-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-06-18",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "32f09fd0-a4a8-41e4-9e1a-35d5432a4f0f",
+      "content": {
+        "id": "32f09fd0-a4a8-41e4-9e1a-35d5432a4f0f",
+        "contentType": "STORY",
+        "title": "Stocks to watch next week: BP, Barclays, NatWest, AirBnB and Lyft",
+        "description": "",
+        "summary": "Earnings preview of key companies reporting next week and what to look out for.",
+        "pubDate": "2025-02-07T15:52:14Z",
+        "displayTime": "2025-02-07T15:52:15Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-02/ba62d850-e54c-11ef-95df-13c3ab0ef514",
+          "originalWidth": 5000,
+          "originalHeight": 3333,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/9qeFOR6jY8vFEw6pREwIeA--~B/aD0zMzMzO3c9NTAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-02/ba62d850-e54c-11ef-95df-13c3ab0ef514",
+              "width": 5000,
+              "height": 3333,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/OAGxo.DwrJoJEK.f_C_EsA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-02/ba62d850-e54c-11ef-95df-13c3ab0ef514",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance UK",
+          "url": "http://uk.finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://uk.finance.yahoo.com/news/bp-barclays-natwest-airbnb-lyft-stocks-watch-155038529.html",
+          "site": "finance",
+          "region": "GB",
+          "lang": "en-GB"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/bp-barclays-natwest-airbnb-lyft-stocks-watch-155038529.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f40b17d2-a4b3-38ad-8349-d44969765c51",
+      "content": {
+        "id": "f40b17d2-a4b3-38ad-8349-d44969765c51",
+        "contentType": "STORY",
+        "title": "With 83% ownership, GE HealthCare Technologies Inc. (NASDAQ:GEHC) boasts of strong institutional backing",
+        "description": "",
+        "summary": "Key Insights Given the large stake in the stock by institutions, GE HealthCare Technologies' stock price might be...",
+        "pubDate": "2025-02-06T11:01:41Z",
+        "displayTime": "2025-02-06T11:01:41Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/83-ownership-ge-healthcare-technologies-110141459.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/83-ownership-ge-healthcare-technologies-110141459.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "056c5743-24ea-37e3-b2d2-5eb95065e02b",
+      "content": {
+        "id": "056c5743-24ea-37e3-b2d2-5eb95065e02b",
+        "contentType": "STORY",
+        "title": "GE Vernova Pops To High As Troubled Wind Energy Unit Improves",
+        "description": "",
+        "summary": "GE Vernova maintained its 2025 outlook early Wednesday after missing revenue estimates for the fourth quarter of 2024 due to weakness in offshore wind energy.  GEV stock rose to a new high, continuing a huge rally for the S&P 500 member since its April 2024 debut.  Vernova holds the gas power and renewable energy assets of the former General Electric.",
+        "pubDate": "2025-01-22T21:05:28Z",
+        "displayTime": "2025-01-22T21:05:28Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/056c5743-24ea-37e3-b2d2-5eb95065e02b/ge-vernova-pops-to-high-as.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/5aa9ab19e565266987e0c5fec6bb84bb",
+          "originalWidth": 1000,
+          "originalHeight": 563,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Ll5xdNzXPgeWaq03kvzNhA--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/5aa9ab19e565266987e0c5fec6bb84bb",
+              "width": 1000,
+              "height": 563,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Ch097_IZ5OjbTRTUBUg_7w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/5aa9ab19e565266987e0c5fec6bb84bb",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/news/ge-vernova-earnings-q4-ge-vernova-stock-energy-supercycle/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "666ebfd2-a43b-374b-9daf-d3da9d55d65e",
+      "content": {
+        "id": "666ebfd2-a43b-374b-9daf-d3da9d55d65e",
+        "contentType": "STORY",
+        "title": "GE HealthCare Technologies Inc. (NASDAQ:GEHC) Shares Could Be 36% Below Their Intrinsic Value Estimate",
+        "description": "",
+        "summary": "Key Insights The projected fair value for GE HealthCare Technologies is US$132 based on 2 Stage Free Cash Flow to...",
+        "pubDate": "2025-01-21T14:00:25Z",
+        "displayTime": "2025-01-21T14:00:25Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-technologies-inc-nasdaq-140025246.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-technologies-inc-nasdaq-140025246.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "33766ca0-3866-369a-80d6-ec2d8db5a859",
+      "content": {
+        "id": "33766ca0-3866-369a-80d6-ec2d8db5a859",
+        "contentType": "STORY",
+        "title": "Possible Bearish Signals With GE HealthCare Technologies Insiders Disposing Stock",
+        "description": "",
+        "summary": "In the last year, many GE HealthCare Technologies Inc. ( NASDAQ:GEHC ) insiders sold a substantial stake in the company...",
+        "pubDate": "2025-01-13T12:00:36Z",
+        "displayTime": "2025-01-13T12:00:36Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/possible-bearish-signals-ge-healthcare-120036137.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/possible-bearish-signals-ge-healthcare-120036137.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0f42412d-88b3-358f-b3f5-29add57bf0a3",
+      "content": {
+        "id": "0f42412d-88b3-358f-b3f5-29add57bf0a3",
+        "contentType": "STORY",
+        "title": "At US$80.52, Is It Time To Put GE HealthCare Technologies Inc. (NASDAQ:GEHC) On Your Watch List?",
+        "description": "",
+        "summary": "Let's talk about the popular GE HealthCare Technologies Inc. ( NASDAQ:GEHC ). The company's shares saw significant...",
+        "pubDate": "2025-01-04T11:00:15Z",
+        "displayTime": "2025-01-04T11:00:15Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/us-80-52-time-put-110015352.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/us-80-52-time-put-110015352.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "9de7b0ae-04d2-33c9-89e9-977e6d3c3853",
+      "content": {
+        "id": "9de7b0ae-04d2-33c9-89e9-977e6d3c3853",
+        "contentType": "STORY",
+        "title": "GE HealthCare price target lowered to $98 from $102 at Evercore ISI",
+        "description": "",
+        "summary": "Evercore ISI lowered the firm’s price target on GE HealthCare (GEHC) to $98 from $102 and keeps an Outperform rating on the shares. In the firm’s 2025 outlook note for MedTech, Life Science Tools and Diagnostics, the analyst argues that FY25 guides from the life science tools group are likely to be conservative on China and Pharma, while in MedTech the firm contends that “healthy” utilization trends and a margin expansion thesis support the group. Published first on TheFly – the ultimate source",
+        "pubDate": "2025-01-03T11:46:16Z",
+        "displayTime": "2025-01-03T11:46:16Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/tipranks_452/bbad1dd12cc6ba90ddd83aeee03f1aae",
+          "originalWidth": 192,
+          "originalHeight": 192,
+          "caption": "https://www.tipranks.com/news/the-fly/ge-healthcare-price-target-lowered-to-98-from-102-at-evercore-isi",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/8UFfyvN5uwZovBLtL_6j3A--~B/aD0xOTI7dz0xOTI7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/bbad1dd12cc6ba90ddd83aeee03f1aae",
+              "width": 192,
+              "height": 192,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/lwoBbwnYOdQ2t8YnQAILdQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/bbad1dd12cc6ba90ddd83aeee03f1aae",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "TipRanks",
+          "url": "https://www.tipranks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-price-target-lowered-114616642.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-price-target-lowered-114616642.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "2d21c6a8-d50d-3c96-b902-eb5355460cbf",
+      "content": {
+        "id": "2d21c6a8-d50d-3c96-b902-eb5355460cbf",
+        "contentType": "STORY",
+        "title": "With 81% ownership of the shares, GE HealthCare Technologies Inc. (NASDAQ:GEHC) is heavily dominated by institutional owners",
+        "description": "",
+        "summary": "Key Insights Significantly high institutional ownership implies GE HealthCare Technologies' stock price is sensitive to...",
+        "pubDate": "2024-12-29T11:00:32Z",
+        "displayTime": "2024-12-29T11:00:32Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/81-ownership-shares-ge-healthcare-110032295.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/81-ownership-shares-ge-healthcare-110032295.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "6f7f43fc-7735-374d-a035-fad4664e8450",
+      "content": {
+        "id": "6f7f43fc-7735-374d-a035-fad4664e8450",
+        "contentType": "STORY",
+        "title": "Is GE HealthCare Technologies Inc.'s (NASDAQ:GEHC) ROE Of 20% Impressive?",
+        "description": "",
+        "summary": "One of the best investments we can make is in our own knowledge and skill set. With that in mind, this article will...",
+        "pubDate": "2024-12-24T13:00:15Z",
+        "displayTime": "2024-12-24T13:00:15Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-technologies-inc-nasdaq-130015022.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/ge-healthcare-technologies-inc-nasdaq-130015022.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "610971a6-312a-385c-92d3-1c93e3416786",
+      "content": {
+        "id": "610971a6-312a-385c-92d3-1c93e3416786",
+        "contentType": "STORY",
+        "title": "An Intrinsic Calculation For GE HealthCare Technologies Inc. (NASDAQ:GEHC) Suggests It's 36% Undervalued",
+        "description": "",
+        "summary": "Key Insights GE HealthCare Technologies' estimated fair value is US$125 based on 2 Stage Free Cash Flow to Equity...",
+        "pubDate": "2024-12-17T14:01:41Z",
+        "displayTime": "2024-12-17T14:01:41Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qrnhoA9Y9l_fYJBd0ck5WA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IAujkiSdBQXs5os_dwl0Xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/983f2bdfe32b19227b1d118c45bf4f09",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/intrinsic-calculation-ge-healthcare-technologies-140141315.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/intrinsic-calculation-ge-healthcare-technologies-140141315.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}
