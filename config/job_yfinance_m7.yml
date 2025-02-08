@@ -1,0 +1,20 @@
+job: yfinance_m7
+description: "抓取美股7姐妹数据（使用 yfinance 库）"
+tickers:
+  - AAPL
+  - MSFT
+  - AMZN
+  - GOOGL
+  - FB
+  - TSLA
+  - NFLX
+data_periods:
+  - oid: "D1"    # 代表最近1年的日线数据
+    period: "1y"
+    interval: "1d"
+  - oid: "W7"    # 代表最近7年的周线数据
+    period: "7y"
+    interval: "1wk"
+  - oid: "M30"   # 代表最近30年的月线数据
+    period: "30y"
+    interval: "1mo"

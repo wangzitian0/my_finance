@@ -1,0 +1,14 @@
+{
+  "ticker": "FB",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-08T18:50:12.618045",
+  "data": {
+    "Open": [],
+    "High": [],
+    "Low": [],
+    "Close": [],
+    "Adj Close": [],
+    "Volume": []
+  }
+}
