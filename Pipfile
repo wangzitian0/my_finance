@@ -8,6 +8,7 @@ yfinance = "*"
 datasette = "*"
 ansible = "*"
 pyyaml = "*"
+tqdm = "*"
 
 [dev-packages]
 

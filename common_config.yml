@@ -1,0 +1,42 @@
+# common_config.yml
+#
+# This configuration file contains common settings shared across various jobs,
+# such as logging configurations, database settings, and data cleaning options.
+#
+# ----- Logging Configuration -----
+logging:
+  # level: The overall logging level for the logger.
+  # Possible values: DEBUG, INFO, WARNING, ERROR, CRITICAL.
+  # For example, setting it to INFO means that all log messages with level INFO and above
+  # (i.e., INFO, WARNING, ERROR, and CRITICAL) will be recorded.
+  level: INFO
+
+  # file_level: The logging level for file output.
+  # This determines the minimum level of log messages written to the log file.
+  # For example, INFO means that messages with INFO level and above will be saved to the file.
+  file_level: INFO
+
+  # console_level: The logging level for console output.
+  # This determines the minimum level of log messages that appear on the console.
+  # For example, WARNING means that only messages with level WARNING, ERROR, and CRITICAL
+  # will be output to the console.
+  console_level: WARNING
+
+  # format: The format string for log messages.
+  # You can modify this to include additional details (e.g., module name, line number) if needed.
+  format: '%(asctime)s - %(levelname)s - %(message)s'
+
+# ----- Database Configuration (Example) -----
+# Uncomment and configure the following section if you plan to use a database.
+# database:
+#   host: localhost            # Database host address
+#   port: 3306                 # Database port (e.g., 3306 for MySQL)
+#   username: your_username    # Your database username
+#   password: your_password    # Your database password
+#   database: your_db_name     # The database name
+
+# ----- Data Cleaning Options (Example) -----
+# Uncomment and configure the following section if you want to enable data cleaning routines.
+# cleaning:
+#   remove_duplicates: true    # Remove duplicate records (true/false)
+#   fill_missing: "mean"         # How to fill missing data; options: "mean", "median", "mode", "none"

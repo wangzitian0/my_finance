@@ -32,5 +32,6 @@ pipenv install xxx
 # how to run
 ## fetch the data
 ```bash
-python run_job.py
+# get the Magnificent 7 data
+python run_job.py data/config/job_yfinance_m7.yml
 ```
