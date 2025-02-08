@@ -4,11 +4,11 @@ description: "Fetch data for the 7 major US stocks (using yfinance library)"
 tickers:
   - AAPL
   - MSFT
-#  - AMZN
-#  - GOOGL
-#  - FB
-#  - TSLA
-#  - NFLX
+  - AMZN
+  - GOOGL
+  - FB
+  - TSLA
+  - NFLX
 data_periods:
   - oid: "D1"    # Represents 1 year of daily data
     period: "1y"

@@ -2,7 +2,7 @@
   "ticker": "AAPL",
   "period": "1y",
   "interval": "1d",
-  "fetched_at": "2025-02-09T02:16:45.429996",
+  "fetched_at": "2025-02-09T02:52:30.618294",
   "info": {
     "address1": "One Apple Park Way",
     "city": "Cupertino",
@@ -2436,6 +2436,67 @@
       }
     },
     {
+      "id": "435db9ef-94fa-31d9-afac-91024d22f47e",
+      "content": {
+        "id": "435db9ef-94fa-31d9-afac-91024d22f47e",
+        "contentType": "STORY",
+        "title": "Apple Inc. (AAPL) Begins Mass Production of AI-Optimized M5 Chip for Next-Gen Devices",
+        "description": "",
+        "summary": "We recently compiled a list of the 9 Must-See AI News Updates That Are Trending on Wall Street. In this article, we are going to take a look at where Apple Inc. (NASDAQ:AAPL) stands against the other AI stocks. CNBC recently spoke to companies worldwide on how DeepSeek’s new AI models will likely impact their operations […]",
+        "pubDate": "2025-02-08T18:17:23Z",
+        "displayTime": "2025-02-08T18:17:23Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/bd47dc2e86b4a3086f845d200d9daf1f",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Apple Inc. (AAPL) - Positioned for the AI Boom, But Is It Enough?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/fTPNobtT0bdcSxj2xXAamw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/bd47dc2e86b4a3086f845d200d9daf1f",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/ERk7UFMt6k8ofjYa8ja0kw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/bd47dc2e86b4a3086f845d200d9daf1f",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/apple-inc-aapl-begins-mass-181723037.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/apple-inc-aapl-begins-mass-181723037.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
       "id": "393dbda1-58dc-37b2-a119-f5e9d6e57f0a",
       "content": {
         "id": "393dbda1-58dc-37b2-a119-f5e9d6e57f0a",
@@ -2841,67 +2902,6 @@
         },
         "clickThroughUrl": {
           "url": "https://finance.yahoo.com/news/bought-1-share-apple-ipo-100800740.html",
-          "site": "finance",
-          "region": "US",
-          "lang": "en-US"
-        },
-        "metadata": {
-          "editorsPick": false
-        },
-        "finance": {
-          "premiumFinance": {
-            "isPremiumNews": false,
-            "isPremiumFreeNews": false
-          }
-        },
-        "storyline": null
-      }
-    },
-    {
-      "id": "a0b116dc-4f91-3a4b-a9cb-5742347e9660",
-      "content": {
-        "id": "a0b116dc-4f91-3a4b-a9cb-5742347e9660",
-        "contentType": "STORY",
-        "title": "Apple Stock Jumps on Artificial Intelligence (AI) Driving iPhone Sales. Here's Why It's Not Getting Crushed by the DeepSeek Launch.",
-        "description": "",
-        "summary": "As Nvidia stock went down, Apple stock went up.",
-        "pubDate": "2025-02-08T09:05:00Z",
-        "displayTime": "2025-02-08T09:05:00Z",
-        "isHosted": true,
-        "bypassModal": false,
-        "previewUrl": null,
-        "thumbnail": {
-          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/f836f1ca6a214d2e409ae5add8d0705b",
-          "originalWidth": 1199,
-          "originalHeight": 800,
-          "caption": "Person holding up a smartphone and smiling",
-          "resolutions": [
-            {
-              "url": "https://s.yimg.com/uu/api/res/1.2/BvIIdW8bYvqez44.QYtwQQ--~B/aD04MDA7dz0xMTk5O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/f836f1ca6a214d2e409ae5add8d0705b",
-              "width": 1199,
-              "height": 800,
-              "tag": "original"
-            },
-            {
-              "url": "https://s.yimg.com/uu/api/res/1.2/E0FGs2vBdZnhgYzF__6bMA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/f836f1ca6a214d2e409ae5add8d0705b",
-              "width": 170,
-              "height": 128,
-              "tag": "170x128"
-            }
-          ]
-        },
-        "provider": {
-          "displayName": "Motley Fool",
-          "url": "http://www.fool.com/"
-        },
-        "canonicalUrl": {
-          "url": "https://www.fool.com/investing/2025/02/08/apple-stock-jumps-on-artificial-intelligence-ai-dr/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=1777d7c7-5709-4c2f-ac91-21b1883d990b",
-          "site": "finance",
-          "region": "US",
-          "lang": "en-US"
-        },
-        "clickThroughUrl": {
-          "url": "https://finance.yahoo.com/news/apple-stock-jumps-artificial-intelligence-090500898.html",
           "site": "finance",
           "region": "US",
           "lang": "en-US"

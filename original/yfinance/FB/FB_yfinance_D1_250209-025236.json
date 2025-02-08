@@ -1,0 +1,144 @@
+{
+  "ticker": "FB",
+  "period": "1y",
+  "interval": "1d",
+  "fetched_at": "2025-02-09T02:52:34.693471",
+  "info": {
+    "quoteType": "NONE",
+    "symbol": "FB",
+    "underlyingSymbol": "FB",
+    "uuid": "30781f1f-c2f9-342c-ab1a-d2f6f35a51db",
+    "maxAge": 86400,
+    "trailingPegRatio": null
+  },
+  "fast_info": "lazy-loading dict with keys = ['currency', 'dayHigh', 'dayLow', 'exchange', 'fiftyDayAverage', 'lastPrice', 'lastVolume', 'marketCap', 'open', 'previousClose', 'quoteType', 'regularMarketPreviousClose', 'shares', 'tenDayAverageVolume', 'threeMonthAverageVolume', 'timezone', 'twoHundredDayAverage', 'yearChange', 'yearHigh', 'yearLow']",
+  "history": {},
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {},
+  "cashflow": {},
+  "recommendations": {},
+  "calendar": {},
+  "major_holders": [],
+  "institutional_holders": [],
+  "sustainability": {},
+  "options": [
+    "2026-02-21"
+  ],
+  "news": [
+    {
+      "id": "5f695c14-bc91-363c-995e-e994c1f0807e",
+      "content": {
+        "id": "5f695c14-bc91-363c-995e-e994c1f0807e",
+        "contentType": "STORY",
+        "title": "These Are The Five Best Stocks To Buy Now Or Add To A Watchlist",
+        "description": "",
+        "summary": "Buying a stock is easy, but buying the right stock without a good strategy is incredibly hard. Here are five top-performing stocks to buy now or put on a watchlist.",
+        "pubDate": "2025-02-06T22:44:04Z",
+        "displayTime": "2025-02-06T22:44:04Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/5f695c14-bc91-363c-995e-e994c1f0807e/these-are-the-five-best.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/d286311e6de86e24602ae294b1416a97",
+          "originalWidth": 1000,
+          "originalHeight": 565,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/CnP2jdOEWBJtUq5bgefK.A--~B/aD01NjU7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/d286311e6de86e24602ae294b1416a97",
+              "width": 1000,
+              "height": 565,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/r4hto1YddsTx6maqnzG_kQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/d286311e6de86e24602ae294b1416a97",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/research/best-stocks-to-buy-now/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0edc9aaa-e3ba-3178-be5a-f8c16fbffff2",
+      "content": {
+        "id": "0edc9aaa-e3ba-3178-be5a-f8c16fbffff2",
+        "contentType": "STORY",
+        "title": "Warren Buffett Stocks: Arista Networks, 4 Chip Stocks Make This Screen",
+        "description": "",
+        "summary": "Arista Networks, Lululemon among 23 names on this screen for Warren Buffett stocks based on the strategy of Berkshire's CEO.",
+        "pubDate": "2024-03-15T19:34:46Z",
+        "displayTime": "2024-03-15T19:34:46Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/0edc9aaa-e3ba-3178-be5a-f8c16fbffff2/warren-buffett-stocks-arista.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/1eca04fa1c2e999f92cbe7d3db997d7e",
+          "originalWidth": 1012,
+          "originalHeight": 572,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Av1uqyJMQ_7V9fY4dCYvMA--~B/aD01NzI7dz0xMDEyO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/1eca04fa1c2e999f92cbe7d3db997d7e",
+              "width": 1012,
+              "height": 572,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/l478Aal9LMR3MSuYgpnpGw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/1eca04fa1c2e999f92cbe7d3db997d7e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/research/warren-buffett-stocks-investing-strategy-stock-screen/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}
