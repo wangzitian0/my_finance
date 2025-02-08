@@ -1,17 +1,21 @@
 ---
-- name: Initial Environment Setup - Bootstrap system, install dependencies, Neo4j, and repository
+- name: Initial Environment Setup - Setup Neo4j and link data repository
   hosts: localhost
   become: yes
   gather_facts: yes
   vars:
+    # Neo4j configuration
     neo4j_version: "5.18.0"
     neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
-    # Download URL for Neo4j tarball (update if necessary)
     neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
     neo4j_install_dir: "/opt/neo4j"
-    repo_url: "https://github.com/wangzitian0/my_finance.git"
-    repo_dest: "./../../my_finance"
+
+    # Data repository configuration (to be cloned into a sibling directory)
+    data_repo_url: "git@github.com:wangzitian0/my_finance_data.git"
+    # 由于当前工作目录为 llm/my_finance，因此数据仓库路径为上级目录下的 my_finance_data
+    data_repo_dest: "../my_finance_data"
     branch: "main"
+
   tasks:
     - name: Update APT cache and upgrade packages
       apt:
@@ -30,12 +34,6 @@
       apt:
         name: openjdk-17-jdk
         state: present
-
-    - name: Install pipenv using pip3
-      pip:
-        name: pipenv
-        state: present
-        executable: pip3
 
     - name: Create Neo4j installation directory
       file:
@@ -76,18 +74,46 @@
       debug:
         var: neo4j_status.stdout_lines
 
-    - name: Clone main repository with submodules
+    # 检查数据仓库（my_finance_data）是否存在（判断 .git 目录）
+    - name: Check if data repository exists
+      stat:
+        path: "{{ data_repo_dest }}/.git"
+      register: data_repo_stat
+
+    - name: Clone data repository (my_finance_data) using SSH
       git:
-        repo: "{{ repo_url }}"
-        dest: "{{ repo_dest }}"
+        repo: "{{ data_repo_url }}"
+        dest: "{{ data_repo_dest }}"
         version: "{{ branch }}"
-        recursive: yes
       become: no
+      when: not data_repo_stat.stat.exists
+
+    # 检查主仓库下的 "data" 符号链接是否存在且正确
+    - name: Check if "data" symlink exists in main repository
+      stat:
+        path: "./data"
+        follow: false
+      register: data_link_stat
+
+    - name: Remove existing "data" if not a correct symlink
+      file:
+        path: "./data"
+        state: absent
+      become: no
+      when: data_link_stat.stat.exists and (not data_link_stat.stat.islnk or data_link_stat.stat.lnk_source != "../my_finance_data")
+
+    - name: Create symlink "data" pointing to ../my_finance_data in main repository
+      file:
+        src: "../my_finance_data"
+        dest: "./data"
+        state: link
+      become: no
+      when: not (data_link_stat.stat.exists and data_link_stat.stat.islnk and data_link_stat.stat.lnk_source == "../my_finance_data")
 
     - name: Install pipenv dependencies (creates virtual environment)
       command: pipenv install
       args:
-        chdir: "{{ repo_dest }}"
+        chdir: "."
       become: no
 
     - name: Final message

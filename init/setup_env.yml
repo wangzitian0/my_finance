@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: yes
   vars:
-    repo_dest: "~/my_finance"
+    repo_dest: "./../../my_finance_data"
   tasks:
     - name: Pull latest changes from main repository
       command: git pull
