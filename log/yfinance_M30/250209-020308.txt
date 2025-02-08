@@ -1,5 +1,0 @@
-2025-02-09 02:03:08,716 - INFO - Job started: exe_id=yfinance_M30_250209-020308
-2025-02-09 02:03:08,717 - INFO - Ticker AAPL: Data exists (skipped).
-2025-02-09 02:03:08,717 - INFO - Ticker MSFT: Data exists (skipped).
-2025-02-09 02:03:08,717 - INFO - Job finished: exe_id=yfinance_M30_250209-020308
-2025-02-09 02:03:08,717 - INFO - Summary: Processed=2, Success=2, Skipped=2, Errors=0

@@ -1,0 +1,26 @@
+2025-02-09 02:16:48,142 - INFO - Job started: exe_id=yfinance_M30_250209-021648
+2025-02-09 02:16:48,142 - INFO - Fetching data for ticker: AAPL (period=30y, interval=1mo)
+2025-02-09 02:16:48,518 - WARNING - Key 2024-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2023-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2022-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2021-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2020-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2024-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2023-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2022-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2021-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,518 - WARNING - Key 2020-09-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,520 - INFO - Ticker AAPL: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_M30_250209-021648.json
+2025-02-09 02:16:48,520 - INFO - Fetching data for ticker: MSFT (period=30y, interval=1mo)
+2025-02-09 02:16:48,955 - WARNING - Key 2024-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2023-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2022-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2021-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2024-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2023-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2022-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2021-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,955 - WARNING - Key 2020-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 02:16:48,957 - INFO - Ticker MSFT: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_M30_250209-021648.json
+2025-02-09 02:16:48,957 - INFO - Job finished: exe_id=yfinance_M30_250209-021648
+2025-02-09 02:16:48,957 - INFO - Summary: Processed=2, Success=2, Skipped=0, Errors=0
