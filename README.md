@@ -10,13 +10,13 @@ cd my_finance
 pip install pipenv
 pipenv shell
 # might need sudo permission
-ansible-playbook init/init_env.yml --ask-become-pass
+ansible-playbook ansible/init_env.yml --ask-become-pass
 ```
 
 ## run
 ```bash
 pipenv shell
-ansible-playbook init/setup_env.yml
+ansible-playbook ansible/setup_env.yml
 # exit the pipenv
 exit
 # if you need the interpreter like pycharm by

@@ -1,5 +1,5 @@
 ---
-- name: Initial Environment Setup - Setup Neo4j and link data repository
+- name: Initial Environment Setup - Bootstrap system, install dependencies, Neo4j, and data repository
   hosts: localhost
   become: yes
   gather_facts: yes
@@ -10,13 +10,39 @@
     neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
     neo4j_install_dir: "/opt/neo4j"
 
-    # Data repository configuration (to be cloned into a sibling directory)
-    data_repo_url: "git@github.com:wangzitian0/my_finance_data.git"
-    # 由于当前工作目录为 llm/my_finance，因此数据仓库路径为上级目录下的 my_finance_data
-    data_repo_dest: "../my_finance_data"
+    # Main repository (my_finance) is assumed to be the current directory.
     branch: "main"
 
+    # Data repository (my_finance_data) configuration:
+    # 将数据仓库克隆到与 my_finance 同级目录，即 llm/my_finance_data
+    data_repo_url: "git@github.com:wangzitian0/my_finance_data.git"
+
   tasks:
+    - name: Set current directory variable using lookup('env','PWD')
+      set_fact:
+        current_dir: "{{ lookup('env', 'PWD') }}"
+      become: false
+
+    - name: Debug current directory
+      debug:
+        msg: "Current directory is {{ current_dir }}"
+      become: false
+
+    - name: Check if current repository is a git repository
+      stat:
+        path: "{{ current_dir }}/.git"
+      register: main_repo_stat
+      become: false
+
+    - name: Fail if current directory is not a git repository
+      fail:
+        msg: "This playbook must be executed inside the my_finance repository directory. Current directory: {{ current_dir }}"
+      when: not main_repo_stat.stat.exists
+      become: false
+
+    # -------------------------
+    # System and Neo4j setup
+    # -------------------------
     - name: Update APT cache and upgrade packages
       apt:
         update_cache: yes
@@ -74,48 +100,59 @@
       debug:
         var: neo4j_status.stdout_lines
 
-    # 检查数据仓库（my_finance_data）是否存在（判断 .git 目录）
-    - name: Check if data repository exists
+    # -------------------------
+    # Data repository handling
+    # -------------------------
+    # 目标：将数据仓库克隆到 llm/my_finance_data，并在 my_finance 中建立符号链接 data 指向 ../my_finance_data
+    - name: Set sibling directory variable for data repository
+      set_fact:
+        data_repo_dest: "{{ current_dir | dirname }}/my_finance_data"
+      become: false
+
+    - name: Check if sibling directory my_finance_data exists
       stat:
-        path: "{{ data_repo_dest }}/.git"
-      register: data_repo_stat
+        path: "{{ data_repo_dest }}"
+      register: sibling_stat
+      become: false
 
     - name: Clone data repository (my_finance_data) using SSH
       git:
         repo: "{{ data_repo_url }}"
         dest: "{{ data_repo_dest }}"
         version: "{{ branch }}"
-      become: no
-      when: not data_repo_stat.stat.exists
+      become: false
+      when: not sibling_stat.stat.exists
 
-    # 检查主仓库下的 "data" 符号链接是否存在且正确
-    - name: Check if "data" symlink exists in main repository
+    - name: Check if local "data" directory exists in my_finance
       stat:
-        path: "./data"
-        follow: false
-      register: data_link_stat
+        path: "{{ current_dir }}/data"
+      register: local_data_stat
+      become: false
 
-    - name: Remove existing "data" if not a correct symlink
+    - name: Remove existing "data" directory in my_finance (if any)
       file:
-        path: "./data"
+        path: "{{ current_dir }}/data"
         state: absent
-      become: no
-      when: data_link_stat.stat.exists and (not data_link_stat.stat.islnk or data_link_stat.stat.lnk_source != "../my_finance_data")
+      become: false
+      when: local_data_stat.stat.exists
 
-    - name: Create symlink "data" pointing to ../my_finance_data in main repository
+    - name: Create symlink "data" in my_finance pointing to sibling my_finance_data
       file:
         src: "../my_finance_data"
-        dest: "./data"
+        dest: "{{ current_dir }}/data"
         state: link
-      become: no
-      when: not (data_link_stat.stat.exists and data_link_stat.stat.islnk and data_link_stat.stat.lnk_source == "../my_finance_data")
+      become: false
 
+    # -------------------------
+    # Install pipenv dependencies
+    # -------------------------
     - name: Install pipenv dependencies (creates virtual environment)
       command: pipenv install
       args:
-        chdir: "."
-      become: no
+        chdir: "{{ current_dir }}"
+      become: false
 
     - name: Final message
       debug:
         msg: "Initial environment setup complete. Verify Neo4j at http://localhost:7474."
+      become: false
