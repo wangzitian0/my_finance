@@ -1,12 +1,10 @@
 ---
-- name: Update code for my_finance and my_finance_data; update pipenv environment for my_finance
+- name: Update code for my_finance and its submodules; update pipenv environment for my_finance
   hosts: localhost
   gather_facts: yes
   vars:
-    # finance_repo points to the main project repository (my_finance), which is the parent of ansible.
-    finance_repo: "../"
-    # finance_data_repo points to the my_finance_data repository, which is a sibling to my_finance.
-    finance_data_repo: "../../my_finance_data"
+    # Assume current directory is my_finance
+    finance_repo: "."
   tasks:
     - name: Pull latest changes for my_finance (main repository)
       command: git pull
@@ -15,21 +13,9 @@
       become: no
 
     - name: Update submodules for my_finance (if any)
-      command: git submodule update --remote
+      command: git submodule update --remote --merge
       args:
         chdir: "{{ finance_repo }}"
-      become: no
-
-    - name: Pull latest changes for my_finance_data repository
-      command: git pull
-      args:
-        chdir: "{{ finance_data_repo }}"
-      become: no
-
-    - name: Update submodules for my_finance_data (if any)
-      command: git submodule update --remote
-      args:
-        chdir: "{{ finance_data_repo }}"
       become: no
 
     - name: Update pipenv dependencies for my_finance (refresh environment)
