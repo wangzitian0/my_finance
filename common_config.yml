@@ -24,7 +24,7 @@ logging:
 
   # format: The format string for log messages.
   # You can modify this to include additional details (e.g., module name, line number) if needed.
-  format: '%(asctime)s - %(levelname)s - %(message)s'
+  format: '%(asctime)s - %(levelname)s - [%(request_logid)s] - %(message)s'
 
 # ----- Database Configuration (Example) -----
 # Uncomment and configure the following section if you plan to use a database.

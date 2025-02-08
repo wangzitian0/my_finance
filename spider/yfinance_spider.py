@@ -6,70 +6,56 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import os
+import sys
 import json
 import re
 from datetime import datetime, timedelta
 import yfinance as yf
 import yaml
-import logging  # Used in sanitize_data for logging warnings
+import logging  # Needed for LoggerAdapter and our custom stream
 
 from common.logger import setup_logger
 from common.progress import create_progress_bar
+from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+
+# Optionally suppress third-party log messages (requests/urllib3)
+suppress_third_party_logs()
 
 # Base directories
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 ORIGINAL_DATA_DIR = os.path.join(BASE_DIR, "data", "original")
 
 
-def is_file_recent(filepath, hours=1):
+class StreamToLogger(object):
     """
-    Check if the timestamp in the filename is within the past 'hours' hours.
-    Assumes the filename format: <ticker>_<source>_<oid>_<date_str>.json,
-    where date_str is in the format %y%m%d-%H%M%S.
+    Fake file-like stream object that redirects writes to a logger instance.
+    This is used to capture stderr output from underlying libraries and log them.
     """
-    filename = os.path.basename(filepath)
-    match = re.search(r"_(\d{6}-\d{6})\.json$", filename)
-    if match:
-        timestamp_str = match.group(1)
-        try:
-            file_dt = datetime.strptime(timestamp_str, "%y%m%d-%H%M%S")
-            if datetime.now() - file_dt < timedelta(hours=hours):
-                return True
-        except Exception:
-            return False
-    return False
+    def __init__(self, logger, log_level=logging.ERROR):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ""
 
+    def write(self, buf):
+        # Split the buffer into lines and log each one.
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
 
-def sanitize_data(obj, logger):
-    """
-    Recursively traverse the object.
-    For any dictionary key that is not of type str, int, float, bool, or None,
-    log a warning and convert that key to a string and set its value to None.
-    """
-    if isinstance(obj, dict):
-        new_dict = {}
-        for k, v in obj.items():
-            if not isinstance(k, (str, int, float, bool)) and k is not None:
-                logger.warning(f"Key {k} (type {type(k)}) is not a valid JSON key type; converting key to string and setting its value to null")
-                new_key = str(k)
-                new_dict[new_key] = None  # Set value to null (None)
-            else:
-                new_key = k
-                new_dict[new_key] = sanitize_data(v, logger)
-        return new_dict
-    elif isinstance(obj, list):
-        return [sanitize_data(item, logger) for item in obj]
-    else:
-        return obj
+    def flush(self):
+        pass
 
 
 def save_data(ticker, source, oid, data, logger):
     """
     Save the data as a JSON file with the filename format:
-    <ticker>_<source>_<oid>_<date_str>.json
+    <ticker>_<source>_<oid>_<date_str>.json.
     The file is stored under data/original/<source>/<ticker>/.
-    Before saving, the data is sanitized so that all dictionary keys are allowed.
+    Before saving, the data is sanitized so that all keys are valid.
+    If no data is available, an exception is raised and nothing is saved.
     """
+    if not data:
+        logger.error(f"No data to save for ticker {ticker}. Skipping save.")
+        raise Exception("No data fetched; skipping saving.")
     date_str = datetime.now().strftime("%y%m%d-%H%M%S")
     filename = f"{ticker}_{source}_{oid}_{date_str}.json"
     ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
@@ -180,6 +166,7 @@ def run_job(config_path):
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")
         exe_id = f"{job_id}_{date_str}"
 
+        # Set up the job-level logger; it writes to file only.
         logger = setup_logger(job_id, date_str)
         logger.info(f"Job started: exe_id={exe_id}")
 
@@ -189,7 +176,17 @@ def run_job(config_path):
         skipped = 0
 
         progress_bar = create_progress_bar(total, description="Tickers Progress")
+        # Create a Snowflake instance for generating unique request log IDs.
+        from common.snowflake import Snowflake
+        sf = Snowflake(machine_id=1)
         for ticker in tickers:
+            # Generate a unique log ID for this ticker request.
+            request_logid = sf.get_id()
+            # Create a LoggerAdapter that adds the request_logid to every log record.
+            ticker_logger = logging.LoggerAdapter(logger, {'request_logid': request_logid})
+            # Redirect sys.stderr to capture underlying errors using ticker_logger.
+            original_stderr = sys.stderr
+            sys.stderr = StreamToLogger(ticker_logger, logging.ERROR)
             base_filename = f"{ticker}_{source}_{oid}_"
             ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
             exists_recent = False
@@ -204,17 +201,21 @@ def run_job(config_path):
             if exists_recent:
                 skipped += 1
                 success += 1
-                logger.info(f"Ticker {ticker}: Data exists (skipped).")
+                ticker_logger.info(f"Ticker {ticker}: Data exists (skipped).")
             else:
                 try:
-                    logger.info(f"Fetching data for ticker: {ticker} (period={period}, interval={interval})")
+                    ticker_logger.info(f"Fetching data for ticker: {ticker} (period={period}, interval={interval})")
                     data = fetch_stock_data(ticker, period, interval)
-                    filepath = save_data(ticker, source, oid, data, logger)
+                    if not data:
+                        raise Exception("No data fetched.")
+                    filepath = save_data(ticker, source, oid, data, ticker_logger)
                     success += 1
-                    logger.info(f"Ticker {ticker}: Data saved at {filepath}")
+                    ticker_logger.info(f"Ticker {ticker}: Data saved at {filepath}")
                 except Exception:
                     errors += 1
-                    logger.exception(f"Ticker {ticker}: Error fetching data")
+                    ticker_logger.exception(f"Ticker {ticker}: Error fetching data")
+            # Restore sys.stderr
+            sys.stderr = original_stderr
             progress_bar.update(1)
         progress_bar.close()
 
@@ -224,8 +225,6 @@ def run_job(config_path):
 
 
 if __name__ == "__main__":
-    import sys
-
     if len(sys.argv) < 2:
         print("Usage: python yfinance_spider.py <config_file_path>")
         exit(1)
