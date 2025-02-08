@@ -4,14 +4,15 @@ try use script to get stock data
 # how to run
 ## init
 ```bash
-ansible-playbook init/install_neo4j.yml
-ansible-playbook init/set_env.yml
+pip install pipenv
+pipenv shell
+ansible-playbook init/init_env.yml
+ansible-playbook init/setup_env.yml
 
 ```
 ## run
 ```bash
-pipenv shell
-./run.sh
+ansible-playbook init/setup_env.yml
 ```
 
 ## dev
@@ -22,5 +23,4 @@ pipenv install xxx
 ```
 ## data
 ```bash
-datasette data/yfinance_data.db
 ```

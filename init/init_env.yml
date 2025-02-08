@@ -1,0 +1,95 @@
+---
+- name: Initial Environment Setup - Bootstrap system, install dependencies, Neo4j, and repository
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  vars:
+    neo4j_version: "5.18.0"
+    neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
+    # Download URL for Neo4j tarball (update if necessary)
+    neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
+    neo4j_install_dir: "/opt/neo4j"
+    repo_url: "https://github.com/wangzitian0/my_finance.git"
+    repo_dest: "./../../my_finance"
+    branch: "main"
+  tasks:
+    - name: Update APT cache and upgrade packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install essential system packages (Python3 and pip3)
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3
+        - python3-pip
+
+    - name: Install OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Install pipenv using pip3
+      pip:
+        name: pipenv
+        state: present
+        executable: pip3
+
+    - name: Create Neo4j installation directory
+      file:
+        path: "{{ neo4j_install_dir }}"
+        state: directory
+
+    - name: Download Neo4j tarball
+      get_url:
+        url: "{{ neo4j_download_url }}"
+        dest: "/tmp/{{ neo4j_tarball }}"
+        mode: '0644'
+
+    - name: Extract Neo4j tarball to installation directory
+      unarchive:
+        src: "/tmp/{{ neo4j_tarball }}"
+        dest: "{{ neo4j_install_dir }}"
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+
+    - name: Configure Neo4j to listen on 0.0.0.0
+      lineinfile:
+        path: "{{ neo4j_install_dir }}/conf/neo4j.conf"
+        regexp: '^#?dbms\.default_listen_address='
+        line: 'dbms.default_listen_address=0.0.0.0'
+        state: present
+
+    - name: Start Neo4j service
+      command: "{{ neo4j_install_dir }}/bin/neo4j start"
+      register: neo4j_start
+      failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
+
+    - name: Check Neo4j service status
+      command: "{{ neo4j_install_dir }}/bin/neo4j status"
+      register: neo4j_status
+      changed_when: false
+
+    - name: Display Neo4j service status
+      debug:
+        var: neo4j_status.stdout_lines
+
+    - name: Clone main repository with submodules
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dest }}"
+        version: "{{ branch }}"
+        recursive: yes
+      become: no
+
+    - name: Install pipenv dependencies (creates virtual environment)
+      command: pipenv install
+      args:
+        chdir: "{{ repo_dest }}"
+      become: no
+
+    - name: Final message
+      debug:
+        msg: "Initial environment setup complete. Verify Neo4j at http://localhost:7474."

@@ -1,0 +1,28 @@
+---
+- name: Development Environment Setup - Update repository and submodules, refresh pipenv environment
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    repo_dest: "~/my_finance"
+  tasks:
+    - name: Pull latest changes from main repository
+      command: git pull
+      args:
+        chdir: "{{ repo_dest }}"
+      become: no
+
+    - name: Update all submodules to the latest remote commit
+      command: git submodule update --remote
+      args:
+        chdir: "{{ repo_dest }}"
+      become: no
+
+    - name: Update pipenv dependencies (refresh virtual environment)
+      command: pipenv install
+      args:
+        chdir: "{{ repo_dest }}"
+      become: no
+
+    - name: Final message
+      debug:
+        msg: "Development environment setup complete. Happy coding!"
