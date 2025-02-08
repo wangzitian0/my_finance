@@ -1,28 +1,43 @@
 ---
-- name: Development Environment Setup - Update repository and submodules, refresh pipenv environment
+- name: Update code for my_finance and my_finance_data; update pipenv environment for my_finance
   hosts: localhost
   gather_facts: yes
   vars:
-    repo_dest: "./../../my_finance_data"
+    # finance_repo points to the main project repository (my_finance), which is the parent of ansible.
+    finance_repo: "../"
+    # finance_data_repo points to the my_finance_data repository, which is a sibling to my_finance.
+    finance_data_repo: "../../my_finance_data"
   tasks:
-    - name: Pull latest changes from main repository
+    - name: Pull latest changes for my_finance (main repository)
       command: git pull
       args:
-        chdir: "{{ repo_dest }}"
+        chdir: "{{ finance_repo }}"
       become: no
 
-    - name: Update all submodules to the latest remote commit
+    - name: Update submodules for my_finance (if any)
       command: git submodule update --remote
       args:
-        chdir: "{{ repo_dest }}"
+        chdir: "{{ finance_repo }}"
       become: no
 
-    - name: Update pipenv dependencies (refresh virtual environment)
+    - name: Pull latest changes for my_finance_data repository
+      command: git pull
+      args:
+        chdir: "{{ finance_data_repo }}"
+      become: no
+
+    - name: Update submodules for my_finance_data (if any)
+      command: git submodule update --remote
+      args:
+        chdir: "{{ finance_data_repo }}"
+      become: no
+
+    - name: Update pipenv dependencies for my_finance (refresh environment)
       command: pipenv install
       args:
-        chdir: "{{ repo_dest }}"
+        chdir: "{{ finance_repo }}"
       become: no
 
     - name: Final message
       debug:
-        msg: "Development environment setup complete. Happy coding!"
+        msg: "Repositories updated and my_finance environment refreshed. Ready to pull new data!"

@@ -16,6 +16,7 @@ ansible-playbook ansible/init_env.yml --ask-become-pass
 ## run
 ```bash
 pipenv shell
+# it would pull lastest data and code for two repo
 ansible-playbook ansible/setup_env.yml
 # exit the pipenv
 exit
