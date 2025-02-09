@@ -1,5 +1,6 @@
 # Not commit the data
 gg.patch
+.webui_secret_key
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

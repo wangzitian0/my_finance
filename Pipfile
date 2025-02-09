@@ -11,6 +11,7 @@ pyyaml = "*"
 tqdm = "*"
 
 [dev-packages]
+open-webui = "*"
 
 [requires]
 python_version = "3.12"
