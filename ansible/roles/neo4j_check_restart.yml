@@ -1,0 +1,30 @@
+---
+# roles/neo4j_check_restart.yml
+- name: Check Neo4j service status
+  command: "{{ neo4j_install_dir }}/bin/neo4j status"
+  register: neo4j_status
+  changed_when: false
+
+- name: Display current Neo4j status
+  debug:
+    var: neo4j_status.stdout_lines
+
+- name: Restart Neo4j if not running
+  command: "{{ neo4j_install_dir }}/bin/neo4j restart"
+  register: neo4j_restart
+  when: neo4j_status.rc != 0
+  changed_when: true
+
+- name: Re-check Neo4j service status after restart
+  command: "{{ neo4j_install_dir }}/bin/neo4j status"
+  register: neo4j_status_after
+  changed_when: false
+
+- name: Display Neo4j status after restart
+  debug:
+    var: neo4j_status_after.stdout_lines
+
+- name: Fail if Neo4j is still not running
+  fail:
+    msg: "Neo4j failed to start after restart!"
+  when: neo4j_status_after.rc != 0

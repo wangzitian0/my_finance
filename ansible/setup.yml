@@ -1,0 +1,24 @@
+---
+# setup.yml
+- name: Development Environment Setup
+  hosts: localhost
+  become: no
+  gather_facts: yes
+  vars:
+    repo_dir: "{{ lookup('env','PWD') }}"
+    run_git_pull: true
+    data_repo_command: "git submodule update --remote --merge"
+    neo4j_install_dir: "/opt/neo4j"
+  tasks:
+    - name: Execute code repository tasks (repo_code)
+      include_tasks: roles/repo_code.yml
+
+    - name: Execute data repository tasks (repo_data)
+      include_tasks: roles/repo_data.yml
+
+    - name: Check and restart Neo4j if needed
+      include_tasks: roles/neo4j_check_restart.yml
+
+    - name: Development environment update complete
+      debug:
+        msg: "Development environment update complete."

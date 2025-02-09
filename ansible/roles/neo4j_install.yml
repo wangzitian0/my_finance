@@ -1,0 +1,62 @@
+---
+# roles/neo4j_install.yml
+- name: Update APT cache and upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+  become: yes
+
+- name: Install required packages (python3, pip3, openjdk-17-jdk)
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3
+    - python3-pip
+    - openjdk-17-jdk
+  become: yes
+
+- name: Create Neo4j installation directory
+  file:
+    path: "{{ neo4j_install_dir }}"
+    state: directory
+  become: yes
+
+- name: Download Neo4j tarball
+  get_url:
+    url: "{{ neo4j_download_url }}"
+    dest: "/tmp/{{ neo4j_tarball }}"
+    mode: '0644'
+  become: yes
+
+- name: Extract Neo4j tarball to installation directory
+  unarchive:
+    src: "/tmp/{{ neo4j_tarball }}"
+    dest: "{{ neo4j_install_dir }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  become: yes
+
+- name: Configure Neo4j to listen on 0.0.0.0
+  lineinfile:
+    path: "{{ neo4j_install_dir }}/conf/neo4j.conf"
+    regexp: '^#?dbms\.default_listen_address='
+    line: 'dbms.default_listen_address=0.0.0.0'
+    state: present
+  become: yes
+
+- name: Start Neo4j service
+  command: "{{ neo4j_install_dir }}/bin/neo4j start"
+  register: neo4j_start
+  failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
+  become: yes
+
+- name: Check Neo4j service status
+  command: "{{ neo4j_install_dir }}/bin/neo4j status"
+  register: neo4j_status
+  changed_when: false
+  become: yes
+
+- name: Display Neo4j service status
+  debug:
+    var: neo4j_status.stdout_lines

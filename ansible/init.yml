@@ -1,0 +1,42 @@
+---
+# init.yml
+- name: Initial Environment Setup
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  vars:
+    repo_dir: "{{ lookup('env','PWD') }}"
+    run_git_pull: false
+    data_repo_command: "git submodule update --init --recursive"
+    neo4j_version: "5.18.0"
+    neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
+    neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
+    neo4j_install_dir: "/opt/neo4j"
+  tasks:
+    - name: Check if current directory is a Git repository
+      stat:
+        path: "{{ repo_dir }}/.git"
+      register: git_repo
+      become: false
+
+    - name: Fail if current directory is not a Git repository
+      fail:
+        msg: "Current directory {{ repo_dir }} is not a Git repository!"
+      when: not git_repo.stat.exists
+      become: false
+
+    - name: Execute Neo4j installation tasks
+      include_tasks: roles/neo4j_install.yml
+
+    - name: Execute data repository tasks (initial mode)
+      include_tasks: roles/repo_data.yml
+
+    - name: Execute code repository tasks (pipenv install, no git pull)
+      include_tasks: roles/repo_code.yml
+
+    - name: Check and restart Neo4j if needed (setup commands)
+      include_tasks: roles/neo4j_check_restart.yml
+
+    - name: Initial environment setup complete
+      debug:
+        msg: "Initial environment setup complete. Environment is fully configured."

@@ -10,14 +10,14 @@ cd my_finance
 pip install pipenv
 pipenv shell
 # might need sudo permission
-ansible-playbook ansible/init_env.yml --ask-become-pass
+ansible-playbook ansible/init.yml --ask-become-pass
 ```
 
 ## run
 ```bash
 pipenv shell
 # it would pull lastest data and code for two repo
-ansible-playbook ansible/setup_env.yml
+ansible-playbook ansible/setup.yml
 # exit the pipenv
 exit
 # if you need the interpreter like pycharm by

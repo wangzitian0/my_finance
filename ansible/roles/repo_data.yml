@@ -1,0 +1,6 @@
+---
+# roles/repo_data.yml
+- name: Update Git submodules (data repository)
+  command: "{{ data_repo_command }}"
+  args:
+    chdir: "{{ repo_dir }}"

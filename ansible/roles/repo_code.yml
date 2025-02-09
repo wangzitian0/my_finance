@@ -1,0 +1,12 @@
+---
+# roles/repo_code.yml
+- name: Optionally pull latest code (for setup only)
+  command: git pull
+  args:
+    chdir: "{{ repo_dir }}"
+  when: run_git_pull | default(false)
+
+- name: Install/Update pipenv dependencies
+  command: pipenv install --skip-lock
+  args:
+    chdir: "{{ repo_dir }}"
