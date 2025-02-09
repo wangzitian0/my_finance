@@ -1,3 +1,4 @@
+# common/logger.py
 import os
 import logging
 from datetime import datetime
@@ -12,25 +13,40 @@ class DefaultRequestLogIDFilter(logging.Filter):
         return True
 
 
+class StreamToLogger(object):
+    """
+    模拟的文件流对象，将写入内容重定向到日志记录器中。
+    用于捕获底层库（例如第三方库）的 stderr 输出，并将其写入日志。
+    """
+
+    def __init__(self, logger, log_level=logging.ERROR):
+        self.logger = logger
+        self.log_level = log_level
+        self.linebuf = ""
+
+    def write(self, buf):
+        for line in buf.rstrip().splitlines():
+            self.logger.log(self.log_level, line.rstrip())
+
+    def flush(self):
+        pass
+
+
 def setup_logger(job_id, date_str=None):
     """
-    Set up a logger using configuration from common_config.yml.
-    Logs are written to data/log/<job_id>/<date_str>.txt.
-    A unique logid is added for each request via a LoggerAdapter.
-    Additionally, every log record gets a default 'request_logid' (if not provided)
-    so that the log format does not cause an error.
+    根据 common_config.yml 中的配置初始化日志记录器。
+    日志写入路径为：data/log/<job_id>/<date_str>.txt
     """
     config = load_common_config()
     log_conf = config.get("logging", {})
     log_level = getattr(logging, log_conf.get("level", "INFO"))
     file_level = getattr(logging, log_conf.get("file_level", "INFO"))
-    # The log format should include %(request_logid)s:
     log_format = log_conf.get("format", '%(asctime)s - %(levelname)s - [%(request_logid)s] - %(message)s')
 
     if date_str is None:
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")
 
-    # Construct log file path: data/log/<job_id>/<date_str>.txt
+    # 构建日志文件路径：data/log/<job_id>/<date_str>.txt
     root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     log_base_dir = os.path.join(root_dir, "data", "log")
     log_dir = os.path.join(log_base_dir, job_id)
@@ -42,19 +58,12 @@ def setup_logger(job_id, date_str=None):
     logger.setLevel(log_level)
     if logger.hasHandlers():
         logger.handlers.clear()
-
-    # Disable propagation so messages don't go to the root logger
+    # 禁用传播，防止消息输出到 root logger
     logger.propagate = False
-
     formatter = logging.Formatter(log_format)
-
-    # File handler for detailed logs (all messages go to file)
     fh = logging.FileHandler(log_file, encoding="utf-8")
     fh.setLevel(file_level)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
-
-    # Add the default filter so every record gets a request_logid
     logger.addFilter(DefaultRequestLogIDFilter())
-
     return logger

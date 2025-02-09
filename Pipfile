@@ -9,6 +9,7 @@ datasette = "*"
 ansible = "*"
 pyyaml = "*"
 tqdm = "*"
+neomodel = "*"
 
 [dev-packages]
 open-webui = "*"
