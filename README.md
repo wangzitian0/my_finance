@@ -28,6 +28,8 @@ which python
 ```bash
 # use this to keep env
 pipenv install xxx
+pipenv install xxx --dev
+pipenv lock --verbose
 ```
 
 # how to run
