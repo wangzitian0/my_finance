@@ -10,6 +10,8 @@ ansible = "*"
 pyyaml = "*"
 tqdm = "*"
 neomodel = "*"
+secedgar = "*"
+lxml = "*"
 
 [dev-packages]
 open-webui = "*"
