@@ -1,0 +1,15 @@
+tickers:
+  - "0000320193"   # Apple
+  - "0000789019"   # Microsoft
+  - "0001018724"   # Amazon
+  - "0001652044"   # Alphabet (Google)
+  - "0001326801"   # Facebook (Meta)
+  - "0001318605"   # Tesla
+  - "0001065280"   # Netflix
+count: 8
+file_types:
+  - "10K"
+  - "10Q"
+  - "13F"
+  - "8K"
+email: "ZitianSG (wangzitian0@gmail.com)"
