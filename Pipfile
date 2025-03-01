@@ -12,6 +12,8 @@ tqdm = "*"
 neomodel = "*"
 secedgar = "*"
 lxml = "*"
+qlib = "*"
+pyqlib = "*"
 
 [dev-packages]
 open-webui = "*"
