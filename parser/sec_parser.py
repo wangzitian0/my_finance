@@ -58,15 +58,15 @@ def parse_sec_file(file_path):
 
 # Example usage
 if __name__ == '__main__':
+    from parser.rcts import sec_text_doc_splitter
+    
     file_path = 'data/sec-edgar/0000320193/10k/0000320193/10-K/0000320193-24-000123.txt'
     documents = parse_sec_file(file_path)
 
-    for idx, doc in enumerate(documents):
-        print(f"Document {idx+1}:")
-        print("  Type:", doc['type'])
-        print("  Sequence:", doc['sequence'])
-        print("  Filename:", doc['filename'])
-        print("  Description:", doc['description'])
-        text_snippet = doc['text'][:200] + '...' if doc['text'] and len(doc['text']) > 200 else doc['text']
-        print("  Text:", text_snippet)
+    # Suppose you have a long SEC filing text in the variable sec_text
+    chunks = sec_text_doc_splitter.split_text(documents[0]['text'])
+
+    print(f"Number of chunks: {len(chunks)}")
+    for chunk in chunks:
+        print(chunk)
         print("-" * 40)
