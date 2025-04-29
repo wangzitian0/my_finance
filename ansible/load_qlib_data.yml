@@ -1,0 +1,28 @@
+---
+- name: Download and extract qlib_bin
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Download qlib_bin.tar.gz
+      get_url:
+        url: "https://github.com/chenditc/investment_data/releases/latest/download/qlib_bin.tar.gz"
+        dest: "/tmp/qlib_bin.tar.gz"
+        mode: '0644'
+
+    - name: Create directory for qlib data
+      file:
+        path: "{{ ansible_env.HOME }}/.qlib/qlib_data/cn_data"
+        state: directory
+        mode: '0755'
+
+    - name: Unarchive qlib_bin.tar.gz into cn_data directory
+      unarchive:
+        src: "/tmp/qlib_bin.tar.gz"
+        dest: "{{ ansible_env.HOME }}/.qlib/qlib_data/cn_data"
+        extra_opts: [ "--strip-components=2" ]
+        remote_src: yes
+
+    - name: Remove downloaded tar.gz file
+      file:
+        path: "/tmp/qlib_bin.tar.gz"
+        state: absent
