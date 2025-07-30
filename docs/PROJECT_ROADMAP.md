@@ -1,92 +1,92 @@
-# My Finance DCF 投资分析工具 - 项目路线图
+# My Finance DCF Investment Analysis Tool - Project Roadmap
 
-## 🎯 核心目标
-基于SEC文件和多源数据的Graph RAG系统，支持DCF估值的端到端问答投资分析工具
+## 🎯 Core Objectives
+Build a Graph RAG system based on SEC filings and multi-source data, supporting end-to-end DCF valuation for investment analysis.
 
-## 📊 现状分析
+## 📊 Current State Analysis
 
-**已有能力**：
-- ✅ Yahoo Finance数据收集 (股价、公司信息)
-- ✅ SEC Edgar文件下载
-- ✅ Neo4j图数据库基础模型
-- ✅ 配置驱动的任务系统
-- ✅ 本地LLM支持框架(Ollama)
+**Existing Capabilities**:
+- ✅ Yahoo Finance data collection (stock prices, company info)
+- ✅ SEC Edgar filing downloads
+- ✅ Neo4j graph database basic models
+- ✅ Configuration-driven task system
+- ✅ Local LLM support framework (Ollama)
 
-**主要Gap**：
-- ❌ SEC文件内容解析和结构化存储
-- ❌ 多数据源校验机制
-- ❌ DCF计算引擎
-- ❌ Graph RAG查询系统
-- ❌ 问答接口和评分系统
+**Major Gaps**:
+- ❌ SEC filing content parsing and structured storage
+- ❌ Multi-source data validation mechanisms
+- ❌ DCF calculation engine
+- ❌ Graph RAG query system
+- ❌ Q&A interface and scoring system
 
-## 🚀 三阶段路线图
+## 🚀 Three-Phase Roadmap
 
-### Phase 1: MVP核心能力 (4-6周)
+### Phase 1: MVP Core Capabilities (4-6 weeks)
 
-**1.1 数据层增强**
-- [ ] 扩展Neo4j schema支持SEC文件结构
-- [ ] 实现SEC文件内容解析器(10-K/10-Q关键章节)
-- [ ] 添加分析师报告和EPS预期数据源
-- [ ] 构建多源数据校验框架
+**1.1 Data Layer Enhancement**
+- [ ] Extend Neo4j schema to support SEC filing structure
+- [ ] Implement SEC filing content parser (10-K/10-Q key sections)
+- [ ] Add analyst reports and EPS forecast data sources
+- [ ] Build multi-source data validation framework
 
-**1.2 DCF计算引擎**
-- [ ] 实现基础DCF模型(可配置参数)
-- [ ] 支持敏感性分析
-- [ ] 中间结果缓存到图数据库
+**1.2 DCF Calculation Engine**
+- [ ] Implement basic DCF model (configurable parameters)
+- [ ] Support sensitivity analysis
+- [ ] Cache intermediate results to graph database
 
-**1.3 简单问答系统**
-- [ ] 命令行界面
-- [ ] 基础Graph RAG实现
-- [ ] LLM切换框架(本地/Claude)
-- [ ] M7公司数据验证
+**1.3 Simple Q&A System**
+- [ ] Command-line interface
+- [ ] Basic Graph RAG implementation
+- [ ] LLM switching framework (local/Claude)
+- [ ] M7 companies data validation
 
-### Phase 2: 完整系统 (6-8周)
+### Phase 2: Complete System (6-8 weeks)
 
-**2.1 Web界面**
-- [ ] 移动端友好的问答界面
-- [ ] 结果展示和引用追踪
-- [ ] 用户评分和反馈系统
+**2.1 Web Interface**
+- [ ] Mobile-friendly Q&A interface
+- [ ] Result display and citation tracking
+- [ ] User scoring and feedback system
 
-**2.2 规模化支持**
-- [ ] NASDAQ100批量处理
-- [ ] 增量数据更新机制
-- [ ] 性能优化和缓存策略
+**2.2 Scaling Support**
+- [ ] NASDAQ100 batch processing
+- [ ] Incremental data update mechanisms
+- [ ] Performance optimization and caching strategies
 
-**2.3 评估工具**
-- [ ] 问答质量评分工具
-- [ ] 结果对比和验证框架
-- [ ] 评分数据持久化
+**2.3 Evaluation Tools**
+- [ ] Q&A quality scoring tools
+- [ ] Result comparison and validation framework
+- [ ] Scoring data persistence
 
-### Phase 3: 生产级优化 (持续)
+### Phase 3: Production-Level Optimization (Continuous)
 
-**3.1 全美股支持**
-- [ ] 数据管道扩展
-- [ ] 自动化数据质量监控
-- [ ] 大规模图查询优化
+**3.1 Full US Stock Support**
+- [ ] Data pipeline extension
+- [ ] Automated data quality monitoring
+- [ ] Large-scale graph query optimization
 
-**3.2 高级功能**
-- [ ] 行业对比分析
-- [ ] 历史估值回测
-- [ ] 自定义DCF模型
+**3.2 Advanced Features**
+- [ ] Industry comparison analysis
+- [ ] Historical valuation backtesting
+- [ ] Custom DCF models
 
-**3.3 系统运维**
-- [ ] 监控和告警
-- [ ] 数据备份恢复
-- [ ] 本地大模型部署优化
+**3.3 System Operations**
+- [ ] Monitoring and alerting
+- [ ] Data backup and recovery
+- [ ] Local large model deployment optimization
 
-## 🎯 近期行动计划
+## 🎯 Immediate Action Plan
 
-**本周开始**：
-1. 设计扩展的Neo4j schema
-2. 实现SEC文件解析器原型
-3. 搭建基础DCF计算框架
+**Starting This Week**:
+1. Design extended Neo4j schema
+2. Implement SEC filing parser prototype
+3. Build basic DCF calculation framework
 
-## 📝 进度记录
+## 📝 Progress Log
 
 ### 2025-07-30
-- ✅ 完成项目需求调研和路线图制定
-- ✅ 建立标准化Git工作流程和Issue关联机制
-- 📋 待定：开始Phase 1技术实现
+- ✅ Complete project requirements research and roadmap development
+- ✅ Establish standardized Git workflow and Issue association mechanisms
+- 📋 Pending: Begin Phase 1 technical implementation
 
 ---
-*路线图会根据开发进度和需求变化持续更新*
+*Roadmap will be continuously updated based on development progress and requirement changes*

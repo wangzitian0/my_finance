@@ -151,6 +151,40 @@ git push --force-with-lease
 - Commit messages must reference issue numbers AND PR URLs
 - Include Claude Code attribution footer in commits
 
+## GitHub Project Management
+
+### Issue Management Guidelines
+**Current Labels**: bug, documentation, duplicate, enhancement, good first issue, help wanted, invalid, question, wontfix, P0, P1, P2, data analysis, ETL, MVP
+
+**Priority System**:
+- **P0**: Blocking/Critical - Must fix immediately
+- **P1**: High priority - Should fix this iteration
+- **P2**: Medium priority - Can be scheduled later
+
+**Phase Labels**:
+- **MVP**: Minimum viable product features
+- **data analysis**: Data processing and analysis tasks
+- **ETL**: Extract, Transform, Load operations
+
+### Project Board Workflow
+**Standard Columns**: Todo → In Progress → Done
+
+**Issue Assignment**:
+- Link all development tasks to specific GitHub Issues
+- Use GitHub Projects for tracking Phase 1/2/3 progress
+- Update issue status as work progresses
+
+### Current Active Issues (Created by Claude)
+- Issue #20: Phase 1.1 - Extend Neo4j schema for SEC filings and DCF calculations
+- Issue #21: Phase 1.2 - Implement basic DCF calculation engine
+- Issue #22: Phase 1.3 - Build Graph RAG Q&A system
+
+### Milestone Management
+Create milestones for each project phase:
+- **Phase 1 MVP**: Core DCF + Graph RAG capabilities
+- **Phase 2 Complete**: Web interface + scaling
+- **Phase 3 Production**: Full US stock support + optimization
+
 ## Testing and Validation
 
 There is no standard test framework configured. The `test_yahoo/` directory contains manual testing scripts for Yahoo Finance functionality. Always verify data collection by checking output files in `data/original/` and log files.
