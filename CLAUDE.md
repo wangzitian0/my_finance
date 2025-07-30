@@ -1,0 +1,105 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Environment Setup and Dependencies
+
+This project uses Python 3.12 with pipenv for dependency management. To set up the development environment:
+
+```bash
+pip install pipenv
+pipenv shell
+pipenv install
+```
+
+For deployment setup with Neo4j database and system configuration:
+```bash
+# Requires sudo permissions for system setup
+ansible-playbook ansible/init.yml --ask-become-pass
+# Pulls latest data and code updates
+ansible-playbook ansible/setup.yml
+```
+
+## Core Commands
+
+### Running Data Collection Jobs
+```bash
+# Run default job (uses first config file found in data/config/)
+python run_job.py
+
+# Run specific configuration
+python run_job.py yfinance_nasdaq100.yml
+
+# Get Magnificent 7 stock data
+python run_job.py
+```
+
+### Development Workflow
+```bash
+# Enter pipenv environment
+pipenv shell
+
+# Install new dependencies
+pipenv install <package_name>
+pipenv install <package_name> --dev
+
+# Update lock file after dependency changes
+pipenv lock --verbose
+
+# Find Python interpreter path (for IDE setup)
+which python
+```
+
+## Architecture Overview
+
+This is a financial data collection and processing system with the following key components:
+
+### Data Flow Architecture
+1. **Configuration-driven Jobs** (`run_job.py`): Main entry point that selects appropriate spider based on config file prefix
+2. **Data Spiders**: Collect data from different sources
+   - `spider/yfinance_spider.py`: Yahoo Finance data collection 
+   - `spider/sec_edgar_spider.py`: SEC Edgar filings collection
+3. **Data Storage**: Raw data saved to `data/original/<source>/<ticker>/` with JSON format
+4. **ETL Pipeline**: `ETL/` directory contains Neo4j database models and import scripts
+5. **Parsers**: `parser/` directory handles SEC filing parsing and processing
+
+### Key Components
+
+**Database Layer (Neo4j)**:
+- Uses neomodel ORM for graph database operations
+- Models defined in `ETL/models.py` with relationships between Stock, Info, PriceData, etc.
+- Stock ticker as unique identifier with relationships to financial data nodes
+
+**Configuration System**:
+- `common_config.yml`: Shared logging and system configuration
+- Job-specific YAML configs in `data/config/`: Control data collection parameters
+- `common/config.py`: Configuration loading utilities
+
+**Data Collection**:
+- Yahoo Finance spider: Collects stock prices, company info, recommendations, sustainability data
+- SEC Edgar spider: Downloads regulatory filings (10-K, 10-Q, etc.) using CIK numbers
+- Progress tracking and logging built into all spiders
+
+**Parsing and Processing**:
+- `parser/sec_parser.py`: Handles SEC filing XML/SGML parsing with BeautifulSoup
+- `parser/rcts.py`: Additional SEC filing processing capabilities
+- Data sanitization and validation in `common/utils.py`
+
+### Data Organization
+- Raw data: `data/original/<source>/<ticker>/`
+- Logs: `data/log/<job_id>/<date_str>.txt`
+- Configuration files: `data/config/*.yml`
+
+### Important CIK Numbers (Magnificent 7)
+The system can work with stock tickers or direct CIK numbers for SEC data:
+- Apple (AAPL): 0000320193
+- Microsoft (MSFT): 0000789019  
+- Amazon (AMZN): 0001018724
+- Alphabet (GOOGL): 0001652044
+- Meta (FB): 0001326801
+- Tesla (TSLA): 0001318605
+- Netflix (NFLX): 0001065280
+
+## Testing and Validation
+
+There is no standard test framework configured. The `test_yahoo/` directory contains manual testing scripts for Yahoo Finance functionality. Always verify data collection by checking output files in `data/original/` and log files.
