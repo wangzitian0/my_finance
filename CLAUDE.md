@@ -100,6 +100,57 @@ The system can work with stock tickers or direct CIK numbers for SEC data:
 - Tesla (TSLA): 0001318605
 - Netflix (NFLX): 0001065280
 
+## Git Workflow and Issue Management
+
+**MANDATORY: All changes must be associated with GitHub Issues for traceability**
+
+### Standard Workflow with GoLand Integration
+```bash
+# 1. Create feature branch
+git checkout -b feature/descriptive-name
+
+# 2. Make changes and commit with PR reference for GoLand integration
+git add .
+git commit -m "Brief description
+
+Fixes #issue-number
+
+PR: https://github.com/wangzitian0/my_finance/pull/XXX"
+
+# 3. Push and create PR with Issue link
+git push -u origin feature/descriptive-name
+gh pr create --title "Title - Fixes #issue-number" --body "Summary
+
+Fixes #issue-number
+Related to https://github.com/wangzitian0/my_finance/issues/14"
+
+# 4. Update commit message with actual PR URL (for GoLand right-click)
+git commit --amend -m "Brief description
+
+Fixes #issue-number
+
+PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_PR_NUMBER"
+git push --force-with-lease
+```
+
+### Issue Association Rules
+- **All PRs must link to an Issue**: Use "Fixes #N" or "Related to #N"
+- **Claude Code configurations**: Always link to https://github.com/wangzitian0/my_finance/issues/14
+- **Feature development**: Create specific issues for each major feature
+- **Documentation updates**: Link to relevant feature issues
+
+### GoLand Integration Benefits
+- **Right-click commit → Open in Browser**: Direct access to GitHub PR
+- **Commit message format**: Include "PR: https://github.com/..." for clickable links
+- **Traceability**: From code change to issue to PR in one click
+
+### Branch and Commit Standards
+- `main`: Protected branch, only updated via merged PRs
+- `feature/*`: Feature development branches  
+- `hotfix/*`: Emergency fixes
+- Commit messages must reference issue numbers AND PR URLs
+- Include Claude Code attribution footer in commits
+
 ## Testing and Validation
 
 There is no standard test framework configured. The `test_yahoo/` directory contains manual testing scripts for Yahoo Finance functionality. Always verify data collection by checking output files in `data/original/` and log files.
