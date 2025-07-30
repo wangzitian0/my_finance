@@ -1,5 +1,36 @@
-# Not commit the data
+# ==============================================================================
+# LAYERED DATA MANAGEMENT STRATEGY
+# ==============================================================================
+# Tier 1 (M7): Stable test dataset - TRACKED in git for development
+# Tier 2 (NASDAQ100): Extended dataset - NOT TRACKED, buildable
+# Tier 3 (US-ALL): Full dataset - NOT TRACKED, buildable
+
+# NASDAQ100 and US-ALL data (large datasets, buildable)
+data/original/yfinance/*nasdaq100*
+data/original/yfinance/*us_all*
+data/original/sec-edgar/nasdaq100/
+data/original/sec-edgar/us_all/
+data/log/*nasdaq100*
+data/log/*us_all*
+
+# Build reports and temporary files
+data/build_report_*.json
+data/validation_report_*.json
+knowledge_base_build.log
+
+# Large data files (> 100MB)
+*.large
+data/original/**/*.zip
+data/original/**/*.tar.gz
+
+# Local development files
 .webui_secret_key
+.env.local
+.env.development
+
+# ==============================================================================
+# PYTHON AND DEVELOPMENT
+# ==============================================================================
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -22,16 +22,37 @@ ansible-playbook ansible/setup.yml
 
 ## Core Commands
 
-### Running Data Collection Jobs
+### Layered Data Management System
+
+**Three-Tier Strategy**:
+- **Tier 1 (M7)**: Stable test dataset (7 companies, ~500MB, tracked in git)
+- **Tier 2 (NASDAQ100)**: Extended dataset (~100 companies, ~5GB, buildable)  
+- **Tier 3 (US-ALL)**: Complete dataset (~8000 companies, ~50GB, buildable)
+
+**Management Commands**:
 ```bash
-# Run default job (uses first config file found in data/config/)
-python run_job.py
+# Build stable test dataset (always safe)
+python manage.py build m7
 
-# Run specific configuration
+# Build extended datasets (large downloads)
+python manage.py build nasdaq100    # ~5GB
+python manage.py build us-all       # ~50GB
+
+# Check data status
+python manage.py status
+
+# Validate data integrity  
+python manage.py validate
+
+# Clean old data (for non-git tiers)
+python manage.py clean nasdaq100
+```
+
+**Legacy Commands** (still supported):
+```bash
+# Run specific configuration directly
 python run_job.py yfinance_nasdaq100.yml
-
-# Get Magnificent 7 stock data
-python run_job.py
+python run_job.py sec_edgar_m7.yml
 ```
 
 ### Development Workflow

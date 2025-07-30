@@ -185,32 +185,68 @@ open-webui serve
 # 访问 http://localhost:8080
 ```
 
-## 数据目录结构
+## Layered Data Management Strategy
 
-### 创建必要目录
+### Data Tier Architecture
+The project implements a three-tier data management strategy:
+
+**Tier 1 - M7 (Magnificent 7)**:
+- **Purpose**: Stable test dataset for core development
+- **Companies**: 7 (AAPL, MSFT, AMZN, GOOGL, TSLA, NFLX, META)
+- **Size**: ~500MB
+- **Git Status**: Tracked in git for reproducible development
+- **Usage**: Always available, perfect for testing and development
+
+**Tier 2 - NASDAQ100**:
+- **Purpose**: Extended validation dataset
+- **Companies**: ~100 NASDAQ companies
+- **Size**: ~5GB
+- **Git Status**: NOT tracked (buildable on-demand)
+- **Usage**: Batch validation and extended testing
+
+**Tier 3 - US-ALL**:
+- **Purpose**: Complete US stock universe
+- **Companies**: ~8000 companies
+- **Size**: ~50GB
+- **Git Status**: NOT tracked (buildable on-demand)
+- **Usage**: Production-scale knowledge base
+
+### Quick Setup with Management Script
 ```bash
-# 数据存储目录
-mkdir -p data/{original,processed,cache}
-mkdir -p data/original/{yfinance,sec_edgar,news,analyst_reports}
-mkdir -p data/config
-mkdir -p data/log
+# Initial project setup
+python manage.py setup
 
-# 文档和输出目录  
-mkdir -p docs/assets
-mkdir -p output/{reports,visualizations}
+# Build M7 stable test dataset (always safe)
+python manage.py build m7
 
-# 测试数据目录
-mkdir -p tests/fixtures
+# Check current status
+python manage.py status
+
+# Build extended datasets (optional)
+python manage.py build nasdaq100    # ~5GB download
+python manage.py build us-all       # ~50GB download
 ```
 
-### 权限设置
-```bash
-# 确保数据目录可写
-chmod -R 755 data/
-chmod -R 755 output/
-
-# 日志目录权限
-chmod -R 644 data/log/
+### Data Directory Structure
+```
+data/                           # Git submodule: my_finance_data
+├── config/                     # Job configurations
+│   ├── job_yfinance_m7.yml    # M7 companies
+│   ├── sec_edgar_m7.yml       # M7 SEC filings
+│   ├── yfinance_nasdaq100.yml # NASDAQ100 (generated)
+│   └── sec_edgar_nasdaq100.yml # NASDAQ100 SEC (generated)
+├── original/
+│   ├── yfinance/
+│   │   ├── AAPL/              # M7 - tracked in git
+│   │   ├── MSFT/              # M7 - tracked in git
+│   │   ├── *nasdaq100*        # NASDAQ100 - gitignored
+│   │   └── *us_all*           # US-ALL - gitignored
+│   └── sec-edgar/
+│       ├── 0000320193/        # AAPL - tracked in git
+│       ├── 0000789019/        # MSFT - tracked in git
+│       ├── nasdaq100/         # NASDAQ100 - gitignored
+│       └── us_all/            # US-ALL - gitignored
+└── log/                       # Build logs
 ```
 
 ## 开发工作流
