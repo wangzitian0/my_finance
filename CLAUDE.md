@@ -13,17 +13,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Ansible automation compatible with Pixi environment
 - Use `pixi info` to check environment details for IDE configuration
 
-## Core Commands
+## Command Line Architecture
 
-**See README.md for complete command reference.** Quick reference for Claude:
+**Two-tier management system:**
+- **Ansible**: Environment setup and infrastructure (Minikube, Neo4j, system-level)
+- **Pixi**: Development operations (data processing, code quality, testing)
+- **Python scripts**: Complex operations that can't be handled by above
 
+### Environment Commands (Ansible-managed)
 ```bash
-# Essential commands
-pixi shell                      # Activate environment (or run pixi run <task>)
-pixi run build-m7               # Build stable test dataset
+pixi run setup-env              # Initial environment setup (installs Minikube, Neo4j)
+pixi run env-start              # Start all services (Minikube + Neo4j)
+pixi run env-stop               # Stop all services
+pixi run env-status             # Check environment status
+pixi run env-reset              # Reset everything (destructive)
+```
+
+### Development Commands (Pixi-managed)
+```bash
+pixi shell                      # Activate environment
 pixi run status                 # Check data status
+pixi run build-m7               # Build stable test dataset
 pixi run run-job                # Run default data collection
-pixi run setup-env              # Ansible environment setup with Pixi
+pixi run format                 # Format code
+pixi run lint                   # Lint code
+pixi run test                   # Run tests
 ```
 
 ## Architecture Overview

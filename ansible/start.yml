@@ -1,0 +1,52 @@
+---
+# start.yml - Start the development environment
+- name: Start Development Environment
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    repo_dir: "{{ lookup('env','PWD') }}"
+  
+  tasks:
+    - name: Start Minikube cluster
+      shell: |
+        if ! minikube status | grep -q "Running"; then
+          echo "Starting Minikube cluster..."
+          minikube start --driver=docker --memory=4096 --cpus=2
+        else
+          echo "Minikube is already running"
+        fi
+      register: minikube_start
+      changed_when: "'Starting' in minikube_start.stdout"
+
+    - name: Deploy Neo4j services
+      shell: |
+        if command -v kubectl &> /dev/null; then
+          kubectl apply -f k8s/
+        else
+          minikube kubectl -- apply -f k8s/
+        fi
+      args:
+        chdir: "{{ repo_dir }}"
+      register: k8s_deploy
+      changed_when: "'created' in k8s_deploy.stdout or 'configured' in k8s_deploy.stdout"
+
+    - name: Wait for services to be ready
+      shell: |
+        if command -v kubectl &> /dev/null; then
+          kubectl wait --for=condition=available --timeout=300s deployment/neo4j
+        else
+          minikube kubectl -- wait --for=condition=available --timeout=300s deployment/neo4j
+        fi
+      register: services_ready
+      failed_when: services_ready.rc != 0
+
+    - name: Display environment status
+      debug:
+        msg: |
+          ✅ Development environment started successfully!
+          
+          Next steps:
+          1. Check status: `pixi run env-status`
+          2. Access Neo4j: Use connection info from status command
+          3. Run development tasks: `pixi run status`, `pixi run build-m7`

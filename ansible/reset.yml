@@ -1,0 +1,46 @@
+---
+# reset.yml - Reset the development environment
+- name: Reset Development Environment
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    repo_dir: "{{ lookup('env','PWD') }}"
+  
+  tasks:
+    - name: Delete all Kubernetes resources
+      shell: |
+        if command -v kubectl &> /dev/null; then
+          kubectl delete -f k8s/ --ignore-not-found=true
+          kubectl delete pvc --all --ignore-not-found=true
+        else
+          minikube kubectl -- delete -f k8s/ --ignore-not-found=true
+          minikube kubectl -- delete pvc --all --ignore-not-found=true
+        fi
+      args:
+        chdir: "{{ repo_dir }}"
+      register: k8s_cleanup
+      changed_when: "'deleted' in k8s_cleanup.stdout"
+
+    - name: Delete Minikube cluster
+      shell: |
+        if command -v minikube &> /dev/null; then
+          echo "Deleting Minikube cluster..."
+          minikube delete
+        fi
+      register: minikube_delete
+      changed_when: "'Deleting' in minikube_delete.stdout"
+
+    - name: Clean local data directories
+      file:
+        path: "{{ repo_dir }}/data/neo4j"
+        state: absent
+
+    - name: Display reset status
+      debug:
+        msg: |
+          ✅ Development environment reset complete.
+          
+          All data has been removed. To start fresh:
+          1. `pixi run setup-env` (if needed)
+          2. `pixi run env-start`

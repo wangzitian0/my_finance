@@ -42,7 +42,6 @@ activate = "echo 'Pixi environment activated'"
 build-m7 = "python manage.py build m7"
 status = "python manage.py status"
 run-job = "python run_job.py"
-setup-env = "pip install ansible psutil && ansible-playbook ansible/init.yml --ask-become-pass"
 
 # Install additional packages via pip (cross-platform)
 install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
@@ -54,34 +53,17 @@ typecheck = "mypy ."
 test = "pytest"
 test-coverage = "pytest --cov"
 
-# Environment checking
-doctor = "python scripts/minikube_doctor.py"
+# --- Environment Management (Ansible) ---
+# Initial environment setup
+setup-env = "pip install ansible psutil && ansible-playbook ansible/init.yml --ask-become-pass"
+# Environment operations
+env-start = "ansible-playbook ansible/start.yml"
+env-stop = "ansible-playbook ansible/stop.yml" 
+env-status = "python scripts/env_status.py"
+env-reset = "ansible-playbook ansible/reset.yml"
 
-# --- Minikube and Kubernetes Management ---
-# Minikube cluster management
-k8s-start = "minikube start --driver=docker --memory=4096 --cpus=2"
-k8s-stop = "minikube stop"
-k8s-status = "minikube status"
-k8s-delete = "minikube delete"
-k8s-dashboard = "minikube dashboard"
-k8s-ip = "minikube ip"
-
-# Service deployment and management
-services-deploy = "kubectl apply -f k8s/"
-services-delete = "kubectl delete -f k8s/"
-services-status = "kubectl get pods,services"
-
-# Neo4j specific commands
-neo4j-logs = "kubectl logs -l app=neo4j -f"
-neo4j-status = "kubectl get pods -l app=neo4j"
-neo4j-restart = "kubectl rollout restart deployment/neo4j"
-neo4j-connect = "echo 'Neo4j Web: http://'$(minikube ip)':30474' && echo 'Neo4j Bolt: bolt://'$(minikube ip)':30687' && echo 'Username: neo4j, Password: finance123'"
-
-# Port forwarding for local access (alternative to NodePort)
-neo4j-port-forward = "kubectl port-forward service/neo4j-service 7474:7474 7687:7687"
-
-# Cleanup command
-neo4j-remove = "kubectl delete -f k8s/neo4j.yaml && kubectl delete pvc neo4j-data-pvc neo4j-logs-pvc"
+# --- Development Operations (Pure Development) ---
+# Core data operations remain in pixi
 
 [environments]
 default = { solve-group = "default" }

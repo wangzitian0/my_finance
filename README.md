@@ -2,11 +2,13 @@
 
 ## Core Philosophy
 
-This project is built on a clear separation of concerns to ensure a robust and user-friendly development experience:
+This project follows a **two-tier command architecture** for clear separation of responsibilities:
 
-- **Pixi is the Single Entry Point**: For all day-to-day development, you will only ever need to use `pixi run <task>`. It manages all application dependencies and provides a consistent command-line interface.
-- **Ansible for First-Time Setup**: Ansible is used only once, via `pixi run setup-env`, to prepare the system environment (primarily setting up Docker for Neo4j). You should never need to run `ansible-playbook` directly.
-- **Docker for Services**: All external services, like the Neo4j database, are managed as Docker containers to ensure perfect consistency across all machines.
+- **Ansible manages Environment**: System setup, infrastructure services (Minikube, Neo4j), and environment lifecycle
+- **Pixi manages Development**: Application dependencies, data processing, code quality, and development workflows  
+- **Python handles Complexity**: Complex operations that can't be handled by the above tools
+
+All commands are accessed through `pixi run <task>`, but internally delegate to the appropriate management layer.
 
 ## Installation: The One-Command Setup
 
@@ -14,25 +16,30 @@ This project is designed to go from a fresh clone to a fully running environment
 
 ### Prerequisites
 
-1.  **Docker**: **Docker is a mandatory requirement.** Please install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and ensure it is running.
+1.  **Docker**: Install Docker Desktop for your platform (required for Minikube):
+    - **macOS**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [OrbStack](https://orbstack.dev/) (faster)
+    - **Linux**: Docker via system package manager (`sudo apt install docker.io` or `sudo dnf install docker`)
+    - **Windows**: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
 2.  **Pixi**: Install Pixi by following the [official instructions](https://pixi.sh/latest/).
 
 ### The Setup Command
 
-With Docker running and Pixi installed, run the following command from the project root:
+From the project root, run:
 
 ```bash
 pixi run setup-env
 ```
 
-This command triggers an Ansible playbook that does the heavy lifting for you:
-1.  Verifies that Docker is running.
-2.  Creates the local `./data/neo4j` directory for persistent data storage.
-3.  Pulls the official Neo4j Docker image and starts the container.
-4.  Installs all Python dependencies into a managed Pixi environment.
-5.  Initializes the data submodules.
+This Ansible-powered setup:
+1. **Installs Minikube** (cross-platform Kubernetes)
+2. **Installs kubectl** (if needed)
+3. **Starts Minikube cluster** with Neo4j
+4. **Deploys Neo4j** via Kubernetes manifests
+5. **Initializes data submodules**
+6. **Sets up Pixi environment**
 
-After this one-time setup, you are ready to go.
+Data is stored in `./data/neo4j/` (not tracked in git).
 
 ## Daily Development Workflow
 
@@ -45,23 +52,33 @@ To enter the isolated development shell with all tools available:
 pixi shell
 ```
 
-### Key Commands
+### Environment Commands (Ansible-managed)
 
-- **`pixi run status`**: Check the status of your local data and database.
-- **`pixi run neo4j-start`**: Start the Neo4j Docker container.
-- **`pixi run neo4j-stop`**: Stop the Neo4j Docker container.
-- **`pixi run neo4j-logs`**: View real-time logs from the Neo4j container.
-- **`pixi run build-m7`**: Download the initial "Magnificent 7" dataset. This command is idempotent and will not re-download existing files.
-- **`pixi run run-job`**: Run the default data collection job.
-- **`pixi run test`**: Run the automated test suite.
-- **`pixi run format`**: Format all code according to project standards.
+- **`pixi run env-status`**: Check overall environment health (Minikube, Neo4j, Pixi)
+- **`pixi run env-start`**: Start all services (Minikube cluster + Neo4j)  
+- **`pixi run env-stop`**: Stop all services
+- **`pixi run env-reset`**: Reset everything (destructive - removes all data)
 
-### Resetting Your Environment
+### Development Commands (Pixi-managed)
 
-If you ever need to completely reset your database:
+- **`pixi run status`**: Check data collection status
+- **`pixi run build-m7`**: Build the "Magnificent 7" test dataset
+- **`pixi run run-job`**: Run data collection jobs
+- **`pixi run format`**: Format code (black + isort)
+- **`pixi run lint`**: Lint code with pylint  
+- **`pixi run test`**: Run test suite with pytest
+
+### Quick Status Check
+
+To see if everything is working:
 
 ```bash
-# WARNING: This deletes all local Neo4j data.
-pixi run neo4j-remove
+pixi shell                # Enter development environment
+pixi run env-status       # Check environment health
 ```
-This command will stop and remove the Neo4j container and delete the local `./data/neo4j` directory. You can then run `pixi run setup-env` to start fresh.
+
+### Troubleshooting
+
+- **Environment issues**: Use `pixi run env-reset` to start fresh (destructive)
+- **Minikube problems**: Check with `minikube status` and restart with `pixi run env-start`
+- **Neo4j connection**: Get connection details with `pixi run env-status`
