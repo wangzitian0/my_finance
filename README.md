@@ -29,71 +29,52 @@ A comprehensive **Graph RAG-powered DCF valuation system** that leverages SEC fi
 ## 🛠️ Quick Start
 
 ### Prerequisites
-- **8GB+ RAM** (16GB+ recommended)
-- **Internet connection** (for conda installation)
-- **Bash-compatible shell** (macOS/Linux/WSL)
+- **Python 3.12+**
+- **Conda** (recommended for cross-platform consistency)
+- **8GB+ RAM** (16GB+ recommended for full datasets)
 
-### 1. Automated Cross-Platform Setup
+### 1. Environment Setup
 ```bash
 git clone git@github.com:wangzitian0/my_finance.git
 cd my_finance
 
-# One-command cross-platform setup (no sudo required!)
-ansible-playbook ansible/init.yml
+# Cross-platform setup with conda
+conda create -n finance python=3.12 openjdk=17 -c conda-forge
+conda activate finance
+pip install pipenv
+pipenv install
+
+# Alternative: Automated setup (requires sudo)
+ansible-playbook ansible/init.yml --ask-become-pass
 ```
 
-**What this does:**
-- ✅ Installs Miniconda (if not present)  
-- ✅ Creates `finance` conda environment with Python 3.12 + OpenJDK 17
-- ✅ Installs all Python dependencies via conda + pip
-- ✅ Downloads and configures Neo4j with proper Java environment
-- ✅ Sets up git submodules and project structure
-
-### 2. Activate Environment & Build Knowledge Base
+### 2. Data Management
 ```bash
-# Activate the finance conda environment
-source activate-finance.sh
+# Activate environment
+pipenv shell
 
-# Build stable test dataset (M7 companies)
-python manage.py build m7
+# Three-tier data strategy:
+python manage.py build m7           # Tier 1: Stable test (500MB, git-tracked)
+python manage.py build nasdaq100    # Tier 2: Extended (5GB, buildable) 
+python manage.py build us-all       # Tier 3: Complete (50GB, buildable)
 
-# Check data status
-python manage.py status
-
-# Optional: Build extended datasets
-python manage.py build nasdaq100    # ~5GB download
-python manage.py build us-all       # ~50GB download
+# Management commands
+python manage.py status             # Check current data status
+python manage.py validate           # Validate data integrity
 ```
 
-### 3. Start Analysis
+### 3. Database and Analysis
 ```bash
-# Start Neo4j database (from project root)
-./neo4j/bin/neo4j-service start
+# Start Neo4j database
+ansible-playbook ansible/setup.yml
 
-# Verify Neo4j is running
-./neo4j/bin/neo4j-service status
-
-# Run DCF analysis (coming in Phase 1)
-python -m dcf.analyze --ticker AAPL
-```
-
-## 📊 Data Management
-
-### Management Commands
-```bash
-python manage.py build m7           # Build core test dataset
-python manage.py validate           # Validate data integrity  
-python manage.py status             # Show current status
-python manage.py clean nasdaq100    # Clean old data (keep 30 days)
-python manage.py setup              # Initial project setup
-```
-
-### Data Collection Jobs
-```bash
-# Individual data collection
+# Run data collection jobs
 python run_job.py                          # Default M7 dataset
 python run_job.py yfinance_nasdaq100.yml   # NASDAQ100 prices
-python run_job.py sec_edgar_m7.yml         # M7 SEC filings
+python run_job.py sec_edgar_m7.yml         # SEC filings
+
+# Future: DCF analysis (Phase 1 development)
+# python -m dcf.analyze --ticker AAPL
 ```
 
 ## 🎯 Target Companies
@@ -137,107 +118,90 @@ my_finance/
 
 ### Environment Setup
 ```bash
-# Activate conda environment (always first!)
-source activate-finance.sh
+# Install development dependencies
+pipenv install --dev
+pipenv shell
 
-# All development tools are pre-installed:
-# - Python 3.12, OpenJDK 17, pipenv
-# - black, isort, pylint, mypy, pytest
-
-# Find Python path for IDE setup
-conda info --envs
-# Use: ~/miniconda3/envs/finance/bin/python
+# Find Python interpreter path for IDE configuration
+pipenv --py
 ```
 
-### Code Quality
+### Architecture
+
+**Three-Tier Data Strategy**: M7 (git-tracked) → NASDAQ100 (buildable) → US-ALL (buildable)
+
+**Core Components**: Data spiders, Neo4j graph database, SEC parsing, management tools
+
+See [docs/architecture.md](docs/architecture.md) for detailed architecture and component documentation.
+
+### Git Workflow
+
+**MANDATORY**: All changes must be associated with GitHub Issues. See [docs/development-setup.md](docs/development-setup.md) for complete workflow details.
+
 ```bash
-# Activate environment first
-source activate-finance.sh
-
-# Format and lint (all tools pre-installed)
-black .
-isort .
-pylint src/
-mypy src/
-
-# Run tests (when available)
-pytest tests/ -v --cov=src/
+git checkout -b feature/description-fixes-N
+git commit -m "Brief description\n\nFixes #issue-number"
+gh pr create --title "Feature - Fixes #issue-number" --body "Summary"
 ```
 
-### Cross-Platform Benefits
-- **✅ No platform-specific package managers** (apt/homebrew/yum)
-- **✅ Consistent Python + Java versions** across macOS/Linux/Windows
-- **✅ Isolated environment** - no system pollution
-- **✅ Reproducible builds** - same conda environment everywhere
-- **✅ Easy CI/CD integration** - single conda environment file
+### Testing
 
-### GoLand Integration
-Create commits with clickable PR links:
-```bash
-git commit -m "Feature description
-
-Fixes #issue-number
-
-PR: https://github.com/wangzitian0/my_finance/pull/TBD"
-```
+Validation through manual testing and output verification. See [docs/data-validation.md](docs/data-validation.md) for testing procedures.
 
 ## 📋 Development Roadmap
 
-### Phase 1: MVP Core Capabilities (4-6 weeks)
-- [ ] **Issue #20**: Extend Neo4j schema for SEC filings and DCF calculations
-- [ ] **Issue #21**: Implement Graph RAG pipeline with semantic search  
-- [ ] **Issue #22**: Build basic DCF valuation engine with parameter extraction
+**Phase 1**: MVP Core (DCF + Graph RAG)
+**Phase 2**: Complete System (Web Interface + Scaling)
+**Phase 3**: Production Optimization
 
-### Phase 2: Complete System (6-8 weeks)
-- [ ] Mobile-responsive web interface
-- [ ] Advanced Graph RAG with multi-hop reasoning
-- [ ] Real-time data updates and monitoring
-- [ ] Comprehensive DCF scenario analysis
-
-### Phase 3: Production Optimization (Continuous)
-- [ ] Performance optimization and caching
-- [ ] Advanced analytics and reporting
-- [ ] API endpoints for external integration
+See [docs/PROJECT_ROADMAP.md](docs/PROJECT_ROADMAP.md) for detailed roadmap and milestones.
 
 ## 🤝 Contributing
 
-This project follows GitHub flow with mandatory issue association:
+1. **Create Issue**: Describe the feature or bug with appropriate labels (P0/P1/P2, MVP, etc.)
+2. **Create Branch**: `git checkout -b feature/description-fixes-N`
+3. **Develop**: Follow existing patterns, use pipenv for dependencies
+4. **Test**: Verify data collection and processing functionality
+5. **PR**: Link to issue, ensure all commits reference issue numbers
 
-1. **Create Issue**: Describe the feature or bug
-2. **Create Branch**: `git checkout -b feature/description-fixes-N`  
-3. **Develop**: Follow existing code patterns and conventions
-4. **Test**: Ensure data collection and processing work correctly
-5. **PR**: Link to issue with descriptive summary
+**Branch Naming**: `feature/`, `bugfix/`, `refactor/` + `description-fixes-N`
 
-### Branch Naming Convention
-- `feature/description-fixes-N` - New features
-- `bugfix/description-fixes-N` - Bug fixes  
-- `refactor/description-fixes-N` - Code refactoring
+## 📚 Documentation
+
+### Core Documentation
+- [**Architecture**](docs/architecture.md) - System design and component details
+- [**Development Setup**](docs/development-setup.md) - Complete development workflow
+- [**Data Schema**](docs/data-schema.md) - Database models and data structures
+- [**Project Roadmap**](docs/PROJECT_ROADMAP.md) - Detailed development phases
+
+### Technical Documentation
+- [**DCF Engine**](docs/dcf-engine.md) - Valuation calculation system
+- [**Graph RAG**](docs/graph-rag.md) - Knowledge graph and semantic search
+- [**Data Validation**](docs/data-validation.md) - Testing and quality assurance
+- [**CI Strategy**](docs/ci-strategy.md) - Continuous integration approach
+
+### Operations
+- [**Deployment**](docs/deployment.md) - Production deployment guide
+- [**Monitoring**](docs/monitoring.md) - System monitoring and observability
+- [**API Documentation**](docs/api-docs.md) - API endpoints and usage
 
 ## 📊 Performance
 
-### Recommended Hardware
-- **CPU**: 4+ cores for parallel data processing
-- **RAM**: 16GB+ for large dataset handling
-- **Storage**: SSD for optimal Neo4j performance
-- **Network**: Stable connection for SEC Edgar API access
+**Hardware**: 4+ CPU cores, 16GB+ RAM, SSD storage recommended  
+**Data Sizes**: M7 (~500MB), NASDAQ100 (~5GB), US-ALL (~50GB)
 
-### Data Size Estimates
-- **M7 Dataset**: ~500MB (7 companies, 3 years of data)
-- **NASDAQ100**: ~5GB (100 companies, 3 years of data)  
-- **US-ALL**: ~50GB (8000+ companies, 3 years of data)
+See [docs/deployment.md](docs/deployment.md) for detailed performance requirements.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Related Projects
 
 - **Data Repository**: [my_finance_data](https://github.com/wangzitian0/my_finance_data) (git submodule)
-- **SEC Parser Library**: Enhanced XML/SGML processing for financial documents
-- **Graph RAG Framework**: Neo4j-powered semantic search and reasoning
+- **Issue Tracking**: [GitHub Issues](https://github.com/wangzitian0/my_finance/issues)
+- **Documentation Index**: All technical details available in [docs/](docs/) directory
 
 ---
 
 **Built with ❤️ for intelligent investment analysis**
-** END **
