@@ -19,12 +19,44 @@
     }}"
     conda_install_dir: "{{ lookup('env','HOME') + '/miniconda3' }}"
 
-- name: Download miniconda installer
+- name: Download miniconda installer (with retries)
   get_url:
     url: "{{ conda_installer_url }}"
     dest: "/tmp/miniconda_installer.sh"
     mode: '0755'
+    timeout: 60
+  retries: 3
+  delay: 10
   when: conda_check.rc != 0
+  register: download_result
+
+- name: Try alternative download method if get_url fails
+  shell: |
+    if [[ "{{ ansible_facts['os_family'] }}" == "Darwin" ]]; then
+      curl -L --retry 3 --retry-delay 5 --connect-timeout 30 -o /tmp/miniconda_installer.sh \
+        "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh" || \
+      curl -L --retry 2 --retry-delay 3 --connect-timeout 30 -o /tmp/miniconda_installer.sh \
+        "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
+    else
+      curl -L --retry 3 --retry-delay 5 --connect-timeout 30 -o /tmp/miniconda_installer.sh \
+        "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" || \
+      curl -L --retry 2 --retry-delay 3 --connect-timeout 30 -o /tmp/miniconda_installer.sh \
+        "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    fi
+    chmod +x /tmp/miniconda_installer.sh
+  when: conda_check.rc != 0 and (download_result.failed | default(false))
+  register: curl_download
+
+- name: Verify miniconda installer was downloaded
+  stat:
+    path: "/tmp/miniconda_installer.sh"
+  register: installer_check
+  when: conda_check.rc != 0
+
+- name: Fail if installer download failed completely
+  fail:
+    msg: "Failed to download miniconda installer. Please check your internet connection and try again."
+  when: conda_check.rc != 0 and not installer_check.stat.exists
 
 - name: Install miniconda
   command: "/tmp/miniconda_installer.sh -b -p {{ conda_install_dir }}"
