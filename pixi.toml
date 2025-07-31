@@ -1,0 +1,72 @@
+[project]
+name = "my_finance"
+version = "0.1.0"
+description = "Graph RAG-powered DCF valuation system"
+authors = ["Your Name <your.email@example.com>"]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[dependencies]
+# Core cross-platform dependencies
+python = "3.12.*"
+openjdk = "17.*"
+git = "*"
+# ansible and psutil are installed via pip in the 'setup-env' task
+
+# Essential Python packages
+pip = "*"
+pyyaml = "*"
+requests = "*"
+beautifulsoup4 = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+seaborn = "*"
+jupyter = "*"
+black = "*"
+isort = "*"
+pylint = "*"
+mypy = "*"
+pytest = "*"
+pytest-cov = "*"
+python-dotenv = "*"
+click = "*"
+tqdm = "*"
+lxml = "*"
+# Neo4j Python driver (official driver for connecting to Neo4j)
+neo4j-python-driver = "*"
+
+[tasks]
+# Core commands from CLAUDE.md
+activate = "echo 'Pixi environment activated'"
+build-m7 = "python manage.py build m7"
+status = "python manage.py status"
+run-job = "python run_job.py"
+
+# Install additional packages via pip (cross-platform)
+install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
+
+# Development tasks
+format = { cmd = "black . && isort .", cwd = "." }
+lint = "pylint ."
+typecheck = "mypy ."
+test = "pytest"
+test-coverage = "pytest --cov"
+
+# --- Environment Management (Ansible) ---
+# Initial environment setup
+setup-env = "pip install ansible psutil && ansible-playbook ansible/init.yml --ask-become-pass"
+# Environment operations
+env-start = "ansible-playbook ansible/start.yml"
+env-stop = "ansible-playbook ansible/stop.yml" 
+env-status = "python scripts/env_status.py"
+env-reset = "ansible-playbook ansible/reset.yml"
+
+# --- Development Operations (Pure Development) ---
+# Core data operations remain in pixi
+
+[environments]
+default = { solve-group = "default" }
+# The 'dev' environment currently inherits all dependencies from 'default'.
+# If you need dev-specific dependencies, create a [feature.dev.dependencies] section.
+dev = { solve-group = "default" }

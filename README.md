@@ -1,207 +1,84 @@
-# My Finance DCF Analysis Tool
+# my-finance: A Graph RAG-powered DCF Valuation System
 
-A comprehensive **Graph RAG-powered DCF valuation system** that leverages SEC filings and multi-source financial data to perform intelligent investment analysis with automated parameter determination.
+## Core Philosophy
 
-## 🚀 Features
+This project follows a **two-tier command architecture** for clear separation of responsibilities:
 
-- **📊 DCF Valuation Engine**: Automated discounted cash flow analysis with bankruptcy probability assessment
-- **🕸️ Graph RAG System**: Neo4j-powered knowledge graph with semantic search capabilities  
-- **📋 SEC Filing Integration**: Automated collection and parsing of 10-K, 10-Q, and 8-K filings
-- **🔄 Multi-Source Data Validation**: Yahoo Finance, SEC Edgar, and extensible data pipeline
-- **🎯 Zero-Config Design**: Knowledge-driven parameter determination without manual configuration
-- **📱 Mobile-Friendly Web Interface**: Responsive design for investment analysis on-the-go
-- **⚡ Layered Data Management**: Smart 3-tier architecture optimizing for development and production
+- **Ansible manages Environment**: System setup, infrastructure services (Minikube, Neo4j), and environment lifecycle
+- **Pixi manages Development**: Application dependencies, data processing, code quality, and development workflows  
+- **Python handles Complexity**: Complex operations that can't be handled by the above tools
 
-## 🏗️ Architecture Overview
+All commands are accessed through `pixi run <task>`, but internally delegate to the appropriate management layer.
 
-### Three-Tier Data Management Strategy
-- **Tier 1 (M7)**: Magnificent 7 companies - stable test dataset (~500MB, git-tracked)
-- **Tier 2 (NASDAQ100)**: Extended validation dataset (~5GB, buildable)  
-- **Tier 3 (US-ALL)**: Complete US stock universe (~50GB, buildable)
+## Installation: The One-Command Setup
 
-### Core Components
-- **Data Collection**: `spider/` - Yahoo Finance and SEC Edgar data acquisition
-- **Graph Database**: `ETL/` - Neo4j models and import scripts using neomodel ORM
-- **Document Parsing**: `parser/` - SEC filing XML/SGML processing with BeautifulSoup
-- **RAG Pipeline**: Graph-powered retrieval with semantic embedding search
-- **Web Interface**: Mobile-responsive DCF analysis dashboard
-
-## 🛠️ Quick Start
+This project is designed to go from a fresh clone to a fully running environment with a single command.
 
 ### Prerequisites
-- **Python 3.12+**
-- **Conda** (recommended for cross-platform consistency)
-- **8GB+ RAM** (16GB+ recommended for full datasets)
 
-### 1. Environment Setup
-```bash
-git clone git@github.com:wangzitian0/my_finance.git
-cd my_finance
+1.  **Docker**: Install Docker Desktop for your platform (required for Minikube):
+    - **macOS**: [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [OrbStack](https://orbstack.dev/) (faster)
+    - **Linux**: Docker via system package manager (`sudo apt install docker.io` or `sudo dnf install docker`)
+    - **Windows**: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-# Cross-platform setup with conda
-conda create -n finance python=3.12 openjdk=17 -c conda-forge
-conda activate finance
-pip install pipenv
-pipenv install
+2.  **Pixi**: Install Pixi by following the [official instructions](https://pixi.sh/latest/).
 
-# Alternative: Automated setup (requires sudo)
-ansible-playbook ansible/init.yml --ask-become-pass
-```
+### The Setup Command
 
-### 2. Data Management
-```bash
-# Activate environment
-pipenv shell
-
-# Three-tier data strategy:
-python manage.py build m7           # Tier 1: Stable test (500MB, git-tracked)
-python manage.py build nasdaq100    # Tier 2: Extended (5GB, buildable) 
-python manage.py build us-all       # Tier 3: Complete (50GB, buildable)
-
-# Management commands
-python manage.py status             # Check current data status
-python manage.py validate           # Validate data integrity
-```
-
-### 3. Database and Analysis
-```bash
-# Start Neo4j database
-ansible-playbook ansible/setup.yml
-
-# Run data collection jobs
-python run_job.py                          # Default M7 dataset
-python run_job.py yfinance_nasdaq100.yml   # NASDAQ100 prices
-python run_job.py sec_edgar_m7.yml         # SEC filings
-
-# Future: DCF analysis (Phase 1 development)
-# python -m dcf.analyze --ticker AAPL
-```
-
-## 🎯 Target Companies
-
-### Magnificent 7 (Core Test Set)
-- **Apple (AAPL)** - CIK: 0000320193
-- **Microsoft (MSFT)** - CIK: 0000789019  
-- **Amazon (AMZN)** - CIK: 0001018724
-- **Alphabet (GOOGL)** - CIK: 0001652044
-- **Meta (META)** - CIK: 0001326801
-- **Tesla (TSLA)** - CIK: 0001318605
-- **Netflix (NFLX)** - CIK: 0001065280
-
-## 🗂️ Project Structure
-
-```
-my_finance/
-├── dcf/                    # DCF valuation engine (Phase 1)
-├── rag/                    # Graph RAG system (Phase 1)  
-├── web/                    # Web interface (Phase 2)
-├── spider/                 # Data collection spiders
-│   ├── yfinance_spider.py  # Yahoo Finance data
-│   └── sec_edgar_spider.py # SEC Edgar filings
-├── ETL/                    # Neo4j database layer
-│   ├── models.py           # Graph database models
-│   └── import_data.py      # Data import scripts
-├── parser/                 # Document processing
-│   ├── sec_parser.py       # SEC filing parser
-│   └── rcts.py             # Advanced text processing
-├── data/                   # Data directory (git submodule)
-│   ├── config/             # Job configurations
-│   ├── original/           # Raw collected data
-│   └── log/                # Build and processing logs
-├── ansible/                # Environment automation
-├── docs/                   # Documentation
-├── build_knowledge_base.py # Layered data builder
-└── manage.py               # Management interface
-```
-
-## 🔧 Development
-
-### Environment Setup
-```bash
-# Install development dependencies
-pipenv install --dev
-pipenv shell
-
-# Find Python interpreter path for IDE configuration
-pipenv --py
-```
-
-### Architecture
-
-**Three-Tier Data Strategy**: M7 (git-tracked) → NASDAQ100 (buildable) → US-ALL (buildable)
-
-**Core Components**: Data spiders, Neo4j graph database, SEC parsing, management tools
-
-See [docs/architecture.md](docs/architecture.md) for detailed architecture and component documentation.
-
-### Git Workflow
-
-**MANDATORY**: All changes must be associated with GitHub Issues. See [docs/development-setup.md](docs/development-setup.md) for complete workflow details.
+From the project root, run:
 
 ```bash
-git checkout -b feature/description-fixes-N
-git commit -m "Brief description\n\nFixes #issue-number"
-gh pr create --title "Feature - Fixes #issue-number" --body "Summary"
+pixi run setup-env
 ```
 
-### Testing
+This Ansible-powered setup:
+1. **Installs Minikube** (cross-platform Kubernetes)
+2. **Installs kubectl** (if needed)
+3. **Starts Minikube cluster** with Neo4j
+4. **Deploys Neo4j** via Kubernetes manifests
+5. **Initializes data submodules**
+6. **Sets up Pixi environment**
 
-Validation through manual testing and output verification. See [docs/data-validation.md](docs/data-validation.md) for testing procedures.
+Data is stored in `./data/neo4j/` (not tracked in git).
 
-## 📋 Development Roadmap
+## Daily Development Workflow
 
-**Phase 1**: MVP Core (DCF + Graph RAG)
-**Phase 2**: Complete System (Web Interface + Scaling)
-**Phase 3**: Production Optimization
+All common tasks are managed through Pixi. You should never need to use any other command-line tool.
 
-See [docs/PROJECT_ROADMAP.md](docs/PROJECT_ROADMAP.md) for detailed roadmap and milestones.
+### Activating the Environment
 
-## 🤝 Contributing
+To enter the isolated development shell with all tools available:
+```bash
+pixi shell
+```
 
-1. **Create Issue**: Describe the feature or bug with appropriate labels (P0/P1/P2, MVP, etc.)
-2. **Create Branch**: `git checkout -b feature/description-fixes-N`
-3. **Develop**: Follow existing patterns, use pipenv for dependencies
-4. **Test**: Verify data collection and processing functionality
-5. **PR**: Link to issue, ensure all commits reference issue numbers
+### Environment Commands (Ansible-managed)
 
-**Branch Naming**: `feature/`, `bugfix/`, `refactor/` + `description-fixes-N`
+- **`pixi run env-status`**: Check overall environment health (Minikube, Neo4j, Pixi)
+- **`pixi run env-start`**: Start all services (Minikube cluster + Neo4j)  
+- **`pixi run env-stop`**: Stop all services
+- **`pixi run env-reset`**: Reset everything (destructive - removes all data)
 
-## 📚 Documentation
+### Development Commands (Pixi-managed)
 
-### Core Documentation
-- [**Architecture**](docs/architecture.md) - System design and component details
-- [**Development Setup**](docs/development-setup.md) - Complete development workflow
-- [**Data Schema**](docs/data-schema.md) - Database models and data structures
-- [**Project Roadmap**](docs/PROJECT_ROADMAP.md) - Detailed development phases
+- **`pixi run status`**: Check data collection status
+- **`pixi run build-m7`**: Build the "Magnificent 7" test dataset
+- **`pixi run run-job`**: Run data collection jobs
+- **`pixi run format`**: Format code (black + isort)
+- **`pixi run lint`**: Lint code with pylint  
+- **`pixi run test`**: Run test suite with pytest
 
-### Technical Documentation
-- [**DCF Engine**](docs/dcf-engine.md) - Valuation calculation system
-- [**Graph RAG**](docs/graph-rag.md) - Knowledge graph and semantic search
-- [**Data Validation**](docs/data-validation.md) - Testing and quality assurance
-- [**CI Strategy**](docs/ci-strategy.md) - Continuous integration approach
+### Quick Status Check
 
-### Operations
-- [**Deployment**](docs/deployment.md) - Production deployment guide
-- [**Monitoring**](docs/monitoring.md) - System monitoring and observability
-- [**API Documentation**](docs/api-docs.md) - API endpoints and usage
+To see if everything is working:
 
-## 📊 Performance
+```bash
+pixi shell                # Enter development environment
+pixi run env-status       # Check environment health
+```
 
-**Hardware**: 4+ CPU cores, 16GB+ RAM, SSD storage recommended  
-**Data Sizes**: M7 (~500MB), NASDAQ100 (~5GB), US-ALL (~50GB)
+### Troubleshooting
 
-See [docs/deployment.md](docs/deployment.md) for detailed performance requirements.
-
-## 📄 License
-
-MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Related Projects
-
-- **Data Repository**: [my_finance_data](https://github.com/wangzitian0/my_finance_data) (git submodule)
-- **Issue Tracking**: [GitHub Issues](https://github.com/wangzitian0/my_finance/issues)
-- **Documentation Index**: All technical details available in [docs/](docs/) directory
-
----
-
-**Built with ❤️ for intelligent investment analysis**
+- **Environment issues**: Use `pixi run env-reset` to start fresh (destructive)
+- **Minikube problems**: Check with `minikube status` and restart with `pixi run env-start`
+- **Neo4j connection**: Get connection details with `pixi run env-status`

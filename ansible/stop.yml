@@ -1,0 +1,26 @@
+---
+# stop.yml - Stop the development environment
+- name: Stop Development Environment
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  
+  tasks:
+    - name: Stop Minikube cluster
+      shell: |
+        if minikube status | grep -q "Running"; then
+          echo "Stopping Minikube cluster..."
+          minikube stop
+        else
+          echo "Minikube is already stopped"
+        fi
+      register: minikube_stop
+      changed_when: "'Stopping' in minikube_stop.stdout"
+
+    - name: Display stop status
+      debug:
+        msg: |
+          ✅ Development environment stopped.
+          
+          To restart: `pixi run env-start`
+          To check status: `pixi run env-status`
