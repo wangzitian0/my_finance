@@ -48,9 +48,25 @@ git commit -m "Brief description
 
 Fixes #issue-number
 
+PR: https://github.com/wangzitian0/my_finance/pull/XXX
+
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
+```
+
+**Important**: After creating PR, always amend commit to include actual PR URL for GoLand integration:
+```bash
+git commit --amend -m "Brief description
+
+Fixes #issue-number
+
+PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+git push --force-with-lease
 ```
 
 ### Issue Association Rules
@@ -102,3 +118,13 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 - **Environment setup**: Use Ansible playbooks in `ansible/` directory
 - **Dependency management**: Always use `pipenv install` and `pipenv lock`
 - **Testing**: Run manual validation, check outputs in `data/` directories
+
+### Standard Development Workflow
+1. **Create feature branch**: `git checkout -b feature/description-fixes-N`
+2. **Make changes and initial commit**: Include placeholder PR URL
+3. **Push branch**: `git push -u origin feature/description-fixes-N`
+4. **Create PR**: `gh pr create --title "..." --body "..."`
+5. **Amend commit**: Replace placeholder with actual PR URL
+6. **Force push**: `git push --force-with-lease`
+
+This ensures GoLand integration works properly with clickable PR links in commit messages.
