@@ -6,7 +6,41 @@
     chdir: "{{ repo_dir }}"
   when: run_git_pull | default(false)
 
+- name: Check if pipenv is installed
+  command: which pipenv
+  register: pipenv_check
+  changed_when: false
+  failed_when: false
+
+- name: Install pipenv if not available
+  pip:
+    name: pipenv
+    state: present
+    executable: pip3
+  become: yes
+  when: pipenv_check.rc != 0
+
 - name: Install/Update pipenv dependencies
   command: pipenv install --skip-lock
   args:
     chdir: "{{ repo_dir }}"
+
+- name: Install development dependencies
+  command: pipenv install --dev --skip-lock
+  args:
+    chdir: "{{ repo_dir }}"
+  ignore_errors: yes
+
+- name: Create .env template if missing
+  copy:
+    dest: "{{ repo_dir }}/.env.template"
+    content: |
+      # Neo4j Database Configuration
+      NEO4J_URI=bolt://localhost:7687
+      NEO4J_USER=neo4j
+      NEO4J_PASSWORD=finance123
+      
+      # Development Settings
+      DEBUG=True
+      LOG_LEVEL=INFO
+    force: no

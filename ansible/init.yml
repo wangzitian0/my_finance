@@ -39,4 +39,10 @@
 
     - name: Initial environment setup complete
       debug:
-        msg: "Initial environment setup complete. Environment is fully configured."
+        msg: |
+          🎉 Initial environment setup complete! Environment is fully configured.
+          
+          ✨ Next steps:
+          1. Configure .env file with API keys (template created at .env.template)
+          2. Build knowledge base: python manage.py build m7
+          3. Check status: python manage.py status
