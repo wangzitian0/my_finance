@@ -1,12 +1,39 @@
 ---
 # roles/neo4j_install.yml
-- name: Update APT cache and upgrade packages
+- name: Detect operating system
+  set_fact:
+    is_macos: "{{ ansible_facts['os_family'] == 'Darwin' }}"
+    is_linux: "{{ ansible_facts['os_family'] in ['Debian', 'RedHat'] }}"
+
+- name: Check if Java is already installed (macOS)
+  command: java -version
+  register: java_check
+  changed_when: false
+  failed_when: false
+  when: is_macos
+
+- name: Install OpenJDK 17 via Homebrew (macOS)
+  homebrew:
+    name: openjdk@17
+    state: present
+    update_homebrew: no
+  when: is_macos and java_check.rc != 0
+  become: no
+  timeout: 300
+
+- name: Skip package installation if Java already exists (macOS)
+  debug:
+    msg: "Java is already installed, skipping Homebrew installation"
+  when: is_macos and java_check.rc == 0
+
+- name: Update APT cache and upgrade packages (Linux)
   apt:
     update_cache: yes
     upgrade: dist
   become: yes
+  when: is_linux and ansible_facts['os_family'] == 'Debian'
 
-- name: Install required packages (python3, pip3, openjdk-17-jdk)
+- name: Install required packages via APT (Ubuntu/Debian)
   apt:
     name: "{{ item }}"
     state: present
@@ -15,19 +42,20 @@
     - python3-pip
     - openjdk-17-jdk
   become: yes
+  when: is_linux and ansible_facts['os_family'] == 'Debian'
 
 - name: Create Neo4j installation directory
   file:
     path: "{{ neo4j_install_dir }}"
     state: directory
-  become: yes
+  become: "{{ 'yes' if not is_macos else 'no' }}"
 
 - name: Download Neo4j tarball
   get_url:
     url: "{{ neo4j_download_url }}"
     dest: "/tmp/{{ neo4j_tarball }}"
     mode: '0644'
-  become: yes
+  become: no
 
 - name: Extract Neo4j tarball to installation directory
   unarchive:
@@ -35,7 +63,7 @@
     dest: "{{ neo4j_install_dir }}"
     remote_src: yes
     extra_opts: [--strip-components=1]
-  become: yes
+  become: "{{ 'yes' if not is_macos else 'no' }}"
 
 - name: Configure Neo4j to listen on 0.0.0.0
   lineinfile:
@@ -43,19 +71,19 @@
     regexp: '^#?dbms\.default_listen_address='
     line: 'dbms.default_listen_address=0.0.0.0'
     state: present
-  become: yes
+  become: no
 
 - name: Start Neo4j service
   command: "{{ neo4j_install_dir }}/bin/neo4j start"
   register: neo4j_start
   failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
-  become: yes
+  become: no
 
 - name: Check Neo4j service status
   command: "{{ neo4j_install_dir }}/bin/neo4j status"
   register: neo4j_status
   changed_when: false
-  become: yes
+  become: no
 
 - name: Display Neo4j service status
   debug:
