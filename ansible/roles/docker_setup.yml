@@ -1,0 +1,80 @@
+---
+# roles/docker_setup.yml - Docker environment setup (alternative to native Neo4j)
+- name: Check if Docker is installed
+  command: docker --version
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Display Docker installation status
+  debug:
+    msg: "{{ 'Docker found: ' + docker_check.stdout if docker_check.rc == 0 else 'Docker not installed - using native Neo4j installation' }}"
+
+- name: Check if Docker is running
+  command: docker info
+  register: docker_running
+  changed_when: false
+  failed_when: false
+  when: docker_check.rc == 0
+
+- name: Start Docker service if available but not running (Linux)
+  systemd:
+    name: docker
+    state: started
+  when: 
+    - docker_check.rc == 0
+    - docker_running.rc != 0
+    - ansible_facts['os_family'] != 'Darwin'
+  become: yes
+  ignore_errors: yes
+
+- name: Check for existing Neo4j container
+  command: docker ps -a --filter "name=neo4j-finance" --format "{{ '{{' }}.Names{{ '}}' }}"
+  register: neo4j_container_exists
+  changed_when: false
+  when: docker_check.rc == 0 and docker_running.rc == 0
+
+- name: Start Neo4j Docker container if Docker is available
+  command: >
+    docker run -d
+    --name neo4j-finance
+    -p 7474:7474
+    -p 7687:7687
+    -e NEO4J_AUTH=neo4j/finance123
+    -e NEO4J_PLUGINS='["apoc"]'
+    -v neo4j_data:/data
+    -v neo4j_logs:/logs
+    --restart unless-stopped
+    neo4j:5.15
+  when:
+    - docker_check.rc == 0
+    - docker_running.rc == 0
+    - "'neo4j-finance' not in (neo4j_container_exists.stdout | default(''))"
+  register: neo4j_docker_start
+  ignore_errors: yes
+
+- name: Start existing Neo4j container if stopped
+  command: docker start neo4j-finance
+  when:
+    - docker_check.rc == 0
+    - docker_running.rc == 0
+    - "'neo4j-finance' in (neo4j_container_exists.stdout | default(''))"
+  register: neo4j_docker_restart
+  ignore_errors: yes
+
+- name: Wait for Neo4j Docker container to be ready
+  wait_for:
+    port: 7474
+    host: localhost
+    delay: 5
+    timeout: 60
+  when: 
+    - docker_check.rc == 0
+    - (neo4j_docker_start is defined and neo4j_docker_start.rc == 0) or (neo4j_docker_restart is defined and neo4j_docker_restart.rc == 0)
+
+- name: Set Docker Neo4j as preferred
+  set_fact:
+    use_docker_neo4j: true
+  when:
+    - docker_check.rc == 0
+    - docker_running.rc == 0

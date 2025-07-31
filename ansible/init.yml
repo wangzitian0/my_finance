@@ -25,8 +25,12 @@
       when: not git_repo.stat.exists
       become: false
 
-    - name: Execute Neo4j installation tasks
+    - name: Try Docker-based Neo4j setup first
+      include_tasks: roles/docker_setup.yml
+
+    - name: Execute Neo4j installation tasks (fallback if Docker unavailable)
       include_tasks: roles/neo4j_install.yml
+      when: use_docker_neo4j is not defined or not use_docker_neo4j
 
     - name: Execute data repository tasks (initial mode)
       include_tasks: roles/repo_data.yml
@@ -36,7 +40,18 @@
 
     - name: Check and restart Neo4j if needed (setup commands)
       include_tasks: roles/neo4j_check_restart.yml
+      when: use_docker_neo4j is not defined or not use_docker_neo4j
 
     - name: Initial environment setup complete
       debug:
-        msg: "Initial environment setup complete. Environment is fully configured."
+        msg: |
+          🎉 Initial environment setup complete!
+          
+          📊 Database: {{ 'Docker-based Neo4j' if (use_docker_neo4j | default(false)) else 'Native Neo4j installation' }}
+          🐍 Python: pipenv environment configured
+          📁 Data: Git submodules initialized
+          
+          ✨ Next steps:
+          1. Configure .env file with API keys
+          2. Build knowledge base: python manage.py build m7
+          3. Check status: python manage.py status
