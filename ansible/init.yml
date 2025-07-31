@@ -33,7 +33,7 @@
     - name: Setup Pixi application environment
       include_tasks: roles/pixi_setup.yml
 
-    - name: Setup and start Neo4j Docker container
+    - name: Setup and start Minikube with Neo4j
       include_tasks: roles/docker_setup.yml
 
     - name: Initialize or update data repositories
@@ -48,11 +48,16 @@
           
           - ✅ Pixi environment is ready.
           - ✅ Data submodules are initialized.
-          - ✅ Neo4j is running in a Docker container named '{{ neo4j_container_name }}'.
+          - ✅ Minikube cluster is running with Neo4j deployed.
           
           Next Steps:
           1. Activate the environment: `pixi shell`
           2. Run key tasks:
              - `pixi run status` (check data status)
-             - `pixi run neo4j-status` (check the database via Docker)
+             - `pixi run k8s-status` (check Minikube cluster)
+             - `pixi run neo4j-logs` (check Neo4j logs)
              - `pixi run build-m7` (build a small test dataset)
+          
+          Access Neo4j:
+          - Get connection info: `minikube ip` and check NodePort services
+          - Use `pixi run neo4j-connect` for connection details

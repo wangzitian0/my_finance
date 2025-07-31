@@ -1,82 +1,185 @@
 ---
-# roles/docker_setup.yml
-# This role ensures Docker is installed and running, then sets up the
-# Neo4j container for the project.
+# roles/minikube_setup.yml
+# This role ensures Minikube is installed and running across platforms
+# Then sets up services using Kubernetes manifests.
 
-- name: Check if Docker is installed and running
-  command: docker info
-  register: docker_check
+- name: Check if Minikube is installed
+  command: minikube version
+  register: minikube_check
   changed_when: false
-  failed_when: false # Don't fail here, provide a better error message below
+  failed_when: false
 
-- name: Fail if Docker is not available
-  fail:
-    msg: |
-      🚨 Docker is not installed or not running.
-      This project requires Docker to manage the Neo4j database.
-      Please install Docker Desktop and ensure it is started before running this setup again.
-      Official website: https://www.docker.com/products/docker-desktop/
-  when: docker_check.rc != 0
-
-- name: Set fact that Docker is being used
-  set_fact:
-    use_docker_neo4j: true
-
-- name: Check if the Neo4j container already exists
-  command: "docker ps -a --filter name={{ neo4j_container_name }} --format '{{ '{{' }}.Names{{ '}}' }}'"
-  register: container_exists
+- name: Check if kubectl is installed
+  command: kubectl version --client
+  register: kubectl_check
   changed_when: false
+  failed_when: false
 
-- name: Pull the latest Neo4j community image
-  command: "docker pull {{ neo4j_image_name }}"
-  when: not container_exists.stdout
-
-- name: Create local directories for Neo4j data
-  file:
-    path: "{{ repo_dir }}/data/neo4j/{{ item }}"
-    state: directory
-    mode: '0755'
-  loop:
-    - data
-    - logs
-
-- name: Create and start the Neo4j container
-  command: >
-    docker run -d
-    --name {{ neo4j_container_name }}
-    -p 7474:7474
-    -p 7687:7687
-    -v "{{ repo_dir }}/data/neo4j/data:/data"
-    -v "{{ repo_dir }}/data/neo4j/logs:/logs"
-    -e NEO4J_AUTH=neo4j/finance123
-    --restart unless-stopped
-    {{ neo4j_image_name }}
-  when: not container_exists.stdout
-  register: container_creation
-  changed_when: container_creation.rc == 0
-
-- name: Ensure the Neo4j container is running
-  command: "docker start {{ neo4j_container_name }}"
-  when: container_exists.stdout
-  register: container_start
-  changed_when: "'{{ neo4j_container_name }}' in container_start.stdout"
-
-- name: Wait for Neo4j to become available
-  wait_for:
-    port: 7687
-    host: localhost
-    timeout: 60
-    delay: 5
-  register: neo4j_service_check
-  until: neo4j_service_check.state == 'started'
-  retries: 5
-
-- name: Display Neo4j Docker status
+- name: Display current tool status
   debug:
     msg: |
-      🐳 Neo4j is running in a Docker container.
-      - Container Name: {{ neo4j_container_name }}
-      - Web Interface: http://localhost:7474
-      - Bolt Connection: bolt://localhost:7687
-      - To manage, use `docker stop/start/restart {{ neo4j_container_name }}`
-        or the `pixi run neo4j-stop/start/restart` commands.
+      Minikube Status: {{ 'Available' if minikube_check.rc == 0 else 'Not Available' }}
+      kubectl Status: {{ 'Available' if kubectl_check.rc == 0 else 'Not Available' }}
+      Platform: {{ ansible_facts['system'] }}
+
+- name: Install Minikube (macOS)
+  shell: |
+    if ! command -v minikube &> /dev/null; then
+      if command -v brew &> /dev/null; then
+        brew install minikube
+      else
+        echo "Installing Minikube manually..."
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+        sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+        rm minikube-darwin-amd64
+      fi
+    fi
+  when: ansible_facts['system'] == 'Darwin' and minikube_check.rc != 0
+  register: minikube_install_macos
+  changed_when: "'installed' in minikube_install_macos.stdout"
+
+- name: Install Minikube (Linux)
+  shell: |
+    if ! command -v minikube &> /dev/null; then
+      echo "Installing Minikube for Linux..."
+      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      rm minikube-linux-amd64
+    fi
+  when: ansible_facts['system'] == 'Linux' and minikube_check.rc != 0
+  register: minikube_install_linux
+  changed_when: "'installed' in minikube_install_linux.stdout"
+
+- name: Install kubectl if not available
+  shell: |
+    if ! command -v kubectl &> /dev/null; then
+      if command -v minikube &> /dev/null; then
+        echo "kubectl will be available through minikube kubectl"
+      else
+        echo "Installing kubectl..."
+        {% if ansible_facts['system'] == 'Darwin' %}
+        if command -v brew &> /dev/null; then
+          brew install kubectl
+        else
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+          sudo install kubectl /usr/local/bin/kubectl
+          rm kubectl
+        fi
+        {% elif ansible_facts['system'] == 'Linux' %}
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install kubectl /usr/local/bin/kubectl
+        rm kubectl
+        {% endif %}
+      fi
+    fi
+  when: kubectl_check.rc != 0
+  register: kubectl_install
+  changed_when: "'installed' in kubectl_install.stdout"
+
+- name: Fail if Minikube is still not available
+  fail:
+    msg: |
+      🚨 Minikube could not be installed automatically.
+      
+      Please install manually:
+      - macOS: 'brew install minikube' or download from https://minikube.sigs.k8s.io/docs/start/
+      - Linux: Download from https://minikube.sigs.k8s.io/docs/start/
+      - Windows: Download from https://minikube.sigs.k8s.io/docs/start/
+      
+      Then re-run this setup.
+  when: minikube_check.rc != 0 and (minikube_install_macos is not defined or not minikube_install_macos.changed) and (minikube_install_linux is not defined or not minikube_install_linux.changed)
+
+- name: Check Minikube status
+  command: minikube status
+  register: minikube_status
+  changed_when: false
+  failed_when: false
+
+- name: Start Minikube cluster if not running
+  shell: |
+    echo "Starting Minikube cluster..."
+    minikube start --driver=docker --memory=4096 --cpus=2
+    echo "Minikube started successfully."
+  when: minikube_status.rc != 0 or 'Running' not in minikube_status.stdout
+  register: minikube_start
+  changed_when: "'successfully' in minikube_start.stdout"
+
+- name: Wait for Minikube to be ready
+  command: minikube status
+  register: minikube_ready_check
+  until: minikube_ready_check.rc == 0 and 'Running' in minikube_ready_check.stdout
+  retries: 10
+  delay: 5
+  changed_when: false
+
+- name: Apply Neo4j Kubernetes manifests
+  shell: |
+    if command -v kubectl &> /dev/null; then
+      kubectl apply -f k8s/neo4j.yaml
+    else
+      minikube kubectl -- apply -f k8s/neo4j.yaml
+    fi
+  args:
+    chdir: "{{ repo_dir }}"
+  register: k8s_apply
+  changed_when: "'created' in k8s_apply.stdout or 'configured' in k8s_apply.stdout"
+
+- name: Wait for Neo4j deployment to be ready
+  shell: |
+    if command -v kubectl &> /dev/null; then
+      kubectl wait --for=condition=available --timeout=300s deployment/neo4j
+    else
+      minikube kubectl -- wait --for=condition=available --timeout=300s deployment/neo4j
+    fi
+  register: neo4j_ready
+  changed_when: false
+
+- name: Get Minikube IP
+  command: minikube ip
+  register: minikube_ip
+  changed_when: false
+
+- name: Get Neo4j service ports
+  shell: |
+    if command -v kubectl &> /dev/null; then
+      kubectl get service neo4j-service -o jsonpath='{.spec.ports[?(@.name=="http")].nodePort}'
+    else
+      minikube kubectl -- get service neo4j-service -o jsonpath='{.spec.ports[?(@.name=="http")].nodePort}'
+    fi
+  register: neo4j_http_port
+  changed_when: false
+
+- name: Get Neo4j bolt port
+  shell: |
+    if command -v kubectl &> /dev/null; then
+      kubectl get service neo4j-service -o jsonpath='{.spec.ports[?(@.name=="bolt")].nodePort}'
+    else
+      minikube kubectl -- get service neo4j-service -o jsonpath='{.spec.ports[?(@.name=="bolt")].nodePort}'
+    fi
+  register: neo4j_bolt_port
+  changed_when: false
+
+- name: Display services status
+  debug:
+    msg: |
+      🚢 Services are running in Minikube Kubernetes cluster.
+      
+      Minikube IP: {{ minikube_ip.stdout }}
+      
+      Neo4j Database:
+      - Web Interface: http://{{ minikube_ip.stdout }}:{{ neo4j_http_port.stdout }}
+      - Bolt Connection: bolt://{{ minikube_ip.stdout }}:{{ neo4j_bolt_port.stdout }}
+      - Username: neo4j / Password: finance123
+      
+      Management Commands:
+      - Start Minikube: `minikube start`
+      - Stop Minikube: `minikube stop`
+      - View services: `kubectl get services` or `minikube kubectl -- get services`
+      - View pods: `kubectl get pods` or `minikube kubectl -- get pods`
+      - Access dashboard: `minikube dashboard`
+      
+      Pixi shortcuts:
+      - `pixi run k8s-start` - Start Minikube cluster
+      - `pixi run k8s-stop` - Stop Minikube cluster
+      - `pixi run k8s-status` - Check cluster status
+      - `pixi run neo4j-logs` - View Neo4j logs
