@@ -61,6 +61,8 @@ env-start = "ansible-playbook ansible/start.yml"
 env-stop = "ansible-playbook ansible/stop.yml" 
 env-status = "python scripts/env_status.py"
 env-reset = "ansible-playbook ansible/reset.yml"
+# One-click shutdown all services
+shutdown-all = "python scripts/shutdown_all.py"
 
 # --- Development Operations (Pure Development) ---
 # Core data operations remain in pixi

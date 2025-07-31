@@ -133,12 +133,76 @@ git push --force-with-lease
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Run manual validation, check outputs in `data/` directories
 
-### Standard Development Workflow
-1. **Create feature branch**: `git checkout -b feature/description-fixes-N`
-2. **Make changes and initial commit**: Include placeholder PR URL
-3. **Push branch**: `git push -u origin feature/description-fixes-N`
-4. **Create PR**: `gh pr create --title "..." --body "..."`
-5. **Amend commit**: Replace placeholder with actual PR URL
-6. **Force push**: `git push --force-with-lease`
+### Daily Development Workflow for Claude
 
-This ensures GoLand integration works properly with clickable PR links in commit messages.
+**ALWAYS follow this sequence when working on tasks:**
+
+```bash
+# 1. Start session
+pixi shell                    # Activate environment
+pixi run env-status           # Check all services
+
+# 2. Work on tasks
+pixi run build-m7             # Build test data if needed
+# ... make code changes ...
+pixi run format               # Format code
+pixi run lint                 # Check quality
+pixi run test                 # Validate changes
+
+# 3. End session (MANDATORY)
+pixi run shutdown-all         # Stop all services
+```
+
+### Environment Management Rules
+- **Setup once**: `pixi run setup-env` (only for new environments)
+- **Daily startup**: `pixi run env-status` (check before starting work)
+- **Daily shutdown**: `pixi run shutdown-all` (ALWAYS run before ending session)
+- **Emergency reset**: `pixi run env-reset` (destructive - use carefully)
+
+### Git Workflow (MANDATORY for all changes)
+
+**Complete workflow including MR creation:**
+
+```bash
+# 1. Create feature branch
+git checkout -b feature/description-fixes-ISSUE_NUMBER
+
+# 2. Make changes and commit with placeholder
+git add .
+git commit -m "Brief description
+
+Fixes #ISSUE_NUMBER
+
+PR: https://github.com/wangzitian0/my_finance/pull/PLACEHOLDER
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+# 3. Push and create MR
+git push -u origin feature/description-fixes-ISSUE_NUMBER
+gh pr create --title "..." --body "..."
+
+# 4. Amend with actual PR URL (CRITICAL for GoLand integration)
+git commit --amend -m "Brief description
+
+Fixes #ISSUE_NUMBER
+
+PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+git push --force-with-lease
+
+# 5. Clean shutdown
+pixi run shutdown-all
+```
+
+### Session Management (CRITICAL)
+- **Always start with**: `pixi shell` and `pixi run env-status`
+- **Always end with**: `pixi run shutdown-all`
+- **Never leave services running** between sessions
+- **Check status frequently** during long development sessions
+
+This ensures clean environment state and prevents port conflicts or resource issues.
