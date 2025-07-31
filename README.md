@@ -52,11 +52,34 @@ To enter the isolated development shell with all tools available:
 pixi shell
 ```
 
+### Basic Development Cycle
+
+```bash
+# 1. Setup (once)
+pixi run setup-env
+
+# 2. Daily startup
+pixi shell                # Activate environment
+pixi run env-status       # Check all services
+
+# 3. Development work
+pixi run build-m7         # Build test data
+pixi run run-job          # Collect data
+pixi run format           # Format code
+pixi run lint             # Check code quality
+pixi run test             # Run tests
+
+# 4. Daily shutdown
+pixi run shutdown-all     # Stop all services
+```
+
 ### Environment Commands (Ansible-managed)
 
+- **`pixi run setup-env`**: Initial environment setup (run once)
 - **`pixi run env-status`**: Check overall environment health (Minikube, Neo4j, Pixi)
 - **`pixi run env-start`**: Start all services (Minikube cluster + Neo4j)  
 - **`pixi run env-stop`**: Stop all services
+- **`pixi run shutdown-all`**: **One-click shutdown of all services** ⭐
 - **`pixi run env-reset`**: Reset everything (destructive - removes all data)
 
 ### Development Commands (Pixi-managed)
@@ -67,6 +90,46 @@ pixi shell
 - **`pixi run format`**: Format code (black + isort)
 - **`pixi run lint`**: Lint code with pylint  
 - **`pixi run test`**: Run test suite with pytest
+
+### Git Development Workflow
+
+**Essential workflow for all code changes:**
+
+```bash
+# 1. Create feature branch
+git checkout -b feature/description-fixes-ISSUE_NUMBER
+
+# 2. Make changes and commit
+git add .
+git commit -m "Brief description
+
+Fixes #ISSUE_NUMBER
+
+PR: https://github.com/wangzitian0/my_finance/pull/PLACEHOLDER
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+# 3. Push and create MR
+git push -u origin feature/description-fixes-ISSUE_NUMBER
+gh pr create --title "..." --body "..."
+
+# 4. Amend commit with actual PR URL
+git commit --amend -m "Brief description
+
+Fixes #ISSUE_NUMBER
+
+PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+git push --force-with-lease
+
+# 5. Clean shutdown when done
+pixi run shutdown-all
+```
 
 ### Quick Status Check
 
@@ -80,5 +143,7 @@ pixi run env-status       # Check environment health
 ### Troubleshooting
 
 - **Environment issues**: Use `pixi run env-reset` to start fresh (destructive)
+- **Services not stopping**: Use `pixi run shutdown-all` for force shutdown
 - **Minikube problems**: Check with `minikube status` and restart with `pixi run env-start`
 - **Neo4j connection**: Get connection details with `pixi run env-status`
+- **Port conflicts**: Check `pixi run shutdown-all` to free ports
