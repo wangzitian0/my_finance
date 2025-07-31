@@ -1,108 +1,165 @@
-# 系统架构设计
+# Architecture Documentation
 
-## 整体架构图
+## System Overview
+
+This is a **Graph RAG-powered DCF valuation system** that combines financial data collection, graph database storage, and intelligent analysis capabilities.
+
+## Three-Tier Data Management Strategy
+
+### Tier 1: M7 (Magnificent 7) - Stable Test Dataset
+- **Size**: ~500MB
+- **Companies**: 7 (Apple, Microsoft, Amazon, Alphabet, Meta, Tesla, Netflix)
+- **Storage**: Git-tracked in repository
+- **Purpose**: Development, testing, and CI/CD
+- **Data**: 3 years of historical data
+
+### Tier 2: NASDAQ100 - Extended Dataset  
+- **Size**: ~5GB
+- **Companies**: ~100 NASDAQ companies
+- **Storage**: Buildable, gitignored
+- **Purpose**: Extended validation and demo scenarios
+- **Data**: 3 years of historical data
+
+### Tier 3: US-ALL - Complete Dataset
+- **Size**: ~50GB  
+- **Companies**: ~8000+ US public companies
+- **Storage**: Buildable, gitignored
+- **Purpose**: Production-scale analysis
+- **Data**: 3 years of historical data
+
+## Core Components
+
+### Data Collection Layer
+
+#### Yahoo Finance Spider (`spider/yfinance_spider.py`)
+- **Purpose**: Collect stock prices, company info, recommendations, sustainability data
+- **Features**: Progress tracking, rate limiting, error handling
+- **Output**: JSON files in `data/original/yfinance/<ticker>/`
+
+#### SEC Edgar Spider (`spider/sec_edgar_spider.py`)  
+- **Purpose**: Download regulatory filings (10-K, 10-Q, 8-K)
+- **Features**: CIK number mapping, filing type filtering
+- **Output**: Raw filings in `data/original/sec/<ticker>/`
+
+### Database Layer
+
+#### Neo4j Graph Database
+- **ORM**: neomodel for Python integration
+- **Models**: Defined in `ETL/models.py`
+- **Relationships**: Stock → Info, PriceData, Filings, etc.
+- **Query Interface**: Cypher queries via neomodel
+
+#### Key Node Types
+- **Stock**: Central node with ticker as unique identifier
+- **Info**: Company information and metadata
+- **PriceData**: Historical price and volume data
+- **Filing**: SEC regulatory documents
+- **Recommendation**: Analyst recommendations
+
+### Document Processing Layer
+
+#### SEC Parser (`parser/sec_parser.py`)
+- **Purpose**: Parse XML/SGML SEC filings
+- **Technology**: BeautifulSoup for parsing
+- **Features**: Text extraction, structure preservation
+- **Output**: Structured data for graph database
+
+#### Advanced Processing (`parser/rcts.py`)
+- **Purpose**: Additional SEC filing capabilities
+- **Features**: Enhanced text processing, metadata extraction
+
+### Configuration System
+
+#### Central Configuration (`common_config.yml`)
+- **Purpose**: Shared logging and system settings
+- **Features**: Environment-specific configurations
+
+#### Job Configurations (`data/config/*.yml`)
+- **Purpose**: Control data collection parameters
+- **Examples**: `yfinance_nasdaq100.yml`, `sec_edgar_m7.yml`
+- **Features**: Ticker lists, date ranges, data types
+
+### Management Layer
+
+#### Management Interface (`manage.py`)
+- **Purpose**: User-friendly command interface
+- **Commands**: build, status, validate, clean, setup
+- **Features**: Progress tracking, error reporting
+
+#### Knowledge Base Builder (`build_knowledge_base.py`)
+- **Purpose**: Automated data pipeline orchestration
+- **Features**: Tier management, dependency handling
+- **Architecture**: Modular, extensible design
+
+## Data Flow Architecture
 
 ```
-╔═══════════════╗
-║  Web Frontend     ║
-║  (手机友好)      ║
-╚═══════╤═══════════╝
-        │
-╔═══════╤═══════════╗
-║ Question/Answer API  ║
-║   (问答接口)       ║
-╚═══════╤═══════════╝
-        │
-╔═══════╤═══════════╗
-║   Graph RAG Engine   ║
-║  (检索增强生成)   ║
-╚═══════╤═══════════╝
-        │
-    ┌───┼────┐
-    │        │
-┌───┬────── ┌──┬─────┐
-│LLM│       │DCF│     │
-│API│       │API│     │
-└───┴────── └──┴─────┘
-        │
-╔═══════╤═══════════╗
-║   Neo4j Graph DB    ║
-║  (知识图谱存储)    ║
-╚═══════╤═══════════╝
-        │
-╔═══════╤═══════════╗
-║   Data Pipeline     ║
-║  (数据清洗和校验)   ║
-╚═══════╤═══════════╝
-        │
-┌───────┼──────────────────────────────────────────┐
-│        │                                        │
-│ SEC    │ Yahoo    │ Analyst  │ S&P     │ News   │
-│ Edgar  │ Finance  │ Reports  │ EPS     │ APIs   │
-│        │          │          │ Data    │        │
-└────────┴──────────┴──────────┴─────────┴────────┘
+1. Configuration → 2. Data Collection → 3. Raw Storage → 4. Processing → 5. Graph Database
+     ↓                    ↓                  ↓              ↓              ↓
+Job Config         Yahoo Finance      data/original/   SEC Parser     Neo4j Graph
+Files           + SEC Edgar APIs      JSON Files     + Validation   + neomodel ORM
 ```
 
-## 核心组件
+## Important Reference Data
 
-### 1. 数据层 (Data Layer)
-- **多源数据采集**: SEC Edgar, Yahoo Finance, 分析师报告, S&P EPS预期
-- **数据校验**: 客观数据取频率高值，主观数据展示分布
-- **存储**: Neo4j图数据库 + 原始文件存储
+### Magnificent 7 CIK Numbers
+- **Apple (AAPL)**: 0000320193
+- **Microsoft (MSFT)**: 0000789019
+- **Amazon (AMZN)**: 0001018724
+- **Alphabet (GOOGL)**: 0001652044
+- **Meta (META)**: 0001326801
+- **Tesla (TSLA)**: 0001318605
+- **Netflix (NFLX)**: 0001065280
 
-### 2. 计算层 (Computation Layer) 
-- **DCF引擎**: 可配置参数的估值模型
-- **敏感性分析**: 不同参数下的估值范围
-- **中间结果缓存**: 预计算常用指标存入图中
+### Directory Structure
+```
+data/
+├── original/          # Raw collected data
+│   ├── yfinance/     # Yahoo Finance data by ticker
+│   └── sec/          # SEC Edgar filings by ticker
+├── config/           # Job configuration files
+└── log/              # Processing and build logs
+```
 
-### 3. 知识层 (Knowledge Layer)
-- **Graph RAG**: 基于图结构的检索增强生成
-- **语义检索**: 基于向量相似度的文档检索
-- **结构化查询**: Cypher查询 + LLM生成
+## Technology Stack
 
-### 4. 服务层 (Service Layer)
-- **LLM接口**: 支持本地/云端模型切换
-- **问答API**: RESTful接口支持复杂查询
-- **评估系统**: 用户反馈和质量评分
+### Core Technologies
+- **Python 3.12**: Primary development language
+- **pipenv**: Dependency management
+- **Neo4j**: Graph database
+- **neomodel**: Python ORM for Neo4j
+- **BeautifulSoup**: HTML/XML parsing
+- **Ansible**: Environment automation
 
-### 5. 应用层 (Application Layer)
-- **Web界面**: 手机友好的问答界面
-- **命令行工具**: 快速开发和测试
-- **管理后台**: 数据状态监控和系统维护
+### Development Tools  
+- **Git**: Version control with mandatory issue association
+- **GitHub Issues**: Project management and tracking
+- **Conda**: Cross-platform environment management
+- **pytest**: Testing framework (planned)
 
-## 技术选型
+## Scalability Considerations
 
-### 数据存储
-- **Neo4j**: 图数据库，适合复杂关系查询
-- **文件系统**: 原始SEC文件和日志存储
+### Performance Optimization
+- **Parallel Processing**: Multi-threaded data collection
+- **Incremental Updates**: Only collect new/changed data
+- **Efficient Storage**: JSON with compression for large datasets
+- **Database Indexing**: Optimized Neo4j indexes for queries
 
-### 计算框架
-- **Python**: 主要开发语言
-- **neomodel**: Neo4j ORM
-- **pandas/numpy**: 数据处理和计算
+### Resource Requirements
+- **Development**: 8GB RAM, 4 CPU cores
+- **Production**: 16GB+ RAM, SSD storage
+- **Network**: Stable connection for API access
+- **Storage**: Varies by tier (500MB - 50GB)
 
-### LLM集成
-- **本地模型**: Ollama + Mistral/Qwen
-- **云端模型**: Claude API
-- **向量数据库**: 适用于语义检索的嵌入存储
+## Security and Compliance
 
-### Web技术栈
-- **后端**: FastAPI/Flask
-- **前端**: 轻量级框架（React/Vue）
-- **部署**: Docker + Ansible
+### Data Handling
+- **Public Data Only**: All data from public APIs and filings
+- **Rate Limiting**: Respectful API usage
+- **Error Handling**: Graceful failure and retry mechanisms
+- **Logging**: Comprehensive audit trails
 
-## 扩展性考虑
-
-### 模块化设计
-- **数据源插件**: 新数据源易于集成
-- **LLM适配器**: 支持不同模型接口
-- **计算引擎**: DCF之外的其他估值模型
-
-### 性能优化
-- **分层缓存**: 数据层/计算层/结果层缓存
-- **异步处理**: 数据采集和复杂计算异步执行
-- **数据分区**: 按时间/行业分区存储
-
----
-
-*架构设计会随着实现进展进行调整和优化*
+### Access Control
+- **No Authentication Required**: Public data sources
+- **Local Storage**: All data stored locally
+- **Privacy**: No personal or proprietary data collected
