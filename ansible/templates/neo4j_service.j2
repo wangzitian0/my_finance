@@ -1,0 +1,27 @@
+#!/bin/bash
+# Neo4j service script using conda environment
+
+export JAVA_HOME="{{ finance_env_path }}"
+export PATH="{{ finance_env_path }}/bin:$PATH"
+
+case "$1" in
+    start)
+        echo "Starting Neo4j with conda Java..."
+        {{ neo4j_install_dir }}/bin/neo4j start
+        ;;
+    stop)
+        echo "Stopping Neo4j..."
+        {{ neo4j_install_dir }}/bin/neo4j stop
+        ;;
+    restart)
+        echo "Restarting Neo4j..."
+        {{ neo4j_install_dir }}/bin/neo4j restart
+        ;;
+    status)
+        {{ neo4j_install_dir }}/bin/neo4j status
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac

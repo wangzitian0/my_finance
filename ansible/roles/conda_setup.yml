@@ -1,0 +1,60 @@
+---
+# roles/conda_setup.yml - Cross-platform conda environment setup
+- name: Check if conda is installed
+  command: conda --version
+  register: conda_check
+  changed_when: false
+  failed_when: false
+
+- name: Display conda installation status
+  debug:
+    msg: "{{ 'Conda found: ' + conda_check.stdout if conda_check.rc == 0 else 'Conda not installed - will install miniconda' }}"
+
+- name: Detect operating system for conda installer
+  set_fact:
+    conda_installer_url: "{{ 
+      'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' if ansible_facts['os_family'] == 'Darwin' else
+      'https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh' if ansible_facts['os_family'] == 'Debian' else
+      'https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh'
+    }}"
+    conda_install_dir: "{{ lookup('env','HOME') + '/miniconda3' }}"
+
+- name: Download miniconda installer
+  get_url:
+    url: "{{ conda_installer_url }}"
+    dest: "/tmp/miniconda_installer.sh"
+    mode: '0755'
+  when: conda_check.rc != 0
+
+- name: Install miniconda
+  command: "/tmp/miniconda_installer.sh -b -p {{ conda_install_dir }}"
+  args:
+    creates: "{{ conda_install_dir }}/bin/conda"
+  when: conda_check.rc != 0
+
+- name: Initialize conda for current shell
+  shell: "{{ conda_install_dir }}/bin/conda init bash"
+  when: conda_check.rc != 0
+
+- name: Update conda to latest version
+  command: "{{ conda_install_dir }}/bin/conda update -n base -c defaults conda -y"
+  when: conda_check.rc != 0
+
+- name: Create finance environment from environment.yml
+  shell: >
+    {{ conda_install_dir if conda_check.rc != 0 else 'conda' }}/bin/conda env create
+    -f {{ repo_dir }}/environment.yml
+  args:
+    creates: "{{ conda_install_dir if conda_check.rc != 0 else lookup('env','HOME') + '/.conda' }}/envs/finance"
+
+- name: Update finance environment if it exists
+  shell: >
+    {{ conda_install_dir if conda_check.rc != 0 else 'conda' }}/bin/conda env update
+    -f {{ repo_dir }}/environment.yml
+  ignore_errors: yes
+
+- name: Set conda environment facts
+  set_fact:
+    conda_base_path: "{{ conda_install_dir if conda_check.rc != 0 else lookup('env','CONDA_PREFIX') | default(lookup('env','HOME') + '/miniconda3') }}"
+    finance_env_path: "{{ (conda_install_dir if conda_check.rc != 0 else lookup('env','HOME') + '/.conda') + '/envs/finance' }}"
+    use_conda_env: true

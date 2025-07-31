@@ -6,30 +6,30 @@
     chdir: "{{ repo_dir }}"
   when: run_git_pull | default(false)
 
-- name: Check if pipenv is installed
-  command: which pipenv
-  register: pipenv_check
-  changed_when: false
-  failed_when: false
-
-- name: Install pipenv if not available
-  pip:
-    name: pipenv
-    state: present
-    executable: pip3
-  become: yes
-  when: pipenv_check.rc != 0
-
-- name: Install/Update pipenv dependencies
-  command: pipenv install --skip-lock
+- name: Activate conda environment and install/update pipenv dependencies
+  shell: |
+    source {{ conda_base_path }}/bin/activate finance
+    cd {{ repo_dir }}
+    pip install pipenv
+    pipenv install --skip-lock
   args:
-    chdir: "{{ repo_dir }}"
+    executable: /bin/bash
 
-- name: Install development dependencies
-  command: pipenv install --dev --skip-lock
+- name: Install development dependencies in conda environment
+  shell: |
+    source {{ conda_base_path }}/bin/activate finance
+    cd {{ repo_dir }}
+    pipenv install --dev --skip-lock
   args:
-    chdir: "{{ repo_dir }}"
+    executable: /bin/bash
   ignore_errors: yes
+
+- name: Install additional packages directly in conda environment
+  shell: |
+    source {{ conda_base_path }}/bin/activate finance
+    pip install black isort pylint mypy pytest pytest-cov
+  args:
+    executable: /bin/bash
 
 - name: Create .env template if missing
   copy:
@@ -40,7 +40,35 @@
       NEO4J_USER=neo4j
       NEO4J_PASSWORD=finance123
       
+      # LLM API Keys (optional)
+      OPENAI_API_KEY=your_openai_key_here
+      CLAUDE_API_KEY=your_claude_key_here
+      
+      # Financial Data API Keys (optional)
+      ALPHA_VANTAGE_KEY=your_alpha_vantage_key
+      FINNHUB_API_KEY=your_finnhub_key
+      
       # Development Settings
       DEBUG=True
       LOG_LEVEL=INFO
+      ENVIRONMENT=development
+      
+      # Conda Environment
+      CONDA_ENV=finance
+      CONDA_BASE={{ conda_base_path }}
     force: no
+
+- name: Create conda activation script
+  copy:
+    dest: "{{ repo_dir }}/activate-finance.sh"
+    content: |
+      #!/bin/bash
+      # Activate finance conda environment
+      source {{ conda_base_path }}/bin/activate finance
+      export JAVA_HOME="{{ finance_env_path }}"
+      export PATH="{{ finance_env_path }}/bin:$PATH"
+      echo "🐍 Finance conda environment activated"
+      echo "☕ Java: $(java -version 2>&1 | head -1)"
+      echo "🐍 Python: $(python --version)"
+      echo "📊 Neo4j: Use './{{ neo4j_install_dir | basename }}/bin/neo4j-service start' to start database"
+    mode: '0755'

@@ -1,0 +1,30 @@
+name: finance
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - openjdk=17
+  - pip
+  - pip:
+    - pipenv
+    - pyyaml
+    - requests
+    - beautifulsoup4
+    - neomodel
+    - yfinance
+    - pandas
+    - numpy
+    - matplotlib
+    - seaborn
+    - jupyter
+    - black
+    - isort
+    - pylint
+    - mypy
+    - pytest
+    - pytest-cov
+    - python-dotenv
+    - click
+    - tqdm
+    - lxml

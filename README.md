@@ -29,23 +29,30 @@ A comprehensive **Graph RAG-powered DCF valuation system** that leverages SEC fi
 ## 🛠️ Quick Start
 
 ### Prerequisites
-- **Python 3.12+**
-- **Docker** (for Neo4j)
 - **8GB+ RAM** (16GB+ recommended)
+- **Internet connection** (for conda installation)
+- **Bash-compatible shell** (macOS/Linux/WSL)
 
-### 1. Automated Setup
+### 1. Automated Cross-Platform Setup
 ```bash
 git clone git@github.com:wangzitian0/my_finance.git
 cd my_finance
 
-# One-command environment setup (requires sudo for system dependencies)
-ansible-playbook ansible/init.yml --ask-become-pass
+# One-command cross-platform setup (no sudo required!)
+ansible-playbook ansible/init.yml
 ```
 
-### 2. Build Knowledge Base
+**What this does:**
+- ✅ Installs Miniconda (if not present)  
+- ✅ Creates `finance` conda environment with Python 3.12 + OpenJDK 17
+- ✅ Installs all Python dependencies via conda + pip
+- ✅ Downloads and configures Neo4j with proper Java environment
+- ✅ Sets up git submodules and project structure
+
+### 2. Activate Environment & Build Knowledge Base
 ```bash
-# Activate environment
-pipenv shell
+# Activate the finance conda environment
+source activate-finance.sh
 
 # Build stable test dataset (M7 companies)
 python manage.py build m7
@@ -60,8 +67,11 @@ python manage.py build us-all       # ~50GB download
 
 ### 3. Start Analysis
 ```bash
-# Start Neo4j database
-ansible-playbook ansible/setup.yml
+# Start Neo4j database (from project root)
+./neo4j/bin/neo4j-service start
+
+# Verify Neo4j is running
+./neo4j/bin/neo4j-service status
 
 # Run DCF analysis (coming in Phase 1)
 python -m dcf.analyze --ticker AAPL
@@ -127,19 +137,24 @@ my_finance/
 
 ### Environment Setup
 ```bash
-# Install development dependencies
-pipenv install --dev
+# Activate conda environment (always first!)
+source activate-finance.sh
 
-# Activate environment  
-pipenv shell
+# All development tools are pre-installed:
+# - Python 3.12, OpenJDK 17, pipenv
+# - black, isort, pylint, mypy, pytest
 
 # Find Python path for IDE setup
-pipenv --py
+conda info --envs
+# Use: ~/miniconda3/envs/finance/bin/python
 ```
 
 ### Code Quality
 ```bash
-# Format and lint
+# Activate environment first
+source activate-finance.sh
+
+# Format and lint (all tools pre-installed)
 black .
 isort .
 pylint src/
@@ -148,6 +163,13 @@ mypy src/
 # Run tests (when available)
 pytest tests/ -v --cov=src/
 ```
+
+### Cross-Platform Benefits
+- **✅ No platform-specific package managers** (apt/homebrew/yum)
+- **✅ Consistent Python + Java versions** across macOS/Linux/Windows
+- **✅ Isolated environment** - no system pollution
+- **✅ Reproducible builds** - same conda environment everywhere
+- **✅ Easy CI/CD integration** - single conda environment file
 
 ### GoLand Integration
 Create commits with clickable PR links:

@@ -2,7 +2,7 @@
 # init.yml
 - name: Initial Environment Setup
   hosts: localhost
-  become: yes
+  connection: local
   gather_facts: yes
   vars:
     repo_dir: "{{ lookup('env','PWD') }}"
@@ -11,7 +11,7 @@
     neo4j_version: "5.18.0"
     neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
     neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
-    neo4j_install_dir: "/opt/neo4j"
+    neo4j_install_dir: "{{ '/opt/neo4j' if ansible_facts['os_family'] != 'Darwin' else lookup('env','HOME') + '/neo4j' }}"
   tasks:
     - name: Check if current directory is a Git repository
       stat:
@@ -25,11 +25,14 @@
       when: not git_repo.stat.exists
       become: false
 
+    - name: Setup conda cross-platform environment
+      include_tasks: roles/conda_setup.yml
+
     - name: Try Docker-based Neo4j setup first
       include_tasks: roles/docker_setup.yml
 
-    - name: Execute Neo4j installation tasks (fallback if Docker unavailable)
-      include_tasks: roles/neo4j_install.yml
+    - name: Execute Neo4j installation with conda (fallback if Docker unavailable)
+      include_tasks: roles/neo4j_conda.yml
       when: use_docker_neo4j is not defined or not use_docker_neo4j
 
     - name: Execute data repository tasks (initial mode)
@@ -45,13 +48,19 @@
     - name: Initial environment setup complete
       debug:
         msg: |
-          🎉 Initial environment setup complete!
+          🎉 Cross-platform environment setup complete!
           
-          📊 Database: {{ 'Docker-based Neo4j' if (use_docker_neo4j | default(false)) else 'Native Neo4j installation' }}
-          🐍 Python: pipenv environment configured
+          🐍 Conda Environment: finance (Python 3.12 + OpenJDK 17)
+          📊 Database: {{ 'Docker-based Neo4j' if (use_docker_neo4j | default(false)) else 'Conda-based Neo4j installation' }}
           📁 Data: Git submodules initialized
           
           ✨ Next steps:
-          1. Configure .env file with API keys
-          2. Build knowledge base: python manage.py build m7
-          3. Check status: python manage.py status
+          1. Activate environment: source activate-finance.sh
+          2. Configure .env file with API keys (template created)
+          3. Build knowledge base: python manage.py build m7
+          4. Check status: python manage.py status
+          
+          🔧 Environment Management:
+          - Activate: source activate-finance.sh
+          - Neo4j control: ./neo4j/bin/neo4j-service {start|stop|status}
+          - All dependencies managed via conda for cross-platform consistency
