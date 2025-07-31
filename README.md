@@ -31,27 +31,27 @@ A comprehensive **Graph RAG-powered DCF valuation system** that leverages SEC fi
 This project uses a hybrid approach for environment management to ensure both flexibility and consistency across platforms (Linux, macOS, Windows).
 
 - **[Pixi](https://pixi.sh/)**: Manages all **application-level dependencies** (Python packages, etc.) in a cross-platform manner. It provides the core development environment.
-- **[Ansible](https://www.ansible.com/)**: Manages all **system-level setup** (installing and configuring services like Neo4j). It prepares the machine for the application to run.
+- **[Ansible](https://www.ansible.com/)**: Manages the **initial environment setup**, primarily by orchestrating the Docker-based Neo4j service.
 
 ### Prerequisites
 
-1.  **Pixi**: Install Pixi by following the [official instructions](https://pixi.sh/latest/).
-2.  **Ansible**: Pixi will automatically install Ansible into the project environment, so no separate installation is needed.
-3.  **Docker (Optional, Recommended)**: For the simplest setup, install [Docker Desktop](https://www.docker.com/products/docker-desktop/). The setup script will automatically use Docker for Neo4j if it's available.
+1.  **Docker**: **Docker is a mandatory requirement.** This project uses Docker to create a consistent, isolated database environment for Neo4j. Please install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and ensure it is running before you proceed.
+2.  **Pixi**: Install Pixi by following the [official instructions](https://pixi.sh/latest/).
+
+*Note: Ansible will be automatically installed into the Pixi environment, so no separate installation is needed.*
 
 ### Setup Instructions
 
-With Pixi installed, setting up the entire development environment is a single command. This command runs an Ansible playbook that intelligently handles system-level setup (like Neo4j) and then uses Pixi to install all application dependencies.
+With Docker running and Pixi installed, setting up the entire development environment is a single command. This command runs an Ansible playbook that validates the Docker setup, starts the Neo4j container, and then uses Pixi to install all application dependencies.
 
 ```bash
 # This command will:
-# 1. Install system dependencies like Neo4j (using Docker if available, otherwise manually).
-# 2. Install all Python packages specified in pixi.toml.
-# 3. Initialize data submodules.
+# 1. Verify that Docker is running.
+# 2. Pull the Neo4j Docker image and start the container.
+# 3. Install all Python packages specified in pixi.toml.
+# 4. Initialize data submodules.
 pixi run setup-env
 ```
-
-The `setup-env` task will prompt for a `sudo` password on Linux if it needs to perform a manual installation of Neo4j in `/opt`. On macOS, manual installation happens in the user's home directory and does not require `sudo`.
 
 ### Data Persistence
 
@@ -84,9 +84,9 @@ pixi shell
 
 The `pixi.toml` file contains a standardized set of tasks for managing the project.
 
-#### Neo4j Database
+#### Neo4j Database (Docker)
 
-The setup script handles the installation. Once set up, you can manage the Neo4j service with the following commands:
+The setup script handles the initial creation of the Neo4j container. Afterwards, you can manage the Neo4j service with the following Docker commands, wrapped as Pixi tasks for convenience:
 
 - **Start Neo4j**:
   ```bash
@@ -104,9 +104,15 @@ The setup script handles the installation. Once set up, you can manage the Neo4j
   ```bash
   pixi run neo4j-restart
   ```
-- **Forcibly Kill Neo4j (if it gets stuck)**:
+- **View Logs**:
   ```bash
-  pixi run neo4j-kill
+  pixi run neo4j-logs
+  ```
+- **Reset the Database (Deletes all data!)**:
+  ```bash
+  # This will stop and remove the container. The next `setup-env` or a manual
+  # `docker run` command will recreate it.
+  pixi run neo4j-remove
   ```
 
 #### Data and Application
