@@ -1,90 +1,64 @@
 ---
 # roles/neo4j_install.yml
-- name: Detect operating system
-  set_fact:
-    is_macos: "{{ ansible_facts['os_family'] == 'Darwin' }}"
-    is_linux: "{{ ansible_facts['os_family'] in ['Debian', 'RedHat'] }}"
+- name: Check if Pixi is installed
+  command: pixi --version
+  register: pixi_check
+  changed_when: false
+  failed_when: false
 
-- name: Check if Java is already installed (macOS)
-  command: java -version
+- name: Ensure Pixi environment is set up
+  command: pixi install
+  args:
+    chdir: "{{ playbook_dir }}/.."
+  when: pixi_check.rc == 0
+
+- name: Check if Java is available in Pixi environment
+  shell: |
+    eval "$(pixi shell-hook)" && java -version
   register: java_check
   changed_when: false
   failed_when: false
-  when: is_macos
+  args:
+    chdir: "{{ playbook_dir }}/.."
 
-- name: Install OpenJDK 17 via Homebrew (macOS)
-  homebrew:
-    name: openjdk@17
-    state: present
-    update_homebrew: no
-  when: is_macos and java_check.rc != 0
-  become: no
-  timeout: 300
-
-- name: Skip package installation if Java already exists (macOS)
+- name: Display Java version from Pixi environment
   debug:
-    msg: "Java is already installed, skipping Homebrew installation"
-  when: is_macos and java_check.rc == 0
+    msg: "Java is available in Pixi environment: {{ java_check.stdout_lines | default('Not found') }}"
+  when: java_check.rc == 0
 
-- name: Update APT cache and upgrade packages (Linux)
-  apt:
-    update_cache: yes
-    upgrade: dist
-  become: yes
-  when: is_linux and ansible_facts['os_family'] == 'Debian'
+- name: Download Neo4j using Pixi task
+  shell: |
+    eval "$(pixi shell-hook)" && pixi run neo4j-download
+  args:
+    chdir: "{{ playbook_dir }}/.."
+  when: pixi_check.rc == 0
 
-- name: Install required packages via APT (Ubuntu/Debian)
-  apt:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - python3
-    - python3-pip
-    - openjdk-17-jdk
-  become: yes
-  when: is_linux and ansible_facts['os_family'] == 'Debian'
+- name: Setup Neo4j using Pixi task
+  shell: |
+    eval "$(pixi shell-hook)" && pixi run neo4j-setup
+  args:
+    chdir: "{{ playbook_dir }}/.."
+  when: pixi_check.rc == 0
 
-- name: Create Neo4j installation directory
-  file:
-    path: "{{ neo4j_install_dir }}"
-    state: directory
-  become: "{{ 'yes' if not is_macos else 'no' }}"
-
-- name: Download Neo4j tarball
-  get_url:
-    url: "{{ neo4j_download_url }}"
-    dest: "/tmp/{{ neo4j_tarball }}"
-    mode: '0644'
-  become: no
-
-- name: Extract Neo4j tarball to installation directory
-  unarchive:
-    src: "/tmp/{{ neo4j_tarball }}"
-    dest: "{{ neo4j_install_dir }}"
-    remote_src: yes
-    extra_opts: [--strip-components=1]
-  become: "{{ 'yes' if not is_macos else 'no' }}"
-
-- name: Configure Neo4j to listen on 0.0.0.0
-  lineinfile:
-    path: "{{ neo4j_install_dir }}/conf/neo4j.conf"
-    regexp: '^#?dbms\.default_listen_address='
-    line: 'dbms.default_listen_address=0.0.0.0'
-    state: present
-  become: no
-
-- name: Start Neo4j service
-  command: "{{ neo4j_install_dir }}/bin/neo4j start"
+- name: Start Neo4j using Pixi task
+  shell: |
+    eval "$(pixi shell-hook)" && pixi run neo4j-start
   register: neo4j_start
   failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
-  become: no
+  args:
+    chdir: "{{ playbook_dir }}/.."
+  when: pixi_check.rc == 0
 
-- name: Check Neo4j service status
-  command: "{{ neo4j_install_dir }}/bin/neo4j status"
+- name: Check Neo4j service status using Pixi task
+  shell: |
+    eval "$(pixi shell-hook)" && pixi run neo4j-status
   register: neo4j_status
   changed_when: false
-  become: no
+  args:
+    chdir: "{{ playbook_dir }}/.."
+  when: pixi_check.rc == 0
 
 - name: Display Neo4j service status
   debug:
     var: neo4j_status.stdout_lines
+  when: pixi_check.rc == 0 and neo4j_status is defined

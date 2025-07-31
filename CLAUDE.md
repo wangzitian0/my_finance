@@ -8,10 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **See README.md for complete setup instructions.** Key points for Claude:
 
-- Python 3.12 + pipenv dependency management
-- Cross-platform conda environment recommended
-- Ansible automation for Neo4j and system setup
-- Use `pipenv --py` to find Python interpreter path for IDE configuration
+- **Pixi** for cross-platform package management (replaces conda/brew/apt)
+- Python 3.12 + all dependencies managed through pixi.toml
+- Ansible automation compatible with Pixi environment
+- Use `pixi info` to check environment details for IDE configuration
 
 ## Core Commands
 
@@ -19,11 +19,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Essential commands
-pipenv shell                    # Activate environment
-python manage.py build m7       # Build stable test dataset
-python manage.py status         # Check data status
-python run_job.py               # Run default data collection
-ansible-playbook ansible/init.yml --ask-become-pass  # Environment setup
+pixi shell                      # Activate environment (or run pixi run <task>)
+pixi run build-m7               # Build stable test dataset
+pixi run status                 # Check data status
+pixi run run-job                # Run default data collection
+pixi run setup-env              # Ansible environment setup with Pixi
 ```
 
 ## Architecture Overview
@@ -103,7 +103,7 @@ git push --force-with-lease
 ### Development Patterns
 - **Always read README.md first** for complete project context
 - **Prefer editing existing files** over creating new ones
-- **Use pipenv** for Python dependency management
+- **Use Pixi** for all dependency management (replaces pipenv/conda/brew/apt)
 - **Follow three-tier data strategy** when working with datasets
 - **Reference CIK numbers** from README.md for SEC data work
 
@@ -114,9 +114,9 @@ git push --force-with-lease
 - **Documentation**: README.md (primary), this file (Claude-specific)
 
 ### Common Tasks
-- **Data collection**: Use `python run_job.py [config.yml]`
-- **Environment setup**: Use Ansible playbooks in `ansible/` directory
-- **Dependency management**: Always use `pipenv install` and `pipenv lock`
+- **Data collection**: Use `pixi run run-job` or `python run_job.py [config.yml]`
+- **Environment setup**: Use `pixi run setup-env` or Ansible playbooks in `ansible/` directory
+- **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Run manual validation, check outputs in `data/` directories
 
 ### Standard Development Workflow

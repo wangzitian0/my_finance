@@ -26,56 +26,106 @@ A comprehensive **Graph RAG-powered DCF valuation system** that leverages SEC fi
 - **RAG Pipeline**: Graph-powered retrieval with semantic embedding search
 - **Web Interface**: Mobile-responsive DCF analysis dashboard
 
-## 🛠️ Quick Start
+## Installation and Setup
+
+This project uses a hybrid approach for environment management to ensure both flexibility and consistency across platforms (Linux, macOS, Windows).
+
+- **[Pixi](https://pixi.sh/)**: Manages all **application-level dependencies** (Python packages, etc.) in a cross-platform manner. It provides the core development environment.
+- **[Ansible](https://www.ansible.com/)**: Manages all **system-level setup** (installing and configuring services like Neo4j). It prepares the machine for the application to run.
 
 ### Prerequisites
-- **Python 3.12+**
-- **Conda** (recommended for cross-platform consistency)
-- **8GB+ RAM** (16GB+ recommended for full datasets)
 
-### 1. Environment Setup
+1.  **Pixi**: Install Pixi by following the [official instructions](https://pixi.sh/latest/).
+2.  **Ansible**: Pixi will automatically install Ansible into the project environment, so no separate installation is needed.
+3.  **Docker (Optional, Recommended)**: For the simplest setup, install [Docker Desktop](https://www.docker.com/products/docker-desktop/). The setup script will automatically use Docker for Neo4j if it's available.
+
+### Setup Instructions
+
+With Pixi installed, setting up the entire development environment is a single command. This command runs an Ansible playbook that intelligently handles system-level setup (like Neo4j) and then uses Pixi to install all application dependencies.
+
 ```bash
-git clone git@github.com:wangzitian0/my_finance.git
-cd my_finance
-
-# Cross-platform setup with conda
-conda create -n finance python=3.12 openjdk=17 -c conda-forge
-conda activate finance
-pip install pipenv
-pipenv install
-
-# Alternative: Automated setup (requires sudo)
-ansible-playbook ansible/init.yml --ask-become-pass
+# This command will:
+# 1. Install system dependencies like Neo4j (using Docker if available, otherwise manually).
+# 2. Install all Python packages specified in pixi.toml.
+# 3. Initialize data submodules.
+pixi run setup-env
 ```
 
-### 2. Data Management
+The `setup-env` task will prompt for a `sudo` password on Linux if it needs to perform a manual installation of Neo4j in `/opt`. On macOS, manual installation happens in the user's home directory and does not require `sudo`.
+
+### Data Persistence
+
+To ensure that your database data is not lost when the Docker container is removed or recreated, this project uses a **local bind mount**. The setup script automatically creates a `neo4j` directory inside the local `./data` folder and mounts it into the container.
+
+-   `./data/neo4j/data`: Stores all the graph data.
+-   `./data/neo4j/logs`: Stores Neo4j log files.
+
+Because this data lives directly on your filesystem (within the project structure), it's easy to inspect, back up, or even move. The `.gitignore` file has been configured to **exclude the `/data/neo4j/` directory** from version control.
+
+- **Reset the Database (Deletes all local data!)**:
+  The `neo4j-remove` task has been configured to be destructive for easy resetting of the environment. It will not only stop and remove the container but also **permanently delete the local `./data/neo4j` directory**.
+
+  ```bash
+  # WARNING: This will delete all your local Neo4j data.
+  pixi run neo4j-remove
+  ```
+  After running this, the next `pixi run setup-env` will recreate the directories and start a fresh, empty database.
+
+## Development Environment
+
+### Activating the Environment
+
+To activate the shell with all the tools and dependencies ready to use, run:
 ```bash
-# Activate environment
-pipenv shell
-
-# Three-tier data strategy:
-python manage.py build m7           # Tier 1: Stable test (500MB, git-tracked)
-python manage.py build nasdaq100    # Tier 2: Extended (5GB, buildable) 
-python manage.py build us-all       # Tier 3: Complete (50GB, buildable)
-
-# Management commands
-python manage.py status             # Check current data status
-python manage.py validate           # Validate data integrity
+pixi shell
 ```
 
-### 3. Database and Analysis
-```bash
-# Start Neo4j database
-ansible-playbook ansible/setup.yml
+### Key Management Tasks
 
-# Run data collection jobs
-python run_job.py                          # Default M7 dataset
-python run_job.py yfinance_nasdaq100.yml   # NASDAQ100 prices
-python run_job.py sec_edgar_m7.yml         # SEC filings
+The `pixi.toml` file contains a standardized set of tasks for managing the project.
 
-# Future: DCF analysis (Phase 1 development)
-# python -m dcf.analyze --ticker AAPL
-```
+#### Neo4j Database
+
+The setup script handles the installation. Once set up, you can manage the Neo4j service with the following commands:
+
+- **Start Neo4j**:
+  ```bash
+  pixi run neo4j-start
+  ```
+- **Check Status**:
+  ```bash
+  pixi run neo4j-status
+  ```
+- **Stop Neo4j**:
+  ```bash
+  pixi run neo4j-stop
+  ```
+- **Restart Neo4j**:
+  ```bash
+  pixi run neo4j-restart
+  ```
+- **Forcibly Kill Neo4j (if it gets stuck)**:
+  ```bash
+  pixi run neo4j-kill
+  ```
+
+#### Data and Application
+
+- **Check Data Status**: See which datasets (M7, NASDAQ100, etc.) are downloaded.
+  ```bash
+  pixi run status
+  ```
+- **Build a Test Dataset**: Download data for the "Magnificent 7" stocks.
+  ```bash
+  pixi run build-m7
+  ```
+- **Run a Data Collection Job**:
+  ```bash
+  # Run the default job
+  pixi run run-job
+  # Run a specific job
+  pixi run python run_job.py --config-path data/config/yfinance_nasdaq100.yml
+  ```
 
 ## 🎯 Target Companies
 

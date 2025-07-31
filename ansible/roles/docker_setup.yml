@@ -1,80 +1,82 @@
 ---
-# roles/docker_setup.yml - Docker environment setup (alternative to native Neo4j)
-- name: Check if Docker is installed
-  command: docker --version
+# roles/docker_setup.yml
+# This role ensures Docker is installed and running, then sets up the
+# Neo4j container for the project.
+
+- name: Check if Docker is installed and running
+  command: docker info
   register: docker_check
   changed_when: false
-  failed_when: false
+  failed_when: false # Don't fail here, provide a better error message below
 
-- name: Display Docker installation status
-  debug:
-    msg: "{{ 'Docker found: ' + docker_check.stdout if docker_check.rc == 0 else 'Docker not installed - using native Neo4j installation' }}"
+- name: Fail if Docker is not available
+  fail:
+    msg: |
+      🚨 Docker is not installed or not running.
+      This project requires Docker to manage the Neo4j database.
+      Please install Docker Desktop and ensure it is started before running this setup again.
+      Official website: https://www.docker.com/products/docker-desktop/
+  when: docker_check.rc != 0
 
-- name: Check if Docker is running
-  command: docker info
-  register: docker_running
-  changed_when: false
-  failed_when: false
-  when: docker_check.rc == 0
-
-- name: Start Docker service if available but not running (Linux)
-  systemd:
-    name: docker
-    state: started
-  when: 
-    - docker_check.rc == 0
-    - docker_running.rc != 0
-    - ansible_facts['os_family'] != 'Darwin'
-  become: yes
-  ignore_errors: yes
-
-- name: Check for existing Neo4j container
-  command: docker ps -a --filter "name=neo4j-finance" --format "{{ '{{' }}.Names{{ '}}' }}"
-  register: neo4j_container_exists
-  changed_when: false
-  when: docker_check.rc == 0 and docker_running.rc == 0
-
-- name: Start Neo4j Docker container if Docker is available
-  command: >
-    docker run -d
-    --name neo4j-finance
-    -p 7474:7474
-    -p 7687:7687
-    -e NEO4J_AUTH=neo4j/finance123
-    -e NEO4J_PLUGINS='["apoc"]'
-    -v neo4j_data:/data
-    -v neo4j_logs:/logs
-    --restart unless-stopped
-    neo4j:5.15
-  when:
-    - docker_check.rc == 0
-    - docker_running.rc == 0
-    - "'neo4j-finance' not in (neo4j_container_exists.stdout | default(''))"
-  register: neo4j_docker_start
-  ignore_errors: yes
-
-- name: Start existing Neo4j container if stopped
-  command: docker start neo4j-finance
-  when:
-    - docker_check.rc == 0
-    - docker_running.rc == 0
-    - "'neo4j-finance' in (neo4j_container_exists.stdout | default(''))"
-  register: neo4j_docker_restart
-  ignore_errors: yes
-
-- name: Wait for Neo4j Docker container to be ready
-  wait_for:
-    port: 7474
-    host: localhost
-    delay: 5
-    timeout: 60
-  when: 
-    - docker_check.rc == 0
-    - (neo4j_docker_start is defined and neo4j_docker_start.rc == 0) or (neo4j_docker_restart is defined and neo4j_docker_restart.rc == 0)
-
-- name: Set Docker Neo4j as preferred
+- name: Set fact that Docker is being used
   set_fact:
     use_docker_neo4j: true
-  when:
-    - docker_check.rc == 0
-    - docker_running.rc == 0
+
+- name: Check if the Neo4j container already exists
+  command: "docker ps -a --filter name={{ neo4j_container_name }} --format '{{ '{{' }}.Names{{ '}}' }}'"
+  register: container_exists
+  changed_when: false
+
+- name: Pull the latest Neo4j community image
+  command: "docker pull {{ neo4j_image_name }}"
+  when: not container_exists.stdout
+
+- name: Create local directories for Neo4j data
+  file:
+    path: "{{ repo_dir }}/data/neo4j/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - data
+    - logs
+
+- name: Create and start the Neo4j container
+  command: >
+    docker run -d
+    --name {{ neo4j_container_name }}
+    -p 7474:7474
+    -p 7687:7687
+    -v "{{ repo_dir }}/data/neo4j/data:/data"
+    -v "{{ repo_dir }}/data/neo4j/logs:/logs"
+    -e NEO4J_AUTH=neo4j/finance123
+    --restart unless-stopped
+    {{ neo4j_image_name }}
+  when: not container_exists.stdout
+  register: container_creation
+  changed_when: container_creation.rc == 0
+
+- name: Ensure the Neo4j container is running
+  command: "docker start {{ neo4j_container_name }}"
+  when: container_exists.stdout
+  register: container_start
+  changed_when: "'{{ neo4j_container_name }}' in container_start.stdout"
+
+- name: Wait for Neo4j to become available
+  wait_for:
+    port: 7687
+    host: localhost
+    timeout: 60
+    delay: 5
+  register: neo4j_service_check
+  until: neo4j_service_check.state == 'started'
+  retries: 5
+
+- name: Display Neo4j Docker status
+  debug:
+    msg: |
+      🐳 Neo4j is running in a Docker container.
+      - Container Name: {{ neo4j_container_name }}
+      - Web Interface: http://localhost:7474
+      - Bolt Connection: bolt://localhost:7687
+      - To manage, use `docker stop/start/restart {{ neo4j_container_name }}`
+        or the `pixi run neo4j-stop/start/restart` commands.

@@ -1,0 +1,54 @@
+---
+# roles/pixi_setup.yml - Cross-platform Pixi environment setup
+- name: Check if Pixi is installed
+  command: pixi --version
+  register: pixi_check
+  changed_when: false
+  failed_when: false
+
+- name: Display Pixi installation status
+  debug:
+    msg: "{{ 'Pixi found: ' + pixi_check.stdout if pixi_check.rc == 0 else 'Pixi not installed - will install Pixi' }}"
+
+- name: Install Pixi (cross-platform)
+  shell: |
+    curl -fsSL https://pixi.sh/install.sh | bash
+    export PATH="$HOME/.pixi/bin:$PATH"
+  when: pixi_check.rc != 0
+  register: pixi_install
+
+- name: Add Pixi to PATH for current session
+  set_fact:
+    pixi_path: "{{ lookup('env','HOME') + '/.pixi/bin' }}"
+
+- name: Verify Pixi installation
+  command: "{{ pixi_path }}/pixi --version"
+  register: pixi_verify
+  when: pixi_check.rc != 0
+
+- name: Initialize Pixi project if pixi.toml doesn't exist
+  command: "{{ pixi_path if pixi_check.rc != 0 else 'pixi' }} init --format pyproject"
+  args:
+    chdir: "{{ repo_dir }}"
+    creates: "{{ repo_dir }}/pixi.toml"
+
+- name: Install all dependencies from pixi.toml
+  command: "{{ pixi_path if pixi_check.rc != 0 else 'pixi' }} install"
+  args:
+    chdir: "{{ repo_dir }}"
+
+- name: Verify Pixi environment
+  shell: |
+    cd {{ repo_dir }}
+    {{ pixi_path if pixi_check.rc != 0 else 'pixi' }} info
+  register: pixi_info
+
+- name: Display Pixi environment info
+  debug:
+    msg: "{{ pixi_info.stdout }}"
+
+- name: Set Pixi environment facts
+  set_fact:
+    pixi_base_path: "{{ lookup('env','HOME') + '/.pixi' }}"
+    pixi_project_path: "{{ repo_dir }}"
+    use_pixi_env: true 

@@ -1,0 +1,74 @@
+[project]
+name = "my_finance"
+version = "0.1.0"
+description = "Graph RAG-powered DCF valuation system"
+authors = ["Your Name <your.email@example.com>"]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[dependencies]
+# Core cross-platform dependencies
+python = "3.12.*"
+openjdk = "17.*"
+git = "*"
+# Cross-platform system tools
+curl = "*"
+
+# Essential Python packages
+pip = "*"
+pyyaml = "*"
+requests = "*"
+beautifulsoup4 = "*"
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+seaborn = "*"
+jupyter = "*"
+black = "*"
+isort = "*"
+pylint = "*"
+mypy = "*"
+pytest = "*"
+pytest-cov = "*"
+python-dotenv = "*"
+click = "*"
+tqdm = "*"
+lxml = "*"
+psutil = "*" # Required for manage_neo4j.py to kill processes
+# Neo4j Python driver (official driver for connecting to Neo4j)
+neo4j-python-driver = "*"
+
+[feature.dev.dependencies]
+# Development-only packages
+
+[tasks]
+# Core commands from CLAUDE.md
+activate = "echo 'Pixi environment activated'"
+build-m7 = "python manage.py build m7"
+status = "python manage.py status"
+run-job = "python run_job.py"
+setup-env = "ansible-playbook ansible/init.yml --ask-become-pass"
+
+# Install additional packages via pip (cross-platform)
+install-extras = "pip install pipenv ansible datasette neomodel yfinance secedgar"
+
+# Development tasks
+format = { cmd = "black . && isort .", cwd = "." }
+lint = "pylint ."
+typecheck = "mypy ."
+test = "pytest"
+test-coverage = "pytest --cov"
+
+# --- Neo4j Service Management (via Docker) ---
+# These tasks directly control the Neo4j Docker container.
+neo4j-start = "docker start my-finance-neo4j"
+neo4j-stop = "docker stop my-finance-neo4j"
+neo4j-status = "docker ps --filter name=my-finance-neo4j"
+neo4j-restart = "docker restart my-finance-neo4j"
+neo4j-logs = "docker logs -f my-finance-neo4j"
+# This task is for cleanup, to be used manually when you want to reset the DB.
+neo4j-remove = "docker rm -f my-finance-neo4j && rm -rf data/neo4j"
+
+[environments]
+default = { solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }

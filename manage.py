@@ -164,7 +164,8 @@ class FinanceManager:
                 else:
                     # Count files with tier pattern
                     pattern = f"*{tier_id}*" if tier_id != 'us-all' else "*us_all*"
-                    tier_files = list(yfinance_dir.rglob(f"*{pattern}*.json"))
+                    # Use glob instead of rglob to avoid '**' pattern issues
+                    tier_files = list(yfinance_dir.glob(f"*/{pattern}.json"))
                     file_count += len(tier_files)
                     for f in tier_files:
                         data_size += f.stat().st_size

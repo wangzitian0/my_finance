@@ -1,17 +1,22 @@
 ---
-# init.yml
+# init.yml - Main Ansible Playbook
+# This playbook sets up the complete local development environment.
+# It delegates application dependencies to Pixi and handles system-level
+# setup, which exclusively uses Docker for Neo4j.
+
 - name: Initial Environment Setup
   hosts: localhost
   connection: local
   gather_facts: yes
   vars:
+    # The project directory, discovered from the environment.
     repo_dir: "{{ lookup('env','PWD') }}"
-    run_git_pull: false
+    # Command for initializing data submodules.
     data_repo_command: "git submodule update --init --recursive"
-    neo4j_version: "5.18.0"
-    neo4j_tarball: "neo4j-community-{{ neo4j_version }}-unix.tar.gz"
-    neo4j_download_url: "https://neo4j.com/artifact.php?name={{ neo4j_tarball }}"
-    neo4j_install_dir: "{{ '/opt/neo4j' if ansible_facts['os_family'] != 'Darwin' else lookup('env','HOME') + '/neo4j' }}"
+    # Docker container configuration
+    neo4j_container_name: "my-finance-neo4j"
+    neo4j_image_name: "neo4j:5.18-community"
+
   tasks:
     - name: Check if current directory is a Git repository
       stat:
@@ -21,46 +26,33 @@
 
     - name: Fail if current directory is not a Git repository
       fail:
-        msg: "Current directory {{ repo_dir }} is not a Git repository!"
+        msg: "The setup must be run from the root of the Git repository. Current directory: {{ repo_dir }}"
       when: not git_repo.stat.exists
       become: false
 
-    - name: Setup conda cross-platform environment
-      include_tasks: roles/conda_setup.yml
+    - name: Setup Pixi application environment
+      include_tasks: roles/pixi_setup.yml
 
-    - name: Try Docker-based Neo4j setup first
+    - name: Setup and start Neo4j Docker container
       include_tasks: roles/docker_setup.yml
 
-    - name: Execute Neo4j installation with conda (fallback if Docker unavailable)
-      include_tasks: roles/neo4j_conda.yml
-      when: use_docker_neo4j is not defined or not use_docker_neo4j
-
-    - name: Execute data repository tasks (initial mode)
+    - name: Initialize or update data repositories
       include_tasks: roles/repo_data.yml
 
-    - name: Execute code repository tasks (pipenv install, no git pull)
-      include_tasks: roles/repo_code.yml
-
-    - name: Check and restart Neo4j if needed (setup commands)
-      include_tasks: roles/neo4j_check_restart.yml
-      when: use_docker_neo4j is not defined or not use_docker_neo4j
-
-    - name: Initial environment setup complete
+    - name: Final summary
       debug:
         msg: |
-          🎉 Cross-platform environment setup complete!
+          🎉 Ansible setup complete!
           
-          🐍 Conda Environment: finance (Python 3.12 + OpenJDK 17)
-          📊 Database: {{ 'Docker-based Neo4j' if (use_docker_neo4j | default(false)) else 'Conda-based Neo4j installation' }}
-          📁 Data: Git submodules initialized
+          Your environment is configured. Here's a summary:
           
-          ✨ Next steps:
-          1. Activate environment: source activate-finance.sh
-          2. Configure .env file with API keys (template created)
-          3. Build knowledge base: python manage.py build m7
-          4. Check status: python manage.py status
+          - ✅ Pixi environment is ready.
+          - ✅ Data submodules are initialized.
+          - ✅ Neo4j is running in a Docker container named '{{ neo4j_container_name }}'.
           
-          🔧 Environment Management:
-          - Activate: source activate-finance.sh
-          - Neo4j control: ./neo4j/bin/neo4j-service {start|stop|status}
-          - All dependencies managed via conda for cross-platform consistency
+          Next Steps:
+          1. Activate the environment: `pixi shell`
+          2. Run key tasks:
+             - `pixi run status` (check data status)
+             - `pixi run neo4j-status` (check the database via Docker)
+             - `pixi run build-m7` (build a small test dataset)

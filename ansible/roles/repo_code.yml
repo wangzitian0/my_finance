@@ -6,28 +6,25 @@
     chdir: "{{ repo_dir }}"
   when: run_git_pull | default(false)
 
-- name: Activate conda environment and install/update pipenv dependencies
+- name: Install all dependencies via Pixi
   shell: |
-    source {{ conda_base_path }}/bin/activate finance
     cd {{ repo_dir }}
-    pip install pipenv
-    pipenv install --skip-lock
+    {{ pixi_path if pixi_check.rc != 0 else 'pixi' }} install
   args:
     executable: /bin/bash
 
-- name: Install development dependencies in conda environment
+- name: Install development dependencies via Pixi
   shell: |
-    source {{ conda_base_path }}/bin/activate finance
     cd {{ repo_dir }}
-    pipenv install --dev --skip-lock
+    {{ pixi_path if pixi_check.rc != 0 else 'pixi' }} install --all-features
   args:
     executable: /bin/bash
   ignore_errors: yes
 
-- name: Install additional packages directly in conda environment
+- name: Install additional packages via Pixi run
   shell: |
-    source {{ conda_base_path }}/bin/activate finance
-    pip install black isort pylint mypy pytest pytest-cov
+    cd {{ repo_dir }}
+    {{ pixi_path if pixi_check.rc != 0 else 'pixi' }} run pip install black isort pylint mypy pytest pytest-cov
   args:
     executable: /bin/bash
 
@@ -53,22 +50,23 @@
       LOG_LEVEL=INFO
       ENVIRONMENT=development
       
-      # Conda Environment
-      CONDA_ENV=finance
-      CONDA_BASE={{ conda_base_path }}
+      # Pixi Environment
+      PIXI_PROJECT={{ pixi_project_path }}
+      PIXI_BASE={{ pixi_base_path }}
     force: no
 
-- name: Create conda activation script
+- name: Create Pixi activation script
   copy:
     dest: "{{ repo_dir }}/activate-finance.sh"
     content: |
       #!/bin/bash
-      # Activate finance conda environment
-      source {{ conda_base_path }}/bin/activate finance
-      export JAVA_HOME="{{ finance_env_path }}"
-      export PATH="{{ finance_env_path }}/bin:$PATH"
-      echo "🐍 Finance conda environment activated"
-      echo "☕ Java: $(java -version 2>&1 | head -1)"
-      echo "🐍 Python: $(python --version)"
-      echo "📊 Neo4j: Use './{{ neo4j_install_dir | basename }}/bin/neo4j-service start' to start database"
+      # Activate finance Pixi environment
+      cd {{ repo_dir }}
+      export PATH="{{ pixi_base_path }}/bin:$PATH"
+      echo "🚀 Finance Pixi environment ready"
+      echo "☕ Java: $(pixi run java -version 2>&1 | head -1)"
+      echo "🐍 Python: $(pixi run python --version)"
+      echo "📊 Neo4j: Use 'pixi run neo4j-start' to start database"
+      echo "💡 Use 'pixi run <task>' to execute commands in the Pixi environment"
+      echo "💡 Use 'pixi shell' to enter the Pixi shell"
     mode: '0755'
