@@ -44,7 +44,7 @@ status = "python manage.py status"
 run-job = "python run_job.py"
 
 # Install additional packages via pip (cross-platform)
-install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
+install-extras = "pip install pipenv datasette neomodel yfinance secedgar sentence-transformers torch"
 
 # Development tasks
 format = { cmd = "black . && isort .", cwd = "." }
@@ -52,6 +52,11 @@ lint = "pylint ."
 typecheck = "mypy ."
 test = "pytest"
 test-coverage = "pytest --cov"
+
+# Graph RAG specific tasks
+setup-graph-rag = "python setup_graph_rag.py"
+demo-graph-rag = "python demo_graph_rag.py"
+test-graph-rag = "python test_graph_rag.py"
 
 # --- Environment Management (Ansible) ---
 # Initial environment setup
