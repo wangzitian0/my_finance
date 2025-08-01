@@ -1,0 +1,1596 @@
+{
+  "ticker": "PDD",
+  "period": "30y",
+  "interval": "1mo",
+  "fetched_at": "2025-02-09T03:48:33.350805",
+  "info": {
+    "address1": "25 Saint Stephens Green",
+    "address2": "First Floor, Dublin 2",
+    "city": "Dublin",
+    "zip": "D02 XF99",
+    "country": "Ireland",
+    "phone": "353 1 539 7938",
+    "website": "https://www.pddholdings.com",
+    "industry": "Internet Retail",
+    "industryKey": "internet-retail",
+    "industryDisp": "Internet Retail",
+    "sector": "Consumer Cyclical",
+    "sectorKey": "consumer-cyclical",
+    "sectorDisp": "Consumer Cyclical",
+    "longBusinessSummary": "PDD Holdings Inc., a multinational commerce group, owns and operates a portfolio of businesses. It operates Pinduoduo, an e-commerce platform that offers products in various categories, including agricultural produce, apparel, shoes, bags, mother and childcare products, food and beverage, electronic appliances, furniture and household goods, cosmetics and other personal care, sports and fitness items and auto accessories; and Temu, an online marketplace. It focuses on bringing businesses and people into the digital economy. The company was formerly known as Pinduoduo Inc. and changed its name to PDD Holdings Inc. in February 2023. The company was incorporated in 2015 and is based in Dublin, Ireland.",
+    "fullTimeEmployees": 17403,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Lei  Chen",
+        "age": 43,
+        "title": "General Counsel, Co-CEO & Chairman",
+        "yearBorn": 1980,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Jiazhen  Zhao",
+        "age": 39,
+        "title": "Co-CEO & Executive Director",
+        "yearBorn": 1984,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Jun  Liu",
+        "age": 40,
+        "title": "Vice President of Finance",
+        "yearBorn": 1983,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Junyun  Xiao",
+        "age": 43,
+        "title": "Senior Vice President of Operation",
+        "yearBorn": 1980,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Xin Yi Lim",
+        "title": "Investor Relations Officers",
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Nick  Shu C.F.A.",
+        "title": "Director of Corporate Development & IR",
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Zhenwei  Zheng",
+        "age": 39,
+        "title": "Senior Vice President of Product Development",
+        "yearBorn": 1984,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "David  Liu",
+        "title": "Vice President of Strategy",
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Peng  Cheng",
+        "title": "IR Director",
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 112.72,
+    "open": 114.0,
+    "dayLow": 111.33,
+    "dayHigh": 115.98,
+    "regularMarketPreviousClose": 112.72,
+    "regularMarketOpen": 114.0,
+    "regularMarketDayLow": 111.33,
+    "regularMarketDayHigh": 115.98,
+    "beta": 0.705,
+    "trailingPE": 11.325074,
+    "forwardPE": 1.2441045,
+    "volume": 9539650,
+    "regularMarketVolume": 9539650,
+    "averageVolume": 9586298,
+    "averageVolume10days": 9180330,
+    "averageDailyVolume10Day": 9180330,
+    "bid": 98.22,
+    "ask": 115.8,
+    "bidSize": 100,
+    "askSize": 200,
+    "marketCap": 158694752256,
+    "fiftyTwoWeekLow": 88.01,
+    "fiftyTwoWeekHigh": 164.69,
+    "priceToSalesTrailing12Months": 0.4645726,
+    "fiftyDayAverage": 102.757,
+    "twoHundredDayAverage": 122.9615,
+    "currency": "USD",
+    "enterpriseValue": 369469816832,
+    "profitMargins": 0.28931,
+    "floatShares": 2979617118,
+    "sharesOutstanding": 1388770048,
+    "sharesShort": 26393031,
+    "sharesShortPriorMonth": 35780674,
+    "sharesShortPreviousMonthDate": 1727654400,
+    "dateShortInterest": 1730332800,
+    "sharesPercentSharesOut": 0.019,
+    "heldPercentInsiders": 1.0000001e-05,
+    "heldPercentInstitutions": 0.33598,
+    "shortRatio": 1.77,
+    "shortPercentOfFloat": 0.032,
+    "impliedSharesOutstanding": 1328589952,
+    "bookValue": 136.089,
+    "priceToBook": 0.839671,
+    "lastFiscalYearEnd": 1703980800,
+    "nextFiscalYearEnd": 1735603200,
+    "mostRecentQuarter": 1719705600,
+    "earningsQuarterlyGrowth": 1.442,
+    "netIncomeToCommon": 98824609792,
+    "trailingEps": 10.09,
+    "forwardEps": 14.09,
+    "enterpriseToRevenue": 1.082,
+    "enterpriseToEbitda": 3.783,
+    "52WeekChange": -0.13148892,
+    "SandP52WeekChange": 0.19995654,
+    "exchange": "NMS",
+    "quoteType": "EQUITY",
+    "symbol": "PDD",
+    "underlyingSymbol": "PDD",
+    "shortName": "PDD Holdings Inc.",
+    "longName": "PDD Holdings Inc.",
+    "firstTradeDateEpochUtc": 1532611800,
+    "timeZoneFullName": "America/New_York",
+    "timeZoneShortName": "EST",
+    "uuid": "feece1ce-41c4-3db9-b5ba-eb6db2cd7cd7",
+    "messageBoardId": "finmb_572577901",
+    "gmtOffSetMilliseconds": -18000000,
+    "currentPrice": 114.27,
+    "targetHighPrice": 191.88222,
+    "targetLowPrice": 101.31139,
+    "targetMeanPrice": 146.84427,
+    "targetMedianPrice": 149.6604,
+    "recommendationMean": 1.47619,
+    "recommendationKey": "strong_buy",
+    "numberOfAnalystOpinions": 39,
+    "totalCash": 284927164416,
+    "totalCashPerShare": 51.489,
+    "ebitda": 97656446976,
+    "totalDebt": 9765086208,
+    "quickRatio": 1.735,
+    "currentRatio": 2.106,
+    "totalRevenue": 341592997888,
+    "debtToEquity": 3.845,
+    "revenuePerShare": 248.59,
+    "returnOnAssets": 0.17253,
+    "returnOnEquity": 0.49495998,
+    "grossProfits": 213291712512,
+    "freeCashflow": 116198785024,
+    "operatingCashflow": 134288343040,
+    "earningsGrowth": 1.4,
+    "revenueGrowth": 0.857,
+    "grossMargins": 0.62439996,
+    "ebitdaMargins": 0.28589,
+    "operatingMargins": 0.33551,
+    "financialCurrency": "CNY",
+    "trailingPegRatio": 0.4133
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 115.9800033569336,
+    "dayLow": 111.33000183105469,
+    "exchange": "NMS",
+    "fiftyDayAverage": 102.75699996948242,
+    "lastPrice": 114.2699966430664,
+    "lastVolume": 9568600,
+    "marketCap": 158694748722.95117,
+    "open": 114.16999816894531,
+    "previousClose": 112.3,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 112.72000122070312,
+    "shares": 1388770048,
+    "tenDayAverageVolume": 9180330,
+    "threeMonthAverageVolume": 9677511,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 122.96150005340576,
+    "yearChange": -0.10362414783501572,
+    "yearHigh": 164.69000244140625,
+    "yearLow": 88.01000213623047
+  },
+  "history": {
+    "Open": [
+      19.3799991607666,
+      18.65999984741211,
+      26.229999542236328,
+      17.860000610351562,
+      24.329999923706055,
+      22.0,
+      28.93000030517578,
+      30.270000457763672,
+      25.530000686645508,
+      22.18000030517578,
+      19.3799991607666,
+      21.299999237060547,
+      22.200000762939453,
+      32.68000030517578,
+      32.349998474121094,
+      41.5,
+      35.86000061035156,
+      38.5,
+      35.0,
+      37.0,
+      35.72999954223633,
+      46.54999923706055,
+      65.91000366210938,
+      85.0,
+      92.97000122070312,
+      89.37000274658203,
+      74.87999725341797,
+      91.91000366210938,
+      139.80999755859375,
+      176.75,
+      173.52999877929688,
+      181.5,
+      141.00999450683594,
+      133.0500030517578,
+      132.5399932861328,
+      128.02000427246094,
+      91.72000122070312,
+      100.30000305175781,
+      90.54000091552734,
+      89.05000305175781,
+      68.41999816894531,
+      58.349998474121094,
+      59.7400016784668,
+      51.68000030517578,
+      44.52000045776367,
+      42.310001373291016,
+      49.5099983215332,
+      61.810001373291016,
+      47.47999954223633,
+      69.44999694824219,
+      62.40999984741211,
+      59.630001068115234,
+      79.23999786376953,
+      85.51000213623047,
+      102.30999755859375,
+      92.6500015258789,
+      74.06999969482422,
+      67.69000244140625,
+      63.86000061035156,
+      71.7699966430664,
+      87.95999908447266,
+      100.0,
+      98.16000366210938,
+      101.08999633789062,
+      143.32000732421875,
+      143.8800048828125,
+      127.22000122070312,
+      126.9000015258789,
+      117.9000015258789,
+      125.08999633789062,
+      147.94000244140625,
+      133.5500030517578,
+      127.86000061035156,
+      94.98999786376953,
+      134.22000122070312,
+      120.0,
+      96.87999725341797,
+      95.58999633789062,
+      105.80000305175781
+    ],
+    "High": [
+      21.899999618530273,
+      30.479999542236328,
+      28.18000030517578,
+      24.59000015258789,
+      25.0,
+      30.399999618530273,
+      31.18000030517578,
+      31.989999771118164,
+      25.65999984741211,
+      24.040000915527344,
+      21.780000686645508,
+      22.799999237060547,
+      33.880001068115234,
+      36.88999938964844,
+      42.849998474121094,
+      45.25,
+      39.619998931884766,
+      41.849998474121094,
+      37.720001220703125,
+      38.779998779296875,
+      53.66999816894531,
+      69.69000244140625,
+      90.4800033569336,
+      98.95999908447266,
+      98.43000030517578,
+      93.91000366210938,
+      97.25,
+      155.61000061035156,
+      182.67999267578125,
+      195.11000061035156,
+      212.60000610351562,
+      188.07000732421875,
+      152.05999755859375,
+      137.8000030517578,
+      143.11000061035156,
+      128.60000610351562,
+      101.16999816894531,
+      109.79000091552734,
+      104.30000305175781,
+      95.58000183105469,
+      68.83999633789062,
+      71.2699966430664,
+      65.18000030517578,
+      55.380001068115234,
+      49.869998931884766,
+      52.790000915527344,
+      68.70999908447266,
+      66.66999816894531,
+      72.19000244140625,
+      73.0199966430664,
+      68.12000274658203,
+      84.2699966430664,
+      93.16000366210938,
+      106.37999725341797,
+      104.94999694824219,
+      97.62999725341797,
+      74.9000015258789,
+      72.2699966430664,
+      83.4000015258789,
+      90.93000030517578,
+      100.70999908447266,
+      103.5999984741211,
+      112.7699966430664,
+      147.64999389648438,
+      150.66000366210938,
+      152.99000549316406,
+      139.05999755859375,
+      148.3000030517578,
+      130.2899932861328,
+      164.69000244140625,
+      152.89999389648438,
+      145.05999755859375,
+      152.22000122070312,
+      142.99000549316406,
+      155.6699981689453,
+      127.2699966430664,
+      113.91999816894531,
+      116.69000244140625,
+      115.9800033569336
+    ],
+    "Low": [
+      17.200000762939453,
+      18.600000381469727,
+      17.0,
+      16.530000686645508,
+      19.920000076293945,
+      21.5,
+      25.5,
+      23.010000228881836,
+      21.299999237060547,
+      19.1200008392334,
+      18.459999084472656,
+      19.110000610351562,
+      21.219999313354492,
+      30.020000457763672,
+      30.649999618530273,
+      30.260000228881836,
+      34.5099983215332,
+      34.599998474121094,
+      32.779998779296875,
+      30.200000762939453,
+      33.900001525878906,
+      44.79999923706055,
+      64.80000305175781,
+      76.0,
+      82.4000015258789,
+      72.1500015258789,
+      69.88999938964844,
+      88.69000244140625,
+      129.19000244140625,
+      157.8000030517578,
+      166.22000122070312,
+      121.22000122070312,
+      122.97000122070312,
+      112.33000183105469,
+      116.97000122070312,
+      77.66000366210938,
+      74.12000274658203,
+      87.55000305175781,
+      83.75,
+      65.51000213623047,
+      51.90999984741211,
+      47.66999816894531,
+      47.56999969482422,
+      23.209999084472656,
+      32.529998779296875,
+      31.010000228881836,
+      48.060001373291016,
+      47.54999923706055,
+      44.81999969482422,
+      58.790000915527344,
+      38.79999923706055,
+      52.0,
+      78.81999969482422,
+      84.2300033569336,
+      81.81999969482422,
+      70.12999725341797,
+      63.58000183105469,
+      59.66999816894531,
+      63.84000015258789,
+      67.55000305175781,
+      75.44000244140625,
+      91.20999908447266,
+      96.44999694824219,
+      98.08000183105469,
+      136.22000122070312,
+      123.54000091552734,
+      120.19999694824219,
+      108.87000274658203,
+      110.6500015258789,
+      122.55999755859375,
+      131.36000061035156,
+      123.01000213623047,
+      88.01000213623047,
+      90.16000366210938,
+      117.80000305175781,
+      95.86000061035156,
+      94.25,
+      94.13999938964844,
+      104.80000305175781
+    ],
+    "Close": [
+      19.350000381469727,
+      26.290000915527344,
+      17.649999618530273,
+      22.959999084472656,
+      22.440000534057617,
+      29.209999084472656,
+      29.940000534057617,
+      24.799999237060547,
+      22.229999542236328,
+      19.420000076293945,
+      20.6299991607666,
+      22.270000457763672,
+      32.77000045776367,
+      32.220001220703125,
+      40.880001068115234,
+      35.95000076293945,
+      37.81999969482422,
+      35.220001220703125,
+      35.779998779296875,
+      36.029998779296875,
+      47.439998626708984,
+      66.87000274658203,
+      85.83999633789062,
+      91.80000305175781,
+      88.94000244140625,
+      74.1500015258789,
+      89.9800033569336,
+      138.80999755859375,
+      177.6699981689453,
+      165.7100067138672,
+      171.16000366210938,
+      133.8800048828125,
+      133.92999267578125,
+      124.87999725341797,
+      127.0199966430664,
+      91.61000061035156,
+      100.0199966430664,
+      90.66999816894531,
+      88.91999816894531,
+      66.5,
+      58.29999923706055,
+      59.84000015258789,
+      51.86000061035156,
+      40.11000061035156,
+      43.09000015258789,
+      50.349998474121094,
+      61.79999923706055,
+      49.0099983215332,
+      71.30000305175781,
+      62.58000183105469,
+      54.83000183105469,
+      82.04000091552734,
+      81.55000305175781,
+      97.9800033569336,
+      87.7300033569336,
+      75.9000015258789,
+      68.1500015258789,
+      65.31999969482422,
+      69.13999938964844,
+      89.81999969482422,
+      98.97000122070312,
+      98.06999969482422,
+      101.41999816894531,
+      147.44000244140625,
+      146.30999755859375,
+      126.87000274658203,
+      124.54000091552734,
+      116.25,
+      125.18000030517578,
+      149.77999877929688,
+      132.9499969482422,
+      128.88999938964844,
+      96.11000061035156,
+      134.80999755859375,
+      120.58999633789062,
+      96.55999755859375,
+      96.98999786376953,
+      111.91000366210938,
+      114.2699966430664
+    ],
+    "Volume": [
+      152371100,
+      129808900,
+      125413700,
+      157742300,
+      64949500,
+      103886300,
+      178476100,
+      225471900,
+      166478400,
+      177735300,
+      94131800,
+      115739500,
+      216665600,
+      158502900,
+      128587600,
+      206710100,
+      80984700,
+      122944500,
+      156525400,
+      191843200,
+      166461700,
+      191950600,
+      197781600,
+      207435800,
+      205498800,
+      150911700,
+      129258700,
+      257950600,
+      195467900,
+      153067100,
+      115376100,
+      241063200,
+      112696900,
+      142191700,
+      154117700,
+      197992400,
+      192322600,
+      159624100,
+      128547100,
+      153155500,
+      189522200,
+      192932000,
+      129230900,
+      658670200,
+      324772500,
+      259146200,
+      332852300,
+      177256600,
+      339637700,
+      203917900,
+      300856500,
+      288951800,
+      210612300,
+      156685000,
+      163211700,
+      278544500,
+      132048500,
+      217399300,
+      195192100,
+      196080100,
+      245089800,
+      177980600,
+      168137600,
+      178381900,
+      144481700,
+      169243800,
+      129698500,
+      239438000,
+      160209800,
+      256789800,
+      151406100,
+      124048000,
+      382642000,
+      320702400,
+      323097000,
+      213145500,
+      208448600,
+      149575900,
+      63717950
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 6,
+      "1": 6,
+      "2": 6,
+      "3": 7
+    },
+    "buy": {
+      "0": 29,
+      "1": 29,
+      "2": 30,
+      "3": 31
+    },
+    "hold": {
+      "0": 7,
+      "1": 7,
+      "2": 7,
+      "3": 7
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 1.0000001e-05
+    },
+    {
+      "Value": 0.33598
+    },
+    {
+      "Value": 0.33598
+    },
+    {
+      "Value": 1080.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Baillie Gifford and Company",
+      "pctHeld": 0.0228,
+      "Shares": 31167044,
+      "Value": 2154889422
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0176,
+      "Shares": 24137254,
+      "Value": 1668849741
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0128,
+      "Shares": 17464197,
+      "Value": 1207474580
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Morgan Stanley",
+      "pctHeld": 0.0113,
+      "Shares": 15431288,
+      "Value": 1066919252
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.0097,
+      "Shares": 13300918,
+      "Value": 919625470
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Ubs Asset Management Americas Inc",
+      "pctHeld": 0.0081,
+      "Shares": 11024163,
+      "Value": 762210629
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0072000003,
+      "Shares": 9863022,
+      "Value": 681929341
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "HHLR Advisors, LTD",
+      "pctHeld": 0.006,
+      "Shares": 8172247,
+      "Value": 565029157
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "IDG China Venture Capital Fund IV Associates, LP",
+      "pctHeld": 0.006,
+      "Shares": 8183514,
+      "Value": 565808157
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Goldman Sachs Group Inc",
+      "pctHeld": 0.0055,
+      "Shares": 7556226,
+      "Value": 522437465
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 28.94,
+      "environmentScore": 9.52,
+      "socialScore": 11.52,
+      "governanceScore": 7.9,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 2.0,
+      "peerCount": 270,
+      "esgPerformance": "AVG_PERF",
+      "peerGroup": "Retailing",
+      "relatedControversy": [
+        "Customer Incidents;Business Ethics Incidents;Social Supply Chain Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.62,
+        "avg": 18.09100000000001,
+        "max": 35.09
+      },
+      "peerGovernancePerformance": {
+        "min": 1.0,
+        "avg": 4.274017094017093,
+        "max": 9.16
+      },
+      "peerSocialPerformance": {
+        "min": 4.13,
+        "avg": 9.120769230769236,
+        "max": 16.56
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.16,
+        "avg": 3.79974358974359,
+        "max": 13.24
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.8703703703703703,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-05-16",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-09-19",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2026-06-18",
+    "2026-12-18",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "6d2aafeb-ea53-34e7-8579-78741078c30d",
+      "content": {
+        "id": "6d2aafeb-ea53-34e7-8579-78741078c30d",
+        "contentType": "STORY",
+        "title": "Is PDD Holdings (PDD) the Best E-Commerce Stock to Buy According to Analysts?",
+        "description": "",
+        "summary": "We recently published a list of the 12 Best E-Commerce Stocks to Buy According to Analysts. In this article, we are going to take a look at where PDD Holdings Inc. (NASDAQ:PDD) stands against other best e-commerce stocks to buy according to analysts. The E-Commerce Sector and the Shift to Mobile According to a report […]",
+        "pubDate": "2025-02-06T13:20:15Z",
+        "displayTime": "2025-02-06T13:20:15Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Why PDD Holdings (PDD) is Skyrocketing?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c3zXb_ESHlhLtvo4DQEsMA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c4s7yUJhWumTr1Wp_Ah2LA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/pdd-holdings-pdd-best-e-132015197.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/pdd-holdings-pdd-best-e-132015197.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "05cf343e-4cc6-3a1e-a71d-a31faa293910",
+      "content": {
+        "id": "05cf343e-4cc6-3a1e-a71d-a31faa293910",
+        "contentType": "STORY",
+        "title": "Those who invested in PDD Holdings (NASDAQ:PDD) five years ago are up 199%",
+        "description": "",
+        "summary": "PDD Holdings Inc. ( NASDAQ:PDD ) shareholders might be concerned after seeing the share price drop 12% in the last...",
+        "pubDate": "2025-02-06T12:00:17Z",
+        "displayTime": "2025-02-06T12:00:17Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/992331fc596d921e34ccfa3b8813259a",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/00OqBzbQM9NM6aQKBzc4vA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/992331fc596d921e34ccfa3b8813259a",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/AaZVsqIka.7tVyjnKPxpJw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/992331fc596d921e34ccfa3b8813259a",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/those-invested-pdd-holdings-nasdaq-120017861.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/those-invested-pdd-holdings-nasdaq-120017861.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "d9eb3f99-4a72-3169-8f4f-34d4930c19f1",
+      "content": {
+        "id": "d9eb3f99-4a72-3169-8f4f-34d4930c19f1",
+        "contentType": "STORY",
+        "title": "Jim Cramer on PDD Holdings (PDD): “Temu and Shein Are Losers Here”",
+        "description": "",
+        "summary": "We recently published a list of Jim Cramer Tells Viewers To Not Trust Billionaires & Discusses These 11 Stocks. In this article, we are going to take a look at where PDD Holdings Inc. (NASDAQ:PDD) stands against other stocks Jim Cramer discusses. In a recent appearance on CNBC’s Squawk on the Street, Jim Cramer commented […]",
+        "pubDate": "2025-02-05T21:16:13Z",
+        "displayTime": "2025-02-05T21:16:13Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/d246300e28cb36eea299b67b3e75789d",
+          "originalWidth": 600,
+          "originalHeight": 800,
+          "caption": "Jim Cramer on PDD Holdings (PDD): \"Temu and Shein Are Losers Here\"",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/x6X2s4PHR4Prg4iHQ7QqKw--~B/aD04MDA7dz02MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/d246300e28cb36eea299b67b3e75789d",
+              "width": 600,
+              "height": 800,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/LrypM745ZmvnIObvFfVCJw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/d246300e28cb36eea299b67b3e75789d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-pdd-holdings-pdd-211613062.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/jim-cramer-pdd-holdings-pdd-211613062.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "ce54dcd5-e153-35b0-95d1-fbed84c8c900",
+      "content": {
+        "id": "ce54dcd5-e153-35b0-95d1-fbed84c8c900",
+        "contentType": "STORY",
+        "title": "Say Goodbye to Cheap Shein & Temu Hauls--Trump's Tariffs Just Wrecked the Game",
+        "description": "",
+        "summary": "Prices are set to skyrocket, U.S. retailers are cashing in, and China is already hitting back.",
+        "pubDate": "2025-02-05T17:53:29Z",
+        "displayTime": "2025-02-05T17:53:29Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": null,
+        "provider": {
+          "displayName": "GuruFocus.com",
+          "url": "http://www.gurufocus.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/goodbye-cheap-shein-temu-hauls-175329142.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/goodbye-cheap-shein-temu-hauls-175329142.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "96f6c427-ee25-3320-abc4-7b93cfaaa699",
+      "content": {
+        "id": "96f6c427-ee25-3320-abc4-7b93cfaaa699",
+        "contentType": "VIDEO",
+        "title": "USPS accepting Chinese packages again: Alibaba, PDD, JD.com react",
+        "description": "<p>Chinese e-commerce platforms Pinduoduo (<a data-i13n=\"cpos:1;pos:1\" href=\"https://finance.yahoo.com/quote/PDD\">PDD</a>), JD.com (<a data-i13n=\"cpos:2;pos:1\" href=\"https://finance.yahoo.com/quote/JD\">JD</a>), and Alibaba (<a data-i13n=\"cpos:3;pos:1\" href=\"https://finance.yahoo.com/quote/BABA\">BABA</a>) are paring back stock losses, while remaining in the red, after the United States Postal Service (USPS) reversed its decision and will continue to accept inbound packages from China.</p>\n<p>Yahoo Finance reporter <a data-i13n=\"cpos:4;pos:1\" href=\"https://finance.yahoo.com/author/jordan-weissmann/\">Jordan Weissmann</a> covers the latest developments.</p>\n<p>To watch more expert insights and analysis on the latest market action, check out more Catalysts <a data-i13n=\"cpos:5;pos:1\" href=\"https://finance.yahoo.com/videos/series/catalysts/\">here</a>.</p>\n<p><em>This post was written by </em><a data-i13n=\"cpos:6;pos:1\" href=\"https://finance.yahoo.com/author/luke-carberry-mogan/\"><em>Luke Carberry Mogan</em></a><em>.</em></p>",
+        "summary": "Chinese e-commerce platforms Pinduoduo (PDD), JD.com (JD), and Alibaba (BABA) are paring back stock losses, while remaining in the red, after the United States Postal Service (USPS) reversed its decision and will continue to accept inbound packages from China. Yahoo Finance reporter Jordan Weissmann covers the latest developments. To watch more expert insights and analysis on the latest market action, check out more Catalysts&nbsp;here. This post was written by Luke Carberry Mogan.",
+        "pubDate": "2025-02-05T16:10:03Z",
+        "displayTime": "",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-02/8172c4a0-e3db-11ef-8c9a-75d371ce1f27",
+          "originalWidth": 3321,
+          "originalHeight": 1870,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/JVGJqh5JnnPg_N2ggnXRWg--~B/aD0xODcwO3c9MzMyMTthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-02/8172c4a0-e3db-11ef-8c9a-75d371ce1f27",
+              "width": 3321,
+              "height": 1870,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/LTZCljZvDwoA3Bpp3ioTMw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-02/8172c4a0-e3db-11ef-8c9a-75d371ce1f27",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance Video",
+          "url": "https://finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/video/usps-accepting-chinese-packages-again-161003755.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/video/usps-accepting-chinese-packages-again-161003755.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0ca1fc43-40c9-3a9b-8d38-e725933d1211",
+      "content": {
+        "id": "0ca1fc43-40c9-3a9b-8d38-e725933d1211",
+        "contentType": "STORY",
+        "title": "Why PDD Holdings (PDD) Is Skyrocketing?",
+        "description": "",
+        "summary": "We recently published a list of 10 Stocks Jump on Impressive Earnings, Bullish Outlooks. In this article, we are going to take a look at where PDD Holdings Inc. (NASDAQ:PDD) stands against other stocks that have surged on impressive earnings and bullish outlooks. The stock market ended firmer on Tuesday, with all of Wall Street’s […]",
+        "pubDate": "2025-02-05T14:49:39Z",
+        "displayTime": "2025-02-05T14:49:39Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Why PDD Holdings (PDD) is Skyrocketing?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c3zXb_ESHlhLtvo4DQEsMA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c4s7yUJhWumTr1Wp_Ah2LA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/why-pdd-holdings-pdd-skyrocketing-144939767.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-pdd-holdings-pdd-skyrocketing-144939767.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0f8d1a0f-1e5d-3003-a9f2-2e8977972bb7",
+      "content": {
+        "id": "0f8d1a0f-1e5d-3003-a9f2-2e8977972bb7",
+        "contentType": "STORY",
+        "title": "USPS Resumes Accepting Packages From China. Temu Parent PDD Pares Losses.",
+        "description": "",
+        "summary": "Temu parent company PDD stock pared its losses after USPS said it would resume accepting packages from China.",
+        "pubDate": "2025-02-05T14:36:40Z",
+        "displayTime": "2025-02-05T14:36:40Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/0f8d1a0f-1e5d-3003-a9f2-2e8977972bb7/usps-resumes-accepting.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/d9ee2fba0ab77f184260e4d9e892f0bd",
+          "originalWidth": 1000,
+          "originalHeight": 563,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/CgW2z6RuNhiFlJWblv753w--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/d9ee2fba0ab77f184260e4d9e892f0bd",
+              "width": 1000,
+              "height": 563,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/RfiGdA2w24mW.9e1Nho.qA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/d9ee2fba0ab77f184260e4d9e892f0bd",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/news/technology/pdd-stock-temu-news-usps-china-tariffs-de-minimis/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "ecb7dfc6-02a0-314f-8197-9f7c78b98b6a",
+      "content": {
+        "id": "ecb7dfc6-02a0-314f-8197-9f7c78b98b6a",
+        "contentType": "STORY",
+        "title": "PDD Holdings Inc. (PDD): Among the Best Low Risk High Growth Stocks To Invest In Now",
+        "description": "",
+        "summary": "We recently compiled a list of the 12 Best Low Risk High Growth Stocks to Invest In. In this article, we are going to take a look at where PDD Holdings Inc. (NASDAQ:PDD) stands against the other low risk high growth stocks. In the past few days, the reintroduction of tariffs by the US government has […]",
+        "pubDate": "2025-02-05T12:55:52Z",
+        "displayTime": "2025-02-05T12:55:52Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is PDD Holdings Inc. (PDD) the Undervalued Cyclical Stock to Buy Right Now?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c3zXb_ESHlhLtvo4DQEsMA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c4s7yUJhWumTr1Wp_Ah2LA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/pdd-holdings-inc-pdd-among-125552859.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/pdd-holdings-inc-pdd-among-125552859.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "bdb8d6ae-51aa-3dac-94bf-86603338a622",
+      "content": {
+        "id": "bdb8d6ae-51aa-3dac-94bf-86603338a622",
+        "contentType": "STORY",
+        "title": "Why Chinese Stocks Alibaba, Tencent, and PDD Holdings Were Rallying Despite a Tariff War",
+        "description": "",
+        "summary": "Shares of Chinese e-commerce stocks Alibaba (NYSE: BABA), Tencent (OTC: TCEHY), and PDD Holdings (NASDAQ: PDD) were rallying on Tuesday, up 4.7%, 4.1%, and 8.8%, respectively, as of 1 p.m. ET.  It seems counterintuitive that Chinese stocks would be rising, given that China just announced countermeasures today as a response to U.S. President Donald Trump putting a new 10% tariff on goods imported from China.",
+        "pubDate": "2025-02-04T20:12:00Z",
+        "displayTime": "2025-02-04T20:12:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/7795052adc39f79f64bbe2d6a5ff9074",
+          "originalWidth": 6000,
+          "originalHeight": 2997,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/ZxRMdgqmpGGxzGiH16UojA--~B/aD0yOTk3O3c9NjAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/motleyfool.com/7795052adc39f79f64bbe2d6a5ff9074",
+              "width": 6000,
+              "height": 2997,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/BzoJsckZjdBTGd7pHWTX.A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/7795052adc39f79f64bbe2d6a5ff9074",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/02/04/why-chinese-stocks-alibaba-tencent-and-pdd-holding/?source=eptyholnk0000202&utm_source=yahoo-host-full&utm_medium=feed&utm_campaign=article&referring_guid=f4750a6a-9bf1-4842-aecb-44e99b9e70c8",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-chinese-stocks-alibaba-tencent-201200300.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "9828332f-cf26-3783-9416-28f63309d6a5",
+      "content": {
+        "id": "9828332f-cf26-3783-9416-28f63309d6a5",
+        "contentType": "STORY",
+        "title": "Why PDD Holdings Inc. (PDD) Crashed on Monday",
+        "description": "",
+        "summary": "We recently compiled a list of the The 10 Worst-Performing Stocks on Monday. In this article, we are going to take a look at where PDD Holdings Inc. (NASDAQ:PDD) stands against the other stocks. Ten companies kicked off this week’s trading with significant losses, mirroring a wider market pessimism over growing trade tensions. The declines came […]",
+        "pubDate": "2025-02-04T09:03:52Z",
+        "displayTime": "2025-02-04T09:03:52Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Is PDD Holdings Inc. (PDD) the Undervalued Cyclical Stock to Buy Right Now?",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c3zXb_ESHlhLtvo4DQEsMA--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/c4s7yUJhWumTr1Wp_Ah2LA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/39432c8f252ec1ff8c978657224a9958",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/why-pdd-holdings-inc-pdd-090352968.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-pdd-holdings-inc-pdd-090352968.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

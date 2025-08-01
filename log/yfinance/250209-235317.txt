@@ -1,0 +1,109 @@
+2025-02-09 23:53:17,228 - INFO - [N/A] - Job started: exe_id=yfinance_250209-235317
+2025-02-09 23:53:17,233 - INFO - [7294382861379964928] - Processing ticker: AAPL
+2025-02-09 23:53:17,233 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_W7_250209-025238.json
+2025-02-09 23:53:19,033 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:19,034 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_nasdaq100D1_250209-033328.json
+2025-02-09 23:53:19,861 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:19,861 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_D1_250209-025231.json
+2025-02-09 23:53:20,642 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:20,642 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_nasdaq100M30_250209-034728.json
+2025-02-09 23:53:21,697 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:21,697 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_nasdaq100W7_250209-034559.json
+2025-02-09 23:53:22,740 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:22,740 - INFO - [7294382861379964928] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_M30_250209-025304.json
+2025-02-09 23:53:23,774 - INFO - [7294382861379964928] - Imported data for ticker: AAPL
+2025-02-09 23:53:23,775 - INFO - [7294382861379964928] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:23,775 - INFO - [7294382888819101696] - Processing ticker: MSFT
+2025-02-09 23:53:23,775 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_nasdaq100M30_250209-034820.json
+2025-02-09 23:53:24,830 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:24,830 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_nasdaq100W7_250209-034649.json
+2025-02-09 23:53:26,074 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:26,075 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_W7_250209-025239.json
+2025-02-09 23:53:27,061 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:27,061 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_nasdaq100D1_250209-033524.json
+2025-02-09 23:53:27,807 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:27,807 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_M30_250209-025304.json
+2025-02-09 23:53:28,816 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:28,816 - INFO - [7294382888819101696] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_D1_250209-025232.json
+2025-02-09 23:53:29,550 - INFO - [7294382888819101696] - Imported data for ticker: MSFT
+2025-02-09 23:53:29,551 - INFO - [7294382888819101696] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:29,551 - INFO - [7294382913045401600] - Processing ticker: AMZN
+2025-02-09 23:53:29,551 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_M30_250209-025310.json
+2025-02-09 23:53:30,488 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:30,488 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_nasdaq100W7_250209-034555.json
+2025-02-09 23:53:31,614 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:31,615 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_W7_250209-025239.json
+2025-02-09 23:53:32,709 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:32,709 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_nasdaq100M30_250209-034722.json
+2025-02-09 23:53:33,549 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:33,549 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_nasdaq100D1_250209-033323.json
+2025-02-09 23:53:34,181 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:34,181 - INFO - [7294382913045401600] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_D1_250209-025232.json
+2025-02-09 23:53:34,842 - INFO - [7294382913045401600] - Imported data for ticker: AMZN
+2025-02-09 23:53:34,842 - INFO - [7294382913045401600] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:34,842 - INFO - [7294382935237464064] - Processing ticker: GOOGL
+2025-02-09 23:53:34,842 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_W7_250209-025240.json
+2025-02-09 23:53:35,737 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:35,738 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_nasdaq100D1_250209-033321.json
+2025-02-09 23:53:36,445 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:36,445 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_D1_250209-025233.json
+2025-02-09 23:53:37,111 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:37,112 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_nasdaq100M30_250209-034718.json
+2025-02-09 23:53:37,716 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:37,716 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_M30_250209-025311.json
+2025-02-09 23:53:38,319 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:38,319 - INFO - [7294382935237464064] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/GOOGL/GOOGL_yfinance_nasdaq100W7_250209-034553.json
+2025-02-09 23:53:39,545 - INFO - [7294382935237464064] - Imported data for ticker: GOOGL
+2025-02-09 23:53:39,545 - INFO - [7294382935237464064] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:39,545 - INFO - [7294382954963275776] - Processing ticker: FB
+2025-02-09 23:53:39,546 - INFO - [7294382954963275776] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_M30_250209-025314.json
+2025-02-09 23:53:39,553 - ERROR - [7294382954963275776] - Error importing file /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_M30_250209-025314.json: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 173, in import_all_json_files
+    import_json_file(file_path, logger)
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 86, in import_json_file
+    currency=fast_info_data.get('currency'),
+             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-02-09 23:53:39,553 - INFO - [7294382954963275776] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_W7_250209-025301.json
+2025-02-09 23:53:39,559 - ERROR - [7294382954963275776] - Error importing file /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_W7_250209-025301.json: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 173, in import_all_json_files
+    import_json_file(file_path, logger)
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 86, in import_json_file
+    currency=fast_info_data.get('currency'),
+             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-02-09 23:53:39,559 - INFO - [7294382954963275776] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_D1_250209-025236.json
+2025-02-09 23:53:39,564 - ERROR - [7294382954963275776] - Error importing file /home/zitian/llm/my_finance/data/original/yfinance/FB/FB_yfinance_D1_250209-025236.json: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 173, in import_all_json_files
+    import_json_file(file_path, logger)
+  File "/home/zitian/llm/my_finance/ETL/import_data.py", line 86, in import_json_file
+    currency=fast_info_data.get('currency'),
+             ^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-02-09 23:53:39,564 - INFO - [7294382954963275776] - All JSON files imported. Total errors: 3
+2025-02-09 23:53:39,564 - INFO - [7294382955042967552] - Processing ticker: TSLA
+2025-02-09 23:53:39,565 - INFO - [7294382955042967552] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/TSLA/TSLA_yfinance_D1_250209-025237.json
+2025-02-09 23:53:40,435 - INFO - [7294382955042967552] - Imported data for ticker: TSLA
+2025-02-09 23:53:40,435 - INFO - [7294382955042967552] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/TSLA/TSLA_yfinance_W7_250209-025302.json
+2025-02-09 23:53:41,381 - INFO - [7294382955042967552] - Imported data for ticker: TSLA
+2025-02-09 23:53:41,382 - INFO - [7294382955042967552] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/TSLA/TSLA_yfinance_M30_250209-025314.json
+2025-02-09 23:53:41,843 - INFO - [7294382955042967552] - Imported data for ticker: TSLA
+2025-02-09 23:53:41,843 - INFO - [7294382955042967552] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:41,843 - INFO - [7294382964601786368] - Processing ticker: NFLX
+2025-02-09 23:53:41,843 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_M30_250209-025315.json
+2025-02-09 23:53:42,682 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:42,682 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_W7_250209-025303.json
+2025-02-09 23:53:43,878 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:43,878 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_D1_250209-025238.json
+2025-02-09 23:53:44,592 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:44,592 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_nasdaq100D1_250209-033528.json
+2025-02-09 23:53:46,879 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:46,880 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_nasdaq100W7_250209-034653.json
+2025-02-09 23:53:47,946 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:47,946 - INFO - [7294382964601786368] - Processing file: /home/zitian/llm/my_finance/data/original/yfinance/NFLX/NFLX_yfinance_nasdaq100M30_250209-034824.json
+2025-02-09 23:53:48,618 - INFO - [7294382964601786368] - Imported data for ticker: NFLX
+2025-02-09 23:53:48,618 - INFO - [7294382964601786368] - All JSON files imported. Total errors: 0
+2025-02-09 23:53:48,618 - INFO - [N/A] - Job finished: exe_id=yfinance_250209-235317, Processed 7 tickers

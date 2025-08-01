@@ -1,0 +1,326 @@
+2025-02-09 03:45:30,599 - INFO - [N/A] - Job started: exe_id=yfinance_nasdaq100D1_250209-034530
+2025-02-09 03:45:30,601 - INFO - [7294078914295500800] - Ticker ADBE: Data exists (skipped).
+2025-02-09 03:45:30,601 - INFO - [7294078914295500801] - Ticker AMD: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914295500802] - Ticker ABNB: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695104] - Ticker GOOGL: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695105] - Ticker GOOG: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695106] - Ticker AMZN: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695107] - Ticker AEP: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695108] - Ticker AMGN: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695109] - Ticker ADI: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695110] - Ticker ANSS: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695111] - Ticker AAPL: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695112] - Ticker AMAT: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695113] - Ticker APP: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695114] - Ticker ARM: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695115] - Ticker ASML: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695116] - Ticker AZN: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695117] - Ticker ADSK: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695118] - Ticker ADP: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695119] - Ticker AXON: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695120] - Ticker BKR: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695121] - Ticker BIIB: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695122] - Ticker BKNG: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695123] - Ticker AVGO: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695124] - Ticker CDNS: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695125] - Ticker CDW: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695126] - Ticker CHTR: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695127] - Ticker CTSH: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695128] - Ticker CMCSA: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695129] - Ticker CCEP: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695130] - Ticker CEG: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695131] - Ticker CPRT: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695132] - Ticker CSGP: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695133] - Ticker COST: Data exists (skipped).
+2025-02-09 03:45:30,602 - INFO - [7294078914299695134] - Ticker CRWD: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889408] - Ticker CSX: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889409] - Ticker DDOG: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889410] - Ticker DXCM: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889411] - Ticker FANG: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889412] - Ticker DASH: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889413] - Ticker DOCU: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889414] - Ticker EA: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889415] - Ticker EXC: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889416] - Ticker FAST: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889417] - Ticker FTNT: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889418] - Ticker FVRR: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889419] - Ticker FSLY: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889420] - Ticker GEHC: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889421] - Ticker GILD: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889422] - Ticker GFS: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889423] - Ticker HON: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889424] - Ticker IDXX: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889425] - Ticker INTC: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889426] - Ticker INTU: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889427] - Ticker ISRG: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889428] - Ticker KDP: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889429] - Ticker KLAC: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889430] - Ticker LRCX: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889431] - Ticker LIN: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889432] - Ticker LULU: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889433] - Ticker LYFT: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889434] - Ticker MAR: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889435] - Ticker MTCH: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889436] - Ticker MRVL: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889437] - Ticker MELI: Data exists (skipped).
+2025-02-09 03:45:30,603 - INFO - [7294078914303889438] - Ticker META: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914303889439] - Ticker MCHP: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083712] - Ticker MU: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083713] - Ticker MSFT: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083714] - Ticker MSTR: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083715] - Ticker MDLZ: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083716] - Ticker MDB: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083717] - Ticker MNST: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083718] - Ticker NFLX: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083719] - Ticker NVDA: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083720] - Ticker NXPI: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083721] - Ticker ORLY: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083722] - Ticker ODFL: Data exists (skipped).
+2025-02-09 03:45:30,604 - INFO - [7294078914308083723] - Fetching data for ticker: ON (period=1y, interval=1d)
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,510 - WARNING - [7294078914308083723] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:32,512 - INFO - [7294078914308083723] - Ticker ON: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/ON/ON_yfinance_nasdaq100D1_250209-034532.json
+2025-02-09 03:45:32,512 - INFO - [7294078922310815744] - Fetching data for ticker: OKTA (period=1y, interval=1d)
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,550 - WARNING - [7294078922310815744] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:33,552 - INFO - [7294078922310815744] - Ticker OKTA: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/OKTA/OKTA_yfinance_nasdaq100D1_250209-034533.json
+2025-02-09 03:45:33,552 - INFO - [7294078926672891904] - Fetching data for ticker: PCAR (period=1y, interval=1d)
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,390 - WARNING - [7294078926672891904] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:34,393 - INFO - [7294078926672891904] - Ticker PCAR: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PCAR/PCAR_yfinance_nasdaq100D1_250209-034534.json
+2025-02-09 03:45:34,393 - INFO - [7294078930200301568] - Fetching data for ticker: PLTR (period=1y, interval=1d)
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,258 - WARNING - [7294078930200301568] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:35,261 - INFO - [7294078930200301568] - Ticker PLTR: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PLTR/PLTR_yfinance_nasdaq100D1_250209-034535.json
+2025-02-09 03:45:35,261 - INFO - [7294078933840957440] - Fetching data for ticker: PANW (period=1y, interval=1d)
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2024-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2023-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2022-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2021-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2020-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2024-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2023-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2022-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2021-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,074 - WARNING - [7294078933840957440] - Key 2020-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,076 - INFO - [7294078933840957440] - Ticker PANW: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PANW/PANW_yfinance_nasdaq100D1_250209-034536.json
+2025-02-09 03:45:36,076 - INFO - [7294078937259315200] - Fetching data for ticker: PAYX (period=1y, interval=1d)
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2024-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2023-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2022-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2021-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2020-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,898 - WARNING - [7294078937259315200] - Key 2024-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,899 - WARNING - [7294078937259315200] - Key 2023-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,899 - WARNING - [7294078937259315200] - Key 2022-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,899 - WARNING - [7294078937259315200] - Key 2021-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,899 - WARNING - [7294078937259315200] - Key 2020-05-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:36,900 - INFO - [7294078937259315200] - Ticker PAYX: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PAYX/PAYX_yfinance_nasdaq100D1_250209-034536.json
+2025-02-09 03:45:36,900 - INFO - [7294078940715421696] - Fetching data for ticker: PYPL (period=1y, interval=1d)
+2025-02-09 03:45:37,633 - WARNING - [7294078940715421696] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,633 - WARNING - [7294078940715421696] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,633 - WARNING - [7294078940715421696] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,634 - WARNING - [7294078940715421696] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:37,635 - INFO - [7294078940715421696] - Ticker PYPL: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PYPL/PYPL_yfinance_nasdaq100D1_250209-034537.json
+2025-02-09 03:45:37,635 - INFO - [7294078943798235136] - Fetching data for ticker: PDD (period=1y, interval=1d)
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,507 - WARNING - [7294078943798235136] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:38,509 - INFO - [7294078943798235136] - Ticker PDD: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/PDD/PDD_yfinance_nasdaq100D1_250209-034538.json
+2025-02-09 03:45:38,509 - INFO - [7294078947464056832] - Fetching data for ticker: SNAP (period=1y, interval=1d)
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,268 - WARNING - [7294078947464056832] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:39,270 - INFO - [7294078947464056832] - Ticker SNAP: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/SNAP/SNAP_yfinance_nasdaq100D1_250209-034539.json
+2025-02-09 03:45:39,270 - INFO - [7294078950655922176] - Fetching data for ticker: SIRI (period=1y, interval=1d)
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2024-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,114 - WARNING - [7294078950655922176] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,117 - INFO - [7294078950655922176] - Ticker SIRI: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/SIRI/SIRI_yfinance_nasdaq100D1_250209-034540.json
+2025-02-09 03:45:40,117 - INFO - [7294078954208497664] - Fetching data for ticker: TTD (period=1y, interval=1d)
+2025-02-09 03:45:40,896 - WARNING - [7294078954208497664] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,896 - WARNING - [7294078954208497664] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,896 - WARNING - [7294078954208497664] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,896 - WARNING - [7294078954208497664] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,897 - WARNING - [7294078954208497664] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,897 - WARNING - [7294078954208497664] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,897 - WARNING - [7294078954208497664] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,897 - WARNING - [7294078954208497664] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:40,899 - INFO - [7294078954208497664] - Ticker TTD: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/TTD/TTD_yfinance_nasdaq100D1_250209-034540.json
+2025-02-09 03:45:40,899 - INFO - [7294078957488443392] - Fetching data for ticker: TEAM (period=1y, interval=1d)
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2024-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2023-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2022-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2021-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2020-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2024-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2023-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2022-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2021-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,616 - WARNING - [7294078957488443392] - Key 2020-06-30 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:41,618 - INFO - [7294078957488443392] - Ticker TEAM: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/TEAM/TEAM_yfinance_nasdaq100D1_250209-034541.json
+2025-02-09 03:45:41,618 - INFO - [7294078960504147968] - Fetching data for ticker: UBER (period=1y, interval=1d)
+2025-02-09 03:45:42,354 - WARNING - [7294078960504147968] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,355 - WARNING - [7294078960504147968] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:42,357 - INFO - [7294078960504147968] - Ticker UBER: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/UBER/UBER_yfinance_nasdaq100D1_250209-034542.json
+2025-02-09 03:45:42,357 - INFO - [7294078963603738624] - Fetching data for ticker: WBD (period=1y, interval=1d)
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,111 - WARNING - [7294078963603738624] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:43,112 - INFO - [7294078963603738624] - Ticker WBD: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/WBD/WBD_yfinance_nasdaq100D1_250209-034543.json
+2025-02-09 03:45:43,112 - INFO - [7294078966770438144] - Fetching data for ticker: WBA (period=1y, interval=1d)
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2024-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2023-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2022-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2021-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2020-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2024-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,004 - WARNING - [7294078966770438144] - Key 2023-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,005 - WARNING - [7294078966770438144] - Key 2022-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,005 - WARNING - [7294078966770438144] - Key 2021-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,005 - WARNING - [7294078966770438144] - Key 2020-08-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,006 - INFO - [7294078966770438144] - Ticker WBA: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/WBA/WBA_yfinance_nasdaq100D1_250209-034544.json
+2025-02-09 03:45:44,006 - INFO - [7294078970520145920] - Fetching data for ticker: WDAY (period=1y, interval=1d)
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,833 - WARNING - [7294078970520145920] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:44,834 - INFO - [7294078970520145920] - Ticker WDAY: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/WDAY/WDAY_yfinance_nasdaq100D1_250209-034544.json
+2025-02-09 03:45:44,835 - INFO - [7294078973997223936] - Fetching data for ticker: XEL (period=1y, interval=1d)
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,666 - WARNING - [7294078973997223936] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:45,668 - INFO - [7294078973997223936] - Ticker XEL: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/XEL/XEL_yfinance_nasdaq100D1_250209-034545.json
+2025-02-09 03:45:45,668 - INFO - [7294078977491079168] - Fetching data for ticker: RBLX (period=1y, interval=1d)
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,473 - WARNING - [7294078977491079168] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:46,476 - INFO - [7294078977491079168] - Ticker RBLX: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/RBLX/RBLX_yfinance_nasdaq100D1_250209-034546.json
+2025-02-09 03:45:46,476 - INFO - [7294078980880076800] - Fetching data for ticker: ROP (period=1y, interval=1d)
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,270 - WARNING - [7294078980880076800] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,272 - INFO - [7294078980880076800] - Ticker ROP: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/ROP/ROP_yfinance_nasdaq100D1_250209-034547.json
+2025-02-09 03:45:47,272 - INFO - [7294078984218742784] - Fetching data for ticker: VEEV (period=1y, interval=1d)
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2024-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2023-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2022-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,988 - WARNING - [7294078984218742784] - Key 2021-01-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:47,990 - INFO - [7294078984218742784] - Ticker VEEV: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/VEEV/VEEV_yfinance_nasdaq100D1_250209-034547.json
+2025-02-09 03:45:47,990 - INFO - [7294078987230253056] - Fetching data for ticker: VRSN (period=1y, interval=1d)
+2025-02-09 03:45:48,700 - WARNING - [7294078987230253056] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,700 - WARNING - [7294078987230253056] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,700 - WARNING - [7294078987230253056] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,700 - WARNING - [7294078987230253056] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,700 - WARNING - [7294078987230253056] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,701 - WARNING - [7294078987230253056] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,701 - WARNING - [7294078987230253056] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,701 - WARNING - [7294078987230253056] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:48,703 - INFO - [7294078987230253056] - Ticker VRSN: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/VRSN/VRSN_yfinance_nasdaq100D1_250209-034548.json
+2025-02-09 03:45:48,703 - INFO - [7294078990220791808] - Fetching data for ticker: VRTX (period=1y, interval=1d)
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2023-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2022-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2021-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,486 - WARNING - [7294078990220791808] - Key 2020-12-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:49,487 - INFO - [7294078990220791808] - Ticker VRTX: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/VRTX/VRTX_yfinance_nasdaq100D1_250209-034549.json
+2025-02-09 03:45:49,487 - INFO - [7294078993509126144] - Fetching data for ticker: ZS (period=1y, interval=1d)
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2024-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2023-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2022-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2021-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2020-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2024-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2023-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2022-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2021-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,202 - WARNING - [7294078993509126144] - Key 2020-07-31 00:00:00 (type <class 'pandas._libs.tslibs.timestamps.Timestamp'>) is not a valid JSON key type; converting key to string and setting its value to null
+2025-02-09 03:45:50,203 - INFO - [7294078993509126144] - Ticker ZS: Data saved at /home/zitian/llm/my_finance/data/original/yfinance/ZS/ZS_yfinance_nasdaq100D1_250209-034550.json
+2025-02-09 03:45:50,203 - INFO - [N/A] - Job finished: exe_id=yfinance_nasdaq100D1_250209-034530
+2025-02-09 03:45:50,203 - INFO - [N/A] - Summary: Processed=100, Success=100, Skipped=77, Errors=0

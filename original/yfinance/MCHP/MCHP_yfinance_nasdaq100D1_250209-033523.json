@@ -1,0 +1,805 @@
+{
+  "ticker": "MCHP",
+  "period": "1y",
+  "interval": "1d",
+  "fetched_at": "2025-02-09T03:35:06.684569",
+  "info": {},
+  "fast_info": "lazy-loading dict with keys = ['currency', 'dayHigh', 'dayLow', 'exchange', 'fiftyDayAverage', 'lastPrice', 'lastVolume', 'marketCap', 'open', 'previousClose', 'quoteType', 'regularMarketPreviousClose', 'shares', 'tenDayAverageVolume', 'threeMonthAverageVolume', 'timezone', 'twoHundredDayAverage', 'yearChange', 'yearHigh', 'yearLow']",
+  "history": {},
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-03-31 00:00:00": null,
+    "2023-03-31 00:00:00": null,
+    "2022-03-31 00:00:00": null,
+    "2021-03-31 00:00:00": null,
+    "2020-03-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-03-31 00:00:00": null,
+    "2023-03-31 00:00:00": null,
+    "2022-03-31 00:00:00": null,
+    "2021-03-31 00:00:00": null,
+    "2020-03-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 5,
+      "1": 5,
+      "2": 5,
+      "3": 5
+    },
+    "buy": {
+      "0": 13,
+      "1": 13,
+      "2": 13,
+      "3": 13
+    },
+    "hold": {
+      "0": 7,
+      "1": 7,
+      "2": 7,
+      "3": 8
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 1,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.02106
+    },
+    {
+      "Value": 0.98225
+    },
+    {
+      "Value": 1.00338
+    },
+    {
+      "Value": 1558.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.122600004,
+      "Shares": 66735107,
+      "Value": 5978798236
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0853,
+      "Shares": 46432684,
+      "Value": 4159904159
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.044499997,
+      "Shares": 24215690,
+      "Value": 2169483667
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "T. Rowe Price Investment Management, Inc.",
+      "pctHeld": 0.0419,
+      "Shares": 22807980,
+      "Value": 2043366928
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Dodge & Cox Inc",
+      "pctHeld": 0.04,
+      "Shares": 21755868,
+      "Value": 1949108214
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Aristotle Capital Management, LLC",
+      "pctHeld": 0.03,
+      "Shares": 16310712,
+      "Value": 1461276688
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Ameriprise Financial, Inc.",
+      "pctHeld": 0.023699999,
+      "Shares": 12880867,
+      "Value": 1153996874
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.0225,
+      "Shares": 12238932,
+      "Value": 1096485917
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.0221,
+      "Shares": 12056451,
+      "Value": 1080137445
+    },
+    {
+      "Date Reported": "2023-06-30 00:00:00",
+      "Holder": "Principal Financial Group, Inc.",
+      "pctHeld": 0.016900001,
+      "Shares": 9193321,
+      "Value": 823629628
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 29.56,
+      "environmentScore": 14.04,
+      "socialScore": 8.07,
+      "governanceScore": 7.44,
+      "ratingYear": 2025,
+      "ratingMonth": 1,
+      "highestControversy": 1.0,
+      "peerCount": 120,
+      "esgPerformance": "AVG_PERF",
+      "peerGroup": "Semiconductors",
+      "relatedControversy": [
+        "Customer Incidents;Operations Incidents;Employee Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 8.4,
+        "avg": 23.415333333333344,
+        "max": 40.69
+      },
+      "peerGovernancePerformance": {
+        "min": 2.62,
+        "avg": 5.332600000000001,
+        "max": 8.77
+      },
+      "peerSocialPerformance": {
+        "min": 2.41,
+        "avg": 5.937200000000001,
+        "max": 10.28
+      },
+      "peerEnvironmentPerformance": {
+        "min": 2.6,
+        "avg": 7.631600000000001,
+        "max": 17.41
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.5666666666666667,
+        "max": 3.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-02-14",
+    "2025-02-21",
+    "2025-02-28",
+    "2025-03-07",
+    "2025-03-14",
+    "2025-03-21",
+    "2025-04-17",
+    "2025-05-16",
+    "2025-06-20",
+    "2025-07-18",
+    "2025-08-15",
+    "2025-09-19",
+    "2026-01-16",
+    "2026-03-20",
+    "2027-01-15"
+  ],
+  "news": [
+    {
+      "id": "285a4cec-a2af-3203-bc41-62854605e473",
+      "content": {
+        "id": "285a4cec-a2af-3203-bc41-62854605e473",
+        "contentType": "STORY",
+        "title": "Microchip price target lowered to $75 from $85 at B. Riley",
+        "description": "",
+        "summary": "B. Riley analyst Craig Ellis lowered the firm’s price target on Microchip (MCHP) to $75 from $85 and keeps a Buy rating on the shares. The company’s fiscal Q3 beat the lowered guidance, but the Q4 outlook is well below estimates as Microchip looks to extinguish excess inventory, the analyst tells investors in a research note. Published first on TheFly – the ultimate source for real-time, market-moving breaking financial news. Try Now>> See the top stocks recommended by analysts >> Read More on M",
+        "pubDate": "2025-02-08T14:11:45Z",
+        "displayTime": "2025-02-08T14:11:45Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/tipranks_452/d9491735df358cd245e88d03b92dc707",
+          "originalWidth": 192,
+          "originalHeight": 192,
+          "caption": "https://www.tipranks.com/news/the-fly/microchip-price-target-lowered-to-75-from-85-at-b-riley",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/SAICltmuLgmQaK.qiQB0Cg--~B/aD0xOTI7dz0xOTI7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/d9491735df358cd245e88d03b92dc707",
+              "width": 192,
+              "height": 192,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Xk16VtLFBk1WsVqRmCpYTQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/d9491735df358cd245e88d03b92dc707",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "TipRanks",
+          "url": "https://www.tipranks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-price-target-lowered-75-141145136.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-price-target-lowered-75-141145136.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "70edaea1-dd3a-33e8-8850-b054e8b936ee",
+      "content": {
+        "id": "70edaea1-dd3a-33e8-8850-b054e8b936ee",
+        "contentType": "STORY",
+        "title": "Bearish: Analysts Just Cut Their Microchip Technology Incorporated (NASDAQ:MCHP) Revenue and EPS estimates",
+        "description": "",
+        "summary": "The latest analyst coverage could presage a bad day for Microchip Technology Incorporated ( NASDAQ:MCHP ), with the...",
+        "pubDate": "2025-02-08T13:57:43Z",
+        "displayTime": "2025-02-08T13:57:43Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/ce85212c51bd88fd1fdcd0febb642a4a",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/5Tyy8Oun7d69.ebTzNgpXA--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/ce85212c51bd88fd1fdcd0febb642a4a",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/sdqM2NN9Xy0ai0FXQvYklw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/ce85212c51bd88fd1fdcd0febb642a4a",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/bearish-analysts-just-cut-microchip-135743447.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/bearish-analysts-just-cut-microchip-135743447.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "e295f1ae-d44c-3487-99a6-bef28acac229",
+      "content": {
+        "id": "e295f1ae-d44c-3487-99a6-bef28acac229",
+        "contentType": "STORY",
+        "title": "Why Microchip Technology (MCHP) Shares Are Getting Obliterated Today",
+        "description": "",
+        "summary": "Shares of analog chipmaker Microchip Technology (NASDAQ:MCHP) fell 7% in the morning session after the company reported disappointing fourth-quarter results, with revenue declining 41.9% compared to the previous year, missing Wall Street expectations. Likewise, its revenue guidance for the next quarter fell short of Wall Street's estimates. Management attributed the decline to ongoing inventory destocking at customers and channel partners, stating, 'We believe the correction cycle is still not c",
+        "pubDate": "2025-02-07T20:02:34Z",
+        "displayTime": "2025-02-07T20:02:34Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/stockstory_922/ec1831763a66ec6e3ce3f0e016f4f3d9",
+          "originalWidth": 1400,
+          "originalHeight": 700,
+          "caption": "MCHP Cover Image",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/HZfsV9QMpSB.Nt8PafYLsw--~B/aD03MDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/stockstory_922/ec1831763a66ec6e3ce3f0e016f4f3d9",
+              "width": 1400,
+              "height": 700,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/OxAnF8FT7mMJxswtTHOzSg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/stockstory_922/ec1831763a66ec6e3ce3f0e016f4f3d9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "StockStory",
+          "url": "https://stockstory.org/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/why-microchip-technology-mchp-shares-200234870.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/why-microchip-technology-mchp-shares-200234870.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "415cfbb7-c8d6-3c9f-86ec-e93eef548a5a",
+      "content": {
+        "id": "415cfbb7-c8d6-3c9f-86ec-e93eef548a5a",
+        "contentType": "STORY",
+        "title": "Microchip Q3 Earnings & Sales Lag Estimates, Shares Fall on Weak View",
+        "description": "",
+        "summary": "MCHP's third-quarter fiscal 2025 results suffer from a significant revenue drop, sluggish guidance and demand challenges across key markets.",
+        "pubDate": "2025-02-07T15:41:00Z",
+        "displayTime": "2025-02-07T15:41:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/c148afeaf671cd9b76653364f8737563",
+          "originalWidth": 635,
+          "originalHeight": 400,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/YT7fN0e2Shv68o.6OVnGmA--~B/aD00MDA7dz02MzU7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c148afeaf671cd9b76653364f8737563",
+              "width": 635,
+              "height": 400,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/s92i05mNfpgSAUlGy2OXZw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/c148afeaf671cd9b76653364f8737563",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-q3-earnings-sales-lag-154100014.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-q3-earnings-sales-lag-154100014.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "b88b4493-d79c-31e0-bf0e-0c6e34e3314f",
+      "content": {
+        "id": "b88b4493-d79c-31e0-bf0e-0c6e34e3314f",
+        "contentType": "STORY",
+        "title": "Q3 2025 Microchip Technology Inc Earnings Call",
+        "description": "",
+        "summary": "Q3 2025 Microchip Technology Inc Earnings Call",
+        "pubDate": "2025-02-07T12:47:41Z",
+        "displayTime": "2025-02-07T12:47:41Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": null,
+        "provider": {
+          "displayName": "Thomson Reuters StreetEvents",
+          "url": "https://financial.thomsonreuters.com/en.html"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/q3-2025-microchip-technology-inc-124741926.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/q3-2025-microchip-technology-inc-124741926.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0704343e-3df1-3131-86e9-a9c4960327d4",
+      "content": {
+        "id": "0704343e-3df1-3131-86e9-a9c4960327d4",
+        "contentType": "STORY",
+        "title": "Microchip Technology Inc (MCHP) Q3 2025 Earnings Call Highlights: Navigating Revenue Challenges ...",
+        "description": "",
+        "summary": "Despite a decline in net sales, Microchip Technology Inc (MCHP) focuses on innovation and efficiency to drive future growth.",
+        "pubDate": "2025-02-07T07:24:00Z",
+        "displayTime": "2025-02-07T07:24:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/us.finance.gurufocus/ea7616d596abc64cda5d5b26c4da6fff",
+          "originalWidth": 400,
+          "originalHeight": 400,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Wk1gCoobXx.dX9mEaPiX5A--~B/aD00MDA7dz00MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/ea7616d596abc64cda5d5b26c4da6fff",
+              "width": 400,
+              "height": 400,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/2Pp5vM3GzCHSsJwGEMaMKA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/ea7616d596abc64cda5d5b26c4da6fff",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "GuruFocus.com",
+          "url": "http://www.gurufocus.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-inc-mchp-q3-072400061.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-inc-mchp-q3-072400061.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "9934ccea-77cc-3532-af0f-5d701fd5fda6",
+      "content": {
+        "id": "9934ccea-77cc-3532-af0f-5d701fd5fda6",
+        "contentType": "STORY",
+        "title": "Microchip Technology Incorporated (MCHP): Among The Chip Stocks In Focus Amid Tech Selloff",
+        "description": "",
+        "summary": "We recently compiled a list of the 35 Chip Stocks In Focus Amid Tech Selloff. In this article, we are going to take a look at where Microchip Technology Incorporated (NASDAQ:MCHP) stands against the other chip stocks. The semiconductor industry is on a trajectory of rapid growth, with global revenues expected to exceed $1 trillion by […]",
+        "pubDate": "2025-02-07T04:31:57Z",
+        "displayTime": "2025-02-07T04:31:57Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/c3d6a9f83df1a6a2419703d8cb84487c",
+          "originalWidth": 1456,
+          "originalHeight": 816,
+          "caption": "Microchip Technology (MCHP): Jim Cramer Warns of Challenges Amid Auto Industry Troubles",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/wqix4EWHXqJ2.Y7lljVJVg--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/c3d6a9f83df1a6a2419703d8cb84487c",
+              "width": 1456,
+              "height": 816,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/oUI3WC_qStqYXosOsppgCQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/c3d6a9f83df1a6a2419703d8cb84487c",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Insider Monkey",
+          "url": "http://www.insidermonkey.com"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-incorporated-mchp-among-043157547.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-incorporated-mchp-among-043157547.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f922a74a-2dfd-323b-8a31-0d4c2f55636a",
+      "content": {
+        "id": "f922a74a-2dfd-323b-8a31-0d4c2f55636a",
+        "contentType": "STORY",
+        "title": "Here's What Key Metrics Tell Us About Microchip Tech (MCHP) Q3 Earnings",
+        "description": "",
+        "summary": "Although the revenue and EPS for Microchip Tech (MCHP) give a sense of how its business performed in the quarter ended December 2024, it might be worth considering how some key metrics compare with Wall Street estimates and the year-ago numbers.",
+        "pubDate": "2025-02-06T23:00:11Z",
+        "displayTime": "2025-02-06T23:00:11Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/432476d296d64c50172213c0415587c9",
+          "originalWidth": 1000,
+          "originalHeight": 603,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Fs_R4sd8jCoOMib958Znmg--~B/aD02MDM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/zacks.com/432476d296d64c50172213c0415587c9",
+              "width": 1000,
+              "height": 603,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/VHlzTcmp5MiZoTQkdAhz1A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/432476d296d64c50172213c0415587c9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/heres-key-metrics-tell-us-230011952.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/heres-key-metrics-tell-us-230011952.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "7a0e3508-a5ac-3b64-af42-6e0786f8bae1",
+      "content": {
+        "id": "7a0e3508-a5ac-3b64-af42-6e0786f8bae1",
+        "contentType": "STORY",
+        "title": "Microchip forecasts dour quarterly results as customers reduce excess inventory",
+        "description": "",
+        "summary": "Chipmaker Microchip Technology forecast fourth-quarter net sales and profit below Wall Street estimates on Thursday, anticipating tepid demand as customers in the automotive market still work on clearing excess inventory. Shares of the Chandler, Arizona-based company fell nearly 5% in extended trading. Automakers had stocked up chips during the pandemic to avoid a supply crunch, but now are grappling with an inventory glut due to lower demand.",
+        "pubDate": "2025-02-06T22:37:22Z",
+        "displayTime": "2025-02-06T22:37:22Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": null,
+        "provider": {
+          "displayName": "Reuters",
+          "url": "http://www.reuters.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-forecasts-dour-quarterly-results-223722914.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-forecasts-dour-quarterly-results-223722914.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f1759772-26a7-3330-b452-779c9f37a522",
+      "content": {
+        "id": "f1759772-26a7-3330-b452-779c9f37a522",
+        "contentType": "STORY",
+        "title": "Microchip Technology (MCHP) Misses Q3 Earnings and Revenue Estimates",
+        "description": "",
+        "summary": "Microchip Tech (MCHP) delivered earnings and revenue surprises of -28.57% and 2.02%, respectively, for the quarter ended December 2024. Do the numbers hold clues to what lies ahead for the stock?",
+        "pubDate": "2025-02-06T22:30:16Z",
+        "displayTime": "2025-02-06T22:30:16Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/26a86d59f0e8f1e82a35a92ae5684cd9",
+          "originalWidth": 900,
+          "originalHeight": 845,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/gUf3JPAiwp3PVjuDKftvaA--~B/aD04NDU7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/26a86d59f0e8f1e82a35a92ae5684cd9",
+              "width": 900,
+              "height": 845,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/eCx50FHAThtC2odHVlyBEw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/26a86d59f0e8f1e82a35a92ae5684cd9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-mchp-misses-q3-223016178.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microchip-technology-mchp-misses-q3-223016178.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

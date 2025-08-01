@@ -1,8 +1,10 @@
 # YFinance Magnificent 7 Configuration
 # Data source: Yahoo Finance via yfinance library
+job: yfinance_m7
 source: yfinance
+description: "Fetch data for the 7 major US stocks (using yfinance library)"
 
-# Magnificent 7 stock tickers
+# Magnificent 7 stock tickers (updated to include META instead of FB)
 tickers:
   - AAPL    # Apple Inc.
   - MSFT    # Microsoft Corporation

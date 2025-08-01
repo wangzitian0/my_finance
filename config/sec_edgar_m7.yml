@@ -20,6 +20,7 @@ count: 8
 
 # SEC filing types to collect
 file_types:
-  - "10-K"    # Annual reports
-  - "10-Q"    # Quarterly reports
-  - "8-K"     # Current reports
+  - "10K"    # Annual reports
+  - "10Q"    # Quarterly reports
+  - "8K"     # Current reports
+  - "13F"    # Institutional investment reports
