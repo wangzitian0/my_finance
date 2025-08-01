@@ -14,6 +14,11 @@ import yfinance as yf
 import yaml
 import logging  # Needed for LoggerAdapter and our custom stream
 
+# Add project root to path for imports
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 from common.logger import setup_logger
 from common.progress import create_progress_bar
 from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
