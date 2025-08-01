@@ -1,0 +1,25 @@
+# YFinance Magnificent 7 Configuration
+# Data source: Yahoo Finance via yfinance library
+source: yfinance
+
+# Magnificent 7 stock tickers
+tickers:
+  - AAPL    # Apple Inc.
+  - MSFT    # Microsoft Corporation
+  - AMZN    # Amazon.com Inc.
+  - GOOGL   # Alphabet Inc. Class A
+  - TSLA    # Tesla Inc.
+  - NFLX    # Netflix Inc.
+  - META    # Meta Platforms Inc.
+
+# Data collection periods and intervals
+data_periods:
+  - oid: m7_quarterly_1y
+    period: 1y
+    interval: 1d
+  - oid: m7_monthly_5y
+    period: 5y
+    interval: 1wk
+  - oid: m7_daily_3mo
+    period: 3mo
+    interval: 1d
