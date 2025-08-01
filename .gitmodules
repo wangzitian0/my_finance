@@ -1,5 +1,3 @@
-# Submodule removed - data is now managed as regular directory
-# M7 data is tracked in git, larger datasets are gitignored
-# [submodule "data"]
-# 	path = data
-# 	url = https://github.com/wangzitian0/my_finance_data.git
+[submodule "data"]
+	path = data
+	url = https://github.com/wangzitian0/my_finance_data.git
