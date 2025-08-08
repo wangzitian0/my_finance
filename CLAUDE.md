@@ -195,8 +195,39 @@ PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
 Co-Authored-By: Claude <noreply@anthropic.com>"
 git push --force-with-lease
 
-# 5. Clean shutdown
+# 5. AFTER MR IS MERGED: Clean up branches
+pixi run cleanup-branches-auto  # Auto-cleanup merged branches
+
+# 6. Clean shutdown
 pixi run shutdown-all
+```
+
+### Branch Cleanup (MANDATORY after MR merge)
+
+**Automated branch cleanup for merged PRs:**
+
+```bash
+# Check what would be cleaned up (safe)
+pixi run cleanup-branches-dry-run
+
+# Interactive cleanup with confirmation
+pixi run cleanup-branches
+
+# Automatic cleanup (for CI or regular maintenance)
+pixi run cleanup-branches-auto
+```
+
+**Manual cleanup if needed:**
+```bash
+# Delete remote branch
+git push origin --delete feature/branch-name
+
+# Delete local branch
+git branch -d feature/branch-name  # Safe delete
+git branch -D feature/branch-name  # Force delete if needed
+
+# Prune remote references
+git remote prune origin
 ```
 
 ### Session Management (CRITICAL)

@@ -58,6 +58,12 @@ setup-graph-rag = "python setup_graph_rag.py"
 demo-graph-rag = "python demo_graph_rag.py"
 test-graph-rag = "python test_graph_rag.py"
 
+# Git workflow optimization tasks
+cleanup-branches = "python scripts/cleanup_merged_branches.py --interactive"
+cleanup-branches-auto = "python scripts/cleanup_merged_branches.py --auto"
+cleanup-branches-dry-run = "python scripts/cleanup_merged_branches.py --dry-run"
+install-git-hooks = "python scripts/install_git_hooks.py"
+
 # --- Environment Management (Ansible) ---
 # Initial environment setup
 setup-env = "pip install ansible psutil && ansible-playbook ansible/init.yml --ask-become-pass"
