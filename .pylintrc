@@ -1,0 +1,37 @@
+[MASTER]
+# Ignore the pixi environment directory to avoid dependency conflicts
+ignore=.pixi
+
+[MESSAGES CONTROL]
+# Disable warnings that are common in data science projects
+disable=missing-docstring,
+        too-many-arguments,
+        too-many-locals,
+        too-many-branches,
+        too-many-statements,
+        import-error,
+        no-name-in-module
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=88
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+# Maximum number of locals for function / method body
+max-locals=20
+# Maximum number of return / yield for function / method body
+max-returns=10
+# Maximum number of branch for function / method body
+max-branches=15
+# Maximum number of statements in function / method body
+max-statements=50
+
+[IMPORTS]
+# List of modules that can be imported at any level, not just the top level
+allow-any-import-level=
+
+[EXCEPTIONS]
+# Exceptions that will emit a warning when being caught
+overgeneral-exceptions=Exception

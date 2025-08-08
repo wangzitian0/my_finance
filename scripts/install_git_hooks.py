@@ -12,21 +12,22 @@ import stat
 import subprocess
 from pathlib import Path
 
+
 def install_post_merge_hook():
     """Install post-merge hook to clean up branches after pulling main."""
-    
+
     # Find git directory (could be .git or .git file in worktree)
-    git_dir = Path('.git')
+    git_dir = Path(".git")
     if git_dir.is_file():
         # This is a worktree, read the actual git dir
-        with open(git_dir, 'r') as f:
-            git_dir = Path(f.read().split(': ')[1].strip())
-    
-    hooks_dir = git_dir / 'hooks'
+        with open(git_dir, "r") as f:
+            git_dir = Path(f.read().split(": ")[1].strip())
+
+    hooks_dir = git_dir / "hooks"
     hooks_dir.mkdir(exist_ok=True)
-    
-    post_merge_hook = hooks_dir / 'post-merge'
-    
+
+    post_merge_hook = hooks_dir / "post-merge"
+
     hook_content = """#!/bin/sh
 # Post-merge hook: Clean up merged branches
 # This runs after a successful git merge (including git pull)
@@ -51,28 +52,29 @@ if [ "$current_branch" = "main" ] || [ "$current_branch" = "master" ]; then
     echo "✅ Post-merge cleanup completed"
 fi
 """
-    
-    with open(post_merge_hook, 'w') as f:
+
+    with open(post_merge_hook, "w") as f:
         f.write(hook_content)
-    
+
     # Make executable
     os.chmod(post_merge_hook, stat.S_IRWXU | stat.S_IRGRP | stat.S_IROTH)
-    
+
     print(f"✅ Installed post-merge hook: {post_merge_hook}")
+
 
 def install_pre_push_hook():
     """Install pre-push hook to verify branch is up to date."""
-    
-    git_dir = Path('.git')
+
+    git_dir = Path(".git")
     if git_dir.is_file():
-        with open(git_dir, 'r') as f:
-            git_dir = Path(f.read().split(': ')[1].strip())
-    
-    hooks_dir = git_dir / 'hooks'
+        with open(git_dir, "r") as f:
+            git_dir = Path(f.read().split(": ")[1].strip())
+
+    hooks_dir = git_dir / "hooks"
     hooks_dir.mkdir(exist_ok=True)
-    
-    pre_push_hook = hooks_dir / 'pre-push'
-    
+
+    pre_push_hook = hooks_dir / "pre-push"
+
     hook_content = """#!/bin/sh
 # Pre-push hook: Verify branch status before push
 
@@ -124,28 +126,29 @@ fi
 
 echo "✅ Pre-push checks passed"
 """
-    
-    with open(pre_push_hook, 'w') as f:
+
+    with open(pre_push_hook, "w") as f:
         f.write(hook_content)
-    
+
     # Make executable
     os.chmod(pre_push_hook, stat.S_IRWXU | stat.S_IRGRP | stat.S_IROTH)
-    
+
     print(f"✅ Installed pre-push hook: {pre_push_hook}")
+
 
 def install_commit_msg_hook():
     """Install commit-msg hook to ensure proper format."""
-    
-    git_dir = Path('.git')
+
+    git_dir = Path(".git")
     if git_dir.is_file():
-        with open(git_dir, 'r') as f:
-            git_dir = Path(f.read().split(': ')[1].strip())
-    
-    hooks_dir = git_dir / 'hooks'
+        with open(git_dir, "r") as f:
+            git_dir = Path(f.read().split(": ")[1].strip())
+
+    hooks_dir = git_dir / "hooks"
     hooks_dir.mkdir(exist_ok=True)
-    
-    commit_msg_hook = hooks_dir / 'commit-msg'
-    
+
+    commit_msg_hook = hooks_dir / "commit-msg"
+
     hook_content = """#!/bin/sh
 # Commit message hook: Ensure proper commit format per CLAUDE.md
 
@@ -197,39 +200,41 @@ fi
 
 echo "✅ Commit message format is valid"
 """
-    
-    with open(commit_msg_hook, 'w') as f:
+
+    with open(commit_msg_hook, "w") as f:
         f.write(hook_content)
-    
+
     # Make executable
     os.chmod(commit_msg_hook, stat.S_IRWXU | stat.S_IRGRP | stat.S_IROTH)
-    
+
     print(f"✅ Installed commit-msg hook: {commit_msg_hook}")
+
 
 def main():
     """Install all Git hooks."""
     print("🔧 Installing Git hooks for workflow optimization...")
-    
+
     try:
         install_post_merge_hook()
         install_pre_push_hook()
         install_commit_msg_hook()
-        
+
         print("\n🎉 All Git hooks installed successfully!")
         print("\nInstalled hooks:")
         print("  • post-merge: Cleans up merged branches after pulling main")
         print("  • pre-push: Verifies branch status before pushing")
         print("  • commit-msg: Ensures proper commit message format")
-        
+
         print("\n💡 To test the hooks:")
         print("  pixi run cleanup-branches-dry-run  # Test branch cleanup")
         print("  git commit --amend                 # Test commit message validation")
-        
+
     except Exception as e:
         print(f"❌ Failed to install Git hooks: {e}")
         return 1
-    
+
     return 0
+
 
 if __name__ == "__main__":
     exit(main())
