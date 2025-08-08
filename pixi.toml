@@ -55,6 +55,14 @@ typecheck = "mypy ."
 test = "pytest"
 test-coverage = "pytest --cov"
 
+# Metadata management tasks
+metadata-list = "python scripts/manage_metadata.py list"
+metadata-rebuild = "python scripts/manage_metadata.py rebuild"
+metadata-index = "python scripts/manage_metadata.py index"
+metadata-failures = "python scripts/manage_metadata.py failures"
+metadata-cleanup = "python scripts/manage_metadata.py cleanup"
+retry-failed = "python scripts/retry_failed.py"
+
 # Strategy Engine tasks (NEW)
 validate-strategy = "python strategy/validator.py"
 generate-report = "python strategy/validator.py && echo 'Reports saved in data/reports/'"

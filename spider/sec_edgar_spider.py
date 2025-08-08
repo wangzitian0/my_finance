@@ -31,6 +31,7 @@ from datetime import datetime, timedelta
 import yaml
 from secedgar import FilingType, filings
 from tqdm import tqdm
+from common.metadata_manager import MetadataManager
 
 # 设置日志输出级别为 DEBUG
 logging.basicConfig(
@@ -75,6 +76,9 @@ def run_job(config_path):
     file_types = config.get("file_types", ["10K", "10Q", "13F", "8K"])
     email = config.get("email", "ZitianSG (wangzitian0@gmail.com)")
 
+    # Initialize metadata manager
+    metadata_manager = MetadataManager(ORIGINAL_DATA_DIR)
+    
     total_tasks = len(cik_list) * len(file_types)
     logging.info(f"开始处理任务, 总计 {total_tasks} 个任务")
     pbar = tqdm(total=total_tasks, desc="Tickers Progress", unit="task")
@@ -99,26 +103,44 @@ def run_job(config_path):
                 pbar.update(1)
                 continue
 
-            output_dir = os.path.join(cik_dir, ft.lower())
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
+            # Create config info for this request
+            config_info = {
+                "filing_type": ft,
+                "count": count,
+                "email": email
+            }
+            
+            # Check if recent data exists using metadata manager (check for 7 days for SEC filings)
+            if metadata_manager.check_file_exists_recent("sec-edgar", cik, ft.lower(), config_info, hours=168):  # 7 days
+                logging.info(f"CIK {cik} {ft} filings: Recent data exists (skipped).")
+            else:
+                output_dir = os.path.join(cik_dir, ft.lower())
+                if not os.path.exists(output_dir):
+                    os.makedirs(output_dir)
 
             try:
-                filings_obj = filings(
-                    cik_lookup=cik,
-                    filing_type=filing_type_enum,
-                    count=count,
-                    user_agent=email,
-                )
+                filings_obj = filings(cik_lookup=cik,
+                                      filing_type=filing_type_enum,
+                                      count=count,
+                                      user_agent=email)
                 # 直接设置 cik_lookup 内部映射，避免调用 /files/company_tickers.json
                 filings_obj.cik_lookup._lookup_dict = {cik: cik}
                 filings_obj.save(output_dir)
                 logging.info(f"成功保存 {cik} {ft} filings 至 {output_dir}")
+                
+                # Update metadata for all downloaded files
+                if os.path.exists(output_dir):
+                    for filename in os.listdir(output_dir):
+                        filepath = os.path.join(output_dir, filename)
+                        if os.path.isfile(filepath):
+                            metadata_manager.add_file_record("sec-edgar", cik, filepath, ft.lower(), config_info)
+                    metadata_manager.generate_markdown_index("sec-edgar", cik)
+                    
             except Exception as e:
+                error_msg = str(e)
+                metadata_manager.mark_download_failed("sec-edgar", cik, ft.lower(), config_info, error_msg)
                 logging.exception(f"处理 {cik} {ft} filings 时出错: {e}")
-                logging.info(
-                    "请检查 /files/company_tickers.json 的访问权限，若仍有问题请手动下载该文件。"
-                )
+                logging.info("请检查 /files/company_tickers.json 的访问权限，若仍有问题请手动下载该文件。")
             pbar.update(1)
             time.sleep(3)
 
