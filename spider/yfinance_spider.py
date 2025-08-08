@@ -23,8 +23,8 @@ if project_root not in sys.path:
 
 from common.logger import setup_logger
 from common.progress import create_progress_bar
-from common.utils import (is_file_recent, sanitize_data,
-                          suppress_third_party_logs)
+from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.metadata_manager import MetadataManager
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
@@ -54,13 +54,14 @@ class StreamToLogger(object):
         pass
 
 
-def save_data(ticker, source, oid, data, logger):
+def save_data(ticker, source, oid, data, logger, metadata_manager, config_info):
     """
     Save the data as a JSON file with the filename format:
     <ticker>_<source>_<oid>_<date_str>.json.
     The file is stored under data/original/<source>/<ticker>/.
     Before saving, the data is sanitized so that all keys are valid.
     If no data is available, an exception is raised and nothing is saved.
+    Also updates metadata and generates index.
     """
     if not data:
         logger.error(f"No data to save for ticker {ticker}. Skipping save.")
@@ -73,6 +74,11 @@ def save_data(ticker, source, oid, data, logger):
     sanitized_data = sanitize_data(data, logger)
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(sanitized_data, f, ensure_ascii=False, indent=2, default=str)
+    
+    # Update metadata and generate index
+    metadata_manager.add_file_record(source, ticker, filepath, oid, config_info)
+    metadata_manager.generate_markdown_index(source, ticker)
+    
     return filepath
 
 
@@ -182,6 +188,9 @@ def run_job(config_path):
         logger = setup_logger(job_id, date_str)
         logger.info(f"Job started: exe_id={exe_id}")
 
+        # Initialize metadata manager
+        metadata_manager = MetadataManager(ORIGINAL_DATA_DIR)
+
         total = len(tickers)
         success = 0
         errors = 0
@@ -202,21 +211,20 @@ def run_job(config_path):
             # Redirect sys.stderr to capture underlying errors using ticker_logger.
             original_stderr = sys.stderr
             sys.stderr = StreamToLogger(ticker_logger, logging.ERROR)
-            base_filename = f"{ticker}_{source}_{oid}_"
-            ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
-            exists_recent = False
-            if os.path.exists(ticker_dir):
-                for fname in os.listdir(ticker_dir):
-                    if fname.startswith(base_filename) and fname.endswith(".json"):
-                        fpath = os.path.join(ticker_dir, fname)
-                        if is_file_recent(fpath, hours=1):
-                            exists_recent = True
-                            break
-
-            if exists_recent:
+            
+            # Create config info for this request
+            config_info = {
+                "period": period,
+                "interval": interval,
+                "oid": oid,
+                "exe_id": exe_id
+            }
+            
+            # Check if recent data exists using metadata manager
+            if metadata_manager.check_file_exists_recent(source, ticker, oid, config_info, hours=24):
                 skipped += 1
                 success += 1
-                ticker_logger.info(f"Ticker {ticker}: Data exists (skipped).")
+                ticker_logger.info(f"Ticker {ticker}: Recent data exists (skipped).")
             else:
                 try:
                     ticker_logger.info(
@@ -225,11 +233,13 @@ def run_job(config_path):
                     data = fetch_stock_data(ticker, period, interval)
                     if not data:
                         raise Exception("No data fetched.")
-                    filepath = save_data(ticker, source, oid, data, ticker_logger)
+                    filepath = save_data(ticker, source, oid, data, ticker_logger, metadata_manager, config_info)
                     success += 1
                     ticker_logger.info(f"Ticker {ticker}: Data saved at {filepath}")
-                except Exception:
+                except Exception as e:
                     errors += 1
+                    error_msg = str(e)
+                    metadata_manager.mark_download_failed(source, ticker, oid, config_info, error_msg)
                     ticker_logger.exception(f"Ticker {ticker}: Error fetching data")
             # Restore sys.stderr
             sys.stderr = original_stderr
