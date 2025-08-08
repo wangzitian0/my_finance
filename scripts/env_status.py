@@ -15,7 +15,9 @@ from pathlib import Path
 def run_command(cmd, capture_output=True, text=True):
     """Run a command and return the result."""
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=capture_output, text=text)
+        result = subprocess.run(
+            cmd, shell=True, capture_output=capture_output, text=text
+        )
         return result.returncode == 0, result.stdout.strip() if capture_output else ""
     except Exception:
         return False, ""
@@ -24,18 +26,18 @@ def run_command(cmd, capture_output=True, text=True):
 def check_minikube():
     """Check Minikube status."""
     print("🔍 Checking Minikube...")
-    
+
     # Check if minikube is installed
     success, _ = run_command("which minikube")
     if not success:
         print("  ❌ Minikube not installed")
         return False
-    
+
     # Check if minikube is running
     success, output = run_command("minikube status")
     if success and "Running" in output:
         print("  ✅ Minikube is running")
-        
+
         # Get IP
         success, ip = run_command("minikube ip")
         if success:
@@ -44,32 +46,34 @@ def check_minikube():
     else:
         print("  ❌ Minikube is not running")
         print("  💡 Start with: pixi run env-start")
-    
+
     return False
 
 
 def check_neo4j(minikube_ip):
     """Check Neo4j status."""
     print("\n🔍 Checking Neo4j...")
-    
+
     # Check if kubectl is available
     kubectl_cmd = "kubectl"
     success, _ = run_command("which kubectl")
     if not success:
         kubectl_cmd = "minikube kubectl --"
-    
+
     # Check deployment
     success, output = run_command(f"{kubectl_cmd} get deployment neo4j")
     if not success:
         print("  ❌ Neo4j deployment not found")
         print("  💡 Deploy with: pixi run env-start")
         return
-    
+
     # Check pod status
-    success, output = run_command(f"{kubectl_cmd} get pods -l app=neo4j -o jsonpath='{{.items[*].status.phase}}'")
+    success, output = run_command(
+        f"{kubectl_cmd} get pods -l app=neo4j -o jsonpath='{{.items[*].status.phase}}'"
+    )
     if success and "Running" in output:
         print("  ✅ Neo4j is running")
-        
+
         if minikube_ip:
             print(f"  🌐 Web Interface: http://{minikube_ip}:30474")
             print(f"  🔌 Bolt Connection: bolt://{minikube_ip}:30687")
@@ -82,17 +86,18 @@ def check_neo4j(minikube_ip):
 def check_pixi():
     """Check Pixi environment."""
     print("\n🔍 Checking Pixi...")
-    
+
     success, _ = run_command("which pixi")
     if not success:
         print("  ❌ Pixi not installed")
         return False
-    
+
     # Check if in pixi environment
     import os
+
     if "PIXI_ENV_DIR" in os.environ:
         print("  ✅ Pixi environment is active")
-        
+
         # Check if pixi.toml exists
         if Path("pixi.toml").exists():
             print("  ✅ Project configuration found")
@@ -102,7 +107,7 @@ def check_pixi():
     else:
         print("  ❌ Not in Pixi shell")
         print("  💡 Run: pixi shell")
-    
+
     return False
 
 
@@ -111,7 +116,7 @@ def show_quick_commands():
     print("\n🚀 Quick Commands:")
     print("  Environment:")
     print("    pixi run env-start    - Start all services")
-    print("    pixi run env-stop     - Stop all services") 
+    print("    pixi run env-stop     - Stop all services")
     print("    pixi run env-reset    - Reset everything")
     print("    pixi run env-status   - This status check")
     print("\n  Development:")
@@ -128,14 +133,14 @@ def main():
     """Main status check."""
     print("🩺 Development Environment Status")
     print("=" * 50)
-    
+
     # Check all components
     minikube_ip = check_minikube()
     check_neo4j(minikube_ip)
     pixi_ok = check_pixi()
-    
+
     print("\n" + "=" * 50)
-    
+
     if minikube_ip and pixi_ok:
         print("✅ Environment is ready for development!")
         show_quick_commands()

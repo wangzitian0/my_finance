@@ -4,8 +4,10 @@ from datetime import datetime, timedelta
 DB_FOLDER = "data"
 DB_NAME = "yfinance_data.db"
 
+
 def get_db_path():
     return f"{DB_FOLDER}/{DB_NAME}"
+
 
 def ensure_common_tables():
     """
@@ -88,6 +90,7 @@ def can_fetch(ticker: str, dimension: str, cooldown_minutes=60) -> bool:
 
     return False
 
+
 def update_fetch_time(ticker: str, dimension: str, success: bool):
     """
     在 fetch_log 中更新:
@@ -115,4 +118,3 @@ def update_fetch_time(ticker: str, dimension: str, success: bool):
 
     conn.commit()
     conn.close()
-

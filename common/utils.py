@@ -1,7 +1,8 @@
 import os
 import re
-from datetime import datetime, timedelta
 import warnings
+from datetime import datetime, timedelta
+
 
 def suppress_third_party_logs():
     """
@@ -9,8 +10,10 @@ def suppress_third_party_logs():
     so that only critical messages are printed to the console.
     """
     import logging
+
     logging.getLogger("requests").setLevel(logging.CRITICAL)
     logging.getLogger("urllib3").setLevel(logging.CRITICAL)
+
 
 def is_file_recent(filepath, hours=1):
     """
@@ -29,6 +32,7 @@ def is_file_recent(filepath, hours=1):
             return False
     return False
 
+
 def sanitize_data(obj, logger):
     """
     Recursively traverse the object.
@@ -39,7 +43,9 @@ def sanitize_data(obj, logger):
         new_dict = {}
         for k, v in obj.items():
             if not isinstance(k, (str, int, float, bool)) and k is not None:
-                logger.warning(f"Key {k} (type {type(k)}) is not a valid JSON key type; converting key to string and setting its value to null")
+                logger.warning(
+                    f"Key {k} (type {type(k)}) is not a valid JSON key type; converting key to string and setting its value to null"
+                )
                 new_key = str(k)
                 new_dict[new_key] = None  # Discard the value by setting it to null
             else:

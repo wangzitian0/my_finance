@@ -1,18 +1,16 @@
 # get_data/fetch_quarterly.py
 
 import sqlite3
-import yfinance as yf
 from datetime import datetime
 
-from common import (
-    get_db_path,
-    can_fetch,
-    update_fetch_time,
-)
+import yfinance as yf
+
+from common import can_fetch, get_db_path, update_fetch_time
+
 
 def fetch_quarterly_balance(ticker_symbol: str, cooldown_minutes=60):
     """
-    拉取 ticker.quarterly_balance_sheet -> quarterly_balance_sheet 表. 
+    拉取 ticker.quarterly_balance_sheet -> quarterly_balance_sheet 表.
     带冷却. 返回 (ticker, dimension, message).
     """
     dimension = "Q_BALANCE"
@@ -53,4 +51,3 @@ def fetch_quarterly_balance(ticker_symbol: str, cooldown_minutes=60):
 
     msg = f"Fetched {row_count} quarterly_balance rows for {ticker_symbol}"
     return (ticker_symbol, dimension, msg)
-

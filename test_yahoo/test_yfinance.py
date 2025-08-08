@@ -4,6 +4,5 @@ import yfinance as yf
 ticker = yf.Ticker("AAPL")
 
 # 获取过去一年的历史数据，默认以天为单位
-data = ticker.history(period="1y") 
+data = ticker.history(period="1y")
 print(data)
-

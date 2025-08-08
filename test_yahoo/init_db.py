@@ -1,5 +1,7 @@
-from common import ensure_common_tables
 from fetch_historical import fetch_historical
+
+from common import ensure_common_tables
+
 
 def main():
     ensure_common_tables()
@@ -7,6 +9,6 @@ def main():
     result = fetch_historical("AAPL")
     print(result)
 
+
 if __name__ == "__main__":
     main()
-

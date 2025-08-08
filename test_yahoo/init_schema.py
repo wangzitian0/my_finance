@@ -1,7 +1,9 @@
 # get_data/init_schema.py
 
 import sqlite3
+
 from common import get_db_path
+
 
 def init_db_schema():
     """
@@ -14,7 +16,8 @@ def init_db_schema():
     cursor = conn.cursor()
 
     # 1) 行情表
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS stock_price (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
@@ -23,10 +26,12 @@ def init_db_schema():
         volume INTEGER,
         UNIQUE(ticker, trade_date)
     )
-    """)
+    """
+    )
 
     # 2) info表
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS stock_info (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
@@ -34,10 +39,12 @@ def init_db_schema():
         last_update TEXT NOT NULL,
         UNIQUE(ticker)
     )
-    """)
+    """
+    )
 
     # 3) 季度财务 (演示)
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS quarterly_balance_sheet (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ticker TEXT NOT NULL,
@@ -46,8 +53,8 @@ def init_db_schema():
         value REAL,
         UNIQUE(ticker, statement_date, item_name)
     )
-    """)
+    """
+    )
 
     conn.commit()
     conn.close()
-

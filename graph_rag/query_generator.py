@@ -9,14 +9,16 @@ for Neo4j graph database retrieval.
 
 import logging
 import re
-from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
+
 class QueryIntent(Enum):
     """Enumeration of supported query intents."""
+
     DCF_VALUATION = "dcf_valuation"
     FINANCIAL_COMPARISON = "financial_comparison"
     RISK_ANALYSIS = "risk_analysis"
@@ -25,179 +27,226 @@ class QueryIntent(Enum):
     GENERAL_INFO = "general_info"
     HISTORICAL_TRENDS = "historical_trends"
 
+
 class StructuredQueryGenerator:
     """
     Converts natural language questions into structured Cypher queries
     and identifies query intentions for appropriate graph traversal.
     """
-    
+
     def __init__(self):
         """Initialize the query generator with pattern matching rules."""
-        
+
         # Intent classification patterns
         self.intent_patterns = {
             QueryIntent.DCF_VALUATION: [
-                r'dcf|discounted cash flow|intrinsic value|valuation|fair value',
-                r'what.*worth|how much.*value|estimate.*value',
-                r'undervalued|overvalued|price target'
+                r"dcf|discounted cash flow|intrinsic value|valuation|fair value",
+                r"what.*worth|how much.*value|estimate.*value",
+                r"undervalued|overvalued|price target",
             ],
             QueryIntent.FINANCIAL_COMPARISON: [
-                r'compare|comparison|versus|vs\.|against',
-                r'better than|worse than|relative to',
-                r'peer.*analysis|competitive.*position'
+                r"compare|comparison|versus|vs\.|against",
+                r"better than|worse than|relative to",
+                r"peer.*analysis|competitive.*position",
             ],
             QueryIntent.RISK_ANALYSIS: [
-                r'risk|risks|risky|bankruptcy|volatile|volatility|danger',
-                r'downside|threat|concern|warning',
-                r'debt.*equity|leverage|solvency'
+                r"risk|risks|risky|bankruptcy|volatile|volatility|danger",
+                r"downside|threat|concern|warning",
+                r"debt.*equity|leverage|solvency",
             ],
             QueryIntent.NEWS_IMPACT: [
-                r'news|recent.*event|latest.*development|announcement',
-                r'impact.*price|affect.*stock|influence.*valuation',
-                r'market.*reaction|sentiment'
+                r"news|recent.*event|latest.*development|announcement",
+                r"impact.*price|affect.*stock|influence.*valuation",
+                r"market.*reaction|sentiment",
             ],
             QueryIntent.SECTOR_ANALYSIS: [
-                r'sector|industry|peers|competitors',
-                r'market.*share|industry.*trend',
-                r'relative.*performance'
+                r"sector|industry|peers|competitors",
+                r"market.*share|industry.*trend",
+                r"relative.*performance",
             ],
             QueryIntent.HISTORICAL_TRENDS: [
-                r'trend|historical|over time|past.*year|growth',
-                r'performance.*history|track record',
-                r'revenue.*growth|earnings.*trend'
+                r"trend|historical|over time|past.*year|growth",
+                r"performance.*history|track record",
+                r"revenue.*growth|earnings.*trend",
             ],
             QueryIntent.GENERAL_INFO: [
-                r'what is|tell me about|information about|details about',
-                r'company.*profile|business.*model|overview'
-            ]
+                r"what is|tell me about|information about|details about",
+                r"company.*profile|business.*model|overview",
+            ],
         }
-        
+
         # Ticker extraction patterns
         self.ticker_patterns = [
-            r'\b([A-Z]{1,5})\b',  # 1-5 uppercase letters
-            r'ticker[:\s]+([A-Z]{1,5})',
-            r'symbol[:\s]+([A-Z]{1,5})',
-            r'stock[:\s]+([A-Z]{1,5})'
+            r"\b([A-Z]{1,5})\b",  # 1-5 uppercase letters
+            r"ticker[:\s]+([A-Z]{1,5})",
+            r"symbol[:\s]+([A-Z]{1,5})",
+            r"stock[:\s]+([A-Z]{1,5})",
         ]
-        
+
         # Company name to ticker mapping (Magnificent 7)
         self.company_ticker_map = {
-            'apple': 'AAPL',
-            'microsoft': 'MSFT', 
-            'amazon': 'AMZN',
-            'alphabet': 'GOOGL',
-            'google': 'GOOGL',
-            'meta': 'META',
-            'facebook': 'META',
-            'tesla': 'TSLA',
-            'netflix': 'NFLX'
+            "apple": "AAPL",
+            "microsoft": "MSFT",
+            "amazon": "AMZN",
+            "alphabet": "GOOGL",
+            "google": "GOOGL",
+            "meta": "META",
+            "facebook": "META",
+            "tesla": "TSLA",
+            "netflix": "NFLX",
         }
-    
+
     def generate_cypher_query(self, natural_question: str) -> Dict[str, Any]:
         """
         Convert natural language question to Cypher query.
-        
+
         Args:
             natural_question: User's natural language query
-            
+
         Returns:
             Dictionary containing Cypher query, intent, and metadata
         """
         # Classify the question intent
         intent = self.classify_question_intent(natural_question)
-        
+
         # Extract ticker symbols from the question
         tickers = self.extract_tickers_from_question(natural_question)
-        
+
         # Generate appropriate Cypher query based on intent
         cypher_query = ""
         params = {}
-        
+
         if intent == QueryIntent.DCF_VALUATION:
             cypher_query, params = self.generate_dcf_query(natural_question, tickers)
         elif intent == QueryIntent.FINANCIAL_COMPARISON:
-            cypher_query, params = self.generate_comparison_query(natural_question, tickers)
+            cypher_query, params = self.generate_comparison_query(
+                natural_question, tickers
+            )
         elif intent == QueryIntent.RISK_ANALYSIS:
             cypher_query, params = self.generate_risk_query(natural_question, tickers)
         elif intent == QueryIntent.NEWS_IMPACT:
-            cypher_query, params = self.generate_news_impact_query(natural_question, tickers)
+            cypher_query, params = self.generate_news_impact_query(
+                natural_question, tickers
+            )
         elif intent == QueryIntent.SECTOR_ANALYSIS:
             cypher_query, params = self.generate_sector_query(natural_question, tickers)
         elif intent == QueryIntent.HISTORICAL_TRENDS:
-            cypher_query, params = self.generate_historical_query(natural_question, tickers)
+            cypher_query, params = self.generate_historical_query(
+                natural_question, tickers
+            )
         else:
-            cypher_query, params = self.generate_general_query(natural_question, tickers)
-        
+            cypher_query, params = self.generate_general_query(
+                natural_question, tickers
+            )
+
         return {
-            'cypher_query': cypher_query,
-            'parameters': params,
-            'intent': intent.value,
-            'tickers': tickers,
-            'original_question': natural_question,
-            'generated_at': datetime.now().isoformat()
+            "cypher_query": cypher_query,
+            "parameters": params,
+            "intent": intent.value,
+            "tickers": tickers,
+            "original_question": natural_question,
+            "generated_at": datetime.now().isoformat(),
         }
-    
+
     def classify_question_intent(self, question: str) -> QueryIntent:
         """
         Classify the intent of a natural language question.
-        
+
         Args:
             question: User's question
-            
+
         Returns:
             Classified intent enum value
         """
         question_lower = question.lower()
-        
+
         # Score each intent based on pattern matches
         intent_scores = {}
-        
+
         for intent, patterns in self.intent_patterns.items():
             score = 0
             for pattern in patterns:
                 matches = len(re.findall(pattern, question_lower))
                 score += matches
             intent_scores[intent] = score
-        
+
         # Return intent with highest score, default to GENERAL_INFO
         if intent_scores:
             best_intent = max(intent_scores.items(), key=lambda x: x[1])
             if best_intent[1] > 0:
                 return best_intent[0]
-        
+
         return QueryIntent.GENERAL_INFO
-    
+
     def extract_tickers_from_question(self, question: str) -> List[str]:
         """
         Extract ticker symbols from natural language question.
-        
+
         Args:
             question: User's question
-            
+
         Returns:
             List of identified ticker symbols
         """
         tickers = []
         question_lower = question.lower()
-        
+
         # First, check for company names
         for company_name, ticker in self.company_ticker_map.items():
             if company_name in question_lower:
                 tickers.append(ticker)
-        
+
         # Then check for direct ticker patterns
         for pattern in self.ticker_patterns:
             matches = re.findall(pattern, question.upper())
             for match in matches:
                 if match not in tickers and len(match) <= 5:
                     # Basic validation: exclude common English words
-                    excluded_words = {'THE', 'AND', 'FOR', 'ARE', 'BUT', 'NOT', 'YOU', 'ALL', 'CAN', 'HAD', 'HER', 'WAS', 'ONE', 'OUR', 'OUT', 'DAY', 'GET', 'HAS', 'HIM', 'HOW', 'NEW', 'NOW', 'OLD', 'SEE', 'TWO', 'WHO', 'BOY', 'DID', 'ITS', 'LET', 'PUT', 'SAY', 'SHE', 'TOO', 'USE'}
+                    excluded_words = {
+                        "THE",
+                        "AND",
+                        "FOR",
+                        "ARE",
+                        "BUT",
+                        "NOT",
+                        "YOU",
+                        "ALL",
+                        "CAN",
+                        "HAD",
+                        "HER",
+                        "WAS",
+                        "ONE",
+                        "OUR",
+                        "OUT",
+                        "DAY",
+                        "GET",
+                        "HAS",
+                        "HIM",
+                        "HOW",
+                        "NEW",
+                        "NOW",
+                        "OLD",
+                        "SEE",
+                        "TWO",
+                        "WHO",
+                        "BOY",
+                        "DID",
+                        "ITS",
+                        "LET",
+                        "PUT",
+                        "SAY",
+                        "SHE",
+                        "TOO",
+                        "USE",
+                    }
                     if match not in excluded_words:
                         tickers.append(match)
-        
+
         return list(set(tickers))  # Remove duplicates
-    
-    def generate_dcf_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_dcf_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for DCF valuation questions."""
         if not tickers:
             # Return query for all available DCF data
@@ -230,11 +279,13 @@ class StructuredQueryGenerator:
             ORDER BY dcf.valuation_date DESC
             LIMIT 1
             """
-            params = {'ticker': ticker}
-        
+            params = {"ticker": ticker}
+
         return cypher, params
-    
-    def generate_comparison_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_comparison_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for financial comparison questions."""
         if len(tickers) >= 2:
             cypher = """
@@ -250,10 +301,10 @@ class StructuredQueryGenerator:
                    info
             ORDER BY s.ticker
             """
-            params = {'tickers': tickers}
+            params = {"tickers": tickers}
         else:
             # Compare with sector peers
-            ticker = tickers[0] if tickers else 'AAPL'
+            ticker = tickers[0] if tickers else "AAPL"
             cypher = f"""
             MATCH (s:Stock {{ticker: $ticker}})-[:HAS_INFO]->(info:Info)
             MATCH (peer:Stock)-[:HAS_INFO]->(peer_info:Info)
@@ -266,13 +317,15 @@ class StructuredQueryGenerator:
                    collect({{ticker: peer.ticker, dcf: peer_dcf}}) as peers
             LIMIT 1
             """
-            params = {'ticker': ticker}
-        
+            params = {"ticker": ticker}
+
         return cypher, params
-    
-    def generate_risk_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_risk_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for risk analysis questions."""
-        ticker = tickers[0] if tickers else 'AAPL'
+        ticker = tickers[0] if tickers else "AAPL"
         cypher = """
         MATCH (s:Stock {ticker: $ticker})
         OPTIONAL MATCH (s)-[:HAS_VALUATION]->(dcf:DCFValuation)
@@ -290,12 +343,14 @@ class StructuredQueryGenerator:
                                current_ratio: metric.current_ratio,
                                metric_date: metric.metric_date}) as financial_health
         """
-        params = {'ticker': ticker}
+        params = {"ticker": ticker}
         return cypher, params
-    
-    def generate_news_impact_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_news_impact_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for news impact analysis."""
-        ticker = tickers[0] if tickers else 'AAPL'
+        ticker = tickers[0] if tickers else "AAPL"
         cypher = """
         MATCH (s:Stock {ticker: $ticker})
         OPTIONAL MATCH (s)-[:MENTIONED_IN]->(news:NewsEvent)
@@ -311,12 +366,14 @@ class StructuredQueryGenerator:
                dcf
         ORDER BY news.published_date DESC
         """
-        params = {'ticker': ticker}
+        params = {"ticker": ticker}
         return cypher, params
-    
-    def generate_sector_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_sector_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for sector analysis."""
-        ticker = tickers[0] if tickers else 'AAPL'
+        ticker = tickers[0] if tickers else "AAPL"
         cypher = """
         MATCH (s:Stock {ticker: $ticker})-[:HAS_INFO]->(info:Info)
         MATCH (peer:Stock)-[:HAS_INFO]->(peer_info:Info)
@@ -328,12 +385,14 @@ class StructuredQueryGenerator:
                        company_name: peer_info.longBusinessSummary,
                        dcf: peer_dcf}) as sector_companies
         """
-        params = {'ticker': ticker}
+        params = {"ticker": ticker}
         return cypher, params
-    
-    def generate_historical_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_historical_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for historical trend analysis."""
-        ticker = tickers[0] if tickers else 'AAPL'
+        ticker = tickers[0] if tickers else "AAPL"
         cypher = """
         MATCH (s:Stock {ticker: $ticker})
         OPTIONAL MATCH (s)-[:HAS_PRICE]->(price:PriceData)
@@ -348,10 +407,12 @@ class StructuredQueryGenerator:
                                free_cash_flow: metric.free_cash_flow}) as financial_history
         ORDER BY price.date DESC, metric.metric_date DESC
         """
-        params = {'ticker': ticker}
+        params = {"ticker": ticker}
         return cypher, params
-    
-    def generate_general_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
+
+    def generate_general_query(
+        self, question: str, tickers: List[str]
+    ) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for general information requests."""
         if tickers:
             ticker = tickers[0]
@@ -363,7 +424,7 @@ class StructuredQueryGenerator:
             WHERE dcf.valuation_date >= date() - duration({days: 90})
             RETURN s, info, fast_info, dcf
             """
-            params = {'ticker': ticker}
+            params = {"ticker": ticker}
         else:
             # Return general information about available stocks
             cypher = """
@@ -376,5 +437,5 @@ class StructuredQueryGenerator:
             LIMIT 10
             """
             params = {}
-        
+
         return cypher, params
