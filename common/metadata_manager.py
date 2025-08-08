@@ -103,6 +103,17 @@ class MetadataManager:
         
         self.save_metadata(source, ticker, metadata)
     
+    def _config_matches_ignore_exe_id(self, config1: Dict[str, Any], config2: Dict[str, Any]) -> bool:
+        """Compare two configs while ignoring the exe_id field."""
+        if config1 is None or config2 is None:
+            return config1 == config2
+        
+        # Create copies without exe_id for comparison
+        config1_filtered = {k: v for k, v in config1.items() if k != "exe_id"}
+        config2_filtered = {k: v for k, v in config2.items() if k != "exe_id"}
+        
+        return config1_filtered == config2_filtered
+    
     def check_file_exists_recent(self, source: str, ticker: str, data_type: str, 
                                 config_info: Dict[str, Any], hours: int = 24) -> bool:
         """Check if a recent file with matching config exists."""
@@ -111,7 +122,7 @@ class MetadataManager:
         
         for filename, file_record in metadata["files"].items():
             if (file_record.get("data_type") == data_type and 
-                file_record.get("config_info") == config_info):
+                self._config_matches_ignore_exe_id(file_record.get("config_info"), config_info)):
                 
                 created_at = datetime.fromisoformat(file_record["created_at"])
                 if created_at > cutoff_time:
