@@ -54,6 +54,12 @@ typecheck = "mypy ."
 test = "pytest"
 test-coverage = "pytest --cov"
 
+# Strategy Engine tasks (NEW)
+validate-strategy = "python strategy/validator.py"
+generate-report = "python strategy/validator.py && echo 'Reports saved in data/reports/'"
+backtest = "python -c 'from strategy.validator import StrategyValidator; v=StrategyValidator(); print(v._run_backtest())'"
+benchmark = "python -c 'from strategy.validator import StrategyValidator; v=StrategyValidator(); print(v._compare_benchmarks())'"
+
 # Graph RAG specific tasks
 setup-graph-rag = "python setup_graph_rag.py"
 demo-graph-rag = "python demo_graph_rag.py"
