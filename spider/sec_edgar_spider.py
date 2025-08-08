@@ -16,22 +16,26 @@
 这样程序将直接使用 CIK 查询 filings 数据，避免内部转换时请求 /files/company_tickers.json 导致的错误。
 """
 
-from bs4 import XMLParsedAsHTMLWarning
 import warnings
+
+from bs4 import XMLParsedAsHTMLWarning
+
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
-import os
 import json
-import time
 import logging
+import os
+import time
 from datetime import datetime, timedelta
+
 import yaml
+from secedgar import FilingType, filings
 from tqdm import tqdm
-from secedgar import filings, FilingType
 
 # 设置日志输出级别为 DEBUG
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # 定义保存数据的基础目录：data/original/sec-edgar/
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -79,7 +83,7 @@ def run_job(config_path):
         "10K": FilingType.FILING_10K,
         "10Q": FilingType.FILING_10Q,
         "13F": FilingType.FILING_13F,
-        "8K": FilingType.FILING_8K
+        "8K": FilingType.FILING_8K,
     }
 
     for cik in cik_list:
@@ -100,17 +104,21 @@ def run_job(config_path):
                 os.makedirs(output_dir)
 
             try:
-                filings_obj = filings(cik_lookup=cik,
-                                      filing_type=filing_type_enum,
-                                      count=count,
-                                      user_agent=email)
+                filings_obj = filings(
+                    cik_lookup=cik,
+                    filing_type=filing_type_enum,
+                    count=count,
+                    user_agent=email,
+                )
                 # 直接设置 cik_lookup 内部映射，避免调用 /files/company_tickers.json
                 filings_obj.cik_lookup._lookup_dict = {cik: cik}
                 filings_obj.save(output_dir)
                 logging.info(f"成功保存 {cik} {ft} filings 至 {output_dir}")
             except Exception as e:
                 logging.exception(f"处理 {cik} {ft} filings 时出错: {e}")
-                logging.info("请检查 /files/company_tickers.json 的访问权限，若仍有问题请手动下载该文件。")
+                logging.info(
+                    "请检查 /files/company_tickers.json 的访问权限，若仍有问题请手动下载该文件。"
+                )
             pbar.update(1)
             time.sleep(3)
 
@@ -120,6 +128,7 @@ def run_job(config_path):
 
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         logging.error("Usage: python run_job.py <config_file_path>")
         sys.exit(1)

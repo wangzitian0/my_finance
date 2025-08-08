@@ -1,6 +1,6 @@
 # common/snowflake.py
-import time
 import threading
+import time
 
 
 class Snowflake:
@@ -31,4 +31,4 @@ class Snowflake:
                 self.sequence = 0
             self.last_timestamp = timestamp
             # Construct ID: 41 bits timestamp, 10 bits machine id, 12 bits sequence
-            return ((timestamp << 22) | (self.machine_id << 12) | self.sequence)
+            return (timestamp << 22) | (self.machine_id << 12) | self.sequence

@@ -2,18 +2,16 @@
 
 import json
 import sqlite3
-import yfinance as yf
 from datetime import datetime
 
-from common import (
-    get_db_path,
-    can_fetch,
-    update_fetch_time,
-)
+import yfinance as yf
+
+from common import can_fetch, get_db_path, update_fetch_time
+
 
 def fetch_info(ticker_symbol: str, cooldown_minutes=60):
     """
-    拉取 ticker.info, 存入 stock_info 表. 带冷却判断. 
+    拉取 ticker.info, 存入 stock_info 表. 带冷却判断.
     返回 (ticker, dimension, message).
     """
     dimension = "INFO"
@@ -44,4 +42,3 @@ def fetch_info(ticker_symbol: str, cooldown_minutes=60):
 
     msg = f"Fetched info for {ticker_symbol}"
     return (ticker_symbol, dimension, msg)
-

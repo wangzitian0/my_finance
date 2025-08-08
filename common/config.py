@@ -1,6 +1,8 @@
 # common/config.py
 import os
+
 import yaml
+
 
 def load_common_config():
     """

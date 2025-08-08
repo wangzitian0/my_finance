@@ -43,8 +43,9 @@ build-m7 = "python manage.py build m7"
 status = "python manage.py status"
 run-job = "python run_job.py"
 
-# Install additional packages via pip (cross-platform)
-install-extras = "pip install pipenv datasette neomodel yfinance secedgar sentence-transformers torch"
+# Install additional packages via pip (cross-platform)  
+install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
+install-graph-rag = "pip install 'numpy<2.0' 'torch>=2.4.0' 'safetensors>=0.4.5' sentence-transformers"
 
 # Development tasks
 format = { cmd = "black . && isort .", cwd = "." }

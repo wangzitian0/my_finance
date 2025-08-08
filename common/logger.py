@@ -1,14 +1,15 @@
 # common/logger.py
-import os
 import logging
+import os
 from datetime import datetime
+
 from .config import load_common_config
 from .snowflake import Snowflake
 
 
 class DefaultRequestLogIDFilter(logging.Filter):
     def filter(self, record):
-        if not hasattr(record, 'request_logid'):
+        if not hasattr(record, "request_logid"):
             record.request_logid = "N/A"
         return True
 
@@ -41,7 +42,9 @@ def setup_logger(job_id, date_str=None):
     log_conf = config.get("logging", {})
     log_level = getattr(logging, log_conf.get("level", "INFO"))
     file_level = getattr(logging, log_conf.get("file_level", "INFO"))
-    log_format = log_conf.get("format", '%(asctime)s - %(levelname)s - [%(request_logid)s] - %(message)s')
+    log_format = log_conf.get(
+        "format", "%(asctime)s - %(levelname)s - [%(request_logid)s] - %(message)s"
+    )
 
     if date_str is None:
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")

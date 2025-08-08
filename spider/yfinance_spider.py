@@ -3,16 +3,18 @@
 
 # Suppress DeprecationWarnings from yfinance
 import warnings
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-import os
-import sys
 import json
-import re
-from datetime import datetime, timedelta
-import yfinance as yf
-import yaml
 import logging  # Needed for LoggerAdapter and our custom stream
+import os
+import re
+import sys
+from datetime import datetime, timedelta
+
+import yaml
+import yfinance as yf
 
 # Add project root to path for imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -21,7 +23,8 @@ if project_root not in sys.path:
 
 from common.logger import setup_logger
 from common.progress import create_progress_bar
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.utils import (is_file_recent, sanitize_data,
+                          suppress_third_party_logs)
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
@@ -36,6 +39,7 @@ class StreamToLogger(object):
     Fake file-like stream object that redirects writes to a logger instance.
     This is used to capture stderr output from underlying libraries and log them.
     """
+
     def __init__(self, logger, log_level=logging.ERROR):
         self.logger = logger
         self.log_level = log_level
@@ -89,6 +93,7 @@ def fetch_stock_data(ticker, period, interval):
     All yfinance calls are wrapped in a warnings context to ignore DeprecationWarnings.
     """
     import warnings
+
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         try:
@@ -139,7 +144,9 @@ def fetch_stock_data(ticker, period, interval):
         "recommendations": safe_get("recommendations", to_dict=True),
         "calendar": safe_get("calendar", to_dict=True),
         "major_holders": safe_get("major_holders", to_dict=True, orient="records"),
-        "institutional_holders": safe_get("institutional_holders", to_dict=True, orient="records"),
+        "institutional_holders": safe_get(
+            "institutional_holders", to_dict=True, orient="records"
+        ),
         "sustainability": safe_get("sustainability", to_dict=True),
         "options": safe_get("options"),
         "news": safe_get("news", orient="list"),
@@ -183,12 +190,15 @@ def run_job(config_path):
         progress_bar = create_progress_bar(total, description="Tickers Progress")
         # Create a Snowflake instance for generating unique request log IDs.
         from common.snowflake import Snowflake
+
         sf = Snowflake(machine_id=1)
         for ticker in tickers:
             # Generate a unique log ID for this ticker request.
             request_logid = sf.get_id()
             # Create a LoggerAdapter that adds the request_logid to every log record.
-            ticker_logger = logging.LoggerAdapter(logger, {'request_logid': request_logid})
+            ticker_logger = logging.LoggerAdapter(
+                logger, {"request_logid": request_logid}
+            )
             # Redirect sys.stderr to capture underlying errors using ticker_logger.
             original_stderr = sys.stderr
             sys.stderr = StreamToLogger(ticker_logger, logging.ERROR)
@@ -209,7 +219,9 @@ def run_job(config_path):
                 ticker_logger.info(f"Ticker {ticker}: Data exists (skipped).")
             else:
                 try:
-                    ticker_logger.info(f"Fetching data for ticker: {ticker} (period={period}, interval={interval})")
+                    ticker_logger.info(
+                        f"Fetching data for ticker: {ticker} (period={period}, interval={interval})"
+                    )
                     data = fetch_stock_data(ticker, period, interval)
                     if not data:
                         raise Exception("No data fetched.")
@@ -225,8 +237,12 @@ def run_job(config_path):
         progress_bar.close()
 
         logger.info(f"Job finished: exe_id={exe_id}")
-        logger.info(f"Summary: Processed={total}, Success={success}, Skipped={skipped}, Errors={errors}")
-        print(f"Job summary for {exe_id}: Processed={total}, Success={success}, Skipped={skipped}, Errors={errors}")
+        logger.info(
+            f"Summary: Processed={total}, Success={success}, Skipped={skipped}, Errors={errors}"
+        )
+        print(
+            f"Job summary for {exe_id}: Processed={total}, Success={success}, Skipped={skipped}, Errors={errors}"
+        )
 
 
 if __name__ == "__main__":

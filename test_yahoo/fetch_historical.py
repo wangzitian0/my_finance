@@ -1,9 +1,14 @@
 import sqlite3
-import yfinance as yf
 from datetime import datetime
-from common import get_db_path, can_fetch, update_fetch_time
 
-def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60):
+import yfinance as yf
+
+from common import can_fetch, get_db_path, update_fetch_time
+
+
+def fetch_historical(
+    ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60
+):
     """
     1. 先检查 `can_fetch()`，如果不需要拉取则返回
     2. 调用 yfinance 获取数据
@@ -48,7 +53,7 @@ def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_mi
                 row.get("Low", None),
                 row.get("Close", None),
                 row.get("Adj Close", None),
-                int(row.get("Volume", 0))
+                int(row.get("Volume", 0)),
             )
             cursor.execute(insert_sql, data_tuple)
             row_count += 1
@@ -58,11 +63,12 @@ def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_mi
 
         update_fetch_time(ticker_symbol, dimension, success=True)
 
-        msg = f"Fetched {row_count} rows for {ticker_symbol} {interval}, period={period}"
+        msg = (
+            f"Fetched {row_count} rows for {ticker_symbol} {interval}, period={period}"
+        )
         return (ticker_symbol, dimension, msg)
 
     except Exception as e:
         update_fetch_time(ticker_symbol, dimension, success=False)
         err_msg = f"Exception: {repr(e)}"
         return (ticker_symbol, dimension, err_msg)
-
