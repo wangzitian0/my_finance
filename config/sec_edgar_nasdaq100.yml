@@ -1,0 +1,9 @@
+description: SEC Edgar filings for NASDAQ 100 companies
+email: ZitianSG (wangzitian0@gmail.com)
+file_types:
+- 10K
+- 10Q
+- 8K
+job: sec_edgar_nasdaq100
+source: sec_edgar
+tickers: []
