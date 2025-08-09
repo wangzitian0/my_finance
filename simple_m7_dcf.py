@@ -35,8 +35,11 @@ class SimpleM7DCF:
         if not yfinance_dir.exists():
             return None
             
-        # 找最新的日线数据文件
-        daily_files = list(yfinance_dir.glob(f"{ticker}_yfinance_m7_D1_*.json"))
+        # 找最新的M7数据文件（优先日线数据）
+        daily_files = list(yfinance_dir.glob(f"{ticker}_yfinance_m7_daily_*.json"))
+        if not daily_files:
+            # 如果没有日线数据，尝试其他M7数据文件
+            daily_files = list(yfinance_dir.glob(f"{ticker}_yfinance_m7_*.json"))
         if not daily_files:
             return None
             
