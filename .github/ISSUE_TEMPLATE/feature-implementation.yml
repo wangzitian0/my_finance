@@ -1,0 +1,130 @@
+name: 🚀 Feature Implementation
+description: Detailed implementation task for a specific feature
+title: "[FEATURE] "
+labels: ["enhancement", "implementation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📋 Implementation Task Template
+        
+        Use this template for specific, actionable implementation tasks. This should contain technical details, code specifications, and step-by-step implementation plans.
+        
+        > **Note**: High-level architecture and design decisions should be documented in `docs/` directory.
+
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: Which component/module does this affect?
+      placeholder: e.g., spider, ETL, graph_rag, common
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: Implementation priority
+      options:
+        - P0 - Critical (blocks other work)
+        - P1 - High (important for milestone)
+        - P2 - Medium (planned feature)
+        - P3 - Low (nice to have)
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Implementation Objective
+      description: What specific functionality needs to be implemented?
+      placeholder: Clear, specific description of what needs to be built
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Implementation Details
+      description: |
+        Specific technical requirements, APIs to implement, database schemas, etc.
+      placeholder: |
+        - API endpoints to create
+        - Database schema changes
+        - Class/function signatures
+        - Configuration changes
+        - Dependencies to add
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How do we know this is complete?
+      placeholder: |
+        - [ ] Specific measurable outcome 1
+        - [ ] Specific measurable outcome 2
+        - [ ] Tests pass
+        - [ ] Documentation updated
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-checklist
+    attributes:
+      label: Implementation Checklist
+      description: Step-by-step implementation plan
+      placeholder: |
+        - [ ] Step 1: Create/modify specific files
+        - [ ] Step 2: Implement specific functions
+        - [ ] Step 3: Add tests
+        - [ ] Step 4: Update documentation
+        - [ ] Step 5: Verify integration
+    validations:
+      required: false
+
+  - type: textarea
+    id: testing-plan
+    attributes:
+      label: Testing Plan
+      description: How will this be tested?
+      placeholder: |
+        - Unit tests for new functions
+        - Integration tests for workflow
+        - Performance testing if applicable
+        - Manual testing scenarios
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: What other issues/tasks must be completed first?
+      placeholder: |
+        - Depends on #123: Database schema update
+        - Blocks #456: Frontend integration
+    validations:
+      required: false
+
+  - type: input
+    id: estimated-effort
+    attributes:
+      label: Estimated Effort
+      description: How long do you estimate this will take?
+      placeholder: e.g., 2-4 hours, 1-2 days, 1 week
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: Links to related documentation, examples, constraints, etc.
+    validations:
+      required: false
