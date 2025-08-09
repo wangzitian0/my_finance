@@ -15,23 +15,46 @@ These files define **how** to collect data from different sources, independent o
 ### 2. Ticker List Configurations (`list_*.yml`)  
 These files define **which** companies to process, with their CLI aliases and metadata.
 
-- `list_magnificent_7.yml` - Magnificent 7 tech companies (CLI: `m7`)
-- `list_nasdaq_100.yml` - NASDAQ-100 index companies (CLI: `n100`) 
-- `list_vti_3500.yml` - VTI ETF holdings (~3500 companies) (CLI: `v3k`)
+**Production Datasets:**
+- `list_magnificent_7.yml` - Magnificent 7 tech companies (CLI: `m7`) - 7 companies
+- `list_nasdaq_100.yml` - NASDAQ-100 index companies (CLI: `n100`) - ~100 companies
+- `list_vti_3500.yml` - VTI ETF holdings (CLI: `v3k`) - ~3500 companies
+
+**Testing Datasets:**
+- `list_fast_2.yml` - Fast 2-company subset from M7 (CLI: `fast`) - For development
+
+### 3. Test Target Configurations (`target_*.yml`)
+These files define **testing strategies** and requirements for different validation scenarios.
+
+- `target_pre_pr.yml` - Pre-PR validation requirements using fast_2 ticker list
 
 ## Usage
 
 ### Command Line Interface
+
+**Production Dataset Building:**
 ```bash
-# Build datasets using CLI aliases
-pixi run build m7        # Magnificent 7 
-pixi run build n100      # NASDAQ-100
-pixi run build v3k       # VTI 3500
+# Build full datasets using CLI aliases
+pixi run build m7        # Magnificent 7 (7 companies) - REQUIRED FOR PR
+pixi run build n100      # NASDAQ-100 (~100 companies)
+pixi run build v3k       # VTI 3500 (~3500 companies)
 
 # Full names also work
 pixi run build magnificent_7
 pixi run build nasdaq_100  
 pixi run build vti_3500
+```
+
+**Development Testing:**
+```bash
+# Fast development testing (2 companies only)
+pixi run build fast      # Fast 2-company subset (MSFT, NVDA)
+
+# PR creation with mandatory M7 testing
+pixi run create-pr "PR title" ISSUE_NUMBER  # Runs full M7 test (7 companies)
+
+# Standalone M7 testing for PR validation
+pixi run test-m7-e2e     # Tests all 7 companies, creates .m7-test-passed marker
 ```
 
 ### Configuration Combination
@@ -138,6 +161,53 @@ python ETL/fetch_ticker_lists.py
 2. Choose a unique `cli_alias` (e.g., `sp500` → `s5h`)
 3. Update the build system to recognize the new alias
 
+## Testing Configuration Architecture
+
+### Development vs PR Testing Strategy
+
+The configuration system supports a **two-tier testing strategy** optimized for development speed and PR quality:
+
+#### 1. Fast Development Testing (`list_fast_2.yml`)
+- **Purpose**: Quick feedback during development
+- **Companies**: 2 (MSFT, NVDA) - selected for speed and reliability
+- **Duration**: ~30 seconds
+- **Usage**: `pixi run build fast`
+- **Data Sources**: YFinance only (SEC disabled for speed)
+
+#### 2. Complete PR Testing (`list_magnificent_7.yml`)
+- **Purpose**: Mandatory validation before PR creation
+- **Companies**: 7 (All M7 companies)
+- **Duration**: ~5-10 minutes
+- **Usage**: `pixi run create-pr` (automatic) or `pixi run test-m7-e2e` (standalone)
+- **Data Sources**: YFinance + SEC Edgar (complete validation)
+
+### Test Target Configuration (`target_pre_pr.yml`)
+
+This configuration defines the testing strategy for pre-PR validation:
+
+```yaml
+test_config:
+  ticker_list: "list_fast_2.yml"  # Uses fast 2-company subset
+  timeout_seconds: 120            # 2-minute timeout
+  enable_sec_edgar: false         # Disabled for speed
+  
+quality_gates:
+  - data_collection: "files_count >= ticker_count"
+  - build_completion: "build_status == 'completed'"
+  - validation_passed: "validation_passed == true"
+```
+
+### PR Workflow Integration
+
+The testing configuration integrates with the automated PR workflow:
+
+1. **Development**: Use `list_fast_2.yml` for rapid iteration
+2. **Pre-PR**: Run `pixi run test-m7-e2e` with full M7 validation
+3. **PR Creation**: `pixi run create-pr` enforces M7 test success
+4. **GitHub Validation**: Checks for `.m7-test-passed` marker file
+
+This ensures **quality without sacrificing development speed**.
+
 ## Benefits of This Architecture
 
 1. **Modularity** - Change data sources without affecting ticker lists
@@ -147,3 +217,5 @@ python ETL/fetch_ticker_lists.py
 5. **Flexibility** - Easy to add new sources or datasets
 6. **Validation** - Built-in quality checks and expectations
 7. **Documentation** - Self-documenting through structured metadata
+8. **Speed** - Fast development testing with rigorous PR validation
+9. **Quality Assurance** - Mandatory M7 testing prevents regressions

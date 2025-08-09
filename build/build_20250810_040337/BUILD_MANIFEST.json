@@ -1,8 +1,8 @@
 {
   "build_info": {
-    "build_id": "20250810_034405",
-    "start_time": "2025-08-10T03:44:05.587172",
-    "end_time": "2025-08-10T03:44:05.587489",
+    "build_id": "20250810_040337",
+    "start_time": "2025-08-10T04:03:37.068077",
+    "end_time": "2025-08-10T04:03:37.068428",
     "status": "failed",
     "configuration": "m7",
     "command": "pixi run build-dataset m7"
