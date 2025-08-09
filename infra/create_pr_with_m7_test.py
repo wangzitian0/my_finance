@@ -71,7 +71,7 @@ def run_m7_end_to_end():
     run_command("pixi run env-status", "Checking environment status", check=False)
     
     # Build M7 dataset
-    run_command("pixi run build m7", "Building M7 dataset", timeout=600)  # 10 minutes
+    run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
     
     # Validate build results
     build_status = run_command("pixi run build-status", "Checking build status")
