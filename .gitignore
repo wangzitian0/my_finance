@@ -14,8 +14,11 @@ build_report_*.json
 *.log
 log/
 
-# TIER 2 & 3: Ignore large buildable datasets
-*nasdaq100*
+# TIER 2: Ignore old nasdaq100 naming format (keep individual stock results)
+*_nasdaq100*
+original/yfinance/**/README.md
+
+# TIER 3: Ignore large buildable datasets  
 *us_all*
 *us-all*
 

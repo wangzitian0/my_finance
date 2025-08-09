@@ -1,0 +1,74 @@
+{
+  "ticker": "META",
+  "source": "yfinance",
+  "created_at": "2025-08-09T21:59:05.448510",
+  "updated_at": "2025-08-09T21:59:27.362103",
+  "version": "1.0.0",
+  "files": {
+    "META_yfinance_1y_1d_250809-215905.json": {
+      "filename": "META_yfinance_1y_1d_250809-215905.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_1y_1d_250809-215905.json",
+      "data_type": "1y_1d",
+      "file_size": 74942,
+      "md5_hash": "08df739f2e9d774da8ca129be5bead8b",
+      "created_at": "2025-08-09T21:59:05.448800",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-215850"
+      }
+    },
+    "META_yfinance_5y_1wk_250809-215917.json": {
+      "filename": "META_yfinance_5y_1wk_250809-215917.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_5y_1wk_250809-215917.json",
+      "data_type": "5y_1wk",
+      "file_size": 77330,
+      "md5_hash": "8abc6068f0895161f27c13f0e515be80",
+      "created_at": "2025-08-09T21:59:17.302179",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250809-215907"
+      }
+    },
+    "META_yfinance_3mo_1d_250809-215927.json": {
+      "filename": "META_yfinance_3mo_1d_250809-215927.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_3mo_1d_250809-215927.json",
+      "data_type": "3mo_1d",
+      "file_size": 49313,
+      "md5_hash": "15015171653101a5386517820e942e38",
+      "created_at": "2025-08-09T21:59:27.362066",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250809-215918"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T21:59:05.448804",
+      "action": "file_created",
+      "filename": "META_yfinance_1y_1d_250809-215905.json",
+      "data_type": "1y_1d",
+      "file_size": 74942
+    },
+    {
+      "timestamp": "2025-08-09T21:59:17.302187",
+      "action": "file_created",
+      "filename": "META_yfinance_5y_1wk_250809-215917.json",
+      "data_type": "5y_1wk",
+      "file_size": 77330
+    },
+    {
+      "timestamp": "2025-08-09T21:59:27.362075",
+      "action": "file_created",
+      "filename": "META_yfinance_3mo_1d_250809-215927.json",
+      "data_type": "3mo_1d",
+      "file_size": 49313
+    }
+  ]
+}
