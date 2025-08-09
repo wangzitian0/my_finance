@@ -13,6 +13,9 @@ knowledge_base_build.log
 .env.local
 .env.development
 
+# M7 test marker files (included in PR branches, cleaned up after merge)
+.m7-test-passed
+
 # ==============================================================================
 # PYTHON AND DEVELOPMENT
 # ==============================================================================

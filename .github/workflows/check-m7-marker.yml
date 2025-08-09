@@ -1,0 +1,94 @@
+name: Check M7 Test Marker
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+# Grant permissions for PR comments
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m7-marker-check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check-m7-marker:
+    name: "M7 Local Test Verification (MANDATORY)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+    - name: "📥 Checkout code"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1  # Only need latest commit
+        
+    - name: "🔍 Check M7 Test Marker"
+      id: check_marker
+      run: |
+        echo "🔍 Checking for M7 test marker file..."
+        
+        if [ ! -f ".m7-test-passed" ]; then
+          echo "❌ FAIL: M7 test marker file not found"
+          echo "   This PR was not created with 'pixi run create-pr' or M7 test did not pass locally"
+          echo ""
+          echo "📝 Required steps:"
+          echo "   1. Run locally: pixi run test-m7-e2e"
+          echo "   2. Ensure test passes and creates .m7-test-passed file"
+          echo "   3. Use: pixi run create-pr \"Your title\" ISSUE_NUMBER"
+          echo ""
+          exit 1
+        fi
+        
+        echo "✅ M7 test marker found"
+        
+        # Read and validate marker file
+        echo "📋 M7 Test Details:"
+        cat .m7-test-passed
+        
+        # Extract key information (trim whitespace)
+        COMMIT_HASH=$(grep "COMMIT_HASH=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        TEST_TIMESTAMP=$(grep "TEST_TIMESTAMP=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        M7_DATA_FILES=$(grep "M7_DATA_FILES=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        VALIDATION_PASSED=$(grep "VALIDATION_PASSED=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        
+        echo ""
+        echo "🔍 Validation Results:"
+        echo "   📊 M7 Data Files: $M7_DATA_FILES"
+        echo "   ✅ Validation Status: $VALIDATION_PASSED"
+        echo "   ⏱️  Test Time: $TEST_TIMESTAMP"
+        echo "   📝 Commit Hash: $COMMIT_HASH"
+        
+        # Debug validation check
+        echo "🔍 Debug: VALIDATION_PASSED='$VALIDATION_PASSED'"
+        echo "🔍 Debug: Length=${#VALIDATION_PASSED}"
+        
+        # Verify validation passed
+        if [ "$VALIDATION_PASSED" != "true" ]; then
+          echo "❌ FAIL: M7 validation did not pass (got: '$VALIDATION_PASSED')"
+          exit 1
+        fi
+        
+        # Check if we have sufficient data files
+        if [ "$M7_DATA_FILES" -lt 7 ]; then
+          echo "❌ FAIL: Insufficient M7 data files ($M7_DATA_FILES < 7)"
+          exit 1
+        fi
+        
+        echo "✅ M7 local test verification PASSED"
+        echo "✅ This PR is ready for human review"
+        
+        # Summary output for GitHub Actions UI
+        echo "## ✅ M7 Local Test Verification PASSED" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "This PR includes a valid M7 test marker with:" >> $GITHUB_STEP_SUMMARY
+        echo "- 🧪 **M7 Test**: Completed successfully" >> $GITHUB_STEP_SUMMARY
+        echo "- 📊 **Data Files**: $M7_DATA_FILES files validated" >> $GITHUB_STEP_SUMMARY
+        echo "- ⏱️ **Test Time**: $TEST_TIMESTAMP" >> $GITHUB_STEP_SUMMARY
+        echo "- 🏠 **Local Testing**: No expensive CI/CD resources used" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**This PR is ready for human review** 🚀" >> $GITHUB_STEP_SUMMARY
