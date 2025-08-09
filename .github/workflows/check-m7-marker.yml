@@ -5,6 +5,12 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
+# Grant permissions for PR comments
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 concurrency:
   group: m7-marker-check-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -76,54 +82,13 @@ jobs:
         echo "✅ M7 local test verification PASSED"
         echo "✅ This PR is ready for human review"
         
-    - name: "📝 Comment on PR (Success)"
-      if: success()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `## ✅ M7 Local Test Verification PASSED
-            
-            This PR includes a valid M7 test marker, indicating that:
-            
-            - 🧪 **M7 End-to-End Test**: Completed successfully on developer machine
-            - 📊 **Data Validation**: All expected M7 files present locally
-            - 🏗️ **Build Process**: Completed without errors
-            - ⚡ **Fast Verification**: No heavy CI/CD resources used
-            
-            The PR was created using the proper workflow: \`pixi run create-pr\`
-            
-            This PR is **ready for human review** 🚀
-            
-            *M7 testing completed locally - no expensive cloud resources used!*`
-          })
-          
-    - name: "📝 Comment on PR (Failure)"  
-      if: failure()
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `## ❌ M7 Local Test Verification FAILED
-            
-            This PR **cannot be merged** because it lacks a valid M7 test marker.
-            
-            **Required actions:**
-            1. Run locally: \`pixi run test-m7-e2e\` 
-            2. Ensure test passes (creates .m7-test-passed file)
-            3. Recreate PR with: \`pixi run create-pr "Your title" ISSUE_NUMBER\`
-            
-            **Why this approach?**
-            - ⚡ **Fast**: No expensive GitHub Actions runners
-            - 🏠 **Local**: Tests run on your development environment  
-            - 💚 **Efficient**: Saves CI/CD resources for actual deployment
-            - 🔒 **Quality**: Still enforces M7 validation requirement
-            
-            ❌ **This PR is BLOCKED until M7 validation passes locally**`
-          })
+        # Summary output for GitHub Actions UI
+        echo "## ✅ M7 Local Test Verification PASSED" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "This PR includes a valid M7 test marker with:" >> $GITHUB_STEP_SUMMARY
+        echo "- 🧪 **M7 Test**: Completed successfully" >> $GITHUB_STEP_SUMMARY
+        echo "- 📊 **Data Files**: $M7_DATA_FILES files validated" >> $GITHUB_STEP_SUMMARY
+        echo "- ⏱️ **Test Time**: $TEST_TIMESTAMP" >> $GITHUB_STEP_SUMMARY
+        echo "- 🏠 **Local Testing**: No expensive CI/CD resources used" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**This PR is ready for human review** 🚀" >> $GITHUB_STEP_SUMMARY
