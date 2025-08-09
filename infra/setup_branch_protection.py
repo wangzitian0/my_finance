@@ -32,7 +32,7 @@ def setup_branch_protection():
         "required_status_checks": {
             "strict": True,
             "contexts": [
-                "M7 End-to-End Validation (MANDATORY)"
+                "M7 Local Test Verification (MANDATORY)"
             ]
         },
         "enforce_admins": False,  # Allow admins to bypass in emergencies
@@ -67,12 +67,12 @@ def setup_branch_protection():
     if result is not None:
         print("\n✅ Branch protection rules applied successfully!")
         print("\n📋 Protection rules summary:")
-        print("   • M7 End-to-End Validation: REQUIRED")
+        print("   • M7 Local Test Verification: REQUIRED")
         print("   • Pull request reviews: 1 required")
         print("   • Dismiss stale reviews: YES") 
         print("   • Force pushes: BLOCKED")
         print("   • Branch deletions: BLOCKED")
-        print("\n🚫 PRs cannot be merged without passing M7 test")
+        print("\n🚫 PRs cannot be merged without local M7 test marker")
         return True
     else:
         print("\n❌ Failed to apply branch protection rules")
