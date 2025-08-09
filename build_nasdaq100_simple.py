@@ -41,7 +41,7 @@ def build_nasdaq100():
     print(f"   Companies: {len(nasdaq100_sample)}")
     print(f"   Strategy: Use existing data with standardized naming")
 
-    base_dir = Path("data/original/yfinance")
+    base_dir = Path("data/stage_01_extract/yfinance")
     processed = 0
 
     for ticker in nasdaq100_sample:

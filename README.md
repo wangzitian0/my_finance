@@ -94,3 +94,21 @@ pixi run setup-env           # Installs Minikube, Neo4j, dependencies
 This creates a complete environment with Kubernetes, Neo4j graph database, and all Python dependencies isolated in Pixi.
 
 **Troubleshooting**: Use `pixi run env-reset` to start fresh if needed.
+
+## Documentation
+
+### Architecture & Design
+- **[Architecture Documentation](docs/README.md)** - System architecture and design documents
+- **[ETL Structure Design](docs/ETL_STRUCTURE_DESIGN.md)** - Data pipeline architecture
+- **[Project Roadmap](docs/PROJECT_ROADMAP.md)** - Development plan and milestones
+
+### Implementation Guides
+- **[Data Collection](spider/README.md)** - YFinance and SEC Edgar spiders
+- **[Data Management](common/README.md)** - Metadata system and utilities  
+- **[Build System](scripts/README.md)** - Dataset building and management
+- **[Data Pipeline](data/README.md)** - ETL structure and four-tier dataset strategy
+
+### Component Documentation
+- **[ETL Processing](ETL/README.md)** - Data processing and transformation
+- **[Graph RAG](graph_rag/README.md)** - Retrieval-augmented generation
+- **[Local LLM](local_llm/README.md)** - Local language model integration

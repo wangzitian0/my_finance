@@ -34,7 +34,11 @@ class TestPipelineBasics:
 
     def test_directory_structure(self):
         """Verify basic directory structure exists"""
-        required_dirs = ["tests", "scripts", ".github/workflows"]
+        required_dirs = [
+            "tests", "scripts", ".github/workflows",
+            "data/stage_01_extract", "data/stage_02_transform", 
+            "data/stage_03_load", "data/build", "data/config"
+        ]
 
         for dir_name in required_dirs:
             dir_path = Path(dir_name)

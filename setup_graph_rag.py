@@ -203,7 +203,7 @@ class GraphRAGSetup:
         directories = [
             "data",
             "data/original",
-            "data/original/yfinance",
+            "data/stage_01_extract/yfinance",
             "data/original/sec",
             "data/config",
             "data/log",

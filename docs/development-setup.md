@@ -292,7 +292,7 @@ python run_job.py test_config.yml
 python -c "from ETL.models import Stock; print('Neo4j connected!')"
 
 # 检查数据目录
-ls -la data/original/yfinance/
+ls -la data/stage_01_extract/yfinance/
 ```
 
 ## 故障排除

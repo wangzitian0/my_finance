@@ -14,7 +14,7 @@ def validate_m7_data():
     """Validate M7 data availability"""
     print("🔍 Validating M7 data...")
 
-    data_dir = Path("data/original/yfinance")
+    data_dir = Path("data/stage_01_extract/yfinance")
     if not data_dir.exists():
         print("❌ M7 YFinance data directory not found")
         return False

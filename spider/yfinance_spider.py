@@ -32,7 +32,7 @@ suppress_third_party_logs()
 
 # Base directories
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-ORIGINAL_DATA_DIR = os.path.join(BASE_DIR, "data", "original")
+STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
 
 
 class StreamToLogger(object):
@@ -59,7 +59,7 @@ def save_data(ticker, source, oid, data, logger, metadata_manager, config_info):
     """
     Save the data as a JSON file with the filename format:
     <ticker>_<source>_<oid>_<date_str>.json.
-    The file is stored under data/original/<source>/<ticker>/.
+    The file is stored under data/stage_01_extract/<source>/<date_partition>/<ticker>/.
     Before saving, the data is sanitized so that all keys are valid.
     If no data is available, an exception is raised and nothing is saved.
     Also updates metadata and generates index.
@@ -67,9 +67,12 @@ def save_data(ticker, source, oid, data, logger, metadata_manager, config_info):
     if not data:
         logger.error(f"No data to save for ticker {ticker}. Skipping save.")
         raise Exception("No data fetched; skipping saving.")
-    date_str = datetime.now().strftime("%y%m%d-%H%M%S")
-    filename = f"{ticker}_{source}_{oid}_{date_str}.json"
-    ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
+    # Create timestamp for filename and date partition for directory
+    timestamp_str = datetime.now().strftime("%y%m%d-%H%M%S")
+    date_partition = datetime.now().strftime("%Y%m%d")
+    filename = f"{ticker}_{source}_{oid}_{timestamp_str}.json"
+    # Create date partition path: data/stage_01_extract/source/YYYYMMDD/ticker/
+    ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, source, date_partition, ticker)
     os.makedirs(ticker_dir, exist_ok=True)
     filepath = os.path.join(ticker_dir, filename)
     sanitized_data = sanitize_data(data, logger)
@@ -190,7 +193,7 @@ def run_job(config_path):
         logger.info(f"Job started: exe_id={exe_id}")
 
         # Initialize metadata manager
-        metadata_manager = MetadataManager(ORIGINAL_DATA_DIR)
+        metadata_manager = MetadataManager(STAGE_01_EXTRACT_DIR)
 
         total = len(tickers)
         success = 0

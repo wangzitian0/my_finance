@@ -39,7 +39,7 @@ neo4j-python-driver = "*"
 [tasks]
 # Core commands from CLAUDE.md
 activate = "echo 'Pixi environment activated'"
-build-m7 = "python manage.py build m7"
+build-m7-legacy = "python manage.py build m7"
 status = "python manage.py status"
 run-job = "python run_job.py"
 
@@ -100,6 +100,16 @@ install-git-hooks = "python scripts/install_git_hooks.py"
 # Data submodule management (CRITICAL)
 commit-data-changes = "python scripts/commit_data_changes.py"
 check-data-status = "python -c 'import os; os.chdir(\"data\"); os.system(\"git status\")'"
+
+# Build tracking and data migration tasks
+migrate-data-structure = "python scripts/migrate_data_structure.py"
+# Unified dataset building with configuration-driven approach
+build-dataset = "python scripts/build_dataset.py"
+build-test = "python scripts/build_dataset.py test --validate"
+build-m7 = "python scripts/build_dataset.py m7 --validate"
+build-nasdaq100 = "python scripts/build_dataset.py nasdaq100 --validate"
+build-vti = "python scripts/build_dataset.py vti"
+build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # --- Environment Management (Ansible) ---
 # Initial environment setup
