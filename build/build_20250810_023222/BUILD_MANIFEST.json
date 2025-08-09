@@ -1,0 +1,46 @@
+{
+  "build_info": {
+    "build_id": "20250810_023222",
+    "start_time": "2025-08-10T02:32:22.943503",
+    "end_time": null,
+    "status": "in_progress",
+    "configuration": "m7",
+    "command": "pixi run build-dataset m7"
+  },
+  "stages": {
+    "stage_01_extract": {
+      "status": "failed",
+      "start_time": "2025-08-10T02:32:22.944821",
+      "end_time": "2025-08-10T02:32:22.945193",
+      "artifacts": []
+    },
+    "stage_02_transform": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "artifacts": []
+    },
+    "stage_03_load": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "artifacts": []
+    }
+  },
+  "data_partitions": {
+    "extract_partition": null,
+    "transform_partition": null,
+    "load_partition": null
+  },
+  "statistics": {
+    "files_processed": 0,
+    "errors": [
+      {
+        "stage": "stage_01_extract",
+        "error": "yfinance data collection failed",
+        "timestamp": "2025-08-10T02:32:22.945195"
+      }
+    ],
+    "warnings": []
+  }
+}
