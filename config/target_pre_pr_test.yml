@@ -1,0 +1,51 @@
+# Pre-PR Test Target Configuration
+# Fast validation using subset of M7 companies for PR testing
+# Reuses M7 stock symbols but with minimal data collection for speed
+
+dataset_name: "pre_pr_test"
+cli_alias: "pre-pr"
+description: "Fast pre-PR validation using M7 subset"
+tier: 1  # Test tier
+tracked_in_git: false
+max_size_mb: 50
+
+# Subset of M7 companies for faster PR testing
+companies:
+  MSFT:
+    name: "Microsoft Corporation"
+    sector: "Technology"
+    industry: "Software"
+    cik: "0000789019"
+    market_cap_category: "mega"
+    
+  NVDA:
+    name: "NVIDIA Corporation"
+    sector: "Technology"
+    industry: "Semiconductors"
+    cik: "0001045810"
+    market_cap_category: "large"
+
+ticker_count: 2
+
+# Fast data collection for PR validation
+data_sources:
+  yfinance:
+    enabled: true
+    periods: ["daily_3mo"]  # Single period for speed
+    
+  sec_edgar:
+    enabled: false  # Disabled for PR speed
+    filing_types: []
+
+# Expected file counts
+expected_files:
+  yfinance: 2  # 2 tickers × 1 period
+  sec_edgar: 0
+  
+# Fast validation settings
+validation:
+  timeout_seconds: 120  # 2 minutes max
+  required_success_rate: 1.0
+  min_files_threshold: 2
+
+last_updated: "2025-08-10T03:45:00.000000"
