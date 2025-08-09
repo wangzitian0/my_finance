@@ -1,6 +1,6 @@
-# Common Utilities
+# Common - 公共组件
 
-This directory contains shared utilities and core functionality used across the my_finance project.
+管理不同模块间的交互，定义schema和共享工具。负责模块间协调和数据标准化。
 
 ## Core Components
 

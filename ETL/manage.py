@@ -125,7 +125,7 @@ class FinanceManager:
         print("🔍 Validating data integrity...")
 
         try:
-            cmd = [sys.executable, "build_knowledge_base.py", "--validate"]
+            cmd = [sys.executable, "dcf_engine/build_knowledge_base.py", "--validate"]
             result = subprocess.run(cmd, check=True)
             print("✅ Data validation completed")
             return True

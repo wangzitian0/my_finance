@@ -14,7 +14,7 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from common.build_tracker import BuildTracker
-from tests.test_config import TestConfigManager, DatasetTier
+from ETL.tests.test_config import TestConfigManager, DatasetTier
 
 def build_dataset(tier_name: str, config_path: str = None) -> bool:
     """
@@ -94,7 +94,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build yfinance data using spider"""
     try:
-        from spider.yfinance_spider import run_job
+        from yfinance_spider import run_job
         
         # Create temp config file path for the spider
         config_manager = TestConfigManager()
@@ -120,7 +120,7 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build SEC Edgar data using spider"""
     try:
-        from spider.sec_edgar_spider import run_job
+        from sec_edgar_spider import run_job
         
         # Find SEC Edgar config for this tier
         config_manager = TestConfigManager()

@@ -39,14 +39,14 @@ neo4j-python-driver = "*"
 [tasks]
 # Core commands from CLAUDE.md
 activate = "echo 'Pixi environment activated'"
-build-m7-legacy = "python manage.py build m7"
-status = "python manage.py status"
-run-job = "python run_job.py"
+build-m7-legacy = "python ETL/manage.py build m7"
+status = "python ETL/manage.py status"
+run-job = "python ETL/run_job.py"
 
 # Analysis and reporting commands  
-dcf-analysis = "python m7_dcf_analysis.py"
-dcf-report = "python generate_dcf_report.py"
-simple-dcf = "python simple_m7_dcf.py"
+dcf-analysis = "python dcf_engine/m7_dcf_analysis.py"
+dcf-report = "python dcf_engine/generate_dcf_report.py"
+simple-dcf = "python dcf_engine/simple_m7_dcf.py"
 
 # Install additional packages via pip (cross-platform)  
 install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
@@ -58,69 +58,73 @@ lint = "echo 'Lint: Using black and isort for code quality (pylint disabled due 
 lint-pylint = "pylint . || echo 'pylint skipped due to dependency conflicts'"
 typecheck = "mypy ."
 # Testing and coverage tasks
-test = "pytest tests/ -v"
-test-with-coverage = "pytest tests/ --cov=. --cov-config=.coveragerc --cov-report=xml --cov-report=html --cov-report=term-missing"
+test = "pytest . -v --ignore=data --ignore=htmlcov --ignore=.pixi"
+test-integration = "pytest tests/ -v"
+test-modules = "pytest ETL/tests/ common/tests/ dcf_engine/tests/ evaluation/tests/ -v"
+test-with-coverage = "pytest . --cov=. --cov-config=.coveragerc --cov-report=xml --cov-report=html --cov-report=term-missing --ignore=data --ignore=htmlcov --ignore=.pixi"
 coverage-report = "coverage html && coverage xml"
-coverage-check = "python scripts/check_coverage.py --threshold 25"
 
-# User case testing tasks
-test-strategy-analyst = "pytest tests/test_user_cases.py::TestStrategyAnalystWorkflow -v"
-test-risk-manager = "pytest tests/test_user_cases.py::TestRiskManagerWorkflow -v"  
-test-investment-manager = "pytest tests/test_user_cases.py::TestInvestmentManagerWorkflow -v"
-test-all-user-cases = "pytest tests/test_user_cases.py -v"
+# Module-specific testing
+test-etl = "pytest ETL/tests/ -v"
+test-common = "pytest common/tests/ -v"
+test-dcf-engine = "pytest dcf_engine/tests/ -v"
+test-evaluation = "pytest evaluation/tests/ -v"
+
+# User case testing tasks (integration tests)
+test-strategy-analyst = "pytest tests/e2e/test_user_cases.py::TestStrategyAnalystWorkflow -v"
+test-risk-manager = "pytest tests/e2e/test_user_cases.py::TestRiskManagerWorkflow -v"  
+test-investment-manager = "pytest tests/e2e/test_user_cases.py::TestInvestmentManagerWorkflow -v"
+test-all-user-cases = "pytest tests/e2e/test_user_cases.py -v"
 
 # Test environment setup
-setup-test-env = "python scripts/setup_test_environment.py"
+setup-test-env = "python ETL/tests/setup_test_environment.py"
 
 # Metadata management tasks
-metadata-list = "python scripts/manage_metadata.py list"
-metadata-rebuild = "python scripts/manage_metadata.py rebuild"
-metadata-index = "python scripts/manage_metadata.py index"
-metadata-failures = "python scripts/manage_metadata.py failures"
-metadata-cleanup = "python scripts/manage_metadata.py cleanup"
-retry-failed = "python scripts/retry_failed.py"
+metadata-list = "python common/manage_metadata.py list"
+metadata-rebuild = "python common/manage_metadata.py rebuild"
+metadata-index = "python common/manage_metadata.py index"
+metadata-failures = "python common/manage_metadata.py failures"
+metadata-cleanup = "python common/manage_metadata.py cleanup"
+retry-failed = "python ETL/retry_failed.py"
 
 # Strategy Engine tasks (NEW)
-validate-strategy = "python strategy/validator.py"
-generate-report = "python strategy/validator.py && echo 'Reports saved in data/reports/'"
-backtest = "python -c 'from strategy.validator import StrategyValidator; v=StrategyValidator(); print(v._run_backtest())'"
-benchmark = "python -c 'from strategy.validator import StrategyValidator; v=StrategyValidator(); print(v._compare_benchmarks())'"
+validate-strategy = "python dcf_engine/validator.py"
+generate-report = "python dcf_engine/validator.py && echo 'Reports saved in data/reports/'"
+backtest = "python -c 'from dcf_engine.validator import StrategyValidator; v=StrategyValidator(); print(v._run_backtest())'"
+benchmark = "python -c 'from dcf_engine.validator import StrategyValidator; v=StrategyValidator(); print(v._compare_benchmarks())'"
 
 # Graph RAG specific tasks
-setup-graph-rag = "python setup_graph_rag.py"
-demo-graph-rag = "python demo_graph_rag.py"
-test-graph-rag = "python test_graph_rag.py"
+setup-graph-rag = "python graph_rag/setup_graph_rag.py"
+demo-graph-rag = "python dcf_engine/demo_graph_rag.py"
+test-graph-rag = "python graph_rag/test_graph_rag.py"
 
 # Git workflow optimization tasks
-cleanup-branches = "python scripts/cleanup_merged_branches.py --interactive"
-cleanup-branches-auto = "python scripts/cleanup_merged_branches.py --auto"
-cleanup-branches-dry-run = "python scripts/cleanup_merged_branches.py --dry-run"
-install-git-hooks = "python scripts/install_git_hooks.py"
+cleanup-branches = "python infra/cleanup_merged_branches.py --interactive"
+cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
+cleanup-branches-dry-run = "python infra/cleanup_merged_branches.py --dry-run"
+install-git-hooks = "python infra/install_git_hooks.py"
 
 # Data submodule management (CRITICAL)
-commit-data-changes = "python scripts/commit_data_changes.py"
+commit-data-changes = "python infra/commit_data_changes.py"
 check-data-status = "python -c 'import os; os.chdir(\"data\"); os.system(\"git status\")'"
 
 # Build tracking and data migration tasks
-migrate-data-structure = "python scripts/migrate_data_structure.py"
+migrate-data-structure = "python ETL/migrate_data_structure.py"
 # Unified dataset building with configuration-driven approach
-build-dataset = "python scripts/build_dataset.py"
-build-test = "python scripts/build_dataset.py test --validate"
-build-m7 = "python scripts/build_dataset.py m7 --validate"
-build-nasdaq100 = "python scripts/build_dataset.py nasdaq100 --validate"
-build-vti = "python scripts/build_dataset.py vti"
+build-dataset = "python ETL/build_dataset.py"
+build = "python ETL/build_dataset.py"
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # --- Environment Management (Ansible) ---
 # Initial environment setup
-setup-env = "pip install ansible psutil && ansible-playbook ansible/init.yml --ask-become-pass"
+setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.yml --ask-become-pass"
 # Environment operations
-env-start = "ansible-playbook ansible/start.yml"
-env-stop = "ansible-playbook ansible/stop.yml" 
-env-status = "python scripts/env_status.py"
-env-reset = "ansible-playbook ansible/reset.yml"
+env-start = "ansible-playbook infra/ansible/start.yml"
+env-stop = "ansible-playbook infra/ansible/stop.yml" 
+env-status = "python infra/env_status.py"
+env-reset = "ansible-playbook infra/ansible/reset.yml"
 # One-click shutdown all services
-shutdown-all = "python scripts/shutdown_all.py"
+shutdown-all = "python infra/shutdown_all.py"
 
 # --- Development Operations (Pure Development) ---
 # Core data operations remain in pixi
