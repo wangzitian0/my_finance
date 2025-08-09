@@ -26,7 +26,7 @@ from graph_rag.semantic_embedding import SemanticEmbedding
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("graph_rag_test.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler("data/log/graph_rag_test.log"), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 

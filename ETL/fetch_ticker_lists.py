@@ -614,7 +614,7 @@ def fetch_vti_holdings() -> List[str]:
 
 
 def update_config_file(config_path: Path, tickers_data: List, description: str):
-    """Update configuration file with new ticker list and metadata comments"""
+    """Update configuration file with new ticker list and metadata comments for new modular format"""
     try:
         with open(config_path, "r") as f:
             config = yaml.safe_load(f)
@@ -626,65 +626,53 @@ def update_config_file(config_path: Path, tickers_data: List, description: str):
         # Determine if we have metadata or just ticker symbols
         has_metadata = tickers_data and isinstance(tickers_data[0], dict)
 
+        # Update companies section for new modular format
+        companies = {}
+        
         if has_metadata:
-            # Extract just ticker symbols for the config structure
-            config["tickers"] = [ticker_info["symbol"] for ticker_info in tickers_data]
+            for ticker_info in tickers_data:
+                symbol = ticker_info["symbol"]
+                companies[symbol] = {
+                    "name": ticker_info.get("name", f"{symbol} Inc."),
+                    "sector": ticker_info.get("sector", "Technology"),
+                }
+                
+                # Add weight for VTI holdings
+                if ticker_info.get("weight") and ticker_info["weight"] != "0.0000%":
+                    companies[symbol]["weight"] = ticker_info["weight"]
+                
+                # Add market cap for NASDAQ data  
+                if ticker_info.get("market_cap"):
+                    companies[symbol]["market_cap"] = ticker_info["market_cap"]
+                
+                # Add CIK if available
+                if ticker_info.get("cik"):
+                    companies[symbol]["cik"] = ticker_info["cik"]
+                    
             ticker_count = len(tickers_data)
         else:
-            config["tickers"] = tickers_data
+            for ticker in tickers_data:
+                companies[ticker] = {
+                    "name": f"{ticker} Inc.",
+                    "sector": "Technology"
+                }
             ticker_count = len(tickers_data)
 
-        # Write YAML with custom formatting to include comments
+        config["companies"] = companies
+        config["ticker_count"] = ticker_count
+        
+        # Update expected files count based on data sources
+        if "expected_files" in config:
+            yf_periods = len(config.get("data_sources", {}).get("yfinance", {}).get("periods", ["daily_3mo", "weekly_5y", "monthly_max"]))
+            config["expected_files"]["yfinance"] = ticker_count * yf_periods
+
+        # Add last updated timestamp
+        from datetime import datetime
+        config["last_updated"] = datetime.now().isoformat()
+
+        # Write updated config
         with open(config_path, "w") as f:
-            # Write all non-ticker fields first
-            for key, value in config.items():
-                if key != "tickers":
-                    yaml.dump(
-                        {key: value}, f, default_flow_style=False, sort_keys=False
-                    )
-
-            # Write tickers section with comments
-            f.write("tickers:\n")
-
-            if has_metadata:
-                # Write with detailed comments from API data
-                for ticker_info in tickers_data:
-                    symbol = ticker_info["symbol"]
-                    comment_parts = []
-
-                    # Add company name
-                    if ticker_info.get("name"):
-                        comment_parts.append(ticker_info["name"])
-
-                    # Add weight for VTI holdings
-                    if ticker_info.get("weight") and ticker_info["weight"] != "0.0000%":
-                        comment_parts.append(f"Weight: {ticker_info['weight']}")
-
-                    # Add market cap for NASDAQ data
-                    if ticker_info.get("market_cap"):
-                        comment_parts.append(f"Market Cap: {ticker_info['market_cap']}")
-
-                    # Add sector information
-                    if ticker_info.get("sector"):
-                        comment_parts.append(f"Sector: {ticker_info['sector']}")
-
-                    # Add price info for NASDAQ data
-                    if ticker_info.get("last_price"):
-                        price_info = ticker_info["last_price"]
-                        if ticker_info.get("change_pct"):
-                            price_info += f" ({ticker_info['change_pct']})"
-                        comment_parts.append(f"Price: {price_info}")
-
-                    # Format the comment
-                    if comment_parts:
-                        comment = " | ".join(comment_parts)
-                        f.write(f"- {symbol}  # {comment}\n")
-                    else:
-                        f.write(f"- {symbol}\n")
-            else:
-                # Simple list without metadata
-                for ticker in tickers_data:
-                    f.write(f"- {ticker}\n")
+            yaml.dump(config, f, default_flow_style=False, sort_keys=False)
 
         logger.info(f"Updated {config_path} with {ticker_count} tickers")
 
@@ -693,7 +681,7 @@ def update_config_file(config_path: Path, tickers_data: List, description: str):
 
 
 def main():
-    """Main function to update all ticker lists"""
+    """Main function to update all ticker lists with new modular config format"""
     base_path = Path(__file__).parent.parent / "data" / "config"
 
     try:
@@ -701,18 +689,18 @@ def main():
         logger.info("=== Fetching NASDAQ-100 tickers ===")
         nasdaq100_tickers = fetch_nasdaq100_tickers()
         update_config_file(
-            base_path / "yfinance_nasdaq100.yml",
+            base_path / "list_nasdaq_100.yml",
             nasdaq100_tickers,
-            "NASDAQ100 - Medium test dataset with validation requirements (buildable)",
+            "NASDAQ-100 index companies - validation dataset",
         )
 
-        # Update VTI
+        # Update VTI 3500
         logger.info("=== Fetching VTI holdings ===")
         vti_tickers = fetch_vti_holdings()
         update_config_file(
-            base_path / "yfinance_vti.yml",
+            base_path / "list_vti_3500.yml",
             vti_tickers,
-            "VTI - Final production dataset representing total US market (primary target)",
+            f"VTI ETF holdings ({len(vti_tickers) if vti_tickers else 0} companies) - production dataset",
         )
 
         logger.info("=== Ticker list update complete ===")
