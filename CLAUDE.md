@@ -44,7 +44,7 @@ pixi run test                   # Run tests
 
 **See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with:
 
-- **Three-tier data management**: M7 (git-tracked) → NASDAQ100 (buildable) → US-ALL (buildable)
+- **Three-tier data management**: M7 (git-tracked) → NASDAQ100 (buildable + validated) → VTI (production target) - see `docs/data-tiers.md`
 - **Neo4j graph database**: neomodel ORM, models in `ETL/models.py`
 - **Data spiders**: Yahoo Finance (`spider/yfinance_spider.py`), SEC Edgar (`spider/sec_edgar_spider.py`)
 - **Document parsing**: SEC filings with BeautifulSoup (`parser/sec_parser.py`)
@@ -118,14 +118,14 @@ git push --force-with-lease
 - **Always read README.md first** for complete project context
 - **Prefer editing existing files** over creating new ones
 - **Use Pixi** for all dependency management (replaces pipenv/conda/brew/apt)
-- **Follow three-tier data strategy** when working with datasets
+- **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
 
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories
 - **Management**: `manage.py`, `build_knowledge_base.py`
 - **Configuration**: `data/config/*.yml`, `common_config.yml`
-- **Documentation**: README.md (primary), this file (Claude-specific)
+- **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
 - **Data collection**: Use `pixi run run-job` or `python run_job.py [config.yml]`
