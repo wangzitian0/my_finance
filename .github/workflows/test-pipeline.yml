@@ -1,0 +1,80 @@
+name: Test Pipeline
+
+on:
+  push:
+    branches: [ main, 'feature/**' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  COVERAGE_THRESHOLD: 25
+
+jobs:
+  test-core-user-cases:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        
+    - name: Setup Pixi
+      uses: prefix-dev/setup-pixi@v0.4.1
+      with:
+        pixi-version: latest
+        
+    - name: Install dependencies
+      run: |
+        pixi install
+        pixi run install-extras
+        pixi run install-graph-rag
+        
+    - name: Setup test environment
+      run: |
+        pixi run setup-test-env
+        
+    - name: Core User Case 1 - Strategy Analyst Workflow
+      run: |
+        echo "::group::Strategy Analyst User Case"
+        pixi run test-strategy-analyst
+        echo "::endgroup::"
+        
+    - name: Core User Case 2 - Risk Manager Workflow  
+      run: |
+        echo "::group::Risk Manager User Case"
+        pixi run test-risk-manager
+        echo "::endgroup::"
+        
+    - name: Core User Case 3 - Investment Manager Workflow
+      run: |
+        echo "::group::Investment Manager User Case"
+        pixi run test-investment-manager
+        echo "::endgroup::"
+        
+    - name: Run unit tests with coverage
+      run: |
+        pixi run test-with-coverage
+        
+    - name: Generate coverage report
+      run: |
+        pixi run coverage-report
+        
+    - name: Check coverage threshold
+      run: |
+        pixi run coverage-check
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: true
+        
+    - name: Store test artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: |
+          test-results/
+          coverage.xml
+          htmlcov/
