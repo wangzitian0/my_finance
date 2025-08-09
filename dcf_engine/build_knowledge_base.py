@@ -32,7 +32,7 @@ import yaml
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("knowledge_base_build.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler("data/log/knowledge_base_build.log"), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 

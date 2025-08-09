@@ -693,7 +693,7 @@ def update_config_file(config_path: Path, tickers_data: List, description: str):
 
 
 def main():
-    """Main function to update all ticker lists"""
+    """Main function to update all ticker lists with new modular config format"""
     base_path = Path(__file__).parent.parent / "data" / "config"
 
     try:
@@ -701,18 +701,18 @@ def main():
         logger.info("=== Fetching NASDAQ-100 tickers ===")
         nasdaq100_tickers = fetch_nasdaq100_tickers()
         update_config_file(
-            base_path / "yfinance_nasdaq100.yml",
+            base_path / "list_nasdaq_100.yml",
             nasdaq100_tickers,
-            "NASDAQ100 - Medium test dataset with validation requirements (buildable)",
+            "NASDAQ-100 index companies - validation dataset",
         )
 
-        # Update VTI
+        # Update VTI 3500
         logger.info("=== Fetching VTI holdings ===")
         vti_tickers = fetch_vti_holdings()
         update_config_file(
-            base_path / "yfinance_vti.yml",
+            base_path / "list_vti_3500.yml",
             vti_tickers,
-            "VTI - Final production dataset representing total US market (primary target)",
+            f"VTI ETF holdings ({len(vti_tickers) if vti_tickers else 0} companies) - production dataset",
         )
 
         logger.info("=== Ticker list update complete ===")
