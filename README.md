@@ -1,16 +1,48 @@
-# my_finance_data
+# My Finance Data Repository
 
-ETL Pipeline Data Repository - Issue tracking at https://github.com/wangzitian0/my_finance
+ETL Pipeline Data Repository with four-tier dataset strategy and enterprise-grade build tracking.
+
+## Data Tier Strategy
+
+The project uses a four-tier approach to manage data sets of increasing size and complexity:
+
+### Tier 1: TEST - CI/CD Validation Dataset
+- **Size**: 1 company (minimal)
+- **Purpose**: Fast CI/CD validation
+- **Storage**: Temporary, not committed
+- **Update frequency**: On-demand
+
+### Tier 2: M7 - Git-Managed Test Dataset  
+- **Size**: 7 companies (Magnificent 7)
+- **Purpose**: Development and unit testing
+- **Storage**: Complete records committed to git
+- **Companies**: AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA
+- **Update frequency**: Manual, stable
+- **Build command**: `pixi run build-m7`
+
+### Tier 3: NASDAQ100 - Buildable Validation Dataset
+- **Size**: ~100 companies (NASDAQ-100 index)
+- **Purpose**: Algorithm validation and integration testing
+- **Storage**: Buildable, not committed to git
+- **Validation**: Required 95% success rate
+- **Build command**: `pixi run build-nasdaq100`
+
+### Tier 4: VTI - Production Target Dataset
+- **Size**: ~4000 companies (VTI ETF holdings)
+- **Purpose**: Complete market analysis and production queries
+- **Storage**: Buildable, production-grade quality
+- **Coverage**: Total US stock market
+- **Build command**: `pixi run build-vti`
 
 ## ETL Directory Structure
 
 ```
 data/
 ├── config/                     # Configuration files (4 datasets)
-│   ├── test_config.yml        # Minimal test data for CI
-│   ├── job_yfinance_m7.yml    # M7 dataset (git-tracked)
-│   ├── yfinance_nasdaq100.yml # NASDAQ100 dataset  
-│   └── yfinance_vti.yml       # VTI full market dataset
+│   ├── test_config.yml        # TEST: Minimal test data for CI
+│   ├── job_yfinance_m7.yml    # M7: Git-tracked dataset
+│   ├── yfinance_nasdaq100.yml # NASDAQ100: Validation dataset  
+│   └── yfinance_vti.yml       # VTI: Full market dataset
 ├── stage_01_extract/          # Raw data extraction
 │   ├── yfinance/
 │   │   ├── <YYYYMMDD>/        # Daily partition
@@ -42,7 +74,7 @@ data/
 │   │   ├── stage_logs/          # ETL stage logs
 │   │   └── artifacts/           # Build artifacts
 │   └── latest -> build_<YYYYMMDD_HHMMSS>/
-└── reports/                  # Analysis reports (legacy - to be moved)
+└── reports/                  # Analysis reports
     └── <YYYYMMDD>/          # Report date partition
         ├── dcf_analysis/    # DCF reports
         └── strategy_validation/
@@ -66,18 +98,27 @@ AAPL_yfinance_1y_1d_250809-143022.json
 AAPL_sec_edgar_10K_250809-143023.json
 ```
 
-## Migration Plan
+## Build Commands
 
-1. **Backup Current Data**: Archive existing `original/` and `reports/`
-2. **Create New Structure**: Build stage-based directories  
-3. **Migrate Data**: Move files to appropriate partitions
-4. **Update Code**: Modify spiders and processors for new structure
-5. **Validate**: Run test suite to ensure compatibility
+```bash
+# Build different dataset tiers
+pixi run build-test          # TEST dataset
+pixi run build-m7            # M7 dataset 
+pixi run build-nasdaq100     # NASDAQ100 dataset
+pixi run build-vti           # VTI dataset
+
+# Check build status
+pixi run build-status
+
+# Environment management
+pixi run env-status
+pixi run env-start
+```
 
 ## One Codebase, Multiple Configurations
 
-The system supports 4 dataset configurations:
-- **test**: Single stock for CI/CD (fast)
-- **m7**: 7 stocks for development (git-tracked)  
-- **nasdaq100**: 100+ stocks for analysis
-- **vti**: Full market for production
+All datasets use the same codebase with different configuration files:
+- **Unified build system**: `scripts/build_dataset.py`
+- **Configuration-driven**: YAML files in `data/config/`
+- **Scalable architecture**: From 1 stock (TEST) to 4000+ stocks (VTI)
+- **Consistent patterns**: Same ETL structure across all tiers
