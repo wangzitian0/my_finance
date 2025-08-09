@@ -22,9 +22,10 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from common.logger import setup_logger
-from common.progress import create_progress_bar
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
 from common.metadata_manager import MetadataManager
+from common.progress import create_progress_bar
+from common.utils import (is_file_recent, sanitize_data,
+                          suppress_third_party_logs)
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
@@ -74,11 +75,11 @@ def save_data(ticker, source, oid, data, logger, metadata_manager, config_info):
     sanitized_data = sanitize_data(data, logger)
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(sanitized_data, f, ensure_ascii=False, indent=2, default=str)
-    
+
     # Update metadata and generate index
     metadata_manager.add_file_record(source, ticker, filepath, oid, config_info)
     metadata_manager.generate_markdown_index(source, ticker)
-    
+
     return filepath
 
 
@@ -211,17 +212,19 @@ def run_job(config_path):
             # Redirect sys.stderr to capture underlying errors using ticker_logger.
             original_stderr = sys.stderr
             sys.stderr = StreamToLogger(ticker_logger, logging.ERROR)
-            
+
             # Create config info for this request
             config_info = {
                 "period": period,
                 "interval": interval,
                 "oid": oid,
-                "exe_id": exe_id
+                "exe_id": exe_id,
             }
-            
+
             # Check if recent data exists using metadata manager
-            if metadata_manager.check_file_exists_recent(source, ticker, oid, config_info, hours=24):
+            if metadata_manager.check_file_exists_recent(
+                source, ticker, oid, config_info, hours=24
+            ):
                 skipped += 1
                 success += 1
                 ticker_logger.info(f"Ticker {ticker}: Recent data exists (skipped).")
@@ -233,13 +236,23 @@ def run_job(config_path):
                     data = fetch_stock_data(ticker, period, interval)
                     if not data:
                         raise Exception("No data fetched.")
-                    filepath = save_data(ticker, source, oid, data, ticker_logger, metadata_manager, config_info)
+                    filepath = save_data(
+                        ticker,
+                        source,
+                        oid,
+                        data,
+                        ticker_logger,
+                        metadata_manager,
+                        config_info,
+                    )
                     success += 1
                     ticker_logger.info(f"Ticker {ticker}: Data saved at {filepath}")
                 except Exception as e:
                     errors += 1
                     error_msg = str(e)
-                    metadata_manager.mark_download_failed(source, ticker, oid, config_info, error_msg)
+                    metadata_manager.mark_download_failed(
+                        source, ticker, oid, config_info, error_msg
+                    )
                     ticker_logger.exception(f"Ticker {ticker}: Error fetching data")
             # Restore sys.stderr
             sys.stderr = original_stderr

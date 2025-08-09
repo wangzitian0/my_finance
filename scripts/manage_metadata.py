@@ -11,10 +11,10 @@ This script provides commands for managing download metadata including:
 - Cleaning up orphaned metadata
 """
 
-import os
-import sys
 import argparse
 import json
+import os
+import sys
 from pathlib import Path
 
 # Add the parent directory to Python path to import common modules
@@ -35,7 +35,7 @@ def list_sources_and_tickers(metadata_manager):
     if not base_dir.exists():
         print("No data directory found.")
         return
-    
+
     print("Available sources and tickers:")
     for source_dir in base_dir.iterdir():
         if source_dir.is_dir():
@@ -58,7 +58,7 @@ def rebuild_metadata(metadata_manager, source=None, ticker=None):
     if not base_dir.exists():
         print("No data directory found.")
         return
-    
+
     if source and ticker:
         # Rebuild specific ticker
         print(f"Rebuilding metadata for {source}/{ticker}...")
@@ -70,7 +70,7 @@ def rebuild_metadata(metadata_manager, source=None, ticker=None):
         if not source_dir.exists():
             print(f"Source '{source}' not found.")
             return
-        
+
         print(f"Rebuilding metadata for all tickers in {source}...")
         for ticker_dir in source_dir.iterdir():
             if ticker_dir.is_dir():
@@ -99,7 +99,7 @@ def generate_indexes(metadata_manager, source=None, ticker=None):
     if not base_dir.exists():
         print("No data directory found.")
         return
-    
+
     if source and ticker:
         # Generate index for specific ticker
         print(f"Generating index for {source}/{ticker}...")
@@ -111,7 +111,7 @@ def generate_indexes(metadata_manager, source=None, ticker=None):
         if not source_dir.exists():
             print(f"Source '{source}' not found.")
             return
-        
+
         print(f"Generating indexes for all tickers in {source}...")
         for ticker_dir in source_dir.iterdir():
             if ticker_dir.is_dir():
@@ -144,16 +144,18 @@ def show_failed_downloads(metadata_manager, source=None, ticker=None):
     if not base_dir.exists():
         print("No data directory found.")
         return
-    
+
     total_failures = 0
-    
+
     if source and ticker:
         # Show failures for specific ticker
         failures = metadata_manager.get_failed_downloads(source, ticker)
         if failures:
             print(f"\n❌ Failed downloads for {source}/{ticker}:")
             for failure in failures:
-                print(f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}")
+                print(
+                    f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}"
+                )
             total_failures += len(failures)
     elif source:
         # Show failures for all tickers in a source
@@ -161,7 +163,7 @@ def show_failed_downloads(metadata_manager, source=None, ticker=None):
         if not source_dir.exists():
             print(f"Source '{source}' not found.")
             return
-        
+
         for ticker_dir in source_dir.iterdir():
             if ticker_dir.is_dir():
                 ticker = ticker_dir.name
@@ -169,7 +171,9 @@ def show_failed_downloads(metadata_manager, source=None, ticker=None):
                 if failures:
                     print(f"\n❌ Failed downloads for {source}/{ticker}:")
                     for failure in failures:
-                        print(f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}")
+                        print(
+                            f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}"
+                        )
                     total_failures += len(failures)
     else:
         # Show all failures
@@ -183,9 +187,11 @@ def show_failed_downloads(metadata_manager, source=None, ticker=None):
                         if failures:
                             print(f"\n❌ Failed downloads for {source}/{ticker}:")
                             for failure in failures:
-                                print(f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}")
+                                print(
+                                    f"  - {failure['timestamp']}: {failure['data_type']} - {failure.get('error_message', 'Unknown error')}"
+                                )
                             total_failures += len(failures)
-    
+
     if total_failures == 0:
         print("✓ No failed downloads found.")
     else:
@@ -198,7 +204,7 @@ def cleanup_orphaned(metadata_manager, source=None, ticker=None):
     if not base_dir.exists():
         print("No data directory found.")
         return
-    
+
     if source and ticker:
         # Clean specific ticker
         print(f"Cleaning orphaned metadata for {source}/{ticker}...")
@@ -210,7 +216,7 @@ def cleanup_orphaned(metadata_manager, source=None, ticker=None):
         if not source_dir.exists():
             print(f"Source '{source}' not found.")
             return
-        
+
         print(f"Cleaning orphaned metadata for all tickers in {source}...")
         for ticker_dir in source_dir.iterdir():
             if ticker_dir.is_dir():
@@ -239,17 +245,21 @@ def cleanup_orphaned(metadata_manager, source=None, ticker=None):
 
 def main():
     parser = argparse.ArgumentParser(description="Manage download metadata")
-    parser.add_argument("command", choices=[
-        "list", "rebuild", "index", "failures", "cleanup"
-    ], help="Command to execute")
-    parser.add_argument("--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')")
+    parser.add_argument(
+        "command",
+        choices=["list", "rebuild", "index", "failures", "cleanup"],
+        help="Command to execute",
+    )
+    parser.add_argument(
+        "--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')"
+    )
     parser.add_argument("--ticker", "-t", help="Ticker symbol")
-    
+
     args = parser.parse_args()
-    
+
     base_data_dir = get_base_data_dir()
     metadata_manager = MetadataManager(str(base_data_dir))
-    
+
     if args.command == "list":
         list_sources_and_tickers(metadata_manager)
     elif args.command == "rebuild":

@@ -123,27 +123,31 @@ class GraphRAGSystem:
                 "semantic_results": len(semantic_content),
             },
         }
-    
+
     def process_query(self, question: str) -> dict:
         """
         Process a query - alias for answer_question for compatibility.
-        
+
         Args:
             question: User's natural language question
-            
+
         Returns:
             Dictionary containing answer and metadata
         """
         try:
             result = self.answer_question(question)
-            
+
             # Convert to format expected by DCF analyzer
             return {
                 "answer": result.get("answer", "No answer available"),
                 "confidence": result.get("confidence", 0.0),
-                "reasoning": result.get("steps", []) if result.get("reasoning_type") == "multi_step" else [result.get("answer", "")],
+                "reasoning": (
+                    result.get("steps", [])
+                    if result.get("reasoning_type") == "multi_step"
+                    else [result.get("answer", "")]
+                ),
                 "metadata": result.get("metadata", {}),
-                "success": True
+                "success": True,
             }
         except Exception as e:
             return {
@@ -151,7 +155,7 @@ class GraphRAGSystem:
                 "confidence": 0.0,
                 "reasoning": [],
                 "metadata": {},
-                "success": False
+                "success": False,
             }
 
     def _execute_mock_query(self, query_info: dict) -> dict:
