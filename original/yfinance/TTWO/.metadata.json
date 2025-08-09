@@ -7,7 +7,7 @@
   "files": {
     "TTWO_yfinance_1y_1d_250809-222948.json": {
       "filename": "TTWO_yfinance_1y_1d_250809-222948.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/TTWO/TTWO_yfinance_1y_1d_250809-222948.json",
+      "filepath": "data/original/yfinance/TTWO/TTWO_yfinance_1y_1d_250809-222948.json",
       "data_type": "1y_1d",
       "file_size": 75011,
       "md5_hash": "62f9cd20705e0a65d54896db424a6b37",

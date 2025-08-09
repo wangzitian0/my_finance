@@ -7,7 +7,7 @@
   "files": {
     "BIIB_yfinance_1y_1d_250809-222932.json": {
       "filename": "BIIB_yfinance_1y_1d_250809-222932.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/BIIB/BIIB_yfinance_1y_1d_250809-222932.json",
+      "filepath": "data/original/yfinance/BIIB/BIIB_yfinance_1y_1d_250809-222932.json",
       "data_type": "1y_1d",
       "file_size": 75057,
       "md5_hash": "666c6202a2d6bb3625482510af7bc725",

@@ -7,7 +7,7 @@
   "files": {
     "ADSK_yfinance_1y_1d_250809-222918.json": {
       "filename": "ADSK_yfinance_1y_1d_250809-222918.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/ADSK/ADSK_yfinance_1y_1d_250809-222918.json",
+      "filepath": "data/original/yfinance/ADSK/ADSK_yfinance_1y_1d_250809-222918.json",
       "data_type": "1y_1d",
       "file_size": 73771,
       "md5_hash": "1c49e9e70fd2b1aa75e6de2e980dbcda",

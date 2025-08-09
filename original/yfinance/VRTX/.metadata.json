@@ -7,7 +7,7 @@
   "files": {
     "VRTX_yfinance_1y_1d_250809-222931.json": {
       "filename": "VRTX_yfinance_1y_1d_250809-222931.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/VRTX/VRTX_yfinance_1y_1d_250809-222931.json",
+      "filepath": "data/original/yfinance/VRTX/VRTX_yfinance_1y_1d_250809-222931.json",
       "data_type": "1y_1d",
       "file_size": 73497,
       "md5_hash": "f3c9c643e5a81fc030a9ea2780ac1329",

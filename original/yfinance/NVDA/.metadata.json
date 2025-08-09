@@ -7,7 +7,7 @@
   "files": {
     "NVDA_yfinance_1y_1d_250809-215903.json": {
       "filename": "NVDA_yfinance_1y_1d_250809-215903.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/NVDA/NVDA_yfinance_1y_1d_250809-215903.json",
+      "filepath": "data/original/yfinance/NVDA/NVDA_yfinance_1y_1d_250809-215903.json",
       "data_type": "1y_1d",
       "file_size": 78915,
       "md5_hash": "6982e56b152073d378997917cb6be18e",
@@ -21,7 +21,7 @@
     },
     "NVDA_yfinance_5y_1wk_250809-215916.json": {
       "filename": "NVDA_yfinance_5y_1wk_250809-215916.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/NVDA/NVDA_yfinance_5y_1wk_250809-215916.json",
+      "filepath": "data/original/yfinance/NVDA/NVDA_yfinance_5y_1wk_250809-215916.json",
       "data_type": "5y_1wk",
       "file_size": 80741,
       "md5_hash": "4ad236ca89edd48c3071a10e231ae478",
@@ -35,7 +35,7 @@
     },
     "NVDA_yfinance_3mo_1d_250809-215926.json": {
       "filename": "NVDA_yfinance_3mo_1d_250809-215926.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/NVDA/NVDA_yfinance_3mo_1d_250809-215926.json",
+      "filepath": "data/original/yfinance/NVDA/NVDA_yfinance_3mo_1d_250809-215926.json",
       "data_type": "3mo_1d",
       "file_size": 52395,
       "md5_hash": "ee8b590b9b0737bb600745bcffb2b665",

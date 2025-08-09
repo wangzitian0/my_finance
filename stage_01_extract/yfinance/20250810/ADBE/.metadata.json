@@ -7,7 +7,7 @@
   "files": {
     "ADBE_yfinance_1y_1d_250809-222922.json": {
       "filename": "ADBE_yfinance_1y_1d_250809-222922.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/ADBE/ADBE_yfinance_1y_1d_250809-222922.json",
+      "filepath": "data/original/yfinance/ADBE/ADBE_yfinance_1y_1d_250809-222922.json",
       "data_type": "1y_1d",
       "file_size": 75211,
       "md5_hash": "858d248ae31b4ad645b4d2076ddd4ffa",

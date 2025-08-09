@@ -7,7 +7,7 @@
   "files": {
     "MSFT_yfinance_1y_1d_250809-215857.json": {
       "filename": "MSFT_yfinance_1y_1d_250809-215857.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_1y_1d_250809-215857.json",
+      "filepath": "data/original/yfinance/MSFT/MSFT_yfinance_1y_1d_250809-215857.json",
       "data_type": "1y_1d",
       "file_size": 76054,
       "md5_hash": "6a7739cbbb57087fce0540092e083c31",
@@ -21,7 +21,7 @@
     },
     "MSFT_yfinance_5y_1wk_250809-215910.json": {
       "filename": "MSFT_yfinance_5y_1wk_250809-215910.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_5y_1wk_250809-215910.json",
+      "filepath": "data/original/yfinance/MSFT/MSFT_yfinance_5y_1wk_250809-215910.json",
       "data_type": "5y_1wk",
       "file_size": 78116,
       "md5_hash": "18c597c9f0b321a04c3198107187f782",
@@ -35,7 +35,7 @@
     },
     "MSFT_yfinance_3mo_1d_250809-215922.json": {
       "filename": "MSFT_yfinance_3mo_1d_250809-215922.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MSFT/MSFT_yfinance_3mo_1d_250809-215922.json",
+      "filepath": "data/original/yfinance/MSFT/MSFT_yfinance_3mo_1d_250809-215922.json",
       "data_type": "3mo_1d",
       "file_size": 50050,
       "md5_hash": "a6fddff2d3a3439bf18ec3f7e6753273",
@@ -49,7 +49,7 @@
     },
     "MSFT_yfinance_m7_daily_3mo_250810-031404.json": {
       "filename": "MSFT_yfinance_m7_daily_3mo_250810-031404.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_daily_3mo_250810-031404.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_daily_3mo_250810-031404.json",
       "data_type": "m7_daily_3mo",
       "file_size": 50071,
       "md5_hash": "df2108e14114b7ebb245dd7b57a6bac5",
@@ -63,7 +63,7 @@
     },
     "MSFT_yfinance_m7_weekly_5y_250810-031411.json": {
       "filename": "MSFT_yfinance_m7_weekly_5y_250810-031411.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_weekly_5y_250810-031411.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_weekly_5y_250810-031411.json",
       "data_type": "m7_weekly_5y",
       "file_size": 78130,
       "md5_hash": "a898c08399fb499d6194c3e359d1541a",
@@ -77,7 +77,7 @@
     },
     "MSFT_yfinance_m7_monthly_max_250810-031417.json": {
       "filename": "MSFT_yfinance_m7_monthly_max_250810-031417.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_monthly_max_250810-031417.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/MSFT/MSFT_yfinance_m7_monthly_max_250810-031417.json",
       "data_type": "m7_monthly_max",
       "file_size": 109003,
       "md5_hash": "cd291d983af9cf62795bfaa571331aa9",

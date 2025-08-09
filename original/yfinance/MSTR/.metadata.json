@@ -7,7 +7,7 @@
   "files": {
     "MSTR_yfinance_1y_1d_250809-222950.json": {
       "filename": "MSTR_yfinance_1y_1d_250809-222950.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MSTR/MSTR_yfinance_1y_1d_250809-222950.json",
+      "filepath": "data/original/yfinance/MSTR/MSTR_yfinance_1y_1d_250809-222950.json",
       "data_type": "1y_1d",
       "file_size": 74009,
       "md5_hash": "717a5be1420d957780ec68427036e823",

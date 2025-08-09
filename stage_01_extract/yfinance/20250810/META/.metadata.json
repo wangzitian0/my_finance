@@ -7,7 +7,7 @@
   "files": {
     "META_yfinance_1y_1d_250809-215905.json": {
       "filename": "META_yfinance_1y_1d_250809-215905.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_1y_1d_250809-215905.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_1y_1d_250809-215905.json",
       "data_type": "1y_1d",
       "file_size": 74942,
       "md5_hash": "08df739f2e9d774da8ca129be5bead8b",
@@ -21,7 +21,7 @@
     },
     "META_yfinance_5y_1wk_250809-215917.json": {
       "filename": "META_yfinance_5y_1wk_250809-215917.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_5y_1wk_250809-215917.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_5y_1wk_250809-215917.json",
       "data_type": "5y_1wk",
       "file_size": 77330,
       "md5_hash": "8abc6068f0895161f27c13f0e515be80",
@@ -35,7 +35,7 @@
     },
     "META_yfinance_3mo_1d_250809-215927.json": {
       "filename": "META_yfinance_3mo_1d_250809-215927.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/META/META_yfinance_3mo_1d_250809-215927.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_3mo_1d_250809-215927.json",
       "data_type": "3mo_1d",
       "file_size": 49313,
       "md5_hash": "15015171653101a5386517820e942e38",
@@ -49,7 +49,7 @@
     },
     "META_yfinance_m7_daily_3mo_250810-031409.json": {
       "filename": "META_yfinance_m7_daily_3mo_250810-031409.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_daily_3mo_250810-031409.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_daily_3mo_250810-031409.json",
       "data_type": "m7_daily_3mo",
       "file_size": 49171,
       "md5_hash": "84dc1c4f0cfae1441503e3d548e4d27d",
@@ -63,7 +63,7 @@
     },
     "META_yfinance_m7_weekly_5y_250810-031414.json": {
       "filename": "META_yfinance_m7_weekly_5y_250810-031414.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_weekly_5y_250810-031414.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_weekly_5y_250810-031414.json",
       "data_type": "m7_weekly_5y",
       "file_size": 77212,
       "md5_hash": "475445b74e1c4c37bd956050b103e4ce",
@@ -77,7 +77,7 @@
     },
     "META_yfinance_m7_monthly_max_250810-031420.json": {
       "filename": "META_yfinance_m7_monthly_max_250810-031420.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_monthly_max_250810-031420.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_monthly_max_250810-031420.json",
       "data_type": "m7_monthly_max",
       "file_size": 63283,
       "md5_hash": "b87fe34ab1996a172887e75cbf643011",

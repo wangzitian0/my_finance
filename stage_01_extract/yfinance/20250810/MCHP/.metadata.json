@@ -7,7 +7,7 @@
   "files": {
     "MCHP_yfinance_1y_1d_250809-222941.json": {
       "filename": "MCHP_yfinance_1y_1d_250809-222941.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MCHP/MCHP_yfinance_1y_1d_250809-222941.json",
+      "filepath": "data/original/yfinance/MCHP/MCHP_yfinance_1y_1d_250809-222941.json",
       "data_type": "1y_1d",
       "file_size": 74290,
       "md5_hash": "b35e27f4da8269140a92240659b91eea",

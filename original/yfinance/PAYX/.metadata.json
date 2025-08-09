@@ -7,7 +7,7 @@
   "files": {
     "PAYX_yfinance_1y_1d_250809-222916.json": {
       "filename": "PAYX_yfinance_1y_1d_250809-222916.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/PAYX/PAYX_yfinance_1y_1d_250809-222916.json",
+      "filepath": "data/original/yfinance/PAYX/PAYX_yfinance_1y_1d_250809-222916.json",
       "data_type": "1y_1d",
       "file_size": 76440,
       "md5_hash": "5ad41e578f219171abaa13616fbafc93",

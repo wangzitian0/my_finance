@@ -7,7 +7,7 @@
   "files": {
     "ROST_yfinance_1y_1d_250809-222920.json": {
       "filename": "ROST_yfinance_1y_1d_250809-222920.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/ROST/ROST_yfinance_1y_1d_250809-222920.json",
+      "filepath": "data/original/yfinance/ROST/ROST_yfinance_1y_1d_250809-222920.json",
       "data_type": "1y_1d",
       "file_size": 73410,
       "md5_hash": "84a965d4c04f1a3b8d0a54ca2e87188c",

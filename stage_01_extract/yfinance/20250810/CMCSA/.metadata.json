@@ -7,7 +7,7 @@
   "files": {
     "CMCSA_yfinance_1y_1d_250809-222908.json": {
       "filename": "CMCSA_yfinance_1y_1d_250809-222908.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/CMCSA/CMCSA_yfinance_1y_1d_250809-222908.json",
+      "filepath": "data/original/yfinance/CMCSA/CMCSA_yfinance_1y_1d_250809-222908.json",
       "data_type": "1y_1d",
       "file_size": 75026,
       "md5_hash": "c65ec7d38664e6c661c3037cd8e9ead6",

@@ -7,7 +7,7 @@
   "files": {
     "AAPL_yfinance_1y_1d_250809-215854.json": {
       "filename": "AAPL_yfinance_1y_1d_250809-215854.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_1y_1d_250809-215854.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_1y_1d_250809-215854.json",
       "data_type": "1y_1d",
       "file_size": 77907,
       "md5_hash": "aba69d2d30867094fe43f7ed83c5f2c5",
@@ -21,7 +21,7 @@
     },
     "AAPL_yfinance_5y_1wk_250809-215909.json": {
       "filename": "AAPL_yfinance_5y_1wk_250809-215909.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_5y_1wk_250809-215909.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_5y_1wk_250809-215909.json",
       "data_type": "5y_1wk",
       "file_size": 79925,
       "md5_hash": "9fe12ab3807998cf2a09f40c0bddeb77",
@@ -35,7 +35,7 @@
     },
     "AAPL_yfinance_3mo_1d_250809-215920.json": {
       "filename": "AAPL_yfinance_3mo_1d_250809-215920.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AAPL/AAPL_yfinance_3mo_1d_250809-215920.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_3mo_1d_250809-215920.json",
       "data_type": "3mo_1d",
       "file_size": 51628,
       "md5_hash": "7d527a9031b995169900d0491059fdf9",
@@ -49,7 +49,7 @@
     },
     "AAPL_yfinance_m7_daily_3mo_250810-031403.json": {
       "filename": "AAPL_yfinance_m7_daily_3mo_250810-031403.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_daily_3mo_250810-031403.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_daily_3mo_250810-031403.json",
       "data_type": "m7_daily_3mo",
       "file_size": 51539,
       "md5_hash": "4c28b901d7515bdceadc7c0fbecc3748",
@@ -63,7 +63,7 @@
     },
     "AAPL_yfinance_m7_weekly_5y_250810-031411.json": {
       "filename": "AAPL_yfinance_m7_weekly_5y_250810-031411.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_weekly_5y_250810-031411.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_weekly_5y_250810-031411.json",
       "data_type": "m7_weekly_5y",
       "file_size": 79835,
       "md5_hash": "fcfe066022c00e09e1078069832c130e",
@@ -77,7 +77,7 @@
     },
     "AAPL_yfinance_m7_monthly_max_250810-031416.json": {
       "filename": "AAPL_yfinance_m7_monthly_max_250810-031416.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_monthly_max_250810-031416.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_monthly_max_250810-031416.json",
       "data_type": "m7_monthly_max",
       "file_size": 113563,
       "md5_hash": "49bc27ce708395962c289918d2bb932d",

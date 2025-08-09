@@ -7,7 +7,7 @@
   "files": {
     "IDXX_yfinance_1y_1d_250809-222929.json": {
       "filename": "IDXX_yfinance_1y_1d_250809-222929.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/IDXX/IDXX_yfinance_1y_1d_250809-222929.json",
+      "filepath": "data/original/yfinance/IDXX/IDXX_yfinance_1y_1d_250809-222929.json",
       "data_type": "1y_1d",
       "file_size": 73291,
       "md5_hash": "dddb0c0e9dff8e4983534570c2130801",

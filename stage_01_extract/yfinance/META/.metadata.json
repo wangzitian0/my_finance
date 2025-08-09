@@ -7,7 +7,7 @@
   "files": {
     "META_yfinance_1y_1d_250810-011256.json": {
       "filename": "META_yfinance_1y_1d_250810-011256.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_1y_1d_250810-011256.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_1y_1d_250810-011256.json",
       "data_type": "1y_1d",
       "file_size": 74437,
       "md5_hash": "52b6eff0c029330cba61bc521501a278",
@@ -21,7 +21,7 @@
     },
     "META_yfinance_5y_1wk_250810-011303.json": {
       "filename": "META_yfinance_5y_1wk_250810-011303.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_5y_1wk_250810-011303.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_5y_1wk_250810-011303.json",
       "data_type": "5y_1wk",
       "file_size": 76798,
       "md5_hash": "204060bdce2a95e5ce554e4356740a17",
@@ -35,7 +35,7 @@
     },
     "META_yfinance_3mo_1d_250810-011309.json": {
       "filename": "META_yfinance_3mo_1d_250810-011309.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/META/META_yfinance_3mo_1d_250810-011309.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_3mo_1d_250810-011309.json",
       "data_type": "3mo_1d",
       "file_size": 48815,
       "md5_hash": "1f73147b95f0fb3bcd7fa3d26aac8860",

@@ -7,7 +7,7 @@
   "files": {
     "MNST_yfinance_1y_1d_250809-222921.json": {
       "filename": "MNST_yfinance_1y_1d_250809-222921.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MNST/MNST_yfinance_1y_1d_250809-222921.json",
+      "filepath": "data/original/yfinance/MNST/MNST_yfinance_1y_1d_250809-222921.json",
       "data_type": "1y_1d",
       "file_size": 71208,
       "md5_hash": "6833ed7af4089320dc6bbe78a1cd4508",

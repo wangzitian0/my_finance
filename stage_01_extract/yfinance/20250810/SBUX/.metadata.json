@@ -7,7 +7,7 @@
   "files": {
     "SBUX_yfinance_1y_1d_250809-222938.json": {
       "filename": "SBUX_yfinance_1y_1d_250809-222938.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/SBUX/SBUX_yfinance_1y_1d_250809-222938.json",
+      "filepath": "data/original/yfinance/SBUX/SBUX_yfinance_1y_1d_250809-222938.json",
       "data_type": "1y_1d",
       "file_size": 73868,
       "md5_hash": "f6cc08ab89c70da57809bf22921c5dad",

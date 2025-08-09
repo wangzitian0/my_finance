@@ -7,7 +7,7 @@
   "files": {
     "ORLY_yfinance_1y_1d_250809-222942.json": {
       "filename": "ORLY_yfinance_1y_1d_250809-222942.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/ORLY/ORLY_yfinance_1y_1d_250809-222942.json",
+      "filepath": "data/original/yfinance/ORLY/ORLY_yfinance_1y_1d_250809-222942.json",
       "data_type": "1y_1d",
       "file_size": 73845,
       "md5_hash": "a743fecd97d2b1bca8f69bea3867ad06",

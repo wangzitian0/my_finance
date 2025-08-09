@@ -7,7 +7,7 @@
   "files": {
     "LRCX_yfinance_1y_1d_250809-222917.json": {
       "filename": "LRCX_yfinance_1y_1d_250809-222917.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/LRCX/LRCX_yfinance_1y_1d_250809-222917.json",
+      "filepath": "data/original/yfinance/LRCX/LRCX_yfinance_1y_1d_250809-222917.json",
       "data_type": "1y_1d",
       "file_size": 75322,
       "md5_hash": "39f2b0f357b7d1eb5aef840cd09e67e5",

@@ -7,7 +7,7 @@
   "files": {
     "BKNG_yfinance_1y_1d_250809-222954.json": {
       "filename": "BKNG_yfinance_1y_1d_250809-222954.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/BKNG/BKNG_yfinance_1y_1d_250809-222954.json",
+      "filepath": "data/original/yfinance/BKNG/BKNG_yfinance_1y_1d_250809-222954.json",
       "data_type": "1y_1d",
       "file_size": 73130,
       "md5_hash": "923a17a99b957cd5f0002197a70d50df",

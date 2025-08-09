@@ -7,7 +7,7 @@
   "files": {
     "CTAS_yfinance_1y_1d_250809-222914.json": {
       "filename": "CTAS_yfinance_1y_1d_250809-222914.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/CTAS/CTAS_yfinance_1y_1d_250809-222914.json",
+      "filepath": "data/original/yfinance/CTAS/CTAS_yfinance_1y_1d_250809-222914.json",
       "data_type": "1y_1d",
       "file_size": 73823,
       "md5_hash": "99bd15cdb31253c8d84e442c1381d743",

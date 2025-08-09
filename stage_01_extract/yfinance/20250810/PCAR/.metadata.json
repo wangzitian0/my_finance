@@ -7,7 +7,7 @@
   "files": {
     "PCAR_yfinance_1y_1d_250809-222913.json": {
       "filename": "PCAR_yfinance_1y_1d_250809-222913.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/PCAR/PCAR_yfinance_1y_1d_250809-222913.json",
+      "filepath": "data/original/yfinance/PCAR/PCAR_yfinance_1y_1d_250809-222913.json",
       "data_type": "1y_1d",
       "file_size": 74374,
       "md5_hash": "687e53618161f6fb65a698c38a9bba6d",

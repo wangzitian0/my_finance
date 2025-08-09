@@ -7,7 +7,7 @@
   "files": {
     "INTU_yfinance_1y_1d_250809-222940.json": {
       "filename": "INTU_yfinance_1y_1d_250809-222940.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/INTU/INTU_yfinance_1y_1d_250809-222940.json",
+      "filepath": "data/original/yfinance/INTU/INTU_yfinance_1y_1d_250809-222940.json",
       "data_type": "1y_1d",
       "file_size": 74583,
       "md5_hash": "e7f5d8226d8b442450aad397cb254edc",

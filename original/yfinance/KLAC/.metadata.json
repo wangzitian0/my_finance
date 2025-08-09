@@ -7,7 +7,7 @@
   "files": {
     "KLAC_yfinance_1y_1d_250809-222911.json": {
       "filename": "KLAC_yfinance_1y_1d_250809-222911.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/KLAC/KLAC_yfinance_1y_1d_250809-222911.json",
+      "filepath": "data/original/yfinance/KLAC/KLAC_yfinance_1y_1d_250809-222911.json",
       "data_type": "1y_1d",
       "file_size": 75535,
       "md5_hash": "ff84eae7e3f69511f98ecdd6cbc67ee9",

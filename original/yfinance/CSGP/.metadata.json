@@ -7,7 +7,7 @@
   "files": {
     "CSGP_yfinance_1y_1d_250809-222953.json": {
       "filename": "CSGP_yfinance_1y_1d_250809-222953.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/CSGP/CSGP_yfinance_1y_1d_250809-222953.json",
+      "filepath": "data/original/yfinance/CSGP/CSGP_yfinance_1y_1d_250809-222953.json",
       "data_type": "1y_1d",
       "file_size": 74554,
       "md5_hash": "1b7b35577c899bd233bc63ad8622859c",

@@ -7,7 +7,7 @@
   "files": {
     "FAST_yfinance_1y_1d_250809-222924.json": {
       "filename": "FAST_yfinance_1y_1d_250809-222924.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/FAST/FAST_yfinance_1y_1d_250809-222924.json",
+      "filepath": "data/original/yfinance/FAST/FAST_yfinance_1y_1d_250809-222924.json",
       "data_type": "1y_1d",
       "file_size": 74415,
       "md5_hash": "7cd87c12a4ecad802a2a9bb3ea7635a7",

@@ -7,7 +7,7 @@
   "files": {
     "AMZN_yfinance_1y_1d_250809-215901.json": {
       "filename": "AMZN_yfinance_1y_1d_250809-215901.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_1y_1d_250809-215901.json",
+      "filepath": "data/original/yfinance/AMZN/AMZN_yfinance_1y_1d_250809-215901.json",
       "data_type": "1y_1d",
       "file_size": 74451,
       "md5_hash": "a67d596852e9cb06a031f88dcef4f584",
@@ -21,7 +21,7 @@
     },
     "AMZN_yfinance_5y_1wk_250809-215914.json": {
       "filename": "AMZN_yfinance_5y_1wk_250809-215914.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_5y_1wk_250809-215914.json",
+      "filepath": "data/original/yfinance/AMZN/AMZN_yfinance_5y_1wk_250809-215914.json",
       "data_type": "5y_1wk",
       "file_size": 76070,
       "md5_hash": "af9e46212ab5475420869052a906d59a",
@@ -35,7 +35,7 @@
     },
     "AMZN_yfinance_3mo_1d_250809-215925.json": {
       "filename": "AMZN_yfinance_3mo_1d_250809-215925.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AMZN/AMZN_yfinance_3mo_1d_250809-215925.json",
+      "filepath": "data/original/yfinance/AMZN/AMZN_yfinance_3mo_1d_250809-215925.json",
       "data_type": "3mo_1d",
       "file_size": 48770,
       "md5_hash": "def6ea6acb6e4da853bafdc1b8f2de5d",
@@ -49,7 +49,7 @@
     },
     "AMZN_yfinance_m7_daily_3mo_250810-031406.json": {
       "filename": "AMZN_yfinance_m7_daily_3mo_250810-031406.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_daily_3mo_250810-031406.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_daily_3mo_250810-031406.json",
       "data_type": "m7_daily_3mo",
       "file_size": 49171,
       "md5_hash": "c6553bab8979b7f5cb78ff2507d24d01",
@@ -63,7 +63,7 @@
     },
     "AMZN_yfinance_m7_weekly_5y_250810-031413.json": {
       "filename": "AMZN_yfinance_m7_weekly_5y_250810-031413.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_weekly_5y_250810-031413.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_weekly_5y_250810-031413.json",
       "data_type": "m7_weekly_5y",
       "file_size": 76471,
       "md5_hash": "f0f1d1caf0ae4d333c0dd1933d4f4cd0",
@@ -77,7 +77,7 @@
     },
     "AMZN_yfinance_m7_monthly_max_250810-031419.json": {
       "filename": "AMZN_yfinance_m7_monthly_max_250810-031419.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_monthly_max_250810-031419.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_m7_monthly_max_250810-031419.json",
       "data_type": "m7_monthly_max",
       "file_size": 87930,
       "md5_hash": "8adb86fc2983793b0c8d691aaff70f26",

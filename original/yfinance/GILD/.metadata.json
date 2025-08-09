@@ -7,7 +7,7 @@
   "files": {
     "GILD_yfinance_1y_1d_250809-222936.json": {
       "filename": "GILD_yfinance_1y_1d_250809-222936.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/GILD/GILD_yfinance_1y_1d_250809-222936.json",
+      "filepath": "data/original/yfinance/GILD/GILD_yfinance_1y_1d_250809-222936.json",
       "data_type": "1y_1d",
       "file_size": 72901,
       "md5_hash": "78992602ad6a187cf2c48bf23484e36a",

@@ -7,7 +7,7 @@
   "files": {
     "COST_yfinance_1y_1d_250809-222944.json": {
       "filename": "COST_yfinance_1y_1d_250809-222944.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/COST/COST_yfinance_1y_1d_250809-222944.json",
+      "filepath": "data/original/yfinance/COST/COST_yfinance_1y_1d_250809-222944.json",
       "data_type": "1y_1d",
       "file_size": 75110,
       "md5_hash": "8daa6515ffea631d72e16e2636c0a9d2",

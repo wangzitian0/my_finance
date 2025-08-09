@@ -7,7 +7,7 @@
   "files": {
     "AMAT_yfinance_1y_1d_250809-222905.json": {
       "filename": "AMAT_yfinance_1y_1d_250809-222905.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/AMAT/AMAT_yfinance_1y_1d_250809-222905.json",
+      "filepath": "data/original/yfinance/AMAT/AMAT_yfinance_1y_1d_250809-222905.json",
       "data_type": "1y_1d",
       "file_size": 74588,
       "md5_hash": "d71e2dd5c4c708f2a3071721e41926e1",

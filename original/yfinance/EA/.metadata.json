@@ -7,7 +7,7 @@
   "files": {
     "EA_yfinance_1y_1d_250809-222925.json": {
       "filename": "EA_yfinance_1y_1d_250809-222925.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/EA/EA_yfinance_1y_1d_250809-222925.json",
+      "filepath": "data/original/yfinance/EA/EA_yfinance_1y_1d_250809-222925.json",
       "data_type": "1y_1d",
       "file_size": 76434,
       "md5_hash": "dead0f5049b823295ff913c26729dc2f",

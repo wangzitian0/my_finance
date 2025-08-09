@@ -7,7 +7,7 @@
   "files": {
     "INTC_yfinance_1y_1d_250809-222910.json": {
       "filename": "INTC_yfinance_1y_1d_250809-222910.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/INTC/INTC_yfinance_1y_1d_250809-222910.json",
+      "filepath": "data/original/yfinance/INTC/INTC_yfinance_1y_1d_250809-222910.json",
       "data_type": "1y_1d",
       "file_size": 74720,
       "md5_hash": "2d917930f5c9cdd97e24cb62a7daf2a5",

@@ -7,7 +7,7 @@
   "files": {
     "REGN_yfinance_1y_1d_250809-222928.json": {
       "filename": "REGN_yfinance_1y_1d_250809-222928.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/REGN/REGN_yfinance_1y_1d_250809-222928.json",
+      "filepath": "data/original/yfinance/REGN/REGN_yfinance_1y_1d_250809-222928.json",
       "data_type": "1y_1d",
       "file_size": 76569,
       "md5_hash": "a3106aba12e7a5f58db11a8959323140",

@@ -7,7 +7,7 @@
   "files": {
     "ODFL_yfinance_1y_1d_250809-222933.json": {
       "filename": "ODFL_yfinance_1y_1d_250809-222933.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/ODFL/ODFL_yfinance_1y_1d_250809-222933.json",
+      "filepath": "data/original/yfinance/ODFL/ODFL_yfinance_1y_1d_250809-222933.json",
       "data_type": "1y_1d",
       "file_size": 75270,
       "md5_hash": "0b0be9a3c19a742855fb76bf15322c31",

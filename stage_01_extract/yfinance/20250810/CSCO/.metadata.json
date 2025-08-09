@@ -7,7 +7,7 @@
   "files": {
     "CSCO_yfinance_1y_1d_250809-222926.json": {
       "filename": "CSCO_yfinance_1y_1d_250809-222926.json",
-      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/CSCO/CSCO_yfinance_1y_1d_250809-222926.json",
+      "filepath": "data/original/yfinance/CSCO/CSCO_yfinance_1y_1d_250809-222926.json",
       "data_type": "1y_1d",
       "file_size": 76173,
       "md5_hash": "c53757e7cb2f1c9cb9a9525fd57d3f10",
