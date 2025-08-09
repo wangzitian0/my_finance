@@ -41,7 +41,7 @@ class M7DCFAnalyzer:
             return None
 
         # Find the most recent daily data file
-        daily_files = list(yfinance_dir.glob(f"{ticker}_yfinance_m7_D1_*.json"))
+        daily_files = list(yfinance_dir.glob(f"{ticker}_yfinance_m7_daily_*.json"))
         if not daily_files:
             return None
 
