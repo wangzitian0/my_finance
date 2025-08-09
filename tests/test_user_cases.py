@@ -1,5 +1,7 @@
 """
 End-to-end tests for core user cases
+
+This file is deprecated. Please use tests in the e2e/ directory instead.
 """
 
 import json

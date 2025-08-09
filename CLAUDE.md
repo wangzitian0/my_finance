@@ -44,12 +44,18 @@ pixi run test                   # Run tests
 
 **See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with:
 
-- **Three-tier data management**: M7 (git-tracked) → NASDAQ100 (buildable + validated) → VTI (production target) - see `docs/data-tiers.md`
+- **ETL Pipeline**: Stage-based data processing (extract → transform → load) with daily partitioning
+- **Four-tier data strategy**: test (CI) → M7 (git-tracked) → NASDAQ100 (buildable) → VTI (production)
+- **Build tracking**: Every execution documented in `data/build/` with comprehensive manifests
 - **Neo4j graph database**: neomodel ORM, models in `ETL/models.py`
 - **Data spiders**: Yahoo Finance (`spider/yfinance_spider.py`), SEC Edgar (`spider/sec_edgar_spider.py`)
 - **Document parsing**: SEC filings with BeautifulSoup (`parser/sec_parser.py`)
 - **Configuration-driven**: YAML configs in `data/config/`, `common_config.yml`
-- **Data storage**: `data/original/<source>/<ticker>/` (JSON format)
+- **ETL Data Storage**: 
+  - Stage 1 (Extract): `data/stage_01_extract/<source>/<date_partition>/<ticker>/`
+  - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
+  - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results}/`
+  - Build tracking: `data/build/build_<YYYYMMDD_HHMMSS>/BUILD_MANIFEST.md`
 - **Magnificent 7 CIK numbers**: Available in README.md
 
 ## Git Workflow and Issue Management
@@ -117,7 +123,8 @@ git push --force-with-lease
 ### Development Patterns
 - **Always read README.md first** for complete project context
 - **Prefer editing existing files** over creating new ones
-- **Use Pixi** for all dependency management (replaces pipenv/conda/brew/apt)
+- **Use Pixi for ALL commands** - NEVER use direct `python script.py`
+- **Handle data submodule changes FIRST** before main repo commits
 - **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
 
@@ -128,12 +135,19 @@ git push --force-with-lease
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
-- **Data collection**: Use `pixi run run-job` or `python run_job.py [config.yml]`
-- **Environment setup**: Use `pixi run setup-env` or Ansible playbooks in `ansible/` directory
+- **Data collection**: Use `pixi run run-job` (NEVER `python run_job.py`)
+- **Environment setup**: Use `pixi run setup-env`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
-- **Testing**: Run manual validation, check outputs in `data/` directories
+- **Testing**: Use `pixi run test` (NEVER direct python commands)
+- **Data submodule**: Use `pixi run commit-data-changes` before main commits
 
 ### Daily Development Workflow for Claude
+
+**CRITICAL RULES - NEVER BREAK THESE:**
+
+1. **ALWAYS use `pixi run <command>` instead of `python <script>.py`**
+2. **ALWAYS handle data submodule changes before main repo commits**
+3. **ALWAYS check and commit submodule changes first**
 
 **ALWAYS follow this sequence when working on tasks:**
 
@@ -142,14 +156,20 @@ git push --force-with-lease
 pixi shell                    # Activate environment
 pixi run env-status           # Check all services
 
-# 2. Work on tasks
+# 2. Work on tasks - USE PIXI COMMANDS ONLY
 pixi run build-m7             # Build test data if needed
 # ... make code changes ...
 pixi run format               # Format code
 pixi run lint                 # Check quality
 pixi run test                 # Validate changes
 
-# 3. End session (MANDATORY)
+# 3. Handle data submodule FIRST (CRITICAL)
+pixi run commit-data-changes  # Auto-commit any data submodule changes
+
+# 4. Then handle main repo changes
+# ... commit main repo changes ...
+
+# 5. End session (MANDATORY)
 pixi run shutdown-all         # Stop all services
 ```
 

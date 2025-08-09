@@ -43,6 +43,11 @@ build-m7 = "python manage.py build m7"
 status = "python manage.py status"
 run-job = "python run_job.py"
 
+# Analysis and reporting commands  
+dcf-analysis = "python m7_dcf_analysis.py"
+dcf-report = "python generate_dcf_report.py"
+simple-dcf = "python simple_m7_dcf.py"
+
 # Install additional packages via pip (cross-platform)  
 install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
 install-graph-rag = "pip install 'numpy<2.0' 'torch>=2.4.0' 'safetensors>=0.4.5' sentence-transformers"
@@ -91,6 +96,10 @@ cleanup-branches = "python scripts/cleanup_merged_branches.py --interactive"
 cleanup-branches-auto = "python scripts/cleanup_merged_branches.py --auto"
 cleanup-branches-dry-run = "python scripts/cleanup_merged_branches.py --dry-run"
 install-git-hooks = "python scripts/install_git_hooks.py"
+
+# Data submodule management (CRITICAL)
+commit-data-changes = "python scripts/commit_data_changes.py"
+check-data-status = "python -c 'import os; os.chdir(\"data\"); os.system(\"git status\")'"
 
 # --- Environment Management (Ansible) ---
 # Initial environment setup
