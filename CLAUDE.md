@@ -42,7 +42,7 @@ pixi run test                   # Run tests
 
 ## Architecture Overview
 
-**See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with:
+**See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with modular architecture:
 
 - **ETL Pipeline**: Stage-based data processing (extract → transform → load) with daily partitioning
 - **Four-tier data strategy**: test (CI) → M7 (git-tracked) → NASDAQ100 (buildable) → VTI (production)
@@ -51,11 +51,29 @@ pixi run test                   # Run tests
 - **Data spiders**: Yahoo Finance (`spider/yfinance_spider.py`), SEC Edgar (`spider/sec_edgar_spider.py`)
 - **Document parsing**: SEC filings with BeautifulSoup (`parser/sec_parser.py`)
 - **Configuration-driven**: YAML configs in `data/config/`, `common_config.yml`
-- **ETL Data Storage**: 
+
+### Graph RAG Architecture (Modular Design)
+
+- **Common Layer** (`common/`):
+  - `graph_rag_schema.py`: Unified data structures, enums, and Neo4j query templates
+  - Shared across ETL (data layer) and dcf_engine (business layer)
+
+- **ETL Data Layer** (`ETL/`):
+  - `graph_data_integration.py`: Neo4j graph data processing and node creation
+  - `semantic_retrieval.py`: Vector embeddings generation and similarity search
+  - Responsible for data integration and retrieval operations
+
+- **DCF Engine Business Layer** (`dcf_engine/`):
+  - `graph_rag_engine.py`: Natural language query processing and answer templates
+  - `rag_orchestrator.py`: System coordination between ETL retrieval and answer generation
+  - Responsible for question understanding and response generation
+
+- **Data Storage Structure**:
   - Stage 1 (Extract): `data/stage_01_extract/<source>/<date_partition>/<ticker>/`
   - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
-  - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results}/`
+  - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
   - Build tracking: `data/build/build_<YYYYMMDD_HHMMSS>/BUILD_MANIFEST.md`
+
 - **Magnificent 7 CIK numbers**: Available in README.md
 
 ## Git Workflow and Issue Management
