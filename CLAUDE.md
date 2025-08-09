@@ -44,12 +44,18 @@ pixi run test                   # Run tests
 
 **See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with:
 
-- **Three-tier data management**: M7 (git-tracked) → NASDAQ100 (buildable + validated) → VTI (production target) - see `docs/data-tiers.md`
+- **ETL Pipeline**: Stage-based data processing (extract → transform → load) with daily partitioning
+- **Four-tier data strategy**: test (CI) → M7 (git-tracked) → NASDAQ100 (buildable) → VTI (production)
+- **Build tracking**: Every execution documented in `data/build/` with comprehensive manifests
 - **Neo4j graph database**: neomodel ORM, models in `ETL/models.py`
 - **Data spiders**: Yahoo Finance (`spider/yfinance_spider.py`), SEC Edgar (`spider/sec_edgar_spider.py`)
 - **Document parsing**: SEC filings with BeautifulSoup (`parser/sec_parser.py`)
 - **Configuration-driven**: YAML configs in `data/config/`, `common_config.yml`
-- **Data storage**: `data/original/<source>/<ticker>/` (JSON format)
+- **ETL Data Storage**: 
+  - Stage 1 (Extract): `data/stage_01_extract/<source>/<date_partition>/<ticker>/`
+  - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
+  - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results}/`
+  - Build tracking: `data/build/build_<YYYYMMDD_HHMMSS>/BUILD_MANIFEST.md`
 - **Magnificent 7 CIK numbers**: Available in README.md
 
 ## Git Workflow and Issue Management
