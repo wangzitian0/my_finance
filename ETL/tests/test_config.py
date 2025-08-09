@@ -57,11 +57,11 @@ class TestConfigManager:
     CONFIG_MAP = {
         DatasetTier.TEST: TestConfig(
             tier=DatasetTier.TEST,
-            config_file="target_pre_pr_test.yml"
+            config_file="list_fast_2.yml"  # Fast 2-company list for testing
         ),
         DatasetTier.M7: TestConfig(
             tier=DatasetTier.M7, 
-            config_file="list_magnificent_7.yml"
+            config_file="list_magnificent_7.yml"  # Full 7-company list for PR
         ),
         DatasetTier.NASDAQ100: TestConfig(
             tier=DatasetTier.NASDAQ100,

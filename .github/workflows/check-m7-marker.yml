@@ -44,11 +44,11 @@ jobs:
         echo "📋 M7 Test Details:"
         cat .m7-test-passed
         
-        # Extract key information
-        COMMIT_HASH=$(grep "COMMIT_HASH=" .m7-test-passed | cut -d'=' -f2)
-        TEST_TIMESTAMP=$(grep "TEST_TIMESTAMP=" .m7-test-passed | cut -d'=' -f2)
-        M7_DATA_FILES=$(grep "M7_DATA_FILES=" .m7-test-passed | cut -d'=' -f2)
-        VALIDATION_PASSED=$(grep "VALIDATION_PASSED=" .m7-test-passed | cut -d'=' -f2)
+        # Extract key information (trim whitespace)
+        COMMIT_HASH=$(grep "COMMIT_HASH=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        TEST_TIMESTAMP=$(grep "TEST_TIMESTAMP=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        M7_DATA_FILES=$(grep "M7_DATA_FILES=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
+        VALIDATION_PASSED=$(grep "VALIDATION_PASSED=" .m7-test-passed | cut -d'=' -f2 | tr -d ' \t\n\r')
         
         echo ""
         echo "🔍 Validation Results:"
@@ -57,9 +57,13 @@ jobs:
         echo "   ⏱️  Test Time: $TEST_TIMESTAMP"
         echo "   📝 Commit Hash: $COMMIT_HASH"
         
+        # Debug validation check
+        echo "🔍 Debug: VALIDATION_PASSED='$VALIDATION_PASSED'"
+        echo "🔍 Debug: Length=${#VALIDATION_PASSED}"
+        
         # Verify validation passed
         if [ "$VALIDATION_PASSED" != "true" ]; then
-          echo "❌ FAIL: M7 validation did not pass"
+          echo "❌ FAIL: M7 validation did not pass (got: '$VALIDATION_PASSED')"
           exit 1
         fi
         
