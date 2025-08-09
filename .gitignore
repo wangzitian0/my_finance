@@ -1,31 +1,49 @@
 # ==============================================================================
-# MY_FINANCE DATA MANAGEMENT STRATEGY
+# MY_FINANCE DATA MANAGEMENT STRATEGY  
 # ==============================================================================
 # Three-tier data strategy:
-# - Tier 1 (M7): Stable test dataset, tracked in git (~500MB)
-# - Tier 2 (NASDAQ100): Extended dataset, buildable (~5GB) - IGNORED
-# - Tier 3 (US-ALL): Full dataset, buildable (~50GB) - IGNORED
-#
-# Only M7 data should be committed to git for development and testing.
+# - Tier 1 (M7): Complete execution process tracked in git (~500MB)
+# - Tier 2 (NASDAQ100): Individual stock results tracked in git (~5GB) 
+# - Tier 3 (VTI): Only final results tracked in git (~50GB builds ignored)
 # ==============================================================================
 
 # Build and log files (always ignore)
-build_report_*.json
+build_report_*.json  
 *.log
 log/
 
-# TIER 2: Ignore old nasdaq100 naming format (keep individual stock results)
-*_nasdaq100*
+# ==============================================================================
+# TIER 1 (M7) - FULLY TRACKED
+# ==============================================================================
+# All M7 data is tracked in git for stable development
+
+# ==============================================================================  
+# TIER 2 (NASDAQ100) - INDIVIDUAL STOCK RESULTS TRACKED
+# ==============================================================================
+# Track individual stock results but ignore intermediate build files
+*_nasdaq100D1_*
+*_nasdaq100W7_*
+*_nasdaq100M30_*
 original/yfinance/**/README.md
 
-# TIER 3: Ignore large buildable datasets  
-*us_all*
-*us-all*
+# ==============================================================================
+# TIER 3 (VTI) - ONLY FINAL RESULTS TRACKED  
+# ==============================================================================
+# Ignore all VTI build data, only track final processed results
+*vti*
+*_us_all_*
+*_us-all_*
 
+# ==============================================================================
+# SEC EDGAR DATA
+# ==============================================================================
 # Ignore SEC Edgar data for now (large files)
 original/sec-edgar/
 
-# Configuration files are tracked except auto-generated ones
+# ==============================================================================
+# CONFIGURATION MANAGEMENT
+# ==============================================================================
+# Track main configs, ignore auto-generated ones
 config/sec_edgar_nasdaq100.yml
 config/yfinance_us_all.yml
 

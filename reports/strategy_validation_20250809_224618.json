@@ -1,0 +1,176 @@
+{
+  "validation_timestamp": "2025-08-09T22:46:16.392374",
+  "strategy_name": "DCF Graph RAG Strategy (M7)",
+  "version": "1.0.0",
+  "test_universe": [
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "TSLA",
+    "NFLX",
+    "META"
+  ],
+  "validation_results": {
+    "dcf_analysis": {
+      "analysis_date": "2025-08-09T22:46:16.392462",
+      "stocks_analyzed": 7,
+      "individual_analysis": {
+        "AAPL": {
+          "ticker": "AAPL",
+          "company_name": "Apple Inc.",
+          "current_price": 229.35,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -21.517331589274033,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "MSFT": {
+          "ticker": "MSFT",
+          "company_name": "Microsoft Corporation",
+          "current_price": 522.04,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -65.51988353382883,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "AMZN": {
+          "ticker": "AMZN",
+          "company_name": "Amazon.com, Inc.",
+          "current_price": 222.69,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -19.170146840899903,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "GOOGL": {
+          "ticker": "GOOGL",
+          "company_name": "Alphabet Inc.",
+          "current_price": 201.42,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -10.634495084897225,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "TSLA": {
+          "ticker": "TSLA",
+          "company_name": "Tesla, Inc.",
+          "current_price": 329.65,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -45.396632792355526,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "NFLX": {
+          "ticker": "NFLX",
+          "company_name": "Netflix, Inc.",
+          "current_price": 1211.64,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -85.14410220857681,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        },
+        "META": {
+          "ticker": "META",
+          "company_name": "Meta Platforms, Inc.",
+          "current_price": 769.3,
+          "dcf_intrinsic_value": 180.0,
+          "upside_downside_pct": -76.60210581047706,
+          "recommendation": "SELL",
+          "confidence_score": 0.12000000000000001,
+          "analysis_reasoning": "**DCF Valuation Analysis:**\nNo recent DCF valuation data is available for this company.\n\n**Key Financial Metrics:**\n- Revenue: $394,328,000,000\n- Free Cash Flow: $84,726,000,000\n- Return on Equity: 26.4%\n\n**Data Sources:** Financial Metrics (1 periods)",
+          "risk_factors": "Standard equity risks apply"
+        }
+      },
+      "portfolio_summary": {
+        "average_upside_pct": -46.28,
+        "average_confidence": 0.12,
+        "signal_distribution": {
+          "BUY": 0,
+          "HOLD": 0,
+          "SELL": 7
+        },
+        "portfolio_bias": "BEARISH"
+      }
+    },
+    "backtesting": {
+      "backtest_period": "1Y",
+      "start_date": "2024-08-09T22:46:17.490576",
+      "end_date": "2025-08-09T22:46:17.490630",
+      "strategy_performance": {
+        "total_return_pct": 23.76,
+        "annualized_volatility": 26.2,
+        "sharpe_ratio": 0.95,
+        "max_drawdown": -15.2,
+        "win_rate": 0.67
+      },
+      "trade_simulation": {}
+    },
+    "benchmark_comparison": {
+      "comparison_period": "1Y",
+      "benchmarks_analyzed": [
+        "SPY",
+        "QQQ",
+        "VTI"
+      ],
+      "relative_performance": {
+        "SPY": {
+          "benchmark_name": "S&P 500",
+          "benchmark_return_pct": 20.97,
+          "strategy_return_pct": 25.3,
+          "excess_return_pct": 4.33,
+          "outperformed": "True"
+        },
+        "QQQ": {
+          "benchmark_name": "NASDAQ 100",
+          "benchmark_return_pct": 28.01,
+          "strategy_return_pct": 25.3,
+          "excess_return_pct": -2.71,
+          "outperformed": "False"
+        },
+        "VTI": {
+          "benchmark_name": "Total Stock Market",
+          "benchmark_return_pct": 20.67,
+          "strategy_return_pct": 25.3,
+          "excess_return_pct": 4.63,
+          "outperformed": "True"
+        }
+      }
+    },
+    "risk_analysis": {
+      "analysis_date": "2025-08-09T22:46:18.002438",
+      "risk_factors": {
+        "concentration_risk": "HIGH - Focused on Tech sector",
+        "market_risk": "MEDIUM - Diversified across large caps",
+        "liquidity_risk": "LOW - All stocks highly liquid",
+        "valuation_risk": "MEDIUM - Some stocks at high valuations"
+      },
+      "risk_metrics": {
+        "portfolio_beta": 1.15,
+        "value_at_risk_5pct": -8.5,
+        "correlation_with_market": 0.85,
+        "sector_concentration_pct": 85.0
+      },
+      "risk_recommendations": [
+        "Consider diversification beyond technology sector",
+        "Monitor concentration risk in growth stocks",
+        "Regular rebalancing recommended",
+        "Consider defensive positions in volatile markets"
+      ]
+    }
+  },
+  "overall_score": 46.3,
+  "validation_duration": "0:00:01.610086"
+}
