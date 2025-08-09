@@ -1,0 +1,74 @@
+{
+  "ticker": "GOOGL",
+  "source": "yfinance",
+  "created_at": "2025-08-10T01:12:52.602740",
+  "updated_at": "2025-08-10T01:13:07.189245",
+  "version": "1.0.0",
+  "files": {
+    "GOOGL_yfinance_1y_1d_250810-011252.json": {
+      "filename": "GOOGL_yfinance_1y_1d_250810-011252.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/GOOGL/GOOGL_yfinance_1y_1d_250810-011252.json",
+      "data_type": "1y_1d",
+      "file_size": 75151,
+      "md5_hash": "e305af00062c0482e548793e08fc8cb8",
+      "created_at": "2025-08-10T01:12:52.603014",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250810-011248"
+      }
+    },
+    "GOOGL_yfinance_5y_1wk_250810-011300.json": {
+      "filename": "GOOGL_yfinance_5y_1wk_250810-011300.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/GOOGL/GOOGL_yfinance_5y_1wk_250810-011300.json",
+      "data_type": "5y_1wk",
+      "file_size": 76912,
+      "md5_hash": "476a4485743c65484cd1bc0ce3ff4355",
+      "created_at": "2025-08-10T01:13:00.547126",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250810-011257"
+      }
+    },
+    "GOOGL_yfinance_3mo_1d_250810-011307.json": {
+      "filename": "GOOGL_yfinance_3mo_1d_250810-011307.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/GOOGL/GOOGL_yfinance_3mo_1d_250810-011307.json",
+      "data_type": "3mo_1d",
+      "file_size": 48856,
+      "md5_hash": "c754045a084a6435624ecfe294c29e2f",
+      "created_at": "2025-08-10T01:13:07.189198",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250810-011304"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-10T01:12:52.603017",
+      "action": "file_created",
+      "filename": "GOOGL_yfinance_1y_1d_250810-011252.json",
+      "data_type": "1y_1d",
+      "file_size": 75151
+    },
+    {
+      "timestamp": "2025-08-10T01:13:00.547137",
+      "action": "file_created",
+      "filename": "GOOGL_yfinance_5y_1wk_250810-011300.json",
+      "data_type": "5y_1wk",
+      "file_size": 76912
+    },
+    {
+      "timestamp": "2025-08-10T01:13:07.189210",
+      "action": "file_created",
+      "filename": "GOOGL_yfinance_3mo_1d_250810-011307.json",
+      "data_type": "3mo_1d",
+      "file_size": 48856
+    }
+  ]
+}

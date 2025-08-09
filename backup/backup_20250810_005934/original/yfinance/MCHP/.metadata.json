@@ -1,0 +1,32 @@
+{
+  "ticker": "MCHP",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:41.477568",
+  "updated_at": "2025-08-09T22:29:41.477990",
+  "version": "1.0.0",
+  "files": {
+    "MCHP_yfinance_1y_1d_250809-222941.json": {
+      "filename": "MCHP_yfinance_1y_1d_250809-222941.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/MCHP/MCHP_yfinance_1y_1d_250809-222941.json",
+      "data_type": "1y_1d",
+      "file_size": 74290,
+      "md5_hash": "b35e27f4da8269140a92240659b91eea",
+      "created_at": "2025-08-09T22:29:41.477970",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:41.477973",
+      "action": "file_created",
+      "filename": "MCHP_yfinance_1y_1d_250809-222941.json",
+      "data_type": "1y_1d",
+      "file_size": 74290
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "ticker": "BKNG",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:54.264492",
+  "updated_at": "2025-08-09T22:29:54.265078",
+  "version": "1.0.0",
+  "files": {
+    "BKNG_yfinance_1y_1d_250809-222954.json": {
+      "filename": "BKNG_yfinance_1y_1d_250809-222954.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/BKNG/BKNG_yfinance_1y_1d_250809-222954.json",
+      "data_type": "1y_1d",
+      "file_size": 73130,
+      "md5_hash": "923a17a99b957cd5f0002197a70d50df",
+      "created_at": "2025-08-09T22:29:54.265034",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:54.265041",
+      "action": "file_created",
+      "filename": "BKNG_yfinance_1y_1d_250809-222954.json",
+      "data_type": "1y_1d",
+      "file_size": 73130
+    }
+  ]
+}

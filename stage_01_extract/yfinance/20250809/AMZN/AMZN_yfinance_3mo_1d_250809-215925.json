@@ -1,0 +1,1599 @@
+{
+  "ticker": "AMZN",
+  "period": "3mo",
+  "interval": "1d",
+  "fetched_at": "2025-08-09T21:59:24.002054",
+  "info": {
+    "address1": "410 Terry Avenue North",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98109-5210",
+    "country": "United States",
+    "phone": "206 266 1000",
+    "website": "https://www.aboutamazon.com",
+    "industry": "Internet Retail",
+    "industryKey": "internet-retail",
+    "industryDisp": "Internet Retail",
+    "sector": "Consumer Cyclical",
+    "sectorKey": "consumer-cyclical",
+    "sectorDisp": "Consumer Cyclical",
+    "longBusinessSummary": "Amazon.com, Inc. engages in the retail sale of consumer products, advertising, and subscriptions service through online and physical stores in North America and internationally. The company operates through three segments: North America, International, and Amazon Web Services (AWS). It also manufactures and sells electronic devices, including Kindle, fire tablets, fire TVs, echo, ring, blink, and eero; and develops and produces media content. In addition, the company offers programs that enable sellers to sell their products in its stores; and programs that allow authors, independent publishers, musicians, filmmakers, Twitch streamers, skill and app developers, and others to publish and sell content. Further, it provides compute, storage, database, analytics, machine learning, and other services, as well as advertising services through programs, such as sponsored ads, display, and video advertising. Additionally, the company offers Amazon Prime, a membership program. The company's products offered through its stores include merchandise and content purchased for resale and products offered by third-party sellers. It serves consumers, sellers, developers, enterprises, content creators, advertisers, and employees. Amazon.com, Inc. was incorporated in 1994 and is headquartered in Seattle, Washington.",
+    "fullTimeEmployees": 1546000,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Jeffrey P. Bezos",
+        "age": 60,
+        "title": "Founder & Executive Chairman",
+        "yearBorn": 1964,
+        "fiscalYear": 2024,
+        "totalPay": 1681840,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Andrew R. Jassy",
+        "age": 56,
+        "title": "President, CEO & Director",
+        "yearBorn": 1968,
+        "fiscalYear": 2024,
+        "totalPay": 1596889,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Brian T. Olsavsky",
+        "age": 60,
+        "title": "Senior VP & CFO",
+        "yearBorn": 1964,
+        "fiscalYear": 2024,
+        "totalPay": 371900,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. David A. Zapolsky J.D.",
+        "age": 60,
+        "title": "Senior VP, Chief Global Affairs & Legal Officer",
+        "yearBorn": 1964,
+        "fiscalYear": 2024,
+        "totalPay": 371900,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Douglas J. Herrington",
+        "age": 57,
+        "title": "Chief Executive Officer of Worldwide Amazon Stores",
+        "yearBorn": 1967,
+        "fiscalYear": 2024,
+        "totalPay": 386435,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Matthew S. Garman",
+        "age": 47,
+        "title": "Chief Executive Officer of Amazon Web Series",
+        "yearBorn": 1977,
+        "fiscalYear": 2024,
+        "totalPay": 384275,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Shelley L. Reynolds",
+        "age": 59,
+        "title": "VP, Worldwide Controller & Principal Accounting Officer",
+        "yearBorn": 1965,
+        "fiscalYear": 2024,
+        "totalPay": 163200,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Dr. Werner  Vogels",
+        "title": "Chief Technology Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Dave  Fildes",
+        "title": "Director of Investor Relations",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Anuradha  Aggarwal",
+        "title": "CMO & Director of User Growth",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 2,
+    "boardRisk": 8,
+    "compensationRisk": 10,
+    "shareHolderRightsRisk": 3,
+    "overallRisk": 9,
+    "governanceEpochDate": 1754006400,
+    "compensationAsOfEpochDate": 1735603200,
+    "irWebsite": "http://phx.corporate-ir.net/phoenix.zhtml?c=97664&p=irol-irhome",
+    "executiveTeam": [],
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 223.13,
+    "open": 223.14,
+    "dayLow": 221.8836,
+    "dayHigh": 223.8,
+    "regularMarketPreviousClose": 223.13,
+    "regularMarketOpen": 223.14,
+    "regularMarketDayLow": 221.8836,
+    "regularMarketDayHigh": 223.8,
+    "payoutRatio": 0.0,
+    "beta": 1.314,
+    "trailingPE": 33.894978,
+    "forwardPE": 36.209755,
+    "volume": 31104720,
+    "regularMarketVolume": 31104720,
+    "averageVolume": 43751741,
+    "averageVolume10days": 57736430,
+    "averageDailyVolume10Day": 57736430,
+    "bid": 222.27,
+    "ask": 222.74,
+    "bidSize": 4,
+    "askSize": 4,
+    "marketCap": 2374966444032,
+    "fiftyTwoWeekLow": 161.38,
+    "fiftyTwoWeekHigh": 242.52,
+    "priceToSalesTrailing12Months": 3.544525,
+    "fiftyDayAverage": 219.1574,
+    "twoHundredDayAverage": 210.34175,
+    "trailingAnnualDividendRate": 0.0,
+    "trailingAnnualDividendYield": 0.0,
+    "currency": "USD",
+    "tradeable": false,
+    "enterpriseValue": 2441359392768,
+    "profitMargins": 0.105399996,
+    "floatShares": 9645133202,
+    "sharesOutstanding": 10664899584,
+    "sharesShort": 62798046,
+    "sharesShortPriorMonth": 61836013,
+    "sharesShortPreviousMonthDate": 1749772800,
+    "dateShortInterest": 1752537600,
+    "sharesPercentSharesOut": 0.0058999998,
+    "heldPercentInsiders": 0.08447,
+    "heldPercentInstitutions": 0.65245,
+    "shortRatio": 1.41,
+    "shortPercentOfFloat": 0.0064999997,
+    "impliedSharesOutstanding": 10664899584,
+    "bookValue": 31.311,
+    "priceToBook": 7.112197,
+    "lastFiscalYearEnd": 1735603200,
+    "nextFiscalYearEnd": 1767139200,
+    "mostRecentQuarter": 1751241600,
+    "earningsQuarterlyGrowth": 0.347,
+    "netIncomeToCommon": 70623002624,
+    "trailingEps": 6.57,
+    "forwardEps": 6.15,
+    "lastSplitFactor": "20:1",
+    "lastSplitDate": 1654473600,
+    "enterpriseToRevenue": 3.644,
+    "enterpriseToEbitda": 18.242,
+    "52WeekChange": 0.33507192,
+    "SandP52WeekChange": 0.19554341,
+    "quoteType": "EQUITY",
+    "currentPrice": 222.69,
+    "targetHighPrice": 306.0,
+    "targetLowPrice": 220.0,
+    "targetMeanPrice": 262.14285,
+    "targetMedianPrice": 260.0,
+    "recommendationMean": 1.31884,
+    "recommendationKey": "strong_buy",
+    "numberOfAnalystOpinions": 63,
+    "totalCash": 93180002304,
+    "totalCashPerShare": 8.737,
+    "ebitda": 133831999488,
+    "totalDebt": 159570001920,
+    "quickRatio": 0.768,
+    "currentRatio": 1.024,
+    "totalRevenue": 670038032384,
+    "debtToEquity": 47.808,
+    "revenuePerShare": 63.373,
+    "returnOnAssets": 0.07699,
+    "returnOnEquity": 0.2477,
+    "grossProfits": 332382994432,
+    "freeCashflow": 31024001024,
+    "operatingCashflow": 121136996352,
+    "earningsGrowth": 0.333,
+    "revenueGrowth": 0.133,
+    "grossMargins": 0.49607,
+    "ebitdaMargins": 0.19974001,
+    "operatingMargins": 0.11432,
+    "financialCurrency": "USD",
+    "symbol": "AMZN",
+    "language": "en-US",
+    "region": "US",
+    "typeDisp": "Equity",
+    "quoteSourceName": "Nasdaq Real Time Price",
+    "triggerable": true,
+    "customPriceAlertConfidence": "HIGH",
+    "marketState": "CLOSED",
+    "postMarketTime": 1754697592,
+    "regularMarketTime": 1754683201,
+    "messageBoardId": "finmb_18749",
+    "exchangeTimezoneName": "America/New_York",
+    "exchangeTimezoneShortName": "EDT",
+    "gmtOffSetMilliseconds": -14400000,
+    "market": "us_market",
+    "esgPopulated": false,
+    "exchange": "NMS",
+    "regularMarketChangePercent": -0.197196,
+    "regularMarketPrice": 222.69,
+    "corporateActions": [],
+    "postMarketPrice": 222.7,
+    "postMarketChange": 0.00999451,
+    "regularMarketChange": -0.440002,
+    "regularMarketDayRange": "221.8836 - 223.8",
+    "fullExchangeName": "NasdaqGS",
+    "averageDailyVolume3Month": 43751741,
+    "fiftyTwoWeekLowChange": 61.309998,
+    "fiftyTwoWeekLowChangePercent": 0.37991074,
+    "fiftyTwoWeekRange": "161.38 - 242.52",
+    "fiftyTwoWeekHighChange": -19.830002,
+    "fiftyTwoWeekHighChangePercent": -0.08176646,
+    "fiftyTwoWeekChangePercent": 33.50719,
+    "earningsTimestamp": 1753992000,
+    "earningsTimestampStart": 1761854400,
+    "earningsTimestampEnd": 1761854400,
+    "earningsCallTimestampStart": 1753995600,
+    "earningsCallTimestampEnd": 1753995600,
+    "isEarningsDateEstimate": true,
+    "epsTrailingTwelveMonths": 6.57,
+    "epsForward": 6.15,
+    "epsCurrentYear": 6.5925,
+    "priceEpsCurrentYear": 33.779293,
+    "fiftyDayAverageChange": 3.532608,
+    "fiftyDayAverageChangePercent": 0.016119046,
+    "twoHundredDayAverageChange": 12.348251,
+    "twoHundredDayAverageChangePercent": 0.05870566,
+    "sourceInterval": 15,
+    "exchangeDataDelayedBy": 0,
+    "averageAnalystRating": "1.3 - Strong Buy",
+    "cryptoTradeable": false,
+    "hasPrePostMarketData": true,
+    "firstTradeDateMilliseconds": 863703000000,
+    "postMarketChangePercent": 0.00448808,
+    "shortName": "Amazon.com, Inc.",
+    "longName": "Amazon.com, Inc.",
+    "displayName": "Amazon.com",
+    "trailingPegRatio": 2.6354
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 223.8000030517578,
+    "dayLow": 221.8800048828125,
+    "exchange": "NMS",
+    "fiftyDayAverage": 219.1574008178711,
+    "lastPrice": 222.69000244140625,
+    "lastVolume": 32916900,
+    "marketCap": 2374966514398.3125,
+    "open": 223.13999938964844,
+    "previousClose": 223.3886,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 223.1300048828125,
+    "shares": 10664899584,
+    "tenDayAverageVolume": 57736430,
+    "threeMonthAverageVolume": 43528112,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 210.34175025939942,
+    "yearChange": 0.33507193265641516,
+    "yearHigh": 242.52000427246094,
+    "yearLow": 161.3800048828125
+  },
+  "history": {
+    "Open": [
+      193.3800048828125,
+      210.7100067138672,
+      211.0800018310547,
+      211.4499969482422,
+      206.4499969482422,
+      206.85000610351562,
+      201.64999389648438,
+      204.6300048828125,
+      201.61000061035156,
+      201.3800048828125,
+      198.89999389648438,
+      203.08999633789062,
+      205.9199981689453,
+      208.02999877929688,
+      204.83999633789062,
+      204.97999572753906,
+      207.11000061035156,
+      206.5500030517578,
+      209.5500030517578,
+      212.39999389648438,
+      214.75,
+      216.77999877929688,
+      217.41000366210938,
+      211.77999877929688,
+      209.9600067138672,
+      212.30999755859375,
+      215.1999969482422,
+      215.08999633789062,
+      214.67999267578125,
+      209.7899932861328,
+      212.13999938964844,
+      214.6199951171875,
+      213.1199951171875,
+      219.9199981689453,
+      223.52000427246094,
+      219.5,
+      219.72999572753906,
+      221.82000732421875,
+      223.0,
+      223.9199981689453,
+      221.07000732421875,
+      221.5500030517578,
+      223.5800018310547,
+      225.07000732421875,
+      226.1999969482422,
+      225.8800048828125,
+      223.32000732421875,
+      225.13999938964844,
+      225.83999633789062,
+      229.67999267578125,
+      228.47000122070312,
+      229.1699981689453,
+      232.22000122070312,
+      233.35000610351562,
+      234.14999389648438,
+      231.63999938964844,
+      235.77000427246094,
+      217.2100067138672,
+      217.39999389648438,
+      213.0500030517578,
+      214.6999969482422,
+      221.0,
+      223.13999938964844
+    ],
+    "High": [
+      194.69000244140625,
+      211.66000366210938,
+      214.83999633789062,
+      211.92999267578125,
+      206.8800048828125,
+      206.85000610351562,
+      206.6199951171875,
+      205.58999633789062,
+      203.4600067138672,
+      205.75999450683594,
+      202.3699951171875,
+      206.69000244140625,
+      207.66000366210938,
+      208.80999755859375,
+      205.99000549316406,
+      207.0,
+      208.9499969482422,
+      208.17999267578125,
+      212.80999755859375,
+      213.8699951171875,
+      217.85000610351562,
+      217.69000244140625,
+      218.39999389648438,
+      213.5800018310547,
+      214.0500030517578,
+      217.05999755859375,
+      217.41000366210938,
+      217.9600067138672,
+      214.88999938964844,
+      210.38999938964844,
+      214.33999633789062,
+      216.02999877929688,
+      218.0399932861328,
+      223.3000030517578,
+      223.82000732421875,
+      221.8800048828125,
+      221.60000610351562,
+      224.00999450683594,
+      224.2899932861328,
+      224.0,
+      224.2899932861328,
+      222.7899932861328,
+      226.67999267578125,
+      226.66000366210938,
+      227.27000427246094,
+      226.10000610351562,
+      224.5,
+      226.39999389648438,
+      229.69000244140625,
+      230.0,
+      228.7899932861328,
+      236.0,
+      232.47999572753906,
+      234.2899932861328,
+      234.72000122070312,
+      231.8000030517578,
+      236.52999877929688,
+      220.44000244140625,
+      217.44000244140625,
+      216.3000030517578,
+      222.64999389648438,
+      226.22000122070312,
+      223.8000030517578
+    ],
+    "Low": [
+      191.16000366210938,
+      205.75,
+      210.10000610351562,
+      208.85000610351562,
+      202.6699981689453,
+      204.3699951171875,
+      201.25999450683594,
+      202.64999389648438,
+      200.05999755859375,
+      200.16000366210938,
+      197.85000610351562,
+      202.19000244140625,
+      204.41000366210938,
+      204.22999572753906,
+      201.6999969482422,
+      202.67999267578125,
+      205.02999877929688,
+      205.17999267578125,
+      207.55999755859375,
+      210.5,
+      212.8800048828125,
+      214.14999389648438,
+      212.88999938964844,
+      211.3300018310547,
+      209.6199951171875,
+      211.60000610351562,
+      214.55999755859375,
+      212.33999633789062,
+      208.27000427246094,
+      207.30999755859375,
+      211.0500030517578,
+      211.11000061035156,
+      212.00999450683594,
+      216.74000549316406,
+      219.1199951171875,
+      217.92999267578125,
+      219.05999755859375,
+      221.36000061035156,
+      222.3699951171875,
+      218.42999267578125,
+      220.47000122070312,
+      219.6999969482422,
+      222.3699951171875,
+      224.24000549316406,
+      225.4600067138672,
+      222.17999267578125,
+      222.50999450683594,
+      222.97999572753906,
+      225.64999389648438,
+      226.35000610351562,
+      227.08999633789062,
+      228.63999938964844,
+      231.17999267578125,
+      232.25,
+      230.30999755859375,
+      229.2899932861328,
+      231.39999389648438,
+      212.8000030517578,
+      211.4199981689453,
+      212.8699951171875,
+      213.74000549316406,
+      220.82000732421875,
+      221.8800048828125
+    ],
+    "Close": [
+      193.05999755859375,
+      208.63999938964844,
+      211.3699951171875,
+      210.25,
+      205.1699981689453,
+      205.58999633789062,
+      206.16000366210938,
+      204.07000732421875,
+      201.1199951171875,
+      203.10000610351562,
+      200.99000549316406,
+      206.02000427246094,
+      204.72000122070312,
+      205.6999969482422,
+      205.00999450683594,
+      206.64999389648438,
+      205.7100067138672,
+      207.22999572753906,
+      207.91000366210938,
+      213.57000732421875,
+      216.97999572753906,
+      217.61000061035156,
+      213.1999969482422,
+      213.24000549316406,
+      212.10000610351562,
+      216.10000610351562,
+      214.82000732421875,
+      212.52000427246094,
+      209.69000244140625,
+      208.47000122070312,
+      212.77000427246094,
+      211.99000549316406,
+      217.1199951171875,
+      223.3000030517578,
+      219.38999938964844,
+      220.4600067138672,
+      219.9199981689453,
+      223.41000366210938,
+      223.47000122070312,
+      219.36000061035156,
+      222.5399932861328,
+      222.25999450683594,
+      225.02000427246094,
+      225.69000244140625,
+      226.35000610351562,
+      223.19000244140625,
+      223.8800048828125,
+      226.1300048828125,
+      229.3000030517578,
+      227.47000122070312,
+      228.2899932861328,
+      232.22999572753906,
+      231.44000244140625,
+      232.7899932861328,
+      231.00999450683594,
+      230.19000244140625,
+      234.11000061035156,
+      214.75,
+      211.64999389648438,
+      213.75,
+      222.30999755859375,
+      223.1300048828125,
+      222.69000244140625
+    ],
+    "Volume": [
+      29663100,
+      75205000,
+      56193700,
+      38492100,
+      64347300,
+      43318500,
+      34314800,
+      29470400,
+      42460900,
+      38938900,
+      33393500,
+      34892000,
+      28549800,
+      34650000,
+      51679400,
+      29113300,
+      33139100,
+      29915600,
+      51864200,
+      39832500,
+      38102500,
+      31303300,
+      39326000,
+      27640000,
+      29337800,
+      33284200,
+      32086300,
+      44360500,
+      75350700,
+      37311700,
+      38378800,
+      31755700,
+      50480800,
+      119217100,
+      58887800,
+      39256800,
+      30894200,
+      29632400,
+      36604100,
+      45692000,
+      38155100,
+      30370600,
+      50518300,
+      35702600,
+      34907300,
+      39535900,
+      31855800,
+      37833800,
+      40297600,
+      37483700,
+      28294900,
+      42902300,
+      28712100,
+      26300100,
+      33716200,
+      32993300,
+      104357300,
+      122258800,
+      77890100,
+      51505100,
+      54823000,
+      40603500,
+      32916900
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 16,
+      "1": 16,
+      "2": 18,
+      "3": 18
+    },
+    "buy": {
+      "0": 50,
+      "1": 49,
+      "2": 48,
+      "3": 47
+    },
+    "hold": {
+      "0": 3,
+      "1": 4,
+      "2": 4,
+      "3": 4
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.08447
+    },
+    {
+      "Value": 0.65245
+    },
+    {
+      "Value": 0.71265
+    },
+    {
+      "Value": 7061.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.078,
+      "Shares": 832274556,
+      "Value": 185339222907,
+      "pctChange": 0.0108
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.066,
+      "Shares": 703411133,
+      "Value": 156642626925,
+      "pctChange": 0.0215
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0346,
+      "Shares": 368934077,
+      "Value": 82157930507,
+      "pctChange": 0.0112
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.0318,
+      "Shares": 339634992,
+      "Value": 75633317197,
+      "pctChange": 0.034
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.02,
+      "Shares": 212995999,
+      "Value": 47432079537,
+      "pctChange": 0.0394
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "JPMORGAN CHASE & CO",
+      "pctHeld": 0.0188,
+      "Shares": 200228094,
+      "Value": 44588794741,
+      "pctChange": 0.0949
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.0165,
+      "Shares": 175482278,
+      "Value": 39078148916,
+      "pctChange": -0.0401
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Morgan Stanley",
+      "pctHeld": 0.0156,
+      "Shares": 166516606,
+      "Value": 37081583396,
+      "pctChange": -0.0038
+    },
+    {
+      "Date Reported": "2024-12-31 00:00:00",
+      "Holder": "NORGES BANK",
+      "pctHeld": 0.0117,
+      "Shares": 124283614,
+      "Value": 27676718305,
+      "pctChange": 0.0448
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Northern Trust Corporation",
+      "pctHeld": 0.0091,
+      "Shares": 97379134,
+      "Value": 21685359588,
+      "pctChange": 0.0031
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 25.7,
+      "environmentScore": 8.19,
+      "socialScore": 10.77,
+      "governanceScore": 6.75,
+      "ratingYear": 2025,
+      "ratingMonth": 7,
+      "highestControversy": 3.0,
+      "peerCount": 267,
+      "esgPerformance": "AVG_PERF",
+      "peerGroup": "Retailing",
+      "relatedControversy": [
+        "Employee Incidents;Customer Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 8.0,
+        "avg": 18.447340823970045,
+        "max": 35.09
+      },
+      "peerGovernancePerformance": {
+        "min": 1.0,
+        "avg": 4.2882786885245885,
+        "max": 8.95
+      },
+      "peerSocialPerformance": {
+        "min": 4.13,
+        "avg": 8.934999999999997,
+        "max": 16.56
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.19,
+        "avg": 3.790573770491802,
+        "max": 10.39
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.9063670411985019,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-08-15",
+    "2025-08-22",
+    "2025-08-29",
+    "2025-09-05",
+    "2025-09-12",
+    "2025-09-19",
+    "2025-10-17",
+    "2025-11-21",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-02-20",
+    "2026-03-20",
+    "2026-05-15",
+    "2026-06-18",
+    "2026-09-18",
+    "2026-12-18",
+    "2027-01-15",
+    "2027-06-17",
+    "2027-12-17"
+  ],
+  "news": [
+    {
+      "id": "6a172168-89df-428b-9877-76eb705511d5",
+      "content": {
+        "id": "6a172168-89df-428b-9877-76eb705511d5",
+        "contentType": "STORY",
+        "title": "The Trade Desk stock crashes, falls 38% as growth slows, company replaces CFO",
+        "description": "",
+        "summary": "The stock has now been more than cut in half this year.",
+        "pubDate": "2025-08-08T15:05:38Z",
+        "displayTime": "2025-08-08T20:03:49Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-08/6af5bfc0-7463-11f0-ba67-74a52b982944",
+          "originalWidth": 6800,
+          "originalHeight": 4533,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/8ZrFD4755nUgy6pMnk5teA--~B/aD00NTMzO3c9NjgwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-08/6af5bfc0-7463-11f0-ba67-74a52b982944",
+              "width": 6800,
+              "height": 4533,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Eclca3YinnDyMMdEvdF4IQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-08/6af5bfc0-7463-11f0-ba67-74a52b982944",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance",
+          "url": "http://finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/the-trade-desk-stock-crashes-falls-38-as-growth-slows-company-replaces-cfo-150538526.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/the-trade-desk-stock-crashes-falls-38-as-growth-slows-company-replaces-cfo-150538526.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": true
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f2cd00df-8d29-3ff0-b25e-237603d7eb68",
+      "content": {
+        "id": "f2cd00df-8d29-3ff0-b25e-237603d7eb68",
+        "contentType": "STORY",
+        "title": "Microsoft, Apple, Amazon, and Meta Just Gave Nvidia Investors Great News",
+        "description": "",
+        "summary": "There's a lot of room for optimism as Nvidia is set to report earnings on Aug. 27.",
+        "pubDate": "2025-08-09T13:05:00Z",
+        "displayTime": "2025-08-09T13:05:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+          "originalWidth": 1200,
+          "originalHeight": 675,
+          "caption": "Person in a wheelchair working on a computer.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/GC2brJmSyhrGMWz1WmeMcQ--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+              "width": 1200,
+              "height": 675,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/UAiomD265fIlt1gMEorvOA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/microsoft-apple-amazon-and-meta-just-gave-nvidia-i/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-apple-amazon-meta-just-130500398.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "5a97c30a-19c9-3031-837d-0766cd7b273f",
+      "content": {
+        "id": "5a97c30a-19c9-3031-837d-0766cd7b273f",
+        "contentType": "STORY",
+        "title": "Traders Are Fleeing Stocks Feared to Be Under Threat From AI",
+        "description": "",
+        "summary": "(Bloomberg) -- Artificial intelligence’s imprint on US financial markets is unmistakable. Nvidia Corp. is the most valuable company in the world at nearly $4.5 trillion. Startups from OpenAI to Anthropic have raised tens of billions of dollars. Most Read from BloombergNew York Warns of $34 Billion Budget Hole, Biggest Since 2009 CrisisAll Hail the Humble Speed HumpThree Deaths Reported as NYC Legionnaires’ Outbreak SpreadsMayor Asked to Explain $1.4 Billion of Wasted Johannesburg FundsA New Stag",
+        "pubDate": "2025-08-09T13:00:01Z",
+        "displayTime": "2025-08-09T13:00:01Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/bloomberg_holding_pen_162/a3a294d76813aa688ac455fa61a0ce40",
+          "originalWidth": 1200,
+          "originalHeight": 675,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/wIdutNUGnz2ivBP3C9jt3Q--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/bloomberg_holding_pen_162/a3a294d76813aa688ac455fa61a0ce40",
+              "width": 1200,
+              "height": 675,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/O9UfYmfFnNzt_NQxQ.EN_g--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/bloomberg_holding_pen_162/a3a294d76813aa688ac455fa61a0ce40",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Bloomberg",
+          "url": "https://www.bloomberg.com/company"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/traders-fleeing-stocks-feared-under-130001182.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/traders-fleeing-stocks-feared-under-130001182.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "6088c43a-68a6-3518-a039-55a6f5c619e4",
+      "content": {
+        "id": "6088c43a-68a6-3518-a039-55a6f5c619e4",
+        "contentType": "STORY",
+        "title": "3 Growth Stocks Down 8% to 77% to Buy in August",
+        "description": "",
+        "summary": "The recent sell-off in these stocks gives investors a timely opportunity to start an investment or buy more shares.",
+        "pubDate": "2025-08-09T12:00:00Z",
+        "displayTime": "2025-08-09T12:00:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/5fc381b0cf1c40fd77fb66831e3028d0",
+          "originalWidth": 1200,
+          "originalHeight": 800,
+          "caption": "A stock chart climbing over an hour glass.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/cpQqJQAI0gBTDbIL1NrmOg--~B/aD04MDA7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/5fc381b0cf1c40fd77fb66831e3028d0",
+              "width": 1200,
+              "height": 800,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/vGfp5uMh_ucgPX5Oma0SsQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/5fc381b0cf1c40fd77fb66831e3028d0",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/3-growth-stocks-down-8-to-77-to-buy-in-august/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/3-growth-stocks-down-8-120000876.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "aa22acc0-5ccd-3678-bb99-5f398e2688a4",
+      "content": {
+        "id": "aa22acc0-5ccd-3678-bb99-5f398e2688a4",
+        "contentType": "STORY",
+        "title": "Want $1 Million In Retirement? Invest $250,000 in These 3 Stocks and Wait a Decade.",
+        "description": "",
+        "summary": "These companies have what it takes to magnify investors' retirement nest eggs over the long run.",
+        "pubDate": "2025-08-09T11:30:00Z",
+        "displayTime": "2025-08-09T11:30:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/03c19968338ab5ccee680b428447c4f6",
+          "originalWidth": 1400,
+          "originalHeight": 933,
+          "caption": "Investor smiling at desk and computer.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/ZgiMP9epmsGyugvvGANFVw--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/03c19968338ab5ccee680b428447c4f6",
+              "width": 1400,
+              "height": 933,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/UcmTiMYMescuKzn5v4TOYQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/03c19968338ab5ccee680b428447c4f6",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/want-1-million-in-retirement-invest-250000-in-thes/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/want-1-million-retirement-invest-113000798.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "c00f1106-9ec9-3c5a-b984-1475c28233ea",
+      "content": {
+        "id": "c00f1106-9ec9-3c5a-b984-1475c28233ea",
+        "contentType": "STORY",
+        "title": "The Most Generous Billionaire: How MacKenzie Scott Is Changing Philanthropy",
+        "description": "",
+        "summary": "MacKenzie Scott became one of the world's richest women after her 2019 divorce from Amazon founder Jeff Bezos, receiving around $36 billion.",
+        "pubDate": "2025-08-09T09:06:05Z",
+        "displayTime": "2025-08-09T09:06:05Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/gobankingrates_644/4f0578e4f5738e2d8fd3bc31f04a98a8",
+          "originalWidth": 1920,
+          "originalHeight": 1080,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/6ncqSF.9JOnCeuvKN3QKpA--~B/aD0xMDgwO3c9MTkyMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/gobankingrates_644/4f0578e4f5738e2d8fd3bc31f04a98a8",
+              "width": 1920,
+              "height": 1080,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/rgQfELgD2odzowr3IsPwSw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/gobankingrates_644/4f0578e4f5738e2d8fd3bc31f04a98a8",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "GOBankingRates",
+          "url": "https://www.gobankingrates.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/most-generous-billionaire-mackenzie-scott-090605366.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/most-generous-billionaire-mackenzie-scott-090605366.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0d02b5d3-c0ef-3267-8852-770254c6eddc",
+      "content": {
+        "id": "0d02b5d3-c0ef-3267-8852-770254c6eddc",
+        "contentType": "STORY",
+        "title": "Forget the \"Magnificent Seven.\" It's Time to Start Talking About the \"Ten Titans.\"",
+        "description": "",
+        "summary": "The megacap all-star team is long overdue for an expansion.",
+        "pubDate": "2025-08-09T08:00:00Z",
+        "displayTime": "2025-08-09T08:00:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+          "originalWidth": 1400,
+          "originalHeight": 933,
+          "caption": "A silhouette of a bull on a mountain peak with a sunset in the background. ",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/QDl.P2CQf5G4VuwVbYbzMg--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+              "width": 1400,
+              "height": 933,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/SuDD_kjgcWJ_4P2Y1yzVZQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/forget-magnificent-seven-buy-growth-stocks/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/forget-magnificent-seven-time-start-080000028.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "da8d8cd8-a60c-38ed-ba02-0dde8ef293cb",
+      "content": {
+        "id": "da8d8cd8-a60c-38ed-ba02-0dde8ef293cb",
+        "contentType": "STORY",
+        "title": "What Amazon's Latest Earnings Mean for Long-Term Investors",
+        "description": "",
+        "summary": "It's important for investors to look beyond the market's immediate reaction.",
+        "pubDate": "2025-08-09T06:00:00Z",
+        "displayTime": "2025-08-09T06:00:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/936392af1187ff4053dfa5ff13fd6aa1",
+          "originalWidth": 1400,
+          "originalHeight": 767,
+          "caption": "pointing to files cloud computing.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/BO_Ll1py2AUO998l0q3WUw--~B/aD03Njc7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/936392af1187ff4053dfa5ff13fd6aa1",
+              "width": 1400,
+              "height": 767,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/JCUjUxHre8yHTID_hnj8xg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/936392af1187ff4053dfa5ff13fd6aa1",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/amazon-stock-latest-earnings-long-term-investors/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/amazons-latest-earnings-mean-long-060000874.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "7cc9712f-095f-3294-9942-49c6b78788fd",
+      "content": {
+        "id": "7cc9712f-095f-3294-9942-49c6b78788fd",
+        "contentType": "STORY",
+        "title": "Ad Tech Company Trade Desk Downgraded as Amazon, AI Reshape Digital Market",
+        "description": "",
+        "summary": "Shares of  Trade Desk  plunged more than 38% Friday, a selloff that suggests investors are reassessing some of their predictions about online advertising and its major players.  Trade Desk runs a demand-side platform where marketers can buy digital ad inventory around the web.  Its second-quarter earnings report after the stock market closed on Thursday was its first as a member of the S&P 500.",
+        "pubDate": "2025-08-08T23:43:00Z",
+        "displayTime": "2025-08-08T23:43:00Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/7cc9712f-095f-3294-9942-49c6b78788fd/ad-tech-company-trade-desk.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/wsj.com/5ecbcee12c9dcf0a9723f63908a606f6",
+          "originalWidth": 1280,
+          "originalHeight": 640,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/D4z_xKAtCbvQ9gaqVOkYkg--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/wsj.com/5ecbcee12c9dcf0a9723f63908a606f6",
+              "width": 1280,
+              "height": 640,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/ODO7yrhx44PfDs3jIk8OOw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/wsj.com/5ecbcee12c9dcf0a9723f63908a606f6",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "The Wall Street Journal",
+          "url": "http://www.wsj.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.wsj.com/articles/ad-tech-company-trade-desk-downgraded-as-amazon-ai-reshape-digital-market-e65b020b?siteid=yhoof2&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "b14a5d01-9332-3cb2-b695-453e2db24859",
+      "content": {
+        "id": "b14a5d01-9332-3cb2-b695-453e2db24859",
+        "contentType": "STORY",
+        "title": "Inflation Is Rising, Growth Is Slowing, Stocks Are Bubbly. What Could Go Wrong?",
+        "description": "",
+        "summary": "A higher-than-expected inflation report could spark a selloff in Treasuries. Yet equity investors seem oblivious to the possibility of bad news.",
+        "pubDate": "2025-08-08T23:24:00Z",
+        "displayTime": "2025-08-08T23:24:00Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/b14a5d01-9332-3cb2-b695-453e2db24859/inflation-is-rising-growth.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/Barrons.com/a1efc02e99d9308c7dbb210490ba60fc",
+          "originalWidth": 1280,
+          "originalHeight": 640,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/kjS5.OEhTQP5YEfWxZDdjA--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/a1efc02e99d9308c7dbb210490ba60fc",
+              "width": 1280,
+              "height": 640,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/0KHBMenWSrxw1wH1_VPFkw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/Barrons.com/a1efc02e99d9308c7dbb210490ba60fc",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Barrons.com",
+          "url": "http://www.barrons.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.barrons.com/articles/more-inflation-less-growth-and-bubbly-stocks-trouble-ahead-a17b5f8e?siteid=yhoof2&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

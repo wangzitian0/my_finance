@@ -1,0 +1,74 @@
+{
+  "ticker": "AMZN",
+  "source": "yfinance",
+  "created_at": "2025-08-10T01:12:53.772266",
+  "updated_at": "2025-08-10T01:13:07.955846",
+  "version": "1.0.0",
+  "files": {
+    "AMZN_yfinance_1y_1d_250810-011253.json": {
+      "filename": "AMZN_yfinance_1y_1d_250810-011253.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_1y_1d_250810-011253.json",
+      "data_type": "1y_1d",
+      "file_size": 74486,
+      "md5_hash": "0b6003183720d8cebb45b0b6bcf0575e",
+      "created_at": "2025-08-10T01:12:53.772747",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250810-011248"
+      }
+    },
+    "AMZN_yfinance_5y_1wk_250810-011301.json": {
+      "filename": "AMZN_yfinance_5y_1wk_250810-011301.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_5y_1wk_250810-011301.json",
+      "data_type": "5y_1wk",
+      "file_size": 76099,
+      "md5_hash": "91c87e27fd4b26e2645dc031c58b76c2",
+      "created_at": "2025-08-10T01:13:01.485322",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250810-011257"
+      }
+    },
+    "AMZN_yfinance_3mo_1d_250810-011307.json": {
+      "filename": "AMZN_yfinance_3mo_1d_250810-011307.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/AMZN/AMZN_yfinance_3mo_1d_250810-011307.json",
+      "data_type": "3mo_1d",
+      "file_size": 48799,
+      "md5_hash": "3a5815960334100e5a3dd2ac29a6f349",
+      "created_at": "2025-08-10T01:13:07.955810",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250810-011304"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-10T01:12:53.772754",
+      "action": "file_created",
+      "filename": "AMZN_yfinance_1y_1d_250810-011253.json",
+      "data_type": "1y_1d",
+      "file_size": 74486
+    },
+    {
+      "timestamp": "2025-08-10T01:13:01.485336",
+      "action": "file_created",
+      "filename": "AMZN_yfinance_5y_1wk_250810-011301.json",
+      "data_type": "5y_1wk",
+      "file_size": 76099
+    },
+    {
+      "timestamp": "2025-08-10T01:13:07.955817",
+      "action": "file_created",
+      "filename": "AMZN_yfinance_3mo_1d_250810-011307.json",
+      "data_type": "3mo_1d",
+      "file_size": 48799
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "ticker": "REGN",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:28.638305",
+  "updated_at": "2025-08-09T22:29:28.638911",
+  "version": "1.0.0",
+  "files": {
+    "REGN_yfinance_1y_1d_250809-222928.json": {
+      "filename": "REGN_yfinance_1y_1d_250809-222928.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/original/yfinance/REGN/REGN_yfinance_1y_1d_250809-222928.json",
+      "data_type": "1y_1d",
+      "file_size": 76569,
+      "md5_hash": "a3106aba12e7a5f58db11a8959323140",
+      "created_at": "2025-08-09T22:29:28.638875",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:28.638880",
+      "action": "file_created",
+      "filename": "REGN_yfinance_1y_1d_250809-222928.json",
+      "data_type": "1y_1d",
+      "file_size": 76569
+    }
+  ]
+}
