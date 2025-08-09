@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import pandas as pd
+import yaml
 import yfinance as yf
 
 # Add project root to path
@@ -34,7 +35,7 @@ class StrategyValidator:
     Comprehensive strategy validation system for DCF-based investment strategies.
     """
 
-    def __init__(self):
+    def __init__(self, config_file: Optional[str] = None):
         """Initialize the strategy validator."""
         self.project_root = Path(__file__).parent.parent
         self.reports_dir = self.project_root / "data" / "reports"
@@ -43,8 +44,9 @@ class StrategyValidator:
         # Initialize Graph RAG system
         self.graph_rag = GraphRAGSystem()
 
-        # M7 companies for testing
-        self.m7_tickers = ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "NFLX", "META"]
+        # Load tickers from config file or default to M7
+        self.tickers = self.load_tickers_from_config(config_file)
+        self.config_name = self.get_config_name(config_file)
 
         # Market benchmarks
         self.benchmarks = {
@@ -52,6 +54,39 @@ class StrategyValidator:
             "QQQ": "NASDAQ 100",
             "VTI": "Total Stock Market",
         }
+
+    def load_tickers_from_config(self, config_file: Optional[str] = None) -> List[str]:
+        """Load tickers from config file or return default M7 tickers."""
+        if not config_file:
+            # Default M7 tickers
+            return ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "NFLX", "META"]
+
+        config_path = self.project_root / "data" / "config" / config_file
+        if not config_path.exists():
+            print(f"⚠️ Config file {config_file} not found, using M7 tickers")
+            return ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "NFLX", "META"]
+
+        try:
+            with open(config_path, "r") as f:
+                config = yaml.safe_load(f)
+                tickers = config.get("tickers", [])
+                # Clean ticker symbols (remove comments)
+                clean_tickers = []
+                for ticker in tickers:
+                    if isinstance(ticker, str):
+                        clean_ticker = ticker.split("#")[0].strip()
+                        if clean_ticker:
+                            clean_tickers.append(clean_ticker)
+                return clean_tickers
+        except Exception as e:
+            print(f"⚠️ Error loading config {config_file}: {e}, using M7 tickers")
+            return ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "NFLX", "META"]
+
+    def get_config_name(self, config_file: Optional[str] = None) -> str:
+        """Get configuration name for reporting."""
+        if not config_file:
+            return "M7"
+        return config_file.replace(".yml", "").replace("yfinance_", "").upper()
 
     def run_full_validation(self) -> Dict:
         """
@@ -68,9 +103,9 @@ class StrategyValidator:
 
         results = {
             "validation_timestamp": validation_start.isoformat(),
-            "strategy_name": "DCF Graph RAG Strategy",
+            "strategy_name": f"DCF Graph RAG Strategy ({self.config_name})",
             "version": "1.0.0",
-            "test_universe": self.m7_tickers,
+            "test_universe": self.tickers,
             "validation_results": {},
         }
 
@@ -111,14 +146,14 @@ class StrategyValidator:
 
         dcf_results = {
             "analysis_date": datetime.now().isoformat(),
-            "stocks_analyzed": len(self.m7_tickers),
+            "stocks_analyzed": len(self.tickers),
             "individual_analysis": {},
             "portfolio_summary": {},
         }
 
         individual_results = []
 
-        for ticker in self.m7_tickers:
+        for ticker in self.tickers:
             print(f"  🔍 Analyzing {ticker}...")
 
             try:
@@ -221,7 +256,7 @@ class StrategyValidator:
             start_date = end_date - timedelta(days=365)
 
             portfolio_data = {}
-            for ticker in self.m7_tickers[:3]:  # Limit for demo
+            for ticker in self.tickers[:3]:  # Limit for demo
                 stock = yf.Ticker(ticker)
                 hist = stock.history(start=start_date, end=end_date)
                 if not hist.empty:
@@ -442,8 +477,15 @@ class StrategyValidator:
 
 def main():
     """Main validation function."""
+    import argparse
 
-    validator = StrategyValidator()
+    parser = argparse.ArgumentParser(description="Run DCF strategy validation")
+    parser.add_argument(
+        "--config", type=str, help="Configuration file (e.g. yfinance_nasdaq100.yml)"
+    )
+    args = parser.parse_args()
+
+    validator = StrategyValidator(config_file=args.config)
 
     try:
         # Run full validation
