@@ -1,82 +1,65 @@
-# Stage 3 Load - Data Products
+# Stage 3: Load Phase Data Directory
 
-This directory contains the final processed data products from the ETL pipeline.
+This directory contains the final processed data products after ETL Stage 3 (Load).
 
 ## Directory Structure
 
-### Core Data Products
-
-- **`dcf_results/`** - DCF valuation calculations and analysis results
-- **`graph_nodes/`** - Neo4j graph database nodes and relationships  
-- **`embeddings/`** - Semantic vector embeddings and metadata
-
-### Graph RAG Extensions  
-
-- **`graph_embeddings/`** - Combined graph + embedding data structures
-- **`vector_index/`** - FAISS vector indexes for similarity search
-- **`graph_rag_cache/`** - Cached query results and responses
-
-## Data Products Usage
-
-### DCF Results
-```bash
-# DCF analysis outputs
-data/stage_03_load/dcf_results/
-├── dcf_analysis_{date}.json        # Calculated valuations
-├── valuation_summary_{date}.json   # Summary reports  
-└── sensitivity_analysis_{date}.json # Risk scenarios
+```
+stage_03_load/
+├── dcf_results/           # DCF valuation calculations and results
+├── graph_nodes/           # Neo4j node and relationship data
+├── embeddings/           # Vector embeddings for semantic search
+├── graph_embeddings/     # Combined graph + vector data products  
+├── vector_index/         # FAISS vector search indexes
+└── graph_rag_cache/      # Cached query results and processed data
 ```
 
-### Graph Nodes
-```bash
-# Neo4j graph data
-data/stage_03_load/graph_nodes/
-├── stock_nodes.json              # Company stock information
-├── sec_filing_nodes.json         # SEC document metadata
-├── financial_metrics_nodes.json  # Financial data points
-└── relationships.json            # Graph relationships
-```
+## Data Products
 
-### Embeddings  
-```bash
-# Semantic embeddings
-data/stage_03_load/embeddings/
-├── embeddings_metadata.json      # Document chunk metadata
-├── embeddings_vectors.npy        # Vector embeddings array
-└── vector_index.faiss            # FAISS similarity index
-```
+### dcf_results/
+- DCF calculation outputs and valuation models
+- Financial metrics and ratios  
+- Intrinsic value estimates and analysis reports
 
-### Graph RAG Cache
-```bash
-# Query result caching
-data/stage_03_load/graph_rag_cache/
-├── query_cache.json             # Cached Q&A responses
-├── retrieval_cache.json         # Cached search results
-└── session_history.json         # Query history
-```
+### graph_nodes/
+- Neo4j graph database nodes (stocks, filings, metrics)
+- Relationship mappings and graph structure data
+- Node metadata and properties
 
-## Integration Points
+### embeddings/
+- Document chunk embeddings using sentence transformers
+- Vector representations of SEC filings and financial documents
+- Embedding metadata and chunk mappings
 
-### ETL Pipeline (Stage 3)
-- **Graph Integration**: `ETL/graph_data_integration.py` → `graph_nodes/`  
-- **Semantic Processing**: `ETL/semantic_retrieval.py` → `embeddings/` + `vector_index/`
-- **DCF Calculations**: `ETL/` → `dcf_results/`
+### graph_embeddings/
+- Combined graph and vector data for Graph RAG
+- Hybrid retrieval indexes combining structured and unstructured data
+- Cross-modal embeddings and similarity mappings
 
-### DCF Engine  
-- **Query Processing**: `dcf_engine/rag_orchestrator.py` reads from all directories
-- **Answer Generation**: `dcf_engine/graph_rag_engine.py` uses cached results
-- **Response Caching**: Results stored in `graph_rag_cache/`
+### vector_index/
+- FAISS indexes for fast similarity search
+- Vector search configurations and parameters
+- Pre-computed similarity matrices
 
-## Data Lifecycle
+### graph_rag_cache/
+- Cached query results and responses  
+- Processed Q&A pairs and reasoning chains
+- Performance optimization data
 
-1. **ETL Load Stage** creates core data products (`dcf_results/`, `graph_nodes/`, `embeddings/`)
-2. **Graph RAG Processing** creates extended products (`graph_embeddings/`, `vector_index/`)  
-3. **Query Engine** uses all products and caches results (`graph_rag_cache/`)
-4. **Build Process** packages everything for deployment
+## Integration with Graph RAG Architecture
 
-## Monitoring & Maintenance
+This directory supports the modular Graph RAG system:
 
-- **Data Freshness**: Check file timestamps in each directory
-- **Index Health**: Monitor `vector_index/` for corruption or size issues  
-- **Cache Management**: Periodically clear `graph_rag_cache/` for storage
-- **Build Manifests**: Reference `../build/` for processing history
+- **ETL Module**: Writes processed data to these directories
+- **dcf_engine Module**: Reads data for query processing and answer generation
+- **Common Schema**: Ensures consistent data formats across directories
+
+## Build Process
+
+Data in this directory is generated through:
+
+1. **Stage 1 Extract**: Raw data collection → `../stage_01_extract/`
+2. **Stage 2 Transform**: Data cleaning and enrichment → `../stage_02_transform/`  
+3. **Stage 3 Load**: Final processing and indexing → `stage_03_load/` (this directory)
+
+Each build is tracked in `../build/build_<timestamp>/BUILD_MANIFEST.md` with complete lineage information.
