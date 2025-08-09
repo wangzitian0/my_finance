@@ -35,7 +35,7 @@ class StreamToLogger(object):
 
 def setup_logger(job_id, date_str=None):
     """
-    根据 common_config.yml 中的配置初始化日志记录器。
+    根据 common/common_config.yml 中的配置初始化日志记录器。
     日志写入路径为：data/log/<job_id>/<date_str>.txt
     """
     config = load_common_config()

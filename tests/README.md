@@ -1,61 +1,47 @@
-# Tests Directory
+# Integration Testing Framework
 
-Simple testing structure following the "one codebase, multiple configurations" principle.
+This directory contains **integration and end-to-end tests** for the my_finance system.
 
-## Test Configurations (Data-Driven)
+> **Architecture**: Module-specific tests are now located within their respective modules. Root `tests/` only contains integration and E2E tests.
 
-Tests use the same 4 configurations from `data/config/`:
+## Test Distribution
 
-- **test_config.yml**: Minimal test data (3 stocks, CI/CD friendly)
-- **job_yfinance_m7.yml**: M7 dataset (7 stocks, git-tracked)  
-- **yfinance_nasdaq100.yml**: NASDAQ100 dataset (100+ stocks, buildable)
-- **yfinance_vti.yml**: VTI full market dataset (production target)
+### Root Tests (Integration/E2E Only)
+- `e2e/test_user_cases.py` - Complete user workflow validation
+- Coverage and integration configuration
 
-## Test Files
+### Module-Specific Tests (Moved)
+- **ETL Tests**: `ETL/tests/` - Data processing, spiders, pipelines
+- **Common Tests**: `common/tests/` - Utilities, configurations, shared components
+- **DTS Tests**: `dts/tests/` - Data transport services (to be added)
+- **DCF Engine Tests**: `dcf_engine/tests/` - Strategy calculations (to be added)
+- **Evaluation Tests**: `evaluation/tests/` - Backtesting, LLM evaluation (to be added)
 
-- `test_simple_validation.py`: Basic CI/CD validation tests
-- `test_user_cases.py`: End-to-end user workflow tests (DEPRECATED)
-- `conftest.py`: pytest configuration
+## Running Tests
 
-## ETL Pipeline Testing
-
-### Data Collection Tests
+### Complete Test Suite (All Modules)
 ```bash
-# Test data extraction (Stage 1)
-python spider/yfinance_spider.py data/config/test_config.yml
-python spider/yfinance_spider.py data/config/job_yfinance_m7.yml
-
-# Test with different configurations
-python spider/yfinance_spider.py data/config/yfinance_nasdaq100.yml
+pixi run test                    # All tests (integration + modules)
+pixi run test-with-coverage      # With coverage report
 ```
 
-### Analysis Pipeline Tests
+### Integration Tests Only
 ```bash
-# Test DCF analysis with different datasets
-python strategy/validator.py --config test_config.yml
-python strategy/validator.py --config job_yfinance_m7.yml
-python strategy/validator.py --config yfinance_nasdaq100.yml
+pytest tests/ -v                # Root integration tests
+pixi run test-all-user-cases     # User workflow tests
 ```
 
-### Build System Tests
+### Module-Specific Tests
 ```bash
-# Test complete ETL pipeline with build tracking
-pixi run build-m7                    # M7 build
-pixi run build-nasdaq100             # NASDAQ100 build (if configured)
+pytest ETL/tests/ -v            # ETL module tests
+pytest common/tests/ -v         # Common module tests
+pytest dcf_engine/tests/ -v     # DCF engine tests
+pytest evaluation/tests/ -v     # Evaluation tests
 ```
 
-## Directory Structure Validation
+## Architecture Benefits
 
-Tests now validate the new ETL directory structure:
-- `stage_01_extract/` - Raw data validation
-- `stage_02_transform/` - Transformation quality checks  
-- `stage_03_load/` - Final data validation
-- `build/` - Build documentation verification
-
-## Test Philosophy
-
-- **One codebase, multiple configurations**: Same code path tested with different data scales
-- **ETL stage validation**: Each stage tested independently and end-to-end
-- **Data quality checks**: Schema validation, completeness, integrity
-- **Build tracking**: Every test execution creates build documentation
-- **CI optimization**: Minimal configuration for fast CI/CD pipeline
+1. **Module Independence**: Each module tests its own functionality
+2. **Clear Separation**: Root tests focus on integration scenarios
+3. **Faster Feedback**: Module tests run independently
+4. **Better Isolation**: Module test failures don't affect others

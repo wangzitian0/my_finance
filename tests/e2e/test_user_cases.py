@@ -20,7 +20,7 @@ class TestStrategyAnalystWorkflow:
         """完整的M7股票DCF估值流程"""
         # 1. 构建M7测试数据集
         result = subprocess.run(
-            ["pixi", "run", "build-m7"], capture_output=True, text=True
+            ["pixi", "run", "build", "m7", "--validate"], capture_output=True, text=True
         )
         assert result.returncode == 0, f"M7 build failed: {result.stderr}"
 
@@ -62,7 +62,7 @@ class TestStrategyAnalystWorkflow:
         """验证投资决策的质量和一致性"""
         # 使用现有的validate命令来检查投资决策质量
         result = subprocess.run(
-            ["python", "manage.py", "validate"], capture_output=True, text=True
+            ["python", "ETL/manage.py", "validate"], capture_output=True, text=True
         )
         assert (
             result.returncode == 0

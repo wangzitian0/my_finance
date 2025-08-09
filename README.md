@@ -23,22 +23,28 @@ pixi run generate-report      # Create validation report
 pixi run shutdown-all         # Clean shutdown
 ```
 
-## Strategy Engine Components
+## 系统架构
 
-### 1. Data Collection Layer
-- **M7 Dataset**: Magnificent 7 stocks (tracked in git for testing)
-- **NASDAQ100**: Extended dataset for validation
-- **US-ALL**: Full market coverage
+### 数据流架构
+```
+ETL → DTS → DCF Engine → Evaluation
+ ↓     ↓        ↓          ↓
+爬虫  数据层   策略引擎   回测评估
+```
 
-### 2. Analysis Engine  
-- **DCF Calculator**: Discounted cash flow valuation models
-- **Graph RAG**: Multi-step reasoning for complex analysis
-- **Risk Engine**: Factor-based risk assessment
+### 核心组件
 
-### 3. Validation System
-- **Backtesting**: Historical performance validation
-- **Benchmark Comparison**: vs S&P 500, sector indices
-- **Strategy Reports**: Stored in `data/reports/` for analysis
+- **`ETL/`** - 数据处理管道：爬虫、数据清洗、结构化处理
+- **`dts/`** - 数据传输服务：抽象数据I/O，屏蔽存储细节
+- **`dcf_engine/`** - DCF估值引擎：策略逻辑、模型计算
+- **`evaluation/`** - 评估工具集：回测、LLM评估、性能分析
+
+### 支撑组件
+
+- **`common/`** - 公共组件：模块协调、Schema定义、工具库
+- **`infra/`** - 基础设施：环境管理、部署、监控
+- **`data/`** - 数据存储：样例数据、配置文档 
+- **`tests/`** - 测试框架：单元测试、集成测试
 
 ## Development Commands
 

@@ -130,12 +130,12 @@ git push --force-with-lease
 
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories
-- **Management**: `manage.py`, `build_knowledge_base.py`
-- **Configuration**: `data/config/*.yml`, `common_config.yml`
+- **Management**: `ETL/manage.py`, `dcf_engine/build_knowledge_base.py`
+- **Configuration**: `data/config/*.yml`, `common/common_config.yml`
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
-- **Data collection**: Use `pixi run run-job` (NEVER `python run_job.py`)
+- **Data collection**: Use `pixi run run-job` (NEVER direct python commands)
 - **Environment setup**: Use `pixi run setup-env`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Use `pixi run test` (NEVER direct python commands)
