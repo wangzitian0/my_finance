@@ -178,28 +178,47 @@ git push --force-with-lease
 1. **ALWAYS use `pixi run <command>` instead of `python <script>.py`**
 2. **ALWAYS handle data submodule changes before main repo commits**
 3. **ALWAYS check and commit submodule changes first**
+4. **ALWAYS start from latest main (`git checkout main && git pull`)**
+5. **ALWAYS test mechanisms before coding (`pixi run build-dataset m7`)**
 
 **ALWAYS follow this sequence when working on tasks:**
 
 ```bash
-# 1. Start session
-pixi shell                    # Activate environment
-pixi run env-status           # Check all services
+# 1. Start session - ENSURE LATEST BASE
+git checkout main && git pull origin main    # CRITICAL: Latest main
+pixi shell                                   # Activate environment
+pixi run env-status                         # Check all services
 
-# 2. Work on tasks - USE PIXI COMMANDS ONLY
-pixi run build-m7             # Build test data if needed
+# 2. Create branch from LATEST main
+git checkout -b feature/description-fixes-N
+
+# 3. VALIDATE mechanisms before coding (CRITICAL)
+pixi run build-dataset m7    # Verify build system works
+pixi run test-m7-e2e        # Verify end-to-end flow works
+rm -f data/build/latest     # Clear symlinks if needed
+
+# 4. Work on tasks - USE PIXI COMMANDS ONLY
 # ... make code changes ...
-pixi run format               # Format code
-pixi run lint                 # Check quality
-pixi run test                 # Validate changes
+pixi run format             # Format code
+pixi run lint               # Check quality
+pixi run test               # Validate changes
 
-# 3. Handle data submodule FIRST (CRITICAL)
+# 5. Handle data submodule FIRST (CRITICAL)
 pixi run commit-data-changes  # Auto-commit any data submodule changes
 
-# 4. Then handle main repo changes
-# ... commit main repo changes ...
+# 6. Then handle main repo changes
+git add . && git commit -m "Description
 
-# 5. End session (MANDATORY)
+Fixes #N
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+# 7. Create PR with automated testing
+pixi run create-pr "Description" N
+
+# 8. End session (MANDATORY)
 pixi run shutdown-all         # Stop all services
 ```
 
@@ -211,13 +230,23 @@ pixi run shutdown-all         # Stop all services
 
 ### Git Workflow (MANDATORY for all changes)
 
-**NEW: Automated PR workflow with M7 validation (RECOMMENDED):**
+**CRITICAL: Always base branches on latest main to avoid conflicts**
 
 ```bash
-# 1. Create feature branch
+# 1. ALWAYS start from latest main (CRITICAL)
+git checkout main && git pull origin main
 git checkout -b feature/description-fixes-ISSUE_NUMBER
 
-# 2. Make your changes and commit
+# 2. For long-running tasks: regularly sync with main
+git fetch origin main
+git log --oneline HEAD..origin/main  # Check if main has new commits
+# If main is ahead, consider: git rebase origin/main
+
+# 3. Verify mechanisms work BEFORE making changes
+pixi run build-dataset m7    # Test build system
+pixi run test-m7-e2e        # Test end-to-end flow
+
+# 4. Make your changes and commit
 git add .
 git commit -m "Brief description
 
@@ -227,13 +256,13 @@ Fixes #ISSUE_NUMBER
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# 3. Create PR with automated M7 testing (CRITICAL)
+# 5. Create PR with automated M7 testing (CRITICAL)
 pixi run create-pr "Brief description" ISSUE_NUMBER
 
-# 4. AFTER PR IS MERGED: Clean up branches  
+# 6. AFTER PR IS MERGED: Clean up branches  
 pixi run cleanup-branches-auto
 
-# 5. Clean shutdown
+# 7. Clean shutdown
 pixi run shutdown-all
 ```
 
@@ -243,6 +272,60 @@ pixi run shutdown-all
 - ✅ **PR URLs**: Updates commit messages with actual PR URLs
 - ✅ **Branch protection**: GitHub enforces M7 validation on all PRs
 - ✅ **No failures**: PRs cannot be created if M7 tests fail
+
+### Conflict Prevention and Resolution (CRITICAL)
+
+**Common Causes of Rework and How to Avoid Them:**
+
+1. **Branch Base Issues** (Most Critical):
+   ```bash
+   ❌ WRONG: git checkout -b feature/task old-commit
+   ❌ WRONG: git checkout -b feature/task (without updating main)
+   ✅ CORRECT: git checkout main && git pull && git checkout -b feature/task
+   ```
+
+2. **Mechanism Failures** - Test Before Coding:
+   ```bash
+   # Always verify these work BEFORE starting development
+   pixi run build-dataset m7      # NOT "pixi run build m7"
+   rm -f data/build/latest       # Clear symlinks if needed
+   pixi run test-m7-e2e          # Full end-to-end validation
+   ```
+
+3. **Long-running Branch Syndrome**:
+   ```bash
+   # Check for main updates frequently (daily for long tasks)
+   git fetch origin main
+   git log --oneline HEAD..origin/main
+   
+   # If main is ahead, rebase early (easier than resolving later)
+   git rebase origin/main
+   ```
+
+**When Conflicts Occur - Resolution Strategy:**
+
+1. **Simple Conflicts** (same file, different sections):
+   ```bash
+   git fetch origin main
+   git rebase origin/main
+   # Resolve conflicts manually, then:
+   git add . && git rebase --continue
+   ```
+
+2. **Complex Conflicts** (major rework needed):
+   ```bash
+   # NUCLEAR OPTION: Start fresh from latest main
+   git checkout main && git pull
+   git checkout -b feature/task-v2
+   # Manually copy/recreate your changes
+   # This prevents accumulating conflict debt
+   ```
+
+3. **Conflict Debt Prevention**:
+   - ⚠️ Don't let conflicts accumulate over multiple PRs
+   - ⚠️ Don't continue working on conflicted branches
+   - ✅ Address conflicts immediately when they occur
+   - ✅ When in doubt, start fresh from latest main
 
 ### Branch Cleanup (MANDATORY after MR merge)
 
