@@ -2,7 +2,7 @@
   "ticker": "NVDA",
   "source": "yfinance",
   "created_at": "2025-08-09T21:59:03.627236",
-  "updated_at": "2025-08-09T21:59:26.507633",
+  "updated_at": "2025-08-10T03:14:21.301528",
   "version": "1.0.0",
   "files": {
     "NVDA_yfinance_1y_1d_250809-215903.json": {
@@ -46,6 +46,48 @@
         "oid": "3mo_1d",
         "exe_id": "yfinance_3mo_1d_250809-215918"
       }
+    },
+    "NVDA_yfinance_m7_daily_3mo_250810-031410.json": {
+      "filename": "NVDA_yfinance_m7_daily_3mo_250810-031410.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_m7_daily_3mo_250810-031410.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 49355,
+      "md5_hash": "e5d07230fa2180d614a4fadd0d072b04",
+      "created_at": "2025-08-10T03:14:10.184180",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "m7_daily_3mo",
+        "exe_id": "yfinance_m7_daily_3mo_250810-031401"
+      }
+    },
+    "NVDA_yfinance_m7_weekly_5y_250810-031415.json": {
+      "filename": "NVDA_yfinance_m7_weekly_5y_250810-031415.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_m7_weekly_5y_250810-031415.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 77728,
+      "md5_hash": "d54414f66b7da04caa07c6cf8b427197",
+      "created_at": "2025-08-10T03:14:15.598641",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "m7_weekly_5y",
+        "exe_id": "yfinance_m7_weekly_5y_250810-031410"
+      }
+    },
+    "NVDA_yfinance_m7_monthly_max_250810-031421.json": {
+      "filename": "NVDA_yfinance_m7_monthly_max_250810-031421.json",
+      "filepath": "/Users/SP14016/zitian/my_finance/data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_m7_monthly_max_250810-031421.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 87206,
+      "md5_hash": "95d81c39c64709b8a9d9f922ac55d2a9",
+      "created_at": "2025-08-10T03:14:21.301500",
+      "config_info": {
+        "period": "max",
+        "interval": "1mo",
+        "oid": "m7_monthly_max",
+        "exe_id": "yfinance_m7_monthly_max_250810-031415"
+      }
     }
   },
   "download_history": [
@@ -69,6 +111,27 @@
       "filename": "NVDA_yfinance_3mo_1d_250809-215926.json",
       "data_type": "3mo_1d",
       "file_size": 52395
+    },
+    {
+      "timestamp": "2025-08-10T03:14:10.184184",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_m7_daily_3mo_250810-031410.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 49355
+    },
+    {
+      "timestamp": "2025-08-10T03:14:15.598656",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_m7_weekly_5y_250810-031415.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 77728
+    },
+    {
+      "timestamp": "2025-08-10T03:14:21.301510",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_m7_monthly_max_250810-031421.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 87206
     }
   ]
 }
