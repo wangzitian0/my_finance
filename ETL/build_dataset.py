@@ -76,6 +76,31 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         tracker.complete_stage("stage_03_load", partition=date_partition,
                               artifacts=["graph_nodes.json", "dcf_results.json"])
         
+        # Analysis stage - DCF calculations
+        tracker.start_stage("stage_04_analysis")
+        try:
+            companies_analyzed = run_dcf_analysis(tier, tracker)
+            tracker.complete_stage("stage_04_analysis", partition=date_partition,
+                                 companies_analyzed=companies_analyzed)
+        except Exception as e:
+            tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
+            tracker.complete_stage("stage_04_analysis", partition=date_partition,
+                                 companies_analyzed=0)
+        
+        # Reporting stage - Generate final reports
+        tracker.start_stage("stage_05_reporting")
+        try:
+            reports_generated = run_report_generation(tier, tracker)
+            tracker.complete_stage("stage_05_reporting", partition=date_partition,
+                                 reports_generated=reports_generated)
+        except Exception as e:
+            tracker.add_warning("stage_05_reporting", f"Report generation failed: {e}")
+            tracker.complete_stage("stage_05_reporting", partition=date_partition,
+                                 reports_generated=0)
+        
+        # Scan filesystem for actual outputs
+        tracker.scan_and_track_outputs()
+        
         # Complete build
         tracker.complete_build("completed")
         
@@ -155,6 +180,64 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
         print(f"   ❌ SEC Edgar collection failed: {e}")
         tracker.log_stage_output("stage_01_extract", f"SEC Edgar error: {e}")
         return False
+
+def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
+    """Run DCF analysis on available data"""
+    try:
+        # Import DCF analyzer
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from dcf_engine.generate_dcf_report import M7DCFAnalyzer
+        
+        print(f"   📊 Running DCF analysis for {tier.value}...")
+        tracker.log_stage_output("stage_04_analysis", f"Starting DCF analysis for {tier.value}")
+        
+        analyzer = M7DCFAnalyzer()
+        companies_analyzed = 0
+        
+        for ticker in analyzer.m7_companies.keys():
+            try:
+                analysis = analyzer.generate_company_analysis(ticker)
+                if analysis:
+                    companies_analyzed += 1
+                    tracker.log_stage_output("stage_04_analysis", f"Analyzed {ticker}: {analysis.get('dcf_valuation', {}).get('upside_downside_pct', 'N/A')}% upside")
+            except Exception as e:
+                tracker.log_stage_output("stage_04_analysis", f"Failed to analyze {ticker}: {e}")
+        
+        print(f"   ✅ Analyzed {companies_analyzed} companies")
+        return companies_analyzed
+        
+    except Exception as e:
+        print(f"   ❌ DCF analysis failed: {e}")
+        tracker.log_stage_output("stage_04_analysis", f"DCF analysis error: {e}")
+        return 0
+
+def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
+    """Generate final reports"""
+    try:
+        # Import DCF report generator
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from dcf_engine.generate_dcf_report import M7DCFAnalyzer
+        
+        print(f"   📄 Generating reports for {tier.value}...")
+        tracker.log_stage_output("stage_05_reporting", f"Starting report generation for {tier.value}")
+        
+        analyzer = M7DCFAnalyzer()
+        
+        # Generate DCF report
+        report = analyzer.generate_report()
+        report_path = analyzer.save_report(report)
+        
+        # Track the generated report
+        tracker.log_stage_output("stage_05_reporting", f"Generated DCF report: {report_path}")
+        tracker.save_artifact("stage_05_reporting", "dcf_report_path.txt", report_path)
+        
+        print(f"   ✅ Generated 1 DCF report: {report_path}")
+        return 1
+        
+    except Exception as e:
+        print(f"   ❌ Report generation failed: {e}")
+        tracker.log_stage_output("stage_05_reporting", f"Report generation error: {e}")
+        return 0
 
 def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
     """Validate the built dataset"""
