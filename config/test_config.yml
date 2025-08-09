@@ -1,0 +1,15 @@
+data_sources:
+  sec_edgar:
+    enabled: false
+  yfinance:
+    enabled: true
+    timeout: 10
+dcf_params:
+  discount_rate: 0.1
+  growth_rate: 0.03
+  terminal_growth: 0.025
+m7_tickers:
+- AAPL
+- MSFT
+- GOOGL
+test_mode: true
