@@ -123,7 +123,8 @@ git push --force-with-lease
 ### Development Patterns
 - **Always read README.md first** for complete project context
 - **Prefer editing existing files** over creating new ones
-- **Use Pixi** for all dependency management (replaces pipenv/conda/brew/apt)
+- **Use Pixi for ALL commands** - NEVER use direct `python script.py`
+- **Handle data submodule changes FIRST** before main repo commits
 - **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
 
@@ -134,12 +135,19 @@ git push --force-with-lease
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
-- **Data collection**: Use `pixi run run-job` or `python run_job.py [config.yml]`
-- **Environment setup**: Use `pixi run setup-env` or Ansible playbooks in `ansible/` directory
+- **Data collection**: Use `pixi run run-job` (NEVER `python run_job.py`)
+- **Environment setup**: Use `pixi run setup-env`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
-- **Testing**: Run manual validation, check outputs in `data/` directories
+- **Testing**: Use `pixi run test` (NEVER direct python commands)
+- **Data submodule**: Use `pixi run commit-data-changes` before main commits
 
 ### Daily Development Workflow for Claude
+
+**CRITICAL RULES - NEVER BREAK THESE:**
+
+1. **ALWAYS use `pixi run <command>` instead of `python <script>.py`**
+2. **ALWAYS handle data submodule changes before main repo commits**
+3. **ALWAYS check and commit submodule changes first**
 
 **ALWAYS follow this sequence when working on tasks:**
 
@@ -148,14 +156,20 @@ git push --force-with-lease
 pixi shell                    # Activate environment
 pixi run env-status           # Check all services
 
-# 2. Work on tasks
+# 2. Work on tasks - USE PIXI COMMANDS ONLY
 pixi run build-m7             # Build test data if needed
 # ... make code changes ...
 pixi run format               # Format code
 pixi run lint                 # Check quality
 pixi run test                 # Validate changes
 
-# 3. End session (MANDATORY)
+# 3. Handle data submodule FIRST (CRITICAL)
+pixi run commit-data-changes  # Auto-commit any data submodule changes
+
+# 4. Then handle main repo changes
+# ... commit main repo changes ...
+
+# 5. End session (MANDATORY)
 pixi run shutdown-all         # Stop all services
 ```
 
