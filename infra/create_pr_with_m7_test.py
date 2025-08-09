@@ -64,14 +64,15 @@ def run_m7_end_to_end():
     print("🧪 RUNNING MANDATORY M7 END-TO-END TEST")
     print("="*60)
     
-    # Clean any existing build artifacts
+    # Clean any existing build artifacts and symlinks
     run_command("rm -rf data/build/build_*", "Cleaning existing build artifacts", check=False)
+    run_command("rm -f data/build/latest", "Cleaning latest symlink", check=False)
     
     # Start environment if needed
     run_command("pixi run env-status", "Checking environment status", check=False)
     
     # Build M7 dataset
-    run_command("pixi run build m7", "Building M7 dataset", timeout=600)  # 10 minutes
+    run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
     
     # Validate build results
     build_status = run_command("pixi run build-status", "Checking build status")
