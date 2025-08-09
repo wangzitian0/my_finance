@@ -1,0 +1,40 @@
+{
+  "build_info": {
+    "build_id": "20250810_050741",
+    "start_time": "2025-08-10T05:07:41.887025",
+    "end_time": "2025-08-10T05:07:41.887453",
+    "status": "failed",
+    "configuration": "m7",
+    "command": "pixi run build-dataset m7"
+  },
+  "stages": {
+    "stage_01_extract": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "artifacts": []
+    },
+    "stage_02_transform": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "artifacts": []
+    },
+    "stage_03_load": {
+      "status": "pending",
+      "start_time": null,
+      "end_time": null,
+      "artifacts": []
+    }
+  },
+  "data_partitions": {
+    "extract_partition": null,
+    "transform_partition": null,
+    "load_partition": null
+  },
+  "statistics": {
+    "files_processed": 0,
+    "errors": [],
+    "warnings": []
+  }
+}
