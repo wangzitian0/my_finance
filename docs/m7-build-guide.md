@@ -147,8 +147,8 @@ pixi run status
 ls -la data/build_report_m7_*.json
 
 # Verify file structure
-ls -la data/original/yfinance/
-ls -la data/original/sec-edgar/
+ls -la data/stage_01_extract/yfinance/
+ls -la data/stage_01_extract/sec_edgar/
 ```
 
 ## Data Usage

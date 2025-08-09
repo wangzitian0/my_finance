@@ -20,13 +20,47 @@ class MetadataManager:
         self.index_filename = "README.md"
 
     def get_metadata_path(self, source: str, ticker: str) -> str:
-        """Get the metadata file path for a specific ticker."""
-        ticker_dir = os.path.join(self.base_data_dir, source, ticker)
+        """Get the metadata file path for a specific ticker in the latest partition."""
+        # Use latest symlink or find most recent partition
+        latest_link = os.path.join(self.base_data_dir, source, "latest")
+        if os.path.exists(latest_link):
+            ticker_dir = os.path.join(latest_link, ticker)
+        else:
+            # Fallback: find most recent date partition
+            source_dir = os.path.join(self.base_data_dir, source)
+            if os.path.exists(source_dir):
+                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                if date_dirs:
+                    latest_date = max(date_dirs)
+                    ticker_dir = os.path.join(source_dir, latest_date, ticker)
+                else:
+                    # Fallback to old structure
+                    ticker_dir = os.path.join(source_dir, ticker)
+            else:
+                ticker_dir = os.path.join(self.base_data_dir, source, ticker)
+        
         return os.path.join(ticker_dir, self.metadata_filename)
 
     def get_index_path(self, source: str, ticker: str) -> str:
-        """Get the README.md index file path for a specific ticker."""
-        ticker_dir = os.path.join(self.base_data_dir, source, ticker)
+        """Get the README.md index file path for a specific ticker in the latest partition."""
+        # Use latest symlink or find most recent partition
+        latest_link = os.path.join(self.base_data_dir, source, "latest")
+        if os.path.exists(latest_link):
+            ticker_dir = os.path.join(latest_link, ticker)
+        else:
+            # Fallback: find most recent date partition
+            source_dir = os.path.join(self.base_data_dir, source)
+            if os.path.exists(source_dir):
+                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                if date_dirs:
+                    latest_date = max(date_dirs)
+                    ticker_dir = os.path.join(source_dir, latest_date, ticker)
+                else:
+                    # Fallback to old structure
+                    ticker_dir = os.path.join(source_dir, ticker)
+            else:
+                ticker_dir = os.path.join(self.base_data_dir, source, ticker)
+        
         return os.path.join(ticker_dir, self.index_filename)
 
     def calculate_file_md5(self, filepath: str) -> str:

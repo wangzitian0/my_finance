@@ -25,7 +25,7 @@ suppress_third_party_logs()
 
 # Base directories
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-ORIGINAL_DATA_DIR = os.path.join(BASE_DIR, "data", "original")
+STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
 
 # 导入模型（确保 ETL 在 PYTHONPATH 中）
 from models import (FastInfo, Info, PriceData, Recommendations, Stock,
@@ -150,7 +150,22 @@ def import_all_json_files(source, tickers, logger):
     """
     total_files = 0
     for ticker in tickers:
-        ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
+        # Use latest data from stage_01_extract
+        latest_link = os.path.join(STAGE_01_EXTRACT_DIR, source, "latest")
+        if os.path.exists(latest_link):
+            ticker_dir = os.path.join(latest_link, ticker)
+        else:
+            # Fallback to most recent date partition
+            source_dir = os.path.join(STAGE_01_EXTRACT_DIR, source)
+            if os.path.exists(source_dir):
+                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                if date_dirs:
+                    latest_date = max(date_dirs)
+                    ticker_dir = os.path.join(source_dir, latest_date, ticker)
+                else:
+                    ticker_dir = os.path.join(source_dir, ticker)  # fallback
+            else:
+                ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, source, ticker)
         if not os.path.isdir(ticker_dir):
             logger.warning(f"目录不存在：{ticker_dir}")
             continue
@@ -159,7 +174,22 @@ def import_all_json_files(source, tickers, logger):
     progress_bar = create_progress_bar(total_files, description="JSON Files")
     errors = 0
     for ticker in tickers:
-        ticker_dir = os.path.join(ORIGINAL_DATA_DIR, source, ticker)
+        # Use latest data from stage_01_extract
+        latest_link = os.path.join(STAGE_01_EXTRACT_DIR, source, "latest")
+        if os.path.exists(latest_link):
+            ticker_dir = os.path.join(latest_link, ticker)
+        else:
+            # Fallback to most recent date partition
+            source_dir = os.path.join(STAGE_01_EXTRACT_DIR, source)
+            if os.path.exists(source_dir):
+                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                if date_dirs:
+                    latest_date = max(date_dirs)
+                    ticker_dir = os.path.join(source_dir, latest_date, ticker)
+                else:
+                    ticker_dir = os.path.join(source_dir, ticker)  # fallback
+            else:
+                ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, source, ticker)
         if not os.path.isdir(ticker_dir):
             continue
         for fname in os.listdir(ticker_dir):

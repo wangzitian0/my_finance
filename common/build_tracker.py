@@ -1,0 +1,294 @@
+#!/usr/bin/env python3
+"""
+Build tracking system for ETL pipeline executions.
+Tracks every build execution with comprehensive manifests and logs.
+"""
+
+import os
+import json
+import logging
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+import shutil
+import uuid
+
+logger = logging.getLogger(__name__)
+
+class BuildTracker:
+    def __init__(self, base_path: str = "/Users/SP14016/zitian/my_finance/data"):
+        self.base_path = Path(base_path)
+        self.build_base_path = self.base_path / "build"
+        self.build_base_path.mkdir(exist_ok=True)
+        
+        self.build_id = self._generate_build_id()
+        self.build_path = self.build_base_path / f"build_{self.build_id}"
+        self.build_path.mkdir(exist_ok=True)
+        
+        # Create subdirectories
+        (self.build_path / "stage_logs").mkdir(exist_ok=True)
+        (self.build_path / "artifacts").mkdir(exist_ok=True)
+        
+        self.manifest = {
+            "build_info": {
+                "build_id": self.build_id,
+                "start_time": datetime.now().isoformat(),
+                "end_time": None,
+                "status": "in_progress",
+                "configuration": None,
+                "command": None
+            },
+            "stages": {
+                "stage_01_extract": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []},
+                "stage_02_transform": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []},
+                "stage_03_load": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []}
+            },
+            "data_partitions": {
+                "extract_partition": None,
+                "transform_partition": None, 
+                "load_partition": None
+            },
+            "statistics": {
+                "files_processed": 0,
+                "errors": [],
+                "warnings": []
+            }
+        }
+        
+    def _generate_build_id(self) -> str:
+        """Generate unique build ID with timestamp"""
+        return datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    def start_build(self, config_name: str, command: str) -> str:
+        """Start a new build execution"""
+        logger.info(f"Starting build {self.build_id} with config: {config_name}")
+        
+        self.manifest["build_info"]["configuration"] = config_name
+        self.manifest["build_info"]["command"] = command
+        
+        self._save_manifest()
+        self._update_latest_symlink()
+        
+        return self.build_id
+    
+    def start_stage(self, stage: str) -> None:
+        """Mark a stage as started"""
+        if stage not in self.manifest["stages"]:
+            raise ValueError(f"Unknown stage: {stage}")
+            
+        logger.info(f"Starting stage: {stage}")
+        self.manifest["stages"][stage]["status"] = "in_progress"
+        self.manifest["stages"][stage]["start_time"] = datetime.now().isoformat()
+        
+        self._save_manifest()
+    
+    def complete_stage(self, stage: str, partition: Optional[str] = None, artifacts: Optional[List[str]] = None) -> None:
+        """Mark a stage as completed"""
+        if stage not in self.manifest["stages"]:
+            raise ValueError(f"Unknown stage: {stage}")
+            
+        logger.info(f"Completing stage: {stage}")
+        self.manifest["stages"][stage]["status"] = "completed"
+        self.manifest["stages"][stage]["end_time"] = datetime.now().isoformat()
+        
+        if artifacts:
+            self.manifest["stages"][stage]["artifacts"].extend(artifacts)
+        
+        # Update partition info
+        if partition:
+            if stage == "stage_01_extract":
+                self.manifest["data_partitions"]["extract_partition"] = partition
+            elif stage == "stage_02_transform":
+                self.manifest["data_partitions"]["transform_partition"] = partition
+            elif stage == "stage_03_load":
+                self.manifest["data_partitions"]["load_partition"] = partition
+        
+        self._save_manifest()
+    
+    def fail_stage(self, stage: str, error_message: str) -> None:
+        """Mark a stage as failed"""
+        if stage not in self.manifest["stages"]:
+            raise ValueError(f"Unknown stage: {stage}")
+            
+        logger.error(f"Stage {stage} failed: {error_message}")
+        self.manifest["stages"][stage]["status"] = "failed"
+        self.manifest["stages"][stage]["end_time"] = datetime.now().isoformat()
+        self.manifest["statistics"]["errors"].append({
+            "stage": stage,
+            "error": error_message,
+            "timestamp": datetime.now().isoformat()
+        })
+        
+        self._save_manifest()
+    
+    def add_warning(self, stage: str, warning_message: str) -> None:
+        """Add a warning to the build"""
+        logger.warning(f"Stage {stage} warning: {warning_message}")
+        self.manifest["statistics"]["warnings"].append({
+            "stage": stage,
+            "warning": warning_message,
+            "timestamp": datetime.now().isoformat()
+        })
+        
+        self._save_manifest()
+    
+    def log_stage_output(self, stage: str, log_content: str) -> None:
+        """Save stage execution logs"""
+        log_file = self.build_path / "stage_logs" / f"{stage}.log"
+        
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(f"[{datetime.now().isoformat()}]\n")
+            f.write(log_content)
+            f.write("\n\n")
+    
+    def save_artifact(self, stage: str, artifact_name: str, content: Any) -> str:
+        """Save build artifacts (configs, intermediate results, etc.)"""
+        artifact_path = self.build_path / "artifacts" / f"{stage}_{artifact_name}"
+        
+        if isinstance(content, (dict, list)):
+            with open(artifact_path, 'w', encoding='utf-8') as f:
+                json.dump(content, f, indent=2)
+        elif isinstance(content, str):
+            with open(artifact_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+        else:
+            # Binary content
+            with open(artifact_path, 'wb') as f:
+                f.write(content)
+        
+        # Add to manifest
+        self.manifest["stages"][stage]["artifacts"].append(artifact_name)
+        self._save_manifest()
+        
+        return str(artifact_path)
+    
+    def complete_build(self, status: str = "completed") -> None:
+        """Complete the build execution"""
+        logger.info(f"Completing build {self.build_id} with status: {status}")
+        
+        self.manifest["build_info"]["status"] = status
+        self.manifest["build_info"]["end_time"] = datetime.now().isoformat()
+        
+        self._save_manifest()
+        self._generate_build_report()
+    
+    def _save_manifest(self) -> None:
+        """Save the build manifest to file"""
+        manifest_path = self.build_path / "BUILD_MANIFEST.json"
+        with open(manifest_path, 'w', encoding='utf-8') as f:
+            json.dump(self.manifest, f, indent=2)
+    
+    def _generate_build_report(self) -> None:
+        """Generate human-readable build report"""
+        report_path = self.build_path / "BUILD_MANIFEST.md"
+        
+        with open(report_path, 'w', encoding='utf-8') as f:
+            f.write(f"# Build Report: {self.build_id}\n\n")
+            
+            # Build Info
+            f.write("## Build Information\n\n")
+            f.write(f"- **Build ID**: {self.manifest['build_info']['build_id']}\n")
+            f.write(f"- **Configuration**: {self.manifest['build_info']['configuration']}\n")
+            f.write(f"- **Command**: `{self.manifest['build_info']['command']}`\n")
+            f.write(f"- **Status**: {self.manifest['build_info']['status']}\n")
+            f.write(f"- **Start Time**: {self.manifest['build_info']['start_time']}\n")
+            f.write(f"- **End Time**: {self.manifest['build_info']['end_time']}\n\n")
+            
+            # Stage Information
+            f.write("## ETL Stages\n\n")
+            for stage, info in self.manifest["stages"].items():
+                f.write(f"### {stage}\n\n")
+                f.write(f"- **Status**: {info['status']}\n")
+                f.write(f"- **Start Time**: {info['start_time']}\n")
+                f.write(f"- **End Time**: {info['end_time']}\n")
+                f.write(f"- **Artifacts**: {len(info['artifacts'])} files\n")
+                
+                if info['artifacts']:
+                    f.write("  - " + "\n  - ".join(info['artifacts']) + "\n")
+                f.write("\n")
+            
+            # Data Partitions
+            f.write("## Data Partitions\n\n")
+            for partition_type, partition_date in self.manifest["data_partitions"].items():
+                if partition_date:
+                    f.write(f"- **{partition_type}**: `{partition_date}`\n")
+            f.write("\n")
+            
+            # Statistics
+            f.write("## Statistics\n\n")
+            f.write(f"- **Files Processed**: {self.manifest['statistics']['files_processed']}\n")
+            f.write(f"- **Errors**: {len(self.manifest['statistics']['errors'])}\n")
+            f.write(f"- **Warnings**: {len(self.manifest['statistics']['warnings'])}\n\n")
+            
+            # Errors
+            if self.manifest['statistics']['errors']:
+                f.write("### Errors\n\n")
+                for error in self.manifest['statistics']['errors']:
+                    f.write(f"- **{error['stage']}** ({error['timestamp']}): {error['error']}\n")
+                f.write("\n")
+            
+            # Warnings
+            if self.manifest['statistics']['warnings']:
+                f.write("### Warnings\n\n")
+                for warning in self.manifest['statistics']['warnings']:
+                    f.write(f"- **{warning['stage']}** ({warning['timestamp']}): {warning['warning']}\n")
+                f.write("\n")
+            
+            # File Locations
+            f.write("## File Locations\n\n")
+            f.write(f"- **Build Directory**: `{self.build_path}`\n")
+            f.write(f"- **Stage Logs**: `{self.build_path}/stage_logs/`\n")
+            f.write(f"- **Artifacts**: `{self.build_path}/artifacts/`\n\n")
+            
+            # Generated Information
+            f.write("---\n")
+            f.write(f"*Generated on {datetime.now().isoformat()}*\n")
+    
+    def _update_latest_symlink(self) -> None:
+        """Update the 'latest' symlink to point to current build"""
+        latest_link = self.build_base_path / "latest"
+        
+        if latest_link.exists():
+            latest_link.unlink()
+        
+        latest_link.symlink_to(f"build_{self.build_id}")
+        logger.debug(f"Updated latest symlink: {latest_link} -> build_{self.build_id}")
+    
+    @classmethod
+    def get_latest_build(cls, base_path: str = "/Users/SP14016/zitian/my_finance/data") -> Optional['BuildTracker']:
+        """Get the most recent build tracker"""
+        build_base_path = Path(base_path) / "build"
+        latest_link = build_base_path / "latest"
+        
+        if not latest_link.exists():
+            return None
+        
+        latest_build_path = latest_link.resolve()
+        build_id = latest_build_path.name.replace("build_", "")
+        
+        # Create a tracker instance for the existing build
+        tracker = cls.__new__(cls)
+        tracker.base_path = Path(base_path)
+        tracker.build_base_path = build_base_path
+        tracker.build_id = build_id
+        tracker.build_path = latest_build_path
+        
+        # Load existing manifest
+        manifest_path = latest_build_path / "BUILD_MANIFEST.json"
+        if manifest_path.exists():
+            with open(manifest_path, 'r', encoding='utf-8') as f:
+                tracker.manifest = json.load(f)
+        
+        return tracker
+    
+    def get_build_status(self) -> Dict[str, Any]:
+        """Get current build status summary"""
+        return {
+            "build_id": self.build_id,
+            "status": self.manifest["build_info"]["status"],
+            "configuration": self.manifest["build_info"]["configuration"],
+            "stages_completed": sum(1 for stage in self.manifest["stages"].values() if stage["status"] == "completed"),
+            "total_stages": len(self.manifest["stages"]),
+            "errors": len(self.manifest["statistics"]["errors"]),
+            "warnings": len(self.manifest["statistics"]["warnings"])
+        }

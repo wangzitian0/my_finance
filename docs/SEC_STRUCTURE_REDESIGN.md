@@ -3,7 +3,7 @@
 ## Current Problem
 
 ```
-original/sec-edgar/
+stage_01_extract/sec_edgar/
 ├── 0000320193/           # CIK number (confusing)
 │   ├── 10k/
 │   │   └── 0000320193/   # Duplicate CIK structure

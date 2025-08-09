@@ -34,7 +34,7 @@ This is a **Graph RAG-powered DCF valuation system** that combines financial dat
 #### Yahoo Finance Spider (`spider/yfinance_spider.py`)
 - **Purpose**: Collect stock prices, company info, recommendations, sustainability data
 - **Features**: Progress tracking, rate limiting, error handling
-- **Output**: JSON files in `data/original/yfinance/<ticker>/`
+- **Output**: JSON files in `data/stage_01_extract/yfinance/<ticker>/`
 
 #### SEC Edgar Spider (`spider/sec_edgar_spider.py`)  
 - **Purpose**: Download regulatory filings (10-K, 10-Q, 8-K)

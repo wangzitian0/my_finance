@@ -16,8 +16,8 @@ def setup_test_data():
 
     # Create test directories
     test_dirs = [
-        "data/test/original/yfinance",
-        "data/test/original/sec_edgar",
+        "data/test/stage_01_extract/yfinance",
+        "data/test/stage_01_extract/sec_edgar",
         "data/test/reports",
         "test-results",
     ]

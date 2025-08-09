@@ -39,11 +39,11 @@ logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# 定义保存数据的基础目录：data/original/sec-edgar/
+# 定义保存数据的基础目录：data/stage_01_extract/sec_edgar/
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-ORIGINAL_DATA_DIR = os.path.join(BASE_DIR, "data", "original", "sec-edgar")
-if not os.path.exists(ORIGINAL_DATA_DIR):
-    os.makedirs(ORIGINAL_DATA_DIR)
+STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract", "sec_edgar")
+if not os.path.exists(STAGE_01_EXTRACT_DIR):
+    os.makedirs(STAGE_01_EXTRACT_DIR)
 
 
 def is_file_recent(filepath, hours=1):
@@ -63,7 +63,7 @@ def run_job(config_path):
     """
     主任务：从 YAML 配置文件加载配置，并依次处理每个 CIK 与 filing 类型，
     直接调用 secedgar.filings 对象的 save() 方法保存 filings 数据。
-    数据将保存在：data/original/sec-edgar/<CIK>/<filing_type>/ 目录下。
+    数据将保存在：data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/ 目录下。
     参数：
       config_path: 配置文件路径
     """
@@ -78,7 +78,7 @@ def run_job(config_path):
     email = config.get("email", "ZitianSG (wangzitian0@gmail.com)")
 
     # Initialize metadata manager
-    metadata_manager = MetadataManager(ORIGINAL_DATA_DIR)
+    metadata_manager = MetadataManager(STAGE_01_EXTRACT_DIR)
 
     total_tasks = len(cik_list) * len(file_types)
     logging.info(f"开始处理任务, 总计 {total_tasks} 个任务")
@@ -93,9 +93,22 @@ def run_job(config_path):
 
     for cik in cik_list:
         logging.info(f"直接使用 CIK 查询: {cik}")
-        cik_dir = os.path.join(ORIGINAL_DATA_DIR, cik)
-        if not os.path.exists(cik_dir):
-            os.makedirs(cik_dir)
+        # Map CIK to ticker for new directory structure
+        cik_to_ticker = {
+            "0000320193": "AAPL",
+            "0000789019": "MSFT", 
+            "0001018724": "AMZN",
+            "0001652044": "GOOGL",
+            "0001318605": "TSLA",
+            "0001326801": "META",
+            "0001065280": "NFLX"
+        }
+        
+        ticker = cik_to_ticker.get(cik, f"CIK_{cik}")
+        date_partition = datetime.now().strftime("%Y%m%d")
+        ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, date_partition, ticker)
+        if not os.path.exists(ticker_dir):
+            os.makedirs(ticker_dir)
         for ft in file_types:
             logging.info(f"开始处理 {cik} 的 {ft} filings")
             filing_type_enum = filing_type_map.get(ft)
@@ -109,11 +122,12 @@ def run_job(config_path):
 
             # Check if recent data exists using metadata manager (check for 7 days for SEC filings)
             if metadata_manager.check_file_exists_recent(
-                "sec-edgar", cik, ft.lower(), config_info, hours=168
+                "sec_edgar", ticker, ft.lower(), config_info, hours=168
             ):  # 7 days
-                logging.info(f"CIK {cik} {ft} filings: Recent data exists (skipped).")
+                logging.info(f"{ticker} ({cik}) {ft} filings: Recent data exists (skipped).")
             else:
-                output_dir = os.path.join(cik_dir, ft.lower())
+                # All filings for a ticker go in the same directory
+                output_dir = ticker_dir
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
 
