@@ -16,7 +16,11 @@ import uuid
 logger = logging.getLogger(__name__)
 
 class BuildTracker:
-    def __init__(self, base_path: str = "/Users/SP14016/zitian/my_finance/data"):
+    def __init__(self, base_path: str = None):
+        if base_path is None:
+            # Use project root relative path
+            project_root = Path(__file__).parent.parent
+            base_path = project_root / "data"
         self.base_path = Path(base_path)
         self.build_base_path = self.base_path / "build"
         self.build_base_path.mkdir(exist_ok=True)
@@ -39,17 +43,26 @@ class BuildTracker:
                 "command": None
             },
             "stages": {
-                "stage_01_extract": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []},
-                "stage_02_transform": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []},
-                "stage_03_load": {"status": "pending", "start_time": None, "end_time": None, "artifacts": []}
+                "stage_01_extract": {"status": "pending", "start_time": None, "end_time": None, "artifacts": [], "file_count": 0},
+                "stage_02_transform": {"status": "pending", "start_time": None, "end_time": None, "artifacts": [], "file_count": 0},
+                "stage_03_load": {"status": "pending", "start_time": None, "end_time": None, "artifacts": [], "file_count": 0},
+                "stage_04_analysis": {"status": "pending", "start_time": None, "end_time": None, "artifacts": [], "companies_analyzed": 0},
+                "stage_05_reporting": {"status": "pending", "start_time": None, "end_time": None, "artifacts": [], "reports_generated": 0}
             },
             "data_partitions": {
                 "extract_partition": None,
                 "transform_partition": None, 
                 "load_partition": None
             },
+            "real_outputs": {
+                "yfinance_files": [],
+                "sec_edgar_files": [],
+                "dcf_reports": [],
+                "graph_rag_outputs": []
+            },
             "statistics": {
                 "files_processed": 0,
+                "companies_processed": 0,
                 "errors": [],
                 "warnings": []
             }
@@ -82,8 +95,8 @@ class BuildTracker:
         
         self._save_manifest()
     
-    def complete_stage(self, stage: str, partition: Optional[str] = None, artifacts: Optional[List[str]] = None) -> None:
-        """Mark a stage as completed"""
+    def complete_stage(self, stage: str, partition: Optional[str] = None, artifacts: Optional[List[str]] = None, **kwargs) -> None:
+        """Mark a stage as completed with optional metadata"""
         if stage not in self.manifest["stages"]:
             raise ValueError(f"Unknown stage: {stage}")
             
@@ -93,6 +106,11 @@ class BuildTracker:
         
         if artifacts:
             self.manifest["stages"][stage]["artifacts"].extend(artifacts)
+        
+        # Update stage-specific metadata
+        for key, value in kwargs.items():
+            if key in self.manifest["stages"][stage]:
+                self.manifest["stages"][stage][key] = value
         
         # Update partition info
         if partition:
@@ -161,6 +179,59 @@ class BuildTracker:
         self._save_manifest()
         
         return str(artifact_path)
+    
+    def track_real_output(self, output_type: str, file_paths: List[str]) -> None:
+        """Track real output files generated during build"""
+        if output_type not in self.manifest["real_outputs"]:
+            self.manifest["real_outputs"][output_type] = []
+        
+        # Add new files, avoiding duplicates
+        for file_path in file_paths:
+            if file_path not in self.manifest["real_outputs"][output_type]:
+                self.manifest["real_outputs"][output_type].append(file_path)
+        
+        logger.info(f"Tracked {len(file_paths)} {output_type} files")
+        self._save_manifest()
+    
+    def scan_and_track_outputs(self) -> None:
+        """Scan filesystem for actual outputs and track them"""
+        base_path = Path(self.base_path)
+        
+        # Track YFinance files
+        yfinance_files = []
+        yfinance_dir = base_path / "original" / "yfinance"
+        if yfinance_dir.exists():
+            for ticker_dir in yfinance_dir.iterdir():
+                if ticker_dir.is_dir():
+                    for json_file in ticker_dir.glob("*m7_daily*.json"):
+                        yfinance_files.append(str(json_file.relative_to(base_path)))
+        
+        # Track SEC Edgar files  
+        sec_files = []
+        sec_dir = base_path / "original" / "sec_edgar"
+        if sec_dir.exists():
+            for ticker_dir in sec_dir.iterdir():
+                if ticker_dir.is_dir():
+                    for json_file in ticker_dir.glob("*.json"):
+                        sec_files.append(str(json_file.relative_to(base_path)))
+        
+        # Track DCF reports
+        dcf_reports = []
+        reports_dir = base_path / "reports"
+        if reports_dir.exists():
+            for report_file in reports_dir.glob("M7_DCF_Report_*.txt"):
+                dcf_reports.append(str(report_file.relative_to(base_path)))
+        
+        # Update manifest
+        self.manifest["real_outputs"]["yfinance_files"] = yfinance_files
+        self.manifest["real_outputs"]["sec_edgar_files"] = sec_files
+        self.manifest["real_outputs"]["dcf_reports"] = dcf_reports
+        
+        # Update statistics
+        self.manifest["statistics"]["files_processed"] = len(yfinance_files) + len(sec_files)
+        
+        logger.info(f"Scanned outputs: {len(yfinance_files)} YFinance, {len(sec_files)} SEC, {len(dcf_reports)} reports")
+        self._save_manifest()
     
     def complete_build(self, status: str = "completed") -> None:
         """Complete the build execution"""
@@ -236,9 +307,9 @@ class BuildTracker:
             
             # File Locations
             f.write("## File Locations\n\n")
-            f.write(f"- **Build Directory**: `{self.build_path}`\n")
-            f.write(f"- **Stage Logs**: `{self.build_path}/stage_logs/`\n")
-            f.write(f"- **Artifacts**: `{self.build_path}/artifacts/`\n\n")
+            f.write(f"- **Build Directory**: `{self.build_path.relative_to(Path.cwd())}`\n")
+            f.write(f"- **Stage Logs**: `{self.build_path.relative_to(Path.cwd())}/stage_logs/`\n")
+            f.write(f"- **Artifacts**: `{self.build_path.relative_to(Path.cwd())}/artifacts/`\n\n")
             
             # Generated Information
             f.write("---\n")
@@ -255,8 +326,12 @@ class BuildTracker:
         logger.debug(f"Updated latest symlink: {latest_link} -> build_{self.build_id}")
     
     @classmethod
-    def get_latest_build(cls, base_path: str = "/Users/SP14016/zitian/my_finance/data") -> Optional['BuildTracker']:
+    def get_latest_build(cls, base_path: str = None) -> Optional['BuildTracker']:
         """Get the most recent build tracker"""
+        if base_path is None:
+            # Use project root relative path
+            project_root = Path(__file__).parent.parent
+            base_path = project_root / "data"
         build_base_path = Path(base_path) / "build"
         latest_link = build_base_path / "latest"
         

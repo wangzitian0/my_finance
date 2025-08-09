@@ -73,7 +73,11 @@ class TestConfigManager:
         )
     }
     
-    def __init__(self, base_path: str = "/Users/SP14016/zitian/my_finance"):
+    def __init__(self, base_path: str = None):
+        if base_path is None:
+            # Use project root relative path
+            project_root = Path(__file__).parent.parent.parent
+            base_path = project_root
         self.base_path = Path(base_path)
         self.config_dir = self.base_path / "data" / "config"
         
