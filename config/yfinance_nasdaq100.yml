@@ -1,114 +1,118 @@
-job: yfinance_nasdaq100
+job: nasdaq100
 source: yfinance
-description: "Fetch data for NASDAQ-100 stocks (using yfinance library)"
-tickers:
-  - ADBE
-  - AMD
-  - ABNB
-  - GOOGL
-  - GOOG
-  - AMZN
-  - AEP
-  - AMGN
-  - ADI
-  - ANSS
-  - AAPL
-  - AMAT
-  - APP
-  - ARM
-  - ASML
-  - AZN
-  - ADSK
-  - ADP
-  - AXON
-  - BKR
-  - BIIB
-  - BKNG
-  - AVGO
-  - CDNS
-  - CDW
-  - CHTR
-  - CTSH
-  - CMCSA
-  - CCEP
-  - CEG
-  - CPRT
-  - CSGP
-  - COST
-  - CRWD
-  - CSX
-  - DDOG
-  - DXCM
-  - FANG
-  - DASH
-  - DOCU
-  - EA
-  - EXC
-  - FAST
-  - FTNT
-  - FVRR
-  - FSLY
-  - GEHC
-  - GILD
-  - GFS
-  - HON
-  - IDXX
-  - INTC
-  - INTU
-  - ISRG
-  - KDP
-  - KLAC
-  - LRCX
-  - LIN
-  - LULU
-  - LYFT
-  - MAR
-  - MTCH
-  - MRVL
-  - MELI
-  - META
-  - MCHP
-  - MU
-  - MSFT
-  - MSTR
-  - MDLZ
-  - MDB
-  - MNST
-  - NFLX
-  - NVDA
-  - NXPI
-  - ORLY
-  - ODFL
-  - "ON"
-  - OKTA
-  - PCAR
-  - PLTR
-  - PANW
-  - PAYX
-  - PYPL
-  - PDD
-  - SNAP
-  - SIRI
-  - TTD
-  - TEAM
-  - UBER
-  - WBD
-  - WBA
-  - WDAY
-  - XEL
-  - RBLX
-  - ROP
-  - VEEV
-  - VRSN
-  - VRTX
-  - ZS
+description: NASDAQ100 - Medium test dataset with validation requirements (buildable)
+validation:
+  required: true
+  min_success_rate: 0.95
+  data_quality_checks: true
 data_periods:
-  - oid: "nasdaq100D1"    # Represents 1 year of daily data
-    period: "1y"
-    interval: "1d"
-  - oid: "nasdaq100W7"    # Represents 7 years of weekly data
-    period: "7y"
-    interval: "1wk"
-  - oid: "nasdaq100M30"   # Represents 30 years of monthly data
-    period: "30y"
-    interval: "1mo"
+- oid: 1y_1d
+  period: 1y
+  interval: 1d
+- oid: 7y_1wk
+  period: 7y
+  interval: 1wk
+- oid: 30y_1mo
+  period: 30y
+  interval: 1mo
+tickers:
+- AAPL  # Apple Inc. Common Stock | Market Cap: 3,403,643,446,500 | Price: $229.35 (+4.24%)
+- AMAT  # Applied Materials, Inc. Common Stock | Market Cap: 148,357,845,377 | Price: $184.87 (+0.94%)
+- AMGN  # Amgen Inc. Common Stock | Market Cap: 155,172,036,314 | Price: $288.23 (+1.24%)
+- CMCSA  # Comcast Corporation Class A Common Stock | Market Cap: 116,932,179,918 | Price: $31.67 (UNCH)
+- INTC  # Intel Corporation Common Stock | Market Cap: 87,321,150,000 | Price: $19.95 (+0.91%)
+- KLAC  # KLA Corporation Common Stock | Market Cap: 120,974,460,164 | Price: $914.80 (+0.30%)
+- PCAR  # PACCAR Inc. Common Stock | Market Cap: 51,113,564,177 | Price: $97.34 (+0.59%)
+- CTAS  # Cintas Corporation Common Stock | Market Cap: 91,181,815,316 | Price: $226.27 (+1.28%)
+- PAYX  # Paychex, Inc. Common Stock | Market Cap: 50,862,832,994 | Price: $141.19 (+0.48%)
+- LRCX  # Lam Research Corporation Common Stock | Market Cap: 130,150,256,500 | Price: $101.75 (+2.62%)
+- ADSK  # Autodesk, Inc. Common Stock | Market Cap: 62,205,520,000 | Price: $290.68 (-0.79%)
+- ROST  # Ross Stores, Inc. Common Stock | Market Cap: 47,497,181,060 | Price: $145.22 (+0.05%)
+- MNST  # Monster Beverage Corporation | Market Cap: 63,088,674,026 | Price: $64.69 (+6.40%)
+- MSFT  # Microsoft Corporation Common Stock | Market Cap: 3,880,410,176,493 | Price: $522.04 (+0.23%)
+- ADBE  # Adobe Inc. Common Stock | Market Cap: 144,673,410,000 | Price: $341.05 (+0.82%)
+- FAST  # Fastenal Company Common Stock | Market Cap: 55,075,081,250 | Price: $47.99 (+1.07%)
+- EA  # Electronic Arts Inc. Common Stock | Market Cap: 41,944,752,275 | Price: $167.64 (+3.00%)
+- CSCO  # Cisco Systems, Inc. Common Stock (DE) | Market Cap: 284,288,269,342 | Price: $71.79 (+2.70%)
+- REGN  # Regeneron Pharmaceuticals, Inc. Common Stock | Market Cap: 59,670,929,846 | Price: $563.00 (+0.57%)
+- IDXX  # IDEXX Laboratories, Inc. Common Stock | Market Cap: 52,647,888,934 | Price: $658.06 (+1.23%)
+- VRTX  # Vertex Pharmaceuticals Incorporated Common Stock | Market Cap: 93,977,429,218 | Price: $366.54 (-2.42%)
+- BIIB  # Biogen Inc. Common Stock | Market Cap: 19,158,129,521 | Price: $130.67 (+2.29%)
+- ODFL  # Old Dominion Freight Line, Inc. Common Stock | Market Cap: 30,360,889,071 | Price: $144.46 (-0.60%)
+- QCOM  # QUALCOMM Incorporated Common Stock | Market Cap: 159,217,240,000 | Price: $147.56 (+1.14%)
+- GILD  # Gilead Sciences, Inc. Common Stock | Market Cap: 148,537,576,339 | Price: $119.41 (+8.28%)
+- SNPS  # Synopsys, Inc. Common Stock | Market Cap: 96,109,788,216 | Price: $619.42 (-0.15%)
+- SBUX  # Starbucks Corporation Common Stock | Market Cap: 104,712,804,000 | Price: $92.12 (+1.21%)
+- INTU  # Intuit Inc. Common Stock | Market Cap: 208,931,303,000 | Price: $749.00 (-1.66%)
+- MCHP  # Microchip Technology Incorporated Common Stock | Market Cap: 33,372,643,724 | Price: $61.87 (-6.57%)
+- ORLY  # O'Reilly Automotive, Inc. Common Stock | Market Cap: 88,330,364,145 | Price: $103.33 (-0.14%)
+- COST  # Costco Wholesale Corporation Common Stock | Market Cap: 435,042,151,824 | Price: $980.98 (+0.36%)
+- CPRT  # Copart, Inc. (DE) Common Stock | Market Cap: 44,657,949,044 | Price: $46.185 (+0.16%)
+- ASML  # ASML Holding N.V. New York Registry Shares | Market Cap: 284,076,696,630 | Price: $722.32 (+1.29%)
+- TTWO  # Take-Two Interactive Software, Inc. Common Stock | Market Cap: 38,566,852,252 | Price: $217.37 (-4.03%)
+- AMZN  # Amazon.com, Inc. Common Stock | Market Cap: 2,374,969,274,881 | Price: $222.69 (-0.20%)
+- MSTR  # MicroStrategy Incorporated Common Stock Class A | Market Cap: 112,040,275,948 | Price: $395.13 (-1.71%)
+- CTSH  # Cognizant Technology Solutions Corporation Class A Common Stock | Market Cap: 33,982,589,296 | Price: $69.58 (+0.67%)
+- CSGP  # CoStar Group, Inc. Common Stock | Market Cap: 40,034,959,209 | Price: $94.50 (-0.88%)
+- NVDA  # NVIDIA Corporation Common Stock | Market Cap: 4,457,880,000,000 | Price: $182.70 (+1.07%)
+- BKNG  # Booking Holdings Inc. Common Stock | Market Cap: 175,204,921,420 | Price: $5,405.91 (-0.48%)
+- ON  # ON Semiconductor Corporation Common Stock | Market Cap: 19,491,700,459 | Price: $47.66 (+0.15%)
+- ISRG  # Intuitive Surgical, Inc. Common Stock | Market Cap: 168,512,635,940 | Price: $470.08 (+0.06%)
+- MRVL  # Marvell Technology, Inc. Common Stock | Market Cap: 66,682,548,000 | Price: $77.34 (+1.96%)
+- ADI  # Analog Devices, Inc. Common Stock | Market Cap: 111,134,783,494 | Price: $223.95 (+0.37%)
+- AEP  # American Electric Power Company, Inc. Common Stock | Market Cap: 60,164,410,838 | Price: $112.50 (-0.27%)
+- AMD  # Advanced Micro Devices, Inc. Common Stock | Market Cap: 280,362,475,712 | Price: $172.76 (+0.21%)
+- ADP  # Automatic Data Processing, Inc. Common Stock | Market Cap: 123,866,243,255 | Price: $305.81 (+0.76%)
+- AZN  # AstraZeneca PLC American Depositary Shares | Market Cap: 228,103,655,263 | Price: $73.55 (-0.68%)
+- CDNS  # Cadence Design Systems, Inc. Common Stock | Market Cap: 95,932,829,400 | Price: $352.06 (-0.64%)
+- CSX  # CSX Corporation Common Stock | Market Cap: 66,051,334,606 | Price: $35.43 (+0.51%)
+- HON  # Honeywell International Inc. Common Stock | Market Cap: 137,334,475,326 | Price: $216.31 (-0.12%)
+- MAR  # Marriott International Class A Common Stock | Market Cap: 70,557,321,513 | Price: $259.92 (-0.26%)
+- MU  # Micron Technology, Inc. Common Stock | Market Cap: 133,052,783,258 | Price: $118.89 (+6.28%)
+- XEL  # Xcel Energy Inc. Common Stock | Market Cap: 43,369,281,559 | Price: $73.33 (+0.14%)
+- EXC  # Exelon Corporation Common Stock | Market Cap: 45,772,624,164 | Price: $45.32 (-0.48%)
+- PEP  # PepsiCo, Inc. Common Stock | Market Cap: 198,803,700,793 | Price: $145.21 (+0.90%)
+- ROP  # Roper Technologies, Inc. Common Stock | Market Cap: 57,506,675,269 | Price: $534.38 (-0.43%)
+- TXN  # Texas Instruments Incorporated Common Stock | Market Cap: 170,208,660,780 | Price: $187.22 (+0.70%)
+- AXON  # Axon Enterprise, Inc. Common Stock | Market Cap: 66,139,990,700 | Price: $842.50 (-3.27%)
+- MDLZ  # Mondelez International, Inc. Class A Common Stock | Market Cap: 80,004,644,824 | Price: $61.83 (-0.91%)
+- NFLX  # Netflix, Inc. Common Stock | Market Cap: 514,857,757,867 | Price: $1,211.64 (+2.65%)
+- GOOGL  # Alphabet Inc. Class A Common Stock | Market Cap: 2,435,973,480,000 | Price: $201.42 (+2.49%)
+- DXCM  # DexCom, Inc. Common Stock | Market Cap: 30,925,364,198 | Price: $78.86 (+3.22%)
+- TMUS  # T-Mobile US, Inc. Common Stock | Market Cap: 275,705,155,929 | Price: $244.98 (+0.84%)
+- LULU  # lululemon athletica inc. Common Stock | Market Cap: 21,733,195,925 | Price: $189.43 (-0.89%)
+- MELI  # MercadoLibre, Inc. Common Stock | Market Cap: 119,326,411,538 | Price: $2,353.70 (+0.81%)
+- KDP  # Keurig Dr Pepper Inc. Common Stock | Market Cap: 46,757,342,303 | Price: $34.42 (+1.53%)
+- AVGO  # Broadcom Inc. Common Stock | Market Cap: 1,434,417,544,466 | Price: $304.97 (+0.40%)
+- VRSK  # Verisk Analytics, Inc. Common Stock | Market Cap: 37,030,055,914 | Price: $265.04 (+0.20%)
+- FTNT  # Fortinet, Inc. Common Stock | Market Cap: 56,939,330,162 | Price: $74.39 (-1.21%)
+- CHTR  # Charter Communications, Inc. Class A Common Stock New | Market Cap: 35,045,149,021 | Price: $256.57 (-0.85%)
+- TSLA  # Tesla, Inc. Common Stock | Market Cap: 1,063,269,226,259 | Price: $329.65 (+2.29%)
+- NXPI  # NXP Semiconductors N.V. Common Stock | Market Cap: 52,228,059,500 | Price: $207.16 (+0.61%)
+- FANG  # Diamondback Energy, Inc. Common Stock | Market Cap: 41,115,713,624 | Price: $142.03 (+0.64%)
+- META  # Meta Platforms, Inc. Class A Common Stock | Market Cap: 1,932,590,436,718 | Price: $769.30 (+0.98%)
+- PANW  # Palo Alto Networks, Inc. Common Stock | Market Cap: 111,395,608,000 | Price: $167.06 (-0.62%)
+- WDAY  # Workday, Inc. Class A Common Stock | Market Cap: 59,292,690,000 | Price: $222.07 (+0.49%)
+- CDW  # CDW Corporation Common Stock | Market Cap: 21,352,416,575 | Price: $162.92 (+0.64%)
+- GOOG  # Alphabet Inc. Class C Capital Stock | Market Cap: 2,444,076,460,000 | Price: $202.09 (+2.44%)
+- PYPL  # PayPal Holdings, Inc. Common Stock | Market Cap: 64,631,349,098 | Price: $67.65 (-0.84%)
+- SHOP  # Shopify Inc. Class A Subordinate Voting Shares | Market Cap: 194,101,152,110 | Price: $149.61 (-0.97%)
+- KHC  # The Kraft Heinz Company Common Stock | Market Cap: 32,856,714,208 | Price: $27.76 (+0.40%)
+- TEAM  # Atlassian Corporation Class A Common Stock | Market Cap: 44,116,730,966 | Price: $168.06 (-1.72%)
+- CCEP  # Coca-Cola Europacific Partners plc Ordinary Shares | Market Cap: 43,419,003,856 | Price: $94.76 (+1.65%)
+- TTD  # The Trade Desk, Inc. Class A Common Stock | Market Cap: 26,650,719,020 | Price: $54.23 (-38.61%)
+- BKR  # Baker Hughes Company Class A Common Stock | Market Cap: 42,678,707,278 | Price: $43.29 (+0.82%)
+- ZS  # Zscaler, Inc. Common Stock | Market Cap: 41,990,344,260 | Price: $269.695 (-1.03%)
+- PDD  # PDD Holdings Inc. American Depositary Shares | Market Cap: 162,208,804,748 | Price: $114.26 (+0.06%)
+- CRWD  # CrowdStrike Holdings, Inc. Class A Common Stock | Market Cap: 105,803,357,381 | Price: $424.49 (-0.12%)
+- DDOG  # Datadog, Inc. Class A Common Stock | Market Cap: 45,210,191,470 | Price: $130.91 (-4.01%)
+- PLTR  # Palantir Technologies Inc. Class A Common Stock | Market Cap: 443,533,139,030 | Price: $186.96 (+2.61%)
+- ABNB  # Airbnb, Inc. Class A Common Stock | Market Cap: 75,206,144,783 | Price: $121.02 (+0.82%)
+- DASH  # DoorDash, Inc. Class A Common Stock | Market Cap: 110,724,628,506 | Price: $259.19 (-4.35%)
+- APP  # Applovin Corporation Class A Common Stock | Market Cap: 154,235,195,786 | Price: $455.98 (+4.26%)
+- GFS  # GlobalFoundries Inc. Ordinary Shares | Market Cap: 17,853,555,055 | Price: $32.29 (+0.03%)
+- CEG  # Constellation Energy Corporation Common Stock  | Market Cap: 105,234,583,238 | Price: $335.765 (-0.19%)
+- WBD  # Warner Bros. Discovery, Inc. Series A Common Stock  | Market Cap: 26,992,158,283 | Price: $10.91 (-8.01%)
+- GEHC  # GE HealthCare Technologies Inc. Common Stock  | Market Cap: 32,872,466,664 | Price: $72.00 (+1.27%)
+- LIN  # Linde plc Ordinary Shares | Market Cap: 221,522,241,107 | Price: $472.42 (+0.64%)
+- ARM  # Arm Holdings plc American Depositary Shares | Market Cap: 146,708,063,862 | Price: $138.50 (+2.16%)
