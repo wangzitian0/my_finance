@@ -39,7 +39,6 @@ neo4j-python-driver = "*"
 [tasks]
 # Core commands from CLAUDE.md
 activate = "echo 'Pixi environment activated'"
-build-m7-legacy = "python ETL/manage.py build m7"
 status = "python ETL/manage.py status"
 run-job = "python ETL/run_job.py"
 
@@ -107,6 +106,11 @@ install-git-hooks = "python infra/install_git_hooks.py"
 # Data submodule management (CRITICAL)
 commit-data-changes = "python infra/commit_data_changes.py"
 check-data-status = "python -c 'import os; os.chdir(\"data\"); os.system(\"git status\")'"
+
+# PR creation workflow with M7 testing (MANDATORY)
+create-pr = "python infra/create_pr_with_m7_test.py"
+test-m7-e2e = "python infra/create_pr_with_m7_test.py --skip-pr-creation"
+setup-branch-protection = "python infra/setup_branch_protection.py"
 
 # Build tracking and data migration tasks
 migrate-data-structure = "python ETL/migrate_data_structure.py"

@@ -62,30 +62,42 @@ pixi run test                   # Run tests
 
 **See README.md for complete git workflow.** Claude-specific requirements:
 
-### MANDATORY Commit Format
+### MANDATORY PR Creation Workflow
+
+**CRITICAL**: Use the automated PR creation script to ensure M7 testing:
+
 ```bash
+# Create PR with automatic M7 end-to-end testing (RECOMMENDED)
+pixi run create-pr "Brief description" ISSUE_NUMBER
+
+# Or create PR with custom description file
+pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
+
+# Test M7 locally without creating PR
+pixi run test-m7-e2e
+```
+
+**⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
+- ✅ M7 end-to-end test runs successfully BEFORE PR creation  
+- ✅ Data submodule changes are committed automatically
+- ✅ Commit messages include proper PR URLs for GoLand integration
+- ✅ GitHub branch protection rules enforce M7 validation
+
+**Legacy manual workflow (NOT RECOMMENDED)**:
+```bash
+# Only use if automated script fails
 git commit -m "Brief description
 
 Fixes #issue-number
 
-PR: https://github.com/wangzitian0/my_finance/pull/XXX
+PR: PLACEHOLDER
 
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
-```
-
-**Important**: After creating PR, always amend commit to include actual PR URL for GoLand integration:
-```bash
-git commit --amend -m "Brief description
-
-Fixes #issue-number
-
-PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
+git push -u origin feature/description-fixes-ISSUE_NUMBER
+gh pr create --title "..." --body "..."
+git commit --amend -m "Brief description with actual PR URL"
 git push --force-with-lease
 ```
 
@@ -181,46 +193,38 @@ pixi run shutdown-all         # Stop all services
 
 ### Git Workflow (MANDATORY for all changes)
 
-**Complete workflow including MR creation:**
+**NEW: Automated PR workflow with M7 validation (RECOMMENDED):**
 
 ```bash
 # 1. Create feature branch
 git checkout -b feature/description-fixes-ISSUE_NUMBER
 
-# 2. Make changes and commit with placeholder
+# 2. Make your changes and commit
 git add .
 git commit -m "Brief description
 
 Fixes #ISSUE_NUMBER
 
-PR: https://github.com/wangzitian0/my_finance/pull/PLACEHOLDER
-
 🤖 Generated with [Claude Code](https://claude.ai/code)
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# 3. Push and create MR
-git push -u origin feature/description-fixes-ISSUE_NUMBER
-gh pr create --title "..." --body "..."
+# 3. Create PR with automated M7 testing (CRITICAL)
+pixi run create-pr "Brief description" ISSUE_NUMBER
 
-# 4. Amend with actual PR URL (CRITICAL for GoLand integration)
-git commit --amend -m "Brief description
+# 4. AFTER PR IS MERGED: Clean up branches  
+pixi run cleanup-branches-auto
 
-Fixes #ISSUE_NUMBER
-
-PR: https://github.com/wangzitian0/my_finance/pull/ACTUAL_NUMBER
-
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>"
-git push --force-with-lease
-
-# 5. AFTER MR IS MERGED: Clean up branches
-pixi run cleanup-branches-auto  # Auto-cleanup merged branches
-
-# 6. Clean shutdown
+# 5. Clean shutdown
 pixi run shutdown-all
 ```
+
+**Benefits of automated workflow:**
+- ✅ **M7 testing**: Runs full end-to-end test BEFORE creating PR
+- ✅ **Data submodules**: Handles data changes automatically  
+- ✅ **PR URLs**: Updates commit messages with actual PR URLs
+- ✅ **Branch protection**: GitHub enforces M7 validation on all PRs
+- ✅ **No failures**: PRs cannot be created if M7 tests fail
 
 ### Branch Cleanup (MANDATORY after MR merge)
 

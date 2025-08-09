@@ -38,7 +38,7 @@ class TestConfig:
             self.enable_sec_edgar = False
             self.enable_graph_rag = False
         elif self.tier == DatasetTier.M7:
-            self.expected_tickers = ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "META", "NFLX"]
+            self.expected_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA"]
             self.timeout_seconds = 300
             self.enable_sec_edgar = True
             self.enable_graph_rag = True
@@ -57,19 +57,19 @@ class TestConfigManager:
     CONFIG_MAP = {
         DatasetTier.TEST: TestConfig(
             tier=DatasetTier.TEST,
-            config_file="test_config.yml"
+            config_file="target_pre_pr_test.yml"
         ),
         DatasetTier.M7: TestConfig(
             tier=DatasetTier.M7, 
-            config_file="job_yfinance_m7.yml"
+            config_file="list_magnificent_7.yml"
         ),
         DatasetTier.NASDAQ100: TestConfig(
             tier=DatasetTier.NASDAQ100,
-            config_file="yfinance_nasdaq100.yml"
+            config_file="list_nasdaq_100.yml"
         ),
         DatasetTier.VTI: TestConfig(
             tier=DatasetTier.VTI,
-            config_file="yfinance_vti.yml"
+            config_file="list_vti_3500.yml"
         )
     }
     

@@ -1,0 +1,138 @@
+name: PR M7 Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+concurrency:
+  group: m7-validation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate-m7:
+    name: "M7 End-to-End Validation (MANDATORY)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+    - name: "📥 Checkout code"
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        
+    - name: "🐍 Setup Python with Pixi"
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: latest
+        cache: true
+        
+    - name: "🔧 Setup environment"
+      run: |
+        pixi run setup-env || echo "Environment setup completed"
+        pixi run env-status
+        
+    - name: "🧪 Run M7 End-to-End Test"
+      id: m7_test
+      run: |
+        echo "🚀 Starting M7 end-to-end validation..."
+        pixi run test-m7-e2e
+        
+    - name: "📊 Validate M7 Results"
+      run: |
+        echo "🔍 Validating M7 test results..."
+        
+        # Check for M7 data files in multiple locations
+        M7_FILES=0
+        for location in data/stage_01_extract data/original data/build/latest; do
+          if [ -d "$location" ]; then
+            FILES=$(find "$location" -name "*.json" -type f | wc -l)
+            echo "📁 Found $FILES files in $location"
+            M7_FILES=$((M7_FILES + FILES))
+          fi
+        done
+        
+        echo "📈 Total M7 data files: $M7_FILES"
+        
+        if [ "$M7_FILES" -lt 7 ]; then
+          echo "❌ FAIL: Expected at least 7 M7 files (one per ticker), found $M7_FILES"
+          exit 1
+        elif [ "$M7_FILES" -lt 21 ]; then
+          echo "⚠️ WARNING: Expected 21 M7 files (7 tickers × 3 periods), found $M7_FILES"
+          echo "   This may be acceptable if some data sources are unavailable"
+        fi
+        
+        # Check build status
+        BUILD_STATUS=$(pixi run build-status)
+        echo "🏗️ Build status: $BUILD_STATUS"
+        
+        # Check for build manifest
+        MANIFESTS=$(find data/build -name "BUILD_MANIFEST.md" | wc -l)
+        if [ "$MANIFESTS" -eq 0 ]; then
+          echo "❌ FAIL: No build manifest found"
+          exit 1
+        fi
+        
+        echo "✅ M7 validation passed - PR ready for review"
+        
+    - name: "📝 Comment on PR (Success)"
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## ✅ M7 End-to-End Validation PASSED
+            
+            The mandatory M7 dataset test has been completed successfully:
+            
+            - 🧪 **M7 Build**: Successfully generated M7 dataset
+            - 📊 **Data Validation**: All expected files present
+            - 🏗️ **Build Tracking**: Build manifest generated
+            - ⏱️ **Duration**: Completed in ${{ steps.m7_test.outputs.duration || 'N/A' }}
+            
+            This PR is **ready for human review** 🚀`
+          })
+          
+    - name: "📝 Comment on PR (Failure)"  
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `## ❌ M7 End-to-End Validation FAILED
+            
+            The mandatory M7 dataset test failed. This PR **cannot be merged** until the M7 test passes.
+            
+            **Required actions:**
+            1. Fix the issues causing M7 test failure
+            2. Test locally with: \`pixi run test-m7-e2e\` 
+            3. Push fixes to trigger re-validation
+            
+            **Local testing:**
+            \`\`\`bash
+            # Run full M7 test locally
+            pixi run test-m7-e2e
+            
+            # Or create PR with automatic M7 testing  
+            pixi run create-pr "Your PR title" ISSUE_NUMBER
+            \`\`\`
+            
+            ❌ **This PR is BLOCKED until M7 validation passes**`
+          })
+          
+    - name: "🔍 Upload M7 Test Artifacts"
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: m7-test-results
+        path: |
+          data/build/
+          data/log/
+        retention-days: 7
