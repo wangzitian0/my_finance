@@ -1,13 +1,13 @@
-# Build Report: 20250810_050827
+# Build Report: 20250810_050932
 
 ## Build Information
 
-- **Build ID**: 20250810_050827
+- **Build ID**: 20250810_050932
 - **Configuration**: m7
 - **Command**: `pixi run build-dataset m7`
 - **Status**: failed
-- **Start Time**: 2025-08-10T05:08:27.627493
-- **End Time**: 2025-08-10T05:08:27.627871
+- **Start Time**: 2025-08-10T05:09:32.718163
+- **End Time**: 2025-08-10T05:09:32.718479
 
 ## ETL Stages
 
@@ -43,9 +43,9 @@
 
 ## File Locations
 
-- **Build Directory**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050827`
-- **Stage Logs**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050827/stage_logs/`
-- **Artifacts**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050827/artifacts/`
+- **Build Directory**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050932`
+- **Stage Logs**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050932/stage_logs/`
+- **Artifacts**: `/Users/SP14016/zitian/my_finance/data/build/build_20250810_050932/artifacts/`
 
 ---
-*Generated on 2025-08-10T05:08:27.628062*
+*Generated on 2025-08-10T05:09:32.718636*
