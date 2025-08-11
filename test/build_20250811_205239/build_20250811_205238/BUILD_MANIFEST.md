@@ -1,21 +1,21 @@
-# Build Report: 20250811_203211
+# Build Report: 20250811_205238
 
 ## Build Information
 
-- **Build ID**: 20250811_203211
+- **Build ID**: 20250811_205238
 - **Configuration**: m7
 - **Command**: `pixi run build-dataset m7`
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:11.787364
-- **End Time**: 2025-08-11T20:32:12.496252
+- **Start Time**: 2025-08-11T20:52:38.610441
+- **End Time**: 2025-08-11T20:52:39.227420
 
 ## ETL Stages
 
 ### stage_01_extract
 
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:11.790116
-- **End Time**: 2025-08-11T20:32:11.790248
+- **Start Time**: 2025-08-11T20:52:38.613057
+- **End Time**: 2025-08-11T20:52:38.613199
 - **Artifacts**: 2 files
   - yfinance_data.json
   - sec_edgar_data.txt
@@ -23,16 +23,16 @@
 ### stage_02_transform
 
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:11.790358
-- **End Time**: 2025-08-11T20:32:11.790473
+- **Start Time**: 2025-08-11T20:52:38.613299
+- **End Time**: 2025-08-11T20:52:38.613393
 - **Artifacts**: 1 files
   - cleaned_data.json
 
 ### stage_03_load
 
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:11.790574
-- **End Time**: 2025-08-11T20:32:11.790662
+- **Start Time**: 2025-08-11T20:52:38.613482
+- **End Time**: 2025-08-11T20:52:38.613570
 - **Artifacts**: 2 files
   - graph_nodes.json
   - dcf_results.json
@@ -40,15 +40,15 @@
 ### stage_04_analysis
 
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:11.790748
-- **End Time**: 2025-08-11T20:32:12.489665
+- **Start Time**: 2025-08-11T20:52:38.613656
+- **End Time**: 2025-08-11T20:52:39.220459
 - **Artifacts**: 0 files
 
 ### stage_05_reporting
 
 - **Status**: completed
-- **Start Time**: 2025-08-11T20:32:12.489794
-- **End Time**: 2025-08-11T20:32:12.492552
+- **Start Time**: 2025-08-11T20:52:39.220632
+- **End Time**: 2025-08-11T20:52:39.223759
 - **Artifacts**: 1 files
   - dcf_report_path.txt
 
@@ -66,9 +66,9 @@
 
 ## File Locations
 
-- **Build Directory**: `data/build/build_20250811_203211`
-- **Stage Logs**: `data/build/build_20250811_203211/stage_logs/`
-- **Artifacts**: `data/build/build_20250811_203211/artifacts/`
+- **Build Directory**: `data/build/build_20250811_205238`
+- **Stage Logs**: `data/build/build_20250811_205238/stage_logs/`
+- **Artifacts**: `data/build/build_20250811_205238/artifacts/`
 
 ---
-*Generated on 2025-08-11T20:32:12.496516*
+*Generated on 2025-08-11T20:52:39.227698*

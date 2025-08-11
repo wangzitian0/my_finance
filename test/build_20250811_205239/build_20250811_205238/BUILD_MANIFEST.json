@@ -1,8 +1,8 @@
 {
   "build_info": {
-    "build_id": "20250811_203211",
-    "start_time": "2025-08-11T20:32:11.787364",
-    "end_time": "2025-08-11T20:32:12.496252",
+    "build_id": "20250811_205238",
+    "start_time": "2025-08-11T20:52:38.610441",
+    "end_time": "2025-08-11T20:52:39.227420",
     "status": "completed",
     "configuration": "m7",
     "command": "pixi run build-dataset m7"
@@ -10,8 +10,8 @@
   "stages": {
     "stage_01_extract": {
       "status": "completed",
-      "start_time": "2025-08-11T20:32:11.790116",
-      "end_time": "2025-08-11T20:32:11.790248",
+      "start_time": "2025-08-11T20:52:38.613057",
+      "end_time": "2025-08-11T20:52:38.613199",
       "artifacts": [
         "yfinance_data.json",
         "sec_edgar_data.txt"
@@ -20,8 +20,8 @@
     },
     "stage_02_transform": {
       "status": "completed",
-      "start_time": "2025-08-11T20:32:11.790358",
-      "end_time": "2025-08-11T20:32:11.790473",
+      "start_time": "2025-08-11T20:52:38.613299",
+      "end_time": "2025-08-11T20:52:38.613393",
       "artifacts": [
         "cleaned_data.json"
       ],
@@ -29,8 +29,8 @@
     },
     "stage_03_load": {
       "status": "completed",
-      "start_time": "2025-08-11T20:32:11.790574",
-      "end_time": "2025-08-11T20:32:11.790662",
+      "start_time": "2025-08-11T20:52:38.613482",
+      "end_time": "2025-08-11T20:52:38.613570",
       "artifacts": [
         "graph_nodes.json",
         "dcf_results.json"
@@ -39,15 +39,15 @@
     },
     "stage_04_analysis": {
       "status": "completed",
-      "start_time": "2025-08-11T20:32:11.790748",
-      "end_time": "2025-08-11T20:32:12.489665",
+      "start_time": "2025-08-11T20:52:38.613656",
+      "end_time": "2025-08-11T20:52:39.220459",
       "artifacts": [],
       "companies_analyzed": 7
     },
     "stage_05_reporting": {
       "status": "completed",
-      "start_time": "2025-08-11T20:32:12.489794",
-      "end_time": "2025-08-11T20:32:12.492552",
+      "start_time": "2025-08-11T20:52:39.220632",
+      "end_time": "2025-08-11T20:52:39.223759",
       "artifacts": [
         "dcf_report_path.txt"
       ],
@@ -72,6 +72,7 @@
     "sec_edgar_files": [],
     "dcf_reports": [
       "reports/M7_DCF_Report_20250810_055630.txt",
+      "reports/M7_DCF_Report_20250811_205239.txt",
       "reports/M7_DCF_Report_20250811_203212.txt",
       "reports/M7_DCF_Report_20250810_060130.txt"
     ],
