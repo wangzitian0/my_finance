@@ -105,10 +105,16 @@ pixi run test-m7-e2e
 ```
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
-- ✅ M7 end-to-end test runs successfully BEFORE PR creation  
+- ✅ M7 end-to-end test runs successfully BEFORE PR creation/update
 - ✅ Data submodule changes are committed automatically
 - ✅ Commit messages include proper PR URLs for GoLand integration
 - ✅ GitHub branch protection rules enforce M7 validation
+
+**CRITICAL**: ALWAYS use `pixi run create-pr` for ALL PR operations:
+- ✅ **Creating new PR**: `pixi run create-pr "Description" ISSUE_NUMBER`
+- ✅ **Updating existing PR**: `pixi run create-pr "Update description" ISSUE_NUMBER`
+- ✅ **Both operations require M7 testing** - no exceptions
+- ❌ **NEVER** use direct `git push` or manual PR updates
 
 **Legacy manual workflow (NOT RECOMMENDED)**:
 ```bash
@@ -272,10 +278,13 @@ Fixes #ISSUE_NUMBER
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# 5. Create PR with automated M7 testing (CRITICAL)
-pixi run create-pr "Brief description" ISSUE_NUMBER
+# 5. Create OR Update PR with automated M7 testing (CRITICAL)
+pixi run create-pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
 
-# 6. AFTER PR IS MERGED: Clean up branches  
+# 6. For PR updates, ALWAYS use the same script (NEVER direct git push)
+# The script will detect existing PR and update it with M7 validation
+
+# 7. AFTER PR IS MERGED: Clean up branches  
 pixi run cleanup-branches-auto
 
 # 7. Clean shutdown
