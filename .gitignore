@@ -4,6 +4,9 @@
 # Data is managed in separate git submodule (my_finance_data)
 # Database directories (neo4j, redis, etc.) are managed in data submodule's .gitignore
 
+# Test directory - temporary data for CI/testing
+data/test/
+
 # Temporary and build files
 *.large
 knowledge_base_build.log

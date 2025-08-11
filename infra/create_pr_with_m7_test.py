@@ -59,20 +59,27 @@ def get_uncommitted_changes():
 
 
 def run_m7_end_to_end():
-    """Run M7 end-to-end test"""
+    """Run M7 end-to-end test with smart cleanup"""
     print("\n" + "="*60)
     print("🧪 RUNNING MANDATORY M7 END-TO-END TEST")
     print("="*60)
     
-    # Clean any existing build artifacts and symlinks
+    # Clean any existing build artifacts and symlinks  
     run_command("rm -rf data/build/build_*", "Cleaning existing build artifacts", check=False)
     run_command("rm -f data/build/latest", "Cleaning latest symlink", check=False)
     
     # Start environment if needed
     run_command("pixi run env-status", "Checking environment status", check=False)
     
-    # Build M7 dataset
-    run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+    test_success = False
+    try:
+        # Build M7 dataset
+        run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+        test_success = True
+    except Exception as e:
+        print(f"❌ M7 test failed: {e}")
+        print("🔍 Build artifacts preserved for debugging")
+        return False
     
     # Validate build results
     build_status = run_command("pixi run build-status", "Checking build status")
@@ -98,6 +105,7 @@ def run_m7_end_to_end():
     
     if total_files < 7:  # At least 1 file per M7 ticker
         print(f"❌ FAIL: Expected at least 7 M7 files (one per ticker), found {total_files}")
+        print("🔍 Build artifacts preserved for debugging")
         return False
     elif total_files < 21:  # Ideal: 7 tickers × 3 periods = 21 files
         print(f"⚠️  WARNING: Expected 21 M7 files (7 tickers × 3 periods), found {total_files}")
@@ -105,12 +113,28 @@ def run_m7_end_to_end():
     
     if total_files == 0:
         print("❌ No M7 data files found")
+        print("🔍 Build artifacts preserved for debugging")
         return False
     
-    # Create M7 test passed marker file
+    # Test passed - clean up artifacts to avoid git pollution
+    print("✅ M7 END-TO-END TEST PASSED")
+    print("🧹 Moving test artifacts to data/test/ to keep git clean...")
+    
+    # Create timestamp for this test run
+    from datetime import datetime
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # Move build artifacts to test directory
+    run_command(f"mkdir -p data/test/build_{timestamp}", "Creating test archive directory", check=False)
+    run_command(f"mv data/build/build_* data/test/build_{timestamp}/ 2>/dev/null || true", "Moving build artifacts", check=False)
+    run_command(f"mv data/reports/M7_DCF_Report_*.txt data/test/build_{timestamp}/ 2>/dev/null || true", "Moving DCF reports", check=False)
+    run_command("rm -f data/build/latest", "Cleaning latest symlink", check=False)
+    
+    # Create test success marker
     create_m7_test_marker(total_files)
     
-    print("✅ M7 END-TO-END TEST PASSED")
+    print(f"📦 Test artifacts archived to data/test/build_{timestamp}/")
+    print("✅ Git status is now clean - ready for PR creation!")
     return True
 
 
