@@ -145,7 +145,7 @@ def import_json_file(file_path, logger):
 
 def import_all_json_files(source, tickers, logger):
     """
-    针对传入的 tickers 列表，从 data/original/<source>/<ticker> 目录中读取所有 JSON 文件，
+    针对传入的 tickers 列表，从 data/stage_00_original/<source>/<ticker> 目录中读取所有 JSON 文件，
     并调用 import_json_file() 将数据写入 Neo4j。
     """
     total_files = 0
@@ -211,7 +211,7 @@ def import_all_json_files(source, tickers, logger):
 
 def run_job(config_path):
     """
-    根据 YAML 配置文件（例如 config.yml），读取配置后从 data/original/<source>/<ticker>/ 中读取 JSON 文件并导入 Neo4j。
+    根据 YAML 配置文件（例如 config.yml），读取配置后从 data/stage_00_original/<source>/<ticker>/ 中读取 JSON 文件并导入 Neo4j。
     配置文件应包含：
       - tickers: list of ticker symbols
       - source: 数据来源名称（例如 "yfinance"）

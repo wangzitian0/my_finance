@@ -22,7 +22,7 @@ class BuildTracker:
             project_root = Path(__file__).parent.parent
             base_path = project_root / "data"
         self.base_path = Path(base_path)
-        self.build_base_path = self.base_path / "build"
+        self.build_base_path = self.base_path / "stage_99_build"
         self.build_base_path.mkdir(exist_ok=True)
         
         self.build_id = self._generate_build_id()
@@ -329,12 +329,8 @@ class BuildTracker:
         common_latest.symlink_to(f"../{relative_path}")
         logger.debug(f"Updated latest build symlink: {common_latest} -> {relative_path}")
         
-        # Also update the old location for backward compatibility
-        old_latest = self.build_base_path / "latest" 
-        if old_latest.exists():
-            old_latest.unlink()
-        old_latest.symlink_to(f"build_{self.build_id}")
-        logger.debug(f"Updated legacy latest: {old_latest} -> build_{self.build_id}")
+        # Note: We no longer create latest symlink in build directory per issue #58
+        # Only use common/latest_build for worktree isolation
     
     @classmethod
     def get_latest_build(cls, base_path: str = None) -> Optional['BuildTracker']:
@@ -346,21 +342,16 @@ class BuildTracker:
         else:
             project_root = Path(base_path).parent
         
-        # Try the new common/latest_build location first (worktree-specific)
+        # Set up build base path
+        build_base_path = Path(base_path) / "stage_99_build"
+        
+        # Use common/latest_build location only (worktree-specific per issue #58)
         common_latest = project_root / "common" / "latest_build"
-        if common_latest.exists():
-            latest_build_path = common_latest.resolve()
-            build_id = latest_build_path.name.replace("build_", "")
-        else:
-            # Fall back to old location for backward compatibility
-            build_base_path = Path(base_path) / "build"
-            latest_link = build_base_path / "latest"
+        if not common_latest.exists():
+            return None
             
-            if not latest_link.exists():
-                return None
-            
-            latest_build_path = latest_link.resolve()
-            build_id = latest_build_path.name.replace("build_", "")
+        latest_build_path = common_latest.resolve()
+        build_id = latest_build_path.name.replace("build_", "")
         
         # Create a tracker instance for the existing build
         tracker = cls.__new__(cls)

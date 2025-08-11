@@ -50,7 +50,7 @@ class M7DCFAnalyzer:
         }
 
         # Create reports directory
-        self.reports_dir = Path("data/reports")
+        self.reports_dir = Path("data/stage_99_build")
         self.reports_dir.mkdir(exist_ok=True)
 
     def analyze_company_dcf(self, ticker: str) -> dict:

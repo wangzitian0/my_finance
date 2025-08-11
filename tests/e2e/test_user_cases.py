@@ -31,7 +31,7 @@ class TestStrategyAnalystWorkflow:
         assert result.returncode == 0, f"Strategy validation failed: {result.stderr}"
 
         # 3. 验证输出报告
-        reports_dir = Path("data/reports")
+        reports_dir = Path("data/stage_99_build")
         assert reports_dir.exists(), "Reports directory not found"
 
         strategy_reports = list(reports_dir.glob("*strategy*.json"))
@@ -81,7 +81,7 @@ class TestRiskManagerWorkflow:
         assert result.returncode == 0, f"Risk analysis failed: {result.stderr}"
 
         # 2. 验证策略报告包含风险指标
-        reports_dir = Path("data/reports")
+        reports_dir = Path("data/stage_99_build")
         strategy_reports = list(reports_dir.glob("*strategy*.json"))
         assert len(strategy_reports) > 0, "No strategy reports generated"
 
@@ -112,7 +112,7 @@ class TestInvestmentManagerWorkflow:
         assert result.returncode == 0, f"Report generation failed: {result.stderr}"
 
         # 2. 验证报告文件
-        reports_dir = Path("data/reports")
+        reports_dir = Path("data/stage_99_build")
         assert reports_dir.exists()
 
         # 应该包含Markdown和JSON格式报告
@@ -131,7 +131,7 @@ class TestInvestmentManagerWorkflow:
         assert result.returncode == 0, f"Benchmark comparison failed: {result.stderr}"
 
         # 验证生成了策略报告（包含基准比较信息）
-        reports_dir = Path("data/reports")
+        reports_dir = Path("data/stage_99_build")
         strategy_reports = list(reports_dir.glob("*strategy*.json"))
         assert len(strategy_reports) > 0, "No strategy reports generated"
 

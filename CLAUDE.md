@@ -40,6 +40,12 @@ pixi run lint                   # Lint code
 pixi run test                   # Run tests
 ```
 
+### Build Data Management Commands
+```bash
+pixi run create-build           # Create new timestamped build directory (branch-specific)
+pixi run release-build          # Promote latest build to release with confirmation
+```
+
 ## Architecture Overview
 
 **See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with modular architecture:
@@ -72,7 +78,10 @@ pixi run test                   # Run tests
   - Stage 1 (Extract): `data/stage_01_extract/<source>/<date_partition>/<ticker>/`
   - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
   - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
-  - Build tracking: `data/build/build_<YYYYMMDD_HHMMSS>/BUILD_MANIFEST.md`
+  - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
+  - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
+  - Release management: `data/release/release_<YYYYMMDD_HHMMSS>_build_<ID>/`
+  - Latest symlink: `latest` (points to most recent build)
 
 - **Magnificent 7 CIK numbers**: Available in README.md
 

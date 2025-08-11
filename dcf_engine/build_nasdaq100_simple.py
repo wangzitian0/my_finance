@@ -80,7 +80,7 @@ def build_nasdaq100():
         "naming_pattern": "TICKER_yfinance_1y_1d_TIMESTAMP.json",
     }
 
-    report_path = Path("data/build_report_nasdaq100_sample.json")
+    report_path = Path("data/stage_99_build/build_report_nasdaq100_sample.json")
     with open(report_path, "w") as f:
         json.dump(report, f, indent=2)
 
