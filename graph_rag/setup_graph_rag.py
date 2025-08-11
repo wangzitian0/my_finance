@@ -202,9 +202,9 @@ class GraphRAGSetup:
 
         directories = [
             "data",
-            "data/original",
+            "data/stage_00_original",
             "data/stage_01_extract/yfinance",
-            "data/original/sec",
+            "data/stage_00_original/sec",
             "data/config",
             "data/log",
             "data/neo4j",

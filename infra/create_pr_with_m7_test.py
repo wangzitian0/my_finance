@@ -82,7 +82,7 @@ def run_m7_end_to_end():
         
         # Try to validate with existing data instead
         existing_files = 0
-        for location in ["data/original/yfinance", "data/stage_01_extract/yfinance"]:
+        for location in ["data/stage_00_original/yfinance", "data/stage_01_extract/yfinance"]:
             if Path(location).exists():
                 result = run_command(f"find {location} -name '*.json' -type f | wc -l", 
                                    f"Counting files in {location}", check=False)
@@ -104,7 +104,7 @@ def run_m7_end_to_end():
     # Check for expected files in multiple possible locations
     file_locations = [
         "data/stage_01_extract/yfinance",
-        "data/original/yfinance", 
+        "data/stage_00_original/yfinance", 
         "latest"
     ]
     

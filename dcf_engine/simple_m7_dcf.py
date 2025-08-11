@@ -25,8 +25,8 @@ class SimpleM7DCF:
             "TSLA": "Tesla Inc.",
             "NFLX": "Netflix Inc.",
         }
-        self.data_dir = Path("data/original")
-        self.reports_dir = Path("data/reports")
+        self.data_dir = Path("data/stage_00_original")
+        self.reports_dir = Path("data/stage_99_build")
         self.reports_dir.mkdir(exist_ok=True)
 
     def load_company_data(self, ticker):
