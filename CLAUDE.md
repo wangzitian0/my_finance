@@ -105,10 +105,16 @@ pixi run test-m7-e2e
 ```
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
-- ✅ M7 end-to-end test runs successfully BEFORE PR creation  
+- ✅ M7 end-to-end test runs successfully BEFORE PR creation/update
 - ✅ Data submodule changes are committed automatically
 - ✅ Commit messages include proper PR URLs for GoLand integration
 - ✅ GitHub branch protection rules enforce M7 validation
+
+**CRITICAL**: ALWAYS use `pixi run create-pr` for ALL PR operations:
+- ✅ **Creating new PR**: `pixi run create-pr "Description" ISSUE_NUMBER`
+- ✅ **Updating existing PR**: `pixi run create-pr "Update description" ISSUE_NUMBER`
+- ✅ **Both operations require M7 testing** - no exceptions
+- ❌ **NEVER** use direct `git push` or manual PR updates
 
 **Legacy manual workflow (NOT RECOMMENDED)**:
 ```bash
@@ -139,6 +145,13 @@ git push --force-with-lease
 - Issue #21: Phase 1.2 - Implement basic DCF calculation engine  
 - Issue #22: Phase 1.3 - Build Graph RAG Q&A system
 - Issue #26: Cross-platform conda migration
+
+### Recently Completed Issues
+- Issue #58: ✅ **COMPLETED** - Automated file management system with directory structure refactoring
+  - Directory restructuring: `data/original` → `data/stage_00_original`, `data/build` → `data/stage_99_build`
+  - Report isolation: DCF reports now saved in specific build directories
+  - Path consistency: Updated all hardcoded path references
+  - Submodule management: Proper data submodule configuration
 
 ### Labels and Priorities
 **Priority**: P0 (critical) > P1 (high) > P2 (medium)
@@ -265,10 +278,13 @@ Fixes #ISSUE_NUMBER
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# 5. Create PR with automated M7 testing (CRITICAL)
-pixi run create-pr "Brief description" ISSUE_NUMBER
+# 5. Create OR Update PR with automated M7 testing (CRITICAL)
+pixi run create-pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
 
-# 6. AFTER PR IS MERGED: Clean up branches  
+# 6. For PR updates, ALWAYS use the same script (NEVER direct git push)
+# The script will detect existing PR and update it with M7 validation
+
+# 7. AFTER PR IS MERGED: Clean up branches  
 pixi run cleanup-branches-auto
 
 # 7. Clean shutdown
@@ -311,30 +327,41 @@ pixi run shutdown-all
    git rebase origin/main
    ```
 
-**When Conflicts Occur - Resolution Strategy:**
+**When Conflicts Occur - MANDATORY Resolution Workflow:**
 
-1. **Simple Conflicts** (same file, different sections):
-   ```bash
-   git fetch origin main
-   git rebase origin/main
-   # Resolve conflicts manually, then:
-   git add . && git rebase --continue
-   ```
+**CRITICAL**: NEVER handle conflicts without first updating main branch:
 
-2. **Complex Conflicts** (major rework needed):
-   ```bash
-   # NUCLEAR OPTION: Start fresh from latest main
-   git checkout main && git pull
-   git checkout -b feature/task-v2
-   # Manually copy/recreate your changes
-   # This prevents accumulating conflict debt
-   ```
+```bash
+# STEP 1: Always start by updating main (MANDATORY)
+git checkout main
+git pull origin main
 
-3. **Conflict Debt Prevention**:
-   - ⚠️ Don't let conflicts accumulate over multiple PRs
-   - ⚠️ Don't continue working on conflicted branches
-   - ✅ Address conflicts immediately when they occur
-   - ✅ When in doubt, start fresh from latest main
+# STEP 2: Return to feature branch and rebase
+git checkout feature/branch-name
+git rebase origin/main  # This will show conflicts
+
+# STEP 3: Resolve conflicts in files, then continue
+git add .
+git rebase --continue
+
+# STEP 4: Push the resolved branch
+git push origin feature/branch-name --force-with-lease
+```
+
+**Conflict Resolution Rules:**
+- ⚠️ **NEVER** attempt conflict resolution without latest main
+- ⚠️ **NEVER** continue working on conflicted branches
+- ✅ **ALWAYS** pull main first, then handle feature branch
+- ✅ **ALWAYS** test with `pixi run test-m7-e2e` after resolution
+- ✅ When in doubt, start fresh from latest main
+
+**Complex Conflicts** (major rework needed):
+```bash
+# NUCLEAR OPTION: Start fresh from latest main
+git checkout main && git pull
+git checkout -b feature/task-v2
+# Manually recreate changes - prevents conflict debt
+```
 
 ### Branch Cleanup (MANDATORY after MR merge)
 
