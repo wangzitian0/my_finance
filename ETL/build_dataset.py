@@ -223,9 +223,9 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
         
         analyzer = M7DCFAnalyzer()
         
-        # Generate DCF report
+        # Generate DCF report and save to current build directory
         report = analyzer.generate_report()
-        report_path = analyzer.save_report(report)
+        report_path = analyzer.save_report(report, output_dir=tracker.build_path)
         
         # Track the generated report
         tracker.log_stage_output("stage_05_reporting", f"Generated DCF report: {report_path}")

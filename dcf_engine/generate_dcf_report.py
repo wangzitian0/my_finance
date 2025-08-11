@@ -508,13 +508,17 @@ class M7DCFAnalyzer:
 
         return "\n".join(report_lines)
 
-    def save_report(self, report: str, filename: str = None) -> str:
+    def save_report(self, report: str, filename: str = None, output_dir: Path = None) -> str:
         """Save report to file."""
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"M7_DCF_Report_{timestamp}.txt"
 
-        filepath = self.reports_dir / filename
+        # Use output_dir if provided, otherwise use default reports_dir
+        target_dir = output_dir if output_dir is not None else self.reports_dir
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        filepath = target_dir / filename
 
         with open(filepath, "w") as f:
             f.write(report)

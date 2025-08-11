@@ -374,11 +374,16 @@ class SimpleM7DCF:
 
         return "\n".join(lines)
 
-    def save_report(self, report):
+    def save_report(self, report, output_dir=None):
         """保存报告"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"M7_DCF_Report_{timestamp}.txt"
-        filepath = self.reports_dir / filename
+        
+        # Use output_dir if provided, otherwise use default reports_dir
+        target_dir = Path(output_dir) if output_dir else self.reports_dir
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        filepath = target_dir / filename
 
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(report)

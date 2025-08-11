@@ -27,9 +27,8 @@ def get_branch_build_dir(branch_name=None):
     
     data_dir = Path("data")
     
-    # For now, use existing 'build' directory for compatibility with BuildTracker
-    # TODO: Implement full branch isolation later
-    return data_dir / "build"
+    # Use new stage_99_build directory per issue #58
+    return data_dir / "stage_99_build"
 
 
 def create_build_dir():
@@ -51,7 +50,7 @@ def create_build_dir():
 
 def promote_to_release():
     """Move latest build to release directory."""
-    latest = Path("latest")
+    latest = Path("common/latest_build")
     if not latest.exists():
         print("No latest build found")
         return

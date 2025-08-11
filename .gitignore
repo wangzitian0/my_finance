@@ -4,8 +4,9 @@
 # Data is managed in separate git submodule (my_finance_data)
 # Database directories (neo4j, redis, etc.) are managed in data submodule's .gitignore
 
-# Build directory - all builds, tests, and temporary artifacts
-data/build/
+# Build directories - all builds, tests, and temporary artifacts
+data/stage_99_build/
+data/stage_99_build_*/
 
 # Temporary and build files
 *.large
