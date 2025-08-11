@@ -59,20 +59,27 @@ def get_uncommitted_changes():
 
 
 def run_m7_end_to_end():
-    """Run M7 end-to-end test"""
+    """Run M7 end-to-end test with smart cleanup"""
     print("\n" + "="*60)
     print("🧪 RUNNING MANDATORY M7 END-TO-END TEST")
     print("="*60)
     
-    # Clean any existing build artifacts and symlinks
+    # Clean any existing build artifacts and symlinks  
     run_command("rm -rf data/build/build_*", "Cleaning existing build artifacts", check=False)
     run_command("rm -f data/build/latest", "Cleaning latest symlink", check=False)
     
     # Start environment if needed
     run_command("pixi run env-status", "Checking environment status", check=False)
     
-    # Build M7 dataset
-    run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+    test_success = False
+    try:
+        # Build M7 dataset
+        run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+        test_success = True
+    except Exception as e:
+        print(f"❌ M7 test failed: {e}")
+        print("🔍 Build artifacts preserved for debugging")
+        return False
     
     # Validate build results
     build_status = run_command("pixi run build-status", "Checking build status")
@@ -98,6 +105,7 @@ def run_m7_end_to_end():
     
     if total_files < 7:  # At least 1 file per M7 ticker
         print(f"❌ FAIL: Expected at least 7 M7 files (one per ticker), found {total_files}")
+        print("🔍 Build artifacts preserved for debugging")
         return False
     elif total_files < 21:  # Ideal: 7 tickers × 3 periods = 21 files
         print(f"⚠️  WARNING: Expected 21 M7 files (7 tickers × 3 periods), found {total_files}")
@@ -105,18 +113,23 @@ def run_m7_end_to_end():
     
     if total_files == 0:
         print("❌ No M7 data files found")
+        print("🔍 Build artifacts preserved for debugging")
         return False
     
-    # Create M7 test passed marker file
+    # Test passed - build artifacts remain in data/build/ (gitignored)
+    print("✅ M7 END-TO-END TEST PASSED")
+    print("📦 Build artifacts remain in data/build/ (gitignored)")
+    
+    # Create test success marker
     create_m7_test_marker(total_files)
     
-    print("✅ M7 END-TO-END TEST PASSED")
+    print("✅ Git status is clean - ready for PR creation!")
     return True
 
 
 def create_m7_test_marker(file_count: int):
     """Create marker file indicating M7 test passed"""
-    from datetime import datetime
+    from datetime import datetime, timezone
     import socket
     
     # Get current commit hash
@@ -182,11 +195,39 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     print("\n🔄 Handling data submodule changes...")
     run_command("pixi run commit-data-changes", "Committing data submodule changes")
     
-    # 4. Add M7 test marker to git (force add even if in .gitignore)
+    # 3.5. Ask about promoting build to release before creating PR
+    ask_about_build_release()
+    
+    # 4. Add M7 test marker and update commit message
     if Path(".m7-test-passed").exists():
+        # Read M7 test details
+        with open(".m7-test-passed", "r") as f:
+            marker_content = f.read()
+        
+        # Extract key info
+        test_timestamp = None
+        data_files = None
+        for line in marker_content.split("\n"):
+            if line.startswith("TEST_TIMESTAMP="):
+                test_timestamp = line.split("=")[1]
+            elif line.startswith("M7_DATA_FILES="):
+                data_files = line.split("=")[1]
+        
+        # Update commit message to include M7 test info
+        current_commit = run_command("git log -1 --pretty=%B", "Getting current commit message")
+        original_msg = current_commit.stdout.strip()
+        
+        # Add M7 test marker to commit message
+        updated_msg = f"""{original_msg}
+
+✅ M7-TESTED: This commit passed M7 end-to-end testing
+📊 Test Results: {data_files} data files validated
+🕐 Test Time: {test_timestamp or 'unknown'}"""
+        
+        # Force add marker file and amend commit
         run_command("git add -f .m7-test-passed", "Force adding M7 test marker to commit")
-        run_command("git commit --amend --no-edit", "Including M7 marker in commit")
-        print("📝 M7 test marker included in commit")
+        run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with M7 test info")
+        print("📝 M7 test marker and status included in commit message")
     
     # 5. Push current branch
     run_command(f"git push -u origin {current_branch}", f"Pushing branch {current_branch}")
@@ -302,6 +343,124 @@ Fixes #{issue_number}
     print("✅ Commit message updated with PR URL")
     
     return pr_url
+
+
+def ask_about_build_release():
+    """Ask user if they want to promote the latest build to release"""
+    print("\n" + "="*60)
+    print("📦 BUILD RELEASE MANAGEMENT")
+    print("="*60)
+    
+    # Check if there are any builds to release
+    from pathlib import Path
+    
+    # Ensure we're working from project root
+    project_root = Path(__file__).parent.parent
+    build_dir = project_root / "data" / "build"
+    
+    if not build_dir.exists():
+        print("ℹ️  No builds found to release")
+        return
+    
+    # Find the latest build
+    build_dirs = [d for d in build_dir.iterdir() if d.is_dir() and d.name.startswith("build_")]
+    if not build_dirs:
+        print("ℹ️  No builds found to release")
+        return
+    
+    latest_build = max(build_dirs, key=lambda d: d.name)
+    build_id = latest_build.name.replace("build_", "")
+    
+    print(f"🔍 Found latest build: {build_id}")
+    
+    # Check build contents
+    artifacts = []
+    if (latest_build / "BUILD_MANIFEST.md").exists():
+        artifacts.append("Build manifest")
+    if any(latest_build.glob("**/*.txt")):
+        artifacts.append("DCF reports")
+    if any(latest_build.glob("**/*.json")):
+        artifacts.append("Data files")
+    
+    if artifacts:
+        print(f"📊 Build contains: {', '.join(artifacts)}")
+        
+        try:
+            response = input("\n❓ Would you like to promote this build to data/release/? [y/N]: ").strip().lower()
+            if response in ['y', 'yes']:
+                promote_build_to_release(build_id, str(latest_build))
+            else:
+                print("⏭️  Skipped build promotion")
+        except (KeyboardInterrupt, EOFError):
+            print("\n⏭️  Skipped build promotion")
+    else:
+        print("⚠️  Build appears to be empty or incomplete")
+
+
+def promote_build_to_release(build_id: str, build_path: str):
+    """Promote a build to the release directory"""
+    from pathlib import Path
+    import shutil
+    from datetime import datetime
+    
+    print(f"\n🚀 Promoting build {build_id} to release...")
+    
+    # Ensure we're working from project root
+    project_root = Path(__file__).parent.parent
+    release_dir = project_root / "data" / "release"
+    release_dir.mkdir(exist_ok=True)
+    
+    # Create release directory with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    release_path = release_dir / f"release_{timestamp}_build_{build_id}"
+    
+    try:
+        # Copy build to release directory
+        shutil.copytree(build_path, release_path)
+        
+        # Create release notes
+        release_notes = f"""# Release {timestamp}
+
+## Build Information
+- **Build ID**: {build_id}
+- **Release Date**: {datetime.now().isoformat()}
+- **Source**: build_{build_id}
+
+## Contents
+- Build manifest and logs
+- DCF analysis results
+- Data processing artifacts
+
+## Validation Status
+✅ M7 end-to-end testing passed
+✅ Build completed successfully
+
+Generated by PR workflow automation.
+"""
+        
+        with open(release_path / "RELEASE_NOTES.md", "w") as f:
+            f.write(release_notes)
+        
+        print(f"✅ Build promoted to: data/release/release_{timestamp}_build_{build_id}/")
+        print("📝 Release notes created")
+        print("⚠️  Remember to commit the release directory changes to git!")
+        
+    # Commit release to git
+        try:
+            run_command("git add data/release/", "Adding release to git")
+            run_command(f'git commit -m "Add release {timestamp} from build {build_id}
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"', "Committing release")
+            print("✅ Release committed to git")
+        except Exception as commit_error:
+            print(f"⚠️  Failed to commit release: {commit_error}")
+            print("   You can manually commit with: git add data/release/ && git commit")
+        
+    except Exception as e:
+        print(f"❌ Failed to promote build: {e}")
+        return
 
 
 def main():

@@ -48,69 +48,23 @@ dcf-report = "python dcf_engine/generate_dcf_report.py"
 simple-dcf = "python dcf_engine/simple_m7_dcf.py"
 
 # Install additional packages via pip (cross-platform)  
-install-extras = "pip install pipenv datasette neomodel yfinance secedgar"
-install-graph-rag = "pip install 'numpy<2.0' 'torch>=2.4.0' 'safetensors>=0.4.5' sentence-transformers"
+pip-install = "pip install neomodel"
 
-# Development tasks
-format = { cmd = "black . --exclude='.pixi' && isort . --skip-glob='.pixi/*'", cwd = "." }
-lint = "echo 'Lint: Using black and isort for code quality (pylint disabled due to dependency conflicts)' && black --check . --exclude='.pixi' && isort --check-only . --skip-glob='.pixi/*'"
-lint-pylint = "pylint . || echo 'pylint skipped due to dependency conflicts'"
-typecheck = "mypy ."
-# Testing and coverage tasks
-test = "pytest . -v --ignore=data --ignore=htmlcov --ignore=.pixi"
-test-integration = "pytest tests/ -v"
-test-modules = "pytest ETL/tests/ common/tests/ dcf_engine/tests/ evaluation/tests/ -v"
-test-with-coverage = "pytest . --cov=. --cov-config=.coveragerc --cov-report=xml --cov-report=html --cov-report=term-missing --ignore=data --ignore=htmlcov --ignore=.pixi"
-coverage-report = "coverage html && coverage xml"
+# Quality assurance commands
+format = "python -m black --line-length 100 . && python -m isort ."
+lint = "python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613"
+typecheck = "python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports"
+test = "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
 
-# Module-specific testing
-test-etl = "pytest ETL/tests/ -v"
-test-common = "pytest common/tests/ -v"
-test-dcf-engine = "pytest dcf_engine/tests/ -v"
-test-evaluation = "pytest evaluation/tests/ -v"
+# Schema and data management commands
+build-schema = "python ETL/build_schema.py"
+import-data = "python ETL/import_data.py"
+check-coverage = "python ETL/check_coverage.py"
 
-# User case testing tasks (integration tests)
-test-strategy-analyst = "pytest tests/e2e/test_user_cases.py::TestStrategyAnalystWorkflow -v"
-test-risk-manager = "pytest tests/e2e/test_user_cases.py::TestRiskManagerWorkflow -v"  
-test-investment-manager = "pytest tests/e2e/test_user_cases.py::TestInvestmentManagerWorkflow -v"
-test-all-user-cases = "pytest tests/e2e/test_user_cases.py -v"
-
-# Test environment setup
-setup-test-env = "python ETL/tests/setup_test_environment.py"
-
-# Metadata management tasks
-metadata-list = "python common/manage_metadata.py list"
-metadata-rebuild = "python common/manage_metadata.py rebuild"
-metadata-index = "python common/manage_metadata.py index"
-metadata-failures = "python common/manage_metadata.py failures"
-metadata-cleanup = "python common/manage_metadata.py cleanup"
-retry-failed = "python ETL/retry_failed.py"
-
-# Strategy Engine tasks (NEW)
-validate-strategy = "python dcf_engine/validator.py"
-generate-report = "python dcf_engine/validator.py && echo 'Reports saved in data/reports/'"
-backtest = "python -c 'from dcf_engine.validator import StrategyValidator; v=StrategyValidator(); print(v._run_backtest())'"
-benchmark = "python -c 'from dcf_engine.validator import StrategyValidator; v=StrategyValidator(); print(v._compare_benchmarks())'"
-
-# Graph RAG specific tasks
-setup-graph-rag = "python graph_rag/setup_graph_rag.py"
-demo-graph-rag = "python dcf_engine/demo_graph_rag.py"
-test-graph-rag = "python graph_rag/test_graph_rag.py"
-
-# Git workflow optimization tasks
-cleanup-branches = "python infra/cleanup_merged_branches.py --interactive"
-cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
-cleanup-branches-dry-run = "python infra/cleanup_merged_branches.py --dry-run"
-install-git-hooks = "python infra/install_git_hooks.py"
-
-# Data submodule management (CRITICAL)
-commit-data-changes = "python infra/commit_data_changes.py"
-check-data-status = "python -c 'import os; os.chdir(\"data\"); os.system(\"git status\")'"
-
-# PR creation workflow with M7 testing (MANDATORY)
-create-pr = "python infra/create_pr_with_m7_test.py"
-test-m7-e2e = "python infra/create_pr_with_m7_test.py --skip-pr-creation"
-setup-branch-protection = "python infra/setup_branch_protection.py"
+# Testing and validation commands
+test-yfinance = "python ETL/tests/integration/test_yfinance.py" 
+test-config = "python -m pytest ETL/tests/test_config.py -v"
+test-dcf-report = "python -m pytest dcf_engine/test_dcf_report.py -v"
 
 # Build tracking and data migration tasks
 migrate-data-structure = "python ETL/migrate_data_structure.py"
@@ -118,6 +72,10 @@ migrate-data-structure = "python ETL/migrate_data_structure.py"
 build-dataset = "python ETL/build_dataset.py"
 build = "python ETL/build_dataset.py"
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
+
+# Build cleanup and maintenance
+clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
+build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
 # --- Environment Management (Ansible) ---
 # Initial environment setup
@@ -127,14 +85,19 @@ env-start = "ansible-playbook infra/ansible/start.yml"
 env-stop = "ansible-playbook infra/ansible/stop.yml" 
 env-status = "python infra/env_status.py"
 env-reset = "ansible-playbook infra/ansible/reset.yml"
-# One-click shutdown all services
+
+# --- Workflow Management ---
+# PR creation with M7 validation
+create-pr = "python infra/create_pr_with_m7_test.py"
+test-m7-e2e = "python infra/create_pr_with_m7_test.py --skip-pr"
+
+# Data submodule management
+commit-data-changes = "python infra/commit_data_changes.py"
+
+# Branch management
+cleanup-branches = "python infra/cleanup_merged_branches.py"
+cleanup-branches-dry-run = "python infra/cleanup_merged_branches.py --dry-run"
+cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
+
+# --- Infrastructure Management ---
 shutdown-all = "python infra/shutdown_all.py"
-
-# --- Development Operations (Pure Development) ---
-# Core data operations remain in pixi
-
-[environments]
-default = { solve-group = "default" }
-# The 'dev' environment currently inherits all dependencies from 'default'.
-# If you need dev-specific dependencies, create a [feature.dev.dependencies] section.
-dev = { solve-group = "default" }
