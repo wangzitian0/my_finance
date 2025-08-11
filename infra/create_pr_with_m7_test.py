@@ -140,7 +140,7 @@ def run_m7_end_to_end():
 
 def create_m7_test_marker(file_count: int):
     """Create marker file indicating M7 test passed"""
-    from datetime import datetime
+    from datetime import datetime, timezone
     import socket
     
     # Get current commit hash
