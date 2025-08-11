@@ -5,153 +5,39 @@ labels: ["architecture", "decision", "discussion"]
 assignees: []
 
 body:
-  - type: markdown
+  - type: textarea
+    id: problem
     attributes:
-      value: |
-        ## 🏗️ Architecture Decision Request
-        
-        Use this template to propose significant architectural changes that need team discussion and formal decision.
-        
-        > **Note**: This will likely result in an ADR (Architecture Decision Record) being added to `docs/DESIGN_DECISIONS.md`.
-
-  - type: input
-    id: decision-title
-    attributes:
-      label: Decision Title
-      description: Concise title for the architectural decision
-      placeholder: e.g., "Replace PostgreSQL with Neo4j for relationship data"
-    validations:
-      required: true
-
-  - type: dropdown
-    id: status
-    attributes:
-      label: Decision Status
-      description: Current status of this decision
-      options:
-        - Proposed (seeking discussion)
-        - In Review (under evaluation)
-        - Decided (approved, ready for implementation)
-        - Superseded (replaced by newer decision)
+      label: Problem Statement
+      description: What needs to be decided and why?
+      placeholder: |
+        Current situation and problems:
+        - Issue 1
+        - Issue 2
     validations:
       required: true
 
   - type: textarea
-    id: context
+    id: proposal
     attributes:
-      label: Context & Problem Statement
-      description: What is the current situation and what problem are we trying to solve?
+      label: Proposed Solution
+      description: What do you recommend?
       placeholder: |
-        Describe:
-        - Current architecture/approach
-        - Problems or limitations
-        - Business/technical drivers for change
-        - Constraints that must be considered
+        Recommended approach:
+        - Solution overview
+        - Key benefits
+        - Implementation approach
     validations:
       required: true
 
   - type: textarea
-    id: considered-options
+    id: alternatives
     attributes:
-      label: Considered Options
-      description: What alternatives were considered?
+      label: Alternatives Considered
+      description: What other options were evaluated?
       placeholder: |
-        ## Option 1: [Title]
-        - **Pros**: 
-        - **Cons**: 
-        - **Implementation effort**: 
-
-        ## Option 2: [Title]
-        - **Pros**: 
-        - **Cons**: 
-        - **Implementation effort**: 
-
-        ## Option 3: [Title]
-        - **Pros**: 
-        - **Cons**: 
-        - **Implementation effort**: 
-    validations:
-      required: true
-
-  - type: textarea
-    id: recommended-decision
-    attributes:
-      label: Recommended Decision
-      description: Which option do you recommend and why?
-      placeholder: |
-        **Recommended Option**: Option X
-        
-        **Rationale**:
-        - Why this option is best
-        - How it addresses the problem
-        - Why it's better than alternatives
-        - Risk mitigation strategies
-    validations:
-      required: true
-
-  - type: textarea
-    id: consequences
-    attributes:
-      label: Expected Consequences
-      description: What are the expected positive and negative consequences?
-      placeholder: |
-        **Positive Consequences**:
-        - Benefit 1
-        - Benefit 2
-
-        **Negative Consequences**:
-        - Risk/Cost 1 (and mitigation)
-        - Risk/Cost 2 (and mitigation)
-
-        **Neutral Consequences**:
-        - Change 1
-        - Change 2
-    validations:
-      required: true
-
-  - type: textarea
-    id: implementation-plan
-    attributes:
-      label: High-Level Implementation Plan
-      description: What are the major steps to implement this decision?
-      placeholder: |
-        1. Phase 1: Planning and preparation
-        2. Phase 2: Core implementation
-        3. Phase 3: Migration and testing
-        4. Phase 4: Rollout and monitoring
-    validations:
-      required: false
-
-  - type: textarea
-    id: success-criteria
-    attributes:
-      label: Success Criteria
-      description: How will we measure success of this decision?
-      placeholder: |
-        - Performance metrics
-        - Quality metrics
-        - Developer experience improvements
-        - Business value delivered
-    validations:
-      required: false
-
-  - type: input
-    id: timeline
-    attributes:
-      label: Proposed Timeline
-      description: When should this be decided and implemented?
-      placeholder: e.g., "Decision by end of Q1, implementation in Q2"
-    validations:
-      required: false
-
-  - type: textarea
-    id: stakeholders
-    attributes:
-      label: Key Stakeholders
-      description: Who needs to be involved in this decision?
-      placeholder: |
-        - Decision makers: @username1, @username2
-        - Technical reviewers: @username3, @username4  
-        - Implementation team: @username5, @username6
+        Alternative approaches and why they weren't chosen:
+        - Option A: reason
+        - Option B: reason
     validations:
       required: false

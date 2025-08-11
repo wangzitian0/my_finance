@@ -99,5 +99,10 @@ cleanup-branches = "python infra/cleanup_merged_branches.py"
 cleanup-branches-dry-run = "python infra/cleanup_merged_branches.py --dry-run"
 cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
 
+# --- Build Data Management ---
+# Simple build management for multiple work trees
+create-build = "python scripts/manage_build_data.py create"
+release-build = "python scripts/manage_build_data.py release"
+
 # --- Infrastructure Management ---
 shutdown-all = "python infra/shutdown_all.py"
