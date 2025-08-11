@@ -1,0 +1,74 @@
+{
+  "build_info": {
+    "build_id": "20250811_223450",
+    "start_time": "2025-08-11T22:34:50.188674",
+    "end_time": "2025-08-11T22:34:50.549141",
+    "status": "completed",
+    "configuration": "m7",
+    "command": "pixi run build-dataset m7"
+  },
+  "stages": {
+    "stage_01_extract": {
+      "status": "completed",
+      "start_time": "2025-08-11T22:34:50.191454",
+      "end_time": "2025-08-11T22:34:50.191595",
+      "artifacts": [
+        "yfinance_data.json",
+        "sec_edgar_data.txt"
+      ],
+      "file_count": 0
+    },
+    "stage_02_transform": {
+      "status": "completed",
+      "start_time": "2025-08-11T22:34:50.191712",
+      "end_time": "2025-08-11T22:34:50.191823",
+      "artifacts": [
+        "cleaned_data.json"
+      ],
+      "file_count": 0
+    },
+    "stage_03_load": {
+      "status": "completed",
+      "start_time": "2025-08-11T22:34:50.191914",
+      "end_time": "2025-08-11T22:34:50.192005",
+      "artifacts": [
+        "graph_nodes.json",
+        "dcf_results.json"
+      ],
+      "file_count": 0
+    },
+    "stage_04_analysis": {
+      "status": "completed",
+      "start_time": "2025-08-11T22:34:50.192109",
+      "end_time": "2025-08-11T22:34:50.545717",
+      "artifacts": [],
+      "companies_analyzed": 7
+    },
+    "stage_05_reporting": {
+      "status": "completed",
+      "start_time": "2025-08-11T22:34:50.545858",
+      "end_time": "2025-08-11T22:34:50.548921",
+      "artifacts": [
+        "dcf_report_path.txt"
+      ],
+      "reports_generated": 1
+    }
+  },
+  "data_partitions": {
+    "extract_partition": "20250811",
+    "transform_partition": "20250811",
+    "load_partition": "20250811"
+  },
+  "real_outputs": {
+    "yfinance_files": [],
+    "sec_edgar_files": [],
+    "dcf_reports": [],
+    "graph_rag_outputs": []
+  },
+  "statistics": {
+    "files_processed": 0,
+    "companies_processed": 0,
+    "errors": [],
+    "warnings": []
+  }
+}
