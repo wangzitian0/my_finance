@@ -206,11 +206,36 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     print("\n🔄 Handling data submodule changes...")
     run_command("pixi run commit-data-changes", "Committing data submodule changes")
     
-    # 4. Add M7 test marker to git (force add even if in .gitignore)
+    # 4. Add M7 test marker and update commit message
     if Path(".m7-test-passed").exists():
+        # Read M7 test details
+        with open(".m7-test-passed", "r") as f:
+            marker_content = f.read()
+        
+        # Extract key info
+        test_timestamp = None
+        data_files = None
+        for line in marker_content.split("\n"):
+            if line.startswith("TEST_TIMESTAMP="):
+                test_timestamp = line.split("=")[1]
+            elif line.startswith("M7_DATA_FILES="):
+                data_files = line.split("=")[1]
+        
+        # Update commit message to include M7 test info
+        current_commit = run_command("git log -1 --pretty=%B", "Getting current commit message")
+        original_msg = current_commit.stdout.strip()
+        
+        # Add M7 test marker to commit message
+        updated_msg = f"""{original_msg}
+
+✅ M7-TESTED: This commit passed M7 end-to-end testing
+📊 Test Results: {data_files} data files validated
+🕐 Test Time: {test_timestamp or 'unknown'}"""
+        
+        # Force add marker file and amend commit
         run_command("git add -f .m7-test-passed", "Force adding M7 test marker to commit")
-        run_command("git commit --amend --no-edit", "Including M7 marker in commit")
-        print("📝 M7 test marker included in commit")
+        run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with M7 test info")
+        print("📝 M7 test marker and status included in commit message")
     
     # 5. Push current branch
     run_command(f"git push -u origin {current_branch}", f"Pushing branch {current_branch}")
