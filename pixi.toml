@@ -42,13 +42,19 @@ activate = "echo 'Pixi environment activated'"
 etl-status = "python ETL/manage.py status"
 run-job = "python ETL/run_job.py"
 
-# Analysis and reporting commands  
-dcf-analysis = "python dcf_engine/m7_dcf_analysis.py"
-dcf-report = "python dcf_engine/generate_dcf_report.py"
-simple-dcf = "python dcf_engine/simple_m7_dcf.py"
+# Analysis and reporting commands (Pure LLM-powered)
+dcf-analysis = "python dcf_engine/pure_llm_dcf.py"
+dcf-report = "python dcf_engine/pure_llm_dcf.py"
+simple-dcf = "python dcf_engine/pure_llm_dcf.py"
+
+# Legacy/Testing commands (traditional DCF)
+dcf-analysis-legacy = "python dcf_engine/legacy_testing/m7_dcf_analysis.py"
+dcf-report-legacy = "python dcf_engine/legacy_testing/generate_dcf_report.py"
+simple-dcf-legacy = "python dcf_engine/legacy_testing/simple_m7_dcf.py"
+hybrid-dcf-legacy = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
 
 # Install additional packages via pip (cross-platform)  
-pip-install = "pip install neomodel"
+pip-install = "pip install neomodel sentence-transformers"
 
 # Development workflow shortcuts
 dev = "echo '🚀 Development Ready! Try: pixi run build (fast) or pixi run build-m7'"
@@ -141,7 +147,8 @@ setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
 ollama-status = "curl -s http://localhost:11434/api/tags 2>/dev/null && echo 'Ollama: ✅ Running' || echo 'Ollama: ❌ Not running'"
 ollama-models = "ollama list"
 build-sec-library = "python dcf_engine/sec_document_manager.py"
-test-ollama = "ollama run llama3.1:8b 'Explain DCF valuation in 2 sentences'"
+test-ollama = "ollama run gpt-oss:20b 'Explain DCF valuation in 2 sentences'"
+llm-dcf-report = "python dcf_engine/llm_dcf_generator.py --ticker AAPL"
 
 # --- Missing commands for e2e tests ---
 # Aliases for existing functionality to match test expectations

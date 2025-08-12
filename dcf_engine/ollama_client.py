@@ -38,7 +38,7 @@ class OllamaClient:
         self.config = self._load_config(config_path)
         self.base_url = self.config.get('ollama', {}).get('base_url', 'http://localhost:11434')
         self.model_name = self.config.get('ollama', {}).get('model_name', 'gpt-oss:20b')
-        self.timeout = self.config.get('ollama', {}).get('timeout', 120)
+        self.timeout = self.config.get('ollama', {}).get('timeout', 15)
         
         # Generation parameters
         self.max_tokens = self.config.get('ollama', {}).get('max_tokens', 4096)
@@ -79,7 +79,7 @@ class OllamaClient:
             'ollama': {
                 'base_url': 'http://localhost:11434',
                 'model_name': 'gpt-oss:20b',
-                'timeout': 120,
+                'timeout': 15,
                 'max_tokens': 4096,
                 'temperature': 0.3,
                 'top_p': 0.9

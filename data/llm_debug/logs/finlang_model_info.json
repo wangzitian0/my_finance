@@ -1,0 +1,7 @@
+{
+  "model_name": "FinLang/finance-embeddings-investopedia",
+  "model_dimension": 768,
+  "max_seq_length": 512,
+  "loaded_at": "2025-08-12T20:42:44.159644",
+  "device": "mps:0"
+}
