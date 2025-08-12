@@ -1,0 +1,520 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Ollama Client for DCF Analysis
+
+Integrates with local Ollama server running gpt-oss:20b for generating
+intelligent DCF reports and financial analysis.
+"""
+
+import json
+import logging
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import requests
+import yaml
+
+logger = logging.getLogger(__name__)
+
+
+class OllamaClient:
+    """
+    Client for interacting with local Ollama server for financial analysis.
+    
+    Provides methods for generating DCF reports, risk analysis, and investment
+    recommendations using the gpt-oss:20b model.
+    """
+
+    def __init__(self, config_path: Optional[str] = None):
+        """
+        Initialize Ollama client.
+        
+        Args:
+            config_path: Path to configuration file
+        """
+        self.config = self._load_config(config_path)
+        self.base_url = self.config.get('ollama', {}).get('base_url', 'http://localhost:11434')
+        self.model_name = self.config.get('ollama', {}).get('model_name', 'gpt-oss:20b')
+        self.timeout = self.config.get('ollama', {}).get('timeout', 120)
+        
+        # Generation parameters
+        self.max_tokens = self.config.get('ollama', {}).get('max_tokens', 4096)
+        self.temperature = self.config.get('ollama', {}).get('temperature', 0.3)
+        self.top_p = self.config.get('ollama', {}).get('top_p', 0.9)
+        
+        # Debug settings
+        self.debug_mode = self.config.get('dcf_generation', {}).get('debug_mode', True)
+        self.log_requests = self.config.get('logging', {}).get('log_requests', True)
+        self.log_responses = self.config.get('logging', {}).get('log_responses', True)
+        self.debug_dir = Path("data/llm_debug")
+        
+        # Template directory
+        self.template_dir = self.debug_dir / "templates"
+        
+        self._verify_ollama_connection()
+
+    def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
+        """Load configuration from YAML file."""
+        if config_path is None:
+            config_path = "data/llm_debug/configs/ollama_config.yml"
+            
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        except FileNotFoundError:
+            logger.warning(f"Config file not found: {config_path}, using defaults")
+            return self._get_default_config()
+        except Exception as e:
+            logger.error(f"Error loading config: {e}")
+            return self._get_default_config()
+
+    def _get_default_config(self) -> Dict[str, Any]:
+        """Get default configuration."""
+        return {
+            'ollama': {
+                'base_url': 'http://localhost:11434',
+                'model_name': 'gpt-oss:20b',
+                'timeout': 120,
+                'max_tokens': 4096,
+                'temperature': 0.3,
+                'top_p': 0.9
+            },
+            'dcf_generation': {
+                'debug_mode': True
+            },
+            'logging': {
+                'log_requests': True,
+                'log_responses': True
+            }
+        }
+
+    def _verify_ollama_connection(self):
+        """Verify connection to Ollama server."""
+        try:
+            response = requests.get(f"{self.base_url}/api/tags", timeout=10)
+            if response.status_code == 200:
+                models = response.json().get('models', [])
+                model_names = [model.get('name', '') for model in models]
+                
+                if self.model_name in model_names:
+                    logger.info(f"✅ Connected to Ollama, model {self.model_name} available")
+                else:
+                    logger.warning(f"⚠️ Model {self.model_name} not found. Available models: {model_names}")
+                    
+                if self.debug_mode:
+                    self._save_connection_info(models)
+            else:
+                logger.error(f"❌ Failed to connect to Ollama server: {response.status_code}")
+                
+        except requests.exceptions.RequestException as e:
+            logger.error(f"❌ Ollama server not reachable: {e}")
+            logger.info("Make sure Ollama is running: ollama serve")
+
+    def _save_connection_info(self, models: List[Dict]):
+        """Save connection and model info for debugging."""
+        connection_info = {
+            'timestamp': datetime.now().isoformat(),
+            'base_url': self.base_url,
+            'target_model': self.model_name,
+            'available_models': models,
+            'connection_status': 'connected'
+        }
+        
+        debug_file = self.debug_dir / "logs" / "ollama_connection.json"
+        debug_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(debug_file, 'w', encoding='utf-8') as f:
+            json.dump(connection_info, f, indent=2)
+
+    def generate_completion(
+        self, 
+        prompt: str, 
+        max_tokens: Optional[int] = None,
+        temperature: Optional[float] = None,
+        stream: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Generate completion from Ollama model.
+        
+        Args:
+            prompt: Input prompt for the model
+            max_tokens: Maximum tokens to generate
+            temperature: Sampling temperature
+            stream: Whether to stream the response
+            
+        Returns:
+            Dictionary containing the response and metadata
+        """
+        request_data = {
+            'model': self.model_name,
+            'prompt': prompt,
+            'stream': stream,
+            'options': {
+                'temperature': temperature or self.temperature,
+                'top_p': self.top_p,
+                'num_predict': max_tokens or self.max_tokens
+            }
+        }
+        
+        request_id = self._generate_request_id()
+        start_time = time.time()
+        
+        if self.log_requests:
+            self._log_request(request_id, request_data)
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/api/generate",
+                json=request_data,
+                timeout=self.timeout
+            )
+            
+            response.raise_for_status()
+            response_data = response.json()
+            
+            end_time = time.time()
+            duration = end_time - start_time
+            
+            result = {
+                'success': True,
+                'response': response_data.get('response', ''),
+                'model': response_data.get('model', self.model_name),
+                'duration_seconds': duration,
+                'total_duration': response_data.get('total_duration', 0),
+                'load_duration': response_data.get('load_duration', 0),
+                'prompt_eval_count': response_data.get('prompt_eval_count', 0),
+                'eval_count': response_data.get('eval_count', 0),
+                'request_id': request_id
+            }
+            
+            if self.log_responses:
+                self._log_response(request_id, result)
+            
+            return result
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Ollama request failed: {e}")
+            return {
+                'success': False,
+                'error': str(e),
+                'request_id': request_id,
+                'duration_seconds': time.time() - start_time
+            }
+
+    def generate_dcf_report(
+        self, 
+        ticker: str,
+        financial_data: Dict[str, Any],
+        market_context: Dict[str, Any],
+        semantic_results: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Generate comprehensive DCF valuation report.
+        
+        Args:
+            ticker: Stock ticker symbol
+            financial_data: Financial metrics and ratios
+            market_context: Market conditions and sector data
+            semantic_results: Relevant financial intelligence from embeddings
+            
+        Returns:
+            Generated DCF report and metadata
+        """
+        # Load DCF valuation prompt template
+        template_path = self.template_dir / "dcf_valuation_prompt.md"
+        
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                prompt_template = f.read()
+        except FileNotFoundError:
+            logger.error(f"DCF template not found: {template_path}")
+            return {'success': False, 'error': 'DCF template not found'}
+        
+        # Format the prompt with data
+        formatted_prompt = self._format_dcf_prompt(
+            prompt_template, ticker, financial_data, market_context, semantic_results
+        )
+        
+        # Generate the report
+        result = self.generate_completion(
+            prompt=formatted_prompt,
+            temperature=0.3,  # Lower temperature for factual analysis
+            max_tokens=3000
+        )
+        
+        if result['success']:
+            # Save the generated report
+            if self.debug_mode:
+                self._save_generated_report('dcf', ticker, result['response'], result)
+        
+        return result
+
+    def generate_risk_analysis(
+        self,
+        ticker: str,
+        financial_data: Dict[str, Any],
+        semantic_results: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Generate comprehensive risk analysis report.
+        
+        Args:
+            ticker: Stock ticker symbol
+            financial_data: Financial risk indicators
+            semantic_results: Relevant risk intelligence
+            
+        Returns:
+            Generated risk analysis and metadata
+        """
+        template_path = self.template_dir / "risk_analysis_prompt.md"
+        
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                prompt_template = f.read()
+        except FileNotFoundError:
+            logger.error(f"Risk template not found: {template_path}")
+            return {'success': False, 'error': 'Risk template not found'}
+        
+        # Format the prompt
+        formatted_prompt = self._format_risk_prompt(
+            prompt_template, ticker, financial_data, semantic_results
+        )
+        
+        result = self.generate_completion(
+            prompt=formatted_prompt,
+            temperature=0.4,  # Slightly higher for nuanced risk assessment
+            max_tokens=2500
+        )
+        
+        if result['success'] and self.debug_mode:
+            self._save_generated_report('risk', ticker, result['response'], result)
+        
+        return result
+
+    def generate_investment_recommendation(
+        self,
+        ticker: str,
+        dcf_results: Dict[str, Any],
+        risk_analysis: Dict[str, Any],
+        semantic_results: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Generate investment recommendation based on DCF and risk analysis.
+        
+        Args:
+            ticker: Stock ticker symbol
+            dcf_results: DCF valuation results
+            risk_analysis: Risk assessment results
+            semantic_results: Market intelligence
+            
+        Returns:
+            Investment recommendation and rationale
+        """
+        template_path = self.template_dir / "investment_recommendation_prompt.md"
+        
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                prompt_template = f.read()
+        except FileNotFoundError:
+            logger.error(f"Investment template not found: {template_path}")
+            return {'success': False, 'error': 'Investment template not found'}
+        
+        # Format the prompt
+        formatted_prompt = self._format_investment_prompt(
+            prompt_template, ticker, dcf_results, risk_analysis, semantic_results
+        )
+        
+        result = self.generate_completion(
+            prompt=formatted_prompt,
+            temperature=0.5,  # Higher temperature for investment creativity
+            max_tokens=2000
+        )
+        
+        if result['success'] and self.debug_mode:
+            self._save_generated_report('investment', ticker, result['response'], result)
+        
+        return result
+
+    def _format_dcf_prompt(
+        self, 
+        template: str, 
+        ticker: str, 
+        financial_data: Dict, 
+        market_context: Dict, 
+        semantic_results: List
+    ) -> str:
+        """Format DCF prompt template with actual data."""
+        # Extract company information
+        company_info = financial_data.get('company_info', {})
+        
+        # Format semantic search results
+        formatted_semantic = self._format_semantic_results(semantic_results)
+        
+        return template.format(
+            ticker=ticker.upper(),
+            company_name=company_info.get('name', ticker),
+            sector=company_info.get('sector', 'Unknown'),
+            industry=company_info.get('industry', 'Unknown'),
+            analysis_date=datetime.now().strftime('%Y-%m-%d'),
+            financial_data=json.dumps(financial_data, indent=2),
+            historical_data=json.dumps(financial_data.get('historical', {}), indent=2),
+            market_context=json.dumps(market_context, indent=2),
+            semantic_search_results=formatted_semantic
+        )
+
+    def _format_risk_prompt(
+        self, 
+        template: str, 
+        ticker: str, 
+        financial_data: Dict, 
+        semantic_results: List
+    ) -> str:
+        """Format risk analysis prompt template."""
+        company_info = financial_data.get('company_info', {})
+        formatted_semantic = self._format_semantic_results(semantic_results)
+        
+        return template.format(
+            ticker=ticker.upper(),
+            company_name=company_info.get('name', ticker),
+            market_cap=financial_data.get('market_cap', 'Unknown'),
+            sector=company_info.get('sector', 'Unknown'),
+            analysis_date=datetime.now().strftime('%Y-%m-%d'),
+            financial_risk_data=json.dumps(financial_data, indent=2),
+            semantic_search_results=formatted_semantic
+        )
+
+    def _format_investment_prompt(
+        self, 
+        template: str, 
+        ticker: str, 
+        dcf_results: Dict, 
+        risk_analysis: Dict, 
+        semantic_results: List
+    ) -> str:
+        """Format investment recommendation prompt template."""
+        formatted_semantic = self._format_semantic_results(semantic_results)
+        
+        return template.format(
+            ticker=ticker.upper(),
+            company_name=dcf_results.get('company_name', ticker),
+            current_price=dcf_results.get('current_price', 'Unknown'),
+            investment_horizon='1-3 years',
+            risk_tolerance='Moderate',
+            valuation_results=json.dumps(dcf_results, indent=2),
+            risk_analysis=json.dumps(risk_analysis, indent=2),
+            semantic_search_results=formatted_semantic
+        )
+
+    def _format_semantic_results(self, semantic_results: List[Dict]) -> str:
+        """Format semantic search results for prompt inclusion."""
+        if not semantic_results:
+            return "No relevant financial intelligence found."
+        
+        formatted_results = []
+        for i, result in enumerate(semantic_results[:5], 1):
+            content = result.get('content', str(result))[:500]  # Limit content length
+            source = result.get('source', 'Unknown source')
+            similarity = result.get('similarity_score', 0.0)
+            
+            formatted_results.append(f"""
+**Source {i}** (Relevance: {similarity:.2f}):
+Source: {source}
+Content: {content}
+""")
+        
+        return "\n".join(formatted_results)
+
+    def _generate_request_id(self) -> str:
+        """Generate unique request ID for tracking."""
+        return f"req_{int(time.time())}_{hash(datetime.now()) % 10000}"
+
+    def _log_request(self, request_id: str, request_data: Dict):
+        """Log request for debugging."""
+        log_data = {
+            'timestamp': datetime.now().isoformat(),
+            'request_id': request_id,
+            'model': request_data['model'],
+            'prompt_length': len(request_data['prompt']),
+            'prompt_preview': request_data['prompt'][:200] + "..." if len(request_data['prompt']) > 200 else request_data['prompt'],
+            'options': request_data['options']
+        }
+        
+        log_file = self.debug_dir / "logs" / "ollama_requests.jsonl"
+        log_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(log_data) + '\n')
+
+    def _log_response(self, request_id: str, response_data: Dict):
+        """Log response for debugging."""
+        log_data = {
+            'timestamp': datetime.now().isoformat(),
+            'request_id': request_id,
+            'success': response_data['success'],
+            'duration_seconds': response_data['duration_seconds'],
+            'response_length': len(response_data.get('response', '')),
+            'response_preview': response_data.get('response', '')[:200] + "..." if len(response_data.get('response', '')) > 200 else response_data.get('response', ''),
+            'eval_count': response_data.get('eval_count', 0),
+            'prompt_eval_count': response_data.get('prompt_eval_count', 0)
+        }
+        
+        log_file = self.debug_dir / "logs" / "ollama_responses.jsonl"
+        log_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(log_data) + '\n')
+
+    def _save_generated_report(self, report_type: str, ticker: str, content: str, metadata: Dict):
+        """Save generated report for debugging and review."""
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{report_type}_{ticker}_{timestamp}.md"
+        
+        report_file = self.debug_dir / "responses" / filename
+        report_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Create full report with metadata
+        full_report = f"""# {report_type.title()} Report for {ticker}
+
+Generated: {datetime.now().isoformat()}
+Model: {metadata.get('model', self.model_name)}
+Duration: {metadata.get('duration_seconds', 0):.2f} seconds
+Request ID: {metadata.get('request_id', 'unknown')}
+
+---
+
+{content}
+
+---
+
+## Generation Metadata
+```json
+{json.dumps(metadata, indent=2)}
+```
+"""
+        
+        with open(report_file, 'w', encoding='utf-8') as f:
+            f.write(full_report)
+        
+        logger.info(f"Saved {report_type} report: {report_file}")
+
+    def test_connection(self) -> Dict[str, Any]:
+        """Test connection to Ollama server with a simple prompt."""
+        test_prompt = "Hello! Please confirm you are working correctly by responding with 'Ollama connection successful'."
+        
+        result = self.generate_completion(
+            prompt=test_prompt,
+            max_tokens=50,
+            temperature=0.1
+        )
+        
+        if self.debug_mode and result['success']:
+            test_file = self.debug_dir / "logs" / "connection_test.json"
+            test_file.parent.mkdir(parents=True, exist_ok=True)
+            
+            with open(test_file, 'w', encoding='utf-8') as f:
+                json.dump(result, f, indent=2)
+        
+        return result
