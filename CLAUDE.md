@@ -106,6 +106,10 @@ pixi run release-build          # Promote latest build to release with confirmat
   - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
   - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
   - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
+    - Build artifacts: `BUILD_MANIFEST.json`, `BUILD_MANIFEST.md`
+    - DCF reports: `M7_DCF_Report_<YYYYMMDD_HHMMSS>.txt`
+    - Validation reports: `validation_report_<YYYYMMDD_HHMMSS>.json`
+    - Stage logs: `stage_logs/` directory
   - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
   - Release management: `data/release/release_<YYYYMMDD_HHMMSS>_build_<ID>/`
   - Latest symlink: `latest` (points to most recent build)
@@ -144,18 +148,31 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 ### MANDATORY PR Creation Workflow
 
-**CRITICAL**: Use the automated PR creation script to ensure M7 testing:
+**CRITICAL**: PRs MUST be created using the automated script after local testing passes.
 
+#### Design Philosophy
+- **Local Testing First**: All tests must pass locally before PR creation
+- **Test Marker System**: CI only validates that local tests were run (checks .m7-test-passed marker)
+- **Fail Fast**: Direct pushes without local testing will fail CI (this is intentional)
+
+#### Required PR Workflow
 ```bash
-# Create PR with automatic M7 end-to-end testing (RECOMMENDED)
+# 1. MANDATORY: Run local M7 end-to-end test first
+pixi run test-m7-e2e
+
+# 2. MANDATORY: Create PR only via script (includes test verification)
 pixi run create-pr "Brief description" ISSUE_NUMBER
 
-# Or create PR with custom description file
+# 3. Optional: Create PR with custom description file
 pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
-
-# Test M7 locally without creating PR
-pixi run test-m7-e2e
 ```
+
+#### Why Manual Git Commands Are Discouraged
+- `git push` without local testing → CI failure (by design)
+- GitHub UI for direct commit → No test marker → CI rejection
+- Manual PR creation → Missing M7 test verification → Merge blocked
+
+**All successful merges require the automated script workflow.**
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
 - ✅ M7 end-to-end test runs successfully BEFORE PR creation/update

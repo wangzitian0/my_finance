@@ -314,9 +314,11 @@ class KnowledgeBaseBuilder:
 
             validation_results[tier_name] = tier_validation
 
-        # Generate validation report
+        # Generate validation report in stage_99_build directory
+        build_dir = self.data_dir / "stage_99_build"
+        build_dir.mkdir(exist_ok=True)
         validation_report_file = (
-            self.data_dir
+            build_dir
             / f"validation_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         )
 
