@@ -135,6 +135,14 @@ release-build = "python scripts/manage_build_data.py release"
 # --- Infrastructure Management ---
 shutdown-all = "python infra/shutdown_all.py"
 
+# --- Ollama & Embedding Management ---
+# Setup Ollama and embedding models
+setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
+ollama-status = "curl -s http://localhost:11434/api/tags 2>/dev/null && echo 'Ollama: ✅ Running' || echo 'Ollama: ❌ Not running'"
+ollama-models = "ollama list"
+build-sec-library = "python dcf_engine/sec_document_manager.py"
+test-ollama = "ollama run llama3.1:8b 'Explain DCF valuation in 2 sentences'"
+
 # --- Missing commands for e2e tests ---
 # Aliases for existing functionality to match test expectations
 validate-strategy = "python ETL/manage.py validate"

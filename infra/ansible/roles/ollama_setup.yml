@@ -1,0 +1,119 @@
+---
+# roles/ollama_setup.yml
+# Setup Ollama and embedding models for local DCF analysis
+
+- name: Check if Ollama is installed
+  command: ollama version
+  register: ollama_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Ollama (macOS)
+  shell: |
+    if ! command -v ollama &> /dev/null; then
+      if command -v brew &> /dev/null; then
+        brew install ollama
+      else
+        echo "Installing Ollama via curl..."
+        curl -fsSL https://ollama.ai/install.sh | sh
+      fi
+    fi
+  when: ansible_facts['system'] == 'Darwin' and ollama_check.rc != 0
+  register: ollama_install_macos
+
+- name: Install Ollama (Linux)
+  shell: |
+    if ! command -v ollama &> /dev/null; then
+      echo "Installing Ollama..."
+      curl -fsSL https://ollama.ai/install.sh | sh
+    fi
+  when: ansible_facts['system'] == 'Linux' and ollama_check.rc != 0
+  register: ollama_install_linux
+
+- name: Start Ollama service
+  shell: |
+    # Start Ollama service in background
+    if ! pgrep -f "ollama serve" > /dev/null; then
+      echo "Starting Ollama service..."
+      nohup ollama serve > /tmp/ollama.log 2>&1 &
+      sleep 5
+    else
+      echo "Ollama service already running"
+    fi
+  register: ollama_service_start
+
+- name: Wait for Ollama service to be ready
+  shell: |
+    echo "Waiting for Ollama service..."
+    for i in {1..10}; do
+      if curl -s http://localhost:11434/api/tags >/dev/null 2>&1; then
+        echo "Ollama service is ready!"
+        exit 0
+      fi
+      echo "Waiting... ($i/10)"
+      sleep 2
+    done
+    echo "Ollama service may need more time to start"
+  register: ollama_ready
+  changed_when: false
+
+- name: Pull embedding model (nomic-embed-text)
+  shell: |
+    echo "Pulling nomic-embed-text model for embeddings..."
+    ollama pull nomic-embed-text
+  register: embedding_model_pull
+  retries: 3
+  delay: 10
+
+- name: Pull code analysis model (codellama)
+  shell: |
+    echo "Pulling codellama model for code analysis..."
+    ollama pull codellama:7b
+  register: code_model_pull
+  retries: 3
+  delay: 10
+
+- name: Pull financial analysis model (llama3.1)
+  shell: |
+    echo "Pulling llama3.1 model for financial analysis..."
+    ollama pull llama3.1:8b
+  register: finance_model_pull
+  retries: 3
+  delay: 10
+
+- name: Verify models are available
+  shell: ollama list
+  register: ollama_models
+  changed_when: false
+
+- name: Create SEC document processing directory
+  file:
+    path: "{{ repo_dir }}/data/sec_documents"
+    state: directory
+    mode: '0755'
+
+- name: Create embeddings cache directory
+  file:
+    path: "{{ repo_dir }}/data/stage_03_load/embeddings"
+    state: directory
+    mode: '0755'
+
+- name: Display Ollama setup status
+  debug:
+    msg: |
+      🤖 Ollama Setup Complete!
+      
+      📊 Available Models:
+      {{ ollama_models.stdout }}
+      
+      🔧 Service Status:
+      - Ollama service: {{ '✅ Running' if ollama_ready.rc == 0 else '⚠️ Starting' }}
+      - Embedding model: {{ '✅ Ready' if embedding_model_pull.rc == 0 else '❌ Failed' }}
+      - Code model: {{ '✅ Ready' if code_model_pull.rc == 0 else '❌ Failed' }}
+      - Finance model: {{ '✅ Ready' if finance_model_pull.rc == 0 else '❌ Failed' }}
+      
+      🌐 API Endpoint: http://localhost:11434
+      📁 SEC Documents: {{ repo_dir }}/data/sec_documents
+      🗃️ Embeddings Cache: {{ repo_dir }}/data/stage_03_load/embeddings
+      
+      💡 Test with: ollama run llama3.1:8b "Explain DCF valuation"
