@@ -3,15 +3,17 @@
 """
 Knowledge Base Builder for My Finance DCF Analysis Tool
 
-This script implements a layered data management strategy:
-- Tier 1 (M7): Stable test dataset, tracked in git
-- Tier 2 (NASDAQ100): Buildable dataset, gitignored
-- Tier 3 (US-ALL): Full dataset, buildable on-demand
+This script implements a four-tier data management strategy:
+- Tier 1 (F2): Fast 2-company test dataset, for rapid development
+- Tier 2 (M7): Stable 7-company test dataset, tracked in git
+- Tier 3 (N100): NASDAQ 100 validation dataset, gitignored  
+- Tier 4 (V3K): VTI 3500+ production dataset, gitignored
 
 Usage:
-    python build_knowledge_base.py --tier m7              # Build M7 stable test set
-    python build_knowledge_base.py --tier nasdaq100       # Build NASDAQ100 dataset
-    python build_knowledge_base.py --tier us-all          # Build full US dataset
+    python build_knowledge_base.py --tier f2              # Build Fast 2 test set
+    python build_knowledge_base.py --tier m7              # Build M7 stable test set  
+    python build_knowledge_base.py --tier n100            # Build NASDAQ100 dataset
+    python build_knowledge_base.py --tier v3k             # Build VTI 3500 dataset
     python build_knowledge_base.py --rebuild              # Rebuild everything
     python build_knowledge_base.py --validate             # Validate existing data
 """
@@ -39,72 +41,68 @@ logger = logging.getLogger(__name__)
 
 class KnowledgeBaseBuilder:
     def __init__(self):
-        self.project_root = Path(__file__).parent
+        self.project_root = Path(__file__).parent.parent  # Go up one level from dcf_engine to project root
         self.data_dir = self.project_root / "data"
         self.config_dir = self.data_dir / "config"
         self.original_dir = self.data_dir / "original"
 
-        # Data tier configurations
+        # Data tier configurations - Four-tier system: f2/m7/n100/v3k
         self.tiers = {
-            "m7": {
-                "name": "Magnificent 7",
-                "description": "Stable test dataset for core development",
-                "configs": ["job_yfinance_m7.yml", "sec_edgar_m7.yml"],
-                "tracked_in_git": True,
-                "max_size_mb": 500,  # Keep reasonable for git
+            "f2": {
+                "name": "Fast 2",
+                "description": "2-company subset for rapid development testing",
+                "configs": ["list_fast_2.yml"],
+                "tracked_in_git": False,
+                "max_size_mb": 20,
             },
-            "nasdaq100": {
+            "m7": {
+                "name": "Magnificent 7", 
+                "description": "Stable test dataset for core development",
+                "configs": ["list_magnificent_7.yml"],
+                "tracked_in_git": True,
+                "max_size_mb": 500,
+            },
+            "n100": {
                 "name": "NASDAQ 100",
-                "description": "Extended validation dataset",
-                "configs": ["yfinance_nasdaq100.yml", "sec_edgar_nasdaq100.yml"],
+                "description": "Extended validation dataset", 
+                "configs": ["list_nasdaq_100.yml"],
                 "tracked_in_git": False,
                 "max_size_mb": 5000,  # 5GB limit
             },
-            "us-all": {
-                "name": "All US Stocks",
-                "description": "Complete US stock universe",
-                "configs": ["yfinance_us_all.yml", "sec_edgar_us_all.yml"],
+            "v3k": {
+                "name": "VTI 3500",
+                "description": "Production dataset with 3500+ companies",
+                "configs": ["list_vti_3500.yml"], 
                 "tracked_in_git": False,
-                "max_size_mb": 50000,  # 50GB limit
+                "max_size_mb": 20000,  # 20GB limit
             },
         }
 
-    def create_missing_configs(self):
-        """Create missing configuration files for NASDAQ100 and US-ALL tiers"""
-
-        # Create NASDAQ100 SEC config
-        nasdaq100_sec_config = self.config_dir / "sec_edgar_nasdaq100.yml"
-        if not nasdaq100_sec_config.exists():
-            logger.info("Creating SEC Edgar NASDAQ100 configuration...")
-            # This would need to be populated with NASDAQ100 CIK numbers
-            nasdaq100_sec_content = {
-                "job": "sec_edgar_nasdaq100",
-                "source": "sec_edgar",
-                "description": "SEC Edgar filings for NASDAQ 100 companies",
-                "file_types": ["10K", "10Q", "8K"],
-                "email": "ZitianSG (wangzitian0@gmail.com)",
-                "tickers": [],  # To be populated with CIK numbers
-            }
-            with open(nasdaq100_sec_config, "w") as f:
-                yaml.dump(nasdaq100_sec_content, f, default_flow_style=False)
-
-        # Create US-ALL configs (placeholder for future implementation)
-        us_all_yfinance_config = self.config_dir / "yfinance_us_all.yml"
-        if not us_all_yfinance_config.exists():
-            logger.info("Creating placeholder US-ALL Yahoo Finance configuration...")
-            us_all_content = {
-                "job": "yfinance_us_all",
-                "source": "yfinance",
-                "description": "Yahoo Finance data for all US stocks (placeholder)",
-                "note": "To be implemented: fetch from stock screener APIs",
-                "data_periods": [
-                    {"oid": "us_all_D1", "period": "1y", "interval": "1d"},
-                    {"oid": "us_all_W7", "period": "7y", "interval": "1wk"},
-                    {"oid": "us_all_M30", "period": "30y", "interval": "1mo"},
-                ],
-            }
-            with open(us_all_yfinance_config, "w") as f:
-                yaml.dump(us_all_content, f, default_flow_style=False)
+    def validate_configs(self):
+        """Validate that required configuration files exist"""
+        
+        # Check that list configuration files exist - Four-tier system
+        required_configs = [
+            "list_fast_2.yml",
+            "list_magnificent_7.yml",
+            "list_nasdaq_100.yml", 
+            "list_vti_3500.yml",
+            "source_yfinance.yml",
+            "source_sec_edgar.yml"
+        ]
+        
+        missing_configs = []
+        for config in required_configs:
+            config_path = self.config_dir / config
+            if not config_path.exists():
+                missing_configs.append(config)
+        
+        if missing_configs:
+            logger.error(f"Missing required configuration files: {missing_configs}")
+            return False
+            
+        logger.info("All required configuration files found")
+        return True
 
     def build_tier(self, tier_name, force_rebuild=False):
         """Build data for a specific tier"""
@@ -368,7 +366,7 @@ def main():
     )
 
     parser.add_argument(
-        "--tier", choices=["m7", "nasdaq100", "us-all"], help="Build specific data tier"
+        "--tier", choices=["f2", "m7", "n100", "v3k"], help="Build specific data tier"
     )
 
     parser.add_argument("--rebuild", action="store_true", help="Force rebuild all data")
@@ -393,8 +391,10 @@ def main():
     builder = KnowledgeBaseBuilder()
 
     try:
-        # Create missing configuration files
-        builder.create_missing_configs()
+        # Validate configuration files
+        if not builder.validate_configs():
+            logger.error("Build failed: Missing required configuration files")
+            sys.exit(1)
 
         if args.validate:
             builder.validate_data()

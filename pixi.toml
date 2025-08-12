@@ -28,7 +28,7 @@ isort = "*"
 pylint = "*"
 mypy = "*"
 pytest = ">=8.4.1,<9"
-pytest-cov = "*"
+pytest-cov = ">=6.2.1,<7"
 python-dotenv = "*"
 click = "*"
 tqdm = "*"
@@ -71,6 +71,18 @@ migrate-data-structure = "python ETL/migrate_data_structure.py"
 # Unified dataset building with configuration-driven approach
 build-dataset = "python ETL/build_dataset.py"
 build = "python ETL/build_dataset.py"
+
+# Four-tier build system: f2/m7/n100/v3k
+build-f2 = "python ETL/build_dataset.py f2"
+build-m7 = "python ETL/build_dataset.py m7" 
+build-n100 = "python ETL/build_dataset.py n100"
+build-v3k = "python ETL/build_dataset.py v3k"
+
+# Legacy build commands (for backward compatibility)
+build-test = "python ETL/build_dataset.py f2"
+build-nasdaq100 = "python ETL/build_dataset.py n100"
+build-vti = "python ETL/build_dataset.py v3k"
+
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # Build cleanup and maintenance

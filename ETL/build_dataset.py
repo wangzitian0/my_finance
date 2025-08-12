@@ -191,10 +191,35 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         print(f"   📊 Running DCF analysis for {tier.value}...")
         tracker.log_stage_output("stage_04_analysis", f"Starting DCF analysis for {tier.value}")
         
+        # Get companies list based on tier configuration
+        config_manager = TestConfigManager()
+        yaml_config = config_manager.load_yaml_config(tier)
+        
+        # Extract company tickers from configuration
+        companies = {}
+        if tier.value in ["f2", "test"] and "reference_config" in yaml_config:
+            # For F2, load companies from reference config and filter by selected_companies
+            import yaml
+            ref_config_path = config_manager.config_dir / yaml_config["reference_config"]
+            with open(ref_config_path, 'r') as f:
+                ref_config = yaml.safe_load(f)
+            
+            selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
+            all_companies = ref_config.get("companies", {})
+            for ticker in selected:
+                if ticker in all_companies:
+                    companies[ticker] = all_companies[ticker]
+        elif "companies" in yaml_config:
+            companies = yaml_config["companies"]
+        
+        if not companies:
+            print(f"   ⚠️  No companies found in {tier.value} configuration")
+            return 0
+            
         analyzer = M7DCFAnalyzer()
         companies_analyzed = 0
         
-        for ticker in analyzer.m7_companies.keys():
+        for ticker in companies.keys():
             try:
                 analysis = analyzer.generate_company_analysis(ticker)
                 if analysis:
@@ -280,8 +305,8 @@ def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
 def main():
     """Main CLI interface"""
     parser = argparse.ArgumentParser(description="Build dataset for specified tier")
-    parser.add_argument("tier", choices=["test", "m7", "nasdaq100", "vti"], 
-                       help="Dataset tier to build")
+    parser.add_argument("tier", choices=["f2", "m7", "n100", "v3k", "test", "nasdaq100", "vti"], 
+                       help="Dataset tier to build (f2/m7/n100/v3k + legacy aliases)")
     parser.add_argument("--config", help="Optional path to specific config file")
     parser.add_argument("--validate", action="store_true", help="Run validation after build")
     
