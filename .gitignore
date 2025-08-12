@@ -4,15 +4,17 @@
 # Data is now managed directly in the main repository (merged from my_finance_data)
 # Only build and temporary directories are ignored
 
-# Build directories - all builds, tests, and temporary artifacts
-# data/stage_99_build/ - Now tracked in git per new strategy
-# data/stage_99_build_*/ - Now tracked in git per new strategy
+# Build directories - directory tracked, but contents ignored
+data/stage_99_build/build_*/
 
 # Temporary and build files
 *.large
 knowledge_base_build.log
 # Latest build symlink (dynamic, should not be tracked)
 common/latest_build
+
+# Data directory logs and temporary files
+data/log/
 
 # Local development files
 .webui_secret_key
