@@ -56,8 +56,10 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
-# Build directory - gitignored in main strategy
+# Build directories - gitignored in main strategy
 build/
+stage_99_build/
+stage_99_build_*/
 
 # Auto-generated reports from builds
 reports/M7_DCF_Report_*.txt
