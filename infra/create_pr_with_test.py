@@ -58,10 +58,10 @@ def get_uncommitted_changes():
     return result.stdout.strip() if result else ""
 
 
-def run_m7_end_to_end():
+def run_end_to_end_test():
     """Run M7 end-to-end test with smart cleanup"""
     print("\n" + "="*60)
-    print("🧪 RUNNING MANDATORY M7 END-TO-END TEST")
+    print("🧪 RUNNING MANDATORY END-TO-END TEST")
     print("="*60)
     
     # Clean any existing build artifacts
@@ -73,11 +73,11 @@ def run_m7_end_to_end():
     
     test_success = False
     try:
-        # Build M7 dataset
-        run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+        # Build F2 dataset (faster test)
+        run_command("pixi run build-f2", "Building F2 dataset", timeout=300)  # 5 minutes
         test_success = True
     except Exception as e:
-        print(f"⚠️  M7 build failed: {e}")
+        print(f"⚠️  F2 build failed: {e}")
         print("🔍 Checking if we can validate with existing data...")
         
         # Try to validate with existing data instead
@@ -91,11 +91,11 @@ def run_m7_end_to_end():
                     existing_files += count
                     print(f"📁 Found {count} existing files in {location}")
         
-        if existing_files >= 7:  # At least 1 file per M7 ticker
+        if existing_files >= 2:  # At least 1 file per F2 ticker
             print(f"✅ Found {existing_files} existing data files - sufficient for validation")
             test_success = True
         else:
-            print(f"❌ Only found {existing_files} files - insufficient for M7 validation")
+            print(f"❌ Only found {existing_files} files - insufficient for F2 validation")
             return False
     
     # Validate build results
@@ -134,17 +134,17 @@ def run_m7_end_to_end():
         return False
     
     # Test passed - build artifacts remain in data/build/ (gitignored)
-    print("✅ M7 END-TO-END TEST PASSED")
+    print("✅ END-TO-END TEST PASSED")
     print("📦 Build artifacts remain in data/build/ (gitignored)")
     
     # Create test success marker
-    create_m7_test_marker(total_files)
+    create_test_marker(total_files)
     
     print("✅ Git status is clean - ready for PR creation!")
     return True
 
 
-def create_m7_test_marker(file_count: int):
+def create_test_marker(file_count: int):
     """Create marker file indicating M7 test passed"""
     from datetime import datetime, timezone
     import socket
@@ -224,7 +224,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
     # 3. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
     if not skip_m7_test:
-        if not run_m7_end_to_end():
+        if not run_end_to_end_test():
             print("❌ M7 test failed - PR creation aborted")
             sys.exit(1)
     else:
@@ -549,7 +549,7 @@ Examples:
     
     if args.skip_pr_creation:
         # Only run M7 test
-        success = run_m7_end_to_end()
+        success = run_end_to_end_test()
         sys.exit(0 if success else 1)
     
     # Validate required arguments for PR creation

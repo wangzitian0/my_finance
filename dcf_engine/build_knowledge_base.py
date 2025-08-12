@@ -314,9 +314,25 @@ class KnowledgeBaseBuilder:
 
             validation_results[tier_name] = tier_validation
 
-        # Generate validation report in stage_99_build directory
-        build_dir = self.data_dir / "stage_99_build"
-        build_dir.mkdir(exist_ok=True)
+        # Generate validation report in current build directory
+        try:
+            from common.build_tracker import BuildTracker
+            build_tracker = BuildTracker()
+            current_build = build_tracker.get_latest_build()
+            
+            if current_build:
+                build_dir = Path(current_build.build_dir)
+            else:
+                # Fallback: create new build directory
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                build_dir = self.data_dir / "stage_99_build" / f"build_{timestamp}"
+                build_dir.mkdir(parents=True, exist_ok=True)
+        except:
+            # Final fallback
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            build_dir = self.data_dir / "stage_99_build" / f"build_{timestamp}"
+            build_dir.mkdir(parents=True, exist_ok=True)
+            
         validation_report_file = (
             build_dir
             / f"validation_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"

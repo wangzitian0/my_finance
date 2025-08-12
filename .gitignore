@@ -5,8 +5,8 @@
 # Only build and temporary directories are ignored
 
 # Build directories - all builds, tests, and temporary artifacts
-data/stage_99_build/
-data/stage_99_build_*/
+# data/stage_99_build/ - Now tracked in git per new strategy
+# data/stage_99_build_*/ - Now tracked in git per new strategy
 
 # Temporary and build files
 *.large

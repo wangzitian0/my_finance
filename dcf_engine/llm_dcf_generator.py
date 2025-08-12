@@ -38,7 +38,7 @@ class LLMDCFGenerator:
             config_path: Path to configuration file
         """
         self.config_path = config_path
-        self.debug_dir = Path("data/llm_debug")
+        self.debug_dir = Path("data/llm")
         self.debug_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize components
@@ -48,6 +48,24 @@ class LLMDCFGenerator:
         # Debug settings
         self.debug_mode = True
         self.save_intermediate_results = True
+        
+    def _get_current_build_dir(self) -> Path:
+        """Get current build directory for storing build-specific artifacts"""
+        try:
+            from common.build_tracker import BuildTracker
+            build_tracker = BuildTracker()
+            current_build = build_tracker.get_latest_build()
+            
+            if current_build:
+                return Path(current_build.build_dir)
+        except:
+            pass
+            
+        # Fallback: create new build directory
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        build_dir = Path(f"data/stage_99_build/build_{timestamp}")
+        build_dir.mkdir(parents=True, exist_ok=True)
+        return build_dir
         
         logger.info("🚀 LLM DCF Generator initialized")
 
@@ -152,8 +170,8 @@ class LLMDCFGenerator:
                     'embedding_model_info': self.embedding_model.get_model_info(),
                     'generation_duration': self._calculate_total_duration(result['components']),
                     'thinking_process_files': {
-                        'semantic_retrieval': f"data/llm_debug/thinking_process/semantic_retrieval_{ticker}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
-                        'detailed_results': f"data/llm_debug/semantic_results/retrieved_docs_{ticker}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+                        'semantic_retrieval': f"data/stage_99_build/latest/thinking_process/semantic_retrieval_{ticker}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                        'detailed_results': f"data/stage_99_build/latest/semantic_results/retrieved_docs_{ticker}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
                     }
                 }
                 self._save_comprehensive_debug_results(ticker, result, semantic_results)
@@ -390,9 +408,10 @@ class LLMDCFGenerator:
             return
             
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        build_dir = self._get_current_build_dir()
         
         # Save thinking process log
-        thinking_file = self.debug_dir / "thinking_process" / f"semantic_retrieval_{ticker}_{timestamp}.txt"
+        thinking_file = build_dir / "thinking_process" / f"semantic_retrieval_{ticker}_{timestamp}.txt"
         thinking_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(thinking_file, 'w', encoding='utf-8') as f:
@@ -417,7 +436,8 @@ class LLMDCFGenerator:
                 f.write("-" * 20 + "\n")
         
         # Also save detailed results as JSON
-        results_file = self.debug_dir / "semantic_results" / f"retrieved_docs_{ticker}_{timestamp}.json"
+        build_dir = self._get_current_build_dir()
+        results_file = build_dir / "semantic_results" / f"retrieved_docs_{ticker}_{timestamp}.json"
         results_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(results_file, 'w', encoding='utf-8') as f:
@@ -500,7 +520,7 @@ class LLMDCFGenerator:
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
         # Save full result data
-        debug_file = self.debug_dir / "logs" / f"dcf_generation_{ticker}_{timestamp}.json"
+        debug_file = Path("data/log") / f"dcf_generation_{ticker}_{timestamp}.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(debug_file, 'w', encoding='utf-8') as f:
@@ -712,7 +732,7 @@ class LLMDCFGenerator:
             test_results['overall_status'] = 'failure'
         
         # Save test results
-        test_file = self.debug_dir / "logs" / "system_integration_test.json"
+        test_file = Path("data/log") / "system_integration_test.json"
         test_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(test_file, 'w', encoding='utf-8') as f:
@@ -738,7 +758,7 @@ class LLMDCFGenerator:
         # Recent log files
         debug_info.append("\n## Recent Activity\n")
         
-        log_dir = self.debug_dir / "logs"
+        log_dir = Path("data/log")
         if log_dir.exists():
             log_files = sorted(log_dir.glob("*.json*"), key=lambda x: x.stat().st_mtime, reverse=True)[:5]
             for log_file in log_files:
