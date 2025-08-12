@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-12T20:42:44.165820",
+  "base_url": "http://localhost:11434",
+  "target_model": "gpt-oss:20b",
+  "available_models": [
+    {
+      "name": "gpt-oss:20b",
+      "model": "gpt-oss:20b",
+      "modified_at": "2025-08-09T11:36:18.402747464+08:00",
+      "size": 13780173839,
+      "digest": "f2b8351c629c005bd3f0a0e3046f905afcbffede19b648e4bd7c884cdfd63af6",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gptoss",
+        "families": [
+          "gptoss"
+        ],
+        "parameter_size": "20.9B",
+        "quantization_level": "MXFP4"
+      }
+    }
+  ],
+  "connection_status": "connected"
+}

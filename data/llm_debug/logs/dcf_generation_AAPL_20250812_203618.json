@@ -1,0 +1,79 @@
+{
+  "ticker": "AAPL",
+  "timestamp": "2025-08-12T20:35:48.365053",
+  "success": false,
+  "components": {},
+  "debug_info": {
+    "financial_data": {
+      "company_info": {
+        "name": "AAPL Inc.",
+        "sector": "Technology",
+        "industry": "Software",
+        "market_cap": 1500000000000,
+        "employees": 150000
+      },
+      "financial_metrics": {
+        "revenue": 394328000000,
+        "net_income": 99803000000,
+        "free_cash_flow": 84726000000,
+        "total_debt": 109106000000,
+        "cash_and_equivalents": 63913000000,
+        "shareholders_equity": 62146000000
+      },
+      "ratios": {
+        "pe_ratio": 28.5,
+        "price_to_book": 12.8,
+        "debt_to_equity": 1.76,
+        "roe": 26.4,
+        "roa": 11.2,
+        "current_ratio": 1.76,
+        "quick_ratio": 1.32
+      },
+      "historical": {
+        "revenue_growth_5y": 0.078,
+        "earnings_growth_5y": 0.112,
+        "dividend_yield": 0.0044,
+        "beta": 1.25
+      },
+      "current_price": 175.5,
+      "analysis_date": "2025-08-12"
+    },
+    "market_context": {
+      "market_conditions": {
+        "sp500_pe": 22.1,
+        "sector_pe": 24.8,
+        "risk_free_rate": 0.045,
+        "market_risk_premium": 0.065,
+        "sector_beta": 1.15
+      },
+      "economic_environment": {
+        "gdp_growth": 0.024,
+        "inflation_rate": 0.031,
+        "unemployment_rate": 0.037,
+        "fed_funds_rate": 0.0525
+      },
+      "sector_analysis": {
+        "sector_growth_outlook": "Positive",
+        "competitive_intensity": "High",
+        "regulatory_environment": "Moderate",
+        "technological_disruption": "High"
+      }
+    },
+    "semantic_results_count": 0,
+    "semantic_results_details": [],
+    "embedding_model_info": {
+      "status": "not_loaded",
+      "model_name": "FinLang/finance-embeddings-investopedia"
+    },
+    "generation_duration": 0.0,
+    "thinking_process_files": {
+      "semantic_retrieval": "data/llm_debug/thinking_process/semantic_retrieval_AAPL_20250812_203618.txt",
+      "detailed_results": "data/llm_debug/semantic_results/retrieved_docs_AAPL_20250812_203618.json"
+    }
+  },
+  "errors": [
+    "DCF generation failed: Unknown error",
+    "Risk analysis failed: Risk template not found",
+    "Investment recommendation failed: Investment template not found"
+  ]
+}
