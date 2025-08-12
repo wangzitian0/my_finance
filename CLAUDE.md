@@ -85,6 +85,32 @@ pixi run release-build          # Promote latest build to release with confirmat
 
 - **Magnificent 7 CIK numbers**: Available in README.md
 
+## Branch Protection and Security
+
+**CRITICAL**: The repository relies on process enforcement rather than technical enforcement for quality control.
+
+### Current Protection Status
+- ✅ **Basic branch protection**: PRs required for main branch
+- ✅ **GitHub Actions validation**: M7 test marker verification runs automatically  
+- ⚠️ **Manual enforcement required**: Status checks are NOT mandatory for merge
+- ⚠️ **Security gap**: Direct push without testing could bypass validation
+
+### Why Automated Scripts Are MANDATORY
+
+Since GitHub branch protection doesn't enforce required status checks, our automated workflow is the **primary defense** against:
+- ❌ Untested code reaching main branch
+- ❌ Broken builds in production
+- ❌ Data corruption from invalid changes
+- ❌ Regression without proper validation
+
+**The `pixi run create-pr` script is not just best practice - it's essential for system stability.**
+
+### Security Recommendations
+1. **NEVER bypass automated scripts** - they prevent production issues
+2. **Always verify M7 tests pass locally** before any PR operation
+3. **Monitor CI status** - failed checks indicate serious problems
+4. **Consider upgrading branch protection** to enforce required status checks
+
 ## Git Workflow and Issue Management
 
 **See README.md for complete git workflow.** Claude-specific requirements:
