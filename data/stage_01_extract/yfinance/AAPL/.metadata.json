@@ -1,0 +1,74 @@
+{
+  "ticker": "AAPL",
+  "source": "yfinance",
+  "created_at": "2025-08-10T01:12:50.023797",
+  "updated_at": "2025-08-10T01:13:05.401939",
+  "version": "1.0.0",
+  "files": {
+    "AAPL_yfinance_1y_1d_250810-011250.json": {
+      "filename": "AAPL_yfinance_1y_1d_250810-011250.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_1y_1d_250810-011250.json",
+      "data_type": "1y_1d",
+      "file_size": 77163,
+      "md5_hash": "657d2c8ecc09044aec12927eb3bafd88",
+      "created_at": "2025-08-10T01:12:50.024309",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250810-011248"
+      }
+    },
+    "AAPL_yfinance_5y_1wk_250810-011258.json": {
+      "filename": "AAPL_yfinance_5y_1wk_250810-011258.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_5y_1wk_250810-011258.json",
+      "data_type": "5y_1wk",
+      "file_size": 79191,
+      "md5_hash": "de7e706bef854b16ce5ece52085e6a83",
+      "created_at": "2025-08-10T01:12:58.211500",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250810-011257"
+      }
+    },
+    "AAPL_yfinance_3mo_1d_250810-011305.json": {
+      "filename": "AAPL_yfinance_3mo_1d_250810-011305.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_3mo_1d_250810-011305.json",
+      "data_type": "3mo_1d",
+      "file_size": 50897,
+      "md5_hash": "f145f96c3deb08d67b863c7d9d0d3759",
+      "created_at": "2025-08-10T01:13:05.401860",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250810-011304"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-10T01:12:50.024315",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_1y_1d_250810-011250.json",
+      "data_type": "1y_1d",
+      "file_size": 77163
+    },
+    {
+      "timestamp": "2025-08-10T01:12:58.211516",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_5y_1wk_250810-011258.json",
+      "data_type": "5y_1wk",
+      "file_size": 79191
+    },
+    {
+      "timestamp": "2025-08-10T01:13:05.401870",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_3mo_1d_250810-011305.json",
+      "data_type": "3mo_1d",
+      "file_size": 50897
+    }
+  ]
+}

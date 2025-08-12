@@ -1,0 +1,137 @@
+{
+  "ticker": "TSLA",
+  "source": "yfinance",
+  "created_at": "2025-08-09T21:59:07.270578",
+  "updated_at": "2025-08-10T03:14:19.822941",
+  "version": "1.0.0",
+  "files": {
+    "TSLA_yfinance_1y_1d_250809-215907.json": {
+      "filename": "TSLA_yfinance_1y_1d_250809-215907.json",
+      "filepath": "data/original/yfinance/TSLA/TSLA_yfinance_1y_1d_250809-215907.json",
+      "data_type": "1y_1d",
+      "file_size": 71159,
+      "md5_hash": "6ebf17ac81551ea8d5aa72856eae8860",
+      "created_at": "2025-08-09T21:59:07.270843",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-215850"
+      }
+    },
+    "TSLA_yfinance_5y_1wk_250809-215918.json": {
+      "filename": "TSLA_yfinance_5y_1wk_250809-215918.json",
+      "filepath": "data/original/yfinance/TSLA/TSLA_yfinance_5y_1wk_250809-215918.json",
+      "data_type": "5y_1wk",
+      "file_size": 73200,
+      "md5_hash": "bbbf86cb0e46f534712eb09d30fff159",
+      "created_at": "2025-08-09T21:59:18.604133",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250809-215907"
+      }
+    },
+    "TSLA_yfinance_3mo_1d_250809-215928.json": {
+      "filename": "TSLA_yfinance_3mo_1d_250809-215928.json",
+      "filepath": "data/original/yfinance/TSLA/TSLA_yfinance_3mo_1d_250809-215928.json",
+      "data_type": "3mo_1d",
+      "file_size": 45908,
+      "md5_hash": "9111a38903f8396e83be4b87e702368e",
+      "created_at": "2025-08-09T21:59:28.359160",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250809-215918"
+      }
+    },
+    "TSLA_yfinance_m7_daily_3mo_250810-031407.json": {
+      "filename": "TSLA_yfinance_m7_daily_3mo_250810-031407.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/TSLA/TSLA_yfinance_m7_daily_3mo_250810-031407.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 47417,
+      "md5_hash": "fc0456a03a004dab71fe8cf218b045fd",
+      "created_at": "2025-08-10T03:14:07.969838",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "m7_daily_3mo",
+        "exe_id": "yfinance_m7_daily_3mo_250810-031401"
+      }
+    },
+    "TSLA_yfinance_m7_weekly_5y_250810-031414.json": {
+      "filename": "TSLA_yfinance_m7_weekly_5y_250810-031414.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/TSLA/TSLA_yfinance_m7_weekly_5y_250810-031414.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 74709,
+      "md5_hash": "8571083435a159634d8f85e4a01b57c6",
+      "created_at": "2025-08-10T03:14:14.160211",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "m7_weekly_5y",
+        "exe_id": "yfinance_m7_weekly_5y_250810-031410"
+      }
+    },
+    "TSLA_yfinance_m7_monthly_max_250810-031419.json": {
+      "filename": "TSLA_yfinance_m7_monthly_max_250810-031419.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/TSLA/TSLA_yfinance_m7_monthly_max_250810-031419.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 64609,
+      "md5_hash": "715dbf71fea23460755fe734aed6f286",
+      "created_at": "2025-08-10T03:14:19.822885",
+      "config_info": {
+        "period": "max",
+        "interval": "1mo",
+        "oid": "m7_monthly_max",
+        "exe_id": "yfinance_m7_monthly_max_250810-031415"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T21:59:07.270845",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_1y_1d_250809-215907.json",
+      "data_type": "1y_1d",
+      "file_size": 71159
+    },
+    {
+      "timestamp": "2025-08-09T21:59:18.604144",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_5y_1wk_250809-215918.json",
+      "data_type": "5y_1wk",
+      "file_size": 73200
+    },
+    {
+      "timestamp": "2025-08-09T21:59:28.359166",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_3mo_1d_250809-215928.json",
+      "data_type": "3mo_1d",
+      "file_size": 45908
+    },
+    {
+      "timestamp": "2025-08-10T03:14:07.969847",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_m7_daily_3mo_250810-031407.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 47417
+    },
+    {
+      "timestamp": "2025-08-10T03:14:14.160218",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_m7_weekly_5y_250810-031414.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 74709
+    },
+    {
+      "timestamp": "2025-08-10T03:14:19.822900",
+      "action": "file_created",
+      "filename": "TSLA_yfinance_m7_monthly_max_250810-031419.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 64609
+    }
+  ]
+}

@@ -1,20 +1,10 @@
 ---
 # roles/repo_data.yml
-# Ensure data repository is cloned as sibling and linked as a symlink under repo_dir/data
+# Verify data directory exists (now integrated in main repository)
 
-- name: Compute data repository paths
+- name: Set data directory path
   set_fact:
-    data_repo_dir: "{{ repo_dir }}/../my_finance_data"
-    data_link_path: "{{ repo_dir }}/data"
-
-- name: Ensure data repository is cloned as a sibling directory
-  git:
-    repo: "https://github.com/wangzitian0/my_finance_data.git"
-    dest: "{{ data_repo_dir }}"
-    version: "main"
-    update: yes
-    force: no
-  register: clone_result
+    data_dir_path: "{{ repo_dir }}/data"
 
 - name: Remove legacy .gitmodules if present
   file:
@@ -26,38 +16,24 @@
     path: "{{ repo_dir }}/.git/modules/data"
     state: absent
 
-- name: Stat existing data path
+- name: Check if data directory exists
   stat:
-    path: "{{ data_link_path }}"
-  register: data_path_stat
+    path: "{{ data_dir_path }}"
+  register: data_dir_stat
 
-- name: Remove existing non-symlink data path if present
-  file:
-    path: "{{ data_link_path }}"
-    state: absent
-  when:
-    - data_path_stat.stat.exists | default(false)
-    - not (data_path_stat.stat.islnk | default(false))
-
-- name: Create symlink from repo_dir/data to sibling data repository
-  file:
-    src: "{{ data_repo_dir }}"
-    dest: "{{ data_link_path }}"
-    state: link
-
-- name: Confirm data link
-  stat:
-    path: "{{ data_link_path }}"
-  register: data_link_stat
-
-- name: Fail if data symlink was not created correctly
+- name: Fail if data directory is missing
   fail:
-    msg: "data link was not created correctly: expected symlink at {{ data_link_path }} -> {{ data_repo_dir }}"
-  when: not (data_link_stat.stat.islnk | default(false))
+    msg: "Data directory not found at {{ data_dir_path }}. Data should be part of the main repository."
+  when: not (data_dir_stat.stat.exists | default(false))
 
-- name: Summary for data repository linking
+- name: Verify data directory is a regular directory (not a symlink)
+  fail:
+    msg: "Data directory at {{ data_dir_path }} is still a symlink. Please merge data into main repository."
+  when: data_dir_stat.stat.islnk | default(false)
+
+- name: Summary for data directory verification
   debug:
     msg: |
-      ✅ Data repository ready.
-      - Source repo: {{ data_repo_dir }}
-      - Link path:  {{ data_link_path }}
+      ✅ Data directory ready.
+      - Data path: {{ data_dir_path }}
+      - Type: Regular directory (integrated in main repository)

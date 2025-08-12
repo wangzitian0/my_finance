@@ -1,0 +1,74 @@
+{
+  "ticker": "NVDA",
+  "source": "yfinance",
+  "created_at": "2025-08-10T01:12:55.137970",
+  "updated_at": "2025-08-10T01:13:08.866019",
+  "version": "1.0.0",
+  "files": {
+    "NVDA_yfinance_1y_1d_250810-011255.json": {
+      "filename": "NVDA_yfinance_1y_1d_250810-011255.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_1y_1d_250810-011255.json",
+      "data_type": "1y_1d",
+      "file_size": 75884,
+      "md5_hash": "eaead54acfa5a41719c3b6f0f5f8da73",
+      "created_at": "2025-08-10T01:12:55.138298",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250810-011248"
+      }
+    },
+    "NVDA_yfinance_5y_1wk_250810-011302.json": {
+      "filename": "NVDA_yfinance_5y_1wk_250810-011302.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_5y_1wk_250810-011302.json",
+      "data_type": "5y_1wk",
+      "file_size": 77733,
+      "md5_hash": "c6f458df85bde0c3bced8baf21c873e8",
+      "created_at": "2025-08-10T01:13:02.364820",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250810-011257"
+      }
+    },
+    "NVDA_yfinance_3mo_1d_250810-011308.json": {
+      "filename": "NVDA_yfinance_3mo_1d_250810-011308.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/NVDA/NVDA_yfinance_3mo_1d_250810-011308.json",
+      "data_type": "3mo_1d",
+      "file_size": 49355,
+      "md5_hash": "20cb8fbab7deef4252bd27c6e1970b4b",
+      "created_at": "2025-08-10T01:13:08.865993",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250810-011304"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-10T01:12:55.138302",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_1y_1d_250810-011255.json",
+      "data_type": "1y_1d",
+      "file_size": 75884
+    },
+    {
+      "timestamp": "2025-08-10T01:13:02.364837",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_5y_1wk_250810-011302.json",
+      "data_type": "5y_1wk",
+      "file_size": 77733
+    },
+    {
+      "timestamp": "2025-08-10T01:13:08.865997",
+      "action": "file_created",
+      "filename": "NVDA_yfinance_3mo_1d_250810-011308.json",
+      "data_type": "3mo_1d",
+      "file_size": 49355
+    }
+  ]
+}

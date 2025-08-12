@@ -64,9 +64,9 @@ def run_m7_end_to_end():
     print("🧪 RUNNING MANDATORY M7 END-TO-END TEST")
     print("="*60)
     
-    # Clean any existing build artifacts and symlinks  
-    run_command("rm -rf data/build/build_*", "Cleaning existing build artifacts", check=False)
-    run_command("rm -f latest", "Cleaning latest symlink", check=False)
+    # Clean any existing build artifacts
+    run_command("rm -rf data/stage_99_build/build_*", "Cleaning existing build artifacts", check=False)
+    run_command("rm -f common/latest_build", "Cleaning latest build symlink", check=False)
     
     # Start environment if needed
     run_command("pixi run env-status", "Checking environment status", check=False)
@@ -215,16 +215,8 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         print("🔄 Rebasing onto latest origin/main...")
         run_command("git rebase origin/main", "Rebasing onto origin/main")
         
-        # Handle data submodule rebase
-        print("🔄 Rebasing data submodule...")
-        run_command("git -C data fetch origin", "Fetching data submodule updates")
-        submodule_behind = run_command("git -C data log --oneline HEAD..origin/main",
-                                      "Checking data submodule status", check=False)
-        if submodule_behind and submodule_behind.stdout.strip():
-            run_command("git -C data rebase origin/main", "Rebasing data submodule")
-            run_command("git add data", "Updating submodule reference after rebase")
-            run_command("git commit -m 'Update data submodule after rebase'", 
-                       "Committing submodule rebase", check=False)
+        # Data is now part of main repository, no separate handling needed
+        print("ℹ️  Data directory is integrated in main repository")
         
         print("✅ Rebase completed - branch is now up to date")
     else:
@@ -238,9 +230,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     else:
         print("⚠️  SKIPPING M7 TEST - NOT RECOMMENDED")
     
-    # 4. Handle data submodule changes first
-    print("\n🔄 Handling data submodule changes...")
-    run_command("pixi run commit-data-changes", "Committing data submodule changes")
+    # 4. Handle data directory changes (now part of main repository)
+    print("\n🔄 Handling data directory changes...")
+    run_command("pixi run commit-data-changes", "Staging data directory changes")
     
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
@@ -327,7 +319,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 ## Test Plan
 
 - [x] M7 end-to-end test passed
-- [x] Data submodule changes committed
+- [x] Data directory changes staged
 - [ ] Additional testing as needed
 
 Fixes #{issue_number}
@@ -408,7 +400,7 @@ Fixes #{issue_number}
     print(f"🏷️  Issue: #{issue_number}")
     print(f"🌿 Branch: {current_branch}")
     print("✅ M7 test passed before PR creation")
-    print("✅ Data submodule changes committed")
+    print("✅ Data directory changes staged")
     print("✅ Commit message updated with PR URL")
     
     return pr_url

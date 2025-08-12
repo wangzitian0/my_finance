@@ -1,0 +1,1655 @@
+{
+  "ticker": "GOOGL",
+  "period": "3mo",
+  "interval": "1d",
+  "fetched_at": "2025-07-31T21:50:21.416700",
+  "info": {
+    "address1": "1600 Amphitheatre Parkway",
+    "city": "Mountain View",
+    "state": "CA",
+    "zip": "94043",
+    "country": "United States",
+    "phone": "650-253-0000",
+    "website": "https://abc.xyz",
+    "industry": "Internet Content & Information",
+    "industryKey": "internet-content-information",
+    "industryDisp": "Internet Content & Information",
+    "sector": "Communication Services",
+    "sectorKey": "communication-services",
+    "sectorDisp": "Communication Services",
+    "longBusinessSummary": "Alphabet Inc. offers various products and platforms in the United States, Europe, the Middle East, Africa, the Asia-Pacific, Canada, and Latin America. It operates through Google Services, Google Cloud, and Other Bets segments. The Google Services segment provides products and services, including ads, Android, Chrome, devices, Gmail, Google Drive, Google Maps, Google Photos, Google Play, Search, and YouTube. It is also involved in the sale of apps and in-app purchases and digital content in the Google Play and YouTube; and devices, as well as in the provision of YouTube consumer subscription services. The Google Cloud segment offers AI infrastructure, Vertex AI platform, cybersecurity, data and analytics, and other services; Google Workspace that include cloud-based communication and collaboration tools for enterprises, such as Calendar, Gmail, Docs, Drive, and Meet; and other services for enterprise customers. The Other Bets segment sells healthcare-related and internet services. The company was incorporated in 1998 and is headquartered in Mountain View, California.",
+    "fullTimeEmployees": 187103,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Sundar  Pichai",
+        "age": 51,
+        "title": "CEO & Director",
+        "yearBorn": 1973,
+        "fiscalYear": 2024,
+        "totalPay": 10319413,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Ruth M. Porat",
+        "age": 66,
+        "title": "President & Chief Investment Officer",
+        "yearBorn": 1958,
+        "fiscalYear": 2024,
+        "totalPay": 3023363,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Dr. Lawrence Edward Page II",
+        "age": 51,
+        "title": "Co-Founder & Director",
+        "yearBorn": 1973,
+        "fiscalYear": 2024,
+        "totalPay": 1,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Sergey  Brin",
+        "age": 50,
+        "title": "Co-Founder & Director",
+        "yearBorn": 1974,
+        "fiscalYear": 2024,
+        "totalPay": 1,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Anat  Ashkenazi",
+        "age": 51,
+        "title": "Senior VP & CFO",
+        "yearBorn": 1973,
+        "fiscalYear": 2024,
+        "totalPay": 11455556,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. J. Kent Walker",
+        "age": 63,
+        "title": "President of Global Affairs, Chief Legal Officer & Company Secretary",
+        "yearBorn": 1961,
+        "fiscalYear": 2024,
+        "totalPay": 3019696,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Philipp  Schindler",
+        "age": 53,
+        "title": "Senior Vice President & Chief Business Officer of Google",
+        "yearBorn": 1971,
+        "fiscalYear": 2024,
+        "totalPay": 3051699,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Amie Thuener O'Toole",
+        "age": 49,
+        "title": "Corporate Controller, Chief Accounting Officer & VP",
+        "yearBorn": 1975,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Ellen  West",
+        "title": "Vice President of Investor Relations",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Fiona Clare Cicconi",
+        "age": 58,
+        "title": "Chief People Officer",
+        "yearBorn": 1966,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 7,
+    "boardRisk": 9,
+    "compensationRisk": 10,
+    "shareHolderRightsRisk": 10,
+    "overallRisk": 10,
+    "governanceEpochDate": 1751328000,
+    "compensationAsOfEpochDate": 1735603200,
+    "executiveTeam": [],
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 196.53,
+    "open": 195.71,
+    "dayLow": 191.94,
+    "dayHigh": 195.99,
+    "regularMarketPreviousClose": 196.53,
+    "regularMarketOpen": 195.71,
+    "regularMarketDayLow": 191.94,
+    "regularMarketDayHigh": 195.99,
+    "dividendRate": 0.84,
+    "dividendYield": 0.43,
+    "exDividendDate": 1757289600,
+    "payoutRatio": 0.0864,
+    "beta": 1.005,
+    "trailingPE": 20.600853,
+    "forwardPE": 21.543526,
+    "volume": 7857507,
+    "regularMarketVolume": 7857507,
+    "averageVolume": 41912079,
+    "averageVolume10days": 44168110,
+    "averageDailyVolume10Day": 44168110,
+    "bid": 185.86,
+    "ask": 193.36,
+    "bidSize": 1,
+    "askSize": 1,
+    "marketCap": 2339349987328,
+    "fiftyTwoWeekLow": 140.53,
+    "fiftyTwoWeekHigh": 207.05,
+    "priceToSalesTrailing12Months": 6.2987514,
+    "fiftyDayAverage": 177.102,
+    "twoHundredDayAverage": 174.74976,
+    "trailingAnnualDividendRate": 1.01,
+    "trailingAnnualDividendYield": 0.0051391646,
+    "currency": "USD",
+    "tradeable": false,
+    "enterpriseValue": 2323353698304,
+    "profitMargins": 0.31118,
+    "floatShares": 10836828700,
+    "sharesOutstanding": 5816999936,
+    "sharesShort": 58227546,
+    "sharesShortPriorMonth": 67944799,
+    "sharesShortPreviousMonthDate": 1749772800,
+    "dateShortInterest": 1752537600,
+    "sharesPercentSharesOut": 0.0047999998,
+    "heldPercentInsiders": 0.0025499999,
+    "heldPercentInstitutions": 0.80969,
+    "shortRatio": 1.41,
+    "shortPercentOfFloat": 0.01,
+    "impliedSharesOutstanding": 12119100416,
+    "bookValue": 29.983,
+    "priceToBook": 6.4379816,
+    "lastFiscalYearEnd": 1735603200,
+    "nextFiscalYearEnd": 1767139200,
+    "mostRecentQuarter": 1751241600,
+    "earningsQuarterlyGrowth": 0.194,
+    "netIncomeToCommon": 115572998144,
+    "trailingEps": 9.37,
+    "forwardEps": 8.96,
+    "lastSplitFactor": "20:1",
+    "lastSplitDate": 1658102400,
+    "enterpriseToRevenue": 6.256,
+    "enterpriseToEbitda": 16.496,
+    "52WeekChange": 0.1509136,
+    "SandP52WeekChange": 0.16821623,
+    "lastDividendValue": 0.21,
+    "lastDividendDate": 1749427200,
+    "quoteType": "EQUITY",
+    "currentPrice": 193.03,
+    "targetHighPrice": 248.0,
+    "targetLowPrice": 160.0,
+    "targetMeanPrice": 216.01288,
+    "targetMedianPrice": 220.0,
+    "recommendationMean": 1.54412,
+    "recommendationKey": "buy",
+    "numberOfAnalystOpinions": 52,
+    "totalCash": 95147999232,
+    "totalCashPerShare": 7.867,
+    "ebitda": 140840992768,
+    "totalDebt": 41668001792,
+    "quickRatio": 1.72,
+    "currentRatio": 1.904,
+    "totalRevenue": 371399000064,
+    "debtToEquity": 11.481,
+    "revenuePerShare": 30.428,
+    "returnOnAssets": 0.16792,
+    "returnOnEquity": 0.34829,
+    "grossProfits": 218911997952,
+    "freeCashflow": 49786499072,
+    "operatingCashflow": 133707997184,
+    "earningsGrowth": 0.223,
+    "revenueGrowth": 0.138,
+    "grossMargins": 0.58943003,
+    "ebitdaMargins": 0.37922,
+    "operatingMargins": 0.32429,
+    "financialCurrency": "USD",
+    "symbol": "GOOGL",
+    "language": "en-US",
+    "region": "US",
+    "typeDisp": "Equity",
+    "quoteSourceName": "Nasdaq Real Time Price",
+    "triggerable": true,
+    "customPriceAlertConfidence": "HIGH",
+    "corporateActions": [],
+    "regularMarketTime": 1753969820,
+    "exchange": "NMS",
+    "messageBoardId": "finmb_29096",
+    "exchangeTimezoneName": "America/New_York",
+    "exchangeTimezoneShortName": "EDT",
+    "gmtOffSetMilliseconds": -14400000,
+    "market": "us_market",
+    "esgPopulated": false,
+    "regularMarketChangePercent": -1.7808986,
+    "regularMarketPrice": 193.03,
+    "shortName": "Alphabet Inc.",
+    "longName": "Alphabet Inc.",
+    "hasPrePostMarketData": true,
+    "firstTradeDateMilliseconds": 1092922200000,
+    "regularMarketChange": -3.5,
+    "regularMarketDayRange": "191.94 - 195.99",
+    "fullExchangeName": "NasdaqGS",
+    "marketState": "REGULAR",
+    "averageDailyVolume3Month": 41912079,
+    "fiftyTwoWeekLowChange": 52.5,
+    "fiftyTwoWeekLowChangePercent": 0.3735857,
+    "fiftyTwoWeekRange": "140.53 - 207.05",
+    "fiftyTwoWeekHighChange": -14.020004,
+    "fiftyTwoWeekHighChangePercent": -0.067713134,
+    "fiftyTwoWeekChangePercent": 15.09136,
+    "dividendDate": 1757894400,
+    "earningsTimestamp": 1753300800,
+    "earningsTimestampStart": 1753300800,
+    "earningsTimestampEnd": 1753300800,
+    "earningsCallTimestampStart": 1753302600,
+    "earningsCallTimestampEnd": 1753302600,
+    "isEarningsDateEstimate": false,
+    "epsTrailingTwelveMonths": 9.37,
+    "epsForward": 8.96,
+    "epsCurrentYear": 9.93224,
+    "priceEpsCurrentYear": 19.43469,
+    "fiftyDayAverageChange": 15.927994,
+    "fiftyDayAverageChangePercent": 0.08993684,
+    "twoHundredDayAverageChange": 18.280243,
+    "twoHundredDayAverageChangePercent": 0.10460812,
+    "sourceInterval": 15,
+    "exchangeDataDelayedBy": 0,
+    "averageAnalystRating": "1.5 - Buy",
+    "cryptoTradeable": false,
+    "trailingPegRatio": 1.4609
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 195.99000549316406,
+    "dayLow": 191.94000244140625,
+    "exchange": "NMS",
+    "fiftyDayAverage": 177.10199890136718,
+    "lastPrice": 193.02999877929688,
+    "lastVolume": 7857507,
+    "marketCap": 2339349938506.6562,
+    "open": 195.7100067138672,
+    "previousClose": 195.91,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 196.52999877929688,
+    "shares": 12119100416,
+    "tenDayAverageVolume": 44168110,
+    "threeMonthAverageVolume": 41912079,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 174.7497501373291,
+    "yearChange": 0.15091359277028615,
+    "yearHigh": 207.0500030517578,
+    "yearLow": 140.52999877929688
+  },
+  "history": {
+    "Open": [
+      157.78897065630795,
+      160.255986901565,
+      163.21241957712974,
+      162.80291566353057,
+      161.97390744721895,
+      163.88160091924024,
+      154.81259075606965,
+      153.98358884442797,
+      157.2995737723926,
+      158.59798647987657,
+      159.7665968345665,
+      165.63946564247587,
+      167.52719070383273,
+      164.311078821177,
+      166.22875761227516,
+      163.49207927319333,
+      171.6422171391164,
+      168.85557933287677,
+      169.9542560308247,
+      172.95063181853965,
+      173.78960291012612,
+      171.14282080509608,
+      167.637058963566,
+      167.28749382619188,
+      166.53838821108508,
+      170.1340365467451,
+      170.6234412090639,
+      174.5399932861328,
+      176.1999969482422,
+      179.77000427246094,
+      176.17999267578125,
+      172.44000244140625,
+      174.72999572753906,
+      175.6999969482422,
+      176.00999450683594,
+      173.9499969482422,
+      166.27000427246094,
+      166.9199981689453,
+      167.6300048828125,
+      172.42999267578125,
+      173.5399932861328,
+      180.77999877929688,
+      175.74000549316406,
+      175.5399932861328,
+      178.5,
+      179.05999755859375,
+      177.85000610351562,
+      175.25,
+      175.6300048828125,
+      176.7899932861328,
+      181.00999450683594,
+      182.80999755859375,
+      183.24000549316406,
+      182.13999938964844,
+      185.39999389648438,
+      186.25,
+      191.5,
+      191.5,
+      197.02999877929688,
+      191.97999572753906,
+      193.64999389648438,
+      192.42999267578125,
+      195.60000610351562,
+      195.7100067138672
+    ],
+    "High": [
+      159.07741935833297,
+      161.7541731584952,
+      164.77053089446972,
+      165.19002528971967,
+      164.60073221310822,
+      164.8004866523399,
+      155.74145898524296,
+      154.86252969975314,
+      158.90762762310243,
+      160.37584814800852,
+      166.7980779664445,
+      166.00902860866202,
+      169.14524229932235,
+      166.43850822896752,
+      168.2962620339302,
+      172.93064990762463,
+      176.55626639163424,
+      169.7545002456487,
+      172.9606110264557,
+      175.0580811773991,
+      174.20909322624098,
+      172.0017815585655,
+      169.66460324672883,
+      168.276287066322,
+      168.01659436979696,
+      170.72331951416996,
+      174.2890017669552,
+      176.47000122070312,
+      181.11000061035156,
+      180.3699951171875,
+      176.72000122070312,
+      177.1300048828125,
+      176.94000244140625,
+      177.36000061035156,
+      176.55999755859375,
+      174.33999633789062,
+      167.33999633789062,
+      168.22000122070312,
+      172.36000061035156,
+      173.69000244140625,
+      178.67999267578125,
+      181.22999572753906,
+      176.08999633789062,
+      178.86000061035156,
+      179.6699981689453,
+      179.3000030517578,
+      177.9499969482422,
+      179.44000244140625,
+      178.42999267578125,
+      181.42999267578125,
+      183.6699981689453,
+      184.22000122070312,
+      184.3300018310547,
+      184.05999755859375,
+      186.4199981689453,
+      190.2899932861328,
+      191.64999389648438,
+      192.52999877929688,
+      197.9499969482422,
+      194.3300018310547,
+      194.0500030517578,
+      195.9199981689453,
+      197.60000610351562,
+      195.99000549316406
+    ],
+    "Low": [
+      155.2120884925965,
+      158.7178557168657,
+      161.6742731041275,
+      162.52325543253818,
+      160.99509669884785,
+      147.6612323828153,
+      152.715123752916,
+      152.01596958260927,
+      156.06106765297667,
+      155.97117700529293,
+      159.4170139283214,
+      162.1736602838883,
+      165.4197413290067,
+      164.02143617765117,
+      162.7030270512069,
+      163.36223158372133,
+      170.50359615670786,
+      167.68699586257836,
+      169.79444583588602,
+      171.70214322301487,
+      170.42368271917738,
+      167.23754486546525,
+      167.18760611208933,
+      165.08015922486254,
+      166.15884281939123,
+      167.3873615992156,
+      170.6234412090639,
+      174.3699951171875,
+      174.91000366210938,
+      176.75,
+      174.75,
+      172.38999938964844,
+      174.64999389648438,
+      174.5800018310547,
+      173.1999969482422,
+      165.4600067138672,
+      162.0,
+      166.1300048828125,
+      167.5500030517578,
+      169.94000244140625,
+      171.72999572753906,
+      174.5800018310547,
+      173.52999877929688,
+      175.07000732421875,
+      177.0500030517578,
+      175.67999267578125,
+      172.80999755859375,
+      172.77000427246094,
+      174.3800048828125,
+      176.47999572753906,
+      179.67999267578125,
+      181.60000610351562,
+      182.02999877929688,
+      180.47999572753906,
+      183.7100067138672,
+      186.14999389648438,
+      187.4600067138672,
+      189.17999267578125,
+      191.0,
+      191.25999450683594,
+      190.83999633789062,
+      192.0800018310547,
+      194.69000244140625,
+      191.94000244140625
+    ],
+    "Close": [
+      158.6079864501953,
+      161.10496520996094,
+      163.8316650390625,
+      164.01145935058594,
+      163.03262329101562,
+      151.19696044921875,
+      154.0934600830078,
+      152.5653076171875,
+      158.26840209960938,
+      159.33709716796875,
+      165.1700439453125,
+      163.76174926757812,
+      165.9890594482422,
+      166.338623046875,
+      163.78172302246094,
+      168.35618591308594,
+      170.66339111328125,
+      168.26629638671875,
+      172.69093322753906,
+      172.15159606933594,
+      171.65219116210938,
+      171.5323486328125,
+      168.82562255859375,
+      165.97906494140625,
+      167.8468017578125,
+      168.00662231445312,
+      173.46998596191406,
+      176.08999633789062,
+      178.60000610351562,
+      177.35000610351562,
+      175.6999969482422,
+      174.6699981689453,
+      176.77000427246094,
+      175.9499969482422,
+      173.32000732421875,
+      166.63999938964844,
+      165.19000244140625,
+      166.77000427246094,
+      170.67999267578125,
+      173.5399932861328,
+      178.52999877929688,
+      176.22999572753906,
+      175.83999633789062,
+      178.63999938964844,
+      179.52999877929688,
+      176.7899932861328,
+      174.36000061035156,
+      176.6199951171875,
+      177.6199951171875,
+      180.19000244140625,
+      181.55999755859375,
+      182.0,
+      182.97000122070312,
+      183.5800018310547,
+      185.05999755859375,
+      190.10000610351562,
+      191.33999633789062,
+      190.22999572753906,
+      192.1699981689453,
+      193.17999267578125,
+      192.5800018310547,
+      195.75,
+      196.52999877929688,
+      193.02999877929688
+    ],
+    "Volume": [
+      34981100,
+      30203200,
+      25715000,
+      21341800,
+      21277200,
+      127490100,
+      57498700,
+      32435300,
+      44138800,
+      42382100,
+      48755900,
+      33146700,
+      42846900,
+      30426100,
+      46607700,
+      73416000,
+      74864400,
+      35211400,
+      37995700,
+      34784000,
+      29317300,
+      52639900,
+      38612300,
+      45084900,
+      26900800,
+      36379100,
+      35731800,
+      28935900,
+      61766100,
+      31646800,
+      20941900,
+      27663100,
+      27389200,
+      24973000,
+      28707500,
+      75659900,
+      57671000,
+      40524300,
+      35479000,
+      31796700,
+      108140200,
+      63378900,
+      35904500,
+      29128900,
+      21689700,
+      34175600,
+      40442500,
+      43025600,
+      29252400,
+      34282900,
+      32536600,
+      33448300,
+      33104200,
+      31992600,
+      34014500,
+      45803100,
+      44660200,
+      58681900,
+      74881700,
+      39785900,
+      38139500,
+      41389200,
+      32332500,
+      7857507
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.21,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 13,
+      "1": 15,
+      "2": 15,
+      "3": 14
+    },
+    "buy": {
+      "0": 43,
+      "1": 42,
+      "2": 42,
+      "3": 42
+    },
+    "hold": {
+      "0": 12,
+      "1": 12,
+      "2": 12,
+      "3": 12
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.0025499999
+    },
+    {
+      "Value": 0.80969
+    },
+    {
+      "Value": 0.81176
+    },
+    {
+      "Value": 6351.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0876,
+      "Shares": 509826331,
+      "Value": 98381187715,
+      "pctChange": 0.028900001
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0756,
+      "Shares": 439591457,
+      "Value": 84827963993,
+      "pctChange": 0.020399999
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.0388,
+      "Shares": 225945895,
+      "Value": 43600779633,
+      "pctChange": -0.00029999999
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.038,
+      "Shares": 221163347,
+      "Value": 42677891340,
+      "pctChange": -0.1097
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.023599999,
+      "Shares": 137390787,
+      "Value": 26512300335,
+      "pctChange": 0.041300002
+    },
+    {
+      "Date Reported": "2024-12-31 00:00:00",
+      "Holder": "NORGES BANK",
+      "pctHeld": 0.0221,
+      "Shares": 128809703,
+      "Value": 24856408545,
+      "pctChange": 0.1984
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Morgan Stanley",
+      "pctHeld": 0.0219,
+      "Shares": 127287446,
+      "Value": 24562658610,
+      "pctChange": 0.02
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.0153,
+      "Shares": 89134129,
+      "Value": 17200212981,
+      "pctChange": -0.0964
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Bank of America Corporation",
+      "pctHeld": 0.012200001,
+      "Shares": 71240397,
+      "Value": 13747259496,
+      "pctChange": 0.0879
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Northern Trust Corporation",
+      "pctHeld": 0.0117,
+      "Shares": 68019033,
+      "Value": 13125632881,
+      "pctChange": -0.023
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 25.17,
+      "environmentScore": 3.22,
+      "socialScore": 11.74,
+      "governanceScore": 10.21,
+      "ratingYear": 2025,
+      "ratingMonth": 7,
+      "highestControversy": 4.0,
+      "peerCount": 586,
+      "esgPerformance": "AVG_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Customer Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 21.189334470989767,
+        "max": 33.72
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.549801587301587,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 10.007142857142858,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 3.2042460317460315,
+        "max": 6.94
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6689419795221843,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-08-01",
+    "2025-08-08",
+    "2025-08-15",
+    "2025-08-22",
+    "2025-08-29",
+    "2025-09-05",
+    "2025-09-19",
+    "2025-10-17",
+    "2025-11-21",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-02-20",
+    "2026-03-20",
+    "2026-05-15",
+    "2026-06-18",
+    "2026-09-18",
+    "2026-12-18",
+    "2027-01-15",
+    "2027-06-17",
+    "2027-12-17"
+  ],
+  "news": [
+    {
+      "id": "c47427ad-f17b-40f1-bbd3-b67333a39557",
+      "content": {
+        "id": "c47427ad-f17b-40f1-bbd3-b67333a39557",
+        "contentType": "STORY",
+        "title": "Microsoft market cap tops $4 trillion, joining Nvidia above milestone after latest earnings beat",
+        "description": "",
+        "summary": "Microsoft crosses $4 trillion market cap on strong Q4 earnings.",
+        "pubDate": "2025-07-30T20:06:37Z",
+        "displayTime": "2025-07-31T13:46:52Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-07/80a2e700-6bce-11f0-bc9b-9e70d28db031",
+          "originalWidth": 3600,
+          "originalHeight": 2401,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/OhxfacDvy2O6SK1.G.n7vw--~B/aD0yNDAxO3c9MzYwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-07/80a2e700-6bce-11f0-bc9b-9e70d28db031",
+              "width": 3600,
+              "height": 2401,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/xOZ65l7xxFzBfJawxIEb0w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-07/80a2e700-6bce-11f0-bc9b-9e70d28db031",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance",
+          "url": "http://finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-market-cap-tops-4-trillion-joining-nvidia-above-milestone-after-latest-earnings-beat-200637180.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-market-cap-tops-4-trillion-joining-nvidia-above-milestone-after-latest-earnings-beat-200637180.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": true
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": {
+          "storylineItems": [
+            {
+              "content": {
+                "id": "d07429aa-5be6-4858-b3f2-58fc9b655d44",
+                "contentType": "STORY",
+                "isHosted": true,
+                "title": "Reddit set to report Q2 earnings as Wall Street scrutinizes daily active user growth",
+                "thumbnail": {
+                  "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-06/0daab730-5046-11f0-9f3a-cba38fd38d35",
+                  "originalWidth": 8119,
+                  "originalHeight": 5415,
+                  "caption": "",
+                  "resolutions": null
+                },
+                "provider": {
+                  "displayName": "Yahoo Finance",
+                  "sourceId": "yahoofinance.com"
+                },
+                "previewUrl": null,
+                "providerContentUrl": "",
+                "canonicalUrl": {
+                  "url": "https://finance.yahoo.com/news/reddit-set-to-report-q2-earnings-as-wall-street-scrutinizes-daily-active-user-growth-205631108.html"
+                },
+                "clickThroughUrl": {
+                  "url": "https://finance.yahoo.com/news/reddit-set-to-report-q2-earnings-as-wall-street-scrutinizes-daily-active-user-growth-205631108.html"
+                }
+              }
+            },
+            {
+              "content": {
+                "id": "e53be388-e644-48ac-8503-a5f4106b963e",
+                "contentType": "STORY",
+                "isHosted": true,
+                "title": "Apple faces Google, AI headaches as earnings draw near",
+                "thumbnail": {
+                  "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-07/271052e0-6d5e-11f0-bf3f-d114a60361a1",
+                  "originalWidth": 4867,
+                  "originalHeight": 3559,
+                  "caption": "",
+                  "resolutions": null
+                },
+                "provider": {
+                  "displayName": "Yahoo Finance",
+                  "sourceId": "yahoofinance.com"
+                },
+                "previewUrl": null,
+                "providerContentUrl": "",
+                "canonicalUrl": {
+                  "url": "https://finance.yahoo.com/news/apple-faces-google-ai-headaches-as-earnings-draw-near-175637312.html"
+                },
+                "clickThroughUrl": {
+                  "url": "https://finance.yahoo.com/news/apple-faces-google-ai-headaches-as-earnings-draw-near-175637312.html"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "91bf1096-d047-493d-ae31-3e217ac26057",
+      "content": {
+        "id": "91bf1096-d047-493d-ae31-3e217ac26057",
+        "contentType": "STORY",
+        "title": "Starbucks CEO Brian Niccol promises a return to glory days: Opening Bid top takeaway",
+        "description": "",
+        "summary": "Starbucks CEO Brian Niccol is staying hopeful on his turnaround.",
+        "pubDate": "2025-07-30T14:31:45Z",
+        "displayTime": "2025-07-30T14:31:45Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-07/3725b4a0-6d4e-11f0-af79-9990cbabcd3b",
+          "originalWidth": 6000,
+          "originalHeight": 4000,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Y243Njp0ADFFfQppiEdyBA--~B/aD00MDAwO3c9NjAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-07/3725b4a0-6d4e-11f0-af79-9990cbabcd3b",
+              "width": 6000,
+              "height": 4000,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/v1r1EHoFcSZku5AwrLeOLg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-07/3725b4a0-6d4e-11f0-af79-9990cbabcd3b",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance",
+          "url": "http://finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/starbucks-ceo-brian-niccol-promises-a-return-to-glory-days-opening-bid-top-takeaway-143145269.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/starbucks-ceo-brian-niccol-promises-a-return-to-glory-days-opening-bid-top-takeaway-143145269.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": true
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "38e2a3a3-aa9e-3923-8f11-53fd5675af3f",
+      "content": {
+        "id": "38e2a3a3-aa9e-3923-8f11-53fd5675af3f",
+        "contentType": "STORY",
+        "title": "Visa brings Google Pay integration to fleet cards for digital wallet support",
+        "description": "",
+        "summary": "Visa (V) announced an advancement for Fleet Operators with the addition of Google Pay (GOOG) tokenization and push-to-wallet capabilities. The company stated fleet data tags can now be configured by the issuer, fintech, or processor, allowing custom data tags to be dynamically provisioned during tokenization, streamlining the digital experience by enabling spend through digital credentials, reducing time to market from days to hours. Published first on TheFly – the ultimate source for real-time,",
+        "pubDate": "2025-07-31T13:35:29Z",
+        "displayTime": "2025-07-31T13:35:29Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/tipranks_452/7f01f2b57128720bbd368bcb6051700e",
+          "originalWidth": 192,
+          "originalHeight": 192,
+          "caption": "https://www.tipranks.com/news/the-fly/visa-brings-google-pay-integration-to-fleet-cards-for-digital-wallet-support-thefly",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/4sKDjR25RgCUFyBF6vtM3Q--~B/aD0xOTI7dz0xOTI7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/7f01f2b57128720bbd368bcb6051700e",
+              "width": 192,
+              "height": 192,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/T1jyUZ6MPEOzJK01QnId5A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/tipranks_452/7f01f2b57128720bbd368bcb6051700e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "TipRanks",
+          "url": "https://www.tipranks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/visa-brings-google-pay-integration-133529937.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/visa-brings-google-pay-integration-133529937.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "c3f68e4b-5a7e-32dc-a620-285780f4a418",
+      "content": {
+        "id": "c3f68e4b-5a7e-32dc-a620-285780f4a418",
+        "contentType": "STORY",
+        "title": "Impressive Earnings May Not Tell The Whole Story For Alphabet (NASDAQ:GOOGL)",
+        "description": "",
+        "summary": "Alphabet Inc. ( NASDAQ:GOOGL ) announced strong profits, but the stock was stagnant. Our analysis suggests that...",
+        "pubDate": "2025-07-31T12:45:37Z",
+        "displayTime": "2025-07-31T12:45:37Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/simply_wall_st__316/24a8be9e4dd93a7a5c866dec7c65e1eb",
+          "originalWidth": 1194,
+          "originalHeight": 432,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/qFxOq7rHmi5HDVnxqXn6Rg--~B/aD00MzI7dz0xMTk0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/simply_wall_st__316/24a8be9e4dd93a7a5c866dec7c65e1eb",
+              "width": 1194,
+              "height": 432,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/E9sgNmKDQZSLkJeqPQh2wQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/simply_wall_st__316/24a8be9e4dd93a7a5c866dec7c65e1eb",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Simply Wall St.",
+          "url": "https://simplywall.st/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/impressive-earnings-may-not-tell-124537343.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/impressive-earnings-may-not-tell-124537343.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "edc6528e-3e5c-3024-93e9-b817050fe002",
+      "content": {
+        "id": "edc6528e-3e5c-3024-93e9-b817050fe002",
+        "contentType": "STORY",
+        "title": "Microsoft Surges to $4 Trillion Market Cap After Earnings. Why the Stock Is on Fire.",
+        "description": "",
+        "summary": "Microsoft  stock surged on better-than-expected financial results for its latest quarter and strong guidance, putting the tech giant on track to hit a $4 trillion market cap.  The beat was driven in part by double-digit revenue growth in the tech firm’s closely watched Azure cloud business.  Microsoft posted adjusted earnings of $3.65 a share on revenue of $76.4 billion for the fiscal fourth quarter.",
+        "pubDate": "2025-07-31T12:07:00Z",
+        "displayTime": "2025-07-31T12:07:00Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/edc6528e-3e5c-3024-93e9-b817050fe002/microsoft-surges-to-4.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/Barrons.com/d4febb1da198145b519835a0e6af9b36",
+          "originalWidth": 1280,
+          "originalHeight": 640,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/MmUxjWi6r5huflUMqDluJg--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/d4febb1da198145b519835a0e6af9b36",
+              "width": 1280,
+              "height": 640,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/4mvi0ub1hDIkcO.3YdjO9w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/Barrons.com/d4febb1da198145b519835a0e6af9b36",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Barrons.com",
+          "url": "http://www.barrons.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.barrons.com/articles/microsoft-earnings-stock-price-8b30c578?siteid=yhoof2&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "b00f1f59-742d-3132-b551-35c321c105f7",
+      "content": {
+        "id": "b00f1f59-742d-3132-b551-35c321c105f7",
+        "contentType": "STORY",
+        "title": "AdvaMed praises CMS’s new healthcare data sharing initiative",
+        "description": "",
+        "summary": "The CMS Interoperability Framework aims to establish a network to simplify the data exchange between patients and healthcare providers.",
+        "pubDate": "2025-07-31T11:46:12Z",
+        "displayTime": "2025-07-31T11:46:12Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/medical_device_network_744/02dd39338c233dbc080544065405dee9",
+          "originalWidth": 1440,
+          "originalHeight": 736,
+          "caption": "Commenting on the CMS's planned framework",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IgNx4yzZm_c1.FW6MSqhYg--~B/aD03MzY7dz0xNDQwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/medical_device_network_744/02dd39338c233dbc080544065405dee9",
+              "width": 1440,
+              "height": 736,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/YtVkp7175SfaKHOqCYD6Eg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/medical_device_network_744/02dd39338c233dbc080544065405dee9",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Medical Device Network",
+          "url": "https://www.globaldata.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.medicaldevice-network.com/news/advamed-praises-cms-new-healthcare-data-sharing-initiative/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/advamed-praises-cms-healthcare-data-114612002.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0d2c2eb1-fb5b-3ded-a487-5c5c0f186579",
+      "content": {
+        "id": "0d2c2eb1-fb5b-3ded-a487-5c5c0f186579",
+        "contentType": "STORY",
+        "title": "The Best Small-Cap Stock Under $50 to Buy in August",
+        "description": "",
+        "summary": "This under-the-radar AI stock may not stay under the radar for long.",
+        "pubDate": "2025-07-31T11:30:02Z",
+        "displayTime": "2025-07-31T11:30:02Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/barchart_com_477/ac3288324a2ac3f2fff832e265843d6d",
+          "originalWidth": 1600,
+          "originalHeight": 1067,
+          "caption": "2d illustration of Cloud computing by Blackboard via Shutterstock",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/WLW9mNDOGkHq8HTZZCUiDg--~B/aD0xMDY3O3c9MTYwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/barchart_com_477/ac3288324a2ac3f2fff832e265843d6d",
+              "width": 1600,
+              "height": 1067,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/rs5.rniwZYYceNCsxY2bnw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/barchart_com_477/ac3288324a2ac3f2fff832e265843d6d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Barchart",
+          "url": "https://www.barchart.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.barchart.com/story/news/33774627/the-best-small-cap-stock-under-50-to-buy-in-august",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/best-small-cap-stock-under-113002445.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "3d0741a7-f14b-3494-8353-743266e7dedd",
+      "content": {
+        "id": "3d0741a7-f14b-3494-8353-743266e7dedd",
+        "contentType": "STORY",
+        "title": "Microsoft’s software rules harming cloud competitors, CMA panel says",
+        "description": "",
+        "summary": "Microsoft’s software licensing terms are harming competition in the cloud computing market, an investigation ordered by the UK antitrust regulator...",
+        "pubDate": "2025-07-31T10:18:19Z",
+        "displayTime": "2025-07-31T10:18:19Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": null,
+        "provider": {
+          "displayName": "Financial Times",
+          "url": "https://www.ft.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-software-rules-harming-cloud-101819713.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-software-rules-harming-cloud-101819713.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": true,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "77a6e35e-aed7-3608-abd9-054037bbc469",
+      "content": {
+        "id": "77a6e35e-aed7-3608-abd9-054037bbc469",
+        "contentType": "STORY",
+        "title": "Dominance of Amazon and Microsoft in cloud harming competition, UK says",
+        "description": "",
+        "summary": "LONDON (Reuters) -The dominant position of Amazon and Microsoft in cloud computing is harming competition, with their impact exacerbated by technical and commercial barriers to switching, an inquiry group from Britain's antitrust regulator said.  The Competition and Markets Authority (CMA) group said on Thursday the regulator should investigate whether to designate the two with strategic market status (SMS) in cloud services, which would give it new powers to intervene.  It noted, however, that the CMA has said it will not consider new SMS investigations, which are conducted by its Digital Markets Unit (DMU), until early next year.",
+        "pubDate": "2025-07-31T10:06:10Z",
+        "displayTime": "2025-07-31T10:06:10Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/reuters.com/b24969d7554e18b07c7ab3301f190c25",
+          "originalWidth": 800,
+          "originalHeight": 499,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/AahU.oam.7OaaEepRu_C9A--~B/aD00OTk7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters.com/b24969d7554e18b07c7ab3301f190c25",
+              "width": 800,
+              "height": 499,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/adfz.0dW8bkhEq0jhQVPNQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters.com/b24969d7554e18b07c7ab3301f190c25",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Reuters",
+          "url": "https://www.reuters.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://uk.finance.yahoo.com/news/dominance-amazon-microsoft-cloud-harming-100610050.html",
+          "site": "finance",
+          "region": "GB",
+          "lang": "en-GB"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/dominance-amazon-microsoft-cloud-harming-100610050.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "21bdc2a0-1aad-3b43-9c99-a83018e1a244",
+      "content": {
+        "id": "21bdc2a0-1aad-3b43-9c99-a83018e1a244",
+        "contentType": "STORY",
+        "title": "AI infrastructure company fal raises $125 million, valuing company at $1.5 billion",
+        "description": "",
+        "summary": "SAN FRANCISCO (Reuters) -Artificial intelligence infrastructure company fal raised a $125 million Series C round valuing the company at $1.5 billion, the company said Thursday.  Venture capital fund Meritech led the round with participation from Salesforce Ventures, Shopify Ventures and Google AI Futures fund.  Existing investors Bessemer Venture Partners, Kindred Ventures, Andreessen Horowitz, Notable Capital, First Round Capital, Unusual Ventures and Village Global also participated in the round.",
+        "pubDate": "2025-07-31T10:05:26Z",
+        "displayTime": "2025-07-31T10:05:26Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/reuters-finance.com/83511b7b16073c45c1b2add1df1b3a06",
+          "originalWidth": 800,
+          "originalHeight": 533,
+          "caption": "An AI (Artificial Intelligence) sign is seen at the World Artificial Intelligence Conference (WAIC) in Shanghai",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/3AHuj2C.o6XwXMes5sGMpA--~B/aD01MzM7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/83511b7b16073c45c1b2add1df1b3a06",
+              "width": 800,
+              "height": 533,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/KEocXaBPA8mmybGd7ay_EA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/reuters-finance.com/83511b7b16073c45c1b2add1df1b3a06",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Reuters",
+          "url": "http://www.reuters.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/ai-infrastructure-company-fal-raises-100526988.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/ai-infrastructure-company-fal-raises-100526988.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}

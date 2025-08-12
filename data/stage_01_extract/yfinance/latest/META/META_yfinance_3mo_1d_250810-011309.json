@@ -1,0 +1,1611 @@
+{
+  "ticker": "META",
+  "period": "3mo",
+  "interval": "1d",
+  "fetched_at": "2025-08-10T01:13:08.905897",
+  "info": {
+    "address1": "1 Meta Way",
+    "city": "Menlo Park",
+    "state": "CA",
+    "zip": "94025",
+    "country": "United States",
+    "phone": "650 543 4800",
+    "website": "https://investor.atmeta.com",
+    "industry": "Internet Content & Information",
+    "industryKey": "internet-content-information",
+    "industryDisp": "Internet Content & Information",
+    "sector": "Communication Services",
+    "sectorKey": "communication-services",
+    "sectorDisp": "Communication Services",
+    "longBusinessSummary": "Meta Platforms, Inc. engages in the development of products that enable people to connect and share with friends and family through mobile devices, personal computers, virtual reality and mixed reality headsets, augmented reality, and wearables worldwide. It operates through two segments, Family of Apps (FoA) and Reality Labs (RL). The FoA segment offers Facebook, which enables people to build community through feed, reels, stories, groups, marketplace, and other; Instagram that brings people closer through instagram feed, stories, reels, live, and messaging; Messenger, a messaging application for people to connect with friends, family, communities, and businesses across platforms and devices through text, audio, and video calls; Threads, an application for text-based updates and public conversations; and WhatsApp, a messaging application that is used by people and businesses to communicate and transact in a private way. The RL segment provides virtual, augmented, and mixed reality related products comprising consumer hardware, software, and content that help people feel connected, anytime, and anywhere. The company was formerly known as Facebook, Inc. and changed its name to Meta Platforms, Inc. in October 2021. The company was incorporated in 2004 and is headquartered in Menlo Park, California.",
+    "fullTimeEmployees": 75945,
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Mark Elliot Zuckerberg",
+        "age": 40,
+        "title": "Founder, Chairman & CEO",
+        "yearBorn": 1984,
+        "fiscalYear": 2024,
+        "totalPay": 27219874,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Susan J. S. Li",
+        "age": 38,
+        "title": "Chief Financial Officer",
+        "yearBorn": 1986,
+        "fiscalYear": 2024,
+        "totalPay": 1948846,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Javier  Olivan",
+        "age": 47,
+        "title": "Chief Operating Officer",
+        "yearBorn": 1977,
+        "fiscalYear": 2024,
+        "totalPay": 3835042,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Andrew  Bosworth",
+        "age": 42,
+        "title": "Chief Technology Officer",
+        "yearBorn": 1982,
+        "fiscalYear": 2024,
+        "totalPay": 1923184,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Christopher K. Cox",
+        "age": 41,
+        "title": "Chief Product Officer",
+        "yearBorn": 1983,
+        "fiscalYear": 2024,
+        "totalPay": 1937677,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Dana  White",
+        "title": "Independent Director",
+        "fiscalYear": 2024,
+        "totalPay": 272,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Aaron A. Anderson",
+        "title": "Chief Accounting Officer",
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Atish  Banerjea",
+        "age": 58,
+        "title": "Chief Information Officer",
+        "yearBorn": 1966,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Ms. Jennifer G. Newstead J.D.",
+        "age": 54,
+        "title": "Chief Legal Officer",
+        "yearBorn": 1970,
+        "fiscalYear": 2024,
+        "totalPay": 3079624,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Henry T. A. Moniz",
+        "age": 59,
+        "title": "Chief Compliance Officer",
+        "yearBorn": 1965,
+        "fiscalYear": 2024,
+        "exercisedValue": 0,
+        "unexercisedValue": 0
+      }
+    ],
+    "auditRisk": 9,
+    "boardRisk": 10,
+    "compensationRisk": 10,
+    "shareHolderRightsRisk": 10,
+    "overallRisk": 10,
+    "governanceEpochDate": 1754006400,
+    "compensationAsOfEpochDate": 1735603200,
+    "executiveTeam": [],
+    "maxAge": 86400,
+    "priceHint": 2,
+    "previousClose": 761.83,
+    "open": 762.75,
+    "dayLow": 758.58,
+    "dayHigh": 769.9,
+    "regularMarketPreviousClose": 761.83,
+    "regularMarketOpen": 762.75,
+    "regularMarketDayLow": 758.58,
+    "regularMarketDayHigh": 769.9,
+    "dividendRate": 2.1,
+    "dividendYield": 0.27,
+    "exDividendDate": 1750032000,
+    "payoutRatio": 0.0744,
+    "beta": 1.273,
+    "trailingPE": 27.933912,
+    "forwardPE": 30.407116,
+    "volume": 7256204,
+    "regularMarketVolume": 7256204,
+    "averageVolume": 12488306,
+    "averageVolume10days": 16042710,
+    "averageDailyVolume10Day": 16042710,
+    "bid": 768.63,
+    "ask": 770.04,
+    "bidSize": 1,
+    "askSize": 1,
+    "marketCap": 1932589268992,
+    "fiftyTwoWeekLow": 479.8,
+    "fiftyTwoWeekHigh": 784.75,
+    "priceToSalesTrailing12Months": 10.808423,
+    "fiftyDayAverage": 712.1686,
+    "twoHundredDayAverage": 633.7858,
+    "trailingAnnualDividendRate": 2.05,
+    "trailingAnnualDividendYield": 0.002690889,
+    "currency": "USD",
+    "tradeable": false,
+    "enterpriseValue": 1935079374848,
+    "profitMargins": 0.39992002,
+    "floatShares": 2164511338,
+    "sharesOutstanding": 2168960000,
+    "sharesShort": 25609977,
+    "sharesShortPriorMonth": 30138882,
+    "sharesShortPreviousMonthDate": 1749772800,
+    "dateShortInterest": 1752537600,
+    "sharesPercentSharesOut": 0.010199999,
+    "heldPercentInsiders": 0.00078,
+    "heldPercentInstitutions": 0.80004,
+    "shortRatio": 2.13,
+    "shortPercentOfFloat": 0.0117999995,
+    "impliedSharesOutstanding": 2512140032,
+    "bookValue": 77.532,
+    "priceToBook": 9.922355,
+    "lastFiscalYearEnd": 1735603200,
+    "nextFiscalYearEnd": 1767139200,
+    "mostRecentQuarter": 1751241600,
+    "earningsQuarterlyGrowth": 0.362,
+    "netIncomeToCommon": 71507001344,
+    "trailingEps": 27.54,
+    "forwardEps": 25.3,
+    "enterpriseToRevenue": 10.822,
+    "enterpriseToEbitda": 20.525,
+    "52WeekChange": 0.49103594,
+    "SandP52WeekChange": 0.19554341,
+    "lastDividendValue": 0.525,
+    "lastDividendDate": 1750032000,
+    "quoteType": "EQUITY",
+    "currentPrice": 769.3,
+    "targetHighPrice": 1086.0,
+    "targetLowPrice": 658.0,
+    "targetMeanPrice": 861.06226,
+    "targetMedianPrice": 875.0,
+    "recommendationMean": 1.44118,
+    "recommendationKey": "strong_buy",
+    "numberOfAnalystOpinions": 62,
+    "totalCash": 47070998528,
+    "totalCashPerShare": 18.737,
+    "ebitda": 94279999488,
+    "totalDebt": 49559998464,
+    "quickRatio": 1.706,
+    "currentRatio": 1.973,
+    "totalRevenue": 178803998720,
+    "debtToEquity": 25.406,
+    "revenuePerShare": 70.813,
+    "returnOnAssets": 0.18465,
+    "returnOnEquity": 0.40647998,
+    "grossProfits": 146558992384,
+    "freeCashflow": 31991250944,
+    "operatingCashflow": 102299000832,
+    "earningsGrowth": 0.384,
+    "revenueGrowth": 0.216,
+    "grossMargins": 0.81966,
+    "ebitdaMargins": 0.52728003,
+    "operatingMargins": 0.43019,
+    "financialCurrency": "USD",
+    "symbol": "META",
+    "language": "en-US",
+    "region": "US",
+    "typeDisp": "Equity",
+    "quoteSourceName": "Delayed Quote",
+    "triggerable": true,
+    "customPriceAlertConfidence": "HIGH",
+    "shortName": "Meta Platforms, Inc.",
+    "longName": "Meta Platforms, Inc.",
+    "hasPrePostMarketData": true,
+    "firstTradeDateMilliseconds": 1337347800000,
+    "postMarketChangePercent": 0.088391095,
+    "postMarketPrice": 769.98,
+    "postMarketChange": 0.6799927,
+    "regularMarketChange": 7.46997,
+    "regularMarketDayRange": "758.58 - 769.9",
+    "fullExchangeName": "NasdaqGS",
+    "averageDailyVolume3Month": 12488306,
+    "fiftyTwoWeekLowChange": 289.5,
+    "fiftyTwoWeekLowChangePercent": 0.60337645,
+    "fiftyTwoWeekRange": "479.8 - 784.75",
+    "fiftyTwoWeekHighChange": -15.450012,
+    "fiftyTwoWeekHighChangePercent": -0.019687815,
+    "fiftyTwoWeekChangePercent": 49.103592,
+    "priceEpsCurrentYear": 27.661346,
+    "fiftyDayAverageChange": 57.13141,
+    "fiftyDayAverageChangePercent": 0.08022175,
+    "twoHundredDayAverageChange": 135.51416,
+    "sourceInterval": 15,
+    "exchangeDataDelayedBy": 0,
+    "ipoExpectedDate": "2022-06-09",
+    "averageAnalystRating": "1.4 - Strong Buy",
+    "cryptoTradeable": false,
+    "regularMarketChangePercent": 0.98053,
+    "regularMarketPrice": 769.3,
+    "corporateActions": [],
+    "postMarketTime": 1754697589,
+    "regularMarketTime": 1754683201,
+    "exchange": "NMS",
+    "messageBoardId": "finmb_20765463",
+    "exchangeTimezoneName": "America/New_York",
+    "exchangeTimezoneShortName": "EDT",
+    "gmtOffSetMilliseconds": -14400000,
+    "market": "us_market",
+    "esgPopulated": false,
+    "marketState": "CLOSED",
+    "dividendDate": 1750896000,
+    "earningsTimestamp": 1753905600,
+    "earningsTimestampStart": 1761768000,
+    "earningsTimestampEnd": 1761768000,
+    "earningsCallTimestampStart": 1753909200,
+    "earningsCallTimestampEnd": 1753909200,
+    "isEarningsDateEstimate": true,
+    "epsTrailingTwelveMonths": 27.54,
+    "epsForward": 25.3,
+    "epsCurrentYear": 27.81137,
+    "twoHundredDayAverageChangePercent": 0.21381696,
+    "displayName": "Meta Platforms",
+    "trailingPegRatio": 2.4219
+  },
+  "fast_info": {
+    "currency": "USD",
+    "dayHigh": 769.9000244140625,
+    "dayLow": 758.5800170898438,
+    "exchange": "NMS",
+    "fiftyDayAverage": 712.1686010742187,
+    "lastPrice": 769.2999877929688,
+    "lastVolume": 7311700,
+    "marketCap": 1932589295951.8281,
+    "open": 762.75,
+    "previousClose": 763.59,
+    "quoteType": "EQUITY",
+    "regularMarketPreviousClose": 761.8300170898438,
+    "shares": 2512140032,
+    "tenDayAverageVolume": 16042710,
+    "threeMonthAverageVolume": 12455592,
+    "timezone": "America/New_York",
+    "twoHundredDayAverage": 633.7858514404297,
+    "yearChange": 0.4910358941599903,
+    "yearHigh": 784.75,
+    "yearLow": 479.79998779296875
+  },
+  "history": {
+    "Open": [
+      603.2558317407384,
+      630.434887813048,
+      645.0436488654467,
+      660.7016415387022,
+      653.7769769402204,
+      637.4695422101522,
+      627.7669935255635,
+      635.521040610427,
+      631.304243948337,
+      633.5624844477077,
+      623.5202359878101,
+      634.9214503428936,
+      642.1059170723001,
+      651.1490397001155,
+      642.0060336659102,
+      643.8945882353455,
+      670.933780241162,
+      668.8054003474581,
+      691.128193299702,
+      695.634728988938,
+      697.9230086279447,
+      700.8107438516906,
+      703.1689726406868,
+      692.7669528666453,
+      687.4210820231808,
+      699.3300170898438,
+      702.0,
+      698.1799926757812,
+      700.75,
+      683.6900024414062,
+      704.8900146484375,
+      713.3200073242188,
+      714.3599853515625,
+      726.52001953125,
+      744.5499877929688,
+      736.8800048828125,
+      715.3300170898438,
+      726.6099853515625,
+      717.5999755859375,
+      721.5700073242188,
+      722.719970703125,
+      731.5499877929688,
+      722.5,
+      717.5999755859375,
+      723.9000244140625,
+      713.3699951171875,
+      704.3900146484375,
+      702.1900024414062,
+      706.7999877929688,
+      716.1900024414062,
+      706.3699951171875,
+      717.0499877929688,
+      716.9199829101562,
+      715.2000122070312,
+      720.0,
+      708.0900268554688,
+      775.2000122070312,
+      760.72998046875,
+      760.0,
+      776.4500122070312,
+      770.0,
+      773.489990234375,
+      762.75
+    ],
+    "High": [
+      606.5033331458584,
+      639.8976383332824,
+      660.4118286945162,
+      662.1604799651236,
+      656.8046155684391,
+      639.9476160073406,
+      642.5056535406882,
+      638.8584386405468,
+      646.1128573238404,
+      642.7554230220385,
+      631.9637513811242,
+      642.5855973216567,
+      650.3795803263449,
+      652.8177387372123,
+      648.9106942904369,
+      672.7423872324788,
+      675.0606098458437,
+      688.4702620523693,
+      693.8461337530863,
+      702.2696384274917,
+      704.6478147285023,
+      702.6893032959509,
+      708.3249785260691,
+      694.8453707616588,
+      694.0359873588837,
+      707.1500244140625,
+      705.969970703125,
+      701.5900268554688,
+      701.8200073242188,
+      699.0499877929688,
+      713.1900024414062,
+      716.5800170898438,
+      728.219970703125,
+      735.4299926757812,
+      747.9000244140625,
+      737.75,
+      720.2999877929688,
+      729.030029296875,
+      727.0,
+      722.9099731445312,
+      737.530029296875,
+      735.7999877929688,
+      725.1599731445312,
+      728.0,
+      724.469970703125,
+      713.969970703125,
+      705.9000244140625,
+      704.7100219726562,
+      717.0,
+      716.5999755859375,
+      714.6300048828125,
+      723.6199951171875,
+      720.6500244140625,
+      724.739990234375,
+      724.469970703125,
+      708.5,
+      784.75,
+      766.0,
+      776.8499755859375,
+      783.1300048828125,
+      773.6400146484375,
+      775.0,
+      769.9000244140625
+    ],
+    "Low": [
+      591.2551162399334,
+      620.5525382829127,
+      642.335771505551,
+      653.8069223034624,
+      638.0890359072837,
+      625.6686244756826,
+      627.3173272935575,
+      631.7739236379011,
+      629.6854943191497,
+      630.2250866339274,
+      622.1712983340897,
+      632.2635222678258,
+      642.0559677120978,
+      639.0083561535087,
+      632.2935358628563,
+      643.7646833041948,
+      664.5187332165345,
+      668.0559769852821,
+      681.7254549732214,
+      691.3380472640042,
+      693.4064643289632,
+      691.0282928322797,
+      691.4579518801445,
+      686.471808739605,
+      680.4864154008052,
+      693.510009765625,
+      696.0599975585938,
+      694.9000244140625,
+      678.6699829101562,
+      678.75,
+      702.1099853515625,
+      705.3800048828125,
+      711.0499877929688,
+      725.8599853515625,
+      734.25,
+      715.3699951171875,
+      712.7999877929688,
+      714.4199829101562,
+      713.510009765625,
+      714.8099975585938,
+      722.719970703125,
+      719.5999755859375,
+      709.7000122070312,
+      716.5499877929688,
+      709.8200073242188,
+      699.27001953125,
+      697.1099853515625,
+      691.6500244140625,
+      705.760009765625,
+      701.4099731445312,
+      704.9299926757812,
+      714.0,
+      711.9000244140625,
+      712.6799926757812,
+      699.9099731445312,
+      691.2000122070312,
+      765.510009765625,
+      745.3099975585938,
+      758.4099731445312,
+      763.0,
+      760.4600219726562,
+      759.5499877929688,
+      758.5800170898438
+    ],
+    "Close": [
+      592.0344848632812,
+      638.9383544921875,
+      655.525634765625,
+      658.85302734375,
+      643.3849487304688,
+      639.8477172851562,
+      639.9376220703125,
+      636.6101684570312,
+      635.0114135742188,
+      636.08056640625,
+      626.577880859375,
+      641.826171875,
+      643.085205078125,
+      644.5540771484375,
+      646.9921875,
+      670.3842163085938,
+      666.3372802734375,
+      687.4210815429688,
+      684.0936279296875,
+      697.173583984375,
+      693.5263671875,
+      701.8599853515625,
+      693.6063232421875,
+      692.826904296875,
+      682.344970703125,
+      702.1199951171875,
+      697.22998046875,
+      695.77001953125,
+      682.3499755859375,
+      698.530029296875,
+      712.2000122070312,
+      708.6799926757812,
+      726.0900268554688,
+      733.6300048828125,
+      738.0900268554688,
+      719.219970703125,
+      713.5700073242188,
+      719.010009765625,
+      718.3499755859375,
+      720.6699829101562,
+      732.780029296875,
+      727.239990234375,
+      717.510009765625,
+      720.9199829101562,
+      710.3900146484375,
+      702.9099731445312,
+      701.4099731445312,
+      704.280029296875,
+      712.969970703125,
+      704.8099975585938,
+      713.5800170898438,
+      714.7999877929688,
+      712.6799926757812,
+      717.6300048828125,
+      700.0,
+      695.2100219726562,
+      773.4400024414062,
+      750.010009765625,
+      776.3699951171875,
+      763.4600219726562,
+      771.989990234375,
+      761.8300170898438,
+      769.2999877929688
+    ],
+    "Volume": [
+      10427300,
+      21965100,
+      18570800,
+      12348200,
+      14341800,
+      18519000,
+      9592400,
+      6743500,
+      11464600,
+      8228400,
+      8454100,
+      9508400,
+      9042900,
+      8858800,
+      16241000,
+      15766300,
+      11585000,
+      14031900,
+      13083100,
+      11728000,
+      12773200,
+      10850100,
+      9582500,
+      7322700,
+      9274400,
+      13720300,
+      10066100,
+      10068300,
+      22538600,
+      11080100,
+      13823200,
+      9320400,
+      13964800,
+      18775700,
+      15402100,
+      13431200,
+      9336700,
+      8601700,
+      9457100,
+      7770700,
+      11418000,
+      9913600,
+      10873900,
+      8939400,
+      11529500,
+      13067600,
+      11803300,
+      12779800,
+      9404400,
+      8921100,
+      8771600,
+      10920800,
+      8271700,
+      8715700,
+      13267000,
+      27077300,
+      38831100,
+      19028700,
+      15801700,
+      11640300,
+      9733900,
+      9019700,
+      7311700
+    ],
+    "Dividends": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.525,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Stock Splits": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "dividends": {},
+  "splits": {},
+  "earnings": {},
+  "quarterly_earnings": {},
+  "balance_sheet": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "cashflow": {
+    "2024-12-31 00:00:00": null,
+    "2023-12-31 00:00:00": null,
+    "2022-12-31 00:00:00": null,
+    "2021-12-31 00:00:00": null,
+    "2020-12-31 00:00:00": null
+  },
+  "recommendations": {
+    "period": {
+      "0": "0m",
+      "1": "-1m",
+      "2": "-2m",
+      "3": "-3m"
+    },
+    "strongBuy": {
+      "0": 9,
+      "1": 10,
+      "2": 11,
+      "3": 11
+    },
+    "buy": {
+      "0": 49,
+      "1": 51,
+      "2": 48,
+      "3": 48
+    },
+    "hold": {
+      "0": 9,
+      "1": 6,
+      "2": 7,
+      "3": 6
+    },
+    "sell": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "strongSell": {
+      "0": 1,
+      "1": 1,
+      "2": 2,
+      "3": 2
+    }
+  },
+  "calendar": {},
+  "major_holders": [
+    {
+      "Value": 0.00078
+    },
+    {
+      "Value": 0.80004
+    },
+    {
+      "Value": 0.80067
+    },
+    {
+      "Value": 6090.0
+    }
+  ],
+  "institutional_holders": [
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Vanguard Group Inc",
+      "pctHeld": 0.0881,
+      "Shares": 191058533,
+      "Value": 146981327104,
+      "pctChange": -0.0007
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Blackrock Inc.",
+      "pctHeld": 0.0767,
+      "Shares": 166370320,
+      "Value": 127988685145,
+      "pctChange": 0.0105
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "FMR, LLC",
+      "pctHeld": 0.0623,
+      "Shares": 135174317,
+      "Value": 103989600418,
+      "pctChange": -0.007900001
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "State Street Corporation",
+      "pctHeld": 0.039300002,
+      "Shares": 85275239,
+      "Value": 65602240321,
+      "pctChange": -0.0099
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "JPMORGAN CHASE & CO",
+      "pctHeld": 0.026800001,
+      "Shares": 58198195,
+      "Value": 44771870703,
+      "pctChange": 0.1259
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Geode Capital Management, LLC",
+      "pctHeld": 0.0235,
+      "Shares": 50892441,
+      "Value": 39151554240,
+      "pctChange": 0.0348
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Price (T.Rowe) Associates Inc",
+      "pctHeld": 0.018,
+      "Shares": 39132171,
+      "Value": 30104378672,
+      "pctChange": -0.0753
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Capital World Investors",
+      "pctHeld": 0.0176,
+      "Shares": 38081486,
+      "Value": 29296086714,
+      "pctChange": -0.0555
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Morgan Stanley",
+      "pctHeld": 0.0175,
+      "Shares": 37891503,
+      "Value": 29149932795,
+      "pctChange": 0.048899997
+    },
+    {
+      "Date Reported": "2025-03-31 00:00:00",
+      "Holder": "Capital Research Global Investors",
+      "pctHeld": 0.015800001,
+      "Shares": 34326729,
+      "Value": 26407552200,
+      "pctChange": -0.0699
+    }
+  ],
+  "sustainability": {
+    "esgScores": {
+      "maxAge": 86400,
+      "totalEsg": 32.8,
+      "environmentScore": 2.47,
+      "socialScore": 21.64,
+      "governanceScore": 8.68,
+      "ratingYear": 2025,
+      "ratingMonth": 7,
+      "highestControversy": 4.0,
+      "peerCount": 586,
+      "esgPerformance": "LEAD_PERF",
+      "peerGroup": "Software & Services",
+      "relatedControversy": [
+        "Customer Incidents"
+      ],
+      "peerEsgScorePerformance": {
+        "min": 7.44,
+        "avg": 21.189334470989767,
+        "max": 33.72
+      },
+      "peerGovernancePerformance": {
+        "min": 1.34,
+        "avg": 5.549801587301587,
+        "max": 10.54
+      },
+      "peerSocialPerformance": {
+        "min": 4.49,
+        "avg": 10.007142857142858,
+        "max": 21.64
+      },
+      "peerEnvironmentPerformance": {
+        "min": 0.05,
+        "avg": 3.2042460317460315,
+        "max": 6.94
+      },
+      "peerHighestControversyPerformance": {
+        "min": 0.0,
+        "avg": 0.6689419795221843,
+        "max": 4.0
+      },
+      "percentile": null,
+      "environmentPercentile": null,
+      "socialPercentile": null,
+      "governancePercentile": null,
+      "adult": false,
+      "alcoholic": false,
+      "animalTesting": false,
+      "catholic": null,
+      "controversialWeapons": false,
+      "smallArms": false,
+      "furLeather": false,
+      "gambling": false,
+      "gmo": false,
+      "militaryContract": false,
+      "nuclear": false,
+      "pesticides": false,
+      "palmOil": false,
+      "coal": false,
+      "tobacco": false
+    }
+  },
+  "options": [
+    "2025-08-15",
+    "2025-08-22",
+    "2025-08-29",
+    "2025-09-05",
+    "2025-09-12",
+    "2025-09-19",
+    "2025-10-17",
+    "2025-11-21",
+    "2025-12-19",
+    "2026-01-16",
+    "2026-02-20",
+    "2026-03-20",
+    "2026-05-15",
+    "2026-06-18",
+    "2026-09-18",
+    "2026-12-18",
+    "2027-01-15",
+    "2027-06-17",
+    "2027-12-17"
+  ],
+  "news": [
+    {
+      "id": "c460faee-a65e-47d1-95c5-47b56017f64f",
+      "content": {
+        "id": "c460faee-a65e-47d1-95c5-47b56017f64f",
+        "contentType": "STORY",
+        "title": "OpenAI’s GPT-5 is out. Here’s what you need to know.",
+        "description": "",
+        "summary": "OpenAI's GPT-5 is now available. Here's what you need to know about the company's latest release.",
+        "pubDate": "2025-08-09T15:00:05Z",
+        "displayTime": "2025-08-09T15:00:05Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-08/355fc9d0-7532-11f0-afff-28f603d4c059",
+          "originalWidth": 4848,
+          "originalHeight": 3232,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/bWHrmL0caqjqUxnag3v2IQ--~B/aD0zMjMyO3c9NDg0ODthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-08/355fc9d0-7532-11f0-afff-28f603d4c059",
+              "width": 4848,
+              "height": 3232,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/65BZU8.x2PrhZNTqG1Llpw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-08/355fc9d0-7532-11f0-afff-28f603d4c059",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Yahoo Finance",
+          "url": "http://finance.yahoo.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/openais-gpt-5-is-out-heres-what-you-need-to-know-150005420.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/openais-gpt-5-is-out-heres-what-you-need-to-know-150005420.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": true
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "b446c808-a061-372e-b8a1-a0ee7d2a4030",
+      "content": {
+        "id": "b446c808-a061-372e-b8a1-a0ee7d2a4030",
+        "contentType": "STORY",
+        "title": "Is Qualcomm the Best Semiconductor Stock to Buy Right Now?",
+        "description": "",
+        "summary": "With leadership in emerging technology markets such as AI, automotive, and IoT, QCOM is one of the best growth plays now.",
+        "pubDate": "2025-08-09T16:00:02Z",
+        "displayTime": "2025-08-09T16:00:02Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/barchart_com_477/fbdf6226373634d96c2ef15831fe7e65",
+          "originalWidth": 1000,
+          "originalHeight": 667,
+          "caption": "Qualcomm, Inc_ logo on phone-by viewimage via Shutterstock",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/IxH_SdrCOmIjU15y51bYTg--~B/aD02Njc7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/barchart_com_477/fbdf6226373634d96c2ef15831fe7e65",
+              "width": 1000,
+              "height": 667,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/2LWDRFuQtxVpvjj5NP.NHQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/barchart_com_477/fbdf6226373634d96c2ef15831fe7e65",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Barchart",
+          "url": "https://www.barchart.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.barchart.com/story/news/34028802/is-qualcomm-the-best-semiconductor-stock-to-buy-right-now",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/qualcomm-best-semiconductor-stock-buy-160002076.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f2cd00df-8d29-3ff0-b25e-237603d7eb68",
+      "content": {
+        "id": "f2cd00df-8d29-3ff0-b25e-237603d7eb68",
+        "contentType": "STORY",
+        "title": "Microsoft, Apple, Amazon, and Meta Just Gave Nvidia Investors Great News",
+        "description": "",
+        "summary": "There's a lot of room for optimism as Nvidia is set to report earnings on Aug. 27.",
+        "pubDate": "2025-08-09T13:05:00Z",
+        "displayTime": "2025-08-09T13:05:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+          "originalWidth": 1200,
+          "originalHeight": 675,
+          "caption": "Person in a wheelchair working on a computer.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/GC2brJmSyhrGMWz1WmeMcQ--~B/aD02NzU7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+              "width": 1200,
+              "height": 675,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/UAiomD265fIlt1gMEorvOA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/c0373a0876a9311c64df79e3e2f0a523",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/microsoft-apple-amazon-and-meta-just-gave-nvidia-i/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/microsoft-apple-amazon-meta-just-130500398.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "5a97c30a-19c9-3031-837d-0766cd7b273f",
+      "content": {
+        "id": "5a97c30a-19c9-3031-837d-0766cd7b273f",
+        "contentType": "STORY",
+        "title": "Traders Are Fleeing Stocks Feared to Be Under Threat From AI",
+        "description": "",
+        "summary": "(Bloomberg) -- Artificial intelligence’s imprint on US financial markets is unmistakable. Nvidia Corp. is the most valuable company in the world at nearly $4.5 trillion. Startups from OpenAI to Anthropic have raised tens of billions of dollars. Most Read from BloombergNew York Warns of $34 Billion Budget Hole, Biggest Since 2009 CrisisThree Deaths Reported as NYC Legionnaires’ Outbreak SpreadsAll Hail the Humble Speed HumpA New Stage for the Theater That Gave America Shakespeare in the ParkChica",
+        "pubDate": "2025-08-09T13:00:01Z",
+        "displayTime": "2025-08-09T13:00:01Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-08/50cd16b0-73dd-11f0-bffe-c0f75b1eda7c",
+          "originalWidth": 6000,
+          "originalHeight": 4000,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/QG0yZasdc3BDLyzk0p51cg--~B/aD00MDAwO3c9NjAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-08/50cd16b0-73dd-11f0-bffe-c0f75b1eda7c",
+              "width": 6000,
+              "height": 4000,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/UKWYHqSkRMA9nSX06Jqz9Q--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-08/50cd16b0-73dd-11f0-bffe-c0f75b1eda7c",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Bloomberg",
+          "url": "https://www.bloomberg.com/company"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/traders-fleeing-stocks-feared-under-130001182.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/traders-fleeing-stocks-feared-under-130001182.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "2b47c372-177e-3051-aa01-406a8d82b220",
+      "content": {
+        "id": "2b47c372-177e-3051-aa01-406a8d82b220",
+        "contentType": "STORY",
+        "title": "These 7 Stocks Are Analyst Favorites For Magnificent Earnings Growth; Arista, GE Lead",
+        "description": "",
+        "summary": "Among the best stocks in earnings performance, Broadcom boasts a 98 EPS Rating, one of the highest in the chip sector.",
+        "pubDate": "2025-08-09T12:30:21Z",
+        "displayTime": "2025-08-09T12:30:21Z",
+        "isHosted": false,
+        "bypassModal": false,
+        "previewUrl": "https://finance.yahoo.com/m/2b47c372-177e-3051-aa01-406a8d82b220/these-7-stocks-are-analyst.html",
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/ibd.com/9b3fe2fcf4fcbe26ebf2d60631024ae6",
+          "originalWidth": 1000,
+          "originalHeight": 563,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/6eV3DIzh.F26TxpKUhYdqA--~B/aD01NjM7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/9b3fe2fcf4fcbe26ebf2d60631024ae6",
+              "width": 1000,
+              "height": 563,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/RcdIm1QW.ISPLxOMd9oGyA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/9b3fe2fcf4fcbe26ebf2d60631024ae6",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Investor's Business Daily",
+          "url": "http://www.investors.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.investors.com/research/best-stocks-seven-magnificent-stocks-earnings-growth/?src=A00220&yptr=yahoo",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": null,
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "9784f533-1534-3391-80c4-abef48c07c3f",
+      "content": {
+        "id": "9784f533-1534-3391-80c4-abef48c07c3f",
+        "contentType": "STORY",
+        "title": "Prediction: Reddit Stock Could Outperform Meta and Snap Over the Next 12 Months",
+        "description": "",
+        "summary": "The company has clearly captured the online zeitgeist and should vault ahead of its two peers as a result.",
+        "pubDate": "2025-08-09T10:05:00Z",
+        "displayTime": "2025-08-09T10:05:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/4767a1d89ff9f80371089bf28abe6db7",
+          "originalWidth": 1400,
+          "originalHeight": 933,
+          "caption": "Person reacting joyfully to something on a smartphone.",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/m0NzJ2BkRj7xnDbbkQbcaw--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/4767a1d89ff9f80371089bf28abe6db7",
+              "width": 1400,
+              "height": 933,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/bjMWKCbR6BkEZbOcB9DQGg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/4767a1d89ff9f80371089bf28abe6db7",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/prediction-reddit-stock-could-outperform-meta-and/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/prediction-reddit-stock-could-outperform-100500208.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "0d02b5d3-c0ef-3267-8852-770254c6eddc",
+      "content": {
+        "id": "0d02b5d3-c0ef-3267-8852-770254c6eddc",
+        "contentType": "STORY",
+        "title": "Forget the \"Magnificent Seven.\" It's Time to Start Talking About the \"Ten Titans.\"",
+        "description": "",
+        "summary": "The megacap all-star team is long overdue for an expansion.",
+        "pubDate": "2025-08-09T08:00:00Z",
+        "displayTime": "2025-08-09T08:00:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+          "originalWidth": 1400,
+          "originalHeight": 933,
+          "caption": "A silhouette of a bull on a mountain peak with a sunset in the background. ",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/QDl.P2CQf5G4VuwVbYbzMg--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+              "width": 1400,
+              "height": 933,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/SuDD_kjgcWJ_4P2Y1yzVZQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/e5ca0f867a7adc2ad8a244f098a6c27e",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Motley Fool",
+          "url": "http://www.fool.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.fool.com/investing/2025/08/09/forget-magnificent-seven-buy-growth-stocks/",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/forget-magnificent-seven-time-start-080000028.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "ab7be9d6-74b6-3d08-a05a-9e3f2621086a",
+      "content": {
+        "id": "ab7be9d6-74b6-3d08-a05a-9e3f2621086a",
+        "contentType": "STORY",
+        "title": "Meta’s $29 Billion Deal Marks Key Moment for Private Credit",
+        "description": "",
+        "summary": "(Bloomberg) -- The heavy hitters of private credit have been waiting for this moment for years.Most Read from BloombergNew York Warns of $34 Billion Budget Hole, Biggest Since 2009 CrisisThree Deaths Reported as NYC Legionnaires’ Outbreak SpreadsAll Hail the Humble Speed HumpA New Stage for the Theater That Gave America Shakespeare in the ParkChicago Schools’ Bond Penalty Widens as $734 Million Gap LoomsMajor lenders, which often cater to companies with dented credit, talk endlessly about the op",
+        "pubDate": "2025-08-08T22:17:10Z",
+        "displayTime": "2025-08-08T22:17:10Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/bloomberg_holding_pen_162/30272d6329445b6345f0f7c0eac5e78d",
+          "originalWidth": 2000,
+          "originalHeight": 1329,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/m1dK9WVGH9Qth9B5pxul2g--~B/aD0xMzI5O3c9MjAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/bloomberg_holding_pen_162/30272d6329445b6345f0f7c0eac5e78d",
+              "width": 2000,
+              "height": 1329,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/i2SWFTVDTvxEHPArssTezg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/bloomberg_holding_pen_162/30272d6329445b6345f0f7c0eac5e78d",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Bloomberg",
+          "url": "https://www.bloomberg.com/company"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/meta-29-billion-deal-marks-191831732.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/meta-29-billion-deal-marks-191831732.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "d226af82-7cdd-3b7b-9302-816e71d613fb",
+      "content": {
+        "id": "d226af82-7cdd-3b7b-9302-816e71d613fb",
+        "contentType": "STORY",
+        "title": "Is Apple Stock a Buy After Appeasing President Trump?",
+        "description": "",
+        "summary": "Apple's stock has spiked +10% in August, as the company has appeased President Trump's request to move chip manufacturing back to the U.S.",
+        "pubDate": "2025-08-08T21:25:00Z",
+        "displayTime": "2025-08-08T21:25:00Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/zacks.com/99f454693ed89b3504902aded9bf2006",
+          "originalWidth": 620,
+          "originalHeight": 420,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/9OQ48FjTzMnxacfGmqiEXg--~B/aD00MjA7dz02MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/99f454693ed89b3504902aded9bf2006",
+              "width": 620,
+              "height": 420,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/uaYMOXtDyoJvG0rAEqWQ3w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/99f454693ed89b3504902aded9bf2006",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Zacks",
+          "url": "http://www.zacks.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://finance.yahoo.com/news/apple-stock-buy-appeasing-president-212500521.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/apple-stock-buy-appeasing-president-212500521.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    },
+    {
+      "id": "f8f81034-6b2a-38d5-9383-76ff55b6955f",
+      "content": {
+        "id": "f8f81034-6b2a-38d5-9383-76ff55b6955f",
+        "contentType": "STORY",
+        "title": "The list of major companies laying off staff this year includes Nextdoor, Intel, Scale AI, Morgan Stanley, and more",
+        "description": "",
+        "summary": "Layoffs have hit companies from Disney to Meta to Intel this year amid a backdrop of cost-cutting and technological change.",
+        "pubDate": "2025-08-08T21:00:40Z",
+        "displayTime": "2025-08-08T21:00:40Z",
+        "isHosted": true,
+        "bypassModal": false,
+        "previewUrl": null,
+        "thumbnail": {
+          "originalUrl": "https://media.zenfs.com/en/business_insider_articles_888/4da92e8d919e27fb0b7421ef3b8cf8f1",
+          "originalWidth": 3536,
+          "originalHeight": 2652,
+          "caption": "",
+          "resolutions": [
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/Z3gtJCtKMnkI78eKiJjRfQ--~B/aD0yNjUyO3c9MzUzNjthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/business_insider_articles_888/4da92e8d919e27fb0b7421ef3b8cf8f1",
+              "width": 3536,
+              "height": 2652,
+              "tag": "original"
+            },
+            {
+              "url": "https://s.yimg.com/uu/api/res/1.2/OIPhBDjeY9asnquI21F4Vw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/business_insider_articles_888/4da92e8d919e27fb0b7421ef3b8cf8f1",
+              "width": 170,
+              "height": 128,
+              "tag": "170x128"
+            }
+          ]
+        },
+        "provider": {
+          "displayName": "Business Insider",
+          "url": "https://www.businessinsider.com/"
+        },
+        "canonicalUrl": {
+          "url": "https://www.businessinsider.com/recent-company-layoffs-laying-off-workers-2025",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "clickThroughUrl": {
+          "url": "https://finance.yahoo.com/news/full-list-major-us-companies-220813398.html",
+          "site": "finance",
+          "region": "US",
+          "lang": "en-US"
+        },
+        "metadata": {
+          "editorsPick": false
+        },
+        "finance": {
+          "premiumFinance": {
+            "isPremiumNews": false,
+            "isPremiumFreeNews": false
+          }
+        },
+        "storyline": null
+      }
+    }
+  ]
+}
