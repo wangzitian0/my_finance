@@ -31,6 +31,9 @@
     - name: Setup Pixi application environment
       include_tasks: roles/pixi_setup.yml
 
+    - name: Setup dependency caching
+      include_tasks: roles/dependency_cache.yml
+
     - name: Setup and start Podman with Neo4j
       include_tasks: roles/podman_setup.yml
 

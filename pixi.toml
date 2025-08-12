@@ -86,7 +86,7 @@ build-vti = "python ETL/build_dataset.py v3k"
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # Build cleanup and maintenance
-clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
+clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
 build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
 # --- Environment Management (Ansible + Podman) ---
@@ -95,7 +95,7 @@ setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.y
 # Environment operations
 env-start = "ansible-playbook infra/ansible/start.yml"
 env-stop = "ansible-playbook infra/ansible/stop.yml" 
-env-status = "python infra/env_status.py"
+env-status = "python infra/comprehensive_env_status.py"
 env-reset = "ansible-playbook infra/ansible/reset.yml"
 
 # --- Podman Management (Local Development) ---

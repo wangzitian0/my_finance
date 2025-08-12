@@ -1,0 +1,71 @@
+---
+# roles/dependency_cache.yml
+# Smart dependency management with local caching to avoid repeated downloads
+
+- name: Create cache directory for dependencies
+  file:
+    path: "{{ ansible_env.HOME }}/.cache/my-finance"
+    state: directory
+    mode: '0755'
+
+- name: Check if Podman machine image is already cached
+  stat:
+    path: "{{ ansible_env.HOME }}/.cache/my-finance/podman-machine-ready"
+  register: podman_cache_check
+
+- name: Cache Podman machine setup completion
+  file:
+    path: "{{ ansible_env.HOME }}/.cache/my-finance/podman-machine-ready"
+    state: touch
+    mode: '0644'
+  when: podman_machine_init is defined and podman_machine_init.rc == 0
+
+- name: Check if Podman is available before pulling images
+  command: podman info
+  register: podman_available
+  changed_when: false
+  failed_when: false
+
+- name: Check if Neo4j image is already pulled (only if Podman is available)
+  shell: podman images | grep neo4j | grep 5.18-community
+  register: neo4j_image_check
+  changed_when: false
+  failed_when: false
+  when: podman_available.rc == 0
+
+- name: Pull Neo4j image if not cached and Podman is available
+  shell: |
+    echo "Pulling Neo4j image (this may take a few minutes on first run)..."
+    podman pull neo4j:5.18-community
+  when: 
+    - podman_available.rc == 0
+    - neo4j_image_check.rc != 0
+  register: neo4j_pull
+  retries: 3
+  delay: 5
+
+- name: Create persistent Neo4j data volume (only if Podman is available)
+  shell: podman volume create neo4j-data || true
+  changed_when: false
+  when: podman_available.rc == 0
+
+- name: Cache Neo4j configuration
+  template:
+    content: |
+      # Neo4j Configuration Cache
+      # Generated: {{ ansible_date_time.iso8601 }}
+      NEO4J_AUTH=neo4j/finance123
+      NEO4J_PLUGINS=["apoc"]
+      NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      NEO4J_dbms_memory_heap_initial__size=512m
+      NEO4J_dbms_memory_heap_max__size=1G
+    dest: "{{ ansible_env.HOME }}/.cache/my-finance/neo4j-config.env"
+    mode: '0644'
+
+- name: Display caching status
+  debug:
+    msg: |
+      📦 Dependency Caching Status:
+      - Podman machine: {{ '✅ Cached' if podman_cache_check.stat.exists else '🔄 Setting up' }}
+      - Neo4j image: {{ '✅ Ready' if neo4j_image_check.rc == 0 else '🔄 Downloaded' }}
+      - Configuration: ✅ Cached at ~/.cache/my-finance/
