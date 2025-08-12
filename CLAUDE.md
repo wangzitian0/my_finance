@@ -1,5 +1,22 @@
 # CLAUDE.md
 
+> IMPORTANT UPDATE (2025-08-12)
+>
+> The `data` directory is no longer a git submodule. It is now a symbolic link to a sibling repository directory.
+>
+> - New structure: `my_finance/data -> ../my_finance_data`
+> - Do NOT use submodule commands for `data` anymore
+> - To re-create locally:
+>   ```bash
+>   # from repository root sibling level
+>   git clone https://github.com/wangzitian0/my_finance_data.git my_finance_data
+>   cd my_finance
+>   rm -rf data .git/modules/data .gitmodules || true
+>   ln -s ../my_finance_data data
+>   ```
+>
+> References in this document to "data submodule" are deprecated and will be updated. Prefer working with the linked directory directly.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **IMPORTANT**: Always read and reference the README.md file first, as it contains the complete project information. This file supplements with Claude-specific instructions only.

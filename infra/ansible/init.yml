@@ -11,8 +11,6 @@
   vars:
     # The project directory, discovered from the environment.
     repo_dir: "{{ lookup('env','PWD') }}"
-    # Command for initializing data submodules.
-    data_repo_command: "git submodule update --init --recursive"
     # Docker container configuration
     neo4j_container_name: "my-finance-neo4j"
     neo4j_image_name: "neo4j:5.18-community"
@@ -36,7 +34,7 @@
     - name: Setup and start Minikube with Neo4j
       include_tasks: roles/docker_setup.yml
 
-    - name: Initialize or update data repositories
+    - name: Initialize or update data repository symlink
       include_tasks: roles/repo_data.yml
 
     - name: Final summary
@@ -47,7 +45,7 @@
           Your environment is configured. Here's a summary:
           
           - ✅ Pixi environment is ready.
-          - ✅ Data submodules are initialized.
+          - ✅ Data repository is linked: repo/data -> ../my_finance_data
           - ✅ Minikube cluster is running with Neo4j deployed.
           
           Next Steps:

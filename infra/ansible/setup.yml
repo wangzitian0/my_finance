@@ -7,7 +7,6 @@
   vars:
     repo_dir: "{{ lookup('env','PWD') }}"
     run_git_pull: true
-    data_repo_command: "git submodule update --remote --merge"
     neo4j_install_dir: "/opt/neo4j"
   tasks:
     - name: Execute code repository tasks (repo_code)

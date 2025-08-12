@@ -91,7 +91,7 @@ env-reset = "ansible-playbook infra/ansible/reset.yml"
 create-pr = "python infra/create_pr_with_m7_test.py"
 test-m7-e2e = "python infra/create_pr_with_m7_test.py --skip-pr"
 
-# Data submodule management
+# Data repository (symlink) management
 commit-data-changes = "python infra/commit_data_changes.py"
 
 # Branch management
