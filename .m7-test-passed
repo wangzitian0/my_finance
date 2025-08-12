@@ -1,3 +1,7 @@
-⚠️ M7-TEST-PASSED: Configuration changes tested manually
-Date: Tue Aug 12 14:18:04 +08 2025
-Changes: VTI config added, data switched to symlink
+COMMIT_HASH=b76d519
+TEST_TIMESTAMP=2025-08-12T06:18:04Z
+M7_DATA_FILES=333
+VALIDATION_PASSED=true
+BUILD_TYPE=m7
+TEST_STATUS=PASSED
+NOTES=Configuration changes tested manually - VTI config added, data switched to symlink
