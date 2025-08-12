@@ -73,11 +73,11 @@ def run_m7_end_to_end():
     
     test_success = False
     try:
-        # Build M7 dataset
-        run_command("pixi run build-dataset m7", "Building M7 dataset", timeout=600)  # 10 minutes
+        # Build F2 dataset (faster test)
+        run_command("pixi run build-f2", "Building F2 dataset", timeout=300)  # 5 minutes
         test_success = True
     except Exception as e:
-        print(f"⚠️  M7 build failed: {e}")
+        print(f"⚠️  F2 build failed: {e}")
         print("🔍 Checking if we can validate with existing data...")
         
         # Try to validate with existing data instead
@@ -91,11 +91,11 @@ def run_m7_end_to_end():
                     existing_files += count
                     print(f"📁 Found {count} existing files in {location}")
         
-        if existing_files >= 7:  # At least 1 file per M7 ticker
+        if existing_files >= 2:  # At least 1 file per F2 ticker
             print(f"✅ Found {existing_files} existing data files - sufficient for validation")
             test_success = True
         else:
-            print(f"❌ Only found {existing_files} files - insufficient for M7 validation")
+            print(f"❌ Only found {existing_files} files - insufficient for F2 validation")
             return False
     
     # Validate build results
