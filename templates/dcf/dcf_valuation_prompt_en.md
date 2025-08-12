@@ -114,8 +114,10 @@ Based on the following financial data:
 {market_context}
 ```
 
-### Relevant Financial Intelligence
-{semantic_search_results}
+### Available Data Sources
+**Financial Intelligence**: {semantic_search_results}
+
+**Note**: If no specific SEC document retrieval results are provided above, please use your knowledge of the company's recent SEC filings, annual reports, and publicly available financial information to conduct the analysis.
 
 ## Required Output Format
 

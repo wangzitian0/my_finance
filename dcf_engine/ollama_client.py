@@ -392,62 +392,106 @@ class OllamaClient:
         }
     
     def _analyze_revenue_growth(self, data: Dict) -> Dict:
-        """Analyze revenue growth patterns."""
+        """Analyze revenue growth patterns from available data."""
+        historical = data.get('historical', {})
+        revenue_data = historical.get('revenue', [])
+        
+        # Calculate organic growth estimate from historical data if available
+        organic_growth = 0.0
+        if len(revenue_data) >= 2:
+            recent_growth = (revenue_data[-1] - revenue_data[-2]) / revenue_data[-2] if revenue_data[-2] > 0 else 0
+            organic_growth = max(0, recent_growth)  # Use actual data
+        
         return {
-            'organic_growth_estimate': 0.12,  # Placeholder - would extract from filings
-            'geographic_breakdown': {'domestic': 0.6, 'international': 0.4},
-            'segment_growth_drivers': ['core_business', 'new_products', 'acquisitions']
+            'organic_growth_estimate': organic_growth,
+            'revenue_trend': 'increasing' if len(revenue_data) >= 2 and revenue_data[-1] > revenue_data[-2] else 'stable',
+            'data_points_available': len(revenue_data)
         }
     
     def _calculate_rd_efficiency(self, data: Dict) -> Dict:
-        """Calculate R&D efficiency metrics."""
+        """Calculate R&D efficiency metrics from actual data."""
         financials = data.get('financials', {})
+        historical = data.get('historical', {})
+        
         rd_expense = financials.get('research_development', 0)
         revenue = financials.get('revenue', 1)  # Avoid division by zero
         
         rd_intensity = rd_expense / revenue if revenue > 0 else 0
         
+        # Calculate R&D growth trend if historical data available
+        rd_historical = historical.get('rd_expenses', [])
+        rd_growth_trend = 'stable'
+        if len(rd_historical) >= 2:
+            if rd_historical[-1] > rd_historical[-2]:
+                rd_growth_trend = 'increasing'
+            elif rd_historical[-1] < rd_historical[-2]:
+                rd_growth_trend = 'decreasing'
+        
         return {
             'rd_intensity': rd_intensity,
-            'industry_avg_rd': 0.08,  # Placeholder - would get from industry data
-            'rd_efficiency_score': 'above_average' if rd_intensity > 0.08 else 'average',
-            'innovation_pipeline_strength': 'strong' if rd_intensity > 0.12 else 'moderate'
+            'rd_growth_trend': rd_growth_trend,
+            'rd_absolute_amount': rd_expense,
+            'historical_rd_points': len(rd_historical)
         }
     
     def _assess_competitive_position(self, data: Dict) -> Dict:
-        """Assess competitive positioning."""
+        """Assess competitive positioning from available financial data."""
+        financials = data.get('financials', {})
+        historical = data.get('historical', {})
+        
+        # Assess based on margin trends if available
+        revenue = financials.get('revenue', 0)
+        net_income = financials.get('net_income', 0)
+        margin = net_income / revenue if revenue > 0 else 0
+        
         return {
-            'market_share_trend': 'gaining',  # Would extract from market data
-            'competitive_moat': 'strong',     # Based on analysis
-            'pricing_power': 'high'           # Based on margin trends
+            'current_margin': margin,
+            'has_historical_data': len(historical.get('revenue', [])) > 1,
+            'data_source': 'financial_metrics'
         }
     
     def _analyze_leadership_age(self, data: Dict) -> Dict:
-        """Analyze executive leadership age and experience."""
-        # This would extract from SEC filings or company data
+        """Analyze executive leadership age and experience from provided data."""
+        executive_info = data.get('executive_info', {})
+        
+        ceo_age = executive_info.get('ceo_age', None)
+        ceo_tenure = executive_info.get('ceo_tenure', None)
+        
+        # Only calculate innovation score if we have real age data
+        leadership_score = None
+        if ceo_age is not None:
+            leadership_score = 'high' if ceo_age < 55 else 'moderate'
+        
         return {
-            'ceo_age': 52,  # Placeholder - would extract from proxy statements
-            'ceo_tenure': 5,
-            'avg_executive_age': 48,
-            'leadership_innovation_score': 'high' if 52 < 55 else 'moderate',  # Younger = more innovative
-            'succession_planning': 'strong'
+            'ceo_age': ceo_age,
+            'ceo_tenure': ceo_tenure,
+            'ceo_name': executive_info.get('ceo_name', None),
+            'leadership_innovation_score': leadership_score,
+            'data_availability': 'provided' if ceo_age is not None else 'not_available'
         }
     
     def _analyze_management_tenure(self, data: Dict) -> Dict:
-        """Analyze management team tenure and stability."""
+        """Analyze management team tenure and stability from available data."""
+        executive_info = data.get('executive_info', {})
+        
         return {
-            'avg_tenure': 6.2,
-            'leadership_stability': 'high',
-            'track_record_score': 'strong'
+            'ceo_tenure': executive_info.get('ceo_tenure', None),
+            'succession_planning': executive_info.get('succession_planning', None),
+            'management_stability': executive_info.get('management_stability', None),
+            'data_source': 'executive_info' if executive_info else 'not_available'
         }
     
     def _calculate_execution_score(self, data: Dict) -> Dict:
-        """Calculate strategic execution capability score."""
+        """Calculate strategic execution capability score from financial performance."""
+        historical = data.get('historical', {})
+        
+        # Base execution assessment on data availability and trends
+        has_good_data = len(historical.get('revenue', [])) >= 3
+        
         return {
-            'guidance_accuracy': 'high',      # Historical guidance vs actual
-            'capital_allocation_efficiency': 'strong',
-            'operational_excellence': 'high',
-            'transformation_experience': 'moderate'
+            'data_quality': 'good' if has_good_data else 'limited',
+            'historical_periods': len(historical.get('revenue', [])),
+            'assessment_basis': 'financial_trends' if has_good_data else 'limited_data'
         }
 
     def generate_risk_analysis(

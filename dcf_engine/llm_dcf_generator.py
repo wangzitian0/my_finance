@@ -39,6 +39,7 @@ class LLMDCFGenerator:
         """
         self.config_path = config_path
         self.debug_dir = Path("data/llm_debug")
+        self.debug_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize components
         self.embedding_model = FinLangEmbedding(config_path)
@@ -260,89 +261,79 @@ class LLMDCFGenerator:
         
         # Try to use real semantic retrieval if available
         try:
-            # Check if embedding model is available and initialized
-            if hasattr(self, 'semantic_retriever') and self.semantic_retriever:
-                thinking_log.append("✅ Semantic retriever available - using real retrieval")
-                real_results = self._perform_real_semantic_search(ticker, search_queries, thinking_log)
-                if real_results:
-                    thinking_log.append(f"📄 Retrieved {len(real_results)} real documents")
-                    self._log_thinking_process(ticker, thinking_log, real_results)
-                    return real_results
-            else:
-                thinking_log.append("⚠️ Semantic retriever not initialized - falling back to enhanced mock")
+            # Check if we have a real semantic retrieval system
+            from ETL.semantic_retrieval import SemanticEmbeddingGenerator
+            
+            # Try to initialize and use real semantic retrieval
+            try:
+                semantic_generator = SemanticEmbeddingGenerator()
+                thinking_log.append("✅ Semantic retrieval system found - attempting real document search")
+                
+                all_results = []
+                for i, query in enumerate(search_queries, 1):
+                    thinking_log.append(f"🔍 Executing query {i}: {query}")
+                    
+                    # Use real semantic search
+                    results = semantic_generator.retrieve_relevant_content(
+                        query=query,
+                        top_k=3,
+                        min_similarity=0.75,
+                        content_filter={'ticker': ticker.upper()}
+                    )
+                    
+                    thinking_log.append(f"   📄 Found {len(results)} documents with similarity >= 0.75")
+                    
+                    for result in results:
+                        thinking_log.append(f"   • {result.source_document} (score: {result.similarity_score:.3f})")
+                        thinking_log.append(f"     Content preview: {result.content[:100]}...")
+                        
+                        # Convert to our format with real data
+                        formatted_result = {
+                            'content': result.content,
+                            'source': result.source_document,
+                            'document_type': result.document_type.value if hasattr(result.document_type, 'value') else str(result.document_type),
+                            'similarity_score': result.similarity_score,
+                            'metadata': result.metadata,
+                            'thinking_process': f'Real semantic search result for query: {query}',
+                            'timestamp': datetime.now().isoformat()
+                        }
+                        all_results.append(formatted_result)
+                
+                # Remove duplicates and return real results
+                seen_sources = set()
+                unique_results = []
+                for result in all_results:
+                    if result['source'] not in seen_sources:
+                        unique_results.append(result)
+                        seen_sources.add(result['source'])
+                
+                if unique_results:
+                    thinking_log.append(f"🎯 Retrieved {len(unique_results)} unique real documents")
+                    self._log_thinking_process(ticker, thinking_log, unique_results)
+                    return unique_results[:10]  # Limit to top 10
+                else:
+                    thinking_log.append("📄 No documents found in semantic search")
+                    
+            except ImportError:
+                thinking_log.append("⚠️ Semantic retrieval module not available")
+            except Exception as retrieval_error:
+                thinking_log.append(f"❌ Semantic retrieval failed: {str(retrieval_error)}")
                 
         except Exception as e:
-            thinking_log.append(f"❌ Semantic retrieval failed: {str(e)}")
-            thinking_log.append("🔄 Falling back to enhanced mock data")
+            thinking_log.append(f"❌ Error setting up semantic retrieval: {str(e)}")
         
-        # Enhanced mock data with more realistic SEC filing content
-        enhanced_mock_context = [
-            {
-                'content': f'From {ticker} Form 10-K: Net revenues increased to $365.8 billion in fiscal 2021, compared to $274.5 billion in fiscal 2020. The Company generated operating cash flow of $104.0 billion and free cash flow of $92.9 billion during fiscal 2021. Research and development expenses increased to $21.9 billion.',
-                'source': f'{ticker}_10K_2021_Item1_Business.txt',
-                'document_type': 'sec_10k_business',
-                'similarity_score': 0.94,
-                'file_section': 'Item 1 - Business',
-                'filing_date': '2021-10-28',
-                'cik': '0000320193',  # Apple's CIK as example
-                'thinking_process': f'High relevance for DCF: Revenue trends, cash flow generation, R&D investments',
-                'timestamp': datetime.now().isoformat()
-            },
-            {
-                'content': f'{ticker} Risk Factors - Competition: The markets for the Company\'s products and services are highly competitive and the Company is confronted by aggressive competition in all areas of its business. The Company\'s competitors who sell mobile devices and personal computers based on other operating systems have aggressively cut prices.',
-                'source': f'{ticker}_10K_2021_Item1A_RiskFactors.txt', 
-                'document_type': 'sec_10k_risks',
-                'similarity_score': 0.91,
-                'file_section': 'Item 1A - Risk Factors',
-                'filing_date': '2021-10-28',
-                'cik': '0000320193',
-                'thinking_process': 'Critical for DCF risk assessment: Competitive pressures affecting margins and market share',
-                'timestamp': datetime.now().isoformat()
-            },
-            {
-                'content': f'{ticker} MD&A: Management believes the Company is well positioned to continue to benefit from the growth in mobile communications and computing. The Company\'s strategy involves expanding its ecosystem through new product categories while maintaining strong margins through premium positioning.',
-                'source': f'{ticker}_10K_2021_Item2_MDA.txt',
-                'document_type': 'sec_10k_mda',
-                'similarity_score': 0.89,
-                'file_section': 'Item 2 - Management Discussion and Analysis',
-                'filing_date': '2021-10-28', 
-                'cik': '0000320193',
-                'thinking_process': 'Strategic insights for DCF: Growth strategy, margin sustainability, ecosystem expansion',
-                'timestamp': datetime.now().isoformat()
-            },
-            {
-                'content': f'{ticker} Quarterly Report: The Company continues to invest heavily in research and development to support the development of innovative products and services. R&D expenses represented approximately 6% of net sales. The Company has also been investing in manufacturing process improvements.',
-                'source': f'{ticker}_10Q_Q1_2022_MDA.txt',
-                'document_type': 'sec_10q_mda',
-                'similarity_score': 0.86,
-                'file_section': 'Item 2 - Management Discussion and Analysis',
-                'filing_date': '2022-01-28',
-                'cik': '0000320193',
-                'thinking_process': 'Innovation investment analysis: R&D intensity, manufacturing efficiency for future cash flows',
-                'timestamp': datetime.now().isoformat()
-            },
-            {
-                'content': f'{ticker} Proxy Statement: The Board believes that the Chief Executive Officer\'s leadership, vision, and deep understanding of the technology industry position the Company well for continued success. CEO age: 61. Average executive team tenure: 8.5 years.',
-                'source': f'{ticker}_DEF14A_2022_ExecutiveCompensation.txt',
-                'document_type': 'sec_def14a_executive',
-                'similarity_score': 0.82,
-                'file_section': 'Executive Compensation Discussion',
-                'filing_date': '2022-01-06',
-                'cik': '0000320193', 
-                'thinking_process': 'Executive assessment: Leadership continuity, experience level impacting execution risk',
-                'timestamp': datetime.now().isoformat()
-            }
-        ]
+        # If no real retrieval available, return empty list for LLM to handle
+        thinking_log.append("⚠️ No semantic retrieval available - will rely on LLM knowledge")
+        thinking_log.append("🎯 LLM will generate DCF analysis based on:")
+        thinking_log.append("   • Provided financial data")
+        thinking_log.append("   • Market context information") 
+        thinking_log.append("   • LLM's training knowledge of SEC filings and company data")
         
-        thinking_log.append(f"📚 Generated {len(enhanced_mock_context)} enhanced mock SEC documents")
-        thinking_log.append("📋 Document breakdown:")
-        for doc in enhanced_mock_context:
-            thinking_log.append(f"   • {doc['source']} (score: {doc['similarity_score']}) - {doc['thinking_process']}")
+        # Log the thinking process even without retrieved documents
+        self._log_thinking_process(ticker, thinking_log, [])
         
-        # Log the complete thinking process
-        self._log_thinking_process(ticker, thinking_log, enhanced_mock_context)
-        
-        return enhanced_mock_context
+        # Return empty list - let LLM work with provided financial data only
+        return []
 
     def _perform_real_semantic_search(self, ticker: str, queries: List[str], thinking_log: List[str]) -> List[Dict[str, Any]]:
         """Perform real semantic search if retriever is available."""

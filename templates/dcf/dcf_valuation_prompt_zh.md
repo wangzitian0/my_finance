@@ -115,8 +115,10 @@
 {market_context}
 ```
 
-### 相关财务情报
-{semantic_search_results}
+### 可用数据源
+**财务情报**: {semantic_search_results}
+
+**注意**: 如果上述未提供具体的SEC文件检索结果，请使用您对该公司最新SEC文件、年度报告和公开财务信息的知识来进行分析。
 
 ## 要求输出格式
 
