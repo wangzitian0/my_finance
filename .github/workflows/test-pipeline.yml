@@ -29,6 +29,8 @@ jobs:
         
     - name: Create basic test structure
       run: |
+        # Remove symlink and create real data directory for CI
+        rm -f data
         mkdir -p data/config data/reports test-results
         echo "test_mode: true" > data/config/test_config.yml
         # Create mock config files for CI testing
