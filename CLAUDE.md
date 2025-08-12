@@ -1,5 +1,22 @@
 # CLAUDE.md
 
+> IMPORTANT UPDATE (2025-08-12)
+>
+> The `data` directory is no longer a git submodule. It is now a symbolic link to a sibling repository directory.
+>
+> - New structure: `my_finance/data -> ../my_finance_data`
+> - Do NOT use submodule commands for `data` anymore
+> - To re-create locally:
+>   ```bash
+>   # from repository root sibling level
+>   git clone https://github.com/wangzitian0/my_finance_data.git my_finance_data
+>   cd my_finance
+>   rm -rf data .git/modules/data .gitmodules || true
+>   ln -s ../my_finance_data data
+>   ```
+>
+> References in this document to "data submodule" are deprecated and will be updated. Prefer working with the linked directory directly.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **IMPORTANT**: Always read and reference the README.md file first, as it contains the complete project information. This file supplements with Claude-specific instructions only.
@@ -16,17 +33,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Command Line Architecture
 
 **Two-tier management system:**
-- **Ansible**: Environment setup and infrastructure (Minikube, Neo4j, system-level)
+- **Ansible**: Environment setup and infrastructure (Podman, Neo4j, system-level)
 - **Pixi**: Development operations (data processing, code quality, testing)
 - **Python scripts**: Complex operations that can't be handled by above
 
 ### Environment Commands (Ansible-managed)
 ```bash
-pixi run setup-env              # Initial environment setup (installs Minikube, Neo4j)
-pixi run env-start              # Start all services (Minikube + Neo4j)
+pixi run setup-env              # Initial environment setup (installs Podman, Neo4j)
+pixi run env-start              # Start all services (Podman + Neo4j)
 pixi run env-stop               # Stop all services
 pixi run env-status             # Check environment status
 pixi run env-reset              # Reset everything (destructive)
+```
+
+### Podman Commands (Local Development)
+```bash
+pixi run podman-status          # Check container status
+pixi run neo4j-logs             # View Neo4j logs
+pixi run neo4j-connect          # Connect to Neo4j shell
+pixi run neo4j-restart          # Restart Neo4j container
+pixi run neo4j-stop             # Stop Neo4j container
+pixi run neo4j-start            # Start Neo4j container
 ```
 
 ### Development Commands (Pixi-managed)
@@ -79,6 +106,10 @@ pixi run release-build          # Promote latest build to release with confirmat
   - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
   - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
   - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
+    - Build artifacts: `BUILD_MANIFEST.json`, `BUILD_MANIFEST.md`
+    - DCF reports: `M7_DCF_Report_<YYYYMMDD_HHMMSS>.txt`
+    - Validation reports: `validation_report_<YYYYMMDD_HHMMSS>.json`
+    - Stage logs: `stage_logs/` directory
   - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
   - Release management: `data/release/release_<YYYYMMDD_HHMMSS>_build_<ID>/`
   - Latest symlink: `latest` (points to most recent build)
@@ -117,18 +148,31 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 ### MANDATORY PR Creation Workflow
 
-**CRITICAL**: Use the automated PR creation script to ensure M7 testing:
+**CRITICAL**: PRs MUST be created using the automated script after local testing passes.
 
+#### Design Philosophy
+- **Local Testing First**: All tests must pass locally before PR creation
+- **Test Marker System**: CI only validates that local tests were run (checks .m7-test-passed marker)
+- **Fail Fast**: Direct pushes without local testing will fail CI (this is intentional)
+
+#### Required PR Workflow
 ```bash
-# Create PR with automatic M7 end-to-end testing (RECOMMENDED)
+# 1. MANDATORY: Run local M7 end-to-end test first
+pixi run test-m7-e2e
+
+# 2. MANDATORY: Create PR only via script (includes test verification)
 pixi run create-pr "Brief description" ISSUE_NUMBER
 
-# Or create PR with custom description file
+# 3. Optional: Create PR with custom description file
 pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
-
-# Test M7 locally without creating PR
-pixi run test-m7-e2e
 ```
+
+#### Why Manual Git Commands Are Discouraged
+- `git push` without local testing → CI failure (by design)
+- GitHub UI for direct commit → No test marker → CI rejection
+- Manual PR creation → Missing M7 test verification → Merge blocked
+
+**All successful merges require the automated script workflow.**
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
 - ✅ M7 end-to-end test runs successfully BEFORE PR creation/update

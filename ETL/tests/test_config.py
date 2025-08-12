@@ -12,11 +12,16 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 class DatasetTier(Enum):
-    """Data tiers for testing strategy"""
-    TEST = "test"
-    M7 = "m7" 
-    NASDAQ100 = "nasdaq100"
-    VTI = "vti"
+    """Data tiers for testing strategy - Four-tier system"""
+    F2 = "f2"      # Fast 2 companies
+    M7 = "m7"      # Magnificent 7 
+    N100 = "n100"  # NASDAQ 100
+    V3K = "v3k"    # VTI 3500+
+    
+    # Legacy aliases for backward compatibility
+    TEST = "test"   # Maps to F2
+    NASDAQ100 = "nasdaq100"  # Maps to N100  
+    VTI = "vti"     # Maps to V3K
 
 @dataclass
 class TestConfig:
@@ -32,21 +37,30 @@ class TestConfig:
     
     def __post_init__(self):
         """Set tier-specific defaults"""
-        if self.tier == DatasetTier.TEST:
-            self.expected_tickers = ["AAPL"]
-            self.timeout_seconds = 60
+        # Normalize legacy aliases
+        tier_value = self.tier.value
+        if tier_value == "test":
+            tier_value = "f2"
+        elif tier_value == "nasdaq100":
+            tier_value = "n100"
+        elif tier_value == "vti":
+            tier_value = "v3k"
+            
+        if tier_value == "f2":
+            self.expected_tickers = ["MSFT", "NVDA"]  # Fast 2
+            self.timeout_seconds = 120  # 2 minutes
             self.enable_sec_edgar = False
             self.enable_graph_rag = False
-        elif self.tier == DatasetTier.M7:
+        elif tier_value == "m7":
             self.expected_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA"]
-            self.timeout_seconds = 300
+            self.timeout_seconds = 300  # 5 minutes
             self.enable_sec_edgar = True
             self.enable_graph_rag = True
-        elif self.tier == DatasetTier.NASDAQ100:
+        elif tier_value == "n100":
             self.timeout_seconds = 1800  # 30 minutes
             self.enable_sec_edgar = True
             self.enable_graph_rag = True
-        elif self.tier == DatasetTier.VTI:
+        elif tier_value == "v3k":
             self.timeout_seconds = 7200  # 2 hours
             self.enable_sec_edgar = False  # Too expensive
             self.enable_graph_rag = True
@@ -55,21 +69,36 @@ class TestConfigManager:
     """Manages test configurations for different dataset tiers"""
     
     CONFIG_MAP = {
-        DatasetTier.TEST: TestConfig(
-            tier=DatasetTier.TEST,
-            config_file="list_fast_2.yml"  # Fast 2-company list for testing
+        # Primary four-tier system
+        DatasetTier.F2: TestConfig(
+            tier=DatasetTier.F2,
+            config_file="list_fast_2.yml"
         ),
         DatasetTier.M7: TestConfig(
             tier=DatasetTier.M7, 
-            config_file="list_magnificent_7.yml"  # Full 7-company list for PR
+            config_file="list_magnificent_7.yml"
+        ),
+        DatasetTier.N100: TestConfig(
+            tier=DatasetTier.N100,
+            config_file="list_nasdaq_100.yml"
+        ),
+        DatasetTier.V3K: TestConfig(
+            tier=DatasetTier.V3K,
+            config_file="list_vti_3500.yml"
+        ),
+        
+        # Legacy aliases (for backward compatibility)
+        DatasetTier.TEST: TestConfig(
+            tier=DatasetTier.TEST,
+            config_file="list_fast_2.yml"  # Maps to F2
         ),
         DatasetTier.NASDAQ100: TestConfig(
             tier=DatasetTier.NASDAQ100,
-            config_file="list_nasdaq_100.yml"
+            config_file="list_nasdaq_100.yml"  # Maps to N100
         ),
         DatasetTier.VTI: TestConfig(
             tier=DatasetTier.VTI,
-            config_file="list_vti_3500.yml"
+            config_file="list_vti_3500.yml"  # Maps to V3K
         )
     }
     

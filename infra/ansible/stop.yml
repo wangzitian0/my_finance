@@ -1,26 +1,39 @@
 ---
-# stop.yml - Stop the development environment
-- name: Stop Development Environment
+# stop.yml - Stop local development environment
+- name: Stop Development Environment  
   hosts: localhost
   connection: local
-  gather_facts: no
-  
+  gather_facts: yes
   tasks:
-    - name: Stop Minikube cluster
+    - name: Stop Neo4j container
       shell: |
-        if minikube status | grep -q "Running"; then
-          echo "Stopping Minikube cluster..."
-          minikube stop
+        if podman ps | grep -q "neo4j-finance"; then
+          echo "Stopping Neo4j container..."
+          podman stop neo4j-finance
         else
-          echo "Minikube is already stopped"
+          echo "Neo4j container not running"
         fi
-      register: minikube_stop
-      changed_when: "'Stopping' in minikube_stop.stdout"
+      register: neo4j_stop
+      changed_when: "'Stopping' in neo4j_stop.stdout"
+
+    - name: Stop Podman machine (optional - keeps it running for faster startup)
+      shell: |
+        echo "Keeping Podman machine running for faster future startups"
+        echo "To fully stop: podman machine stop"
+      register: podman_machine_info
+      changed_when: false
 
     - name: Display stop status
       debug:
         msg: |
-          ✅ Development environment stopped.
+          🛑 Development environment stopped!
           
-          To restart: `pixi run env-start`
-          To check status: `pixi run env-status`
+          📊 Status:
+          - Neo4j container: Stopped
+          - Podman machine: Still running (for faster restart)
+          
+          🔄 To restart:
+          - `pixi run env-start`
+          
+          🛠️  To fully shutdown:
+          - `podman machine stop` (if you want to free all resources)

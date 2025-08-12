@@ -1,52 +1,80 @@
 ---
-# start.yml - Start the development environment
+# start.yml - Start local development environment with Podman
 - name: Start Development Environment
   hosts: localhost
   connection: local
   gather_facts: yes
-  vars:
-    repo_dir: "{{ lookup('env','PWD') }}"
-  
   tasks:
-    - name: Start Minikube cluster
-      shell: |
-        if ! minikube status | grep -q "Running"; then
-          echo "Starting Minikube cluster..."
-          minikube start --driver=docker --memory=4096 --cpus=2
-        else
-          echo "Minikube is already running"
-        fi
-      register: minikube_start
-      changed_when: "'Starting' in minikube_start.stdout"
+    - name: Check if Podman machine is running
+      command: podman machine list
+      register: podman_machine_status
+      changed_when: false
+      failed_when: false
 
-    - name: Deploy Neo4j services
+    - name: Start Podman machine if not running
       shell: |
-        if command -v kubectl &> /dev/null; then
-          kubectl apply -f k8s/
+        if ! podman machine list | grep -q "Running"; then
+          echo "Starting Podman machine..."
+          podman machine start
         else
-          minikube kubectl -- apply -f k8s/
+          echo "Podman machine already running"
         fi
-      args:
-        chdir: "{{ repo_dir }}"
-      register: k8s_deploy
-      changed_when: "'created' in k8s_deploy.stdout or 'configured' in k8s_deploy.stdout"
+      register: podman_machine_start
+      changed_when: "'Starting' in podman_machine_start.stdout"
 
-    - name: Wait for services to be ready
+    - name: Start Neo4j container
       shell: |
-        if command -v kubectl &> /dev/null; then
-          kubectl wait --for=condition=available --timeout=300s deployment/neo4j
+        if ! podman ps | grep -q "neo4j-finance"; then
+          echo "Starting Neo4j container..."
+          podman start neo4j-finance || {
+            echo "Container doesn't exist, creating new one..."
+            podman run -d \
+              --name neo4j-finance \
+              --publish 7474:7474 \
+              --publish 7687:7687 \
+              --volume neo4j-data:/data \
+              --env NEO4J_AUTH=neo4j/finance123 \
+              --env NEO4J_PLUGINS='["apoc"]' \
+              --env NEO4J_dbms_security_procedures_unrestricted=apoc.* \
+              --env NEO4J_dbms_memory_heap_initial__size=512m \
+              --env NEO4J_dbms_memory_heap_max__size=1G \
+              --restart unless-stopped \
+              neo4j:5.18-community
+          }
         else
-          minikube kubectl -- wait --for=condition=available --timeout=300s deployment/neo4j
+          echo "Neo4j container already running"
         fi
-      register: services_ready
-      failed_when: services_ready.rc != 0
+      register: neo4j_start
+      changed_when: "'Starting' in neo4j_start.stdout or 'creating' in neo4j_start.stdout"
+
+    - name: Wait for Neo4j to be ready
+      shell: |
+        echo "Waiting for Neo4j to be ready..."
+        for i in {1..20}; do
+          if curl -s http://localhost:7474 >/dev/null 2>&1; then
+            echo "Neo4j is ready!"
+            exit 0
+          fi
+          echo "Waiting... ($i/20)"
+          sleep 3
+        done
+        echo "Neo4j may need more time to start"
+      register: neo4j_ready
+      changed_when: false
 
     - name: Display environment status
       debug:
         msg: |
-          ✅ Development environment started successfully!
+          🚀 Development environment started!
           
-          Next steps:
-          1. Check status: `pixi run env-status`
-          2. Access Neo4j: Use connection info from status command
-          3. Run development tasks: `pixi run status`, `pixi run build-m7`
+          📊 Neo4j Database:
+          - Web Interface: http://localhost:7474
+          - Bolt Connection: bolt://localhost:7687
+          - Username: neo4j / Password: finance123
+          
+          🛠️  Quick Commands:
+          - Check status: `pixi run podman-status`
+          - View logs: `pixi run neo4j-logs`
+          - Connect: `pixi run neo4j-connect`
+          
+          ✅ Ready for development!

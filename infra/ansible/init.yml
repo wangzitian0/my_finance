@@ -11,8 +11,6 @@
   vars:
     # The project directory, discovered from the environment.
     repo_dir: "{{ lookup('env','PWD') }}"
-    # Command for initializing data submodules.
-    data_repo_command: "git submodule update --init --recursive"
     # Docker container configuration
     neo4j_container_name: "my-finance-neo4j"
     neo4j_image_name: "neo4j:5.18-community"
@@ -33,10 +31,10 @@
     - name: Setup Pixi application environment
       include_tasks: roles/pixi_setup.yml
 
-    - name: Setup and start Minikube with Neo4j
-      include_tasks: roles/docker_setup.yml
+    - name: Setup and start Podman with Neo4j
+      include_tasks: roles/podman_setup.yml
 
-    - name: Initialize or update data repositories
+    - name: Initialize or update data repository symlink
       include_tasks: roles/repo_data.yml
 
     - name: Final summary
@@ -47,17 +45,17 @@
           Your environment is configured. Here's a summary:
           
           - ✅ Pixi environment is ready.
-          - ✅ Data submodules are initialized.
-          - ✅ Minikube cluster is running with Neo4j deployed.
+          - ✅ Data repository is linked: repo/data -> ../my_finance_data
+          - ✅ Podman is running with Neo4j container deployed.
           
           Next Steps:
           1. Activate the environment: `pixi shell`
           2. Run key tasks:
              - `pixi run status` (check data status)
-             - `pixi run k8s-status` (check Minikube cluster)
+             - `pixi run podman-status` (check containers)
              - `pixi run neo4j-logs` (check Neo4j logs)
              - `pixi run build-m7` (build a small test dataset)
           
           Access Neo4j:
-          - Get connection info: `minikube ip` and check NodePort services
-          - Use `pixi run neo4j-connect` for connection details
+          - Web Interface: http://localhost:7474
+          - Bolt: bolt://localhost:7687 (neo4j/finance123)

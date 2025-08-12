@@ -1,6 +1,63 @@
 ---
 # roles/repo_data.yml
-- name: Update Git submodules (data repository)
-  command: "{{ data_repo_command }}"
-  args:
-    chdir: "{{ repo_dir }}"
+# Ensure data repository is cloned as sibling and linked as a symlink under repo_dir/data
+
+- name: Compute data repository paths
+  set_fact:
+    data_repo_dir: "{{ repo_dir }}/../my_finance_data"
+    data_link_path: "{{ repo_dir }}/data"
+
+- name: Ensure data repository is cloned as a sibling directory
+  git:
+    repo: "https://github.com/wangzitian0/my_finance_data.git"
+    dest: "{{ data_repo_dir }}"
+    version: "main"
+    update: yes
+    force: no
+  register: clone_result
+
+- name: Remove legacy .gitmodules if present
+  file:
+    path: "{{ repo_dir }}/.gitmodules"
+    state: absent
+
+- name: Remove legacy .git/modules/data if present
+  file:
+    path: "{{ repo_dir }}/.git/modules/data"
+    state: absent
+
+- name: Stat existing data path
+  stat:
+    path: "{{ data_link_path }}"
+  register: data_path_stat
+
+- name: Remove existing non-symlink data path if present
+  file:
+    path: "{{ data_link_path }}"
+    state: absent
+  when:
+    - data_path_stat.stat.exists | default(false)
+    - not (data_path_stat.stat.islnk | default(false))
+
+- name: Create symlink from repo_dir/data to sibling data repository
+  file:
+    src: "{{ data_repo_dir }}"
+    dest: "{{ data_link_path }}"
+    state: link
+
+- name: Confirm data link
+  stat:
+    path: "{{ data_link_path }}"
+  register: data_link_stat
+
+- name: Fail if data symlink was not created correctly
+  fail:
+    msg: "data link was not created correctly: expected symlink at {{ data_link_path }} -> {{ data_repo_dir }}"
+  when: not (data_link_stat.stat.islnk | default(false))
+
+- name: Summary for data repository linking
+  debug:
+    msg: |
+      ✅ Data repository ready.
+      - Source repo: {{ data_repo_dir }}
+      - Link path:  {{ data_link_path }}
