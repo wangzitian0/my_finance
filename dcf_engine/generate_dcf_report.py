@@ -534,8 +534,14 @@ def main():
         # Generate report
         report = analyzer.generate_report()
 
-        # Save report
-        report_path = analyzer.save_report(report)
+        # Create timestamped build directory for standalone execution
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        build_dir = Path(f"data/stage_99_build/build_{timestamp}")
+        build_dir.mkdir(parents=True, exist_ok=True)
+
+        # Save report to proper build directory
+        report_path = analyzer.save_report(report, output_dir=build_dir)
 
         print(f"\n✅ DCF Report generated successfully!")
         print(f"📄 Report saved to: {report_path}")

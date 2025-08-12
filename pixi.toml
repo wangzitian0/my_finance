@@ -39,7 +39,7 @@ neo4j-python-driver = "*"
 [tasks]
 # Core commands from CLAUDE.md
 activate = "echo 'Pixi environment activated'"
-status = "python ETL/manage.py status"
+etl-status = "python ETL/manage.py status"
 run-job = "python ETL/run_job.py"
 
 # Analysis and reporting commands  
@@ -49,6 +49,11 @@ simple-dcf = "python dcf_engine/simple_m7_dcf.py"
 
 # Install additional packages via pip (cross-platform)  
 pip-install = "pip install neomodel"
+
+# Development workflow shortcuts
+dev = "echo '🚀 Development Ready! Try: pixi run build (fast) or pixi run build-m7'"
+quick-test = "python -m pytest tests/test_basic_structure.py -v"
+status = "python infra/comprehensive_env_status.py"
 
 # Quality assurance commands
 format = "python -m black --line-length 100 . && python -m isort ."
@@ -70,7 +75,7 @@ test-dcf-report = "python -m pytest dcf_engine/test_dcf_report.py -v"
 migrate-data-structure = "python ETL/migrate_data_structure.py"
 # Unified dataset building with configuration-driven approach
 build-dataset = "python ETL/build_dataset.py"
-build = "python ETL/build_dataset.py"
+build = "python ETL/build_dataset.py f2"  # Default to fast build for development
 
 # Four-tier build system: f2/m7/n100/v3k
 build-f2 = "python ETL/build_dataset.py f2"
@@ -86,8 +91,9 @@ build-vti = "python ETL/build_dataset.py v3k"
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # Build cleanup and maintenance
-clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
-build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
+clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
+clean = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'"
+build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/stage_99_build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
 # --- Environment Management (Ansible + Podman) ---
 # Initial environment setup (now uses Podman instead of Minikube)
@@ -95,8 +101,9 @@ setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.y
 # Environment operations
 env-start = "ansible-playbook infra/ansible/start.yml"
 env-stop = "ansible-playbook infra/ansible/stop.yml" 
-env-status = "python infra/env_status.py"
+env-status = "python infra/comprehensive_env_status.py"
 env-reset = "ansible-playbook infra/ansible/reset.yml"
+cache-status = "python infra/show_cache_status.py"
 
 # --- Podman Management (Local Development) ---
 # Podman container operations
@@ -127,6 +134,14 @@ release-build = "python scripts/manage_build_data.py release"
 
 # --- Infrastructure Management ---
 shutdown-all = "python infra/shutdown_all.py"
+
+# --- Ollama & Embedding Management ---
+# Setup Ollama and embedding models
+setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
+ollama-status = "curl -s http://localhost:11434/api/tags 2>/dev/null && echo 'Ollama: ✅ Running' || echo 'Ollama: ❌ Not running'"
+ollama-models = "ollama list"
+build-sec-library = "python dcf_engine/sec_document_manager.py"
+test-ollama = "ollama run llama3.1:8b 'Explain DCF valuation in 2 sentences'"
 
 # --- Missing commands for e2e tests ---
 # Aliases for existing functionality to match test expectations

@@ -1,0 +1,94 @@
+---
+# roles/dependency_cache.yml
+# Smart dependency management leveraging Podman's native caching + custom logic
+
+- name: Create cache directory for dependencies
+  file:
+    path: "{{ ansible_env.HOME }}/.cache/my-finance"
+    state: directory
+    mode: '0755'
+
+- name: Display Podman's native cache locations
+  debug:
+    msg: |
+      📦 Podman Native Caching:
+      - Images cache: ~/.local/share/containers/storage/
+      - Machine data: ~/.local/share/containers/podman/machine/
+      - Network cache: ~/.local/share/containers/cache/
+      - Registry cache: Automatic via containers/image library
+
+- name: Check if Podman machine is already initialized
+  shell: podman machine list --format json
+  register: existing_machines
+  changed_when: false
+  failed_when: false
+
+- name: Parse existing machine info
+  set_fact:
+    machine_exists: "{{ (existing_machines.stdout | from_json | length > 0) if existing_machines.rc == 0 else false }}"
+    machine_running: "{{ (existing_machines.stdout | from_json | selectattr('Running', 'equalto', true) | list | length > 0) if existing_machines.rc == 0 else false }}"
+
+- name: Skip machine initialization if already exists and working
+  debug:
+    msg: "✅ Podman machine already exists and {{ 'running' if machine_running else 'stopped' }}"
+  when: machine_exists
+
+- name: Cache setup completion marker
+  file:
+    path: "{{ ansible_env.HOME }}/.cache/my-finance/environment-ready"
+    state: touch
+    mode: '0644'
+  when: machine_exists and machine_running
+
+- name: Check if Podman is available before pulling images
+  command: podman info
+  register: podman_available
+  changed_when: false
+  failed_when: false
+
+- name: Check if Neo4j image is already pulled (only if Podman is available)
+  shell: podman images | grep neo4j | grep 5.18-community
+  register: neo4j_image_check
+  changed_when: false
+  failed_when: false
+  when: podman_available.rc == 0
+
+- name: Pull Neo4j image if not cached and Podman is available
+  shell: |
+    echo "Pulling Neo4j image (this may take a few minutes on first run)..."
+    podman pull neo4j:5.18-community
+  when: 
+    - podman_available.rc == 0
+    - neo4j_image_check.rc != 0
+  register: neo4j_pull
+  retries: 3
+  delay: 5
+
+- name: Create persistent Neo4j data volume (only if Podman is available)
+  shell: podman volume create neo4j-data || true
+  changed_when: false
+  when: podman_available.rc == 0
+
+- name: Cache Neo4j configuration
+  copy:
+    content: |
+      # Neo4j Configuration Cache
+      # Generated: {{ ansible_date_time.iso8601 }}
+      NEO4J_AUTH=neo4j/finance123
+      NEO4J_PLUGINS=["apoc"]
+      NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      NEO4J_dbms_memory_heap_initial__size=512m
+      NEO4J_dbms_memory_heap_max__size=1G
+    dest: "{{ ansible_env.HOME }}/.cache/my-finance/neo4j-config.env"
+    mode: '0644'
+
+- name: Display caching status
+  debug:
+    msg: |
+      📦 Dependency Caching Status:
+      - Podman machine: {{ '✅ Exists' if machine_exists else '🔄 Will create' }}
+      - Machine running: {{ '✅ Running' if machine_running else '⚠️ Stopped' }}
+      - Cache directory: ✅ Created at ~/.cache/my-finance/
+      - Neo4j config: ✅ Cached
+      
+      🚀 Ready for Podman setup phase!

@@ -46,17 +46,48 @@
   changed_when: false
   failed_when: false
 
-- name: Initialize Podman machine if needed
+- name: Use cached machine information from dependency_cache
+  debug:
+    msg: |
+      🔄 Machine Setup Strategy:
+      - Exists: {{ machine_exists | default('unknown') }}
+      - Running: {{ machine_running | default('unknown') }}
+      - Will {{ 'reuse existing' if (machine_exists | default(false)) else 'create new' }} machine
+
+- name: Remove problematic existing machine only if needed
+  shell: |
+    if podman machine list | grep -q "podman-machine-default.*Stopped.*Last start.*error\|broken\|invalid"; then
+      echo "🗑️ Removing problematic machine..."
+      podman machine stop podman-machine-default || true
+      podman machine rm podman-machine-default --force || true
+    else
+      echo "ℹ️ Existing machine seems fine, keeping it"
+    fi
+  ignore_errors: true
+  when: machine_exists | default(false)
+
+- name: Initialize Podman machine only if needed
+  shell: |
+    echo "🚀 Creating new Podman machine..."
+    podman machine init \
+      --cpus 2 \
+      --memory 4096 \
+      --disk-size 20 \
+      --volume /Users:/Users \
+      --now
+  register: podman_machine_init
+  retries: 2
+  delay: 10
+  when: not (machine_exists | default(false))
+
+- name: Ensure Podman machine is started
   shell: |
     if ! podman machine list | grep -q "Running"; then
-      echo "Initializing Podman machine..."
-      podman machine init --cpus 2 --memory 4096 --disk-size 20
       echo "Starting Podman machine..."
       podman machine start
-    else
-      echo "Podman machine already running"
+      sleep 10
     fi
-  register: podman_machine_init
+  register: podman_start_result
   changed_when: "'Initializing' in podman_machine_init.stdout"
 
 - name: Verify Podman is working

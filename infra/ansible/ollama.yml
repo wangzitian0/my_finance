@@ -1,0 +1,30 @@
+---
+# ollama.yml - Setup Ollama for local embedding and analysis
+- name: Setup Ollama Environment
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    repo_dir: "{{ lookup('env','PWD') }}"
+  
+  tasks:
+    - name: Setup Ollama and embedding models
+      include_tasks: roles/ollama_setup.yml
+      
+    - name: Display final setup summary
+      debug:
+        msg: |
+          🎉 Ollama Setup Complete!
+          
+          🔧 Quick Commands:
+          - Check status: `pixi run ollama-status`
+          - List models: `pixi run ollama-models`
+          - Test chat: `pixi run test-ollama`
+          - Build SEC library: `pixi run build-sec-library`
+          
+          📚 Next Steps:
+          1. Run `pixi run build-sec-library` to download SEC filings
+          2. Generate embeddings for DCF analysis
+          3. Use enhanced DCF reports with document context
+          
+          ✅ Ready for enhanced DCF analysis with document intelligence!
