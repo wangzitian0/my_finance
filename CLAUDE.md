@@ -33,17 +33,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Command Line Architecture
 
 **Two-tier management system:**
-- **Ansible**: Environment setup and infrastructure (Minikube, Neo4j, system-level)
+- **Ansible**: Environment setup and infrastructure (Podman, Neo4j, system-level)
 - **Pixi**: Development operations (data processing, code quality, testing)
 - **Python scripts**: Complex operations that can't be handled by above
 
 ### Environment Commands (Ansible-managed)
 ```bash
-pixi run setup-env              # Initial environment setup (installs Minikube, Neo4j)
-pixi run env-start              # Start all services (Minikube + Neo4j)
+pixi run setup-env              # Initial environment setup (installs Podman, Neo4j)
+pixi run env-start              # Start all services (Podman + Neo4j)
 pixi run env-stop               # Stop all services
 pixi run env-status             # Check environment status
 pixi run env-reset              # Reset everything (destructive)
+```
+
+### Podman Commands (Local Development)
+```bash
+pixi run podman-status          # Check container status
+pixi run neo4j-logs             # View Neo4j logs
+pixi run neo4j-connect          # Connect to Neo4j shell
+pixi run neo4j-restart          # Restart Neo4j container
+pixi run neo4j-stop             # Stop Neo4j container
+pixi run neo4j-start            # Start Neo4j container
 ```
 
 ### Development Commands (Pixi-managed)

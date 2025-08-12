@@ -77,14 +77,23 @@ build-status = "python -c 'from common.build_tracker import BuildTracker; bt=Bui
 clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
 build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
-# --- Environment Management (Ansible) ---
-# Initial environment setup
-setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.yml --ask-become-pass"
+# --- Environment Management (Ansible + Podman) ---
+# Initial environment setup (now uses Podman instead of Minikube)
+setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.yml"
 # Environment operations
 env-start = "ansible-playbook infra/ansible/start.yml"
 env-stop = "ansible-playbook infra/ansible/stop.yml" 
 env-status = "python infra/env_status.py"
 env-reset = "ansible-playbook infra/ansible/reset.yml"
+
+# --- Podman Management (Local Development) ---
+# Podman container operations
+podman-status = "podman ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
+neo4j-logs = "podman logs neo4j-finance"
+neo4j-connect = "podman exec -it neo4j-finance cypher-shell -u neo4j -p finance123"
+neo4j-restart = "podman restart neo4j-finance"
+neo4j-stop = "podman stop neo4j-finance"
+neo4j-start = "podman start neo4j-finance"
 
 # --- Workflow Management ---
 # PR creation with M7 validation

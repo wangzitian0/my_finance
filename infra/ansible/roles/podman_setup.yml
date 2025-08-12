@@ -1,0 +1,133 @@
+---
+# roles/podman_setup.yml
+# Simplified local development setup using Podman instead of Minikube + Kubernetes
+# Perfect for local development without deployment concerns
+
+- name: Check if Podman is installed
+  command: podman version
+  register: podman_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Podman (macOS)
+  shell: |
+    if ! command -v podman &> /dev/null; then
+      if command -v brew &> /dev/null; then
+        brew install podman
+      else
+        echo "Please install Homebrew first: https://brew.sh/"
+        exit 1
+      fi
+    fi
+  when: ansible_facts['system'] == 'Darwin' and podman_check.rc != 0
+  register: podman_install_macos
+
+- name: Install Podman (Linux)
+  shell: |
+    if ! command -v podman &> /dev/null; then
+      # Try different package managers
+      if command -v apt-get &> /dev/null; then
+        sudo apt-get update && sudo apt-get install -y podman
+      elif command -v dnf &> /dev/null; then
+        sudo dnf install -y podman
+      elif command -v yum &> /dev/null; then
+        sudo yum install -y podman
+      else
+        echo "Please install podman manually for your Linux distribution"
+        exit 1
+      fi
+    fi
+  when: ansible_facts['system'] == 'Linux' and podman_check.rc != 0
+  register: podman_install_linux
+
+- name: Check Podman machine status
+  command: podman machine list
+  register: podman_machine_status
+  changed_when: false
+  failed_when: false
+
+- name: Initialize Podman machine if needed
+  shell: |
+    if ! podman machine list | grep -q "Running"; then
+      echo "Initializing Podman machine..."
+      podman machine init --cpus 2 --memory 4096 --disk-size 20
+      echo "Starting Podman machine..."
+      podman machine start
+    else
+      echo "Podman machine already running"
+    fi
+  register: podman_machine_init
+  changed_when: "'Initializing' in podman_machine_init.stdout"
+
+- name: Verify Podman is working
+  command: podman info
+  register: podman_info
+  changed_when: false
+
+- name: Stop existing Neo4j container if running
+  shell: podman stop neo4j-finance || true
+  changed_when: false
+
+- name: Remove existing Neo4j container
+  shell: podman rm neo4j-finance || true
+  changed_when: false
+
+- name: Create Neo4j data volume
+  shell: podman volume create neo4j-data || true
+  changed_when: false
+
+- name: Start Neo4j container with Podman
+  shell: |
+    podman run -d \
+      --name neo4j-finance \
+      --publish 7474:7474 \
+      --publish 7687:7687 \
+      --volume neo4j-data:/data \
+      --env NEO4J_AUTH=neo4j/finance123 \
+      --env NEO4J_PLUGINS='["apoc"]' \
+      --env NEO4J_dbms_security_procedures_unrestricted=apoc.* \
+      --env NEO4J_dbms_memory_heap_initial__size=512m \
+      --env NEO4J_dbms_memory_heap_max__size=1G \
+      --restart unless-stopped \
+      neo4j:5.18-community
+  register: neo4j_start
+  changed_when: true
+
+- name: Wait for Neo4j to be ready
+  shell: |
+    echo "Waiting for Neo4j to start..."
+    for i in {1..30}; do
+      if podman exec neo4j-finance cypher-shell -u neo4j -p finance123 "RETURN 1" &>/dev/null; then
+        echo "Neo4j is ready!"
+        exit 0
+      fi
+      echo "Waiting... ($i/30)"
+      sleep 2
+    done
+    echo "Neo4j failed to start within timeout"
+    exit 1
+  register: neo4j_ready
+  changed_when: false
+
+- name: Display Neo4j connection info
+  debug:
+    msg: |
+      🎉 Local development environment ready!
+      
+      📊 Neo4j Database:
+      - Web Interface: http://localhost:7474
+      - Bolt Connection: bolt://localhost:7687
+      - Username: neo4j
+      - Password: finance123
+      
+      🛠️  Management Commands:
+      - Check status: `podman ps`
+      - View logs: `podman logs neo4j-finance`
+      - Stop: `podman stop neo4j-finance`
+      - Start: `podman start neo4j-finance`
+      - Connect: `podman exec -it neo4j-finance cypher-shell -u neo4j -p finance123`
+      
+      🚀 Ready for local development!
+      - No Kubernetes complexity
+      - No minikube overhead  
+      - Perfect for development & testing
