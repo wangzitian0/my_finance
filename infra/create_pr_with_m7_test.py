@@ -276,8 +276,30 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with M7 test info")
         print("📝 M7 test marker and status included in commit message")
     
-    # 6. Push current branch
-    run_command(f"git push -u origin {current_branch}", f"Pushing branch {current_branch}")
+    # 6. Push current branch (handle potential conflicts)
+    print(f"🔄 Pushing branch {current_branch}...")
+    try:
+        push_result = run_command(f"git push -u origin {current_branch}", f"Pushing branch {current_branch}", check=False)
+        if push_result and push_result.returncode != 0:
+            if "non-fast-forward" in push_result.stderr or "rejected" in push_result.stderr:
+                print("⚠️  Remote branch has diverged. Attempting to resolve...")
+                # Fetch and rebase
+                run_command("git fetch origin", "Fetching latest changes")
+                rebase_result = run_command(f"git rebase origin/{current_branch}", "Rebasing on remote changes", check=False)
+                if rebase_result and rebase_result.returncode == 0:
+                    # Try push again after rebase
+                    run_command(f"git push origin {current_branch}", f"Pushing rebased branch {current_branch}")
+                else:
+                    print("❌ Rebase failed. Using force-with-lease for safety...")
+                    run_command(f"git push --force-with-lease origin {current_branch}", f"Force pushing branch {current_branch}")
+            else:
+                print(f"❌ Push failed with error: {push_result.stderr}")
+                sys.exit(1)
+        else:
+            print(f"✅ Successfully pushed {current_branch}")
+    except Exception as e:
+        print(f"❌ Push failed with exception: {e}")
+        sys.exit(1)
     
     # 7. Create PR body
     if description_file and Path(description_file).exists():

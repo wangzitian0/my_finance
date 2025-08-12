@@ -11,6 +11,8 @@ data/stage_99_build_*/
 # Temporary and build files
 *.large
 knowledge_base_build.log
+# Latest build symlink (dynamic, should not be tracked)
+common/latest_build
 
 # Local development files
 .webui_secret_key
