@@ -53,6 +53,8 @@ class OllamaClient:
         
         # Template directory
         self.template_dir = self.debug_dir / "templates"
+        # Fallback to project templates if data templates don't exist
+        self.fallback_template_dir = Path("templates/dcf")
         
         self._verify_ollama_connection()
 
@@ -252,6 +254,246 @@ class OllamaClient:
         
         return result
 
+    def generate_bilingual_dcf_report(
+        self, 
+        ticker: str,
+        financial_data: Dict[str, Any],
+        market_context: Dict[str, Any],
+        semantic_results: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Generate bilingual (English and Chinese) DCF valuation reports.
+        
+        Args:
+            ticker: Stock ticker symbol
+            financial_data: Enhanced financial metrics including market size, R&D, executive info
+            market_context: Market conditions and sector data
+            semantic_results: Relevant financial intelligence from embeddings
+            
+        Returns:
+            Dictionary containing both English and Chinese reports and metadata
+        """
+        results = {'success': True, 'reports': {}}
+        
+        # Enhance financial data with additional analysis factors
+        enhanced_data = self._enhance_financial_data(financial_data, ticker)
+        
+        # Generate English report
+        en_result = self._generate_single_language_report(
+            ticker, enhanced_data, market_context, semantic_results, 'en'
+        )
+        
+        # Generate Chinese report  
+        zh_result = self._generate_single_language_report(
+            ticker, enhanced_data, market_context, semantic_results, 'zh'
+        )
+        
+        if en_result['success']:
+            results['reports']['english'] = en_result
+            # Save English report
+            if self.debug_mode:
+                self._save_generated_report('dcf_en', ticker, en_result['response'], en_result)
+        else:
+            results['success'] = False
+            results['english_error'] = en_result.get('error', 'Unknown error')
+            
+        if zh_result['success']:
+            results['reports']['chinese'] = zh_result  
+            # Save Chinese report
+            if self.debug_mode:
+                self._save_generated_report('dcf_zh', ticker, zh_result['response'], zh_result)
+        else:
+            results['success'] = False
+            results['chinese_error'] = zh_result.get('error', 'Unknown error')
+        
+        return results
+
+    def _generate_single_language_report(
+        self, 
+        ticker: str, 
+        financial_data: Dict, 
+        market_context: Dict, 
+        semantic_results: List, 
+        language: str
+    ) -> Dict[str, Any]:
+        """Generate DCF report in specified language."""
+        # Load appropriate template
+        template_filename = f"dcf_valuation_prompt_{language}.md"
+        template_path = self.template_dir / template_filename
+        
+        # Try fallback template location if primary doesn't exist
+        if not template_path.exists():
+            template_path = self.fallback_template_dir / template_filename
+            
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                prompt_template = f.read()
+        except FileNotFoundError:
+            logger.error(f"DCF template not found: {template_path}")
+            return {'success': False, 'error': f'DCF template not found: {template_filename}'}
+        
+        # Format the prompt with enhanced data
+        formatted_prompt = self._format_enhanced_dcf_prompt(
+            prompt_template, ticker, financial_data, market_context, semantic_results
+        )
+        
+        # Generate the report
+        result = self.generate_completion(
+            prompt=formatted_prompt,
+            temperature=0.3,  # Lower temperature for factual analysis
+            max_tokens=4000   # Increased for comprehensive analysis
+        )
+        
+        return result
+
+    def _enhance_financial_data(self, financial_data: Dict, ticker: str) -> Dict:
+        """Enhance financial data with additional analysis factors."""
+        enhanced = financial_data.copy()
+        
+        # Add market analysis factors
+        enhanced['market_analysis'] = {
+            'market_size_growth': self._calculate_market_growth(financial_data),
+            'revenue_growth_breakdown': self._analyze_revenue_growth(financial_data),
+            'rd_efficiency': self._calculate_rd_efficiency(financial_data),
+            'competitive_positioning': self._assess_competitive_position(financial_data)
+        }
+        
+        # Add executive analysis factors
+        enhanced['executive_analysis'] = {
+            'leadership_age_factor': self._analyze_leadership_age(financial_data),
+            'management_tenure': self._analyze_management_tenure(financial_data),
+            'strategic_execution_score': self._calculate_execution_score(financial_data)
+        }
+        
+        return enhanced
+    
+    def _calculate_market_growth(self, data: Dict) -> Dict:
+        """Calculate market size and growth metrics."""
+        historical = data.get('historical', {})
+        revenue_data = historical.get('revenue', [])
+        
+        if len(revenue_data) >= 3:
+            # Calculate CAGR over available period
+            recent_revenue = revenue_data[-1] if revenue_data else 0
+            old_revenue = revenue_data[0] if len(revenue_data) > 0 else recent_revenue
+            years = len(revenue_data) - 1
+            
+            if years > 0 and old_revenue > 0:
+                cagr = ((recent_revenue / old_revenue) ** (1/years)) - 1
+            else:
+                cagr = 0
+        else:
+            cagr = 0
+            
+        return {
+            'revenue_cagr': cagr,
+            'market_capacity_estimate': recent_revenue * 10 if 'recent_revenue' in locals() else 0,
+            'growth_trend': 'accelerating' if cagr > 0.15 else 'stable' if cagr > 0.05 else 'declining'
+        }
+    
+    def _analyze_revenue_growth(self, data: Dict) -> Dict:
+        """Analyze revenue growth patterns from available data."""
+        historical = data.get('historical', {})
+        revenue_data = historical.get('revenue', [])
+        
+        # Calculate organic growth estimate from historical data if available
+        organic_growth = 0.0
+        if len(revenue_data) >= 2:
+            recent_growth = (revenue_data[-1] - revenue_data[-2]) / revenue_data[-2] if revenue_data[-2] > 0 else 0
+            organic_growth = max(0, recent_growth)  # Use actual data
+        
+        return {
+            'organic_growth_estimate': organic_growth,
+            'revenue_trend': 'increasing' if len(revenue_data) >= 2 and revenue_data[-1] > revenue_data[-2] else 'stable',
+            'data_points_available': len(revenue_data)
+        }
+    
+    def _calculate_rd_efficiency(self, data: Dict) -> Dict:
+        """Calculate R&D efficiency metrics from actual data."""
+        financials = data.get('financials', {})
+        historical = data.get('historical', {})
+        
+        rd_expense = financials.get('research_development', 0)
+        revenue = financials.get('revenue', 1)  # Avoid division by zero
+        
+        rd_intensity = rd_expense / revenue if revenue > 0 else 0
+        
+        # Calculate R&D growth trend if historical data available
+        rd_historical = historical.get('rd_expenses', [])
+        rd_growth_trend = 'stable'
+        if len(rd_historical) >= 2:
+            if rd_historical[-1] > rd_historical[-2]:
+                rd_growth_trend = 'increasing'
+            elif rd_historical[-1] < rd_historical[-2]:
+                rd_growth_trend = 'decreasing'
+        
+        return {
+            'rd_intensity': rd_intensity,
+            'rd_growth_trend': rd_growth_trend,
+            'rd_absolute_amount': rd_expense,
+            'historical_rd_points': len(rd_historical)
+        }
+    
+    def _assess_competitive_position(self, data: Dict) -> Dict:
+        """Assess competitive positioning from available financial data."""
+        financials = data.get('financials', {})
+        historical = data.get('historical', {})
+        
+        # Assess based on margin trends if available
+        revenue = financials.get('revenue', 0)
+        net_income = financials.get('net_income', 0)
+        margin = net_income / revenue if revenue > 0 else 0
+        
+        return {
+            'current_margin': margin,
+            'has_historical_data': len(historical.get('revenue', [])) > 1,
+            'data_source': 'financial_metrics'
+        }
+    
+    def _analyze_leadership_age(self, data: Dict) -> Dict:
+        """Analyze executive leadership age and experience from provided data."""
+        executive_info = data.get('executive_info', {})
+        
+        ceo_age = executive_info.get('ceo_age', None)
+        ceo_tenure = executive_info.get('ceo_tenure', None)
+        
+        # Only calculate innovation score if we have real age data
+        leadership_score = None
+        if ceo_age is not None:
+            leadership_score = 'high' if ceo_age < 55 else 'moderate'
+        
+        return {
+            'ceo_age': ceo_age,
+            'ceo_tenure': ceo_tenure,
+            'ceo_name': executive_info.get('ceo_name', None),
+            'leadership_innovation_score': leadership_score,
+            'data_availability': 'provided' if ceo_age is not None else 'not_available'
+        }
+    
+    def _analyze_management_tenure(self, data: Dict) -> Dict:
+        """Analyze management team tenure and stability from available data."""
+        executive_info = data.get('executive_info', {})
+        
+        return {
+            'ceo_tenure': executive_info.get('ceo_tenure', None),
+            'succession_planning': executive_info.get('succession_planning', None),
+            'management_stability': executive_info.get('management_stability', None),
+            'data_source': 'executive_info' if executive_info else 'not_available'
+        }
+    
+    def _calculate_execution_score(self, data: Dict) -> Dict:
+        """Calculate strategic execution capability score from financial performance."""
+        historical = data.get('historical', {})
+        
+        # Base execution assessment on data availability and trends
+        has_good_data = len(historical.get('revenue', [])) >= 3
+        
+        return {
+            'data_quality': 'good' if has_good_data else 'limited',
+            'historical_periods': len(historical.get('revenue', [])),
+            'assessment_basis': 'financial_trends' if has_good_data else 'limited_data'
+        }
+
     def generate_risk_analysis(
         self,
         ticker: str,
@@ -363,6 +605,41 @@ class OllamaClient:
             historical_data=json.dumps(financial_data.get('historical', {}), indent=2),
             market_context=json.dumps(market_context, indent=2),
             semantic_search_results=formatted_semantic
+        )
+
+    def _format_enhanced_dcf_prompt(
+        self, 
+        template: str, 
+        ticker: str, 
+        financial_data: Dict, 
+        market_context: Dict, 
+        semantic_results: List
+    ) -> str:
+        """Format enhanced DCF prompt template with comprehensive data."""
+        # Extract company information
+        company_info = financial_data.get('company_info', {})
+        
+        # Format semantic search results
+        formatted_semantic = self._format_semantic_results(semantic_results)
+        
+        # Extract enhanced analysis data
+        market_analysis = financial_data.get('market_analysis', {})
+        executive_analysis = financial_data.get('executive_analysis', {})
+        
+        return template.format(
+            ticker=ticker.upper(),
+            company_name=company_info.get('name', ticker),
+            sector=company_info.get('sector', 'Unknown'),
+            industry=company_info.get('industry', 'Unknown'),
+            analysis_date=datetime.now().strftime('%Y-%m-%d'),
+            financial_data=json.dumps(financial_data, indent=2, ensure_ascii=False),
+            historical_data=json.dumps(financial_data.get('historical', {}), indent=2, ensure_ascii=False),
+            market_context=json.dumps(market_context, indent=2, ensure_ascii=False),
+            semantic_search_results=formatted_semantic,
+            # Enhanced analysis factors
+            market_growth_data=json.dumps(market_analysis.get('market_size_growth', {}), indent=2, ensure_ascii=False),
+            rd_efficiency_data=json.dumps(market_analysis.get('rd_efficiency', {}), indent=2, ensure_ascii=False),
+            executive_analysis_data=json.dumps(executive_analysis, indent=2, ensure_ascii=False)
         )
 
     def _format_risk_prompt(

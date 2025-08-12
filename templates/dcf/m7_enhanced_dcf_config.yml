@@ -1,0 +1,149 @@
+# Enhanced M7 DCF Configuration
+# Supports bilingual report generation with advanced analysis factors
+
+dcf_generation:
+  # Enable bilingual output
+  bilingual_reports: true
+  languages: 
+    - en
+    - zh
+  
+  # Enhanced analysis factors
+  enhanced_analysis:
+    market_dynamics:
+      market_size_analysis: true
+      growth_rate_calculation: true  # 3-5 year CAGR
+      competitive_positioning: true
+    
+    innovation_metrics:
+      rd_efficiency_scoring: true
+      rd_intensity_benchmarking: true
+      patent_analysis: false  # Placeholder for future SEC filing extraction
+      innovation_pipeline_assessment: true
+    
+    executive_assessment:
+      leadership_age_factor: true
+      management_tenure_analysis: true
+      strategic_execution_scoring: true
+      succession_planning_evaluation: true
+    
+    financial_modeling:
+      advanced_dcf_scenarios: true  # Conservative, Base, Optimistic
+      risk_adjusted_discount_rate: true
+      terminal_value_scenarios: true
+      sensitivity_analysis: true
+
+# M7 Company-Specific Configurations
+magnificent_7:
+  companies:
+    AAPL:
+      name: "Apple Inc."
+      sector: "Technology"
+      industry: "Consumer Electronics"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.06  # Industry average for comparison
+      leadership_notes: "Strong succession planning, experienced management"
+      
+    MSFT:
+      name: "Microsoft Corporation" 
+      sector: "Technology"
+      industry: "Software"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.13
+      leadership_notes: "Satya Nadella transformation leadership"
+      
+    AMZN:
+      name: "Amazon.com Inc."
+      sector: "Consumer Discretionary"
+      industry: "E-commerce & Cloud"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.12
+      leadership_notes: "Post-Bezos transition management"
+      
+    GOOGL:
+      name: "Alphabet Inc."
+      sector: "Technology"
+      industry: "Internet Services"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.15
+      leadership_notes: "Founder-led innovation culture"
+      
+    META:
+      name: "Meta Platforms Inc."
+      sector: "Technology"
+      industry: "Social Media"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.18
+      leadership_notes: "Zuckerberg long-term vision, metaverse pivot"
+      
+    TSLA:
+      name: "Tesla Inc."
+      sector: "Consumer Discretionary" 
+      industry: "Electric Vehicles"
+      market_cap_tier: "mega"
+      rd_intensity_benchmark: 0.03  # Capital intensive manufacturing
+      leadership_notes: "Musk innovation leadership, execution risk"
+      
+    NFLX:
+      name: "Netflix Inc."
+      sector: "Communication Services"
+      industry: "Streaming Entertainment"
+      market_cap_tier: "large"
+      rd_intensity_benchmark: 0.12
+      leadership_notes: "Content strategy leadership, global expansion"
+
+# Analysis Enhancement Parameters
+analysis_weights:
+  # Scoring weights for investment decision
+  financial_strength: 0.35
+  market_growth_potential: 0.25
+  management_quality: 0.20
+  innovation_capability: 0.20
+  
+  # Age bias factor (younger = higher innovation score)
+  executive_age_optimal_range: [45, 55]  # Peak experience + energy
+  age_penalty_threshold: 60  # Reduce innovation score after this age
+  
+# Output Formatting
+report_structure:
+  executive_summary:
+    paragraphs: 4
+    focus_areas: ["valuation", "growth", "risks", "recommendation"]
+    
+  detailed_analysis:
+    financial_projections_years: 5
+    scenario_count: 3  # Conservative, Base, Optimistic
+    risk_factors_count: 5
+    catalysts_count: 3
+    
+  language_specific:
+    en:
+      currency_format: "USD"
+      number_format: "US"
+      date_format: "%Y-%m-%d"
+      
+    zh:
+      currency_format: "USD"  # Keep USD for consistency
+      number_format: "CN"
+      date_format: "%Y年%m月%d日"
+
+# Data Sources Integration
+data_integration:
+  yahoo_finance:
+    extract_fields: ["revenue", "net_income", "free_cash_flow", "total_debt", "cash"]
+    historical_years: 5
+    
+  sec_filings:
+    extract_rd_expenses: true
+    extract_executive_compensation: true  # For age/tenure analysis
+    extract_segment_data: true
+    
+  market_data:
+    sector_comparisons: true
+    peer_analysis: false  # Future enhancement
+    
+# Quality Assurance
+validation:
+  min_data_completeness: 0.8  # 80% of required fields
+  max_processing_time: 300  # 5 minutes per company
+  output_file_verification: true
