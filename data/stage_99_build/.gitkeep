@@ -1,0 +1,2 @@
+# This file ensures the stage_99_build directory is tracked in git
+# while build_*/ subdirectories are ignored per .gitignore rules

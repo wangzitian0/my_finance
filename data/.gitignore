@@ -56,9 +56,9 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
-# Build directories - gitignored in main strategy
+# Build directories - directory tracked, contents ignored (per main .gitignore)
 build/
-stage_99_build/
+stage_99_build/build_*/
 stage_99_build_*/
 
 # Auto-generated reports from builds
