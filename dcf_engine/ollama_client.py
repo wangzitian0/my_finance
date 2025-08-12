@@ -38,7 +38,7 @@ class OllamaClient:
         self.config = self._load_config(config_path)
         self.base_url = self.config.get('ollama', {}).get('base_url', 'http://localhost:11434')
         self.model_name = self.config.get('ollama', {}).get('model_name', 'gpt-oss:20b')
-        self.timeout = self.config.get('ollama', {}).get('timeout', 15)
+        self.timeout = self.config.get('ollama', {}).get('timeout', 90)
         
         # Generation parameters
         self.max_tokens = self.config.get('ollama', {}).get('max_tokens', 4096)
@@ -49,7 +49,7 @@ class OllamaClient:
         self.debug_mode = self.config.get('dcf_generation', {}).get('debug_mode', True)
         self.log_requests = self.config.get('logging', {}).get('log_requests', True)
         self.log_responses = self.config.get('logging', {}).get('log_responses', True)
-        self.debug_dir = Path("data/llm_debug")
+        self.debug_dir = Path("data/llm")
         
         # Template directory
         self.template_dir = self.debug_dir / "templates"
@@ -61,7 +61,7 @@ class OllamaClient:
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            config_path = "data/llm_debug/configs/ollama_config.yml"
+            config_path = "data/llm/configs/local_ollama.yml"
             
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
@@ -79,7 +79,7 @@ class OllamaClient:
             'ollama': {
                 'base_url': 'http://localhost:11434',
                 'model_name': 'gpt-oss:20b',
-                'timeout': 15,
+                'timeout': 45,
                 'max_tokens': 4096,
                 'temperature': 0.3,
                 'top_p': 0.9
@@ -125,7 +125,7 @@ class OllamaClient:
             'connection_status': 'connected'
         }
         
-        debug_file = self.debug_dir / "logs" / "ollama_connection.json"
+        debug_file = Path("data/log") / "ollama_connection.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(debug_file, 'w', encoding='utf-8') as f:
@@ -719,7 +719,7 @@ Content: {content}
             'options': request_data['options']
         }
         
-        log_file = self.debug_dir / "logs" / "ollama_requests.jsonl"
+        log_file = Path("data/log") / "ollama_requests.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(log_file, 'a', encoding='utf-8') as f:
@@ -738,7 +738,7 @@ Content: {content}
             'prompt_eval_count': response_data.get('prompt_eval_count', 0)
         }
         
-        log_file = self.debug_dir / "logs" / "ollama_responses.jsonl"
+        log_file = Path("data/log") / "ollama_responses.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
         
         with open(log_file, 'a', encoding='utf-8') as f:
@@ -788,7 +788,7 @@ Request ID: {metadata.get('request_id', 'unknown')}
         )
         
         if self.debug_mode and result['success']:
-            test_file = self.debug_dir / "logs" / "connection_test.json"
+            test_file = Path("data/log") / "connection_test.json"
             test_file.parent.mkdir(parents=True, exist_ok=True)
             
             with open(test_file, 'w', encoding='utf-8') as f:

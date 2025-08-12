@@ -186,7 +186,7 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
     try:
         # Import DCF analyzer
         sys.path.insert(0, str(Path(__file__).parent.parent))
-        from dcf_engine.generate_dcf_report import M7DCFAnalyzer
+        from dcf_engine.pure_llm_dcf import PureLLMDCFAnalyzer
         
         print(f"   📊 Running DCF analysis for {tier.value}...")
         tracker.log_stage_output("stage_04_analysis", f"Starting DCF analysis for {tier.value}")
@@ -216,7 +216,7 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
             print(f"   ⚠️  No companies found in {tier.value} configuration")
             return 0
             
-        analyzer = M7DCFAnalyzer()
+        analyzer = PureLLMDCFAnalyzer()
         companies_analyzed = 0
         
         for ticker in companies.keys():
@@ -241,16 +241,42 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
     try:
         # Import DCF report generator
         sys.path.insert(0, str(Path(__file__).parent.parent))
-        from dcf_engine.generate_dcf_report import M7DCFAnalyzer
+        from dcf_engine.pure_llm_dcf import PureLLMDCFAnalyzer
         
         print(f"   📄 Generating reports for {tier.value}...")
         tracker.log_stage_output("stage_05_reporting", f"Starting report generation for {tier.value}")
         
-        analyzer = M7DCFAnalyzer()
+        # Get companies list based on tier configuration
+        config_manager = TestConfigManager()
+        yaml_config = config_manager.load_yaml_config(tier)
+        
+        # Extract company tickers from configuration
+        tickers = []
+        if tier.value in ["f2", "test"] and "reference_config" in yaml_config:
+            # For F2, load companies from reference config and filter by selected_companies
+            import yaml
+            ref_config_path = config_manager.config_dir / yaml_config["reference_config"]
+            with open(ref_config_path, 'r') as f:
+                ref_config = yaml.safe_load(f)
+            
+            selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
+            all_companies = ref_config.get("companies", {})
+            tickers = [ticker for ticker in selected if ticker in all_companies]
+        elif "companies" in yaml_config:
+            tickers = list(yaml_config["companies"].keys())
+        
+        # Default to M7 if no specific tickers found
+        if not tickers:
+            print(f"   ⚠️  No companies found in {tier.value} configuration, using M7 default")
+            tickers = None  # Will use M7 default
+        else:
+            print(f"   📊 Generating report for {len(tickers)} companies: {', '.join(tickers)}")
+        
+        analyzer = PureLLMDCFAnalyzer()
         
         # Generate DCF report and save to current build directory
-        report = analyzer.generate_report()
-        report_path = analyzer.save_report(report, output_dir=tracker.build_path)
+        report = analyzer.generate_report(tickers)
+        report_path = analyzer.save_report(report)
         
         # Track the generated report
         tracker.log_stage_output("stage_05_reporting", f"Generated DCF report: {report_path}")

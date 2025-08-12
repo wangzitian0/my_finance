@@ -149,9 +149,11 @@ ollama-models = "ollama list"
 build-sec-library = "python dcf_engine/sec_document_manager.py"
 test-ollama = "ollama run gpt-oss:20b 'Explain DCF valuation in 2 sentences'"
 llm-dcf-report = "python dcf_engine/llm_dcf_generator.py --ticker AAPL"
+hybrid-dcf-report = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
 
 # --- Missing commands for e2e tests ---
 # Aliases for existing functionality to match test expectations
 validate-strategy = "python ETL/manage.py validate"
-generate-report = "python dcf_engine/generate_dcf_report.py"
-backtest = "echo 'Backtest simulation completed (placeholder)' && python dcf_engine/simple_m7_dcf.py"
+generate-report = "python dcf_engine/pure_llm_dcf.py"
+generate-report-legacy = "python dcf_engine/legacy_testing/generate_dcf_report.py"
+backtest = "echo 'Backtest simulation completed (placeholder)' && python dcf_engine/legacy_testing/simple_m7_dcf.py"
