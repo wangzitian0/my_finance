@@ -200,7 +200,37 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         print("Please commit or stash changes first")
         sys.exit(1)
     
-    # 2. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
+    # 2.5. CRITICAL: Sync with latest main and rebase
+    print("\n🔄 Syncing with latest main branch...")
+    run_command("git fetch origin main", "Fetching latest main")
+
+    # Check if current branch is behind main
+    behind_check = run_command("git log --oneline HEAD..origin/main", 
+                              "Checking if branch is behind main", check=False)
+    if behind_check and behind_check.stdout.strip():
+        commits_behind = len(behind_check.stdout.strip().split('\n'))
+        print(f"⚠️  Current branch is {commits_behind} commits behind origin/main")
+        
+        # Rebase onto latest main
+        print("🔄 Rebasing onto latest origin/main...")
+        run_command("git rebase origin/main", "Rebasing onto origin/main")
+        
+        # Handle data submodule rebase
+        print("🔄 Rebasing data submodule...")
+        run_command("git -C data fetch origin", "Fetching data submodule updates")
+        submodule_behind = run_command("git -C data log --oneline HEAD..origin/main",
+                                      "Checking data submodule status", check=False)
+        if submodule_behind and submodule_behind.stdout.strip():
+            run_command("git -C data rebase origin/main", "Rebasing data submodule")
+            run_command("git add data", "Updating submodule reference after rebase")
+            run_command("git commit -m 'Update data submodule after rebase'", 
+                       "Committing submodule rebase", check=False)
+        
+        print("✅ Rebase completed - branch is now up to date")
+    else:
+        print("✅ Branch is already up to date with origin/main")
+
+    # 3. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
     if not skip_m7_test:
         if not run_m7_end_to_end():
             print("❌ M7 test failed - PR creation aborted")
@@ -208,14 +238,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     else:
         print("⚠️  SKIPPING M7 TEST - NOT RECOMMENDED")
     
-    # 3. Handle data submodule changes first
+    # 4. Handle data submodule changes first
     print("\n🔄 Handling data submodule changes...")
     run_command("pixi run commit-data-changes", "Committing data submodule changes")
     
-    # 3.5. Ask about promoting build to release before creating PR
+    # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
     
-    # 4. Add M7 test marker and update commit message
+    # 5. Add M7 test marker and update commit message
     if Path(".m7-test-passed").exists():
         # Read M7 test details
         with open(".m7-test-passed", "r") as f:
@@ -246,10 +276,10 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with M7 test info")
         print("📝 M7 test marker and status included in commit message")
     
-    # 5. Push current branch
+    # 6. Push current branch
     run_command(f"git push -u origin {current_branch}", f"Pushing branch {current_branch}")
     
-    # 5. Create PR body
+    # 7. Create PR body
     if description_file and Path(description_file).exists():
         with open(description_file, 'r') as f:
             body = f.read()
@@ -282,7 +312,7 @@ Fixes #{issue_number}
 
 🤖 Generated with [Claude Code](https://claude.ai/code)"""
     
-    # 6. Create PR using gh CLI
+    # 8. Create PR using gh CLI
     result = run_command(f'gh pr create --title "{title}" --body "{body}"', "Creating PR with gh CLI")
     
     # Extract PR URL from output (check both stdout and stderr)
@@ -322,7 +352,7 @@ Fixes #{issue_number}
     
     print(f"✅ PR Created: {pr_url}")
     
-    # 7. Update commit message with actual PR URL
+    # 9. Update commit message with actual PR URL
     pr_number = pr_url.split('/pull/')[-1]
     
     # Get the last commit message
