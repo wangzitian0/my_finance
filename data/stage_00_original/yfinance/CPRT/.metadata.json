@@ -1,0 +1,32 @@
+{
+  "ticker": "CPRT",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:45.345231",
+  "updated_at": "2025-08-09T22:29:45.345972",
+  "version": "1.0.0",
+  "files": {
+    "CPRT_yfinance_1y_1d_250809-222945.json": {
+      "filename": "CPRT_yfinance_1y_1d_250809-222945.json",
+      "filepath": "data/original/yfinance/CPRT/CPRT_yfinance_1y_1d_250809-222945.json",
+      "data_type": "1y_1d",
+      "file_size": 75250,
+      "md5_hash": "fcffbef4b5ef071305bebf1a9da2d0c7",
+      "created_at": "2025-08-09T22:29:45.345920",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:45.345928",
+      "action": "file_created",
+      "filename": "CPRT_yfinance_1y_1d_250809-222945.json",
+      "data_type": "1y_1d",
+      "file_size": 75250
+    }
+  ]
+}

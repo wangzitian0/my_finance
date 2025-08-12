@@ -2,20 +2,12 @@
 
 > IMPORTANT UPDATE (2025-08-12)
 >
-> The `data` directory is no longer a git submodule. It is now a symbolic link to a sibling repository directory.
+> The `data` directory is now directly integrated into the main repository. 
+> The previous symlink/submodule structure has been merged for simpler management.
 >
-> - New structure: `my_finance/data -> ../my_finance_data`
-> - Do NOT use submodule commands for `data` anymore
-> - To re-create locally:
->   ```bash
->   # from repository root sibling level
->   git clone https://github.com/wangzitian0/my_finance_data.git my_finance_data
->   cd my_finance
->   rm -rf data .git/modules/data .gitmodules || true
->   ln -s ../my_finance_data data
->   ```
->
-> References in this document to "data submodule" are deprecated and will be updated. Prefer working with the linked directory directly.
+> - New structure: `my_finance/data/` (regular directory, part of main repo)
+> - All data files are now tracked in the main repository
+> - No need for separate repository or symlink management
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -112,7 +104,7 @@ pixi run release-build          # Promote latest build to release with confirmat
     - Stage logs: `stage_logs/` directory
   - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
   - Release management: `data/release/release_<YYYYMMDD_HHMMSS>_build_<ID>/`
-  - Latest symlink: `latest` (points to most recent build)
+  - Latest build symlink: `common/latest_build` (points to most recent build)
 
 - **Magnificent 7 CIK numbers**: Available in README.md
 
@@ -176,7 +168,7 @@ pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
 - ✅ M7 end-to-end test runs successfully BEFORE PR creation/update
-- ✅ Data submodule changes are committed automatically
+- ✅ Data directory changes are managed as part of main repository
 - ✅ Commit messages include proper PR URLs for GoLand integration
 - ✅ GitHub branch protection rules enforce M7 validation
 
@@ -246,7 +238,7 @@ git push --force-with-lease
 - **Always read README.md first** for complete project context
 - **Prefer editing existing files** over creating new ones
 - **Use Pixi for ALL commands** - NEVER use direct `python script.py`
-- **Handle data submodule changes FIRST** before main repo commits
+- **Stage data directory changes FIRST** before main repo commits
 - **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
 
@@ -261,15 +253,15 @@ git push --force-with-lease
 - **Environment setup**: Use `pixi run setup-env`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Use `pixi run test` (NEVER direct python commands)
-- **Data submodule**: Use `pixi run commit-data-changes` before main commits
+- **Data directory**: Use `pixi run commit-data-changes` to stage data changes
 
 ### Daily Development Workflow for Claude
 
 **CRITICAL RULES - NEVER BREAK THESE:**
 
 1. **ALWAYS use `pixi run <command>` instead of `python <script>.py`**
-2. **ALWAYS handle data submodule changes before main repo commits**
-3. **ALWAYS check and commit submodule changes first**
+2. **ALWAYS stage data directory changes before main repo commits**
+3. **ALWAYS check and stage data changes first**
 4. **ALWAYS start from latest main (`git checkout main && git pull`)**
 5. **ALWAYS test mechanisms before coding (`pixi run build-dataset m7`)**
 
@@ -287,7 +279,7 @@ git checkout -b feature/description-fixes-N
 # 3. VALIDATE mechanisms before coding (CRITICAL)
 pixi run build-dataset m7    # Verify build system works
 pixi run test-m7-e2e        # Verify end-to-end flow works
-rm -f data/build/latest     # Clear symlinks if needed
+rm -f common/latest_build   # Clear build symlinks if needed
 
 # 4. Work on tasks - USE PIXI COMMANDS ONLY
 # ... make code changes ...
@@ -295,8 +287,8 @@ pixi run format             # Format code
 pixi run lint               # Check quality
 pixi run test               # Validate changes
 
-# 5. Handle data submodule FIRST (CRITICAL)
-pixi run commit-data-changes  # Auto-commit any data submodule changes
+# 5. Handle data directory FIRST (CRITICAL)
+pixi run commit-data-changes  # Stage any data directory changes
 
 # 6. Then handle main repo changes
 git add . && git commit -m "Description
@@ -363,7 +355,7 @@ pixi run shutdown-all
 
 **Benefits of automated workflow:**
 - ✅ **M7 testing**: Runs full end-to-end test BEFORE creating PR
-- ✅ **Data submodules**: Handles data changes automatically  
+- ✅ **Data directory**: Stages data changes as part of main repository  
 - ✅ **PR URLs**: Updates commit messages with actual PR URLs
 - ✅ **Branch protection**: GitHub enforces M7 validation on all PRs
 - ✅ **No failures**: PRs cannot be created if M7 tests fail
@@ -383,7 +375,7 @@ pixi run shutdown-all
    ```bash
    # Always verify these work BEFORE starting development
    pixi run build-dataset m7      # NOT "pixi run build m7"
-   rm -f data/build/latest       # Clear symlinks if needed
+   rm -f common/latest_build     # Clear build symlinks if needed
    pixi run test-m7-e2e          # Full end-to-end validation
    ```
 

@@ -1,0 +1,32 @@
+{
+  "ticker": "GILD",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:36.372029",
+  "updated_at": "2025-08-09T22:29:36.372686",
+  "version": "1.0.0",
+  "files": {
+    "GILD_yfinance_1y_1d_250809-222936.json": {
+      "filename": "GILD_yfinance_1y_1d_250809-222936.json",
+      "filepath": "data/original/yfinance/GILD/GILD_yfinance_1y_1d_250809-222936.json",
+      "data_type": "1y_1d",
+      "file_size": 72901,
+      "md5_hash": "78992602ad6a187cf2c48bf23484e36a",
+      "created_at": "2025-08-09T22:29:36.372642",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:36.372648",
+      "action": "file_created",
+      "filename": "GILD_yfinance_1y_1d_250809-222936.json",
+      "data_type": "1y_1d",
+      "file_size": 72901
+    }
+  ]
+}

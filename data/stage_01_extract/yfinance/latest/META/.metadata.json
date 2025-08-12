@@ -1,0 +1,137 @@
+{
+  "ticker": "META",
+  "source": "yfinance",
+  "created_at": "2025-08-09T21:59:05.448510",
+  "updated_at": "2025-08-10T03:14:20.532958",
+  "version": "1.0.0",
+  "files": {
+    "META_yfinance_1y_1d_250809-215905.json": {
+      "filename": "META_yfinance_1y_1d_250809-215905.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_1y_1d_250809-215905.json",
+      "data_type": "1y_1d",
+      "file_size": 74942,
+      "md5_hash": "08df739f2e9d774da8ca129be5bead8b",
+      "created_at": "2025-08-09T21:59:05.448800",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-215850"
+      }
+    },
+    "META_yfinance_5y_1wk_250809-215917.json": {
+      "filename": "META_yfinance_5y_1wk_250809-215917.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_5y_1wk_250809-215917.json",
+      "data_type": "5y_1wk",
+      "file_size": 77330,
+      "md5_hash": "8abc6068f0895161f27c13f0e515be80",
+      "created_at": "2025-08-09T21:59:17.302179",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250809-215907"
+      }
+    },
+    "META_yfinance_3mo_1d_250809-215927.json": {
+      "filename": "META_yfinance_3mo_1d_250809-215927.json",
+      "filepath": "data/original/yfinance/META/META_yfinance_3mo_1d_250809-215927.json",
+      "data_type": "3mo_1d",
+      "file_size": 49313,
+      "md5_hash": "15015171653101a5386517820e942e38",
+      "created_at": "2025-08-09T21:59:27.362066",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250809-215918"
+      }
+    },
+    "META_yfinance_m7_daily_3mo_250810-031409.json": {
+      "filename": "META_yfinance_m7_daily_3mo_250810-031409.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_daily_3mo_250810-031409.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 49171,
+      "md5_hash": "84dc1c4f0cfae1441503e3d548e4d27d",
+      "created_at": "2025-08-10T03:14:09.046302",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "m7_daily_3mo",
+        "exe_id": "yfinance_m7_daily_3mo_250810-031401"
+      }
+    },
+    "META_yfinance_m7_weekly_5y_250810-031414.json": {
+      "filename": "META_yfinance_m7_weekly_5y_250810-031414.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_weekly_5y_250810-031414.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 77212,
+      "md5_hash": "475445b74e1c4c37bd956050b103e4ce",
+      "created_at": "2025-08-10T03:14:14.817424",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "m7_weekly_5y",
+        "exe_id": "yfinance_m7_weekly_5y_250810-031410"
+      }
+    },
+    "META_yfinance_m7_monthly_max_250810-031420.json": {
+      "filename": "META_yfinance_m7_monthly_max_250810-031420.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/META/META_yfinance_m7_monthly_max_250810-031420.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 63283,
+      "md5_hash": "b87fe34ab1996a172887e75cbf643011",
+      "created_at": "2025-08-10T03:14:20.532937",
+      "config_info": {
+        "period": "max",
+        "interval": "1mo",
+        "oid": "m7_monthly_max",
+        "exe_id": "yfinance_m7_monthly_max_250810-031415"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T21:59:05.448804",
+      "action": "file_created",
+      "filename": "META_yfinance_1y_1d_250809-215905.json",
+      "data_type": "1y_1d",
+      "file_size": 74942
+    },
+    {
+      "timestamp": "2025-08-09T21:59:17.302187",
+      "action": "file_created",
+      "filename": "META_yfinance_5y_1wk_250809-215917.json",
+      "data_type": "5y_1wk",
+      "file_size": 77330
+    },
+    {
+      "timestamp": "2025-08-09T21:59:27.362075",
+      "action": "file_created",
+      "filename": "META_yfinance_3mo_1d_250809-215927.json",
+      "data_type": "3mo_1d",
+      "file_size": 49313
+    },
+    {
+      "timestamp": "2025-08-10T03:14:09.046316",
+      "action": "file_created",
+      "filename": "META_yfinance_m7_daily_3mo_250810-031409.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 49171
+    },
+    {
+      "timestamp": "2025-08-10T03:14:14.817437",
+      "action": "file_created",
+      "filename": "META_yfinance_m7_weekly_5y_250810-031414.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 77212
+    },
+    {
+      "timestamp": "2025-08-10T03:14:20.532942",
+      "action": "file_created",
+      "filename": "META_yfinance_m7_monthly_max_250810-031420.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 63283
+    }
+  ]
+}

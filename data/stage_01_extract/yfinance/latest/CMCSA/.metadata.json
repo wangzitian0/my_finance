@@ -1,0 +1,32 @@
+{
+  "ticker": "CMCSA",
+  "source": "yfinance",
+  "created_at": "2025-08-09T22:29:08.948782",
+  "updated_at": "2025-08-09T22:29:08.949207",
+  "version": "1.0.0",
+  "files": {
+    "CMCSA_yfinance_1y_1d_250809-222908.json": {
+      "filename": "CMCSA_yfinance_1y_1d_250809-222908.json",
+      "filepath": "data/original/yfinance/CMCSA/CMCSA_yfinance_1y_1d_250809-222908.json",
+      "data_type": "1y_1d",
+      "file_size": 75026,
+      "md5_hash": "c65ec7d38664e6c661c3037cd8e9ead6",
+      "created_at": "2025-08-09T22:29:08.949176",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-222903"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T22:29:08.949181",
+      "action": "file_created",
+      "filename": "CMCSA_yfinance_1y_1d_250809-222908.json",
+      "data_type": "1y_1d",
+      "file_size": 75026
+    }
+  ]
+}

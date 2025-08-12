@@ -1,0 +1,137 @@
+{
+  "ticker": "AAPL",
+  "source": "yfinance",
+  "created_at": "2025-08-09T21:58:54.857405",
+  "updated_at": "2025-08-10T03:14:16.656019",
+  "version": "1.0.0",
+  "files": {
+    "AAPL_yfinance_1y_1d_250809-215854.json": {
+      "filename": "AAPL_yfinance_1y_1d_250809-215854.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_1y_1d_250809-215854.json",
+      "data_type": "1y_1d",
+      "file_size": 77907,
+      "md5_hash": "aba69d2d30867094fe43f7ed83c5f2c5",
+      "created_at": "2025-08-09T21:58:54.858045",
+      "config_info": {
+        "period": "1y",
+        "interval": "1d",
+        "oid": "1y_1d",
+        "exe_id": "yfinance_1y_1d_250809-215850"
+      }
+    },
+    "AAPL_yfinance_5y_1wk_250809-215909.json": {
+      "filename": "AAPL_yfinance_5y_1wk_250809-215909.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_5y_1wk_250809-215909.json",
+      "data_type": "5y_1wk",
+      "file_size": 79925,
+      "md5_hash": "9fe12ab3807998cf2a09f40c0bddeb77",
+      "created_at": "2025-08-09T21:59:09.085400",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "5y_1wk",
+        "exe_id": "yfinance_5y_1wk_250809-215907"
+      }
+    },
+    "AAPL_yfinance_3mo_1d_250809-215920.json": {
+      "filename": "AAPL_yfinance_3mo_1d_250809-215920.json",
+      "filepath": "data/original/yfinance/AAPL/AAPL_yfinance_3mo_1d_250809-215920.json",
+      "data_type": "3mo_1d",
+      "file_size": 51628,
+      "md5_hash": "7d527a9031b995169900d0491059fdf9",
+      "created_at": "2025-08-09T21:59:20.470391",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "3mo_1d",
+        "exe_id": "yfinance_3mo_1d_250809-215918"
+      }
+    },
+    "AAPL_yfinance_m7_daily_3mo_250810-031403.json": {
+      "filename": "AAPL_yfinance_m7_daily_3mo_250810-031403.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_daily_3mo_250810-031403.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 51539,
+      "md5_hash": "4c28b901d7515bdceadc7c0fbecc3748",
+      "created_at": "2025-08-10T03:14:03.184416",
+      "config_info": {
+        "period": "3mo",
+        "interval": "1d",
+        "oid": "m7_daily_3mo",
+        "exe_id": "yfinance_m7_daily_3mo_250810-031401"
+      }
+    },
+    "AAPL_yfinance_m7_weekly_5y_250810-031411.json": {
+      "filename": "AAPL_yfinance_m7_weekly_5y_250810-031411.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_weekly_5y_250810-031411.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 79835,
+      "md5_hash": "fcfe066022c00e09e1078069832c130e",
+      "created_at": "2025-08-10T03:14:11.063343",
+      "config_info": {
+        "period": "5y",
+        "interval": "1wk",
+        "oid": "m7_weekly_5y",
+        "exe_id": "yfinance_m7_weekly_5y_250810-031410"
+      }
+    },
+    "AAPL_yfinance_m7_monthly_max_250810-031416.json": {
+      "filename": "AAPL_yfinance_m7_monthly_max_250810-031416.json",
+      "filepath": "data/stage_01_extract/yfinance/20250810/AAPL/AAPL_yfinance_m7_monthly_max_250810-031416.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 113563,
+      "md5_hash": "49bc27ce708395962c289918d2bb932d",
+      "created_at": "2025-08-10T03:14:16.655959",
+      "config_info": {
+        "period": "max",
+        "interval": "1mo",
+        "oid": "m7_monthly_max",
+        "exe_id": "yfinance_m7_monthly_max_250810-031415"
+      }
+    }
+  },
+  "download_history": [
+    {
+      "timestamp": "2025-08-09T21:58:54.858049",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_1y_1d_250809-215854.json",
+      "data_type": "1y_1d",
+      "file_size": 77907
+    },
+    {
+      "timestamp": "2025-08-09T21:59:09.085406",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_5y_1wk_250809-215909.json",
+      "data_type": "5y_1wk",
+      "file_size": 79925
+    },
+    {
+      "timestamp": "2025-08-09T21:59:20.470405",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_3mo_1d_250809-215920.json",
+      "data_type": "3mo_1d",
+      "file_size": 51628
+    },
+    {
+      "timestamp": "2025-08-10T03:14:03.184442",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_m7_daily_3mo_250810-031403.json",
+      "data_type": "m7_daily_3mo",
+      "file_size": 51539
+    },
+    {
+      "timestamp": "2025-08-10T03:14:11.063354",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_m7_weekly_5y_250810-031411.json",
+      "data_type": "m7_weekly_5y",
+      "file_size": 79835
+    },
+    {
+      "timestamp": "2025-08-10T03:14:16.655973",
+      "action": "file_created",
+      "filename": "AAPL_yfinance_m7_monthly_max_250810-031416.json",
+      "data_type": "m7_monthly_max",
+      "file_size": 113563
+    }
+  ]
+}
