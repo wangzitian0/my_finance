@@ -1,0 +1,20 @@
+{
+  "m7": {
+    "data_exists": false,
+    "file_count": 0,
+    "corrupted_files": [],
+    "missing_expected_files": []
+  },
+  "nasdaq100": {
+    "data_exists": false,
+    "file_count": 0,
+    "corrupted_files": [],
+    "missing_expected_files": []
+  },
+  "us-all": {
+    "data_exists": false,
+    "file_count": 0,
+    "corrupted_files": [],
+    "missing_expected_files": []
+  }
+}
