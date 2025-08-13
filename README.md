@@ -200,4 +200,4 @@ ls data/stage_99_build/sec_recall_examples/
 ### Component Documentation
 - **[ETL Processing](ETL/README.md)** - Data processing and transformation
 - **[Graph RAG](graph_rag/README.md)** - Retrieval-augmented generation
-- **[Local LLM](local_llm/README.md)** - Local language model integration
+- **[Local LLM](local_llm/README.md)** - Local language model integration# Test trigger
