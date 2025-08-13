@@ -13,34 +13,50 @@ from typing import Optional
 
 def get_commit_info():
     """Get commit information - check actual PR commits, not merge commit"""
+    import os
+    
     try:
-        # Check if this is a merge commit (in PR context)
-        result = subprocess.run(['git', 'log', '-1', '--pretty=%P'], 
-                              capture_output=True, text=True, check=True)
-        parents = result.stdout.strip().split()
+        # In GitHub Actions, check if we have PR-specific environment variables
+        github_sha = os.environ.get('GITHUB_SHA')
+        github_event_name = os.environ.get('GITHUB_EVENT_NAME')
         
-        if len(parents) > 1:
-            # This is a merge commit, check the actual PR commits
-            print("🔍 Detected merge commit, checking actual PR commits...")
+        if github_event_name == 'pull_request' and github_sha:
+            # In PR context, GitHub_SHA is the merge commit
+            # We need to find the actual PR branch head
+            print("🔍 GitHub Actions PR context detected...")
             
-            # The first parent is usually the PR branch head, second is the base branch
-            pr_branch_commit = parents[0]
-            print(f"🔍 Checking PR branch commit: {pr_branch_commit[:8]}")
-            
-            # Get commit message from the actual PR commit
-            result = subprocess.run(['git', 'log', '-1', '--pretty=%B', pr_branch_commit], 
+            # Check if current HEAD is a merge commit
+            result = subprocess.run(['git', 'log', '-1', '--pretty=%P'], 
                                   capture_output=True, text=True, check=True)
-            commit_msg = result.stdout.strip()
+            parents = result.stdout.strip().split()
             
-            # Get commit timestamp from the actual PR commit
-            result = subprocess.run(['git', 'log', '-1', '--pretty=%ct', pr_branch_commit], 
-                                  capture_output=True, text=True, check=True)
-            commit_time = int(result.stdout.strip())
-            
-            return commit_msg, commit_time
+            if len(parents) > 1:
+                print("🔍 Found merge commit, getting PR branch commits...")
+                
+                # Get all commits in the PR (excluding merge base)
+                result = subprocess.run(['git', 'log', '--pretty=%H', f'{parents[0]}..HEAD^'], 
+                                      capture_output=True, text=True, check=True)
+                pr_commits = [line.strip() for line in result.stdout.strip().split('\n') if line.strip()]
+                
+                if pr_commits:
+                    # Use the most recent commit from the PR
+                    latest_pr_commit = pr_commits[0]
+                    print(f"🔍 Checking latest PR commit: {latest_pr_commit[:8]}")
+                    
+                    # Get commit message from the actual PR commit
+                    result = subprocess.run(['git', 'log', '-1', '--pretty=%B', latest_pr_commit], 
+                                          capture_output=True, text=True, check=True)
+                    commit_msg = result.stdout.strip()
+                    
+                    # Get commit timestamp from the actual PR commit
+                    result = subprocess.run(['git', 'log', '-1', '--pretty=%ct', latest_pr_commit], 
+                                          capture_output=True, text=True, check=True)
+                    commit_time = int(result.stdout.strip())
+                    
+                    return commit_msg, commit_time
         
-        # Not a merge commit, use HEAD
-        print("🔍 Using HEAD commit (not a merge commit)...")
+        # Not in PR context or no merge commit detected, use HEAD
+        print("🔍 Using HEAD commit...")
         
         # Get commit message
         result = subprocess.run(['git', 'log', '-1', '--pretty=%B'], 
