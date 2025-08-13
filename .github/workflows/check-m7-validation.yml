@@ -27,5 +27,5 @@ jobs:
         
     - name: "M7 Validation - 4 Core Conditions"
       run: |
-        echo "🔍 运行M7验证脚本..."
+        echo "🔍 Running M7 validation script..."
         python3 ci_m7_validation.py
