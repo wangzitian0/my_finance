@@ -103,7 +103,8 @@ env-setup = "pip install ansible psutil && ansible-playbook infra/ansible/init.y
 
 # --- Release & PR Commands ---
 release = "python scripts/manage_build_data.py release"
-pr = "python infra/create_pr_with_test.py"
+pr = "python infra/create_pr_with_improved_testing.py"
+pr-legacy = "python infra/create_pr_with_test.py"
 
 # --- Tab Completion Setup ---
 setup-completion = "python scripts/setup_p3_completion.py"
@@ -128,6 +129,10 @@ neo4j-stop = "podman stop neo4j-finance"
 
 # Testing aliases
 test-e2e = "python infra/create_pr_with_test.py --skip-pr"
+
+# Improved M7 testing with commit markers (no conflict files)
+test-m7-mark = "python infra/test_marker_system.py run-test"
+check-test-marker = "python infra/test_marker_system.py check"
 
 # Legacy command aliases for backward compatibility
 generate-report = "python dcf_engine/pure_llm_dcf.py"

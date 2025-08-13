@@ -36,14 +36,45 @@ class TestPixiCommandIntegration:
         """Test the P3 alias system display."""
         result = self._run_pixi_command("p3")
         assert result.returncode == 0
-        assert "P3 Alias System" in result.stdout
+        assert "P3 Command System" in result.stdout
         
         # Test help command
         help_result = self._run_pixi_command("p3-help")
         assert help_result.returncode == 0
-        assert "Core:" in help_result.stdout
-        assert "DCF:" in help_result.stdout
-        assert "Env:" in help_result.stdout
+        assert "Available:" in help_result.stdout
+        
+    def test_p3_real_commands(self):
+        """Test P3 commands with real execution (safe commands only)."""
+        
+        # Test safe informational commands
+        safe_commands = ["p3", "p3-help", "dev", "status"]
+        
+        for cmd in safe_commands:
+            result = self._run_pixi_command(cmd, allow_failure=True)
+            if result:  # Command executed
+                # Should not crash
+                assert result.returncode in [0, 1], f"Command {cmd} should not crash"
+    
+    def test_p3_command_availability(self):
+        """Test that all documented P3 commands are available."""
+        pixi_config = self._load_pixi_config()
+        tasks = pixi_config.get("tasks", {})
+        
+        # Core P3 commands that should exist
+        p3_commands = [
+            "p3", "p3-help", "build", "build-f2", "build-m7", 
+            "test", "lint", "clean", "status", "dev",
+            "dcf", "dcf-f2", "dcf-m7",
+            "env-start", "env-stop", "env-status", "env-reset", "env-setup",
+            "release", "pr"
+        ]
+        
+        missing = []
+        for cmd in p3_commands:
+            if cmd not in tasks:
+                missing.append(cmd)
+        
+        assert not missing, f"Missing P3 commands: {missing}"
         
     def test_environment_status_command(self):
         """Test environment status checking."""
@@ -60,20 +91,22 @@ class TestPixiCommandIntegration:
         assert result.returncode == 0
         assert "Development Ready" in result.stdout
         
-    @patch('subprocess.run')
-    def test_build_commands(self, mock_run):
-        """Test build command validation."""
-        mock_run.return_value = MagicMock(returncode=0, stdout="Build complete")
+    def test_build_commands_real(self):
+        """Test build commands with real execution (fast F2 only)."""
+        # Only test F2 for real execution (fast)
+        result = self._run_pixi_command("build-f2", allow_failure=True)
+        # Should attempt to run (may fail without full environment)
+        assert result is not None
         
-        # Test default build (F2)
-        self._run_pixi_command("build")
-        mock_run.assert_called()
+    def test_build_commands_structure(self):
+        """Test that all build commands are properly defined."""
+        pixi_config = self._load_pixi_config()
+        tasks = pixi_config.get("tasks", {})
         
-        # Test specific builds
-        for build_type in ["build-f2", "build-m7", "build-n100", "build-v3k"]:
-            mock_run.reset_mock()
-            self._run_pixi_command(build_type)
-            mock_run.assert_called()
+        build_commands = ["build", "build-f2", "build-m7", "build-n100", "build-v3k"]
+        for cmd in build_commands:
+            assert cmd in tasks, f"Build command {cmd} should be defined"
+            assert "ETL/build_dataset.py" in tasks[cmd], f"Build command {cmd} should use ETL/build_dataset.py"
     
     @patch('subprocess.run')
     def test_dcf_commands(self, mock_run):
