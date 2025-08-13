@@ -502,3 +502,51 @@ git remote prune origin
 - **Check status frequently** during long development sessions
 
 This ensures clean environment state and prevents port conflicts or resource issues.
+
+### PR Creation Script Robustness (Issue #78 Implementation)
+
+**CRITICAL**: The `pixi run create-pr` script is the mandatory way to create PRs. Manual git commands are deprecated.
+
+#### Key Improvements Made:
+- **Mandatory Testing**: Removed all options to skip M7 testing - testing is now REQUIRED
+- **Enhanced Debug Mode**: Added comprehensive debug output with `--debug` flag
+- **Test Marker Validation**: Script checks for recent test markers (≤3min) before push
+- **Robust Error Handling**: Enhanced error reporting with command details and timeouts
+- **Path Handling Fixes**: Fixed `__file__` usage issues for various execution contexts
+
+#### Script Usage:
+```bash
+# Standard PR creation (mandatory M7 testing)
+pixi run create-pr "Description" ISSUE_NUMBER
+
+# Debug mode for troubleshooting  
+pixi run create-pr "Description" ISSUE_NUMBER --debug
+
+# Test-only mode (no PR creation)
+pixi run test-e2e
+```
+
+#### Architecture Enhancements:
+- **Global DEBUG_MODE**: Consistent debug output across all script functions
+- **Test Marker System**: Creates .m7-test-passed with timestamp validation
+- **Build Validation**: Verifies 7+ M7 data files (ideal: 21 files for 7×3 periods)
+- **Branch Protection**: Prevents push of untested commits to satisfy GitHub checks
+
+#### Troubleshooting Tips:
+1. **Always use pixi run**: Never run Python scripts directly - pixi manages environment
+2. **Check environment first**: Run `pixi run env-status` before starting work
+3. **Debug mode**: Use `--debug` flag to see detailed execution steps  
+4. **Test marker**: Script creates .m7-test-passed for GitHub CI validation
+5. **Pandas issues**: If pandas circular import errors occur, restart pixi environment
+
+#### Script Robustness Features:
+- **Execution Context**: Handles both direct execution and exec() contexts
+- **Command Logging**: All commands logged with input/output for debugging
+- **Timeout Management**: Appropriate timeouts for different operations
+- **Error Recovery**: Graceful handling of environment and dependency issues
+
+#### Pixi as Central Command System:
+- **ALL operations MUST use pixi run**: Direct python execution is deprecated
+- **Environment Management**: Pixi handles all dependency and environment issues
+- **Command Consistency**: All team members use identical execution environment  
+- **Debug Capabilities**: Enhanced logging and error reporting through pixi context
