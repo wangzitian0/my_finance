@@ -134,8 +134,8 @@ def test_config_validation_logic():
             "list_magnificent_7.yml", 
             "list_nasdaq_100.yml",
             "list_vti_3500.yml",
-            "source_yfinance.yml",
-            "source_sec_edgar.yml"
+            "stage_00_original_yfinance.yml",
+            "stage_00_original_sec_edgar.yml"
         ]
         
         # This tests the logic structure, not file existence
