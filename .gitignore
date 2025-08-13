@@ -21,8 +21,7 @@ data/log/
 .env.local
 .env.development
 
-# M7 test marker files (included in PR branches, cleaned up after merge)
-.m7-test-passed
+# M7 test validation is now embedded in commit messages (no marker files needed)
 
 # ==============================================================================
 # PYTHON AND DEVELOPMENT

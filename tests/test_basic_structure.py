@@ -51,18 +51,26 @@ def test_vti_config_exists():
         pytest.skip("VTI config not available (likely CI symlink issue)")
 
 
-def test_m7_marker_file():
-    """Test that M7 test marker exists with correct format"""
-    project_root = Path(__file__).parent.parent
-    marker_file = project_root / ".m7-test-passed"
+def test_m7_commit_message_validation():
+    """Test that M7 test validation is embedded in commit message (if available)"""
+    import subprocess
     
-    if marker_file.exists():
-        content = marker_file.read_text()
-        assert "VALIDATION_PASSED=true" in content, "M7 marker should show validation passed"
-        assert "COMMIT_HASH=" in content, "M7 marker should include commit hash"
-        assert "TEST_TIMESTAMP=" in content, "M7 marker should include timestamp"
-    else:
-        pytest.skip("M7 marker not found (test may run before marker creation)")
+    try:
+        # Get latest commit message
+        result = subprocess.run(["git", "log", "-1", "--pretty=%B"], 
+                              capture_output=True, text=True, check=True)
+        commit_msg = result.stdout.strip()
+        
+        # Check if this commit has M7 validation
+        if "✅ M7-TESTED" in commit_msg:
+            assert "📊 Test Results:" in commit_msg, "M7 validation should include test results"
+            assert "🕐 Test Time:" in commit_msg, "M7 validation should include test timestamp"
+            assert "🔍 Test Host:" in commit_msg, "M7 validation should include test host"
+            assert "📝 Commit Hash:" in commit_msg, "M7 validation should include commit hash"
+        else:
+            pytest.skip("M7 validation not found in commit message (test may run before validation)")
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pytest.skip("Git not available or not in a git repository")
 
 
 if __name__ == "__main__":

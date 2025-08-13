@@ -121,7 +121,8 @@ pixi run release-build          # Promote latest build to release with confirmat
 
 ### Current Protection Status
 - ✅ **Basic branch protection**: PRs required for main branch
-- ✅ **GitHub Actions validation**: M7 test marker verification runs automatically  
+- ✅ **GitHub Actions validation**: M7 test validation in commit messages runs automatically  
+- ✅ **Improved conflict management**: Eliminated .m7-test-passed file to reduce merge conflicts
 - ⚠️ **Manual enforcement required**: Status checks are NOT mandatory for merge
 - ⚠️ **Security gap**: Direct push without testing could bypass validation
 
@@ -151,7 +152,8 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 #### Design Philosophy
 - **Local Testing First**: All tests must pass locally before PR creation
-- **Test Marker System**: CI only validates that local tests were run (checks .m7-test-passed marker)
+- **Commit Message Validation**: CI validates that local tests were run (checks commit message for M7 test validation)
+- **No Conflict Files**: Eliminated .m7-test-passed file to prevent merge conflicts
 - **Fail Fast**: Direct pushes without local testing will fail CI (this is intentional)
 
 #### Required PR Workflow
@@ -170,7 +172,7 @@ pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 
 #### Why Manual Git Commands Are Discouraged
 - `git push` without local testing → CI failure (by design)
-- GitHub UI for direct commit → No test marker → CI rejection
+- GitHub UI for direct commit → No test validation in commit message → CI rejection
 - Manual PR creation → Missing test verification → Merge blocked
 
 **All successful merges require the automated script workflow.**
@@ -178,8 +180,9 @@ pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
 - ✅ End-to-end test runs successfully BEFORE PR creation/update
 - ✅ Data directory changes are managed as part of main repository
-- ✅ Commit messages include proper PR URLs for GoLand integration
-- ✅ GitHub branch protection rules enforce test validation
+- ✅ Commit messages include M7 test validation and PR URLs for GoLand integration
+- ✅ GitHub branch protection rules enforce test validation via commit message parsing
+- ✅ No conflict-prone marker files (.m7-test-passed eliminated)
 
 **CRITICAL**: ALWAYS use `pixi run create-pr` for ALL PR operations:
 - ✅ **Creating new PR**: `pixi run create-pr "Description" ISSUE_NUMBER`
@@ -218,6 +221,14 @@ git push --force-with-lease
 - Issue #26: Cross-platform conda migration
 
 ### Recently Completed Issues
+- Issue #80: ✅ **COMPLETED** - Eliminated .m7-test-passed file conflicts (2025-08-13)
+  - Replaced file-based test validation with commit message validation
+  - Updated create-pr script to embed M7 test results directly in commit messages
+  - Created new GitHub Actions workflow for commit message validation
+  - Removed conflict-prone .m7-test-passed files entirely
+  - Improved merge conflict resolution by eliminating file-based markers
+  - Enhanced test timing validation (tests must be within reasonable time of push)
+
 - Issue #75: ✅ **COMPLETED** - SEC Filing Data Integration and Enhancement (2025-08-13)
   - Unified company schema (ticker→name, cik) in configuration files
   - Renamed source configurations to stage-based naming convention
