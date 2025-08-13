@@ -12,11 +12,18 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+# Global debug flag
+DEBUG_MODE = False
 
-def run_command(cmd, description, timeout=None, check=True):
+
+def run_command(cmd, description, timeout=None, check=True, debug=None):
     """Run a command with proper error handling"""
+    if debug is None:
+        debug = DEBUG_MODE
     print(f"🔄 {description}...")
     print(f"   Command: {cmd}")
+    if debug:
+        print(f"🐛 DEBUG: About to run command with timeout={timeout}, check={check}")
     try:
         if isinstance(cmd, str):
             result = subprocess.run(
@@ -227,8 +234,13 @@ def create_pr_workflow(title, issue_number, description_file=None, debug=False):
     print("\n" + "=" * 60)
     print("🚀 STARTING PR CREATION WORKFLOW")
     print("=" * 60)
+    if debug:
+        print("🐛 DEBUG: Entering create_pr_workflow function")
+        print(f"🐛 DEBUG: Parameters - title='{title}', issue={issue_number}, debug={debug}")
 
     # 1. Check current state
+    if debug:
+        print("🐛 DEBUG: Step 1 - Checking current state...")
     current_branch = get_current_branch()
     print(f"📍 Current branch: {current_branch}")
 
@@ -236,6 +248,8 @@ def create_pr_workflow(title, issue_number, description_file=None, debug=False):
         print("❌ Cannot create PR from main branch")
         sys.exit(1)
 
+    if debug:
+        print("🐛 DEBUG: Step 1.5 - Checking for uncommitted changes...")
     uncommitted = get_uncommitted_changes()
     if uncommitted:
         print("❌ Uncommitted changes detected:")
@@ -244,6 +258,8 @@ def create_pr_workflow(title, issue_number, description_file=None, debug=False):
         sys.exit(1)
 
     # 2.5. CRITICAL: Sync with latest main and rebase
+    if debug:
+        print("🐛 DEBUG: Step 2 - Syncing with latest main...")
     print("\n🔄 Syncing with latest main branch...")
     run_command("git fetch origin main", "Fetching latest main")
 
@@ -659,6 +675,13 @@ Examples:
     try:
         args = parser.parse_args()
         print(f"📋 Arguments parsed: title='{args.title}', issue={args.issue_number}, debug={args.debug}")
+        
+        # Set global debug flag
+        global DEBUG_MODE
+        DEBUG_MODE = args.debug
+        if DEBUG_MODE:
+            print("🐛 DEBUG: Debug mode enabled globally")
+            
     except Exception as e:
         print(f"❌ Failed to parse arguments: {e}")
         sys.exit(1)
