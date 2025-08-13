@@ -250,9 +250,7 @@ def main():
         choices=["list", "rebuild", "index", "failures", "cleanup"],
         help="Command to execute",
     )
-    parser.add_argument(
-        "--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')"
-    )
+    parser.add_argument("--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')")
     parser.add_argument("--ticker", "-t", help="Ticker symbol")
 
     args = parser.parse_args()

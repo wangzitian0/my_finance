@@ -64,16 +64,16 @@ def get_project_paths():
     Returns a dictionary with commonly used paths for consistent access.
     """
     from pathlib import Path
-    
+
     # Get project root directory
     project_root = Path(__file__).parent.parent
     data_root = project_root / "data"
-    
+
     return {
         "project_root": project_root,
         "data_root": data_root,
         "stage_00_original": data_root / "stage_00_original",
-        "stage_01_extract": data_root / "stage_01_extract", 
+        "stage_01_extract": data_root / "stage_01_extract",
         "stage_02_transform": data_root / "stage_02_transform",
         "stage_03_load": data_root / "stage_03_load",
         "stage_99_build": data_root / "stage_99_build",
@@ -87,7 +87,7 @@ def get_project_paths():
         "release": data_root / "release",
         "logs": data_root / "log",
         "config": data_root / "config",
-        "common": project_root / "common"
+        "common": project_root / "common",
     }
 
 
@@ -98,6 +98,7 @@ def get_current_build_dir():
     """
     try:
         from common.build_tracker import BuildTracker
+
         build_tracker = BuildTracker.get_latest_build()
         if build_tracker:
             return Path(build_tracker.build_path)
@@ -115,6 +116,7 @@ def ensure_path_exists(path):
         Path object of the created/existing directory
     """
     from pathlib import Path
+
     path = Path(path)
     path.mkdir(parents=True, exist_ok=True)
     return path

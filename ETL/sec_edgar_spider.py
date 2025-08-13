@@ -35,9 +35,7 @@ from tqdm import tqdm
 from common.metadata_manager import MetadataManager
 
 # 设置日志输出级别为 DEBUG
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # 定义保存数据的基础目录：data/stage_01_extract/sec_edgar/
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -96,14 +94,14 @@ def run_job(config_path):
         # Map CIK to ticker for new directory structure
         cik_to_ticker = {
             "0000320193": "AAPL",
-            "0000789019": "MSFT", 
+            "0000789019": "MSFT",
             "0001018724": "AMZN",
             "0001652044": "GOOGL",
             "0001318605": "TSLA",
             "0001326801": "META",
-            "0001065280": "NFLX"
+            "0001065280": "NFLX",
         }
-        
+
         ticker = cik_to_ticker.get(cik, f"CIK_{cik}")
         date_partition = datetime.now().strftime("%Y%m%d")
         ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, date_partition, ticker)

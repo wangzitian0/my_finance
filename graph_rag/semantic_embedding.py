@@ -51,9 +51,7 @@ class SemanticEmbedding:
                 logger.error(f"Failed to load embedding model {embedding_model}: {e}")
                 self.model = None
         else:
-            logger.warning(
-                "Sentence transformers not available. Embedding functionality disabled."
-            )
+            logger.warning("Sentence transformers not available. Embedding functionality disabled.")
 
     def embed_text(self, text: str) -> Optional[List[float]]:
         """
@@ -94,9 +92,7 @@ class SemanticEmbedding:
             "business_overview": sec_filing.get("item_1", ""),
             "risk_factors": sec_filing.get("item_1a", ""),
             "financial_statements": sec_filing.get("item_8", ""),
-            "md_and_a": sec_filing.get(
-                "item_7", ""
-            ),  # Management Discussion & Analysis
+            "md_and_a": sec_filing.get("item_7", ""),  # Management Discussion & Analysis
         }
 
         embeddings = {}
@@ -118,9 +114,7 @@ class SemanticEmbedding:
                         if chunk_embeddings:
                             # Calculate aggregate embedding as mean of chunks
                             chunk_embeddings_array = np.array(chunk_embeddings)
-                            aggregate_embedding = np.mean(
-                                chunk_embeddings_array, axis=0
-                            )
+                            aggregate_embedding = np.mean(chunk_embeddings_array, axis=0)
 
                             embeddings[section_name] = {
                                 "chunks": chunks,
@@ -148,9 +142,7 @@ class SemanticEmbedding:
 
         return embeddings
 
-    def chunk_text(
-        self, text: str, max_length: int = 512, overlap: int = 50
-    ) -> List[str]:
+    def chunk_text(self, text: str, max_length: int = 512, overlap: int = 50) -> List[str]:
         """
         Split text into overlapping chunks for better embedding processing.
 
@@ -264,9 +256,7 @@ class SemanticEmbedding:
 
         return embeddings
 
-    def calculate_similarity(
-        self, embedding1: List[float], embedding2: List[float]
-    ) -> float:
+    def calculate_similarity(self, embedding1: List[float], embedding2: List[float]) -> float:
         """
         Calculate cosine similarity between two embeddings.
 
@@ -325,9 +315,7 @@ class SemanticEmbedding:
             chunk_embedding = chunk.get("embedding")
             if chunk_embedding:
                 similarity = self.calculate_similarity(query_embedding, chunk_embedding)
-                chunk_similarities.append(
-                    {"chunk": chunk, "similarity_score": similarity}
-                )
+                chunk_similarities.append({"chunk": chunk, "similarity_score": similarity})
 
         # Sort by similarity score (descending)
         chunk_similarities.sort(key=lambda x: x["similarity_score"], reverse=True)

@@ -152,7 +152,7 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 # 1. MANDATORY: Run end-to-end test first
 pixi run e2e             # Standard M7 test (required for PRs, default scope)
 # OR for quick testing during development:
-pixi run e2e f2          # Fast F2 test (2 companies)
+pixi run e2e-f2          # Fast F2 test (2 companies)
 
 # 2. MANDATORY: Create PR only via script (includes test verification)
 pixi run create-pr "Brief description" ISSUE_NUMBER
@@ -276,14 +276,20 @@ git push --force-with-lease
 - `v3k` - VTI 3500+ companies (production testing)
 
 ### Testing Strategy
-- **Fast Development Testing**: `pixi run e2e f2` (~1-2 minutes)
+- **Fast Development Testing**: `pixi run e2e-f2` (~1-2 minutes)
   - Quick validation during development
   - Sufficient for most code changes and bug fixes
-- **Standard PR Testing**: `pixi run e2e` or `pixi run e2e m7` (~5-10 minutes)  
+- **Standard PR Testing**: `pixi run e2e` or `pixi run e2e-m7` (~5-10 minutes)  
   - **REQUIRED** before creating PRs
   - Full M7 validation (default scope)
   - Production-grade quality assurance
-- **Extended Testing**: `pixi run e2e n100` or `pixi run e2e v3k` (comprehensive validation)
+- **Extended Testing**: `pixi run e2e-n100` or `pixi run e2e-v3k` (comprehensive validation)
+
+### Stock List Management
+- **Update stock lists**: `pixi run update-stock-lists`
+  - Updates NASDAQ-100 and VTI stock lists from official APIs
+  - Manual execution for latest ticker lists and market cap data
+  - Leverages existing `ETL/fetch_ticker_lists.py` functionality
 
 ### Daily Development Workflow for Claude
 
@@ -308,7 +314,7 @@ git checkout -b feature/description-fixes-N
 
 # 3. VALIDATE mechanisms before coding (CRITICAL)
 pixi run build m7           # Verify build system works (explicit M7)
-pixi run e2e f2             # Fast validation during development
+pixi run e2e-f2             # Fast validation during development
 # OR for thorough validation:
 pixi run e2e                # Full end-to-end flow verification (default M7)
 rm -f common/latest_build   # Clear build symlinks if needed
@@ -360,7 +366,7 @@ git log --oneline HEAD..origin/main  # Check if main has new commits
 
 # 3. Verify mechanisms work BEFORE making changes
 pixi run build m7           # Test build system
-pixi run e2e f2             # Fast test (development)
+pixi run e2e-f2             # Fast test (development)
 # For comprehensive validation:
 pixi run e2e                # Full end-to-end test (default M7)
 
@@ -410,7 +416,7 @@ pixi run shutdown-all
    # Always verify these work BEFORE starting development
    pixi run build m7             # Test build system with M7 scope
    rm -f common/latest_build     # Clear build symlinks if needed
-   pixi run e2e f2               # Fast validation (development)
+   pixi run e2e-f2               # Fast validation (development)
    # For comprehensive validation:
    pixi run e2e                  # Full end-to-end validation (default M7)
    ```
@@ -450,7 +456,7 @@ git push origin feature/branch-name --force-with-lease
 - ⚠️ **NEVER** attempt conflict resolution without latest main
 - ⚠️ **NEVER** continue working on conflicted branches
 - ✅ **ALWAYS** pull main first, then handle feature branch
-- ✅ **ALWAYS** test with `pixi run e2e f2` (quick) or `pixi run e2e` (thorough, default M7) after resolution
+- ✅ **ALWAYS** test with `pixi run e2e-f2` (quick) or `pixi run e2e` (thorough, default M7) after resolution
 - ✅ When in doubt, start fresh from latest main
 
 **Complex Conflicts** (major rework needed):

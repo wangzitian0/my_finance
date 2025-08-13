@@ -158,7 +158,11 @@ def import_all_json_files(source, tickers, logger):
             # Fallback to most recent date partition
             source_dir = os.path.join(STAGE_01_EXTRACT_DIR, source)
             if os.path.exists(source_dir):
-                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                date_dirs = [
+                    d
+                    for d in os.listdir(source_dir)
+                    if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()
+                ]
                 if date_dirs:
                     latest_date = max(date_dirs)
                     ticker_dir = os.path.join(source_dir, latest_date, ticker)
@@ -182,7 +186,11 @@ def import_all_json_files(source, tickers, logger):
             # Fallback to most recent date partition
             source_dir = os.path.join(STAGE_01_EXTRACT_DIR, source)
             if os.path.exists(source_dir):
-                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                date_dirs = [
+                    d
+                    for d in os.listdir(source_dir)
+                    if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()
+                ]
                 if date_dirs:
                     latest_date = max(date_dirs)
                     ticker_dir = os.path.join(source_dir, latest_date, ticker)

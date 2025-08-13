@@ -66,6 +66,8 @@ format = "python -m black --line-length 100 . && python -m isort ."
 lint = "python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613"
 typecheck = "python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports"
 test = "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
+test-commands = "python -m pytest tests/test_pixi_commands_simple.py -v"
+test-commands-old = "python -m pytest tests/test_pixi_commands.py -v"
 
 # Schema and data management commands
 build-schema = "python ETL/build_schema.py"
@@ -104,6 +106,15 @@ build-size = "python -c 'from pathlib import Path; import subprocess; result = s
 # --- Stock List Management ---
 # Update stock lists from official APIs (NASDAQ-100 and VTI)
 update-stock-lists = "python ETL/fetch_ticker_lists.py"
+
+# --- Tab Completion ---
+# Setup shell tab completion for pixi commands
+setup-tab-completion = "python scripts/setup_tab_completion.py"
+
+# --- Path Consistency ---
+# Fix path handling inconsistencies across codebase
+fix-path-consistency = "python scripts/fix_path_consistency.py --analyze"
+fix-path-consistency-apply = "python scripts/fix_path_consistency.py --fix"
 
 # --- Environment Management (Ansible + Podman) ---
 # Initial environment setup (now uses Podman instead of Minikube)

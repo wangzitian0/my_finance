@@ -40,14 +40,10 @@ def check_coverage_threshold(threshold: int = 80) -> bool:
         print(f"🎯 Required threshold: {threshold}%")
 
         if coverage_percent >= threshold:
-            print(
-                f"✅ Coverage meets threshold ({coverage_percent:.1f}% >= {threshold}%)"
-            )
+            print(f"✅ Coverage meets threshold ({coverage_percent:.1f}% >= {threshold}%)")
             return True
         else:
-            print(
-                f"❌ Coverage below threshold ({coverage_percent:.1f}% < {threshold}%)"
-            )
+            print(f"❌ Coverage below threshold ({coverage_percent:.1f}% < {threshold}%)")
 
             # Show detailed breakdown for improvement
             show_coverage_breakdown(root)
