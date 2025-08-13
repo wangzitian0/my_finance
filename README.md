@@ -1,6 +1,6 @@
 # Financial Strategy Engine
 
-**A Graph RAG-powered DCF valuation and investment analysis system**
+**A Graph RAG-powered DCF valuation and investment analysis system** (test change without M7 validation)
 
 ## What This Does
 
