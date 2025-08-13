@@ -61,7 +61,7 @@ hybrid-dcf-legacy = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
 pip-install = "pip install neomodel sentence-transformers"
 
 # Development workflow shortcuts
-dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 pr "Title" 81'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (consider adding to ~/.zshrc)'"
+dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 pr TITLE 81'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (add to ~/.zshrc)'"
 quick-test = "python -m pytest tests/test_basic_structure.py -v"
 status = "python infra/comprehensive_env_status.py"
 
