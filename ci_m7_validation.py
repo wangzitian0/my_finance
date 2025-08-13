@@ -147,6 +147,14 @@ def main():
     
     print(f"📝 Commit time: {datetime.datetime.fromtimestamp(commit_time, datetime.timezone.utc)}")
     print(f"📝 Message length: {len(commit_msg)} characters")
+    
+    # Debug: Show first few lines of commit message for troubleshooting
+    lines = commit_msg.split('\n')
+    print(f"📝 First line: {lines[0]}")
+    if len(lines) > 1:
+        print(f"📝 Total lines: {len(lines)}")
+        for i, line in enumerate(lines[1:6], 1):  # Show lines 1-5
+            print(f"📝 Line {i}: {line}")
     print()
     
     # Run all checks
