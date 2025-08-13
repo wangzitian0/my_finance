@@ -229,13 +229,16 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
     run_command("pixi run format", "Formatting Python code with black and isort")
-    
+
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
     if uncommitted_after_format:
         print("📝 Code formatting made changes - committing them...")
         run_command("git add .", "Adding formatted code changes")
-        run_command('git commit -m "Format code with black and isort\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>"', "Committing formatted code")
+        run_command(
+            'git commit -m "Format code with black and isort\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>"',
+            "Committing formatted code",
+        )
         print("✅ Formatted code committed")
     else:
         print("✅ Code already properly formatted")

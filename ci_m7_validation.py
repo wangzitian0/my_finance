@@ -223,31 +223,31 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
 def check_condition_5_code_formatting() -> bool:
     """Condition 5: Python code formatting with black and isort"""
     print("🔍 Checking condition 5: Python code formatting validation")
-    
+
     try:
         # Install formatting tools if needed
         try:
-            subprocess.run(["python3", "-c", "import black, isort"], 
-                         capture_output=True, check=True)
+            subprocess.run(
+                ["python3", "-c", "import black, isort"], capture_output=True, check=True
+            )
         except subprocess.CalledProcessError:
             print("   Installing black and isort...")
-            subprocess.run(["pip", "install", "black", "isort"], 
-                         capture_output=True, check=True)
-        
+            subprocess.run(["pip", "install", "black", "isort"], capture_output=True, check=True)
+
         # Check black formatting
         print("   Running black format check...")
         black_result = subprocess.run(
             ["python3", "-m", "black", "--check", "--line-length", "100", "."],
-            capture_output=True, text=True
+            capture_output=True,
+            text=True,
         )
-        
-        # Check isort formatting  
+
+        # Check isort formatting
         print("   Running isort format check...")
         isort_result = subprocess.run(
-            ["python3", "-m", "isort", "--check-only", "."],
-            capture_output=True, text=True
+            ["python3", "-m", "isort", "--check-only", "."], capture_output=True, text=True
         )
-        
+
         if black_result.returncode == 0 and isort_result.returncode == 0:
             print("✅ Condition 5 passed: Python code is properly formatted")
             return True
@@ -261,7 +261,7 @@ def check_condition_5_code_formatting() -> bool:
                 print(f"   {isort_result.stderr}")
             print("   Fix with: pixi run format")
             return False
-            
+
     except Exception as e:
         print(f"❌ Condition 5 failed: Error checking code formatting: {e}")
         return False
