@@ -15,15 +15,15 @@ This system analyzes financial data to generate:
 
 ```bash
 # Setup (once)
-pixi run setup-env
+p3 env setup
 
 # Daily workflow
-pixi shell                    # Enter environment
-pixi run env-status           # Check environment health
-pixi run build-m7             # Build test dataset with SEC filings
-pixi run validate-strategy    # Run strategy validation
-pixi run generate-report      # Create validation report with SEC citations
-pixi run shutdown-all         # Clean shutdown
+pixi shell                    # Enter environment (managed by pixi)
+p3 e2e                        # Quick validation (end-to-end)
+p3 refresh m7                 # Build test dataset with SEC filings
+./p3 pr "Description" 81      # If p3 not in PATH, run local script
+p3 clean                      # Clean local build artifacts
+p3 shutdown-all               # Clean shutdown
 ```
 
 ## 系统架构
@@ -54,40 +54,36 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 
 ### SEC-Enhanced DCF Operations
 ```bash
-pixi run build-m7             # Build M7 dataset with SEC filings (336 documents)
-pixi run validate-strategy    # Run SEC-backed DCF validation suite
-pixi run generate-report      # Create validation report with SEC citations
-pixi run dcf-analysis         # Generate Pure LLM DCF reports
-pixi run backtest             # Run historical performance test
+p3 refresh m7               # Build M7 dataset with SEC filings (336 documents)
+p3 dcf-analysis             # Generate Pure LLM DCF reports
+p3 backtest                 # Run historical performance test
 ```
 
 ### Development Tools
 ```bash
-pixi run format              # Format code with black + isort
-pixi run lint                # Code quality check with pylint
-pixi run typecheck           # Type checking with mypy
-pixi run test                # Run test suite with pytest
-pixi run create-pr           # Create PR with automated M7 testing
+p3 format                   # Format code with black + isort
+p3 lint                     # Code quality check with pylint
+p3 typecheck                # Type checking with mypy
+p3 test                     # Run test suite with pytest
+p3 create-pr                # Create PR with automated M7 testing
 ```
 
 ### Environment Management (Pixi + Ansible)
 ```bash
-pixi run setup-env           # Complete environment setup (Podman + Neo4j)
-pixi run env-status          # Check environment health (all services)
-pixi run env-start           # Start all services (Podman + Neo4j)
-pixi run env-stop            # Stop services gracefully
-pixi run shutdown-all        # Complete shutdown with cleanup
-pixi run env-reset           # Reset environment (destructive)
+p3 env setup               # Complete environment setup (Podman + Neo4j)
+p3 env status              # Check environment health (all services)
+p3 env start               # Start all services (Podman + Neo4j)
+p3 env stop                # Stop services gracefully
+p3 shutdown-all            # Complete shutdown with cleanup
+p3 env reset               # Reset environment (destructive)
 ```
 
 ### Data Pipeline Operations
 ```bash
-pixi run build-dataset f2    # Fast build (2 tickers)
-pixi run build-dataset m7    # Magnificent 7 build (7 tickers + SEC data)
-pixi run build-dataset n100  # NASDAQ 100 build 
-pixi run build-dataset v3k   # Full VTI build (3500 tickers)
-pixi run create-build        # Create timestamped build
-pixi run release-build       # Promote build to release
+p3 refresh f2              # Fast build (2 tickers)
+p3 refresh m7              # Magnificent 7 build (7 tickers + SEC data)
+p3 refresh n100            # NASDAQ 100 build 
+p3 refresh v3k             # Full VTI build (3500 tickers)
 ```
 
 ## SEC-Enhanced Strategy Reports
@@ -135,7 +131,7 @@ git clone https://github.com/wangzitian0/my_finance.git
 cd my_finance
 
 # One-command setup (installs everything)
-pixi run setup-env           # Podman + Neo4j + Python ML stack + SEC data
+p3 env setup                 # Podman + Neo4j + Python ML stack + SEC data
 ```
 
 **What gets installed**:
@@ -146,11 +142,11 @@ pixi run setup-env           # Podman + Neo4j + Python ML stack + SEC data
 
 **Verification**:
 ```bash
-pixi run env-status          # Check all services
-pixi run build-m7            # Test with Magnificent 7 dataset
+p3 env status                # Check all services
+p3 build-m7                  # Test with Magnificent 7 dataset
 ```
 
-**Troubleshooting**: Use `pixi run env-reset` for complete clean reset.
+**Troubleshooting**: Use `p3 env reset` for complete clean reset.
 
 ## SEC Filing Integration
 
@@ -171,7 +167,7 @@ This system uniquely integrates SEC filing data directly into DCF valuations:
 ### Usage Examples
 ```bash
 # Generate SEC-enhanced DCF report
-pixi run dcf-analysis
+p3 dcf-analysis
 
 # View SEC integration templates
 ls data/stage_99_build/sec_integration_examples/

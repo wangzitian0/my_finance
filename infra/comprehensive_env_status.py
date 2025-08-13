@@ -201,9 +201,9 @@ def main():
     if all_ready:
         print("✅ All systems ready! You can start development.")
         print("\n🚀 Quick start commands:")
-        print("   pixi run build-f2      # Quick test build")
-        print("   pixi run test-m7-e2e   # Full test")
-        print("   pixi run neo4j-connect # Connect to database")
+        print("   p3 build run f2        # Quick test build")
+        print("   p3 e2e                 # Full test")
+        print("   p3 neo4j connect       # Connect to database")
     else:
         print("❌ Some components need attention.")
         print("\n🔧 Recommended fix sequence:")
@@ -211,7 +211,7 @@ def main():
             print(f"   {i}. {cmd}")
         
         print("\n💡 Or run the complete setup:")
-        print("   pixi run setup-env")
+        print("   p3 env setup")
     
     return 0 if all_ready else 1
 

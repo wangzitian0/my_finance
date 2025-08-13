@@ -103,8 +103,8 @@ def main():
 
     print("\n🎉 Shutdown sequence completed!")
     print("\n💡 To restart services:")
-    print("   • Full setup: pixi run setup-env")
-    print("   • Start services: pixi run env-start")
+    print("   • Full setup: p3 env setup")
+    print("   • Start services: p3 env start")
 
 
 if __name__ == "__main__":

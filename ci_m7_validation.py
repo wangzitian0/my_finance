@@ -104,7 +104,7 @@ def check_condition_1_test_run(commit_msg: str) -> bool:
     else:
         print("❌ Condition 1 failed: M7 test marker not found")
         print("   Expected pattern: M7-TESTED: This commit passed M7 end-to-end testing")
-        print("   Please use: pixi run create-pr \"title\" ISSUE_NUMBER")
+        print("   Please use: p3 create-pr \"title\" ISSUE_NUMBER")
         return False
 
 
@@ -242,8 +242,8 @@ def main():
         print("🚫 This commit should not be merged")
         print()
         print("📝 Fix steps:")
-        print("1. Run: pixi run test-m7-e2e")
-        print("2. Use: pixi run create-pr \"title\" ISSUE_NUMBER")
+        print("1. Run: p3 e2e")
+        print("2. Use: p3 create-pr \"title\" ISSUE_NUMBER")
         sys.exit(1)
 
 
