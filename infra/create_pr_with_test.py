@@ -16,6 +16,7 @@ from pathlib import Path
 def run_command(cmd, description, timeout=None, check=True):
     """Run a command with proper error handling"""
     print(f"🔄 {description}...")
+    print(f"   Command: {cmd}")
     try:
         if isinstance(cmd, str):
             result = subprocess.run(
@@ -32,20 +33,26 @@ def run_command(cmd, description, timeout=None, check=True):
                 print(f"   Output: {result.stdout.strip()}")
             return result
         else:
-            print(f"❌ {description} - FAILED")
+            print(f"❌ {description} - FAILED (return code: {result.returncode})")
+            if result.stdout.strip():
+                print(f"   Stdout: {result.stdout.strip()}")
             if result.stderr.strip():
-                print(f"   Error: {result.stderr.strip()}")
+                print(f"   Stderr: {result.stderr.strip()}")
             if check:
+                print(f"💥 Exiting due to failed command: {cmd}")
                 sys.exit(1)
             return result
     except subprocess.TimeoutExpired:
         print(f"⏰ {description} - TIMEOUT ({timeout}s)")
         if check:
+            print(f"💥 Exiting due to timeout: {cmd}")
             sys.exit(1)
         return None
     except Exception as e:
         print(f"💥 {description} - EXCEPTION: {e}")
+        print(f"   Command was: {cmd}")
         if check:
+            print(f"💥 Exiting due to exception")
             sys.exit(1)
         return None
 
@@ -152,6 +159,34 @@ def run_end_to_end_test():
     return True
 
 
+def check_recent_test_marker():
+    """Check if there's a recent (within 3 minutes) test marker"""
+    marker_file = Path(".m7-test-passed")
+    if not marker_file.exists():
+        return False, "No test marker found"
+    
+    try:
+        with open(marker_file, "r") as f:
+            content = f.read()
+        
+        # Extract timestamp
+        for line in content.split("\n"):
+            if line.startswith("TEST_TIMESTAMP="):
+                timestamp_str = line.split("=")[1]
+                test_time = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+                current_time = datetime.now(test_time.tzinfo)
+                time_diff = current_time - test_time
+                
+                if time_diff.total_seconds() <= 180:  # 3 minutes
+                    return True, f"Recent test found (age: {int(time_diff.total_seconds())}s)"
+                else:
+                    return False, f"Test too old (age: {int(time_diff.total_seconds())}s, limit: 180s)"
+        
+        return False, "No timestamp found in test marker"
+    except Exception as e:
+        return False, f"Error reading test marker: {e}"
+
+
 def create_test_marker(file_count: int):
     """Create marker file indicating M7 test passed"""
     import socket
@@ -186,7 +221,7 @@ VALIDATION_PASSED=true
     print("📝 Created M7 test marker: .m7-test-passed")
 
 
-def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=False):
+def create_pr_workflow(title, issue_number, description_file=None, debug=False):
     """Complete PR creation workflow"""
 
     print("\n" + "=" * 60)
@@ -231,13 +266,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     else:
         print("✅ Branch is already up to date with origin/main")
 
-    # 3. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
-    if not skip_m7_test:
-        if not run_end_to_end_test():
-            print("❌ M7 test failed - PR creation aborted")
-            sys.exit(1)
-    else:
-        print("⚠️  SKIPPING M7 TEST - NOT RECOMMENDED")
+    # 3. MANDATORY: Run M7 end-to-end test - NO EXCEPTIONS
+    print("\n🧪 MANDATORY M7 END-TO-END TESTING")
+    print("⚠️  Testing is REQUIRED - cannot skip for PR creation")
+    if not run_end_to_end_test():
+        print("❌ M7 test failed - PR creation aborted")
+        print("🚫 GitHub branch protection will reject untested commits")
+        sys.exit(1)
+    print("✅ M7 test passed - proceeding with PR creation")
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
@@ -277,7 +313,17 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with M7 test info")
         print("📝 M7 test marker and status included in commit message")
 
-    # 6. Push current branch (handle potential conflicts)
+    # 6. CRITICAL: Verify recent test before push
+    print("🔍 Verifying recent M7 test before push...")
+    has_recent_test, test_status = check_recent_test_marker()
+    if not has_recent_test:
+        print(f"🚫 BLOCKING PUSH: {test_status}")
+        print("❌ Cannot push without recent (≤3min) M7 test completion")
+        print("🔧 GitHub branch protection will reject this commit")
+        sys.exit(1)
+    print(f"✅ Recent test verified: {test_status}")
+
+    # 7. Push current branch (handle potential conflicts)
     print(f"🔄 Pushing branch {current_branch}...")
     try:
         push_result = run_command(
@@ -556,13 +602,17 @@ Co-Authored-By: Claude <noreply@anthropic.com>"""
 
 def main():
     """Main CLI interface"""
+    print("🚀 Starting PR creation workflow...")
+    print(f"📅 Current time: {datetime.now().isoformat()}")
+    
     parser = argparse.ArgumentParser(
         description="Create PR with mandatory M7 end-to-end testing",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python infra/create_pr_with_m7_test.py "Fix config bug" 42
-  python infra/create_pr_with_m7_test.py "Add new feature" 43 --description pr_body.md
+  python infra/create_pr_with_test.py "Fix config bug" 42
+  python infra/create_pr_with_test.py "Add new feature" 43 --description pr_body.md
+  python infra/create_pr_with_test.py "Fix" 42 --skip-m7-test --fast
         """,
     )
 
@@ -570,30 +620,33 @@ Examples:
     parser.add_argument("issue_number", nargs="?", type=int, help="GitHub issue number")
     parser.add_argument("--description", help="Path to file containing PR description")
     parser.add_argument(
-        "--skip-m7-test", action="store_true", help="Skip M7 test (NOT RECOMMENDED)"
-    )
-    parser.add_argument(
         "--skip-pr-creation", action="store_true", help="Only run M7 test, skip PR creation"
     )
+    parser.add_argument(
+        "--debug", action="store_true", help="Enable debug output for troubleshooting"
+    )
 
-    args = parser.parse_args()
+    try:
+        args = parser.parse_args()
+        print(f"📋 Arguments parsed: title='{args.title}', issue={args.issue_number}, debug={args.debug}")
+    except Exception as e:
+        print(f"❌ Failed to parse arguments: {e}")
+        sys.exit(1)
 
     if args.skip_pr_creation:
+        print("🧪 Running M7 test only (no PR creation)")
         # Only run M7 test
         success = run_end_to_end_test()
         sys.exit(0 if success else 1)
 
     # Validate required arguments for PR creation
     if not args.title or not args.issue_number:
+        print("❌ Missing required arguments")
         parser.error("title and issue_number are required when creating PR")
-
-    if args.skip_m7_test:
-        print("⚠️  WARNING: Skipping M7 test - this is NOT recommended!")
-        time.sleep(3)
 
     try:
         pr_url = create_pr_workflow(
-            args.title, args.issue_number, args.description, args.skip_m7_test
+            args.title, args.issue_number, args.description, debug=args.debug
         )
 
         if pr_url:
