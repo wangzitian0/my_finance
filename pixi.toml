@@ -101,6 +101,10 @@ clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = 
 clean = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'"
 build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/stage_99_build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
+# --- Stock List Management ---
+# Update stock lists from official APIs (NASDAQ-100 and VTI)
+update-stock-lists = "python ETL/fetch_ticker_lists.py"
+
 # --- Environment Management (Ansible + Podman) ---
 # Initial environment setup (now uses Podman instead of Minikube)
 setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.yml"
@@ -124,6 +128,12 @@ neo4j-start = "podman start neo4j-finance"
 # PR creation with automated testing
 create-pr = "python infra/create_pr_with_test.py"
 test-e2e = "python infra/create_pr_with_test.py --skip-pr"
+
+# End-to-end testing with different scopes
+e2e = "python infra/create_pr_with_test.py --skip-pr m7"  # Default M7 scope
+e2e-f2 = "python infra/create_pr_with_test.py --skip-pr f2"  # Fast 2 companies
+e2e-m7 = "python infra/create_pr_with_test.py --skip-pr m7"  # Magnificent 7
+e2e-n100 = "python infra/create_pr_with_test.py --skip-pr n100"  # NASDAQ 100
 
 # Data repository (symlink) management
 commit-data-changes = "python infra/commit_data_changes.py"
