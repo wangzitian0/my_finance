@@ -1,0 +1,84 @@
+#!/usr/bin/env sh
+
+set -e
+
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$REPO_ROOT"
+
+usage() {
+  cat <<EOF
+p3 - Unified developer commands (my_finance)
+
+Usage:
+  p3 pr "TITLE" ISSUE [--description FILE]
+  p3 e2e
+  p3 refresh [f2|m7|n100|v3k]
+  p3 clean
+
+Commands:
+  pr         Create or update PR with mandatory testing
+  e2e        Run end-to-end validation (no PR)
+  refresh    Build data for scope (default: m7)
+  clean      Clean local build artifacts
+
+Scopes:
+  f2 m7 n100 v3k
+
+Tips:
+  - Add completion: source ./scripts/p3-completion.zsh
+  - Add to PATH:    export PATH="$REPO_ROOT:$PATH"
+EOF
+}
+
+cmd_pr() {
+  title="$1"; shift || true
+  issue="$1"; shift || true
+  if [ -z "$title" ] || [ -z "$issue" ]; then
+    echo "Error: title and issue number are required" >&2
+    exit 2
+  fi
+  python3 infra/create_pr_with_test.py "$title" "$issue" "$@"
+}
+
+cmd_e2e() {
+  python3 infra/create_pr_with_test.py --skip-pr
+}
+
+cmd_refresh() {
+  scope="${1:-m7}"
+  case "$scope" in
+    f2|m7|n100|v3k) ;;
+    *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
+  esac
+  python3 ETL/build_dataset.py "$scope"
+}
+
+cmd_clean() {
+  # Clean stage_99 builds (safe operation)
+  python3 - "$@" <<'PY'
+from pathlib import Path
+import shutil
+
+build_dir = Path('data/stage_99_build')
+if build_dir.exists():
+    removed = 0
+    for d in build_dir.glob('build_*'):
+        if d.is_dir():
+            shutil.rmtree(d)
+            removed += 1
+    print(f"🧹 Cleaned {removed} build directories in {build_dir}")
+else:
+    print("ℹ️ Nothing to clean")
+PY
+}
+
+case "$1" in
+  pr) shift; cmd_pr "$@" ;;
+  e2e) shift; cmd_e2e "$@" ;;
+  refresh) shift; cmd_refresh "$@" ;;
+  clean) shift; cmd_clean "$@" ;;
+  -h|--help|help|"") usage ;;
+  *) echo "Unknown command: $1" >&2; usage; exit 2 ;;
+esac
+
+

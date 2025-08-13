@@ -61,7 +61,7 @@ hybrid-dcf-legacy = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
 pip-install = "pip install neomodel sentence-transformers"
 
 # Development workflow shortcuts
-dev = "echo '🚀 Development Ready! Try: pixi run build (fast) or pixi run build-m7'"
+dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 pr "Title" 81'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (consider adding to ~/.zshrc)'"
 quick-test = "python -m pytest tests/test_basic_structure.py -v"
 status = "python infra/comprehensive_env_status.py"
 
@@ -176,6 +176,6 @@ verify-environment = "python -c 'import sys; print(f\"Python: {sys.version}\"); 
 check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stage_00_original\", \"data/stage_01_extract\", \"data/stage_99_build\"]; [print(f\"📁 {d}: {\"✅ exists\" if Path(d).exists() else \"❌ missing\"}\") for d in dirs]'"
 
 # --- P3 ALIAS SYSTEM ---
-# Short commands for daily development workflow
+# Keep legacy helpers if needed
 pr = "python infra/create_pr_with_improved_testing.py"
 test-only = "python infra/create_pr_with_improved_testing.py --test-only"

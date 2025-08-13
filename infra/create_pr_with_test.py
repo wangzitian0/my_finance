@@ -68,13 +68,13 @@ def run_end_to_end_test():
     run_command("rm -rf data/stage_99_build/build_*", "Cleaning existing build artifacts", check=False)
     run_command("rm -f common/latest_build", "Cleaning latest build symlink", check=False)
     
-    # Start environment if needed
-    run_command("pixi run env-status", "Checking environment status", check=False)
+    # Start environment if needed (Python-based status)
+    run_command(f"{sys.executable} infra/comprehensive_env_status.py", "Checking environment status", check=False)
     
     test_success = False
     try:
-        # Build F2 dataset (faster test)
-        run_command("pixi run build-f2", "Building F2 dataset", timeout=300)  # 5 minutes
+        # Build F2 dataset (faster test) using Python entrypoint
+        run_command(f"{sys.executable} ETL/build_dataset.py f2", "Building F2 dataset", timeout=300)  # 5 minutes
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
@@ -99,7 +99,10 @@ def run_end_to_end_test():
             return False
     
     # Validate build results
-    build_status = run_command("pixi run build-status", "Checking build status")
+    build_status = run_command(
+        f"{sys.executable} -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
+        "Checking build status"
+    )
     
     # Check for expected files in multiple possible locations
     file_locations = [
@@ -223,7 +226,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_command("pixi run commit-data-changes", "Staging data directory changes")
+    run_command(f"{sys.executable} infra/commit_data_changes.py", "Staging data directory changes")
     
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
