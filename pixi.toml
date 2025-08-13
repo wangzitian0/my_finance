@@ -136,15 +136,11 @@ neo4j-stop = "podman stop neo4j-finance"
 neo4j-start = "podman start neo4j-finance"
 
 # --- Workflow Management ---
-# PR creation with automated testing
-create-pr = "python infra/create_pr_with_test.py"
-test-e2e = "python infra/create_pr_with_test.py --skip-pr"
+# Generate PR (auto-detects if PR exists: push changes or create new)
+gen-pr = "python infra/create_pr_with_test.py"
 
-# End-to-end testing with different scopes
-e2e = "python infra/create_pr_with_test.py --skip-pr m7"  # Default M7 scope
-e2e-f2 = "python infra/create_pr_with_test.py --skip-pr f2"  # Fast 2 companies
-e2e-m7 = "python infra/create_pr_with_test.py --skip-pr m7"  # Magnificent 7
-e2e-n100 = "python infra/create_pr_with_test.py --skip-pr n100"  # NASDAQ 100
+# End-to-end testing only (no PR operations)
+test-e2e = "python infra/create_pr_with_test.py --skip-pr-creation"
 
 # Data repository (symlink) management
 commit-data-changes = "python infra/commit_data_changes.py"

@@ -126,7 +126,7 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 - ❌ Data corruption from invalid changes
 - ❌ Regression without proper validation
 
-**The `pixi run create-pr` script is not just best practice - it's essential for system stability.**
+**The `pixi run gen-pr` script is not just best practice - it's essential for system stability.**
 
 ### Security Recommendations
 1. **NEVER bypass automated scripts** - they prevent production issues
@@ -155,10 +155,10 @@ pixi run e2e             # Standard M7 test (required for PRs, default scope)
 pixi run e2e-f2          # Fast F2 test (2 companies)
 
 # 2. MANDATORY: Create PR only via script (includes test verification)
-pixi run create-pr "Brief description" ISSUE_NUMBER
+pixi run gen-pr "Brief description" ISSUE_NUMBER
 
 # 3. Optional: Create PR with custom description file
-pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
+pixi run gen-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 ```
 
 #### Why Manual Git Commands Are Discouraged
@@ -174,9 +174,9 @@ pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 - ✅ Commit messages include proper PR URLs for GoLand integration
 - ✅ GitHub branch protection rules enforce test validation
 
-**CRITICAL**: ALWAYS use `pixi run create-pr` for ALL PR operations:
-- ✅ **Creating new PR**: `pixi run create-pr "Description" ISSUE_NUMBER`
-- ✅ **Updating existing PR**: `pixi run create-pr "Update description" ISSUE_NUMBER`
+**CRITICAL**: ALWAYS use `pixi run gen-pr` for ALL PR operations:
+- ✅ **Creating new PR**: `pixi run gen-pr "Description" ISSUE_NUMBER`
+- ✅ **Updating existing PR**: `pixi run gen-pr "Update description" ISSUE_NUMBER`
 - ✅ **Both operations require end-to-end testing** - no exceptions
 - ❌ **NEVER** use direct `git push` or manual PR updates
 
@@ -338,7 +338,7 @@ Fixes #N
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # 7. Create PR with automated testing
-pixi run create-pr "Description" N
+pixi run gen-pr "Description" N
 
 # 8. End session (MANDATORY)
 pixi run shutdown-all         # Stop all services
@@ -381,7 +381,7 @@ Fixes #ISSUE_NUMBER
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # 5. Create OR Update PR with automated M7 testing (CRITICAL)
-pixi run create-pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
+pixi run gen-pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
 
 # 6. For PR updates, ALWAYS use the same script (NEVER direct git push)
 # The script will detect existing PR and update it with M7 validation
@@ -505,7 +505,7 @@ This ensures clean environment state and prevents port conflicts or resource iss
 
 ### PR Creation Script Robustness (Issue #78 Implementation)
 
-**CRITICAL**: The `pixi run create-pr` script is the mandatory way to create PRs. Manual git commands are deprecated.
+**CRITICAL**: The `pixi run gen-pr` script is the mandatory way to handle PRs. It automatically detects if PR exists for the branch and either pushes changes or creates new PR. Manual git commands are deprecated.
 
 #### Key Improvements Made:
 - **Mandatory Testing**: Removed all options to skip M7 testing - testing is now REQUIRED
@@ -516,17 +516,19 @@ This ensures clean environment state and prevents port conflicts or resource iss
 
 #### Script Usage:
 ```bash
-# Standard PR creation (mandatory M7 testing)
-pixi run create-pr "Description" ISSUE_NUMBER
+# Generate PR (auto-detects existing PR: mandatory M7 testing)
+pixi run gen-pr "Description" ISSUE_NUMBER
 
 # Debug mode for troubleshooting  
-pixi run create-pr "Description" ISSUE_NUMBER --debug
+pixi run gen-pr "Description" ISSUE_NUMBER --debug
 
-# Test-only mode (no PR creation)
+# Test-only mode (no PR operations)
 pixi run test-e2e
 ```
 
 #### Architecture Enhancements:
+- **Auto-Detection**: Checks if PR exists for branch using GitHub CLI
+- **Smart Workflow**: If PR exists → push changes + update description; If no PR → create new PR
 - **Global DEBUG_MODE**: Consistent debug output across all script functions
 - **Test Marker System**: Creates .m7-test-passed with timestamp validation
 - **Build Validation**: Verifies 7+ M7 data files (ideal: 21 files for 7×3 periods)

@@ -407,51 +407,90 @@ Fixes #{issue_number}
 
 🤖 Generated with [Claude Code](https://claude.ai/code)"""
 
-    # 8. Create PR using gh CLI
-    result = run_command(
-        f'gh pr create --title "{title}" --body "{body}"', "Creating PR with gh CLI"
+    # 8. Auto-detect and handle PR creation/update
+    print("🔍 Checking if PR already exists for this branch...")
+    
+    # Check if PR exists for current branch
+    pr_check_result = run_command(
+        f"gh pr list --head {current_branch} --json url,number --jq '.[0]'",
+        "Checking for existing PR",
+        check=False,
     )
-
-    # Extract PR URL from output (check both stdout and stderr)
-    pr_url = None
-    if result:
-        # Check stdout first (where gh pr create normally outputs the URL)
-        if result.stdout:
-            lines = result.stdout.split("\n")
-            for line in lines:
-                if "https://github.com/" in line and "/pull/" in line:
-                    pr_url = line.strip()
-                    break
-
-        # Fallback to stderr if not found in stdout
-        if not pr_url and result.stderr:
-            lines = result.stderr.split("\n")
-            for line in lines:
-                if "https://github.com/" in line and "/pull/" in line:
-                    pr_url = line.strip()
-                    break
-
-    if not pr_url:
-        print("⚠️  Could not extract PR URL from gh output")
-        if result and result.stdout:
-            print(f"   stdout: {result.stdout.strip()}")
-        if result and result.stderr:
-            print(f"   stderr: {result.stderr.strip()}")
-        # Try to get PR URL using gh pr list as fallback
-        print("🔄 Attempting to find PR URL using gh pr list...")
-        fallback_result = run_command(
-            f"gh pr list --head {current_branch} --json url --jq '.[0].url'",
-            "Getting PR URL from list",
+    
+    existing_pr = None
+    if pr_check_result and pr_check_result.stdout.strip() and pr_check_result.stdout.strip() != "null":
+        try:
+            import json
+            existing_pr = json.loads(pr_check_result.stdout.strip())
+            print(f"✅ Found existing PR #{existing_pr['number']}: {existing_pr['url']}")
+        except (json.JSONDecodeError, KeyError):
+            print("⚠️  Could not parse existing PR data")
+    
+    if existing_pr:
+        # PR exists - just update it with latest changes
+        print("🔄 Updating existing PR with latest changes...")
+        pr_url = existing_pr['url']
+        pr_number = existing_pr['number']
+        
+        # Update PR body with latest information
+        update_result = run_command(
+            f'gh pr edit {pr_number} --body "{body}"',
+            f"Updating PR #{pr_number} description",
             check=False,
         )
-        if fallback_result and fallback_result.stdout.strip():
-            pr_url = fallback_result.stdout.strip()
-            print(f"✅ Found PR URL via fallback: {pr_url}")
+        if update_result and update_result.returncode == 0:
+            print(f"✅ PR #{pr_number} updated successfully")
         else:
-            print("❌ Could not determine PR URL")
-            return None
+            print(f"⚠️  Failed to update PR description, but changes are pushed")
+            
+        print(f"✅ PR Updated: {pr_url}")
+    else:
+        # No existing PR - create new one
+        print("🆕 Creating new PR...")
+        result = run_command(
+            f'gh pr create --title "{title}" --body "{body}"', "Creating new PR with gh CLI"
+        )
 
-    print(f"✅ PR Created: {pr_url}")
+        # Extract PR URL from output
+        pr_url = None
+        if result:
+            # Check stdout first (where gh pr create normally outputs the URL)
+            if result.stdout:
+                lines = result.stdout.split("\n")
+                for line in lines:
+                    if "https://github.com/" in line and "/pull/" in line:
+                        pr_url = line.strip()
+                        break
+
+            # Fallback to stderr if not found in stdout
+            if not pr_url and result.stderr:
+                lines = result.stderr.split("\n")
+                for line in lines:
+                    if "https://github.com/" in line and "/pull/" in line:
+                        pr_url = line.strip()
+                        break
+
+        if not pr_url:
+            print("⚠️  Could not extract PR URL from gh output")
+            if result and result.stdout:
+                print(f"   stdout: {result.stdout.strip()}")
+            if result and result.stderr:
+                print(f"   stderr: {result.stderr.strip()}")
+            # Try to get PR URL using gh pr list as fallback
+            print("🔄 Attempting to find PR URL using gh pr list...")
+            fallback_result = run_command(
+                f"gh pr list --head {current_branch} --json url --jq '.[0].url'",
+                "Getting PR URL from list",
+                check=False,
+            )
+            if fallback_result and fallback_result.stdout.strip():
+                pr_url = fallback_result.stdout.strip()
+                print(f"✅ Found PR URL via fallback: {pr_url}")
+            else:
+                print("❌ Could not determine PR URL")
+                return None
+
+        print(f"✅ PR Created: {pr_url}")
 
     # 9. Update commit message with actual PR URL
     pr_number = pr_url.split("/pull/")[-1]
