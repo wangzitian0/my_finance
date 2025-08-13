@@ -12,7 +12,7 @@ jobs:
   validation-check:
     name: "Check M7 Validation"
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     
     steps:
     - name: "Checkout"
@@ -20,15 +20,19 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: "Check M7 Test Validation in Commit Message"
+    - name: "Check M7 Test Validation and Timing"
       run: |
         echo "🔍 Checking for M7 test validation in commit message..."
         
-        # Get the latest commit message
+        # Get the latest commit message and timestamp
         COMMIT_MSG=$(git log -1 --pretty=%B)
+        COMMIT_TIME=$(git log -1 --pretty=%ct)
+        COMMIT_TIME_ISO=$(git log -1 --pretty=%cI)
+        
         echo "📝 Latest commit message:"
         echo "$COMMIT_MSG"
         echo "---"
+        echo "📅 Commit time: $COMMIT_TIME_ISO (epoch: $COMMIT_TIME)"
         
         # Check for M7-TESTED marker
         if echo "$COMMIT_MSG" | grep -q "M7-TESTED.*This commit passed M7 end-to-end testing"; then
@@ -37,6 +41,54 @@ jobs:
           # Check for test results
           if echo "$COMMIT_MSG" | grep -q "Test Results.*data files validated"; then
             echo "✅ Found test results information"
+            
+            # Extract test time
+            TEST_TIME_LINE=$(echo "$COMMIT_MSG" | grep "🕐 Test Time:" | head -1)
+            if [ -n "$TEST_TIME_LINE" ]; then
+              # Extract ISO timestamp (format: 2025-08-13T11:27:36Z)
+              TEST_TIME_ISO=$(echo "$TEST_TIME_LINE" | sed 's/.*Test Time: //' | sed 's/[^0-9T:Z-].*//')
+              echo "🕐 Test time: $TEST_TIME_ISO"
+              
+              if [ -n "$TEST_TIME_ISO" ]; then
+                # Convert test time to epoch for comparison
+                TEST_TIME_EPOCH=$(date -d "$TEST_TIME_ISO" +%s 2>/dev/null || echo "0")
+                
+                if [ "$TEST_TIME_EPOCH" -gt 0 ]; then
+                  # Calculate time difference (commit time - test time)
+                  TIME_DIFF=$((COMMIT_TIME - TEST_TIME_EPOCH))
+                  TIME_DIFF_MIN=$((TIME_DIFF / 60))
+                  
+                  echo "⏰ Time difference: ${TIME_DIFF} seconds (${TIME_DIFF_MIN} minutes)"
+                  echo "   Test time: $(date -d "@$TEST_TIME_EPOCH" -u)"
+                  echo "   Commit time: $(date -d "@$COMMIT_TIME" -u)"
+                  
+                  # Test time should be within 5 minutes before commit time to 1 minute after
+                  # This allows for small clock differences but prevents stale tests
+                  if [ "$TIME_DIFF" -gt 300 ]; then
+                    echo "❌ FAIL: Test is too old (${TIME_DIFF_MIN} minutes before commit)"
+                    echo "   Tests must be run within 5 minutes of commit time"
+                    echo "   This prevents using stale test results after code changes"
+                    exit 1
+                  elif [ "$TIME_DIFF" -lt -60 ]; then
+                    echo "❌ FAIL: Test time is in the future (${TIME_DIFF_MIN} minutes after commit)"
+                    echo "   This indicates a clock sync issue or invalid timestamp"
+                    exit 1
+                  else
+                    echo "✅ Test timing is valid (within acceptable range)"
+                  fi
+                else
+                  echo "❌ FAIL: Could not parse test timestamp"
+                  exit 1
+                fi
+              else
+                echo "❌ FAIL: Could not extract test timestamp"
+                exit 1
+              fi
+            else
+              echo "❌ FAIL: Test time not found in commit message"
+              exit 1
+            fi
+            
             echo "✅ M7 validation check PASSED"
           else
             echo "❌ FAIL: Test results information not found in commit message"
