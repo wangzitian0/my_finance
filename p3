@@ -37,11 +37,13 @@ cmd_pr() {
     echo "Error: title and issue number are required" >&2
     exit 2
   fi
-  python3 infra/create_pr_with_test.py "$title" "$issue" "$@"
+  # Use pixi to run in proper environment
+  pixi run "python infra/create_pr_with_test.py '$title' '$issue' $*"
 }
 
 cmd_e2e() {
-  python3 infra/create_pr_with_test.py --skip-pr
+  # Use pixi to run in proper environment
+  pixi run "python infra/create_pr_with_test.py --skip-pr"
 }
 
 cmd_refresh() {
@@ -50,7 +52,8 @@ cmd_refresh() {
     f2|m7|n100|v3k) ;;
     *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
   esac
-  python3 ETL/build_dataset.py "$scope"
+  # Use pixi to run in proper environment with dependencies
+  pixi run "python ETL/build_dataset.py $scope"
 }
 
 cmd_clean() {

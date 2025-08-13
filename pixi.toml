@@ -39,6 +39,7 @@ neo4j-python-driver = "*"
 # Machine Learning dependencies for semantic retrieval
 scikit-learn = "*"
 pytorch = "*"
+yfinance = ">=0.2.57,<0.3"
 
 [tasks]
 # Core commands from CLAUDE.md
