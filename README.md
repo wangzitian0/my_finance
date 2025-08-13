@@ -13,14 +13,47 @@ This system analyzes financial data to generate:
 ## Quick Start
 
 ```bash
-# Setup (once)
-pixi run setup-env
+# Setup (once)  
+p3 env-setup                 # Install Podman, Neo4j, dependencies
 
-# Daily workflow
-pixi shell                    # Enter environment
-pixi run validate-strategy    # Run strategy validation
-pixi run generate-report      # Create validation report
-pixi run shutdown-all         # Clean shutdown
+# Daily workflow with P3 system
+pixi shell                   # Enter environment
+p3 build                     # Fast F2 build & analysis  
+p3 dcf-m7                    # Full M7 DCF analysis
+p3 release                   # Create release
+p3 env-stop                  # Clean shutdown
+
+# Additional commands (if needed)
+p3 validate-strategy         # Legacy strategy validation
+p3 generate-report           # Legacy report generation  
+```
+
+### P3 Alias System 🚀
+
+Use short commands for faster development:
+
+```bash
+# Core Development
+p3 build          # Fast build (F2)
+p3 test           # Run tests
+p3 lint           # Code formatting
+p3 clean          # Cleanup builds
+p3 status         # Environment status
+
+# DCF Analysis  
+p3 dcf            # Quick DCF analysis
+p3 dcf-f2         # Fast 2-company test
+p3 dcf-m7         # Full Magnificent 7
+
+# Environment (Ansible)
+p3 env-start      # Start services
+p3 env-stop       # Stop services  
+p3 env-status     # Check environment
+p3 env-reset      # Reset environment
+
+# Release Management
+p3 release        # Create release
+p3 pr             # Create pull request
 ```
 
 > **📖 Complete Commands**: See [CLAUDE.md](CLAUDE.md) for full command reference and development workflows.
@@ -52,26 +85,25 @@ ETL → DTS → DCF Engine → Evaluation
 
 ### Core Operations
 ```bash
-pixi run build-m7            # Build test dataset (required for development)
-pixi run validate-strategy   # Run strategy validation
-pixi run generate-report     # Create validation report
-pixi run update-stock-lists  # Update NASDAQ-100 and VTI stock lists
+p3 build-m7                  # Build M7 dataset with DCF analysis
+p3 validate-strategy         # Run strategy validation (legacy)
+p3 generate-report           # Create validation report (legacy)  
+p3 update-stock-lists        # Update NASDAQ-100 and VTI stock lists
 ```
 
 ### Development & Testing
 ```bash
-pixi run e2e-f2              # Fast end-to-end test (2 companies)
-pixi run e2e                 # Full end-to-end test (M7 companies)
-pixi run format              # Format code
-pixi run lint                # Code quality check
-pixi run test                # Run test suite
+p3 dcf-f2                    # Fast 2-company DCF test
+p3 dcf-m7                    # Full M7 DCF analysis
+p3 lint                      # Format & check code quality
+p3 test                      # Run complete test suite
 ```
 
 ### Environment
 ```bash
-pixi run env-status          # Check environment health
-pixi run setup-tab-completion # Setup shell tab completion
-pixi run shutdown-all        # Stop all services
+p3 status                    # Check environment health
+p3 env-status                # Detailed environment status  
+p3 env-stop                  # Stop all services
 ```
 
 > **⚙️ Advanced Commands**: See [CLAUDE.md](CLAUDE.md) for complete command reference, development workflows, and testing strategies.
@@ -99,12 +131,12 @@ Data Sources → Neo4j Graph → Strategy Engine → Validation → Reports
 
 **Full Setup**:
 ```bash
-pixi run setup-env           # Installs Podman, Neo4j, dependencies
+p3 env-setup                 # Installs Podman, Neo4j, dependencies
 ```
 
 This creates a complete environment with Podman containers, Neo4j graph database, and all Python dependencies isolated in Pixi.
 
-**Troubleshooting**: Use `pixi run env-reset` to start fresh if needed.
+**Troubleshooting**: Use `p3 env-reset` to start fresh if needed.
 
 ## Documentation
 

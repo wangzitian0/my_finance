@@ -24,45 +24,64 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Command Line Architecture
 
-**Two-tier management system:**
-- **Ansible**: Environment setup and infrastructure (Podman, Neo4j, system-level)
-- **Pixi**: Development operations (data processing, code quality, testing)
-- **Python scripts**: Complex operations that can't be handled by above
+**Unified P3 command system:**
+- **P3 Commands**: Primary interface for all operations (`p3 build`, `p3 test`, `p3 env-start`)
+- **Shell Integration**: Use `pixi shell` then `p3 <command>` for optimal workflow
+- **Tab Completion**: Type `p3 <TAB>` to see all available commands with descriptions
 
-### Environment Commands (Ansible-managed)
+### P3 Alias System (Recommended) 🚀
+
+**Daily Development Shortcuts:**
 ```bash
-pixi run setup-env              # Initial environment setup (installs Podman, Neo4j)
-pixi run env-start              # Start all services (Podman + Neo4j)
-pixi run env-stop               # Stop all services
-pixi run env-status             # Check environment status
-pixi run env-reset              # Reset everything (destructive)
+# Quick commands (recommended for development)
+p3 build                        # Fast F2 build
+p3 test                         # Run test suite
+p3 lint                         # Code formatting
+p3 clean                        # Cleanup builds
+p3 status                       # Environment status
+p3 dev                          # Development environment check
+
+# DCF Analysis
+p3 dcf                          # Quick DCF analysis  
+p3 dcf-f2                       # Fast 2-company test
+p3 dcf-m7                       # Full Magnificent 7 analysis
+
+# Environment Management (Ansible)
+p3 env-setup                    # Initial setup (Podman, Neo4j)
+p3 env-start                    # Start all services
+p3 env-stop                     # Stop all services  
+p3 env-status                   # Check environment status
+p3 env-reset                    # Reset everything (destructive)
+
+# Release & PR
+p3 release                      # Create release with build selection
+p3 pr                           # Create pull request
 ```
 
-### Podman Commands (Local Development)
+### Container Management (Via P3)
 ```bash
-pixi run podman-status          # Check container status
-pixi run neo4j-logs             # View Neo4j logs
-pixi run neo4j-connect          # Connect to Neo4j shell
-pixi run neo4j-restart          # Restart Neo4j container
-pixi run neo4j-stop             # Stop Neo4j container
-pixi run neo4j-start            # Start Neo4j container
+p3 podman-status               # Check container status
+p3 neo4j-logs                  # View Neo4j logs
+p3 neo4j-connect               # Connect to Neo4j shell
+p3 neo4j-restart               # Restart Neo4j container
+p3 neo4j-stop                  # Stop Neo4j container
+p3 neo4j-start                 # Start Neo4j container
 ```
 
-### Development Commands (Pixi-managed)
+### Development Workflow
 ```bash
-pixi shell                      # Activate environment
-pixi run status                 # Check data status
-pixi run build-m7               # Build stable test dataset
-pixi run run-job                # Run default data collection
-pixi run format                 # Format code
-pixi run lint                   # Lint code
-pixi run test                   # Run tests
+pixi shell                      # Activate environment (required once)
+p3 status                       # Check environment & data status
+p3 build-m7                     # Build M7 dataset with DCF analysis
+p3 run-job                      # Run data collection (legacy)
+p3 lint                         # Format and lint code
+p3 test                         # Run complete test suite
 ```
 
-### Build Data Management Commands
+### Build Data Management
 ```bash
-pixi run create-build           # Create new timestamped build directory (branch-specific)
-pixi run release-build          # Promote latest build to release with confirmation
+p3 create-build                 # Create new timestamped build directory (branch-specific)
+p3 release                      # Interactive build selection & release management
 ```
 
 ## Architecture Overview
@@ -126,7 +145,7 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 - ❌ Data corruption from invalid changes
 - ❌ Regression without proper validation
 
-**The `pixi run gen-pr` script is not just best practice - it's essential for system stability.**
+**The `p3 pr` script is not just best practice - it's essential for system stability.**
 
 ### Security Recommendations
 1. **NEVER bypass automated scripts** - they prevent production issues
@@ -150,15 +169,15 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 #### Required PR Workflow
 ```bash
 # 1. MANDATORY: Run end-to-end test first
-pixi run e2e             # Standard M7 test (required for PRs, default scope)
+p3 dcf-m7             # Standard M7 test (required for PRs, default scope)
 # OR for quick testing during development:
-pixi run e2e-f2          # Fast F2 test (2 companies)
+p3 dcf-f2          # Fast F2 test (2 companies)
 
 # 2. MANDATORY: Create PR only via script (includes test verification)
-pixi run gen-pr "Brief description" ISSUE_NUMBER
+p3 pr "Brief description" ISSUE_NUMBER
 
 # 3. Optional: Create PR with custom description file
-pixi run gen-pr "Brief description" ISSUE_NUMBER --description pr_body.md
+p3 pr "Brief description" ISSUE_NUMBER --description pr_body.md
 ```
 
 #### Why Manual Git Commands Are Discouraged
@@ -174,9 +193,9 @@ pixi run gen-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 - ✅ Commit messages include proper PR URLs for GoLand integration
 - ✅ GitHub branch protection rules enforce test validation
 
-**CRITICAL**: ALWAYS use `pixi run gen-pr` for ALL PR operations:
-- ✅ **Creating new PR**: `pixi run gen-pr "Description" ISSUE_NUMBER`
-- ✅ **Updating existing PR**: `pixi run gen-pr "Update description" ISSUE_NUMBER`
+**CRITICAL**: ALWAYS use `p3 pr` for ALL PR operations:
+- ✅ **Creating new PR**: `p3 pr "Description" ISSUE_NUMBER`
+- ✅ **Updating existing PR**: `p3 pr "Update description" ISSUE_NUMBER`
 - ✅ **Both operations require end-to-end testing** - no exceptions
 - ❌ **NEVER** use direct `git push` or manual PR updates
 
@@ -251,11 +270,11 @@ git push --force-with-lease
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
-- **Data collection**: Use `pixi run run-job` (NEVER direct python commands)
-- **Environment setup**: Use `pixi run setup-env`
+- **Data collection**: Use `p3 run-job` (NEVER direct python commands)
+- **Environment setup**: Use `p3 env-setup`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
-- **Testing**: Use `pixi run test` (NEVER direct python commands)
-- **Data directory**: Use `pixi run commit-data-changes` to stage data changes
+- **Testing**: Use `p3 test` (NEVER direct python commands)
+- **Data directory**: Use `p3 commit-data-changes` to stage data changes
 
 ### Simplified Command System
 
@@ -276,17 +295,17 @@ git push --force-with-lease
 - `v3k` - VTI 3500+ companies (production testing)
 
 ### Testing Strategy
-- **Fast Development Testing**: `pixi run e2e-f2` (~1-2 minutes)
+- **Fast Development Testing**: `p3 dcf-f2` (~1-2 minutes)
   - Quick validation during development
   - Sufficient for most code changes and bug fixes
-- **Standard PR Testing**: `pixi run e2e` or `pixi run e2e-m7` (~5-10 minutes)  
+- **Standard PR Testing**: `p3 dcf-m7` or `p3 dcf-m7-m7` (~5-10 minutes)  
   - **REQUIRED** before creating PRs
   - Full M7 validation (default scope)
   - Production-grade quality assurance
-- **Extended Testing**: `pixi run e2e-n100` or `pixi run e2e-v3k` (comprehensive validation)
+- **Extended Testing**: `p3 dcf-m7-n100` or `p3 dcf-m7-v3k` (comprehensive validation)
 
 ### Stock List Management
-- **Update stock lists**: `pixi run update-stock-lists`
+- **Update stock lists**: `p3 update-stock-lists`
   - Updates NASDAQ-100 and VTI stock lists from official APIs
   - Manual execution for latest ticker lists and market cap data
   - Leverages existing `ETL/fetch_ticker_lists.py` functionality
@@ -299,7 +318,7 @@ git push --force-with-lease
 2. **ALWAYS stage data directory changes before main repo commits**
 3. **ALWAYS check and stage data changes first**
 4. **ALWAYS start from latest main (`git checkout main && git pull`)**
-5. **ALWAYS test mechanisms before coding (`pixi run build-dataset m7`)**
+5. **ALWAYS test mechanisms before coding (`p3 build-dataset m7`)**
 
 **ALWAYS follow this sequence when working on tasks:**
 
@@ -307,26 +326,26 @@ git push --force-with-lease
 # 1. Start session - ENSURE LATEST BASE
 git checkout main && git pull origin main    # CRITICAL: Latest main
 pixi shell                                   # Activate environment
-pixi run env-status                         # Check all services
+p3 env-status                         # Check all services
 
 # 2. Create branch from LATEST main
 git checkout -b feature/description-fixes-N
 
 # 3. VALIDATE mechanisms before coding (CRITICAL)
-pixi run build m7           # Verify build system works (explicit M7)
-pixi run e2e-f2             # Fast validation during development
+p3 build m7           # Verify build system works (explicit M7)
+p3 dcf-f2             # Fast validation during development
 # OR for thorough validation:
-pixi run e2e                # Full end-to-end flow verification (default M7)
+p3 dcf-m7                # Full end-to-end flow verification (default M7)
 rm -f common/latest_build   # Clear build symlinks if needed
 
 # 4. Work on tasks - USE PIXI COMMANDS ONLY
 # ... make code changes ...
-pixi run format             # Format code
-pixi run lint               # Check quality
-pixi run test               # Validate changes
+p3 lint             # Format code
+p3 lint               # Check quality
+p3 test               # Validate changes
 
 # 5. Handle data directory FIRST (CRITICAL)
-pixi run commit-data-changes  # Stage any data directory changes
+p3 commit-data-changes  # Stage any data directory changes
 
 # 6. Then handle main repo changes
 git add . && git commit -m "Description
@@ -338,17 +357,17 @@ Fixes #N
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # 7. Create PR with automated testing
-pixi run gen-pr "Description" N
+p3 pr "Description" N
 
 # 8. End session (MANDATORY)
-pixi run shutdown-all         # Stop all services
+p3 env-stop         # Stop all services
 ```
 
 ### Environment Management Rules
-- **Setup once**: `pixi run setup-env` (only for new environments)
-- **Daily startup**: `pixi run env-status` (check before starting work)
-- **Daily shutdown**: `pixi run shutdown-all` (ALWAYS run before ending session)
-- **Emergency reset**: `pixi run env-reset` (destructive - use carefully)
+- **Setup once**: `p3 env-setup` (only for new environments)
+- **Daily startup**: `p3 env-status` (check before starting work)
+- **Daily shutdown**: `p3 env-stop` (ALWAYS run before ending session)
+- **Emergency reset**: `p3 env-reset` (destructive - use carefully)
 
 ### Git Workflow (MANDATORY for all changes)
 
@@ -365,10 +384,10 @@ git log --oneline HEAD..origin/main  # Check if main has new commits
 # If main is ahead, consider: git rebase origin/main
 
 # 3. Verify mechanisms work BEFORE making changes
-pixi run build m7           # Test build system
-pixi run e2e-f2             # Fast test (development)
+p3 build m7           # Test build system
+p3 dcf-f2             # Fast test (development)
 # For comprehensive validation:
-pixi run e2e                # Full end-to-end test (default M7)
+p3 dcf-m7                # Full end-to-end test (default M7)
 
 # 4. Make your changes and commit
 git add .
@@ -381,16 +400,16 @@ Fixes #ISSUE_NUMBER
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # 5. Create OR Update PR with automated M7 testing (CRITICAL)
-pixi run gen-pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
+p3 pr "Brief description" ISSUE_NUMBER  # Works for both new and existing PRs
 
 # 6. For PR updates, ALWAYS use the same script (NEVER direct git push)
 # The script will detect existing PR and update it with M7 validation
 
 # 7. AFTER PR IS MERGED: Clean up branches  
-pixi run cleanup-branches-auto
+p3 cleanup-branches-auto
 
 # 7. Clean shutdown
-pixi run shutdown-all
+p3 env-stop
 ```
 
 **Benefits of automated workflow:**
@@ -414,11 +433,11 @@ pixi run shutdown-all
 2. **Mechanism Failures** - Test Before Coding:
    ```bash
    # Always verify these work BEFORE starting development
-   pixi run build m7             # Test build system with M7 scope
+   p3 build m7             # Test build system with M7 scope
    rm -f common/latest_build     # Clear build symlinks if needed
-   pixi run e2e-f2               # Fast validation (development)
+   p3 dcf-f2               # Fast validation (development)
    # For comprehensive validation:
-   pixi run e2e                  # Full end-to-end validation (default M7)
+   p3 dcf-m7                  # Full end-to-end validation (default M7)
    ```
 
 3. **Long-running Branch Syndrome**:
@@ -456,7 +475,7 @@ git push origin feature/branch-name --force-with-lease
 - ⚠️ **NEVER** attempt conflict resolution without latest main
 - ⚠️ **NEVER** continue working on conflicted branches
 - ✅ **ALWAYS** pull main first, then handle feature branch
-- ✅ **ALWAYS** test with `pixi run e2e-f2` (quick) or `pixi run e2e` (thorough, default M7) after resolution
+- ✅ **ALWAYS** test with `p3 dcf-f2` (quick) or `p3 dcf-m7` (thorough, default M7) after resolution
 - ✅ When in doubt, start fresh from latest main
 
 **Complex Conflicts** (major rework needed):
@@ -473,13 +492,13 @@ git checkout -b feature/task-v2
 
 ```bash
 # Check what would be cleaned up (safe)
-pixi run cleanup-branches-dry-run
+p3 cleanup-branches-dry-run
 
 # Interactive cleanup with confirmation
-pixi run cleanup-branches
+p3 cleanup-branches
 
 # Automatic cleanup (for CI or regular maintenance)
-pixi run cleanup-branches-auto
+p3 cleanup-branches-auto
 ```
 
 **Manual cleanup if needed:**
@@ -496,8 +515,8 @@ git remote prune origin
 ```
 
 ### Session Management (CRITICAL)
-- **Always start with**: `pixi shell` and `pixi run env-status`
-- **Always end with**: `pixi run shutdown-all`
+- **Always start with**: `pixi shell` and `p3 env-status`
+- **Always end with**: `p3 env-stop`
 - **Never leave services running** between sessions
 - **Check status frequently** during long development sessions
 
@@ -505,7 +524,7 @@ This ensures clean environment state and prevents port conflicts or resource iss
 
 ### PR Creation Script Robustness (Issue #78 Implementation)
 
-**CRITICAL**: The `pixi run gen-pr` script is the mandatory way to handle PRs. It automatically detects if PR exists for the branch and either pushes changes or creates new PR. Manual git commands are deprecated.
+**CRITICAL**: The `p3 pr` script is the mandatory way to handle PRs. It automatically detects if PR exists for the branch and either pushes changes or creates new PR. Manual git commands are deprecated.
 
 #### Key Improvements Made:
 - **Mandatory Testing**: Removed all options to skip M7 testing - testing is now REQUIRED
@@ -517,13 +536,13 @@ This ensures clean environment state and prevents port conflicts or resource iss
 #### Script Usage:
 ```bash
 # Generate PR (auto-detects existing PR: mandatory M7 testing)
-pixi run gen-pr "Description" ISSUE_NUMBER
+p3 pr "Description" ISSUE_NUMBER
 
 # Debug mode for troubleshooting  
-pixi run gen-pr "Description" ISSUE_NUMBER --debug
+p3 pr "Description" ISSUE_NUMBER --debug
 
 # Test-only mode (no PR operations)
-pixi run test-e2e
+p3 test-e2e
 ```
 
 #### Architecture Enhancements:
@@ -536,7 +555,7 @@ pixi run test-e2e
 
 #### Troubleshooting Tips:
 1. **Always use pixi run**: Never run Python scripts directly - pixi manages environment
-2. **Check environment first**: Run `pixi run env-status` before starting work
+2. **Check environment first**: Run `p3 env-status` before starting work
 3. **Debug mode**: Use `--debug` flag to see detailed execution steps  
 4. **Test marker**: Script creates .m7-test-passed for GitHub CI validation
 5. **Pandas issues**: If pandas circular import errors occur, restart pixi environment

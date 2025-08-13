@@ -41,7 +41,7 @@
 python run_job.py data/config/job_yfinance_m7.yml
 
 # Via pixi commands
-pixi run build-m7
+p3 build-m7
 ```
 
 ### SEC Edgar Spider (`sec_edgar_spider.py`)
@@ -182,13 +182,13 @@ Both spiders integrate with:
 
 ```bash
 # Build M7 dataset
-pixi run build-m7
+p3 build-m7
 
 # Run specific job
 python run_job.py <config_file.yml>
 
 # Check build status
-pixi run build-status
+p3 build-status
 
 # View latest build
 ls data/build/

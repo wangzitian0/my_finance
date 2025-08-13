@@ -51,7 +51,7 @@ DTS (数据输入) → DCF Engine (策略计算) → DTS (结果输出)
 
 ```bash
 # 策略验证
-pixi run validate-strategy
+p3 validate-strategy
 
 # DCF分析
 python dcf_engine/m7_dcf_analysis.py
