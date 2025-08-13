@@ -200,7 +200,7 @@ Provide a 2-sentence investment insight: (1) key strength or concern, (2) invest
     def save_enhanced_report(self, report: str, output_dir: Path = None) -> str:
         """Save enhanced report to file"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"M7_Enhanced_DCF_Report_{timestamp}.txt"
+        filename = f"M7_Enhanced_DCF_Report_{timestamp}.md"
         
         target_dir = output_dir if output_dir is not None else self.traditional_analyzer.reports_dir
         target_dir.mkdir(parents=True, exist_ok=True)

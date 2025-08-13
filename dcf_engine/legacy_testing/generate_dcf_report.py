@@ -512,7 +512,7 @@ class M7DCFAnalyzer:
         """Save report to file."""
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"M7_DCF_Report_{timestamp}.txt"
+            filename = f"M7_DCF_Report_{timestamp}.md"
 
         # Use output_dir if provided, otherwise use default reports_dir
         target_dir = output_dir if output_dir is not None else self.reports_dir

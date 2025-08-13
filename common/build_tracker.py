@@ -219,7 +219,7 @@ class BuildTracker:
         dcf_reports = []
         reports_dir = base_path / "reports"
         if reports_dir.exists():
-            for report_file in reports_dir.glob("M7_DCF_Report_*.txt"):
+            for report_file in reports_dir.glob("M7_DCF_Report_*.md"):
                 dcf_reports.append(str(report_file.relative_to(base_path)))
         
         # Update manifest

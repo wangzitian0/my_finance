@@ -51,7 +51,7 @@ class TestModuleIntegrationWorkflow:
         assert "f2" in manifest_content.lower()
         
         # 5. Verify DCF report
-        dcf_reports = list(latest_build.glob("M7_DCF_Report_*.txt"))
+        dcf_reports = list(latest_build.glob("M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports found"
         
         dcf_report = dcf_reports[0]

@@ -65,7 +65,7 @@ def promote_to_release():
     for i, build in enumerate(builds, 1):
         # Get basic info about the build
         build_time = build.name.replace("build_", "").replace("_", ":")
-        dcf_reports = list(build.glob("*DCF_Report*.txt"))
+        dcf_reports = list(build.glob("*DCF_Report*.md"))
         report_count = len(dcf_reports)
         
         print(f"  {i}. {build.name} (Time: {build_time[:8]} {build_time[8:]}, Reports: {report_count})")
@@ -126,8 +126,8 @@ def promote_to_release():
 def create_release_notes(release_path, build_dir):
     """Create release notes for the promoted build."""
     # Analyze the build to gather information
-    dcf_reports = list(build_dir.glob("*DCF_Report*.txt"))
-    m7_reports = list(build_dir.glob("*M7*DCF*.txt"))
+    dcf_reports = list(build_dir.glob("*DCF_Report*.md"))
+    m7_reports = list(build_dir.glob("*M7*DCF*.md"))
     
     # Extract build timestamp
     build_time = build_dir.name.replace("build_", "")
@@ -170,8 +170,8 @@ def create_release_notes(release_path, build_dir):
 
 ```
 {release_path.name}/
-├── DCF_Report_*.txt           # Main DCF analysis report
-├── M7_LLM_DCF_Report_*.txt   # M7-specific report (if available)
+├── DCF_Report_*.md            # Main DCF analysis report  
+├── M7_LLM_DCF_Report_*.md     # M7-specific report (if available)
 ├── artifacts/                 # Build artifacts
 └── stage_logs/               # Build stage logs
 ```

@@ -377,7 +377,7 @@ class SimpleM7DCF:
     def save_report(self, report, output_dir=None):
         """保存报告"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"M7_DCF_Report_{timestamp}.txt"
+        filename = f"M7_DCF_Report_{timestamp}.md"
         
         # Use output_dir if provided, otherwise use default reports_dir
         target_dir = Path(output_dir) if output_dir else self.reports_dir
