@@ -12,8 +12,42 @@ from typing import Optional
 
 
 def get_commit_info():
-    """Get commit information"""
+    """Get commit information - check actual PR commits, not merge commit"""
     try:
+        # Check if this is a merge commit (in PR context)
+        result = subprocess.run(['git', 'log', '-1', '--pretty=%P'], 
+                              capture_output=True, text=True, check=True)
+        parents = result.stdout.strip().split()
+        
+        if len(parents) > 1:
+            # This is a merge commit, check the actual PR commits
+            print("🔍 Detected merge commit, checking actual PR commits...")
+            
+            # Get the commits from the PR branch (excluding merge base)
+            result = subprocess.run(['git', 'log', '--pretty=%H', f'{parents[1]}..{parents[0]}'], 
+                                  capture_output=True, text=True, check=True)
+            pr_commits = result.stdout.strip().split('\n')
+            
+            if pr_commits and pr_commits[0]:
+                # Check the latest commit from the PR branch
+                latest_pr_commit = pr_commits[0]
+                print(f"🔍 Checking latest PR commit: {latest_pr_commit[:8]}")
+                
+                # Get commit message from the actual PR commit
+                result = subprocess.run(['git', 'log', '-1', '--pretty=%B', latest_pr_commit], 
+                                      capture_output=True, text=True, check=True)
+                commit_msg = result.stdout.strip()
+                
+                # Get commit timestamp from the actual PR commit
+                result = subprocess.run(['git', 'log', '-1', '--pretty=%ct', latest_pr_commit], 
+                                      capture_output=True, text=True, check=True)
+                commit_time = int(result.stdout.strip())
+                
+                return commit_msg, commit_time
+        
+        # Not a merge commit, use HEAD
+        print("🔍 Using HEAD commit (not a merge commit)...")
+        
         # Get commit message
         result = subprocess.run(['git', 'log', '-1', '--pretty=%B'], 
                               capture_output=True, text=True, check=True)
