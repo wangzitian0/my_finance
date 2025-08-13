@@ -35,7 +35,7 @@ class TestStrategyAnalystWorkflow:
         assert reports_dir.exists(), "Reports directory not found"
 
         # Look for DCF reports (the actual output format)
-        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.txt"))
+        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
 
         # 4. 验证报告文件不为空
@@ -76,7 +76,7 @@ class TestRiskManagerWorkflow:
 
         # 2. 验证DCF报告包含风险指标
         reports_dir = Path("data/stage_99_build")
-        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.txt"))
+        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
 
         with open(dcf_reports[0], 'r') as f:
@@ -111,7 +111,7 @@ class TestInvestmentManagerWorkflow:
 
         # 应该包含Markdown和JSON格式报告
         # Look for any reports in the build directories
-        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.txt"))
+        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         manifest_files = list(reports_dir.glob("**/BUILD_MANIFEST.md"))
 
         assert len(dcf_reports) > 0, "No DCF reports generated"
@@ -127,7 +127,7 @@ class TestInvestmentManagerWorkflow:
 
         # 验证生成了DCF报告（包含基准比较信息）
         reports_dir = Path("data/stage_99_build")
-        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.txt"))
+        dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
 
 

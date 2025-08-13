@@ -86,12 +86,6 @@
   register: ollama_models
   changed_when: false
 
-- name: Create SEC document processing directory
-  file:
-    path: "{{ repo_dir }}/data/sec_documents"
-    state: directory
-    mode: '0755'
-
 - name: Create embeddings cache directory
   file:
     path: "{{ repo_dir }}/data/stage_03_load/embeddings"
@@ -113,7 +107,7 @@
       - Finance model: {{ '✅ Ready' if finance_model_pull.rc == 0 else '❌ Failed' }}
       
       🌐 API Endpoint: http://localhost:11434
-      📁 SEC Documents: {{ repo_dir }}/data/sec_documents
+      📁 SEC Documents: {{ repo_dir }}/data/stage_00_original/sec-edgar
       🗃️ Embeddings Cache: {{ repo_dir }}/data/stage_03_load/embeddings
       
       💡 Test with: ollama run llama3.1:8b "Explain DCF valuation"

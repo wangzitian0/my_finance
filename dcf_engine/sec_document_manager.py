@@ -22,13 +22,17 @@ class SECDocumentManager:
             project_root = Path(__file__).parent.parent
             base_path = project_root / "data"
         
-        self.base_path = Path(base_path)
-        self.sec_docs_path = self.base_path / "sec_documents"
-        self.embeddings_path = self.base_path / "stage_03_load" / "embeddings"
+        # Use common path utilities for consistent path management
+        from common.utils import get_project_paths, ensure_path_exists
+        
+        paths = get_project_paths()
+        self.base_path = paths["data_root"]
+        self.sec_docs_path = paths["sec_edgar_original"]  # Use stage_00_original/sec-edgar
+        self.embeddings_path = paths["embeddings"]
         
         # Create directories
-        self.sec_docs_path.mkdir(parents=True, exist_ok=True)
-        self.embeddings_path.mkdir(parents=True, exist_ok=True)
+        ensure_path_exists(self.sec_docs_path)
+        ensure_path_exists(self.embeddings_path)
         
         # SEC API settings
         self.sec_base_url = "https://data.sec.gov"

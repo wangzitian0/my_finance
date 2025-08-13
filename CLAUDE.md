@@ -99,7 +99,7 @@ pixi run release-build          # Promote latest build to release with confirmat
   - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
   - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
     - Build artifacts: `BUILD_MANIFEST.json`, `BUILD_MANIFEST.md`
-    - DCF reports: `M7_DCF_Report_<YYYYMMDD_HHMMSS>.txt`
+    - DCF reports: `M7_DCF_Report_<YYYYMMDD_HHMMSS>.md`
     - Validation reports: `validation_report_<YYYYMMDD_HHMMSS>.json`
     - Stage logs: `stage_logs/` directory
   - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
@@ -149,8 +149,10 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 #### Required PR Workflow
 ```bash
-# 1. MANDATORY: Run local M7 end-to-end test first
-pixi run test-m7-e2e
+# 1. MANDATORY: Run end-to-end test first
+pixi run e2e             # Standard M7 test (required for PRs, default scope)
+# OR for quick testing during development:
+pixi run e2e f2          # Fast F2 test (2 companies)
 
 # 2. MANDATORY: Create PR only via script (includes test verification)
 pixi run create-pr "Brief description" ISSUE_NUMBER
@@ -162,20 +164,20 @@ pixi run create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 #### Why Manual Git Commands Are Discouraged
 - `git push` without local testing → CI failure (by design)
 - GitHub UI for direct commit → No test marker → CI rejection
-- Manual PR creation → Missing M7 test verification → Merge blocked
+- Manual PR creation → Missing test verification → Merge blocked
 
 **All successful merges require the automated script workflow.**
 
 **⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
-- ✅ M7 end-to-end test runs successfully BEFORE PR creation/update
+- ✅ End-to-end test runs successfully BEFORE PR creation/update
 - ✅ Data directory changes are managed as part of main repository
 - ✅ Commit messages include proper PR URLs for GoLand integration
-- ✅ GitHub branch protection rules enforce M7 validation
+- ✅ GitHub branch protection rules enforce test validation
 
 **CRITICAL**: ALWAYS use `pixi run create-pr` for ALL PR operations:
 - ✅ **Creating new PR**: `pixi run create-pr "Description" ISSUE_NUMBER`
 - ✅ **Updating existing PR**: `pixi run create-pr "Update description" ISSUE_NUMBER`
-- ✅ **Both operations require M7 testing** - no exceptions
+- ✅ **Both operations require end-to-end testing** - no exceptions
 - ❌ **NEVER** use direct `git push` or manual PR updates
 
 **Legacy manual workflow (NOT RECOMMENDED)**:
@@ -255,6 +257,34 @@ git push --force-with-lease
 - **Testing**: Use `pixi run test` (NEVER direct python commands)
 - **Data directory**: Use `pixi run commit-data-changes` to stage data changes
 
+### Simplified Command System
+
+**Format**: `pixi run <command> [scope]`
+
+**Commands**:
+- `build` - Build dataset and run analysis
+- `e2e` - End-to-end testing  
+- `clean-branch` - Clean up branches
+- `commit-xx` - Commit operations
+- `create-xx` - Create operations (PR, build, etc.)
+- `env-xx` - Environment management
+
+**Scopes** (defaults to `m7` if not specified):
+- `f2` - Fast 2 companies (development testing)
+- `m7` - Magnificent 7 companies (standard/PR testing)  
+- `n100` - NASDAQ 100 companies (validation testing)
+- `v3k` - VTI 3500+ companies (production testing)
+
+### Testing Strategy
+- **Fast Development Testing**: `pixi run e2e f2` (~1-2 minutes)
+  - Quick validation during development
+  - Sufficient for most code changes and bug fixes
+- **Standard PR Testing**: `pixi run e2e` or `pixi run e2e m7` (~5-10 minutes)  
+  - **REQUIRED** before creating PRs
+  - Full M7 validation (default scope)
+  - Production-grade quality assurance
+- **Extended Testing**: `pixi run e2e n100` or `pixi run e2e v3k` (comprehensive validation)
+
 ### Daily Development Workflow for Claude
 
 **CRITICAL RULES - NEVER BREAK THESE:**
@@ -277,8 +307,10 @@ pixi run env-status                         # Check all services
 git checkout -b feature/description-fixes-N
 
 # 3. VALIDATE mechanisms before coding (CRITICAL)
-pixi run build-dataset m7    # Verify build system works
-pixi run test-m7-e2e        # Verify end-to-end flow works
+pixi run build m7           # Verify build system works (explicit M7)
+pixi run e2e f2             # Fast validation during development
+# OR for thorough validation:
+pixi run e2e                # Full end-to-end flow verification (default M7)
 rm -f common/latest_build   # Clear build symlinks if needed
 
 # 4. Work on tasks - USE PIXI COMMANDS ONLY
@@ -327,8 +359,10 @@ git log --oneline HEAD..origin/main  # Check if main has new commits
 # If main is ahead, consider: git rebase origin/main
 
 # 3. Verify mechanisms work BEFORE making changes
-pixi run build-dataset m7    # Test build system
-pixi run test-m7-e2e        # Test end-to-end flow
+pixi run build m7           # Test build system
+pixi run e2e f2             # Fast test (development)
+# For comprehensive validation:
+pixi run e2e                # Full end-to-end test (default M7)
 
 # 4. Make your changes and commit
 git add .
@@ -374,9 +408,11 @@ pixi run shutdown-all
 2. **Mechanism Failures** - Test Before Coding:
    ```bash
    # Always verify these work BEFORE starting development
-   pixi run build-dataset m7      # NOT "pixi run build m7"
+   pixi run build m7             # Test build system with M7 scope
    rm -f common/latest_build     # Clear build symlinks if needed
-   pixi run test-m7-e2e          # Full end-to-end validation
+   pixi run e2e f2               # Fast validation (development)
+   # For comprehensive validation:
+   pixi run e2e                  # Full end-to-end validation (default M7)
    ```
 
 3. **Long-running Branch Syndrome**:
@@ -414,7 +450,7 @@ git push origin feature/branch-name --force-with-lease
 - ⚠️ **NEVER** attempt conflict resolution without latest main
 - ⚠️ **NEVER** continue working on conflicted branches
 - ✅ **ALWAYS** pull main first, then handle feature branch
-- ✅ **ALWAYS** test with `pixi run test-m7-e2e` after resolution
+- ✅ **ALWAYS** test with `pixi run e2e f2` (quick) or `pixi run e2e` (thorough, default M7) after resolution
 - ✅ When in doubt, start fresh from latest main
 
 **Complex Conflicts** (major rework needed):
