@@ -18,11 +18,12 @@ ticker_count: 2
 data_sources:
   yfinance:
     enabled: true
-    periods: ["daily_3mo"]  # Single period for speed
+    stage_config: "stage_00_original_yfinance.yml"
+    periods: ["daily_3mo"]  # Override: Single period for speed
     
   sec_edgar:
     enabled: false  # Disabled for PR speed
-    filing_types: []
+    stage_config: "stage_00_original_sec_edgar.yml"
 
 # Expected file counts
 expected_files:

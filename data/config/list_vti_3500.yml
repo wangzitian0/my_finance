@@ -13657,12 +13657,10 @@ companies:
 data_sources:
   yfinance:
     enabled: true
-    periods:
-    - daily_3mo
-    - weekly_5y
-    - monthly_max
+    stage_config: "stage_00_original_yfinance.yml"
   sec_edgar:
     enabled: false
+    stage_config: "stage_00_original_sec_edgar.yml"
 expected_files:
   yfinance: 10455
   sec_edgar: 0

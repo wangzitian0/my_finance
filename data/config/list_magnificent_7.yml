@@ -63,16 +63,16 @@ companies:
 data_sources:
   yfinance:
     enabled: true
-    periods: ["daily_3mo", "weekly_5y", "monthly_max"]
+    stage_config: "stage_00_original_yfinance.yml"
     
   sec_edgar:
     enabled: true
-    filing_types: ["10K", "10Q", "8K"]
+    stage_config: "stage_00_original_sec_edgar.yml"
 
-# Quality expectations
+# Quality expectations (calculated based on stage configurations)
 expected_files:
-  yfinance: 21  # 7 tickers × 3 periods
-  sec_edgar: 147  # 7 tickers × 21 filings avg (5+8+8)
+  yfinance: 21  # 7 tickers × 3 periods (from stage_00_original_yfinance.yml)
+  sec_edgar: 231  # 7 tickers × 33 filings max (5+8+20 from stage_00_original_sec_edgar.yml)
   
 # Validation settings
 validation:

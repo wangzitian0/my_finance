@@ -36,6 +36,10 @@ lxml = "*"
 # Neo4j Python driver (official driver for connecting to Neo4j)
 neo4j-python-driver = "*"
 
+# Machine Learning dependencies for semantic retrieval
+scikit-learn = "*"
+pytorch = "*"
+
 [tasks]
 # Core commands from CLAUDE.md
 activate = "echo 'Pixi environment activated'"
@@ -151,9 +155,22 @@ test-ollama = "ollama run gpt-oss:20b 'Explain DCF valuation in 2 sentences'"
 llm-dcf-report = "python dcf_engine/llm_dcf_generator.py --ticker AAPL"
 hybrid-dcf-report = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
 
+# --- SEC Integration Commands ---
+# SEC filing analysis and integration
+test-sec-integration = "python dcf_engine/sec_integration_template.py"
+test-sec-recall = "python dcf_engine/sec_recall_usage_example.py"
+verify-sec-data = "python -c 'from pathlib import Path; from collections import Counter; sec_files = list(Path(\"data/stage_01_extract/sec_edgar\").rglob(\"*.txt\")); print(f\"📄 Found {len(sec_files)} total SEC documents\"); ticker_counts = Counter(f.name.split(\"_\")[0] for f in sec_files); print(\"📊 By ticker:\"); [print(f\"  - {ticker}: {count} files\") for ticker, count in sorted(ticker_counts.items())]'"
+test-semantic-retrieval = "python test_semantic_retrieval.py"
+
 # --- Missing commands for e2e tests ---
 # Aliases for existing functionality to match test expectations
 validate-strategy = "python ETL/manage.py validate"
 generate-report = "python dcf_engine/pure_llm_dcf.py"
 generate-report-legacy = "python dcf_engine/legacy_testing/generate_dcf_report.py"
 backtest = "echo 'Backtest simulation completed (placeholder)' && python dcf_engine/legacy_testing/simple_m7_dcf.py"
+
+# --- Reproducibility & Testing Commands ---
+# Complete workflow validation
+test-m7-e2e = "python infra/create_pr_with_test.py --skip-pr"
+verify-environment = "python -c 'import sys; print(f\"Python: {sys.version}\"); import torch, sklearn, sentence_transformers; print(\"✅ ML dependencies available\"); import neomodel; print(\"✅ Neo4j ORM available\")'"
+check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stage_00_original\", \"data/stage_01_extract\", \"data/stage_99_build\"]; [print(f\"📁 {d}: {\"✅ exists\" if Path(d).exists() else \"❌ missing\"}\") for d in dirs]'"

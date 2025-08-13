@@ -67,15 +67,16 @@ pixi run release-build          # Promote latest build to release with confirmat
 
 ## Architecture Overview
 
-**See README.md for complete architecture details.** This is a Graph RAG-powered DCF valuation system with modular architecture:
+**See README.md for complete architecture details.** This is a SEC Filing-Enhanced Graph RAG-powered DCF valuation system with modular architecture:
 
-- **ETL Pipeline**: Stage-based data processing (extract → transform → load) with daily partitioning
-- **Four-tier data strategy**: test (CI) → M7 (git-tracked) → NASDAQ100 (buildable) → VTI (production)
-- **Build tracking**: Every execution documented in `data/build/` with comprehensive manifests
-- **Neo4j graph database**: neomodel ORM, models in `ETL/models.py`
-- **Data spiders**: Yahoo Finance (`spider/yfinance_spider.py`), SEC Edgar (`spider/sec_edgar_spider.py`)
-- **Document parsing**: SEC filings with BeautifulSoup (`parser/sec_parser.py`)
-- **Configuration-driven**: YAML configs in `data/config/`, `common_config.yml`
+- **ETL Pipeline**: Stage-based data processing with SEC document semantic embedding
+- **Four-tier data strategy**: test (CI) → M7 (git-tracked + SEC) → NASDAQ100 (buildable) → VTI (production)
+- **SEC Integration**: 336 SEC documents (10-K/10-Q/8-K) with semantic retrieval for M7 companies
+- **Build tracking**: Every execution documented with comprehensive manifests and SEC citations
+- **Neo4j graph database**: neomodel ORM with semantic embeddings storage
+- **Data spiders**: SEC Edgar API (`spider/sec_edgar_spider.py`), Yahoo Finance integration
+- **Semantic Retrieval**: Sentence transformers with FAISS vector search (`ETL/semantic_retrieval.py`)
+- **Configuration-driven**: Stage-based YAML configs with SEC filing parameters
 
 ### Graph RAG Architecture (Modular Design)
 
@@ -93,15 +94,21 @@ pixi run release-build          # Promote latest build to release with confirmat
   - `rag_orchestrator.py`: System coordination between ETL retrieval and answer generation
   - Responsible for question understanding and response generation
 
-- **Data Storage Structure**:
-  - Stage 1 (Extract): `data/stage_01_extract/<source>/<date_partition>/<ticker>/`
+- **SEC-Enhanced Data Storage Structure**:
+  - Stage 0: Original Data (`data/stage_00_original/`)
+    - SEC Edgar: `sec-edgar/<CIK>/{10k,10q,8k}/` (336 documents total)
+    - YFinance: `yfinance/<TICKER>/` (historical price and fundamental data)
+  - Stage 1 (Extract): `data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/`
+    - SEC documents: `<TICKER>_sec_edgar_{10k,10q,8k}_*.txt`
+    - YFinance data: `<TICKER>_yfinance_*.json`
   - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
   - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
+    - Semantic embeddings: `embeddings_vectors.npy`, `embeddings_metadata.json`
+    - Vector indices: `vector_index.faiss`
   - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
     - Build artifacts: `BUILD_MANIFEST.json`, `BUILD_MANIFEST.md`
-    - DCF reports: `M7_DCF_Report_<YYYYMMDD_HHMMSS>.md`
-    - Validation reports: `validation_report_<YYYYMMDD_HHMMSS>.json`
-    - Stage logs: `stage_logs/` directory
+    - SEC-enhanced DCF reports: `M7_LLM_DCF_Report_<YYYYMMDD_HHMMSS>.md`
+    - SEC integration examples: `sec_integration_examples/`, `sec_recall_examples/`
   - Branch builds: `data/stage_99_build_<branch>/build_<YYYYMMDD_HHMMSS>/` (feature branches)
   - Release management: `data/release/release_<YYYYMMDD_HHMMSS>_build_<ID>/`
   - Latest build symlink: `common/latest_build` (points to most recent build)
@@ -211,6 +218,14 @@ git push --force-with-lease
 - Issue #26: Cross-platform conda migration
 
 ### Recently Completed Issues
+- Issue #75: ✅ **COMPLETED** - SEC Filing Data Integration and Enhancement (2025-08-13)
+  - Unified company schema (ticker→name, cik) in configuration files
+  - Renamed source configurations to stage-based naming convention
+  - Created SEC integration template for DCF reports with citation management
+  - Built complete SEC dataset with 336 documents for M7 companies
+  - Implemented SEC recall usage examples with semantic retrieval
+  - Installed ML dependencies (PyTorch, scikit-learn, sentence-transformers)
+  
 - Issue #58: ✅ **COMPLETED** - Automated file management system with directory structure refactoring
   - Directory restructuring: `data/original` → `data/stage_00_original`, `data/build` → `data/stage_99_build`
   - Report isolation: DCF reports now saved in specific build directories
@@ -294,6 +309,8 @@ git push --force-with-lease
 3. **ALWAYS check and stage data changes first**
 4. **ALWAYS start from latest main (`git checkout main && git pull`)**
 5. **ALWAYS test mechanisms before coding (`pixi run build-dataset m7`)**
+6. **ALWAYS verify SEC data availability before semantic retrieval work**
+7. **ALWAYS use proper citations when working with SEC filing integration**
 
 **ALWAYS follow this sequence when working on tasks:**
 
