@@ -28,3 +28,7 @@ dependencies:
     - click
     - tqdm
     - lxml
+    - torch
+    - scikit-learn
+    - sentence-transformers
+    - faiss-cpu
