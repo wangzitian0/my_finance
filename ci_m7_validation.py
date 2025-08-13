@@ -220,13 +220,61 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
         return False
 
 
+def check_condition_5_code_formatting() -> bool:
+    """Condition 5: Python code formatting with black and isort"""
+    print("🔍 Checking condition 5: Python code formatting validation")
+    
+    try:
+        # Install formatting tools if needed
+        try:
+            subprocess.run(["python3", "-c", "import black, isort"], 
+                         capture_output=True, check=True)
+        except subprocess.CalledProcessError:
+            print("   Installing black and isort...")
+            subprocess.run(["pip", "install", "black", "isort"], 
+                         capture_output=True, check=True)
+        
+        # Check black formatting
+        print("   Running black format check...")
+        black_result = subprocess.run(
+            ["python3", "-m", "black", "--check", "--line-length", "100", "."],
+            capture_output=True, text=True
+        )
+        
+        # Check isort formatting  
+        print("   Running isort format check...")
+        isort_result = subprocess.run(
+            ["python3", "-m", "isort", "--check-only", "."],
+            capture_output=True, text=True
+        )
+        
+        if black_result.returncode == 0 and isort_result.returncode == 0:
+            print("✅ Condition 5 passed: Python code is properly formatted")
+            return True
+        else:
+            print("❌ Condition 5 failed: Python code formatting issues found")
+            if black_result.returncode != 0:
+                print("   Black formatting errors:")
+                print(f"   {black_result.stderr}")
+            if isort_result.returncode != 0:
+                print("   Isort formatting errors:")
+                print(f"   {isort_result.stderr}")
+            print("   Fix with: pixi run format")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Condition 5 failed: Error checking code formatting: {e}")
+        return False
+
+
 def main():
     """Main validation function - CI only"""
-    print("🔍 M7 Validation Starting - Checking 4 Core Conditions")
+    print("🔍 M7 Validation Starting - Checking 5 Core Conditions")
     print("1. ✅ Tests were run")
     print("2. ⏰ Test completion time within 10 minutes of push time")
     print("3. 📅 Push time within 24h")
     print("4. 📊 Simple tests pass on CI")
+    print("5. 🎨 Python code formatting validation")
     print("=" * 60)
 
     # Get commit info
@@ -250,6 +298,7 @@ def main():
         check_condition_2_test_timing(commit_msg, commit_time),
         check_condition_3_commit_freshness(commit_time),
         check_condition_4_test_results(commit_msg),
+        check_condition_5_code_formatting(),
     ]
 
     passed = sum(checks)
@@ -265,8 +314,9 @@ def main():
         print("🚫 This commit should not be merged")
         print()
         print("📝 Fix steps:")
-        print("1. Run: p3 e2e")
-        print('2. Use: p3 create-pr "title" ISSUE_NUMBER')
+        print("1. Run: pixi run format")
+        print("2. Run: p3 e2e")
+        print('3. Use: p3 create-pr "title" ISSUE_NUMBER')
         sys.exit(1)
 
 
