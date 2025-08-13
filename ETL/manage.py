@@ -69,9 +69,7 @@ class FinanceManager:
         print()
         print("Available Tiers:")
         for tier_id, tier_info in self.tiers.items():
-            status = (
-                "📌 tracked in git" if tier_info["tracked_in_git"] else "🔄 buildable"
-            )
+            status = "📌 tracked in git" if tier_info["tracked_in_git"] else "🔄 buildable"
             print(
                 f"  {tier_id:<12} {tier_info['name']} - {tier_info['companies']} companies, {tier_info['size_estimate']} ({status})"
             )
@@ -115,9 +113,7 @@ class FinanceManager:
             print(f"❌ Failed to build {tier_name}: {e}")
             return False
         except FileNotFoundError:
-            print(
-                "❌ build_knowledge_base.py not found. Run 'python manage.py setup' first."
-            )
+            print("❌ build_knowledge_base.py not found. Run 'python manage.py setup' first.")
             return False
 
     def validate_data(self):
@@ -133,9 +129,7 @@ class FinanceManager:
             print(f"❌ Validation failed: {e}")
             return False
         except FileNotFoundError:
-            print(
-                "❌ build_knowledge_base.py not found. Run 'python manage.py setup' first."
-            )
+            print("❌ build_knowledge_base.py not found. Run 'python manage.py setup' first.")
             return False
 
     def show_status(self):
@@ -261,9 +255,7 @@ class FinanceManager:
             print("   ✅ pipenv found")
         except ImportError:
             print("   📦 Installing pipenv...")
-            subprocess.run(
-                [sys.executable, "-m", "pip", "install", "pipenv"], check=True
-            )
+            subprocess.run([sys.executable, "-m", "pip", "install", "pipenv"], check=True)
 
         # Install dependencies
         print("2. Installing dependencies...")
@@ -311,18 +303,14 @@ def main():
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Build command
-    build_parser = subparsers.add_parser(
-        "build", help="Build knowledge base for specific tier"
-    )
+    build_parser = subparsers.add_parser("build", help="Build knowledge base for specific tier")
     build_parser.add_argument(
         "tier", choices=["m7", "nasdaq100", "us-all"], help="Data tier to build"
     )
 
     # Clean command
     clean_parser = subparsers.add_parser("clean", help="Clean old data for tier")
-    clean_parser.add_argument(
-        "tier", choices=["nasdaq100", "us-all"], help="Data tier to clean"
-    )
+    clean_parser.add_argument("tier", choices=["nasdaq100", "us-all"], help="Data tier to clean")
 
     # Other commands
     subparsers.add_parser("validate", help="Validate existing data integrity")

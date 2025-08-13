@@ -6,9 +6,7 @@ import yfinance as yf
 from common import can_fetch, get_db_path, update_fetch_time
 
 
-def fetch_historical(
-    ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60
-):
+def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60):
     """
     1. 先检查 `can_fetch()`，如果不需要拉取则返回
     2. 调用 yfinance 获取数据
@@ -63,9 +61,7 @@ def fetch_historical(
 
         update_fetch_time(ticker_symbol, dimension, success=True)
 
-        msg = (
-            f"Fetched {row_count} rows for {ticker_symbol} {interval}, period={period}"
-        )
+        msg = f"Fetched {row_count} rows for {ticker_symbol} {interval}, period={period}"
         return (ticker_symbol, dimension, msg)
 
     except Exception as e:

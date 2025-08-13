@@ -115,9 +115,7 @@ class DCFValuation(StructuredNode):
     valuation_date = DateTimeProperty(required=True)
     intrinsic_value = FloatProperty(required=True)
     current_price = FloatProperty(required=True)
-    upside_downside = (
-        FloatProperty()
-    )  # (intrinsic_value - current_price) / current_price
+    upside_downside = FloatProperty()  # (intrinsic_value - current_price) / current_price
 
     # Key DCF parameters
     revenue_growth_rate = FloatProperty()

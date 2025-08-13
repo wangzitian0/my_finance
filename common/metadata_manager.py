@@ -29,7 +29,11 @@ class MetadataManager:
             # Fallback: find most recent date partition
             source_dir = os.path.join(self.base_data_dir, source)
             if os.path.exists(source_dir):
-                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                date_dirs = [
+                    d
+                    for d in os.listdir(source_dir)
+                    if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()
+                ]
                 if date_dirs:
                     latest_date = max(date_dirs)
                     ticker_dir = os.path.join(source_dir, latest_date, ticker)
@@ -38,7 +42,7 @@ class MetadataManager:
                     ticker_dir = os.path.join(source_dir, ticker)
             else:
                 ticker_dir = os.path.join(self.base_data_dir, source, ticker)
-        
+
         return os.path.join(ticker_dir, self.metadata_filename)
 
     def get_index_path(self, source: str, ticker: str) -> str:
@@ -51,7 +55,11 @@ class MetadataManager:
             # Fallback: find most recent date partition
             source_dir = os.path.join(self.base_data_dir, source)
             if os.path.exists(source_dir):
-                date_dirs = [d for d in os.listdir(source_dir) if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()]
+                date_dirs = [
+                    d
+                    for d in os.listdir(source_dir)
+                    if os.path.isdir(os.path.join(source_dir, d)) and d.isdigit()
+                ]
                 if date_dirs:
                     latest_date = max(date_dirs)
                     ticker_dir = os.path.join(source_dir, latest_date, ticker)
@@ -60,7 +68,7 @@ class MetadataManager:
                     ticker_dir = os.path.join(source_dir, ticker)
             else:
                 ticker_dir = os.path.join(self.base_data_dir, source, ticker)
-        
+
         return os.path.join(ticker_dir, self.index_filename)
 
     def calculate_file_md5(self, filepath: str) -> str:
@@ -169,9 +177,7 @@ class MetadataManager:
         cutoff_time = datetime.now() - timedelta(hours=hours)
 
         for filename, file_record in metadata["files"].items():
-            if file_record.get(
-                "data_type"
-            ) == data_type and self._config_matches_ignore_exe_id(
+            if file_record.get("data_type") == data_type and self._config_matches_ignore_exe_id(
                 file_record.get("config_info"), config_info
             ):
 
@@ -336,9 +342,7 @@ class MetadataManager:
                     "data_type": data_type,
                     "file_size": file_size,
                     "md5_hash": md5_hash,
-                    "created_at": datetime.fromtimestamp(
-                        os.path.getctime(filepath)
-                    ).isoformat(),
+                    "created_at": datetime.fromtimestamp(os.path.getctime(filepath)).isoformat(),
                     "config_info": {},
                 }
 

@@ -6,12 +6,12 @@ Knowledge Base Builder for My Finance DCF Analysis Tool
 This script implements a four-tier data management strategy:
 - Tier 1 (F2): Fast 2-company test dataset, for rapid development
 - Tier 2 (M7): Stable 7-company test dataset, tracked in git
-- Tier 3 (N100): NASDAQ 100 validation dataset, gitignored  
+- Tier 3 (N100): NASDAQ 100 validation dataset, gitignored
 - Tier 4 (V3K): VTI 3500+ production dataset, gitignored
 
 Usage:
     python build_knowledge_base.py --tier f2              # Build Fast 2 test set
-    python build_knowledge_base.py --tier m7              # Build M7 stable test set  
+    python build_knowledge_base.py --tier m7              # Build M7 stable test set
     python build_knowledge_base.py --tier n100            # Build NASDAQ100 dataset
     python build_knowledge_base.py --tier v3k             # Build VTI 3500 dataset
     python build_knowledge_base.py --rebuild              # Rebuild everything
@@ -41,7 +41,9 @@ logger = logging.getLogger(__name__)
 
 class KnowledgeBaseBuilder:
     def __init__(self):
-        self.project_root = Path(__file__).parent.parent  # Go up one level from dcf_engine to project root
+        self.project_root = Path(
+            __file__
+        ).parent.parent  # Go up one level from dcf_engine to project root
         self.data_dir = self.project_root / "data"
         self.config_dir = self.data_dir / "config"
         self.original_dir = self.data_dir / "original"
@@ -56,7 +58,7 @@ class KnowledgeBaseBuilder:
                 "max_size_mb": 20,
             },
             "m7": {
-                "name": "Magnificent 7", 
+                "name": "Magnificent 7",
                 "description": "Stable test dataset for core development",
                 "configs": ["list_magnificent_7.yml"],
                 "tracked_in_git": True,
@@ -64,7 +66,7 @@ class KnowledgeBaseBuilder:
             },
             "n100": {
                 "name": "NASDAQ 100",
-                "description": "Extended validation dataset", 
+                "description": "Extended validation dataset",
                 "configs": ["list_nasdaq_100.yml"],
                 "tracked_in_git": False,
                 "max_size_mb": 5000,  # 5GB limit
@@ -72,7 +74,7 @@ class KnowledgeBaseBuilder:
             "v3k": {
                 "name": "VTI 3500",
                 "description": "Production dataset with 3500+ companies",
-                "configs": ["list_vti_3500.yml"], 
+                "configs": ["list_vti_3500.yml"],
                 "tracked_in_git": False,
                 "max_size_mb": 20000,  # 20GB limit
             },
@@ -80,27 +82,27 @@ class KnowledgeBaseBuilder:
 
     def validate_configs(self):
         """Validate that required configuration files exist"""
-        
+
         # Check that list configuration files exist - Four-tier system
         required_configs = [
             "list_fast_2.yml",
             "list_magnificent_7.yml",
-            "list_nasdaq_100.yml", 
+            "list_nasdaq_100.yml",
             "list_vti_3500.yml",
             "stage_00_original_yfinance.yml",
-            "stage_00_original_sec_edgar.yml"
+            "stage_00_original_sec_edgar.yml",
         ]
-        
+
         missing_configs = []
         for config in required_configs:
             config_path = self.config_dir / config
             if not config_path.exists():
                 missing_configs.append(config)
-        
+
         if missing_configs:
             logger.error(f"Missing required configuration files: {missing_configs}")
             return False
-            
+
         logger.info("All required configuration files found")
         return True
 
@@ -120,9 +122,7 @@ class KnowledgeBaseBuilder:
             config_path = self.config_dir / config_file
 
             if not config_path.exists():
-                logger.warning(
-                    f"Configuration file {config_file} not found, skipping..."
-                )
+                logger.warning(f"Configuration file {config_file} not found, skipping...")
                 continue
 
             logger.info(f"Processing configuration: {config_file}")
@@ -165,9 +165,7 @@ class KnowledgeBaseBuilder:
         if not tier_config["tracked_in_git"]:
             self._validate_data_size(tier_name)
 
-        logger.info(
-            f"Completed building {tier_config['name']} dataset in {build_time:.2f} seconds"
-        )
+        logger.info(f"Completed building {tier_config['name']} dataset in {build_time:.2f} seconds")
 
     def _is_data_recent(self, config_file, tier_name, max_age_hours=24):
         """Check if data for a config is recent enough"""
@@ -262,9 +260,7 @@ class KnowledgeBaseBuilder:
                         stats["total_companies"] += 1
                         for filing_type_dir in company_dir.iterdir():
                             if filing_type_dir.is_dir():
-                                stats["sec_filings"] += len(
-                                    list(filing_type_dir.rglob("*.txt"))
-                                )
+                                stats["sec_filings"] += len(list(filing_type_dir.rglob("*.txt")))
 
             elif data_source_dir.name == "yfinance":
                 for company_dir in data_source_dir.iterdir():
@@ -317,25 +313,25 @@ class KnowledgeBaseBuilder:
         # Generate validation report in current build directory
         try:
             from common.build_tracker import BuildTracker
+
             build_tracker = BuildTracker()
             current_build = build_tracker.get_latest_build()
-            
+
             if current_build:
                 build_dir = Path(current_build.build_dir)
             else:
                 # Fallback: create new build directory
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 build_dir = self.data_dir / "stage_99_build" / f"build_{timestamp}"
                 build_dir.mkdir(parents=True, exist_ok=True)
         except:
             # Final fallback
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             build_dir = self.data_dir / "stage_99_build" / f"build_{timestamp}"
             build_dir.mkdir(parents=True, exist_ok=True)
-            
+
         validation_report_file = (
-            build_dir
-            / f"validation_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            build_dir / f"validation_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         )
 
         with open(validation_report_file, "w") as f:
@@ -356,9 +352,7 @@ class KnowledgeBaseBuilder:
             logger.warning("Cannot cleanup M7 data - it's tracked in git")
             return
 
-        logger.info(
-            f"Cleaning up old data for {tier_name} (keeping last {keep_days} days)..."
-        )
+        logger.info(f"Cleaning up old data for {tier_name} (keeping last {keep_days} days)...")
 
         cutoff_time = time.time() - (keep_days * 24 * 3600)
         removed_files = 0
@@ -389,13 +383,9 @@ def main():
 
     parser.add_argument("--rebuild", action="store_true", help="Force rebuild all data")
 
-    parser.add_argument(
-        "--validate", action="store_true", help="Validate existing data integrity"
-    )
+    parser.add_argument("--validate", action="store_true", help="Validate existing data integrity")
 
-    parser.add_argument(
-        "--cleanup", metavar="TIER", help="Clean up old data for specified tier"
-    )
+    parser.add_argument("--cleanup", metavar="TIER", help="Clean up old data for specified tier")
 
     parser.add_argument(
         "--keep-days",
@@ -430,9 +420,7 @@ def main():
 
         else:
             # Default: build M7 tier only
-            logger.info(
-                "No specific tier specified, building M7 stable test dataset..."
-            )
+            logger.info("No specific tier specified, building M7 stable test dataset...")
             builder.build_tier("m7")
 
     except Exception as e:

@@ -29,9 +29,7 @@ def run_command(cmd, description, ignore_errors=False):
 def shutdown_minikube():
     """Shutdown Minikube cluster if running."""
     # Check if Minikube is running first
-    result = subprocess.run(
-        "minikube status", shell=True, capture_output=True, text=True
-    )
+    result = subprocess.run("minikube status", shell=True, capture_output=True, text=True)
     if result.returncode == 0 and "running" in result.stdout.lower():
         run_command("minikube stop", "Stopping Minikube cluster")
     else:
@@ -84,18 +82,14 @@ def main():
     print("🔍 Final status check:")
 
     # Check Minikube status
-    minikube_result = subprocess.run(
-        "minikube status", shell=True, capture_output=True, text=True
-    )
+    minikube_result = subprocess.run("minikube status", shell=True, capture_output=True, text=True)
     if minikube_result.returncode == 0 and "running" in minikube_result.stdout.lower():
         print("⚠️  Minikube: Still running")
     else:
         print("✅ Minikube: Stopped")
 
     # Check Neo4j status
-    neo4j_result = subprocess.run(
-        "neo4j status", shell=True, capture_output=True, text=True
-    )
+    neo4j_result = subprocess.run("neo4j status", shell=True, capture_output=True, text=True)
     if neo4j_result.returncode == 0 and "running" in neo4j_result.stdout.lower():
         print("⚠️  Neo4j: Still running")
     else:

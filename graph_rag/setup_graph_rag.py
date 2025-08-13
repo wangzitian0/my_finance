@@ -14,9 +14,7 @@ import sys
 from pathlib import Path
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -134,9 +132,7 @@ class GraphRAGSetup:
                 else:
                     logger.error(f"Failed to install required package {package}: {e}")
                     if category in ["core", "embedding", "parsing"]:
-                        logger.error(
-                            "This package is required for Graph RAG functionality"
-                        )
+                        logger.error("This package is required for Graph RAG functionality")
 
     def install_package(self, package: str):
         """
@@ -175,9 +171,7 @@ class GraphRAGSetup:
                     "For PyTorch, you might want to visit https://pytorch.org/get-started/locally/"
                 )
             elif "sentence-transformers" in package_name:
-                logger.info(
-                    "sentence-transformers requires PyTorch. Install PyTorch first."
-                )
+                logger.info("sentence-transformers requires PyTorch. Install PyTorch first.")
 
             raise
 
@@ -274,20 +268,14 @@ class GraphRAGSetup:
         # Summary
         if all_core_passed:
             logger.info("🎉 Graph RAG system validation passed!")
-            logger.info(
-                f"Optional features available: {optional_available}/{len(optional_tests)}"
-            )
+            logger.info(f"Optional features available: {optional_available}/{len(optional_tests)}")
 
             if optional_available == 0:
-                logger.warning(
-                    "Consider installing optional dependencies for full functionality:"
-                )
+                logger.warning("Consider installing optional dependencies for full functionality:")
                 logger.warning("python setup_graph_rag.py --install-optional")
         else:
             logger.error("❌ Graph RAG system validation failed")
-            logger.error(
-                "Please check the error messages above and install missing dependencies"
-            )
+            logger.error("Please check the error messages above and install missing dependencies")
             sys.exit(1)
 
     def check_system_requirements(self):
@@ -307,9 +295,7 @@ class GraphRAGSetup:
                 logger.warning("Graph RAG may run slowly or encounter memory issues")
             elif memory_gb < 8:
                 logger.warning("⚠️  Less than 8GB RAM available")
-                logger.warning(
-                    "Consider closing other applications when running Graph RAG"
-                )
+                logger.warning("Consider closing other applications when running Graph RAG")
             else:
                 logger.info("✅ Sufficient RAM available")
 
@@ -394,8 +380,7 @@ def main():
 
             if (
                 args.generate_config
-                or input("\nGenerate sample config files? (y/n): ").strip().lower()
-                == "y"
+                or input("\nGenerate sample config files? (y/n): ").strip().lower() == "y"
             ):
                 setup.generate_config_files()
 

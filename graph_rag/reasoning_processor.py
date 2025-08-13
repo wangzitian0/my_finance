@@ -45,9 +45,7 @@ class MultiStepReasoning:
     and coordinated analysis across different data sources.
     """
 
-    def __init__(
-        self, query_generator, semantic_retriever, answer_generator, graph_client=None
-    ):
+    def __init__(self, query_generator, semantic_retriever, answer_generator, graph_client=None):
         """
         Initialize the multi-step reasoning processor.
 
@@ -95,9 +93,7 @@ class MultiStepReasoning:
         for i, sub_question in enumerate(sub_questions, 1):
             logger.info(f"Processing sub-question {i}: {sub_question}")
 
-            step_result = self.answer_sub_question(
-                sub_question, accumulated_context, step_number=i
-            )
+            step_result = self.answer_sub_question(sub_question, accumulated_context, step_number=i)
 
             reasoning_steps.append(step_result)
 
@@ -124,9 +120,7 @@ class MultiStepReasoning:
             },
         )
 
-        logger.info(
-            f"Completed multi-step reasoning with confidence: {overall_confidence:.2f}"
-        )
+        logger.info(f"Completed multi-step reasoning with confidence: {overall_confidence:.2f}")
         return reasoning_chain
 
     def decompose_question(self, complex_question: str) -> List[str]:
@@ -148,20 +142,11 @@ class MultiStepReasoning:
             for pattern in ["recent news", "latest development", "recent event"]
         ):
             return self._decompose_news_impact_question(complex_question)
-        elif any(
-            pattern in question_lower
-            for pattern in ["compare", "versus", "vs.", "against"]
-        ):
+        elif any(pattern in question_lower for pattern in ["compare", "versus", "vs.", "against"]):
             return self._decompose_comparison_question(complex_question)
-        elif any(
-            pattern in question_lower
-            for pattern in ["dcf", "valuation", "worth", "value"]
-        ):
+        elif any(pattern in question_lower for pattern in ["dcf", "valuation", "worth", "value"]):
             return self._decompose_valuation_question(complex_question)
-        elif any(
-            pattern in question_lower
-            for pattern in ["trend", "historical", "over time"]
-        ):
+        elif any(pattern in question_lower for pattern in ["trend", "historical", "over time"]):
             return self._decompose_trend_question(complex_question)
         else:
             return self._decompose_general_question(complex_question)
@@ -269,9 +254,7 @@ class MultiStepReasoning:
             )
 
             # Extract evidence sources
-            evidence = self._extract_evidence(
-                answer_result, graph_data, semantic_content
-            )
+            evidence = self._extract_evidence(answer_result, graph_data, semantic_content)
 
             return ReasoningStep(
                 step_number=step_number,
@@ -309,9 +292,7 @@ class MultiStepReasoning:
         # Mock data structure - replace with actual Neo4j execution
         mock_data = {
             "ticker": (
-                query_info.get("tickers", ["AAPL"])[0]
-                if query_info.get("tickers")
-                else "AAPL"
+                query_info.get("tickers", ["AAPL"])[0] if query_info.get("tickers") else "AAPL"
             ),
             "company_info": {
                 "sector": "Technology",
@@ -337,9 +318,7 @@ class MultiStepReasoning:
 
         return mock_data
 
-    def _update_accumulated_context(
-        self, context: Dict[str, Any], step_result: ReasoningStep
-    ):
+    def _update_accumulated_context(self, context: Dict[str, Any], step_result: ReasoningStep):
         """Update accumulated context with results from a reasoning step."""
 
         step_key = f"step_{step_result.step_number}"
@@ -417,9 +396,7 @@ class MultiStepReasoning:
         answer_parts.append(f"Analysis confidence: {overall_confidence:.1%}")
 
         if overall_confidence > 0.7:
-            answer_parts.append(
-                "High confidence in analysis based on comprehensive data."
-            )
+            answer_parts.append("High confidence in analysis based on comprehensive data.")
         elif overall_confidence > 0.4:
             answer_parts.append("Moderate confidence - some data limitations noted.")
         else:
@@ -432,15 +409,11 @@ class MultiStepReasoning:
 
         unique_evidence = list(set(all_evidence))
         if unique_evidence:
-            answer_parts.append(
-                f"\n**Evidence Sources:** {', '.join(unique_evidence[:5])}"
-            )
+            answer_parts.append(f"\n**Evidence Sources:** {', '.join(unique_evidence[:5])}")
 
         return "\n".join(answer_parts)
 
-    def calculate_overall_confidence(
-        self, reasoning_steps: List[ReasoningStep]
-    ) -> float:
+    def calculate_overall_confidence(self, reasoning_steps: List[ReasoningStep]) -> float:
         """
         Calculate overall confidence score for the reasoning chain.
 
@@ -474,9 +447,7 @@ class MultiStepReasoning:
 
         return base_confidence * completeness_factor
 
-    def _assess_complexity(
-        self, original_question: str, sub_questions: List[str]
-    ) -> float:
+    def _assess_complexity(self, original_question: str, sub_questions: List[str]) -> float:
         """Assess the complexity of the original question."""
 
         complexity_indicators = [

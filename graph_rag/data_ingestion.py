@@ -84,15 +84,9 @@ class GraphRAGDataIngestion:
 
                 # Update statistics
                 ingestion_stats["companies_processed"] += 1
-                ingestion_stats["stocks_created"] += yfinance_stats.get(
-                    "stocks_created", 0
-                )
-                ingestion_stats["filings_processed"] += sec_stats.get(
-                    "filings_processed", 0
-                )
-                ingestion_stats["embeddings_generated"] += sec_stats.get(
-                    "embeddings_generated", 0
-                )
+                ingestion_stats["stocks_created"] += yfinance_stats.get("stocks_created", 0)
+                ingestion_stats["filings_processed"] += sec_stats.get("filings_processed", 0)
+                ingestion_stats["embeddings_generated"] += sec_stats.get("embeddings_generated", 0)
 
                 logger.info(f"Completed processing {ticker}")
 
@@ -122,9 +116,7 @@ class GraphRAGDataIngestion:
 
         yfinance_dir = self.original_data_dir / "yfinance" / ticker
         if not yfinance_dir.exists():
-            logger.warning(
-                f"Yahoo Finance data directory not found for {ticker}: {yfinance_dir}"
-            )
+            logger.warning(f"Yahoo Finance data directory not found for {ticker}: {yfinance_dir}")
             return stats
 
         try:
@@ -203,20 +195,14 @@ class GraphRAGDataIngestion:
             for filing_file in filing_files:
                 try:
                     filing_stats = self._process_sec_filing(ticker, cik, filing_file)
-                    stats["filings_processed"] += filing_stats.get(
-                        "filings_processed", 0
-                    )
-                    stats["embeddings_generated"] += filing_stats.get(
-                        "embeddings_generated", 0
-                    )
+                    stats["filings_processed"] += filing_stats.get("filings_processed", 0)
+                    stats["embeddings_generated"] += filing_stats.get("embeddings_generated", 0)
 
                 except Exception as e:
                     logger.error(f"Error processing SEC filing {filing_file}: {e}")
                     continue
 
-            logger.info(
-                f"Processed {stats['filings_processed']} SEC filings for {ticker}"
-            )
+            logger.info(f"Processed {stats['filings_processed']} SEC filings for {ticker}")
 
         except Exception as e:
             logger.error(f"Error processing SEC data for {ticker}: {e}")
@@ -336,18 +322,14 @@ class GraphRAGDataIngestion:
                     )
                     continue
 
-            logger.debug(
-                f"Processed {processed_count} price records for {stock.ticker}"
-            )
+            logger.debug(f"Processed {processed_count} price records for {stock.ticker}")
 
         except Exception as e:
             logger.error(f"Error processing price history for {stock.ticker}: {e}")
 
         return processed_count
 
-    def _process_recommendations(
-        self, stock: Stock, recommendations_data: Dict[str, Any]
-    ):
+    def _process_recommendations(self, stock: Stock, recommendations_data: Dict[str, Any]):
         """Process and store analyst recommendations."""
         try:
             recommendations = Recommendations(
@@ -367,9 +349,7 @@ class GraphRAGDataIngestion:
         except Exception as e:
             logger.error(f"Error processing recommendations for {stock.ticker}: {e}")
 
-    def _process_sustainability(
-        self, stock: Stock, sustainability_data: Dict[str, Any]
-    ):
+    def _process_sustainability(self, stock: Stock, sustainability_data: Dict[str, Any]):
         """Process and store ESG/sustainability data."""
         try:
             sustainability = Sustainability(esgScores=sustainability_data)
@@ -380,13 +360,9 @@ class GraphRAGDataIngestion:
             logger.debug(f"Processed sustainability data for {stock.ticker}")
 
         except Exception as e:
-            logger.error(
-                f"Error processing sustainability data for {stock.ticker}: {e}"
-            )
+            logger.error(f"Error processing sustainability data for {stock.ticker}: {e}")
 
-    def _process_sec_filing(
-        self, ticker: str, cik: str, filing_file: Path
-    ) -> Dict[str, Any]:
+    def _process_sec_filing(self, ticker: str, cik: str, filing_file: Path) -> Dict[str, Any]:
         """Process a single SEC filing file."""
         stats = {"filings_processed": 0, "embeddings_generated": 0}
 
@@ -412,9 +388,7 @@ class GraphRAGDataIngestion:
                 stats["filings_processed"] = 1
 
                 # Generate semantic embeddings for sections
-                embedding_count = self._generate_filing_embeddings(
-                    sec_filing, filing_data
-                )
+                embedding_count = self._generate_filing_embeddings(sec_filing, filing_data)
                 stats["embeddings_generated"] = embedding_count
 
                 # Connect to stock
@@ -479,8 +453,7 @@ class GraphRAGDataIngestion:
                 raw_content=filing_data.get("raw_content", ""),
                 processed_at=datetime.now(),
                 parsing_success=bool(
-                    filing_data.get("business_overview")
-                    or filing_data.get("raw_content")
+                    filing_data.get("business_overview") or filing_data.get("raw_content")
                 ),
             )
 
