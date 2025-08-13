@@ -25,25 +25,7 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: "M7 Validation - All 4 Core Conditions"
+    - name: "M7 Validation - 4 Core Conditions"
       run: |
-        echo "🔍 M7验证开始 - 使用Python验证脚本"
-        echo "检查4个核心条件:"
-        echo "1. ✅ 跑了测试"
-        echo "2. ⏰ 测试通过的结束时间在push时间10分钟之内"
-        echo "3. 📅 push时间在24h内"
-        echo "4. 📊 CI上跑简易测试是通的"
-        echo ""
-        
-        # 运行Python验证脚本
-        python3 m7_validation.py
-        
-        # 如果脚本成功运行，显示成功信息
-        echo ""
-        echo "🎉 所有4个核心条件检查通过!"
-        echo "✅ 1. 运行了M7测试"
-        echo "✅ 2. 测试时间在10分钟内"
-        echo "✅ 3. Commit在24小时内"
-        echo "✅ 4. 测试结果充足"
-        echo ""
-        echo "🚀 这个PR可以安全合并!"
+        echo "🔍 运行M7验证脚本..."
+        python3 ci_m7_validation.py
