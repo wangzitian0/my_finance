@@ -17,9 +17,39 @@ jobs:
     steps:
     - name: "Checkout"
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
         
-    - name: "Validate"
+    - name: "Check M7 Test Validation in Commit Message"
       run: |
-        echo "✅ M7 validation check passed"
-        echo "New commit-based validation system is active"
-        echo "No .m7-test-passed file conflicts anymore"
+        echo "🔍 Checking for M7 test validation in commit message..."
+        
+        # Get the latest commit message
+        COMMIT_MSG=$(git log -1 --pretty=%B)
+        echo "📝 Latest commit message:"
+        echo "$COMMIT_MSG"
+        echo "---"
+        
+        # Check for M7-TESTED marker
+        if echo "$COMMIT_MSG" | grep -q "M7-TESTED.*This commit passed M7 end-to-end testing"; then
+          echo "✅ Found M7 test validation in commit message"
+          
+          # Check for test results
+          if echo "$COMMIT_MSG" | grep -q "Test Results.*data files validated"; then
+            echo "✅ Found test results information"
+            echo "✅ M7 validation check PASSED"
+          else
+            echo "❌ FAIL: Test results information not found in commit message"
+            echo "   Expected: Test Results: X data files validated"
+            exit 1
+          fi
+        else
+          echo "❌ FAIL: M7 test validation not found in commit message"
+          echo "   This PR was not created with 'pixi run create-pr'"
+          echo "   Expected pattern: 'M7-TESTED: This commit passed M7 end-to-end testing'"
+          echo ""
+          echo "📝 Required steps:"
+          echo "   1. Run locally: pixi run test-m7-e2e"
+          echo "   2. Use: pixi run create-pr \"Your title\" ISSUE_NUMBER"
+          exit 1
+        fi
