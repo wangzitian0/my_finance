@@ -32,11 +32,29 @@ def get_commit_info():
             
             if len(parents) > 1:
                 print("🔍 Found merge commit, getting PR branch commits...")
+                print(f"🔍 Merge parents: {parents}")
                 
-                # Get all commits in the PR (excluding merge base)
-                result = subprocess.run(['git', 'log', '--pretty=%H', f'{parents[0]}..HEAD^'], 
-                                      capture_output=True, text=True, check=True)
-                pr_commits = [line.strip() for line in result.stdout.strip().split('\n') if line.strip()]
+                # Try different approaches to get PR commits
+                git_commands = [
+                    f'{parents[0]}..HEAD^',  # Original approach
+                    f'{parents[1]}..HEAD^',  # Try second parent
+                    f'{parents[0]}..{parents[1]}',  # Between parents
+                ]
+                
+                pr_commits = []
+                for cmd in git_commands:
+                    try:
+                        print(f"🔍 Trying git log command: {cmd}")
+                        result = subprocess.run(['git', 'log', '--pretty=%H', cmd], 
+                                              capture_output=True, text=True, check=True)
+                        commits = [line.strip() for line in result.stdout.strip().split('\n') if line.strip()]
+                        print(f"🔍 Found {len(commits)} commits: {commits[:3] if commits else 'none'}")
+                        if commits:
+                            pr_commits = commits
+                            break
+                    except Exception as e:
+                        print(f"🔍 Command failed: {e}")
+                        continue
                 
                 if pr_commits:
                     # Use the most recent commit from the PR
@@ -54,6 +72,8 @@ def get_commit_info():
                     commit_time = int(result.stdout.strip())
                     
                     return commit_msg, commit_time
+                else:
+                    print("🔍 No PR commits found, falling back to HEAD")
         
         # Not in PR context or no merge commit detected, use HEAD
         print("🔍 Using HEAD commit...")
