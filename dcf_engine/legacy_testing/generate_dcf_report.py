@@ -129,18 +129,14 @@ class M7DCFAnalyzer:
 
         # Debt-to-equity ratio
         debt_to_equity = (
-            metrics.get("debt_to_equity", 0) / 100
-            if metrics.get("debt_to_equity")
-            else 0
+            metrics.get("debt_to_equity", 0) / 100 if metrics.get("debt_to_equity") else 0
         )
 
         # Calculate WACC
         if debt_to_equity > 0:
             equity_weight = 1 / (1 + debt_to_equity)
             debt_weight = debt_to_equity / (1 + debt_to_equity)
-            wacc = (equity_weight * cost_of_equity) + (
-                debt_weight * cost_of_debt * (1 - tax_rate)
-            )
+            wacc = (equity_weight * cost_of_equity) + (debt_weight * cost_of_debt * (1 - tax_rate))
         else:
             wacc = cost_of_equity
 
@@ -334,12 +330,8 @@ class M7DCFAnalyzer:
         report_lines.append("=" * 80)
         report_lines.append("MAGNIFICENT 7 (M7) DCF VALUATION REPORT")
         report_lines.append("=" * 80)
-        report_lines.append(
-            f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-        )
-        report_lines.append(
-            f"Analysis Period: Based on latest available financial data"
-        )
+        report_lines.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        report_lines.append(f"Analysis Period: Based on latest available financial data")
         report_lines.append("")
 
         # Executive Summary
@@ -366,9 +358,7 @@ class M7DCFAnalyzer:
             else:
                 recommendations["HOLD"].append(ticker)
 
-        report_lines.append(
-            f"Total M7 Market Cap: {self.format_currency(total_market_cap)}"
-        )
+        report_lines.append(f"Total M7 Market Cap: {self.format_currency(total_market_cap)}")
         report_lines.append(f"Companies Analyzed: {len(analyses)}")
         report_lines.append(
             f"Buy Recommendations: {len(recommendations['BUY'])} ({', '.join(recommendations['BUY'])})"
@@ -415,15 +405,9 @@ class M7DCFAnalyzer:
 
             # Key Financials
             report_lines.append("KEY FINANCIAL METRICS")
-            report_lines.append(
-                f"Market Cap: {self.format_currency(metrics['market_cap'])}"
-            )
-            report_lines.append(
-                f"Revenue: {self.format_currency(metrics['total_revenue'])}"
-            )
-            report_lines.append(
-                f"Net Income: {self.format_currency(metrics['net_income'])}"
-            )
+            report_lines.append(f"Market Cap: {self.format_currency(metrics['market_cap'])}")
+            report_lines.append(f"Revenue: {self.format_currency(metrics['total_revenue'])}")
+            report_lines.append(f"Net Income: {self.format_currency(metrics['net_income'])}")
             report_lines.append(
                 f"Free Cash Flow: {self.format_currency(metrics['free_cash_flow'])}"
             )
@@ -431,9 +415,7 @@ class M7DCFAnalyzer:
 
             # Profitability & Growth
             report_lines.append("PROFITABILITY & GROWTH")
-            report_lines.append(
-                f"Gross Margin: {self.format_percentage(metrics['gross_margin'])}"
-            )
+            report_lines.append(f"Gross Margin: {self.format_percentage(metrics['gross_margin'])}")
             report_lines.append(
                 f"Operating Margin: {self.format_percentage(metrics['operating_margin'])}"
             )
@@ -461,9 +443,7 @@ class M7DCFAnalyzer:
             report_lines.append(
                 f"Enterprise Value: {self.format_currency(dcf['enterprise_value'])}"
             )
-            report_lines.append(
-                f"Terminal Value: {self.format_currency(dcf['terminal_value'])}"
-            )
+            report_lines.append(f"Terminal Value: {self.format_currency(dcf['terminal_value'])}")
 
             # 5-Year Cash Flow Projections
             report_lines.append("5-YEAR FREE CASH FLOW PROJECTIONS:")
@@ -480,9 +460,7 @@ class M7DCFAnalyzer:
         report_lines.append("• Risk-free rate: 4.5% (10-year US Treasury)")
         report_lines.append("• Market risk premium: 6.0%")
         report_lines.append("• Corporate tax rate: 21%")
-        report_lines.append(
-            "• Terminal growth rates: 2.5-3.0% based on company maturity"
-        )
+        report_lines.append("• Terminal growth rates: 2.5-3.0% based on company maturity")
         report_lines.append("")
         report_lines.append("RISKS TO CONSIDER:")
         report_lines.append("• Interest rate changes affecting discount rates")
@@ -493,15 +471,9 @@ class M7DCFAnalyzer:
         report_lines.append("")
 
         report_lines.append("DISCLAIMER:")
-        report_lines.append(
-            "This analysis is for educational purposes only and should not be"
-        )
-        report_lines.append(
-            "considered as investment advice. Past performance does not guarantee"
-        )
-        report_lines.append(
-            "future results. Please consult with a financial advisor before making"
-        )
+        report_lines.append("This analysis is for educational purposes only and should not be")
+        report_lines.append("considered as investment advice. Past performance does not guarantee")
+        report_lines.append("future results. Please consult with a financial advisor before making")
         report_lines.append("investment decisions.")
         report_lines.append("")
         report_lines.append("=" * 80)
@@ -517,7 +489,7 @@ class M7DCFAnalyzer:
         # Use output_dir if provided, otherwise use default reports_dir
         target_dir = output_dir if output_dir is not None else self.reports_dir
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         filepath = target_dir / filename
 
         with open(filepath, "w") as f:
@@ -536,6 +508,7 @@ def main():
 
         # Create timestamped build directory for standalone execution
         from datetime import datetime
+
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         build_dir = Path(f"data/stage_99_build/build_{timestamp}")
         build_dir.mkdir(parents=True, exist_ok=True)

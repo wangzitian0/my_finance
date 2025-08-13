@@ -1,38 +1,80 @@
 # zsh completion for p3 (scoped to my_finance)
 
-_p3_commands=(pr e2e refresh clean)
+_p3_commands=(env podman neo4j format lint test e2e build refresh create-build release-build clean create-pr commit-data-changes cleanup-branches shutdown-all)
+_p3_env_commands=(setup start stop status reset)
+_p3_podman_commands=(status)
+_p3_neo4j_commands=(logs connect restart stop start)
 _p3_scopes=(f2 m7 n100 v3k)
 
 _p3() {
-  local -a cmds scopes
+  local -a cmds env_cmds podman_cmds neo4j_cmds scopes
   cmds=(${_p3_commands})
+  env_cmds=(${_p3_env_commands})
+  podman_cmds=(${_p3_podman_commands})
+  neo4j_cmds=(${_p3_neo4j_commands})
   scopes=(${_p3_scopes})
 
   if (( CURRENT == 2 )); then
-    compadd -x '提示        说明'
-    compadd -x 'pr          创建/更新 PR（带校验）。例: p3 pr "修复" 81'
-    compadd -x 'e2e         端到端校验（不创建 PR）。例: p3 e2e'
-    compadd -x 'refresh     构建数据（默认 m7）。例: p3 refresh m7'
-    compadd -x 'clean       清理本地构建产物。例: p3 clean'
-    compadd -x 'f2          快速 2 公司（开发）。例: p3 refresh f2'
-    compadd -x 'm7          Magnificent 7（默认/PR）。例: p3 refresh m7'
-    compadd -x 'n100        NASDAQ100（验证）。例: p3 refresh n100'
-    compadd -x 'v3k         VTI 3500+（生产）。例: p3 refresh v3k'
+    compadd -x 'Command     Description'
+    compadd -x 'env         Environment management (setup/start/stop/status/reset)'
+    compadd -x 'podman      Container management (status)'
+    compadd -x 'neo4j       Neo4j management (logs/connect/restart/stop/start)'
+    compadd -x 'format      Format code (black + isort)'
+    compadd -x 'lint        Lint code (pylint)'
+    compadd -x 'test        Run tests (pytest)'
+    compadd -x 'e2e         End-to-end validation'
+    compadd -x 'build       Build dataset (build run [scope])'
+    compadd -x 'refresh     Build dataset (alias for build run)'
+    compadd -x 'create-pr   Create/update PR with testing'
+    compadd -x 'clean       Clean build artifacts'
     compadd -a cmds
     return
   fi
 
   local cmd=$words[2]
   case $cmd in
-    refresh)
+    env)
       if (( CURRENT == 3 )); then
-        compadd -x '提示   说明'
-        compadd -x 'f2     快速 2 公司（开发）。例: p3 refresh f2'
-        compadd -x 'm7     Magnificent 7（默认/PR）。例: p3 refresh m7'
-        compadd -x 'n100   NASDAQ100（验证）。例: p3 refresh n100'
-        compadd -x 'v3k    VTI 3500+（生产）。例: p3 refresh v3k'
+        compadd -x 'Env Command Description'
+        compadd -x 'setup       Initial environment setup'
+        compadd -x 'start       Start all services'
+        compadd -x 'stop        Stop all services'
+        compadd -x 'status      Check environment status'
+        compadd -x 'reset       Reset everything (destructive)'
+        compadd -a env_cmds
+      fi
+      ;;
+    podman)
+      if (( CURRENT == 3 )); then
+        compadd -a podman_cmds
+      fi
+      ;;
+    neo4j)
+      if (( CURRENT == 3 )); then
+        compadd -x 'Neo4j Cmd   Description'
+        compadd -x 'logs        View Neo4j logs'
+        compadd -x 'connect     Connect to Neo4j shell'
+        compadd -x 'restart     Restart Neo4j container'
+        compadd -x 'stop        Stop Neo4j container'
+        compadd -x 'start       Start Neo4j container'
+        compadd -a neo4j_cmds
+      fi
+      ;;
+    refresh|build)
+      if (( CURRENT == 3 )) || (( CURRENT == 4 && $words[3] == "run" )); then
+        compadd -x 'Scope  Description'
+        compadd -x 'f2     Fast 2 companies (development)'
+        compadd -x 'm7     Magnificent 7 (default/PR)'
+        compadd -x 'n100   NASDAQ 100 (validation)'
+        compadd -x 'v3k    VTI 3500+ (production)'
         compadd -a scopes
-        return
+      elif (( CURRENT == 3 && $cmd == "build" )); then
+        compadd "run"
+      fi
+      ;;
+    cleanup-branches)
+      if (( CURRENT == 3 )); then
+        compadd "--dry-run" "--auto"
       fi
       ;;
   esac

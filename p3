@@ -10,19 +10,43 @@ usage() {
 p3 - Unified developer commands (my_finance)
 
 Usage:
-  p3 pr "TITLE" ISSUE [--description FILE]
-  p3 e2e
-  p3 refresh [f2|m7|n100|v3k]
-  p3 clean
+  p3 <command> [args...]
 
-Commands:
-  pr         Create or update PR with mandatory testing
-  e2e        Run end-to-end validation (no PR)
-  refresh    Build data for scope (default: m7)
-  clean      Clean local build artifacts
+Environment Management:
+  env setup              Initial environment setup (Podman, Neo4j)
+  env start              Start all services
+  env stop               Stop all services 
+  env status             Check environment status
+  env reset              Reset everything (destructive)
 
-Scopes:
-  f2 m7 n100 v3k
+Container Management:
+  podman status          Check container status
+  neo4j logs             View Neo4j logs
+  neo4j connect          Connect to Neo4j shell
+  neo4j restart          Restart Neo4j container
+  neo4j stop             Stop Neo4j container
+  neo4j start            Start Neo4j container
+
+Development Commands:
+  format                 Format code (black + isort)
+  lint                   Lint code (pylint)
+  test                   Run tests (pytest)
+  e2e                    End-to-end validation
+  build run [scope]      Build dataset (default: m7)
+  refresh [scope]        Alias for build run
+
+Build Management:
+  create-build           Create timestamped build directory
+  release-build          Promote latest build to release
+  clean                  Clean local build artifacts
+
+Workflow Management:
+  create-pr "TITLE" ISSUE  Create/update PR with mandatory testing
+  commit-data-changes    Stage data directory changes
+  cleanup-branches       Clean merged branches
+  shutdown-all           Stop all services
+
+Scopes: f2 m7 n100 v3k (default: m7)
 
 Tips:
   - Add completion: source ./scripts/p3-completion.zsh
@@ -30,20 +54,18 @@ Tips:
 EOF
 }
 
-cmd_pr() {
+cmd_create_pr() {
   title="$1"; shift || true
   issue="$1"; shift || true
   if [ -z "$title" ] || [ -z "$issue" ]; then
     echo "Error: title and issue number are required" >&2
     exit 2
   fi
-  # Use pixi to run in proper environment
-  pixi run "python infra/create_pr_with_test.py '$title' '$issue' $*"
+  pixi run create-pr "$title" "$issue" "$@"
 }
 
 cmd_e2e() {
-  # Use pixi to run in proper environment
-  pixi run "python infra/create_pr_with_test.py --skip-pr"
+  pixi run test-e2e
 }
 
 cmd_refresh() {
@@ -52,34 +74,125 @@ cmd_refresh() {
     f2|m7|n100|v3k) ;;
     *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
   esac
-  # Use pixi to run in proper environment with dependencies
-  pixi run "python ETL/build_dataset.py $scope"
+  pixi run "build-$scope"
+}
+
+cmd_build() {
+  if [ "$1" = "run" ]; then
+    shift
+    cmd_refresh "$@"
+  else
+    cmd_refresh "$@"
+  fi
+}
+
+# Environment management
+cmd_env() {
+  case "$1" in
+    setup) pixi run setup-env ;;
+    start) pixi run env-start ;;
+    stop) pixi run env-stop ;;
+    status) pixi run env-status ;;
+    reset) pixi run env-reset ;;
+    *) echo "Unknown env command: $1" >&2; exit 2 ;;
+  esac
+}
+
+# Container management
+cmd_podman() {
+  case "$1" in
+    status) pixi run podman-status ;;
+    *) echo "Unknown podman command: $1" >&2; exit 2 ;;
+  esac
+}
+
+cmd_neo4j() {
+  case "$1" in
+    logs) pixi run neo4j-logs ;;
+    connect) pixi run neo4j-connect ;;
+    restart) pixi run neo4j-restart ;;
+    stop) pixi run neo4j-stop ;;
+    start) pixi run neo4j-start ;;
+    *) echo "Unknown neo4j command: $1" >&2; exit 2 ;;
+  esac
+}
+
+# Development commands
+cmd_format() {
+  pixi run format
+}
+
+cmd_lint() {
+  pixi run lint
+}
+
+cmd_test() {
+  pixi run test
+}
+
+# Build management
+cmd_create_build() {
+  pixi run create-build
+}
+
+cmd_release_build() {
+  pixi run release-build
+}
+
+# Workflow management
+cmd_commit_data_changes() {
+  pixi run commit-data-changes
+}
+
+cmd_cleanup_branches() {
+  if [ "$1" = "--dry-run" ]; then
+    pixi run cleanup-branches-dry-run
+  elif [ "$1" = "--auto" ]; then
+    pixi run cleanup-branches-auto
+  else
+    pixi run cleanup-branches
+  fi
+}
+
+cmd_shutdown_all() {
+  pixi run shutdown-all
 }
 
 cmd_clean() {
-  # Clean stage_99 builds (safe operation)
-  python3 - "$@" <<'PY'
-from pathlib import Path
-import shutil
-
-build_dir = Path('data/stage_99_build')
-if build_dir.exists():
-    removed = 0
-    for d in build_dir.glob('build_*'):
-        if d.is_dir():
-            shutil.rmtree(d)
-            removed += 1
-    print(f"🧹 Cleaned {removed} build directories in {build_dir}")
-else:
-    print("ℹ️ Nothing to clean")
-PY
+  pixi run clean
 }
 
 case "$1" in
-  pr) shift; cmd_pr "$@" ;;
+  # Environment management
+  env) shift; cmd_env "$@" ;;
+  
+  # Container management
+  podman) shift; cmd_podman "$@" ;;
+  neo4j) shift; cmd_neo4j "$@" ;;
+  
+  # Development commands
+  format) shift; cmd_format "$@" ;;
+  lint) shift; cmd_lint "$@" ;;
+  test) shift; cmd_test "$@" ;;
   e2e) shift; cmd_e2e "$@" ;;
+  build) shift; cmd_build "$@" ;;
   refresh) shift; cmd_refresh "$@" ;;
+  
+  # Build management
+  create-build) shift; cmd_create_build "$@" ;;
+  release-build) shift; cmd_release_build "$@" ;;
   clean) shift; cmd_clean "$@" ;;
+  
+  # Workflow management
+  create-pr) shift; cmd_create_pr "$@" ;;
+  commit-data-changes) shift; cmd_commit_data_changes "$@" ;;
+  cleanup-branches) shift; cmd_cleanup_branches "$@" ;;
+  shutdown-all) shift; cmd_shutdown_all "$@" ;;
+  
+  # Legacy aliases
+  pr) shift; cmd_create_pr "$@" ;;
+  
+  # Help
   -h|--help|help|"") usage ;;
   *) echo "Unknown command: $1" >&2; usage; exit 2 ;;
 esac

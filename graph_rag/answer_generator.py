@@ -150,9 +150,7 @@ class IntelligentAnswerGenerator:
             )
 
         # Process financial metrics
-        metrics = graph_data.get("financial_metrics", []) or graph_data.get(
-            "metrics", []
-        )
+        metrics = graph_data.get("financial_metrics", []) or graph_data.get("metrics", [])
         if metrics:
             context["structured_data"]["financial_metrics"] = []
             for metric in metrics:
@@ -295,9 +293,7 @@ class IntelligentAnswerGenerator:
 
         return summary
 
-    def generate_dcf_analysis_answer(
-        self, question: str, context: Dict[str, Any]
-    ) -> str:
+    def generate_dcf_analysis_answer(self, question: str, context: Dict[str, Any]) -> str:
         """Generate DCF valuation analysis answer."""
 
         answer_parts = []
@@ -319,9 +315,7 @@ class IntelligentAnswerGenerator:
                     if percentage > 0:
                         answer_parts.append(f"- Potential Upside: {percentage:.1f}%")
                     else:
-                        answer_parts.append(
-                            f"- Potential Downside: {abs(percentage):.1f}%"
-                        )
+                        answer_parts.append(f"- Potential Downside: {abs(percentage):.1f}%")
 
                 # Add key assumptions
                 wacc = dcf_data.get("wacc")
@@ -329,14 +323,10 @@ class IntelligentAnswerGenerator:
                 if wacc:
                     answer_parts.append(f"- WACC: {wacc:.2f}%")
                 if terminal_growth:
-                    answer_parts.append(
-                        f"- Terminal Growth Rate: {terminal_growth:.2f}%"
-                    )
+                    answer_parts.append(f"- Terminal Growth Rate: {terminal_growth:.2f}%")
         else:
             answer_parts.append("**DCF Valuation Analysis:**")
-            answer_parts.append(
-                "No recent DCF valuation data is available for this company."
-            )
+            answer_parts.append("No recent DCF valuation data is available for this company.")
 
         # Add financial context
         metrics = context["structured_data"].get("financial_metrics", [])
@@ -347,9 +337,7 @@ class IntelligentAnswerGenerator:
             if latest_metrics.get("revenue"):
                 answer_parts.append(f"- Revenue: ${latest_metrics['revenue']:,.0f}")
             if latest_metrics.get("free_cash_flow"):
-                answer_parts.append(
-                    f"- Free Cash Flow: ${latest_metrics['free_cash_flow']:,.0f}"
-                )
+                answer_parts.append(f"- Free Cash Flow: ${latest_metrics['free_cash_flow']:,.0f}")
             if latest_metrics.get("roe"):
                 answer_parts.append(f"- Return on Equity: {latest_metrics['roe']:.1f}%")
 
@@ -357,8 +345,7 @@ class IntelligentAnswerGenerator:
         risk_content = [
             c
             for c in context["document_content"]
-            if c.get("section") == "risk_factors"
-            or "risk" in c.get("source", "").lower()
+            if c.get("section") == "risk_factors" or "risk" in c.get("source", "").lower()
         ]
         if risk_content:
             answer_parts.append(f"\n**Key Risk Considerations:**")
@@ -366,9 +353,7 @@ class IntelligentAnswerGenerator:
             for risk in risk_content[:2]:  # Top 2 risk-related content pieces
                 # Extract first sentence or first 100 characters
                 content = (
-                    risk["content"][:100] + "..."
-                    if len(risk["content"]) > 100
-                    else risk["content"]
+                    risk["content"][:100] + "..." if len(risk["content"]) > 100 else risk["content"]
                 )
                 answer_parts.append(f"- {content}")
 
@@ -426,9 +411,7 @@ class IntelligentAnswerGenerator:
 
         return "\n".join(answer_parts)
 
-    def generate_risk_analysis_answer(
-        self, question: str, context: Dict[str, Any]
-    ) -> str:
+    def generate_risk_analysis_answer(self, question: str, context: Dict[str, Any]) -> str:
         """Generate risk analysis answer."""
 
         answer_parts = ["**Risk Analysis:**"]
@@ -482,9 +465,7 @@ class IntelligentAnswerGenerator:
 
         return "\n".join(answer_parts)
 
-    def generate_news_impact_answer(
-        self, question: str, context: Dict[str, Any]
-    ) -> str:
+    def generate_news_impact_answer(self, question: str, context: Dict[str, Any]) -> str:
         """Generate news impact analysis answer."""
 
         answer_parts = ["**Recent News Impact Analysis:**"]
@@ -496,9 +477,7 @@ class IntelligentAnswerGenerator:
                 news_events, key=lambda x: x.get("published_date", ""), reverse=True
             )
 
-            answer_parts.append(
-                f"**Recent News Events ({len(sorted_news)} articles):**"
-            )
+            answer_parts.append(f"**Recent News Events ({len(sorted_news)} articles):**")
 
             for news in sorted_news[:5]:  # Top 5 most recent
                 title = news.get("title", "No title")
@@ -506,9 +485,7 @@ class IntelligentAnswerGenerator:
                 date = news.get("published_date", "Unknown date")
 
                 sentiment_label = (
-                    "Positive"
-                    if sentiment > 0.1
-                    else "Negative" if sentiment < -0.1 else "Neutral"
+                    "Positive" if sentiment > 0.1 else "Negative" if sentiment < -0.1 else "Neutral"
                 )
                 answer_parts.append(f"- {title} ({date}) - {sentiment_label} sentiment")
 
@@ -523,9 +500,7 @@ class IntelligentAnswerGenerator:
                         answer_parts.append(f"  Impact areas: {', '.join(impacts)}")
 
         # Add relevant news content from semantic retrieval
-        news_content = [
-            c for c in context["document_content"] if c.get("document_type") == "news"
-        ]
+        news_content = [c for c in context["document_content"] if c.get("document_type") == "news"]
         if news_content:
             answer_parts.append(f"\n**Key News Highlights:**")
             for content in news_content[:3]:
@@ -538,9 +513,7 @@ class IntelligentAnswerGenerator:
 
         return "\n".join(answer_parts)
 
-    def generate_sector_analysis_answer(
-        self, question: str, context: Dict[str, Any]
-    ) -> str:
+    def generate_sector_analysis_answer(self, question: str, context: Dict[str, Any]) -> str:
         """Generate sector analysis answer."""
 
         answer_parts = ["**Sector Analysis:**"]
@@ -576,9 +549,7 @@ class IntelligentAnswerGenerator:
 
         return "\n".join(answer_parts)
 
-    def generate_historical_analysis_answer(
-        self, question: str, context: Dict[str, Any]
-    ) -> str:
+    def generate_historical_analysis_answer(self, question: str, context: Dict[str, Any]) -> str:
         """Generate historical trend analysis answer."""
 
         answer_parts = ["**Historical Trend Analysis:**"]
@@ -656,9 +627,7 @@ class IntelligentAnswerGenerator:
         business_summary = company_info.get("business_summary")
         if business_summary:
             summary = (
-                business_summary[:200] + "..."
-                if len(business_summary) > 200
-                else business_summary
+                business_summary[:200] + "..." if len(business_summary) > 200 else business_summary
             )
             answer_parts.append(f"\n**Business Overview:**\n{summary}")
 

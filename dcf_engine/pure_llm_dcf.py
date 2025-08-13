@@ -14,15 +14,16 @@ from .ollama_client import OllamaClient
 
 logger = logging.getLogger(__name__)
 
+
 class PureLLMDCFAnalyzer:
     """
     Pure LLM-based DCF analyzer using only Ollama for financial analysis.
     """
-    
+
     def __init__(self):
         self.m7_companies = {
             "AAPL": "Apple Inc.",
-            "MSFT": "Microsoft Corporation", 
+            "MSFT": "Microsoft Corporation",
             "AMZN": "Amazon.com Inc.",
             "GOOGL": "Alphabet Inc.",
             "META": "Meta Platforms Inc.",
@@ -31,25 +32,26 @@ class PureLLMDCFAnalyzer:
         }
         # Use common path utilities for consistent path management
         from common.utils import get_project_paths
+
         paths = get_project_paths()
         self.data_dir = paths["stage_00_original"]
-        
+
         # Initialize LLM client
         try:
             self.llm_client = OllamaClient()
             print("✅ LLM client initialized successfully")
-            
+
             # Ping test to ensure LLM is responsive
             self._ping_llm()
-            
+
         except Exception as e:
             print(f"❌ LLM client initialization failed: {e}")
             raise
-    
+
     def _ping_llm(self):
         """Ping LLM to ensure it's responsive before starting analysis"""
         print("🏓 Pinging LLM with realistic DCF query...")
-        
+
         # Use a similar prompt structure as the actual DCF analysis
         ping_prompt = """DCF Analysis for TEST - Test Company
 
@@ -67,52 +69,59 @@ Provide concise DCF analysis with:
    - BUY/HOLD/SELL recommendation
 
 Respond with exactly: 'PING_TEST_OK' if you understand this format."""
-        
+
         try:
             result = self.llm_client.generate_completion(
                 prompt=ping_prompt,
                 max_tokens=3000,  # Same as real DCF calls
-                temperature=0.3   # Same as real DCF calls
+                temperature=0.3,  # Same as real DCF calls
             )
-            
-            if result['success']:
-                response = result['response'].strip()
-                duration = result.get('duration_seconds', 0)
-                
+
+            if result["success"]:
+                response = result["response"].strip()
+                duration = result.get("duration_seconds", 0)
+
                 # Check for proper response (either the exact text or a valid DCF-style response)
-                if 'PING_TEST_OK' in response:
+                if "PING_TEST_OK" in response:
                     print(f"✅ LLM ping successful ({duration:.1f}s) - Got expected response")
-                elif len(response) > 50 and ('valuation' in response.lower() or 'dcf' in response.lower()):
+                elif len(response) > 50 and (
+                    "valuation" in response.lower() or "dcf" in response.lower()
+                ):
                     print(f"✅ LLM ping successful ({duration:.1f}s) - Got DCF analysis response")
                     print(f"   Preview: {response[:100]}...")
                 else:
-                    print(f"❌ LLM ping failed - got unexpected response ({duration:.1f}s): '{response[:100]}'")
+                    print(
+                        f"❌ LLM ping failed - got unexpected response ({duration:.1f}s): '{response[:100]}'"
+                    )
                     print("LLM is not responding correctly, aborting analysis.")
-                    raise Exception(f"LLM ping validation failed - expected DCF response, got: '{response[:200]}'")
+                    raise Exception(
+                        f"LLM ping validation failed - expected DCF response, got: '{response[:200]}'"
+                    )
             else:
-                error = result.get('error', 'Unknown error')
+                error = result.get("error", "Unknown error")
                 print(f"❌ LLM ping failed: {error}")
                 raise Exception(f"LLM ping failed: {error}")
-                
+
         except Exception as e:
             print(f"❌ LLM ping error: {e}")
             raise Exception(f"LLM is not responsive: {e}")
-    
+
     def _get_current_build_dir(self) -> Path:
         """Get current build directory for storing build-specific artifacts"""
-        from common.utils import get_current_build_dir, get_project_paths, ensure_path_exists
-        
+        from common.utils import (ensure_path_exists, get_current_build_dir,
+                                  get_project_paths)
+
         # Try to get current build directory
         build_dir = get_current_build_dir()
         if build_dir:
             return build_dir
-            
+
         # Fallback: create new build directory
         paths = get_project_paths()
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         build_dir = paths["stage_99_build"] / f"build_{timestamp}"
         return ensure_path_exists(build_dir)
-    
+
     def load_company_data(self, ticker: str) -> Optional[Dict]:
         """Load financial data for a company"""
         yfinance_dir = self.data_dir / "yfinance" / ticker
@@ -132,14 +141,14 @@ Respond with exactly: 'PING_TEST_OK' if you understand this format."""
         except Exception as e:
             print(f"Error loading {latest_file}: {e}")
             return None
-    
+
     def extract_key_metrics(self, data: Dict) -> Dict:
         """Extract key financial metrics for LLM analysis"""
         if not data:
             return {}
 
         info = data.get("info", {})
-        
+
         return {
             "ticker": data.get("ticker"),
             "company_name": info.get("longName", "N/A"),
@@ -161,10 +170,10 @@ Respond with exactly: 'PING_TEST_OK' if you understand this format."""
             "beta": info.get("beta", 1.0),
             "debt_to_equity": info.get("debtToEquity", 0),
         }
-    
+
     def generate_llm_dcf_analysis(self, ticker: str, metrics: Dict) -> Optional[str]:
         """Generate comprehensive DCF analysis using LLM"""
-        
+
         # Create focused prompt for faster response
         prompt = f"""DCF Analysis for {ticker} - {metrics['company_name']}
 
@@ -195,56 +204,56 @@ Keep response under 300 words, focus on actionable insights."""
 
         try:
             result = self.llm_client.generate_completion(
-                prompt=prompt,
-                max_tokens=3000,
-                temperature=0.3
+                prompt=prompt, max_tokens=3000, temperature=0.3
             )
-            
-            if result['success']:
-                print(f"✅ Generated LLM DCF analysis for {ticker} ({result.get('duration_seconds', 0):.1f}s)")
-                return result['response']
+
+            if result["success"]:
+                print(
+                    f"✅ Generated LLM DCF analysis for {ticker} ({result.get('duration_seconds', 0):.1f}s)"
+                )
+                return result["response"]
             else:
                 print(f"❌ LLM DCF analysis failed for {ticker}: {result.get('error', 'Unknown')}")
                 return None
-                
+
         except Exception as e:
             print(f"❌ Error generating LLM DCF for {ticker}: {e}")
             return None
-    
+
     def generate_company_report(self, ticker: str) -> Optional[str]:
         """Generate complete LLM-based DCF report for a company"""
         print(f"🤖 Analyzing {ticker} with LLM...")
-        
+
         # Load data
         data = self.load_company_data(ticker)
         if not data:
             print(f"No data available for {ticker}")
             return None
-        
+
         # Extract metrics
         metrics = self.extract_key_metrics(data)
         if not metrics:
             print(f"Could not extract metrics for {ticker}")
             return None
-        
+
         # Generate LLM analysis
         analysis = self.generate_llm_dcf_analysis(ticker, metrics)
         return analysis
-    
+
     def generate_m7_report(self) -> str:
         """Generate comprehensive M7 DCF report using pure LLM analysis"""
         print("🤖 Generating Pure LLM M7 DCF Analysis Report...")
-        
+
         # Analyze all M7 companies
         company_analyses = {}
         for ticker in self.m7_companies:
             analysis = self.generate_company_report(ticker)
             if analysis:
                 company_analyses[ticker] = analysis
-        
+
         if not company_analyses:
             return "Error: No LLM analyses generated for M7 companies"
-        
+
         # Create comprehensive report
         report_lines = []
         report_lines.append("=" * 80)
@@ -254,19 +263,19 @@ Keep response under 300 words, focus on actionable insights."""
         report_lines.append(f"Analysis Method: Pure LLM (Ollama gpt-oss:20b)")
         report_lines.append(f"Companies Analyzed: {len(company_analyses)}")
         report_lines.append("")
-        
+
         # Individual company analyses
         for ticker in sorted(company_analyses.keys()):
             company_name = self.m7_companies.get(ticker, ticker)
             analysis = company_analyses[ticker]
-            
+
             report_lines.append("=" * 60)
             report_lines.append(f"{ticker} - {company_name}")
             report_lines.append("=" * 60)
             report_lines.append("")
             report_lines.append(analysis)
             report_lines.append("")
-        
+
         # Add methodology note
         report_lines.append("=" * 80)
         report_lines.append("METHODOLOGY & DISCLAIMER")
@@ -279,26 +288,28 @@ Keep response under 300 words, focus on actionable insights."""
         report_lines.append("• Professional equity research frameworks")
         report_lines.append("")
         report_lines.append("DISCLAIMER:")
-        report_lines.append("This AI-generated analysis is for educational and research purposes only.")
+        report_lines.append(
+            "This AI-generated analysis is for educational and research purposes only."
+        )
         report_lines.append("It should not be considered as investment advice. Please consult with")
         report_lines.append("qualified financial professionals before making investment decisions.")
         report_lines.append("")
         report_lines.append("=" * 80)
-        
+
         return "\n".join(report_lines)
-    
+
     def save_report(self, report: str, filename: str = None) -> str:
         """Save report to current build directory"""
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"M7_LLM_DCF_Report_{timestamp}.md"
-        
+
         build_dir = self._get_current_build_dir()
         filepath = build_dir / filename
-        
+
         with open(filepath, "w") as f:
             f.write(report)
-        
+
         return str(filepath)
 
     def generate_report(self, tickers: List[str] = None) -> str:
@@ -306,9 +317,9 @@ Keep response under 300 words, focus on actionable insights."""
         if not tickers:
             # Default to M7 if no tickers specified
             return self.generate_m7_report()
-        
+
         print(f"📊 Generating DCF report for {len(tickers)} tickers using Pure LLM...")
-        
+
         reports = []
         for ticker in tickers:
             print(f"   📈 Analyzing {ticker}...")
@@ -317,9 +328,9 @@ Keep response under 300 words, focus on actionable insights."""
                 reports.append(f"## {ticker} Analysis\n\n{report}")
             else:
                 reports.append(f"## {ticker} Analysis\n\n❌ Analysis failed")
-        
+
         # Combine all reports
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         full_report = f"""# DCF Analysis Report
 Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 Analysis Method: Pure LLM (Ollama gpt-oss:20b)
@@ -331,28 +342,29 @@ Tickers: {', '.join(tickers)}
 Report generated by Pure LLM DCF Analyzer at {timestamp}
 """
 
-        # Save to current build directory  
+        # Save to current build directory
         try:
             from common.build_tracker import BuildTracker
+
             build_tracker = BuildTracker()
             current_build = build_tracker.get_latest_build()
-            
+
             if current_build:
                 build_dir = Path(current_build.build_dir)
             else:
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 build_dir = Path(f"data/stage_99_build/build_{timestamp}")
                 build_dir.mkdir(parents=True, exist_ok=True)
         except:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             build_dir = Path(f"data/stage_99_build/build_{timestamp}")
             build_dir.mkdir(parents=True, exist_ok=True)
-            
+
         report_file = build_dir / f"DCF_Report_{timestamp}.md"
-        
-        with open(report_file, 'w') as f:
+
+        with open(report_file, "w") as f:
             f.write(full_report)
-            
+
         print(f"✅ DCF report saved to: {report_file}")
         return full_report
 
@@ -360,17 +372,17 @@ Report generated by Pure LLM DCF Analyzer at {timestamp}
 def main():
     """Main function to generate M7 LLM DCF report"""
     analyzer = PureLLMDCFAnalyzer()
-    
+
     try:
         # Generate report
         report = analyzer.generate_m7_report()
-        
+
         # Save report
         report_path = analyzer.save_report(report)
-        
+
         print(f"\n✅ LLM DCF Report generated successfully!")
         print(f"📄 Report saved to: {report_path}")
-        
+
         # Print preview
         print("\n" + "=" * 60)
         print("REPORT PREVIEW:")
@@ -378,20 +390,19 @@ def main():
         lines = report.split("\n")
         for line in lines[:30]:
             print(line)
-        
+
         if len(lines) > 30:
             print(f"\n... and {len(lines) - 30} more lines")
             print(f"📄 Full report available at: {report_path}")
-        
+
         return report_path
-        
+
     except Exception as e:
         print(f"❌ Error generating LLM DCF report: {e}")
         import traceback
+
         traceback.print_exc()
         return None
-
-
 
 
 if __name__ == "__main__":

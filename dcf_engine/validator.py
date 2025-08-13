@@ -174,9 +174,7 @@ class StrategyValidator:
                     "current_price": current_price,
                     "dcf_intrinsic_value": 180.0,  # Mock - replace with actual DCF
                     "upside_downside_pct": (
-                        ((180.0 - current_price) / current_price) * 100
-                        if current_price > 0
-                        else 0
+                        ((180.0 - current_price) / current_price) * 100 if current_price > 0 else 0
                     ),
                     "recommendation": (
                         "BUY"
@@ -184,9 +182,7 @@ class StrategyValidator:
                         else "HOLD" if current_price < 180.0 * 1.1 else "SELL"
                     ),
                     "confidence_score": result.get("confidence", 0.8),
-                    "analysis_reasoning": result.get(
-                        "answer", "DCF analysis completed"
-                    ),
+                    "analysis_reasoning": result.get("answer", "DCF analysis completed"),
                     "risk_factors": info.get("risk", "Standard equity risks apply"),
                 }
 
@@ -205,22 +201,16 @@ class StrategyValidator:
         successful_analyses = [r for r in individual_results if "error" not in r]
 
         if successful_analyses:
-            avg_upside = sum(
-                r["upside_downside_pct"] for r in successful_analyses
-            ) / len(successful_analyses)
-            avg_confidence = sum(
-                r["confidence_score"] for r in successful_analyses
-            ) / len(successful_analyses)
+            avg_upside = sum(r["upside_downside_pct"] for r in successful_analyses) / len(
+                successful_analyses
+            )
+            avg_confidence = sum(r["confidence_score"] for r in successful_analyses) / len(
+                successful_analyses
+            )
 
-            buy_signals = len(
-                [r for r in successful_analyses if r["recommendation"] == "BUY"]
-            )
-            hold_signals = len(
-                [r for r in successful_analyses if r["recommendation"] == "HOLD"]
-            )
-            sell_signals = len(
-                [r for r in successful_analyses if r["recommendation"] == "SELL"]
-            )
+            buy_signals = len([r for r in successful_analyses if r["recommendation"] == "BUY"])
+            hold_signals = len([r for r in successful_analyses if r["recommendation"] == "HOLD"])
+            sell_signals = len([r for r in successful_analyses if r["recommendation"] == "SELL"])
 
             dcf_results["portfolio_summary"] = {
                 "average_upside_pct": round(avg_upside, 2),
@@ -231,9 +221,7 @@ class StrategyValidator:
                     "SELL": sell_signals,
                 },
                 "portfolio_bias": (
-                    "BULLISH"
-                    if avg_upside > 5
-                    else "NEUTRAL" if avg_upside > -5 else "BEARISH"
+                    "BULLISH" if avg_upside > 5 else "NEUTRAL" if avg_upside > -5 else "BEARISH"
                 ),
             }
 
@@ -271,9 +259,7 @@ class StrategyValidator:
                 cumulative_return = (1 + equal_weight_returns).cumprod()[-1] - 1
                 volatility = equal_weight_returns.std() * (252**0.5)  # Annualized
                 sharpe_ratio = (
-                    (equal_weight_returns.mean() * 252) / volatility
-                    if volatility > 0
-                    else 0
+                    (equal_weight_returns.mean() * 252) / volatility if volatility > 0 else 0
                 )
 
                 backtest_results["strategy_performance"] = {
@@ -317,9 +303,7 @@ class StrategyValidator:
                         "benchmark_name": benchmark_name,
                         "benchmark_return_pct": round(benchmark_return, 2),
                         "strategy_return_pct": strategy_return,
-                        "excess_return_pct": round(
-                            strategy_return - benchmark_return, 2
-                        ),
+                        "excess_return_pct": round(strategy_return - benchmark_return, 2),
                         "outperformed": strategy_return > benchmark_return,
                     }
 

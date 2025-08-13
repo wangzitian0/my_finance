@@ -108,25 +108,18 @@ class SimpleM7DCF:
             # 终值计算
             terminal_growth = 0.03
             terminal_value = (
-                projected_fcf[-1]
-                * (1 + terminal_growth)
-                / (discount_rate - terminal_growth)
+                projected_fcf[-1] * (1 + terminal_growth) / (discount_rate - terminal_growth)
             )
 
             # 现值计算
             pv_fcf = sum(
-                [
-                    fcf / ((1 + discount_rate) ** (i + 1))
-                    for i, fcf in enumerate(projected_fcf)
-                ]
+                [fcf / ((1 + discount_rate) ** (i + 1)) for i, fcf in enumerate(projected_fcf)]
             )
             pv_terminal = terminal_value / ((1 + discount_rate) ** 5)
 
             enterprise_value = pv_fcf + pv_terminal
             shares_outstanding = info.get("sharesOutstanding", 1)
-            intrinsic_value = (
-                enterprise_value / shares_outstanding if shares_outstanding > 0 else 0
-            )
+            intrinsic_value = enterprise_value / shares_outstanding if shares_outstanding > 0 else 0
 
             upside_potential = (
                 ((intrinsic_value - current_price) / current_price * 100)
@@ -160,9 +153,7 @@ class SimpleM7DCF:
             "intrinsic_value": intrinsic_value,
             "upside_potential": upside_potential,
             "projected_fcf": projected_fcf,
-            "recommendation": self.get_recommendation(
-                upside_potential, roe, profit_margin
-            ),
+            "recommendation": self.get_recommendation(upside_potential, roe, profit_margin),
         }
 
     def get_recommendation(self, upside, roe, profit_margin):
@@ -238,12 +229,8 @@ class SimpleM7DCF:
 
         total_market_cap = sum([a["market_cap"] for a in analyses.values()])
         buy_count = len([a for a in analyses.values() if "买入" in a["recommendation"]])
-        hold_count = len(
-            [a for a in analyses.values() if "持有" in a["recommendation"]]
-        )
-        sell_count = len(
-            [a for a in analyses.values() if "卖出" in a["recommendation"]]
-        )
+        hold_count = len([a for a in analyses.values() if "持有" in a["recommendation"]])
+        sell_count = len([a for a in analyses.values() if "卖出" in a["recommendation"]])
 
         lines.extend(
             [
@@ -378,11 +365,11 @@ class SimpleM7DCF:
         """保存报告"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"M7_DCF_Report_{timestamp}.md"
-        
+
         # Use output_dir if provided, otherwise use default reports_dir
         target_dir = Path(output_dir) if output_dir else self.reports_dir
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+
         filepath = target_dir / filename
 
         with open(filepath, "w", encoding="utf-8") as f:
