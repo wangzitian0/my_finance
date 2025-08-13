@@ -89,9 +89,7 @@ class GraphRAGTester:
 
             # Test 2: Embedding Functionality
             logger.info("Test 2: Embedding Functionality")
-            test_results["embedding_functionality"] = (
-                self.test_embedding_functionality()
-            )
+            test_results["embedding_functionality"] = self.test_embedding_functionality()
 
             # Test 3: Query Generation
             logger.info("Test 3: Query Generation")
@@ -203,23 +201,17 @@ class GraphRAGTester:
             if doc_embeddings and len(doc_embeddings) > 0:
                 results["document_embedding_success"] = True
                 results["embeddings_generated"] += len(doc_embeddings)
-                logger.info(
-                    f"✓ Document embeddings generated for {len(doc_embeddings)} sections"
-                )
+                logger.info(f"✓ Document embeddings generated for {len(doc_embeddings)} sections")
             else:
                 logger.warning("⚠ Document embedding generation failed")
 
             # Test similarity calculation
             if embedding:
-                test_text_2 = (
-                    "Microsoft Corporation develops software and cloud services."
-                )
+                test_text_2 = "Microsoft Corporation develops software and cloud services."
                 embedding_2 = embedding_system.embed_text(test_text_2)
 
                 if embedding_2:
-                    similarity = embedding_system.calculate_similarity(
-                        embedding, embedding_2
-                    )
+                    similarity = embedding_system.calculate_similarity(embedding, embedding_2)
                     if similarity is not None:
                         results["similarity_calculation_success"] = True
                         logger.info(
@@ -269,9 +261,7 @@ class GraphRAGTester:
                         if cypher_query and "MATCH" in cypher_query:
                             results["cypher_queries_valid"] += 1
 
-                        logger.info(
-                            f"✓ {query_name}: Intent={intent}, Tickers={tickers}"
-                        )
+                        logger.info(f"✓ {query_name}: Intent={intent}, Tickers={tickers}")
 
                 except Exception as e:
                     error_msg = f"Query generation failed for {query_name}: {str(e)}"
@@ -314,9 +304,7 @@ class GraphRAGTester:
 
                         # Simple quality assessment
                         answer_text = answer_result["answer"]
-                        quality_score = self.assess_answer_quality(
-                            answer_text, test_query
-                        )
+                        quality_score = self.assess_answer_quality(answer_text, test_query)
                         results["answer_quality_scores"][query_name] = quality_score
 
                         logger.info(
@@ -354,9 +342,7 @@ class GraphRAGTester:
                     test_query = self.test_queries[query_name]
 
                     # Check if question is identified as complex
-                    is_complex = self.graph_rag.reasoning_processor.is_complex_question(
-                        test_query
-                    )
+                    is_complex = self.graph_rag.reasoning_processor.is_complex_question(test_query)
 
                     if is_complex:
                         logger.info(f"✓ {query_name} correctly identified as complex")
@@ -377,9 +363,7 @@ class GraphRAGTester:
 
                             # Assess answer quality
                             answer_text = answer_result.get("answer", "")
-                            quality = self.assess_answer_quality(
-                                answer_text, test_query
-                            )
+                            quality = self.assess_answer_quality(answer_text, test_query)
                             results["final_answers_quality"][query_name] = quality
                     else:
                         logger.info(
@@ -453,11 +437,7 @@ class GraphRAGTester:
             quality_score += min(0.3, keyword_matches * 0.1)
 
         # Data sources mentioned
-        if (
-            "source" in answer_lower
-            or "filing" in answer_lower
-            or "data" in answer_lower
-        ):
+        if "source" in answer_lower or "filing" in answer_lower or "data" in answer_lower:
             quality_score += 0.2
 
         return min(1.0, quality_score)
@@ -491,9 +471,7 @@ class GraphRAGTester:
                 stats["total_errors"] += category_errors
 
                 # Consider test successful if it has some positive results and few errors
-                if category_errors == 0 and self._has_positive_results(
-                    category_results
-                ):
+                if category_errors == 0 and self._has_positive_results(category_results):
                     stats["successful_tests"] += 1
 
         # Calculate success rate
@@ -572,18 +550,12 @@ class GraphRAGTester:
 
         # System initialization
         init_results = test_results.get("system_initialization", {})
-        print(
-            f"System Initialization: {'✓' if init_results.get('graph_rag_initialized') else '✗'}"
-        )
-        print(
-            f"Embedding Model: {'✓' if init_results.get('embedding_model_loaded') else '⚠'}"
-        )
+        print(f"System Initialization: {'✓' if init_results.get('graph_rag_initialized') else '✗'}")
+        print(f"Embedding Model: {'✓' if init_results.get('embedding_model_loaded') else '⚠'}")
 
         # Embedding functionality
         embed_results = test_results.get("embedding_functionality", {})
-        print(
-            f"Text Embeddings: {'✓' if embed_results.get('text_embedding_success') else '✗'}"
-        )
+        print(f"Text Embeddings: {'✓' if embed_results.get('text_embedding_success') else '✗'}")
         print(
             f"Document Embeddings: {'✓' if embed_results.get('document_embedding_success') else '✗'}"
         )

@@ -40,9 +40,7 @@ class SemanticRetriever:
     with relevance and recency-based ranking.
     """
 
-    def __init__(
-        self, semantic_embedding: SemanticEmbedding, vector_store: Optional[Any] = None
-    ):
+    def __init__(self, semantic_embedding: SemanticEmbedding, vector_store: Optional[Any] = None):
         """
         Initialize the semantic retriever.
 
@@ -117,9 +115,7 @@ class SemanticRetriever:
 
         return ranked_chunks[:top_k]
 
-    def _extract_content_from_graph_data(
-        self, graph_data: Dict[str, Any]
-    ) -> List[Dict[str, Any]]:
+    def _extract_content_from_graph_data(self, graph_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
         Extract embeddable content chunks from Neo4j graph query results.
 
@@ -156,14 +152,10 @@ class SemanticRetriever:
                                     "source": f"SEC Filing {filing.get('filing_type', 'Unknown')}",
                                     "document_type": "sec_filing",
                                     "section": section_name,
-                                    "document_date": filing.get(
-                                        "filing_date", datetime.now()
-                                    ),
+                                    "document_date": filing.get("filing_date", datetime.now()),
                                     "metadata": {
                                         "filing_type": filing.get("filing_type"),
-                                        "accession_number": filing.get(
-                                            "accession_number"
-                                        ),
+                                        "accession_number": filing.get("accession_number"),
                                         "cik": filing.get("cik"),
                                     },
                                 }
@@ -272,19 +264,14 @@ class SemanticRetriever:
 
             # Calculate keyword relevance boost
             content_lower = chunk.content.lower()
-            keyword_matches = sum(
-                1 for keyword in question_keywords if keyword in content_lower
-            )
+            keyword_matches = sum(1 for keyword in question_keywords if keyword in content_lower)
             keyword_boost = min(0.2, keyword_matches * 0.05)  # Max 20% boost
 
             # Calculate document type relevance
             type_boost = self._get_document_type_boost(chunk.document_type, question)
 
             # Calculate final relevance score
-            base_score = (
-                similarity_weight * chunk.similarity_score
-                + recency_weight * recency_score
-            )
+            base_score = similarity_weight * chunk.similarity_score + recency_weight * recency_score
             final_score = base_score + keyword_boost + type_boost
 
             chunk.relevance_score = min(1.0, final_score)  # Cap at 1.0
@@ -496,9 +483,7 @@ class SemanticRetriever:
             type_counts[doc_type] = type_counts.get(doc_type, 0) + 1
 
         # Get date range
-        dates = [
-            r.document_date for r in results if isinstance(r.document_date, datetime)
-        ]
+        dates = [r.document_date for r in results if isinstance(r.document_date, datetime)]
         date_range = {
             "earliest": min(dates).isoformat() if dates else None,
             "latest": max(dates).isoformat() if dates else None,

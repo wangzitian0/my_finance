@@ -14,9 +14,7 @@ from typing import Dict, List
 import yaml
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -53,11 +51,7 @@ def fetch_nasdaq100_tickers() -> List[str]:
             response = urllib.request.urlopen(req, timeout=30)
             data = json.loads(response.read().decode())
 
-            if (
-                "data" in data
-                and "data" in data["data"]
-                and "rows" in data["data"]["data"]
-            ):
+            if "data" in data and "data" in data["data"] and "rows" in data["data"]["data"]:
                 ticker_data = []
                 for row in data["data"]["data"]["rows"]:
                     ticker_info = {
@@ -70,9 +64,7 @@ def fetch_nasdaq100_tickers() -> List[str]:
                         "change_pct": row.get("percentageChange", ""),
                     }
                     ticker_data.append(ticker_info)
-                logger.info(
-                    f"Successfully fetched {len(ticker_data)} tickers from NASDAQ API"
-                )
+                logger.info(f"Successfully fetched {len(ticker_data)} tickers from NASDAQ API")
                 return ticker_data
             else:
                 logger.warning("Unexpected API response format")
@@ -597,9 +589,7 @@ def fetch_vti_holdings() -> List[str]:
             # Remove duplicates while preserving VTI at the front
             unique_holdings = ["VTI"] + list(dict.fromkeys(market_components))
 
-            logger.info(
-                f"Built comprehensive VTI representation: {len(unique_holdings)} tickers"
-            )
+            logger.info(f"Built comprehensive VTI representation: {len(unique_holdings)} tickers")
             return unique_holdings
 
         except Exception as build_error:
@@ -628,7 +618,7 @@ def update_config_file(config_path: Path, tickers_data: List, description: str):
 
         # Update companies section for new modular format
         companies = {}
-        
+
         if has_metadata:
             for ticker_info in tickers_data:
                 symbol = ticker_info["symbol"]
@@ -636,38 +626,40 @@ def update_config_file(config_path: Path, tickers_data: List, description: str):
                     "name": ticker_info.get("name", f"{symbol} Inc."),
                     "sector": ticker_info.get("sector", "Technology"),
                 }
-                
+
                 # Add weight for VTI holdings
                 if ticker_info.get("weight") and ticker_info["weight"] != "0.0000%":
                     companies[symbol]["weight"] = ticker_info["weight"]
-                
-                # Add market cap for NASDAQ data  
+
+                # Add market cap for NASDAQ data
                 if ticker_info.get("market_cap"):
                     companies[symbol]["market_cap"] = ticker_info["market_cap"]
-                
+
                 # Add CIK if available
                 if ticker_info.get("cik"):
                     companies[symbol]["cik"] = ticker_info["cik"]
-                    
+
             ticker_count = len(tickers_data)
         else:
             for ticker in tickers_data:
-                companies[ticker] = {
-                    "name": f"{ticker} Inc.",
-                    "sector": "Technology"
-                }
+                companies[ticker] = {"name": f"{ticker} Inc.", "sector": "Technology"}
             ticker_count = len(tickers_data)
 
         config["companies"] = companies
         config["ticker_count"] = ticker_count
-        
+
         # Update expected files count based on data sources
         if "expected_files" in config:
-            yf_periods = len(config.get("data_sources", {}).get("yfinance", {}).get("periods", ["daily_3mo", "weekly_5y", "monthly_max"]))
+            yf_periods = len(
+                config.get("data_sources", {})
+                .get("yfinance", {})
+                .get("periods", ["daily_3mo", "weekly_5y", "monthly_max"])
+            )
             config["expected_files"]["yfinance"] = ticker_count * yf_periods
 
         # Add last updated timestamp
         from datetime import datetime
+
         config["last_updated"] = datetime.now().isoformat()
 
         # Write updated config

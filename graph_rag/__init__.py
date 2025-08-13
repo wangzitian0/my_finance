@@ -76,9 +76,7 @@ class GraphRAGSystem:
         # Check if question requires multi-step reasoning
         if self.reasoning_processor.is_complex_question(question):
             # Use multi-step reasoning for complex questions
-            reasoning_chain = self.reasoning_processor.process_complex_question(
-                question
-            )
+            reasoning_chain = self.reasoning_processor.process_complex_question(question)
 
             return {
                 "answer": reasoning_chain.final_answer,
@@ -161,11 +159,7 @@ class GraphRAGSystem:
     def _execute_mock_query(self, query_info: dict) -> dict:
         """Mock query execution - replace with real Neo4j implementation."""
 
-        ticker = (
-            query_info.get("tickers", ["AAPL"])[0]
-            if query_info.get("tickers")
-            else "AAPL"
-        )
+        ticker = query_info.get("tickers", ["AAPL"])[0] if query_info.get("tickers") else "AAPL"
 
         return {
             "ticker": ticker,

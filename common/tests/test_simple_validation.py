@@ -17,9 +17,7 @@ class TestPipelineBasics:
         assert test_dir.exists(), "Tests directory should exist"
 
         test_files = list(test_dir.glob("test_*.py"))
-        assert (
-            len(test_files) >= 2
-        ), f"Should have at least 2 test files, found {len(test_files)}"
+        assert len(test_files) >= 2, f"Should have at least 2 test files, found {len(test_files)}"
 
     def test_basic_imports_work(self):
         """Test that basic Python imports work"""
@@ -35,9 +33,14 @@ class TestPipelineBasics:
     def test_directory_structure(self):
         """Verify basic directory structure exists"""
         required_dirs = [
-            "tests", "scripts", ".github/workflows",
-            "data/stage_01_extract", "data/stage_02_transform", 
-            "data/stage_03_load", "data/build", "data/config"
+            "tests",
+            "scripts",
+            ".github/workflows",
+            "data/stage_01_extract",
+            "data/stage_02_transform",
+            "data/stage_03_load",
+            "data/build",
+            "data/config",
         ]
 
         for dir_name in required_dirs:

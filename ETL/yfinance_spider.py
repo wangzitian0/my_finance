@@ -154,9 +154,7 @@ def fetch_stock_data(ticker, period, interval):
         "recommendations": safe_get("recommendations", to_dict=True),
         "calendar": safe_get("calendar", to_dict=True),
         "major_holders": safe_get("major_holders", to_dict=True, orient="records"),
-        "institutional_holders": safe_get(
-            "institutional_holders", to_dict=True, orient="records"
-        ),
+        "institutional_holders": safe_get("institutional_holders", to_dict=True, orient="records"),
         "sustainability": safe_get("sustainability", to_dict=True),
         "options": safe_get("options"),
         "news": safe_get("news", orient="list"),
@@ -209,9 +207,7 @@ def run_job(config_path):
             # Generate a unique log ID for this ticker request.
             request_logid = sf.get_id()
             # Create a LoggerAdapter that adds the request_logid to every log record.
-            ticker_logger = logging.LoggerAdapter(
-                logger, {"request_logid": request_logid}
-            )
+            ticker_logger = logging.LoggerAdapter(logger, {"request_logid": request_logid})
             # Redirect sys.stderr to capture underlying errors using ticker_logger.
             original_stderr = sys.stderr
             sys.stderr = StreamToLogger(ticker_logger, logging.ERROR)

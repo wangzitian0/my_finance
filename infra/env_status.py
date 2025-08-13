@@ -15,9 +15,7 @@ from pathlib import Path
 def run_command(cmd, capture_output=True, text=True):
     """Run a command and return the result."""
     try:
-        result = subprocess.run(
-            cmd, shell=True, capture_output=capture_output, text=text
-        )
+        result = subprocess.run(cmd, shell=True, capture_output=capture_output, text=text)
         return result.returncode == 0, result.stdout.strip() if capture_output else ""
     except Exception:
         return False, ""

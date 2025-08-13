@@ -119,25 +119,17 @@ class StructuredQueryGenerator:
         if intent == QueryIntent.DCF_VALUATION:
             cypher_query, params = self.generate_dcf_query(natural_question, tickers)
         elif intent == QueryIntent.FINANCIAL_COMPARISON:
-            cypher_query, params = self.generate_comparison_query(
-                natural_question, tickers
-            )
+            cypher_query, params = self.generate_comparison_query(natural_question, tickers)
         elif intent == QueryIntent.RISK_ANALYSIS:
             cypher_query, params = self.generate_risk_query(natural_question, tickers)
         elif intent == QueryIntent.NEWS_IMPACT:
-            cypher_query, params = self.generate_news_impact_query(
-                natural_question, tickers
-            )
+            cypher_query, params = self.generate_news_impact_query(natural_question, tickers)
         elif intent == QueryIntent.SECTOR_ANALYSIS:
             cypher_query, params = self.generate_sector_query(natural_question, tickers)
         elif intent == QueryIntent.HISTORICAL_TRENDS:
-            cypher_query, params = self.generate_historical_query(
-                natural_question, tickers
-            )
+            cypher_query, params = self.generate_historical_query(natural_question, tickers)
         else:
-            cypher_query, params = self.generate_general_query(
-                natural_question, tickers
-            )
+            cypher_query, params = self.generate_general_query(natural_question, tickers)
 
         return {
             "cypher_query": cypher_query,
@@ -244,9 +236,7 @@ class StructuredQueryGenerator:
 
         return list(set(tickers))  # Remove duplicates
 
-    def generate_dcf_query(
-        self, question: str, tickers: List[str]
-    ) -> tuple[str, Dict[str, Any]]:
+    def generate_dcf_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for DCF valuation questions."""
         if not tickers:
             # Return query for all available DCF data
@@ -321,9 +311,7 @@ class StructuredQueryGenerator:
 
         return cypher, params
 
-    def generate_risk_query(
-        self, question: str, tickers: List[str]
-    ) -> tuple[str, Dict[str, Any]]:
+    def generate_risk_query(self, question: str, tickers: List[str]) -> tuple[str, Dict[str, Any]]:
         """Generate Cypher query for risk analysis questions."""
         ticker = tickers[0] if tickers else "AAPL"
         cypher = """

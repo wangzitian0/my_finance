@@ -15,9 +15,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Set
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -73,9 +71,7 @@ class BranchCleanup:
 
             for pr in prs:
                 try:
-                    merged_at = datetime.fromisoformat(
-                        pr["mergedAt"].replace("Z", "+00:00")
-                    )
+                    merged_at = datetime.fromisoformat(pr["mergedAt"].replace("Z", "+00:00"))
                     if merged_at.replace(tzinfo=None) > cutoff_date:
                         recent_prs.append(pr)
                 except (ValueError, KeyError):
@@ -100,9 +96,7 @@ class BranchCleanup:
                 check=True,
             )
 
-            branches = [
-                branch.strip() for branch in result.stdout.split("\n") if branch.strip()
-            ]
+            branches = [branch.strip() for branch in result.stdout.split("\n") if branch.strip()]
             return [b for b in branches if b not in self.protected_branches]
 
         except subprocess.CalledProcessError as e:
@@ -180,9 +174,7 @@ class BranchCleanup:
 
         try:
             flag = "-D" if force else "-d"
-            subprocess.run(
-                ["git", "branch", flag, branch], check=True, capture_output=True
-            )
+            subprocess.run(["git", "branch", flag, branch], check=True, capture_output=True)
             logger.info(f"✅ Deleted local branch: {branch}")
             return True
 
@@ -236,9 +228,7 @@ class BranchCleanup:
 
         # Get merged PRs
         merged_prs = self.get_merged_prs(days_back)
-        merged_branches = {
-            pr["headRefName"] for pr in merged_prs if pr.get("headRefName")
-        }
+        merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
 
         logger.info(
             f"Found {len(merged_branches)} branches from merged PRs in last {days_back} days"
@@ -295,9 +285,7 @@ class BranchCleanup:
 
         # Get merged PRs and branches
         merged_prs = self.get_merged_prs(30)
-        merged_branches = {
-            pr["headRefName"] for pr in merged_prs if pr.get("headRefName")
-        }
+        merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
 
         local_branches = self.get_local_branches()
         remote_branches = self.get_remote_branches()
@@ -321,9 +309,7 @@ class BranchCleanup:
 
         # Local branches to delete
         local_to_delete = [
-            b
-            for b in local_branches
-            if b in merged_branches or self.is_branch_merged(b)
+            b for b in local_branches if b in merged_branches or self.is_branch_merged(b)
         ]
         print(f"\nLocal branches to delete: {len(local_to_delete)}")
         for branch in local_to_delete:
@@ -334,9 +320,7 @@ class BranchCleanup:
             print("\n✨ No branches need cleanup!")
             return
 
-        print(
-            f"\nTotal branches to delete: {len(remote_to_delete) + len(local_to_delete)}"
-        )
+        print(f"\nTotal branches to delete: {len(remote_to_delete) + len(local_to_delete)}")
 
         confirm = input("\n❓ Proceed with cleanup? (y/N): ").strip().lower()
         if confirm != "y":
@@ -404,16 +388,10 @@ def main():
             print(f"Errors encountered: {stats['errors']}")
 
             if args.dry_run:
-                print(
-                    "\n💡 This was a dry run. Use --auto to actually delete branches."
-                )
+                print("\n💡 This was a dry run. Use --auto to actually delete branches.")
         else:
-            print(
-                "Use --interactive for guided cleanup or --auto for automatic cleanup"
-            )
-            print(
-                "Add --dry-run to see what would be deleted without actually deleting"
-            )
+            print("Use --interactive for guided cleanup or --auto for automatic cleanup")
+            print("Add --dry-run to see what would be deleted without actually deleting")
 
     except KeyboardInterrupt:
         print("\n\n👋 Cleanup cancelled by user.")

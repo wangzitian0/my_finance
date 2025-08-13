@@ -50,9 +50,7 @@ def create_temp_config(source, ticker, failed_downloads):
                 periods_set.add(period_key)
 
         for oid, period, interval in periods_set:
-            config["data_periods"].append(
-                {"oid": oid, "period": period, "interval": interval}
-            )
+            config["data_periods"].append({"oid": oid, "period": period, "interval": interval})
 
     elif source == "sec-edgar":
         # Create SEC Edgar config
@@ -122,13 +120,9 @@ def retry_failed_downloads(metadata_manager, source=None, ticker=None, dry_run=F
                 for ticker_dir in source_dir.iterdir():
                     if ticker_dir.is_dir():
                         ticker_name = ticker_dir.name
-                        failures = metadata_manager.get_failed_downloads(
-                            source_name, ticker_name
-                        )
+                        failures = metadata_manager.get_failed_downloads(source_name, ticker_name)
                         if failures:
-                            retries_to_perform.append(
-                                (source_name, ticker_name, failures)
-                            )
+                            retries_to_perform.append((source_name, ticker_name, failures))
 
     if not retries_to_perform:
         print("✓ No failed downloads found to retry.")
@@ -137,9 +131,7 @@ def retry_failed_downloads(metadata_manager, source=None, ticker=None, dry_run=F
     print(f"Found {len(retries_to_perform)} ticker(s) with failed downloads to retry.")
 
     for source_name, ticker_name, failures in retries_to_perform:
-        print(
-            f"\n🔄 Retrying {len(failures)} failed downloads for {source_name}/{ticker_name}"
-        )
+        print(f"\n🔄 Retrying {len(failures)} failed downloads for {source_name}/{ticker_name}")
 
         if dry_run:
             print("  DRY RUN - would retry:")
@@ -154,21 +146,15 @@ def retry_failed_downloads(metadata_manager, source=None, ticker=None, dry_run=F
             config = create_temp_config(source_name, ticker_name, failures)
 
             # Write config to temporary file
-            with tempfile.NamedTemporaryFile(
-                mode="w", suffix=".yml", delete=False
-            ) as temp_file:
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as temp_file:
                 yaml.dump(config, temp_file, default_flow_style=False)
                 temp_config_path = temp_file.name
 
             # Determine which spider to run
             if source_name == "yfinance":
-                spider_path = (
-                    Path(__file__).parent.parent / "spider" / "yfinance_spider.py"
-                )
+                spider_path = Path(__file__).parent.parent / "spider" / "yfinance_spider.py"
             elif source_name == "sec-edgar":
-                spider_path = (
-                    Path(__file__).parent.parent / "spider" / "sec_edgar_spider.py"
-                )
+                spider_path = Path(__file__).parent.parent / "spider" / "sec_edgar_spider.py"
             else:
                 print(f"  ❌ Unknown source: {source_name}")
                 continue
@@ -184,9 +170,7 @@ def retry_failed_downloads(metadata_manager, source=None, ticker=None, dry_run=F
             )
 
             if result.returncode == 0:
-                print(
-                    f"  ✓ Successfully retried downloads for {source_name}/{ticker_name}"
-                )
+                print(f"  ✓ Successfully retried downloads for {source_name}/{ticker_name}")
                 retry_count += len(failures)
             else:
                 print(f"  ❌ Failed to retry downloads for {source_name}/{ticker_name}")
@@ -198,16 +182,12 @@ def retry_failed_downloads(metadata_manager, source=None, ticker=None, dry_run=F
         except Exception as e:
             print(f"  ❌ Error retrying {source_name}/{ticker_name}: {e}")
 
-    print(
-        f"\n✓ Retry process completed. Attempted to retry {retry_count} failed downloads."
-    )
+    print(f"\n✓ Retry process completed. Attempted to retry {retry_count} failed downloads.")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Retry failed downloads")
-    parser.add_argument(
-        "--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')"
-    )
+    parser.add_argument("--source", "-s", help="Source name (e.g., 'yfinance', 'sec-edgar')")
     parser.add_argument("--ticker", "-t", help="Ticker symbol")
     parser.add_argument(
         "--dry-run",

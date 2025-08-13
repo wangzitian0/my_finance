@@ -23,6 +23,8 @@ pixi run generate-report      # Create validation report
 pixi run shutdown-all         # Clean shutdown
 ```
 
+> **📖 Complete Commands**: See [CLAUDE.md](CLAUDE.md) for full command reference and development workflows.
+
 ## 系统架构
 
 ### 数据流架构
@@ -46,30 +48,33 @@ ETL → DTS → DCF Engine → Evaluation
 - **`data/`** - 数据存储：样例数据、配置文档 
 - **`tests/`** - 测试框架：单元测试、集成测试
 
-## Development Commands
+## Essential Commands
 
-### Strategy Operations
+### Core Operations
 ```bash
-pixi run validate-strategy    # Run strategy validation suite
-pixi run generate-report      # Create validation report  
-pixi run backtest            # Run historical performance test
-pixi run benchmark           # Compare against market indices
+pixi run build-m7            # Build test dataset (required for development)
+pixi run validate-strategy   # Run strategy validation
+pixi run generate-report     # Create validation report
+pixi run update-stock-lists  # Update NASDAQ-100 and VTI stock lists
 ```
 
-### Development Tools
+### Development & Testing
 ```bash
-pixi run build-m7            # Build test dataset
+pixi run e2e-f2              # Fast end-to-end test (2 companies)
+pixi run e2e                 # Full end-to-end test (M7 companies)
 pixi run format              # Format code
 pixi run lint                # Code quality check
 pixi run test                # Run test suite
 ```
 
-### Environment Management
+### Environment
 ```bash
 pixi run env-status          # Check environment health
-pixi run env-start           # Start services
+pixi run setup-tab-completion # Setup shell tab completion
 pixi run shutdown-all        # Stop all services
 ```
+
+> **⚙️ Advanced Commands**: See [CLAUDE.md](CLAUDE.md) for complete command reference, development workflows, and testing strategies.
 
 ## Strategy Reports
 
@@ -94,10 +99,10 @@ Data Sources → Neo4j Graph → Strategy Engine → Validation → Reports
 
 **Full Setup**:
 ```bash
-pixi run setup-env           # Installs Minikube, Neo4j, dependencies
+pixi run setup-env           # Installs Podman, Neo4j, dependencies
 ```
 
-This creates a complete environment with Kubernetes, Neo4j graph database, and all Python dependencies isolated in Pixi.
+This creates a complete environment with Podman containers, Neo4j graph database, and all Python dependencies isolated in Pixi.
 
 **Troubleshooting**: Use `pixi run env-reset` to start fresh if needed.
 

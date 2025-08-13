@@ -5,7 +5,7 @@ Graph RAG Schema Definitions
 
 Centralized schema definitions for Graph RAG system including:
 - Neo4j node and relationship models
-- Vector embedding configurations  
+- Vector embedding configurations
 - Query intent classifications
 - Data structure interfaces
 
@@ -13,16 +13,17 @@ This file is used by both ETL (data layer) and dcf_engine (business layer)
 to ensure consistent data models across the system.
 """
 
-from enum import Enum
-from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
+from typing import Any, Dict, List, Optional, Union
 
 
 class QueryIntent(Enum):
     """Intent classification for user queries."""
+
     DCF_VALUATION = "dcf_valuation"
-    FINANCIAL_COMPARISON = "financial_comparison"  
+    FINANCIAL_COMPARISON = "financial_comparison"
     RISK_ANALYSIS = "risk_analysis"
     NEWS_IMPACT = "news_impact"
     INDUSTRY_ANALYSIS = "industry_analysis"
@@ -33,8 +34,9 @@ class QueryIntent(Enum):
 
 class DocumentType(Enum):
     """Types of documents in the system."""
+
     SEC_10K = "10k"
-    SEC_10Q = "10q" 
+    SEC_10Q = "10q"
     SEC_8K = "8k"
     NEWS_ARTICLE = "news"
     YFINANCE_DATA = "yfinance"
@@ -44,6 +46,7 @@ class DocumentType(Enum):
 @dataclass
 class VectorEmbeddingConfig:
     """Configuration for vector embeddings."""
+
     model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
     chunk_size: int = 512
     chunk_overlap: int = 50
@@ -55,6 +58,7 @@ class VectorEmbeddingConfig:
 @dataclass
 class GraphNodeSchema:
     """Base schema for graph nodes."""
+
     node_id: str = ""
     node_type: str = ""
     created_at: Optional[datetime] = None
@@ -62,9 +66,10 @@ class GraphNodeSchema:
     metadata: Optional[Dict[str, Any]] = None
 
 
-@dataclass  
+@dataclass
 class StockNode(GraphNodeSchema):
     """Stock company node schema."""
+
     node_type: str = "Stock"
     ticker: str = ""
     company_name: str = ""
@@ -74,9 +79,10 @@ class StockNode(GraphNodeSchema):
     market_cap: Optional[float] = None
 
 
-@dataclass  
+@dataclass
 class SECFilingNode(GraphNodeSchema):
     """SEC filing document node schema."""
+
     node_type: str = "SECFiling"
     accession_number: str = ""
     filing_type: Optional[DocumentType] = None
@@ -89,6 +95,7 @@ class SECFilingNode(GraphNodeSchema):
 @dataclass
 class DocumentChunkNode(GraphNodeSchema):
     """Document chunk node for semantic search."""
+
     node_type: str = "DocumentChunk"
     document_id: str = ""
     chunk_index: int = 0
@@ -101,6 +108,7 @@ class DocumentChunkNode(GraphNodeSchema):
 @dataclass
 class DCFValuationNode(GraphNodeSchema):
     """DCF valuation result node schema."""
+
     node_type: str = "DCFValuation"
     ticker: str = ""
     valuation_date: Optional[datetime] = None
@@ -114,6 +122,7 @@ class DCFValuationNode(GraphNodeSchema):
 @dataclass
 class NewsEventNode(GraphNodeSchema):
     """News event node schema."""
+
     node_type: str = "NewsEvent"
     headline: str = ""
     publication_date: Optional[datetime] = None
@@ -121,7 +130,7 @@ class NewsEventNode(GraphNodeSchema):
     sentiment_score: Optional[float] = None
     impact_score: Optional[float] = None
     mentioned_tickers: List[str] = None
-    
+
     def __post_init__(self):
         if self.mentioned_tickers is None:
             self.mentioned_tickers = []
@@ -130,6 +139,7 @@ class NewsEventNode(GraphNodeSchema):
 @dataclass
 class FinancialMetricsNode(GraphNodeSchema):
     """Financial metrics node schema."""
+
     node_type: str = "FinancialMetrics"
     ticker: str = ""
     report_date: Optional[datetime] = None
@@ -142,6 +152,7 @@ class FinancialMetricsNode(GraphNodeSchema):
 
 class RelationshipType(Enum):
     """Types of relationships between nodes."""
+
     HAS_FILING = "HAS_FILING"
     MENTIONED_IN = "MENTIONED_IN"
     HAS_VALUATION = "HAS_VALUATION"
@@ -155,6 +166,7 @@ class RelationshipType(Enum):
 @dataclass
 class GraphRelationship:
     """Graph relationship schema."""
+
     source_node: str = ""
     target_node: str = ""
     relationship_type: Optional[RelationshipType] = None
@@ -166,6 +178,7 @@ class GraphRelationship:
 @dataclass
 class SemanticSearchResult:
     """Result from semantic search."""
+
     node_id: str
     content: str
     similarity_score: float
@@ -177,6 +190,7 @@ class SemanticSearchResult:
 @dataclass
 class GraphRAGQuery:
     """Query structure for Graph RAG system."""
+
     question: str
     intent: QueryIntent
     entities: List[str]  # Extracted tickers, company names, etc.
@@ -188,6 +202,7 @@ class GraphRAGQuery:
 @dataclass
 class GraphRAGResponse:
     """Response structure from Graph RAG system."""
+
     answer: str
     confidence_score: float
     sources: List[SemanticSearchResult]
@@ -198,27 +213,30 @@ class GraphRAGResponse:
 
 class ETLStageOutput:
     """Interface for ETL stage outputs related to Graph RAG."""
-    
+
     @dataclass
     class GraphNodesOutput:
         """Output from graph nodes creation stage."""
+
         nodes_created: int
         relationships_created: int
         node_types: Dict[str, int]
         output_path: str
-    
+
     @dataclass
     class EmbeddingsOutput:
         """Output from embeddings generation stage."""
+
         embeddings_created: int
         documents_processed: int
         model_used: str
         dimension: int
         output_path: str
-    
+
     @dataclass
     class VectorIndexOutput:
         """Output from vector index creation stage."""
+
         index_size: int
         index_type: str
         search_ready: bool
@@ -230,12 +248,12 @@ MAGNIFICENT_7_TICKERS = ["AAPL", "MSFT", "AMZN", "GOOGL", "META", "TSLA", "NFLX"
 
 MAGNIFICENT_7_CIKS = {
     "AAPL": "0000320193",
-    "MSFT": "0000789019", 
+    "MSFT": "0000789019",
     "AMZN": "0001018724",
     "GOOGL": "0001652044",
     "META": "0001326801",
     "TSLA": "0001318605",
-    "NFLX": "0001065280"
+    "NFLX": "0001065280",
 }
 
 DEFAULT_EMBEDDING_CONFIG = VectorEmbeddingConfig()
@@ -248,7 +266,6 @@ CYPHER_TEMPLATES = {
         ORDER BY dcf.valuation_date DESC
         LIMIT 1
     """,
-    
     QueryIntent.FINANCIAL_COMPARISON: """
         MATCH (s1:Stock {ticker: $ticker1})-[:HAS_METRIC]->(m1:FinancialMetrics)
         MATCH (s2:Stock {ticker: $ticker2})-[:HAS_METRIC]->(m2:FinancialMetrics)
@@ -257,7 +274,6 @@ CYPHER_TEMPLATES = {
         ORDER BY m1.report_date DESC
         LIMIT 5
     """,
-    
     QueryIntent.RISK_ANALYSIS: """
         MATCH (s:Stock {ticker: $ticker})-[:HAS_FILING]->(f:SECFiling)
         WHERE f.filing_type = '10K' OR f.filing_type = '10Q'
@@ -266,5 +282,5 @@ CYPHER_TEMPLATES = {
         RETURN c
         ORDER BY f.filing_date DESC
         LIMIT 10
-    """
+    """,
 }

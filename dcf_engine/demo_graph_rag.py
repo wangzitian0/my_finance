@@ -158,9 +158,7 @@ class GraphRAGDemo:
                 self.display_result(result, query)
 
                 # Ask if user wants to continue
-                continue_choice = (
-                    input("\n❓ Ask another question? (y/n): ").strip().lower()
-                )
+                continue_choice = input("\n❓ Ask another question? (y/n): ").strip().lower()
                 if continue_choice != "y":
                     break
 

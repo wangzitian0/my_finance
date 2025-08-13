@@ -44,13 +44,15 @@ class TestStrategyAnalystWorkflow:
         assert dcf_report.stat().st_size > 0, "DCF report file is empty"
 
         # 5. 验证DCF报告包含M7股票分析
-        with open(dcf_report, 'r') as f:
+        with open(dcf_report, "r") as f:
             report_content = f.read()
-        
+
         # 检查报告包含M7股票代码
         m7_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA"]
         found_tickers = [ticker for ticker in m7_tickers if ticker in report_content]
-        assert len(found_tickers) > 0, f"No M7 tickers found in DCF report. Content preview: {report_content[:200]}"
+        assert (
+            len(found_tickers) > 0
+        ), f"No M7 tickers found in DCF report. Content preview: {report_content[:200]}"
 
     def test_investment_decision_quality(self):
         """验证投资决策的质量和一致性"""
@@ -58,9 +60,7 @@ class TestStrategyAnalystWorkflow:
         result = subprocess.run(
             ["python", "ETL/manage.py", "validate"], capture_output=True, text=True
         )
-        assert (
-            result.returncode == 0
-        ), f"Investment decision test failed: {result.stderr}"
+        assert result.returncode == 0, f"Investment decision test failed: {result.stderr}"
 
 
 class TestRiskManagerWorkflow:
@@ -79,7 +79,7 @@ class TestRiskManagerWorkflow:
         dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
 
-        with open(dcf_reports[0], 'r') as f:
+        with open(dcf_reports[0], "r") as f:
             report_content = f.read()
 
         # 3. 验证包含基础分析结果
@@ -88,9 +88,7 @@ class TestRiskManagerWorkflow:
 
     def test_backtest_performance(self):
         """验证回测性能分析"""
-        result = subprocess.run(
-            ["pixi", "run", "backtest"], capture_output=True, text=True
-        )
+        result = subprocess.run(["pixi", "run", "backtest"], capture_output=True, text=True)
         assert result.returncode == 0, f"Backtest failed: {result.stderr}"
 
 
@@ -100,9 +98,7 @@ class TestInvestmentManagerWorkflow:
     def test_strategy_report_generation(self):
         """完整的策略报告生成流程"""
         # 1. 生成策略报告
-        result = subprocess.run(
-            ["pixi", "run", "generate-report"], capture_output=True, text=True
-        )
+        result = subprocess.run(["pixi", "run", "generate-report"], capture_output=True, text=True)
         assert result.returncode == 0, f"Report generation failed: {result.stderr}"
 
         # 2. 验证报告文件
@@ -120,9 +116,7 @@ class TestInvestmentManagerWorkflow:
     def test_benchmark_comparison(self):
         """验证基准比较功能"""
         # 使用现有的generate-report命令，它包含基准比较
-        result = subprocess.run(
-            ["pixi", "run", "generate-report"], capture_output=True, text=True
-        )
+        result = subprocess.run(["pixi", "run", "generate-report"], capture_output=True, text=True)
         assert result.returncode == 0, f"Benchmark comparison failed: {result.stderr}"
 
         # 验证生成了DCF报告（包含基准比较信息）
@@ -137,9 +131,7 @@ class TestDataIntegrity:
     def test_data_consistency_across_workflows(self):
         """确保不同工作流使用的数据一致"""
         # 执行状态检查
-        result = subprocess.run(
-            ["pixi", "run", "status"], capture_output=True, text=True
-        )
+        result = subprocess.run(["pixi", "run", "status"], capture_output=True, text=True)
         assert result.returncode == 0, f"Status check failed: {result.stderr}"
 
         # 验证数据目录结构（基础目录结构）
@@ -153,12 +145,8 @@ class TestEnvironmentValidation:
 
     def test_services_health(self):
         """验证所有服务健康状态"""
-        result = subprocess.run(
-            ["pixi", "run", "env-status"], capture_output=True, text=True
-        )
-        assert (
-            result.returncode == 0
-        ), f"Environment status check failed: {result.stderr}"
+        result = subprocess.run(["pixi", "run", "env-status"], capture_output=True, text=True)
+        assert result.returncode == 0, f"Environment status check failed: {result.stderr}"
 
         # 验证环境状态检查运行成功（服务状态可能因环境而异）
         assert (
