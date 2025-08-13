@@ -487,7 +487,10 @@ def ask_about_build_release():
     from pathlib import Path
 
     # Ensure we're working from project root
-    project_root = Path(__file__).parent.parent
+    try:
+        project_root = Path(__file__).parent.parent
+    except NameError:
+        project_root = Path.cwd()
     build_dir = project_root / "data" / "build"
 
     if not build_dir.exists():
@@ -542,7 +545,10 @@ def promote_build_to_release(build_id: str, build_path: str):
     print(f"\n🚀 Promoting build {build_id} to release...")
 
     # Ensure we're working from project root
-    project_root = Path(__file__).parent.parent
+    try:
+        project_root = Path(__file__).parent.parent
+    except NameError:
+        project_root = Path.cwd()
     release_dir = project_root / "data" / "release"
     release_dir.mkdir(exist_ok=True)
 
@@ -604,6 +610,30 @@ def main():
     """Main CLI interface"""
     print("🚀 Starting PR creation workflow...")
     print(f"📅 Current time: {datetime.now().isoformat()}")
+    print(f"🐍 Python version: {sys.version}")
+    print(f"📁 Working directory: {Path.cwd()}")
+    try:
+        print(f"🔧 Script path: {Path(__file__).absolute()}")
+    except NameError:
+        print("🔧 Script path: <unknown - running from exec>")
+    
+    # Test basic system availability
+    print("\n🔍 System check...")
+    try:
+        result = subprocess.run(["git", "--version"], capture_output=True, text=True, timeout=5)
+        print(f"✅ Git available: {result.stdout.strip()}")
+    except Exception as e:
+        print(f"❌ Git not available: {e}")
+        
+    try:
+        result = subprocess.run(["pixi", "--version"], capture_output=True, text=True, timeout=5)
+        if result.returncode == 0:
+            print(f"✅ Pixi available: {result.stdout.strip()}")
+        else:
+            print(f"⚠️  Pixi check failed: return code {result.returncode}")
+    except Exception as e:
+        print(f"❌ Pixi not available: {e}")
+        print("   Continuing anyway...")
     
     parser = argparse.ArgumentParser(
         description="Create PR with mandatory M7 end-to-end testing",
