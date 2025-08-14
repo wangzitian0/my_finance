@@ -352,11 +352,19 @@ class BuildTracker:
             sec_doc_copied = self._copy_sec_dcf_documentation()
             if sec_doc_copied:
                 f.write("## 📋 SEC DCF Integration Process\n\n")
-                f.write("This build includes comprehensive documentation of how SEC filings are integrated into DCF analysis:\n\n")
-                f.write("- **Documentation**: [`SEC_DCF_Integration_Process.md`](./SEC_DCF_Integration_Process.md)\n")
-                f.write("- **Process Overview**: Detailed explanation of the ETL pipeline and semantic retrieval system\n")
-                f.write("- **Build Integration**: Shows how SEC data flows through the system into final DCF reports\n\n")
-            
+                f.write(
+                    "This build includes comprehensive documentation of how SEC filings are integrated into DCF analysis:\n\n"
+                )
+                f.write(
+                    "- **Documentation**: [`SEC_DCF_Integration_Process.md`](./SEC_DCF_Integration_Process.md)\n"
+                )
+                f.write(
+                    "- **Process Overview**: Detailed explanation of the ETL pipeline and semantic retrieval system\n"
+                )
+                f.write(
+                    "- **Build Integration**: Shows how SEC data flows through the system into final DCF reports\n\n"
+                )
+
             # Generated Information
             f.write("---\n")
             f.write(f"*Generated on {datetime.now().isoformat()}*\n")
@@ -425,7 +433,7 @@ class BuildTracker:
             ),
             "total_stages": len(self.manifest["stages"]),
             "errors": len(self.manifest["statistics"]["errors"]),
-            "warnings": len(self.manifest["statistics"]["warnings"])
+            "warnings": len(self.manifest["statistics"]["warnings"]),
         }
 
     def _copy_sec_dcf_documentation(self) -> bool:
@@ -434,20 +442,20 @@ class BuildTracker:
             # Source documentation file
             project_root = Path(__file__).parent.parent
             source_doc = project_root / "docs" / "SEC_DCF_Integration_Process.md"
-            
+
             if not source_doc.exists():
                 logger.warning(f"SEC DCF integration documentation not found: {source_doc}")
                 return False
-            
+
             # Target location in build artifacts
             target_doc = self.build_path / "SEC_DCF_Integration_Process.md"
-            
+
             # Copy the documentation
             shutil.copy2(source_doc, target_doc)
-            
+
             logger.info(f"📋 Copied SEC DCF integration documentation to build: {target_doc}")
             return True
-            
+
         except Exception as e:
             logger.error(f"Failed to copy SEC DCF documentation: {e}")
             return False
