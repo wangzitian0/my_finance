@@ -16,19 +16,9 @@ from typing import Any, Dict, List, Optional
 
 import yaml
 
-from ETL.models import (
-    DCFValuation,
-    DocumentChunk,
-    FastInfo,
-    FinancialMetrics,
-    Info,
-    NewsEvent,
-    PriceData,
-    Recommendations,
-    SECFiling,
-    Stock,
-    Sustainability,
-)
+from ETL.models import (DCFValuation, DocumentChunk, FastInfo,
+                        FinancialMetrics, Info, NewsEvent, PriceData,
+                        Recommendations, SECFiling, Stock, Sustainability)
 
 from .semantic_embedding import SemanticEmbedding
 

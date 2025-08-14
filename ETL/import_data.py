@@ -8,7 +8,6 @@ import sys
 from datetime import datetime, timedelta
 
 import yaml
-
 # 从 neomodel 导入 config，并设置数据库连接
 from neomodel import config
 
@@ -18,7 +17,8 @@ config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
 from common.logger import StreamToLogger, setup_logger
 from common.progress import create_progress_bar
 from common.snowflake import Snowflake
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.utils import (is_file_recent, sanitize_data,
+                          suppress_third_party_logs)
 
 # Optionally suppress third-party log messages (e.g. requests/urllib3)
 suppress_third_party_logs()
@@ -28,7 +28,8 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
 
 # 导入模型（确保 ETL 在 PYTHONPATH 中）
-from models import FastInfo, Info, PriceData, Recommendations, Stock, Sustainability
+from models import (FastInfo, Info, PriceData, Recommendations, Stock,
+                    Sustainability)
 
 
 def import_json_file(file_path, logger):

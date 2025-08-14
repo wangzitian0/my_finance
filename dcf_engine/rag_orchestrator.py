@@ -19,14 +19,11 @@ from typing import Any, Dict, List, Optional
 
 from neomodel import db
 
-from common.graph_rag_schema import (
-    DEFAULT_EMBEDDING_CONFIG,
-    GraphRAGQuery,
-    GraphRAGResponse,
-    QueryIntent,
-    SemanticSearchResult,
-)
-from dcf_engine.graph_rag_engine import AnswerContext, AnswerGenerator, QueryProcessor
+from common.graph_rag_schema import (DEFAULT_EMBEDDING_CONFIG, GraphRAGQuery,
+                                     GraphRAGResponse, QueryIntent,
+                                     SemanticSearchResult)
+from dcf_engine.graph_rag_engine import (AnswerContext, AnswerGenerator,
+                                         QueryProcessor)
 from ETL.semantic_retrieval import SemanticRetriever
 
 logger = logging.getLogger(__name__)

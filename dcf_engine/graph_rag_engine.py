@@ -24,15 +24,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from neomodel import db
 
-from common.graph_rag_schema import (
-    CYPHER_TEMPLATES,
-    MAGNIFICENT_7_TICKERS,
-    DocumentType,
-    GraphRAGQuery,
-    GraphRAGResponse,
-    QueryIntent,
-    SemanticSearchResult,
-)
+from common.graph_rag_schema import (CYPHER_TEMPLATES, MAGNIFICENT_7_TICKERS,
+                                     DocumentType, GraphRAGQuery,
+                                     GraphRAGResponse, QueryIntent,
+                                     SemanticSearchResult)
 
 logger = logging.getLogger(__name__)
 

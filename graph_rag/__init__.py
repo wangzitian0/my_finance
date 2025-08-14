@@ -9,7 +9,8 @@ system for intelligent financial analysis and investment research.
 
 from .answer_generator import IntelligentAnswerGenerator
 from .query_generator import QueryIntent, StructuredQueryGenerator
-from .reasoning_processor import MultiStepReasoning, ReasoningChain, ReasoningStep
+from .reasoning_processor import (MultiStepReasoning, ReasoningChain,
+                                  ReasoningStep)
 from .semantic_embedding import SemanticEmbedding
 from .semantic_retriever import RetrievalResult, SemanticRetriever
 

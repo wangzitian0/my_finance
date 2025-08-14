@@ -26,14 +26,10 @@ import torch
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from common.graph_rag_schema import (
-    DEFAULT_EMBEDDING_CONFIG,
-    DocumentChunkNode,
-    DocumentType,
-    ETLStageOutput,
-    SemanticSearchResult,
-    VectorEmbeddingConfig,
-)
+from common.graph_rag_schema import (DEFAULT_EMBEDDING_CONFIG,
+                                     DocumentChunkNode, DocumentType,
+                                     ETLStageOutput, SemanticSearchResult,
+                                     VectorEmbeddingConfig)
 
 logger = logging.getLogger(__name__)
 

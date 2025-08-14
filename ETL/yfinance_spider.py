@@ -24,7 +24,8 @@ if project_root not in sys.path:
 from common.logger import setup_logger
 from common.metadata_manager import MetadataManager
 from common.progress import create_progress_bar
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.utils import (is_file_recent, sanitize_data,
+                          suppress_third_party_logs)
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
