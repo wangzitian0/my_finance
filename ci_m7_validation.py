@@ -234,19 +234,21 @@ def check_condition_5_code_formatting() -> bool:
             print("   Installing black and isort...")
             subprocess.run(["pip", "install", "black", "isort"], capture_output=True, check=True)
 
-        # Check black formatting
+        # Define project directories to check (avoid checking dependencies)
+        project_dirs = [
+            "ETL/", "dcf_engine/", "common/", "graph_rag/", "tests/", 
+            "infra/", "scripts/", "ci_m7_validation.py", "p3.py"
+        ]
+        
+        # Check black formatting on project files only
         print("   Running black format check...")
-        black_result = subprocess.run(
-            ["python3", "-m", "black", "--check", "--line-length", "100", "."],
-            capture_output=True,
-            text=True,
-        )
+        black_cmd = ["python3", "-m", "black", "--check", "--line-length", "100"] + project_dirs
+        black_result = subprocess.run(black_cmd, capture_output=True, text=True)
 
-        # Check isort formatting
+        # Check isort formatting on project files only  
         print("   Running isort format check...")
-        isort_result = subprocess.run(
-            ["python3", "-m", "isort", "--check-only", "."], capture_output=True, text=True
-        )
+        isort_cmd = ["python3", "-m", "isort", "--check-only"] + project_dirs
+        isort_result = subprocess.run(isort_cmd, capture_output=True, text=True)
 
         if black_result.returncode == 0 and isort_result.returncode == 0:
             print("✅ Condition 5 passed: Python code is properly formatted")
