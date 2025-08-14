@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from common.graph_rag_schema import DEFAULT_EMBEDDING_CONFIG
+
 # Import your actual semantic retrieval system
 from ETL.semantic_retrieval import SemanticRetriever
 
