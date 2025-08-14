@@ -108,8 +108,7 @@ Respond with exactly: 'PING_TEST_OK' if you understand this format."""
 
     def _get_current_build_dir(self) -> Path:
         """Get current build directory for storing build-specific artifacts"""
-        from common.utils import (ensure_path_exists, get_current_build_dir,
-                                  get_project_paths)
+        from common.utils import ensure_path_exists, get_current_build_dir, get_project_paths
 
         # Try to get current build directory
         build_dir = get_current_build_dir()

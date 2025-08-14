@@ -2,10 +2,18 @@
 from datetime import datetime
 
 import numpy as np
-from neomodel import (ArrayProperty, BooleanProperty, DateTimeProperty,
-                      FloatProperty, IntegerProperty, JSONProperty,
-                      RelationshipFrom, RelationshipTo, StringProperty,
-                      StructuredNode)
+from neomodel import (
+    ArrayProperty,
+    BooleanProperty,
+    DateTimeProperty,
+    FloatProperty,
+    IntegerProperty,
+    JSONProperty,
+    RelationshipFrom,
+    RelationshipTo,
+    StringProperty,
+    StructuredNode,
+)
 
 
 class Info(StructuredNode):

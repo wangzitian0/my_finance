@@ -32,10 +32,14 @@ def test_cross_module_schema_integration():
 
     try:
         # Import from common
-        from common.graph_rag_schema import (MAGNIFICENT_7_TICKERS,
-                                             DocumentType, GraphRAGQuery,
-                                             GraphRAGResponse, QueryIntent,
-                                             StockNode)
+        from common.graph_rag_schema import (
+            MAGNIFICENT_7_TICKERS,
+            DocumentType,
+            GraphRAGQuery,
+            GraphRAGResponse,
+            QueryIntent,
+            StockNode,
+        )
 
         # Test that schema works in all contexts
         query = GraphRAGQuery(
@@ -77,9 +81,13 @@ def test_etl_data_flow_simulation():
     logger.info("Testing ETL data flow simulation...")
 
     try:
-        from common.graph_rag_schema import (MAGNIFICENT_7_CIKS, DocumentType,
-                                             ETLStageOutput, SECFilingNode,
-                                             StockNode)
+        from common.graph_rag_schema import (
+            MAGNIFICENT_7_CIKS,
+            DocumentType,
+            ETLStageOutput,
+            SECFilingNode,
+            StockNode,
+        )
 
         # Simulate Stage 3 Load processing for M7
         integration_stats = {"nodes_created": 0, "relationships_created": 0, "node_types": {}}
@@ -156,8 +164,12 @@ def test_dcf_engine_query_pipeline():
     logger.info("Testing DCF engine query pipeline...")
 
     try:
-        from common.graph_rag_schema import (DocumentType, GraphRAGQuery,
-                                             QueryIntent, SemanticSearchResult)
+        from common.graph_rag_schema import (
+            DocumentType,
+            GraphRAGQuery,
+            QueryIntent,
+            SemanticSearchResult,
+        )
 
         # Simulate query processing pipeline
         test_queries = [

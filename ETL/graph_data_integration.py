@@ -23,12 +23,19 @@ from typing import Any, Dict, List, Optional, Tuple
 from neomodel import config, db
 from neomodel.exceptions import DoesNotExist, MultipleNodesReturned
 
-from common.graph_rag_schema import (MAGNIFICENT_7_CIKS, DCFValuationNode,
-                                     DocumentChunkNode, DocumentType,
-                                     ETLStageOutput, FinancialMetricsNode,
-                                     GraphRelationship, NewsEventNode,
-                                     RelationshipType, SECFilingNode,
-                                     StockNode)
+from common.graph_rag_schema import (
+    MAGNIFICENT_7_CIKS,
+    DCFValuationNode,
+    DocumentChunkNode,
+    DocumentType,
+    ETLStageOutput,
+    FinancialMetricsNode,
+    GraphRelationship,
+    NewsEventNode,
+    RelationshipType,
+    SECFilingNode,
+    StockNode,
+)
 
 logger = logging.getLogger(__name__)
 
