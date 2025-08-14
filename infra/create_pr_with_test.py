@@ -76,17 +76,15 @@ def run_end_to_end_test():
 
     # Start environment if needed (Python-based status)
     run_command(
-        f"{sys.executable} infra/comprehensive_env_status.py",
+        "pixi run status",
         "Checking environment status",
         check=False,
     )
 
     test_success = False
     try:
-        # Build F2 dataset (faster test) using Python entrypoint
-        run_command(
-            f"{sys.executable} ETL/build_dataset.py f2", "Building F2 dataset", timeout=300
-        )  # 5 minutes
+        # Build F2 dataset (faster test) using pixi environment
+        run_command("pixi run build-f2", "Building F2 dataset", timeout=300)  # 5 minutes
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
@@ -115,7 +113,7 @@ def run_end_to_end_test():
 
     # Validate build results
     build_status = run_command(
-        f"{sys.executable} -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
+        "pixi run build-status",
         "Checking build status",
     )
 
@@ -226,6 +224,23 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     else:
         print("✅ Branch is already up to date with origin/main")
 
+    # 2.9. MANDATORY: Format code before testing
+    print("\n🔄 Running code formatting...")
+    run_command("pixi run format", "Formatting Python code with black and isort")
+
+    # Check if formatting made changes
+    uncommitted_after_format = get_uncommitted_changes()
+    if uncommitted_after_format:
+        print("📝 Code formatting made changes - committing them...")
+        run_command("git add .", "Adding formatted code changes")
+        run_command(
+            'git commit -m "Format code with black and isort\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>"',
+            "Committing formatted code",
+        )
+        print("✅ Formatted code committed")
+    else:
+        print("✅ Code already properly formatted")
+
     # 3. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
     test_info = None
     if not skip_m7_test:
@@ -241,7 +256,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_command(f"{sys.executable} infra/commit_data_changes.py", "Staging data directory changes")
+    run_command("pixi run commit-data-changes", "Staging data directory changes")
 
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
