@@ -1,6 +1,6 @@
 # zsh completion for p3 (scoped to my_finance)
 
-_p3_commands=(env podman neo4j format lint test e2e build refresh create-build release-build clean create-pr commit-data-changes cleanup-branches shutdown-all)
+_p3_commands=(env podman neo4j format lint typecheck test e2e build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity)
 _p3_env_commands=(setup start stop status reset)
 _p3_podman_commands=(status)
 _p3_neo4j_commands=(logs connect restart stop start)
@@ -21,12 +21,15 @@ _p3() {
     compadd -x 'neo4j       Neo4j management (logs/connect/restart/stop/start)'
     compadd -x 'format      Format code (black + isort)'
     compadd -x 'lint        Lint code (pylint)'
+    compadd -x 'typecheck   Type check with mypy'
     compadd -x 'test        Run tests (pytest)'
     compadd -x 'e2e         End-to-end validation'
     compadd -x 'build       Build dataset (build run [scope])'
     compadd -x 'refresh     Build dataset (alias for build run)'
     compadd -x 'create-pr   Create/update PR with testing'
     compadd -x 'clean       Clean build artifacts'
+    compadd -x 'status      Quick environment status'
+    compadd -x 'verify-env  Verify environment dependencies'
     compadd -a cmds
     return
   fi

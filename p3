@@ -30,6 +30,7 @@ Container Management:
 Development Commands:
   format                 Format code (black + isort)
   lint                   Lint code (pylint)
+  typecheck              Type check with mypy
   test                   Run tests (pytest)
   e2e                    End-to-end validation
   build run [scope]      Build dataset (default: m7)
@@ -39,12 +40,19 @@ Build Management:
   create-build           Create timestamped build directory
   release-build          Promote latest build to release
   clean                  Clean local build artifacts
+  build-status           Check build status
 
 Workflow Management:
   create-pr "TITLE" ISSUE  Create/update PR with mandatory testing
   commit-data-changes    Stage data directory changes
   cleanup-branches       Clean merged branches
   shutdown-all           Stop all services
+
+Status & Validation:
+  status                 Quick environment status
+  cache-status           Check cache status
+  verify-env             Verify environment dependencies
+  check-integrity        Check data integrity
 
 Scopes: f2 m7 n100 v3k (default: m7)
 
@@ -130,6 +138,10 @@ cmd_test() {
   pixi run test
 }
 
+cmd_typecheck() {
+  pixi run typecheck
+}
+
 # Build management
 cmd_create_build() {
   pixi run create-build
@@ -137,6 +149,10 @@ cmd_create_build() {
 
 cmd_release_build() {
   pixi run release-build
+}
+
+cmd_build_status() {
+  pixi run build-status
 }
 
 # Workflow management
@@ -162,6 +178,23 @@ cmd_clean() {
   pixi run clean
 }
 
+# Status & Validation commands
+cmd_status() {
+  pixi run status
+}
+
+cmd_cache_status() {
+  pixi run cache-status
+}
+
+cmd_verify_env() {
+  pixi run verify-environment
+}
+
+cmd_check_integrity() {
+  pixi run check-data-integrity
+}
+
 case "$1" in
   # Environment management
   env) shift; cmd_env "$@" ;;
@@ -173,6 +206,7 @@ case "$1" in
   # Development commands
   format) shift; cmd_format "$@" ;;
   lint) shift; cmd_lint "$@" ;;
+  typecheck) shift; cmd_typecheck "$@" ;;
   test) shift; cmd_test "$@" ;;
   e2e) shift; cmd_e2e "$@" ;;
   build) shift; cmd_build "$@" ;;
@@ -182,12 +216,19 @@ case "$1" in
   create-build) shift; cmd_create_build "$@" ;;
   release-build) shift; cmd_release_build "$@" ;;
   clean) shift; cmd_clean "$@" ;;
+  build-status) shift; cmd_build_status "$@" ;;
   
   # Workflow management
   create-pr) shift; cmd_create_pr "$@" ;;
   commit-data-changes) shift; cmd_commit_data_changes "$@" ;;
   cleanup-branches) shift; cmd_cleanup_branches "$@" ;;
   shutdown-all) shift; cmd_shutdown_all "$@" ;;
+  
+  # Status & Validation
+  status) shift; cmd_status "$@" ;;
+  cache-status) shift; cmd_cache_status "$@" ;;
+  verify-env) shift; cmd_verify_env "$@" ;;
+  check-integrity) shift; cmd_check_integrity "$@" ;;
   
   # Legacy aliases
   pr) shift; cmd_create_pr "$@" ;;
