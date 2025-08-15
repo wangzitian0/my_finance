@@ -203,14 +203,16 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
 
 def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
-    """Run DCF analysis on available data"""
+    """Run DCF analysis on available data with SEC document integration"""
     try:
-        # Import DCF analyzer
+        # Import SEC-integrated DCF analyzer
         sys.path.insert(0, str(Path(__file__).parent.parent))
-        from dcf_engine.pure_llm_dcf import PureLLMDCFAnalyzer
+        from dcf_engine.llm_dcf_generator import LLMDCFGenerator
 
-        print(f"   📊 Running DCF analysis for {tier.value}...")
-        tracker.log_stage_output("stage_04_analysis", f"Starting DCF analysis for {tier.value}")
+        print(f"   📊 Running SEC-enhanced DCF analysis for {tier.value}...")
+        tracker.log_stage_output(
+            "stage_04_analysis", f"Starting SEC-enhanced DCF analysis for {tier.value}"
+        )
 
         # Get companies list based on tier configuration
         config_manager = TestConfigManager()
@@ -238,20 +240,25 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
             print(f"   ⚠️  No companies found in {tier.value} configuration")
             return 0
 
-        analyzer = PureLLMDCFAnalyzer()
+        # Use SEC-integrated DCF generator instead of Pure LLM
+        analyzer = LLMDCFGenerator()
         companies_analyzed = 0
 
         for ticker in companies.keys():
             try:
-                analysis = analyzer.generate_company_analysis(ticker)
-                if analysis:
+                # Use the correct method name for LLMDCFGenerator
+                report = analyzer.generate_comprehensive_dcf_report(ticker)
+                if report:
                     companies_analyzed += 1
+                    # Log intermediate process files for debugging
+                    build_dir = analyzer._get_current_build_dir()
                     tracker.log_stage_output(
                         "stage_04_analysis",
-                        f"Analyzed {ticker}: {analysis.get('dcf_valuation', {}).get('upside_downside_pct', 'N/A')}% upside",
+                        f"SEC-enhanced DCF analysis completed for {ticker}. Intermediate files saved to {build_dir}",
                     )
             except Exception as e:
                 tracker.log_stage_output("stage_04_analysis", f"Failed to analyze {ticker}: {e}")
+                print(f"   ❌ Error analyzing {ticker}: {e}")
 
         print(f"   ✅ Analyzed {companies_analyzed} companies")
         return companies_analyzed
