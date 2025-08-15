@@ -735,4 +735,3 @@ dcf_prompt = f'''
 ---
 *本文档自动生成于每次build过程中，详细记录了SEC文档在DCF估值系统中的完整使用流程。*
 """
->>>>>>> 518ee4e (Complete SEC DCF integration documentation in build artifacts)
