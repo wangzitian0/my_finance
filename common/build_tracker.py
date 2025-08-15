@@ -441,14 +441,14 @@ class BuildTracker:
         try:
             # Target location in build artifacts
             target_doc = self.build_path / "SEC_DCF_Integration_Process.md"
-            
+
             # Generate documentation content directly
             doc_content = self._generate_sec_dcf_documentation()
-            
+
             # Write the documentation
-            with open(target_doc, 'w', encoding='utf-8') as f:
+            with open(target_doc, "w", encoding="utf-8") as f:
                 f.write(doc_content)
-            
+
             logger.info(f"📋 Generated SEC DCF integration documentation: {target_doc}")
             return True
 
@@ -458,37 +458,37 @@ class BuildTracker:
 
     def _generate_sec_dcf_documentation(self) -> str:
         """Generate the content for SEC DCF integration documentation"""
-        return """# SEC文档在DCF估值中的使用过程
+        return """# SEC Document Usage in DCF Valuation Process
 
-## 概述
+## Overview
 
-当前的LLM DCF系统通过Graph RAG架构集成SEC文档数据，为DCF估值提供监管级别的财务洞察。本文档详细描述了SEC文档从提取、处理到应用于DCF分析的完整过程。
+The current LLM DCF system integrates SEC document data through Graph RAG architecture to provide regulatory-level financial insights for DCF valuation. This document details the complete process of SEC documents from extraction and processing to application in DCF analysis.
 
-## 系统架构
+## System Architecture
 
-### 核心组件
-1. **ETL Pipeline**: 数据提取、转换、加载
-2. **Semantic Retrieval**: 语义嵌入和检索  
-3. **Graph RAG Engine**: 问答和上下文生成
-4. **DCF Generator**: LLM驱动的DCF报告生成
+### Core Components
+1. **ETL Pipeline**: Data extraction, transformation, and loading
+2. **Semantic Retrieval**: Semantic embedding and retrieval  
+3. **Graph RAG Engine**: Question answering and context generation
+4. **DCF Generator**: LLM-driven DCF report generation
 
-### 数据流向
+### Data Flow
 ```
 SEC Edgar Data → ETL Extract → Semantic Embeddings → Graph RAG → DCF Analysis → Build Artifacts
 ```
 
-## 详细处理流程
+## Detailed Process Flow
 
-### 第一阶段：SEC文档提取 (Stage 01 - Extract)
+### Stage 1: SEC Document Extraction (Stage 01 - Extract)
 
-**位置**: `data/stage_01_extract/sec_edgar/`
+**Location**: `data/stage_01_extract/sec_edgar/`
 
-**文档类型**:
-- **10-K**: 年度报告，包含完整业务概述、风险因素、财务数据
-- **10-Q**: 季度报告，提供最新财务表现和趋势  
-- **8-K**: 重大事件报告，包含战略变更、收购等
+**Document Types**:
+- **10-K**: Annual reports containing complete business overview, risk factors, financial data
+- **10-Q**: Quarterly reports providing latest financial performance and trends  
+- **8-K**: Material event reports including strategic changes, acquisitions, etc.
 
-**存储结构**:
+**Storage Structure**:
 ```
 data/stage_01_extract/sec_edgar/
 ├── latest/
@@ -497,57 +497,57 @@ data/stage_01_extract/sec_edgar/
 │   │   ├── AAPL_sec_edgar_10q_*.txt
 │   │   └── AAPL_sec_edgar_8k_*.txt
 │   ├── GOOGL/
-│   └── [其他M7公司]
-└── 20250809/ [历史分区]
+│   └── [Other M7 companies]
+└── 20250809/ [Historical partitions]
 ```
 
-**数据统计**:
-- 总计336个SEC文档覆盖Magnificent 7公司
-- 包含10-K、10-Q、8-K多年份历史数据
-- 每个公司平均48个文档
+**Data Statistics**:
+- Total of 336 SEC documents covering Magnificent 7 companies
+- Contains 10-K, 10-Q, 8-K multi-year historical data
+- Average of 48 documents per company
 
-### 第二阶段：语义嵌入生成 (Stage 02-03 - Transform & Load)
+### Stage 2: Semantic Embedding Generation (Stage 02-03 - Transform & Load)
 
-**核心文件**: `ETL/semantic_retrieval.py`
+**Core File**: `ETL/semantic_retrieval.py`
 
-**处理步骤**:
-1. **文档分块**: 将长文档切分为可管理的chunk（默认1000字符，重叠200字符）
-2. **关键词过滤**: 识别DCF相关内容（收入、现金流、盈利能力、指引、风险因素）
-3. **向量嵌入**: 使用sentence-transformers生成语义向量
-4. **索引构建**: 创建FAISS向量索引用于快速检索
+**Processing Steps**:
+1. **Document Chunking**: Split long documents into manageable chunks (default 1000 chars, 200 char overlap)
+2. **Keyword Filtering**: Identify DCF-relevant content (revenue, cash flow, profitability, guidance, risk factors)
+3. **Vector Embedding**: Generate semantic vectors using sentence-transformers
+4. **Index Building**: Create FAISS vector index for fast retrieval
 
-**生成的数据**:
+**Generated Data**:
 ```python
-# 每个文档chunk包含：
+# Each document chunk contains:
 {
     'node_id': 'chunk_AAPL_sec_edgar_10k_0',
-    'content': '实际文档内容...',
+    'content': 'Actual document content...',
     'content_type': 'SEC_10K',
-    'embedding_vector': [384维向量],
+    'embedding_vector': [384-dimensional vector],
     'ticker': 'AAPL',
     'metadata': {
-        'file_path': '原始文件路径',
+        'file_path': 'Original file path',
         'chunk_start': 0,
         'chunk_end': 1000
     }
 }
 ```
 
-**存储位置**:
+**Storage Location**:
 ```
 data/stage_03_load/embeddings/
-├── embeddings_vectors.npy      # 向量数据
-├── embeddings_metadata.json    # 元数据
-└── vector_index.faiss          # FAISS索引
+├── embeddings_vectors.npy      # Vector data
+├── embeddings_metadata.json    # Metadata
+└── vector_index.faiss          # FAISS index
 ```
 
-### 第三阶段：语义检索 (Semantic Retrieval)
+### Stage 3: Semantic Retrieval
 
-**触发时机**: DCF分析开始时
+**Trigger Point**: When DCF analysis begins
 
-**检索策略**: 
+**Retrieval Strategy**: 
 ```python
-# 生成多个DCF相关查询
+# Generate multiple DCF-related queries
 search_queries = [
     f"{ticker} financial performance revenue growth cash flow",
     f"{ticker} risk factors competitive regulatory risks", 
@@ -558,70 +558,70 @@ search_queries = [
 ]
 ```
 
-**相似度阈值**: 0.75（仅返回高度相关的内容）
+**Similarity Threshold**: 0.75 (only returns highly relevant content)
 
-**检索结果**:
+**Retrieval Results**:
 ```python
-# 每个检索结果包含：
+# Each retrieval result contains:
 {
-    'content': 'SEC文档相关段落',
+    'content': 'SEC document relevant paragraph',
     'source': 'AAPL_sec_edgar_10k_20231002.txt',
     'document_type': 'SEC_10K',
     'similarity_score': 0.85,
     'metadata': {'filing_date': '2023-10-02'},
-    'thinking_process': '检索原因和相关性分析'
+    'thinking_process': 'Retrieval reasoning and relevance analysis'
 }
 ```
 
-### 第四阶段：DCF分析集成
+### Stage 4: DCF Analysis Integration
 
-**核心文件**: `dcf_engine/llm_dcf_generator.py`
+**Core File**: `dcf_engine/llm_dcf_generator.py`
 
-**集成点**: `_retrieve_financial_context()` 方法
+**Integration Point**: `_retrieve_financial_context()` method
 
-**处理流程**:
-1. **上下文构建**: 将检索到的SEC文档片段按DCF组件分类
-2. **LLM提示生成**: 创建包含SEC数据的结构化提示
-3. **引用管理**: 确保每个洞察都包含SEC文档来源
-4. **质量验证**: 验证检索内容与DCF分析的相关性
+**Processing Flow**:
+1. **Context Building**: Classify retrieved SEC document fragments by DCF components
+2. **LLM Prompt Generation**: Create structured prompts containing SEC data
+3. **Citation Management**: Ensure each insight includes SEC document source
+4. **Quality Validation**: Verify relevance of retrieved content to DCF analysis
 
-**DCF组件映射**:
+**DCF Component Mapping**:
 ```python
 dcf_components = {
-    'revenue_growth': '收入增长分析',
-    'cash_flow_analysis': '现金流预测', 
-    'profitability_trends': '盈利能力评估',
-    'forward_guidance': '前瞻性指引',
-    'risk_factors': '风险因素分析'
+    'revenue_growth': 'Revenue Growth Analysis',
+    'cash_flow_analysis': 'Cash Flow Forecasting', 
+    'profitability_trends': 'Profitability Assessment',
+    'forward_guidance': 'Forward-looking Guidance',
+    'risk_factors': 'Risk Factor Analysis'
 }
 ```
 
-### 第五阶段：LLM报告生成
+### Stage 5: LLM Report Generation
 
-**双语支持**: 同时生成中英文DCF报告
+**Bilingual Support**: Generate both Chinese and English DCF reports
 
-**SEC数据应用**:
-- **收入预测**: 基于SEC文件中的历史收入数据和管理层指引
-- **现金流预测**: 结合SEC披露的资本支出计划和运营现金流趋势
-- **风险调整**: 利用SEC风险因素部分调整折现率
-- **终值计算**: 参考SEC战略展望确定长期增长率
+**SEC Data Application**:
+- **Revenue Forecasting**: Based on historical revenue data and management guidance from SEC filings
+- **Cash Flow Forecasting**: Combines SEC-disclosed capital expenditure plans and operating cash flow trends
+- **Risk Adjustment**: Uses SEC risk factors section to adjust discount rates
+- **Terminal Value Calculation**: References SEC strategic outlook to determine long-term growth rates
 
-**生成示例**:
+**Generation Example**:
 ```markdown
-## 📊 DCF估值分析 (基于SEC文件洞察)
+## 📊 DCF Valuation Analysis (Based on SEC Filing Insights)
 
-### 收入预测
-根据SEC 10-K文件显示，AAPL在2023年收入增长2.8%达到$383.3B...
-*来源: AAPL_sec_edgar_10k_20231002.txt - SEC 10K Filing*
+### Revenue Forecasting
+According to SEC 10-K filings, AAPL's revenue grew 2.8% year-over-year to $383.3B in 2023...
+*Source: AAPL_sec_edgar_10k_20231002.txt - SEC 10K Filing*
 
-### 现金流分析  
-SEC文件显示公司自由现金流为$84.7B，资本支出指引为...
-*来源: AAPL_sec_edgar_10q_20231101.txt - SEC 10Q Filing*
+### Cash Flow Analysis  
+SEC filings show company free cash flow of $84.7B, with capital expenditure guidance of...
+*Source: AAPL_sec_edgar_10q_20231101.txt - SEC 10Q Filing*
 ```
 
-## Build产物集成
+## Build Artifact Integration
 
-### 文档保存位置
+### Document Storage Location
 ```
 data/stage_99_build/build_YYYYMMDD_HHMMSS/
 ├── thinking_process/
@@ -632,12 +632,12 @@ data/stage_99_build/build_YYYYMMDD_HHMMSS/
 │   ├── SEC_Integration_Guide.md
 │   ├── sec_context_example_TICKER.json
 │   └── sec_enhanced_dcf_prompt_TICKER.md
-├── SEC_DCF_Integration_Process.md (本文档)
+├── SEC_DCF_Integration_Process.md (this document)
 └── M7_LLM_DCF_Report_YYYYMMDD_HHMMSS.md
 ```
 
-### 思考过程记录
-每次语义检索都会生成详细的思考过程日志：
+### Thinking Process Recording
+Each semantic retrieval generates detailed thinking process logs:
 ```
 🧠 Semantic Retrieval Thinking Process for AAPL
 ====================================================
@@ -656,45 +656,45 @@ data/stage_99_build/build_YYYYMMDD_HHMMSS/
      Content preview: Revenue increased 2.8% year over year to $383.3 billion...
 ```
 
-## 核心实现文件
+## Core Implementation Files
 
 ### 1. `dcf_engine/llm_dcf_generator.py`
-- `_retrieve_financial_context()`: 主要的SEC文档检索入口
-- 集成semantic retrieval获取相关SEC内容
-- 将SEC数据转换为DCF分析的上下文
+- `_retrieve_financial_context()`: Main SEC document retrieval entry point
+- Integrates semantic retrieval to obtain relevant SEC content
+- Converts SEC data to DCF analysis context
 
 ### 2. `ETL/semantic_retrieval.py`
-- `SemanticRetrieval` 类: 核心的语义检索引擎
-- `search_similar_content()`: 执行向量相似度搜索
-- `build_embeddings()`: 构建文档嵌入向量和索引
+- `SemanticRetrieval` class: Core semantic retrieval engine
+- `search_similar_content()`: Executes vector similarity search
+- `build_embeddings()`: Builds document embedding vectors and indexes
 
 ### 3. `dcf_engine/sec_integration_template.py`
-- `SECIntegrationTemplate` 类: SEC集成模板和示例
-- 提供标准化的SEC数据提取和格式化方法
-- 生成LLM可用的SEC增强提示
+- `SECIntegrationTemplate` class: SEC integration templates and examples
+- Provides standardized SEC data extraction and formatting methods
+- Generates LLM-ready SEC-enhanced prompts
 
-## 数据质量保证
+## Data Quality Assurance
 
-### 内容过滤标准
-- **关键词匹配**: 使用DCF相关关键词列表过滤内容
-- **相关性评分**: 多关键词匹配的段落优先级更高
-- **内容长度**: 确保实质性内容（>200字符）
+### Content Filtering Standards
+- **Keyword Matching**: Uses DCF-related keyword lists to filter content
+- **Relevance Scoring**: Multi-keyword matching paragraphs have higher priority
+- **Content Length**: Ensures substantial content (>200 characters)
 
-### 引用标准
-- **来源归属**: 每个片段包含原始文档名称
-- **申报日期**: 从文件名提取申报日期（如可用）
-- **文档分类**: 正确分类（10-K、10-Q、8-K）
+### Citation Standards
+- **Source Attribution**: Each fragment includes original document name
+- **Filing Date**: Extracts filing date from filename (if available)
+- **Document Classification**: Correct classification (10-K, 10-Q, 8-K)
 
-### 错误处理
-- **文件访问**: 优雅处理不可读文件
-- **内容提取**: UTF-8编码，容错处理
-- **缺失数据**: 回退到可用信息
+### Error Handling
+- **File Access**: Gracefully handles unreadable files
+- **Content Extraction**: UTF-8 encoding with error tolerance
+- **Missing Data**: Fallback to available information
 
-## 使用示例
+## Usage Examples
 
-### 语义检索触发
+### Semantic Retrieval Trigger
 ```python
-# 在DCF分析中自动触发
+# Automatically triggered in DCF analysis
 retrieval_system = SemanticRetrieval()
 relevant_docs = retrieval_system.search_similar_content(
     ticker="AAPL",
@@ -703,35 +703,35 @@ relevant_docs = retrieval_system.search_similar_content(
 )
 ```
 
-### SEC数据在DCF中的应用
+### SEC Data Application in DCF
 ```python
-# 生成SEC增强的DCF提示
+# Generate SEC-enhanced DCF prompt
 dcf_prompt = f'''
-基于以下SEC文件洞察进行DCF分析:
+Perform DCF analysis based on the following SEC filing insights:
 
-收入增长分析:
+Revenue Growth Analysis:
 {sec_revenue_insights}
 
-现金流分析:
+Cash Flow Analysis:
 {sec_cashflow_insights}
 
-风险因素:
+Risk Factors:
 {sec_risk_factors}
 '''
 ```
 
-## 结论
+## Conclusion
 
-通过这个综合的SEC文档集成系统，DCF估值分析获得了：
+Through this comprehensive SEC document integration system, DCF valuation analysis gains:
 
-1. **监管支持**: 基于实际SEC申报的财务洞察
-2. **数据质量**: 高精度的语义检索和过滤
-3. **完整追溯**: 每个洞察都有明确的SEC文档来源
-4. **自动化处理**: 从原始SEC数据到DCF报告的端到端自动化
-5. **质量保证**: 多层次的验证和错误处理
+1. **Regulatory Support**: Financial insights based on actual SEC filings
+2. **Data Quality**: High-precision semantic retrieval and filtering
+3. **Complete Traceability**: Each insight has clear SEC document sources
+4. **Automated Processing**: End-to-end automation from raw SEC data to DCF reports
+5. **Quality Assurance**: Multi-layered validation and error handling
 
-这种方法确保DCF估值不仅基于数学模型，更重要的是建立在公司实际披露的监管级财务数据基础上，提高了估值的可信度和准确性。
+This approach ensures DCF valuations are not only based on mathematical models, but more importantly built on the company's actual disclosed regulatory-level financial data, improving the credibility and accuracy of valuations.
 
 ---
-*本文档自动生成于每次build过程中，详细记录了SEC文档在DCF估值系统中的完整使用流程。*
+*This document is automatically generated during each build process, providing detailed records of the complete SEC document usage flow in the DCF valuation system.*
 """

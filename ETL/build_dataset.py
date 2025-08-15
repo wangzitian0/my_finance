@@ -210,7 +210,9 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         from dcf_engine.llm_dcf_generator import LLMDCFGenerator
 
         print(f"   📊 Running SEC-enhanced DCF analysis for {tier.value}...")
-        tracker.log_stage_output("stage_04_analysis", f"Starting SEC-enhanced DCF analysis for {tier.value}")
+        tracker.log_stage_output(
+            "stage_04_analysis", f"Starting SEC-enhanced DCF analysis for {tier.value}"
+        )
 
         # Get companies list based on tier configuration
         config_manager = TestConfigManager()
@@ -252,7 +254,7 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
                     build_dir = analyzer._get_current_build_dir()
                     tracker.log_stage_output(
                         "stage_04_analysis",
-                        f"SEC-enhanced DCF analysis completed for {ticker}. Intermediate files saved to {build_dir}"
+                        f"SEC-enhanced DCF analysis completed for {ticker}. Intermediate files saved to {build_dir}",
                     )
             except Exception as e:
                 tracker.log_stage_output("stage_04_analysis", f"Failed to analyze {ticker}: {e}")
