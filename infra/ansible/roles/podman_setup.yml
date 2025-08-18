@@ -13,13 +13,36 @@
   shell: |
     if ! command -v podman &> /dev/null; then
       if command -v brew &> /dev/null; then
-        brew install podman
+        echo "Installing Podman for native architecture..."
+        # Ensure we get the right architecture binary
+        if [[ $(uname -m) == "arm64" ]]; then
+          # For Apple Silicon, use native arch
+          arch -arm64 brew install podman
+        else
+          # For Intel Macs
+          brew install podman
+        fi
       else
         echo "Please install Homebrew first: https://brew.sh/"
         exit 1
       fi
+    else
+      # Check if existing podman has architecture mismatch
+      PODMAN_PATH=$(which podman)
+      PODMAN_ARCH=$(file "$PODMAN_PATH" | grep -o 'x86_64\|arm64')
+      SYSTEM_ARCH=$(uname -m)
+      if [[ "$PODMAN_ARCH" == "x86_64" && "$SYSTEM_ARCH" == "arm64" ]]; then
+        echo "Detected architecture mismatch (podman: $PODMAN_ARCH at $PODMAN_PATH, system: $SYSTEM_ARCH)"
+        echo "Reinstalling podman for correct architecture..."
+        # Uninstall from x86 brew if exists
+        /usr/local/bin/brew uninstall podman 2>/dev/null || true
+        # Install with ARM brew
+        arch -arm64 /opt/homebrew/bin/brew install podman
+        echo "✅ Installed ARM64 podman at /opt/homebrew/bin/podman"
+        echo "⚠️  Update PATH to prioritize /opt/homebrew/bin before /usr/local/bin"
+      fi
     fi
-  when: ansible_facts['system'] == 'Darwin' and podman_check.rc != 0
+  when: ansible_facts['system'] == 'Darwin' and (podman_check.rc != 0 or podman_check.rc == 0)
   register: podman_install_macos
 
 - name: Install Podman (Linux)
