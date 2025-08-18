@@ -15,12 +15,29 @@
       shell: |
         if ! podman machine list | grep -q "Running"; then
           echo "Starting Podman machine..."
-          podman machine start
+          # Check if machine exists first
+          if ! podman machine list | grep -q "podman-machine-default"; then
+            echo "No machine exists, creating new one with reduced resources..."
+            # Create with minimal resources to avoid vfkit issues
+            podman machine init --cpus 1 --memory 2048 --disk-size 10 --now
+          elif podman machine list | grep -q "Never"; then
+            echo "Machine never started successfully, recreating with minimal config..."
+            podman machine rm -f podman-machine-default || true
+            # Try with absolute minimal configuration
+            podman machine init --cpus 1 --memory 1024 --disk-size 8
+            sleep 5
+            podman machine start
+          else
+            echo "Starting existing machine..."
+            podman machine start
+          fi
         else
           echo "Podman machine already running"
         fi
       register: podman_machine_start
-      changed_when: "'Starting' in podman_machine_start.stdout"
+      changed_when: "'Starting' in podman_machine_start.stdout or 'Creating' in podman_machine_start.stdout"
+      retries: 2
+      delay: 15
 
     - name: Start Neo4j container
       shell: |

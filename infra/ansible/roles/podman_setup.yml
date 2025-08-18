@@ -68,16 +68,16 @@
 
 - name: Initialize Podman machine only if needed
   shell: |
-    echo "🚀 Creating new Podman machine..."
+    echo "🚀 Creating new Podman machine with minimal config (vfkit workaround)..."
     podman machine init \
-      --cpus 2 \
-      --memory 4096 \
-      --disk-size 20 \
+      --cpus 1 \
+      --memory 2048 \
+      --disk-size 10 \
       --volume /Users:/Users \
       --now
   register: podman_machine_init
   retries: 2
-  delay: 10
+  delay: 15
   when: not (machine_exists | default(false))
 
 - name: Ensure Podman machine is started
