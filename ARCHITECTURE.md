@@ -98,7 +98,7 @@ my_finance/
 ### 开发人员
 ```bash
 # 数据处理
-pixi run build-m7              # ETL数据构建
+p3 build run m7              # ETL数据构建
 pixi run metadata-rebuild      # 元数据管理
 
 # 策略开发  
@@ -106,8 +106,8 @@ pixi run dcf-analysis          # DCF分析
 pixi run validate-strategy     # 策略验证
 
 # 环境管理
-pixi run env-status            # 环境检查
-pixi run shutdown-all          # 服务关闭
+p3 env status            # 环境检查
+p3 shutdown-all          # 服务关闭
 ```
 
 ### 运维人员

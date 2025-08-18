@@ -29,7 +29,7 @@ def check_pixi() -> Dict:
         "name": "Pixi Package Manager",
         "status": "✅ Ready" if success else "❌ Not Available",
         "details": output if success else "Install: https://pixi.sh/",
-        "commands": ["pixi shell", "pixi run setup-env"] if not success else [],
+        "commands": ["pixi shell", "p3 env setup"] if not success else [],
     }
     return status
 
@@ -43,7 +43,7 @@ def check_podman() -> Dict:
             "name": "Podman Container Engine",
             "status": "❌ Not Installed",
             "details": "Install with: brew install podman",
-            "commands": ["brew install podman", "pixi run setup-env"],
+            "commands": ["brew install podman", "p3 env setup"],
         }
 
     # Check machine status
@@ -65,11 +65,11 @@ def check_podman() -> Dict:
     elif never_started:
         status_text = "❌ Machine Never Started (vfkit issue)"
         details = f"Version: {version}, Machine exists but failed to start"
-        commands = ["pixi run env-start"]
+        commands = ["p3 env start"]
     else:
         status_text = "❌ Machine Not Running"
         details = f"Version: {version}, Machine: Stopped"
-        commands = ["pixi run env-start"]
+        commands = ["p3 env start"]
 
     return {
         "name": "Podman Container Engine",
@@ -91,7 +91,7 @@ def check_neo4j() -> Dict:
             "name": "Neo4j Database",
             "status": "❌ Container Not Found",
             "details": "Neo4j container not deployed",
-            "commands": ["pixi run env-start"],
+            "commands": ["p3 env start"],
         }
 
     is_running = "Up" in container_info
@@ -106,11 +106,11 @@ def check_neo4j() -> Dict:
         else:
             status_text = "⚠️ Starting Up"
             details = f"Container running but not yet responding"
-            commands = ["pixi run neo4j-logs"]
+            commands = ["p3 neo4j logs"]
     else:
         status_text = "❌ Container Stopped"
         details = f"Status: {container_info}"
-        commands = ["pixi run neo4j-start"]
+        commands = ["p3 neo4j start"]
 
     return {
         "name": "Neo4j Database",
@@ -129,7 +129,7 @@ def check_data_symlink() -> Dict:
             "name": "Data Directory Symlink",
             "status": "❌ Missing",
             "details": "data/ symlink not found",
-            "commands": ["pixi run setup-env"],
+            "commands": ["p3 env setup"],
         }
 
     if not data_path.is_symlink():
@@ -137,7 +137,7 @@ def check_data_symlink() -> Dict:
             "name": "Data Directory Symlink",
             "status": "⚠️ Not a Symlink",
             "details": "data/ exists but is not a symlink",
-            "commands": ["rm -rf data", "pixi run setup-env"],
+            "commands": ["rm -rf data", "p3 env setup"],
         }
 
     target = data_path.resolve()
@@ -148,7 +148,7 @@ def check_data_symlink() -> Dict:
     else:
         status_text = "❌ Broken Link"
         details = f"Points to non-existent: {target}"
-        commands = ["pixi run setup-env"]
+        commands = ["p3 env setup"]
 
     return {
         "name": "Data Directory Symlink",

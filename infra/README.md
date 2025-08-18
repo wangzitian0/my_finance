@@ -27,13 +27,13 @@
 
 ```bash
 # 环境管理
-pixi run env-status
-pixi run shutdown-all
+p3 env status
+p3 shutdown-all
 
 # Git工作流
-pixi run cleanup-branches
+p3 cleanup-branches
 pixi run install-git-hooks
-pixi run commit-data-changes
+p3 commit-data-changes
 
 # 部署
 ansible-playbook infra/ansible/setup.yml

@@ -19,7 +19,7 @@
           🔧 Quick Commands:
           - Check status: `pixi run ollama-status`
           - List models: `pixi run ollama-models`
-          - Test chat: `pixi run test-ollama`
+          - Test chat: `p3 test-ollama`
           - Build SEC library: `pixi run build-sec-library`
           
           📚 Next Steps:

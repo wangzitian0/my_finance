@@ -27,13 +27,13 @@
 
 ```bash
 # 查看会被清理的分支 (安全)
-pixi run cleanup-branches-dry-run
+p3 cleanup-branches-dry-run
 
 # 交互式清理 (推荐)
-pixi run cleanup-branches
+p3 cleanup-branches
 
 # 自动清理 (适用于CI或定期维护)
-pixi run cleanup-branches-auto
+p3 cleanup-branches-auto
 ```
 
 ### 清理规则
@@ -140,7 +140,7 @@ git push --force-with-lease
 gh pr view 456
 
 # 如果已合并，自动清理分支
-pixi run cleanup-branches-auto
+p3 cleanup-branches-auto
 
 # 或手动清理
 git push origin --delete feature/description-fixes-123
@@ -153,7 +153,7 @@ git branch -D feature/description-fixes-123
 
 ```bash
 # 每周运行一次，清理过时分支
-pixi run cleanup-branches-auto
+p3 cleanup-branches-auto
 
 # 更新Git hooks
 pixi run install-git-hooks

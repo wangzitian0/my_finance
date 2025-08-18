@@ -117,8 +117,8 @@ def main():
         if validate_test_environment():
             print("\n✅ Test environment setup complete!")
             print("\nYou can now run:")
-            print("  pixi run test-all-user-cases")
-            print("  pixi run test-with-coverage")
+            print("  p3 test-all-user-cases")
+            print("  p3 test-with-coverage")
             return 0
         else:
             print("\n❌ Test environment setup failed")

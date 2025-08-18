@@ -98,8 +98,8 @@
           - Username: neo4j / Password: finance123
           
           🛠️  Quick Commands:
-          - Check status: `pixi run podman-status`
-          - View logs: `pixi run neo4j-logs`
-          - Connect: `pixi run neo4j-connect`
+          - Check status: `p3 podman status`
+          - View logs: `p3 neo4j logs`
+          - Connect: `p3 neo4j connect`
           
           ✅ Ready for development!

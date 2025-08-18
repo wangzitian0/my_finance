@@ -43,7 +43,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 
         # Initialize build tracker
         tracker = BuildTracker()
-        build_id = tracker.start_build(tier.value, f"pixi run build-dataset {tier_name}")
+        build_id = tracker.start_build(tier.value, f"p3 build run {tier_name}")
 
         # Load YAML configuration
         yaml_config = config_manager.load_yaml_config(tier)

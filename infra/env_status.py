@@ -43,7 +43,7 @@ def check_minikube():
             return ip
     else:
         print("  ❌ Minikube is not running")
-        print("  💡 Start with: pixi run env-start")
+        print("  💡 Start with: p3 env start")
 
     return False
 
@@ -62,7 +62,7 @@ def check_neo4j(minikube_ip):
     success, output = run_command(f"{kubectl_cmd} get deployment neo4j")
     if not success:
         print("  ❌ Neo4j deployment not found")
-        print("  💡 Deploy with: pixi run env-start")
+        print("  💡 Deploy with: p3 env start")
         return
 
     # Check pod status
@@ -113,18 +113,18 @@ def show_quick_commands():
     """Show commonly used commands."""
     print("\n🚀 Quick Commands:")
     print("  Environment:")
-    print("    pixi run env-start    - Start all services")
-    print("    pixi run env-stop     - Stop all services")
-    print("    pixi run env-reset    - Reset everything")
-    print("    pixi run env-status   - This status check")
+    print("    p3 env start    - Start all services")
+    print("    p3 env stop     - Stop all services")
+    print("    p3 env reset    - Reset everything")
+    print("    p3 env status   - This status check")
     print("\n  Development:")
-    print("    pixi run status       - Check data status")
-    print("    pixi run build-m7     - Build test dataset")
+    print("    p3 status       - Check data status")
+    print("    p3 build run m7     - Build test dataset")
     print("    pixi run run-job      - Run data collection")
     print("\n  Code Quality:")
-    print("    pixi run format       - Format code")
-    print("    pixi run lint         - Lint code")
-    print("    pixi run test         - Run tests")
+    print("    p3 format       - Format code")
+    print("    p3 lint         - Lint code")
+    print("    p3 test         - Run tests")
 
 
 def main():
@@ -149,8 +149,8 @@ def main():
             print("  1. Install Pixi: https://pixi.sh/")
             print("  2. Run: pixi shell")
         if not minikube_ip:
-            print("  3. Run: pixi run setup-env")
-            print("  4. Run: pixi run env-start")
+            print("  3. Run: p3 env setup")
+            print("  4. Run: p3 env start")
 
 
 if __name__ == "__main__":

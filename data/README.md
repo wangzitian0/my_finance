@@ -18,21 +18,21 @@ The project uses a four-tier approach to manage data sets of increasing size and
 - **Storage**: Complete records committed to git
 - **Companies**: AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA
 - **Update frequency**: Manual, stable
-- **Build command**: `pixi run build-m7`
+- **Build command**: `p3 build run m7`
 
 ### Tier 3: NASDAQ100 - Buildable Validation Dataset
 - **Size**: ~100 companies (NASDAQ-100 index)
 - **Purpose**: Algorithm validation and integration testing
 - **Storage**: Buildable, not committed to git
 - **Validation**: Required 95% success rate
-- **Build command**: `pixi run build-nasdaq100`
+- **Build command**: `p3 build run n100`
 
 ### Tier 4: VTI - Production Target Dataset
 - **Size**: ~4000 companies (VTI ETF holdings)
 - **Purpose**: Complete market analysis and production queries
 - **Storage**: Buildable, production-grade quality
 - **Coverage**: Total US stock market
-- **Build command**: `pixi run build-vti`
+- **Build command**: `p3 build run v3k`
 
 ## ETL Directory Structure
 
@@ -147,26 +147,26 @@ pixi run build n100          # NASDAQ100 dataset (validation, ~100 companies)
 pixi run build v3k           # VTI dataset (production, 3500+ companies)
 
 # End-to-end testing
-pixi run e2e f2              # Fast F2 end-to-end test (~1-2 minutes)
-pixi run e2e                 # Standard M7 end-to-end test (~5-10 minutes, default)
-pixi run e2e n100            # Extended NASDAQ100 testing
-pixi run e2e v3k             # Full VTI production testing
+p3 e2e f2              # Fast F2 end-to-end test (~1-2 minutes)
+p3 e2e                 # Standard M7 end-to-end test (~5-10 minutes, default)
+p3 e2e n100            # Extended NASDAQ100 testing
+p3 e2e v3k             # Full VTI production testing
 ```
 
 ### Environment & Management
 ```bash
 # Environment management
-pixi run env-status          # Check all services
-pixi run env-start           # Start all services (Podman + Neo4j)
-pixi run env-stop            # Stop all services
-pixi run env-reset           # Reset everything (destructive)
+p3 env status          # Check all services
+p3 env start           # Start all services (Podman + Neo4j)
+p3 env stop            # Stop all services
+p3 env reset           # Reset everything (destructive)
 
 # Build management
-pixi run create-build        # Create new timestamped build
-pixi run release-build       # Promote build to release
+p3 create-build        # Create new timestamped build
+p3 release-build       # Promote build to release
 
 # Status & utilities
-pixi run status              # Check data and build status
+p3 status              # Check data and build status
 pixi run run-job             # Run default data collection
 ```
 
