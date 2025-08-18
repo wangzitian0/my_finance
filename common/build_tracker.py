@@ -17,9 +17,10 @@ logger = logging.getLogger(__name__)
 
 # Try to import quality reporter, handle gracefully if not available
 try:
-    from common.quality_reporter import setup_quality_reporter, QUALITY_REPORTING_AVAILABLE
+    from common.quality_reporter import QUALITY_REPORTING_AVAILABLE, setup_quality_reporter
 except ImportError:
     QUALITY_REPORTING_AVAILABLE = False
+
     def setup_quality_reporter(build_id: str, tier_name: str):
         return None
 
@@ -41,7 +42,7 @@ class BuildTracker:
         # Create subdirectories
         (self.build_path / "stage_logs").mkdir(exist_ok=True)
         (self.build_path / "artifacts").mkdir(exist_ok=True)
-        
+
         # Initialize quality reporter (will be set up in start_build)
         self.quality_reporter = None
 
@@ -187,7 +188,9 @@ class BuildTracker:
                 stage_quality_report = self.quality_reporter.report_stage_quality(
                     stage, partition, **kwargs
                 )
-                logger.info(f"Quality report generated for {stage}: {stage_quality_report.get('overall_success_rate', stage_quality_report.get('success_rate', 'N/A'))}")
+                logger.info(
+                    f"Quality report generated for {stage}: {stage_quality_report.get('overall_success_rate', stage_quality_report.get('success_rate', 'N/A'))}"
+                )
             except Exception as e:
                 logger.warning(f"Failed to generate quality report for {stage}: {e}")
 
@@ -312,7 +315,9 @@ class BuildTracker:
         if self.quality_reporter:
             try:
                 build_summary = self.quality_reporter.generate_build_summary_report()
-                logger.info(f"Build quality summary report generated: {build_summary.get('overall_build_health', 'N/A')} overall health")
+                logger.info(
+                    f"Build quality summary report generated: {build_summary.get('overall_build_health', 'N/A')} overall health"
+                )
             except Exception as e:
                 logger.warning(f"Failed to generate build quality summary: {e}")
 

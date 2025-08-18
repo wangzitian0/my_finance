@@ -1,0 +1,30 @@
+{
+  "stage_name": "Data Extraction",
+  "yfinance_quality": {
+    "success_rate": 0,
+    "total_expected": 0,
+    "total_found": 0,
+    "companies_processed": [],
+    "missing_companies": [],
+    "status": "no_data_found"
+  },
+  "sec_edgar_quality": {
+    "success_rate": 0.0,
+    "total_expected": 30,
+    "total_found": 0,
+    "companies_processed": [],
+    "document_types": {
+      "10-K": 0,
+      "10-Q": 0,
+      "8-K": 0
+    },
+    "companies_with_sec_data": 0,
+    "status": "failed"
+  },
+  "overall_success_rate": 0.0,
+  "stage": "stage_01_extract",
+  "partition": "20250818",
+  "timestamp": "2025-08-18T20:19:06.641364",
+  "build_id": "20250818_201906",
+  "tier_name": "f2"
+}
