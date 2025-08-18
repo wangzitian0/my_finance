@@ -29,7 +29,7 @@ COMMAND_MAPPING = {
     "p3 lint": "p3 lint",
     "p3 typecheck": "p3 typecheck",
     "p3 test": "p3 test",
-    "p3 test-e2e": "p3 e2e",
+    "p3 e2e": "p3 e2e",
     # Build commands
     "p3 build run f2": "p3 build run f2",
     "p3 build run m7": "p3 build run m7",
@@ -45,8 +45,8 @@ COMMAND_MAPPING = {
     "p3 create-pr": "p3 create-pr",
     "p3 commit-data-changes": "p3 commit-data-changes",
     "p3 cleanup-branches": "p3 cleanup-branches",
-    "p3 cleanup-branches-dry-run": "p3 cleanup-branches --dry-run",
-    "p3 cleanup-branches-auto": "p3 cleanup-branches --auto",
+    "p3 cleanup-branches --dry-run": "p3 cleanup-branches --dry-run",
+    "p3 cleanup-branches --auto": "p3 cleanup-branches --auto",
     "p3 shutdown-all": "p3 shutdown-all",
     # Status commands
     "p3 status": "p3 status",
