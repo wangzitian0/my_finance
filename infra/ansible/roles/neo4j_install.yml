@@ -42,7 +42,7 @@
 
 - name: Start Neo4j using Pixi task
   shell: |
-    eval "$(pixi shell-hook)" && pixi run neo4j-start
+    eval "$(pixi shell-hook)" && p3 neo4j start
   register: neo4j_start
   failed_when: (neo4j_start.rc != 0) and ("Neo4j is already running" not in neo4j_start.stderr)
   args:

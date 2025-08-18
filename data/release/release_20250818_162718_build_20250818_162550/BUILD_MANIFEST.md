@@ -4,7 +4,7 @@
 
 - **Build ID**: 20250818_162550
 - **Configuration**: f2
-- **Command**: `pixi run build-dataset f2`
+- **Command**: `p3 build run f2`
 - **Status**: completed
 - **Start Time**: 2025-08-18T16:25:50.832480
 - **End Time**: 2025-08-18T16:25:50.859891

@@ -182,4 +182,4 @@
       - `pixi run k8s-start` - Start Minikube cluster
       - `pixi run k8s-stop` - Stop Minikube cluster
       - `pixi run k8s-status` - Check cluster status
-      - `pixi run neo4j-logs` - View Neo4j logs
+      - `p3 neo4j logs` - View Neo4j logs

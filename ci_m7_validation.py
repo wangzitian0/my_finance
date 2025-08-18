@@ -268,7 +268,7 @@ def check_condition_5_code_formatting() -> bool:
             if isort_result.returncode != 0:
                 print("   Isort formatting errors:")
                 print(f"   {isort_result.stderr}")
-            print("   Fix with: pixi run format")
+            print("   Fix with: p3 format")
             return False
 
     except Exception as e:
@@ -323,7 +323,7 @@ def main():
         print("🚫 This commit should not be merged")
         print()
         print("📝 Fix steps:")
-        print("1. Run: pixi run format")
+        print("1. Run: p3 format")
         print("2. Run: p3 e2e")
         print('3. Use: p3 create-pr "title" ISSUE_NUMBER')
         sys.exit(1)

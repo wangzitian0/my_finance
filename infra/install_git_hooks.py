@@ -226,7 +226,7 @@ def main():
         print("  • commit-msg: Ensures proper commit message format")
 
         print("\n💡 To test the hooks:")
-        print("  pixi run cleanup-branches-dry-run  # Test branch cleanup")
+        print("  p3 cleanup-branches-dry-run  # Test branch cleanup")
         print("  git commit --amend                 # Test commit message validation")
 
     except Exception as e:

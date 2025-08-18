@@ -76,7 +76,7 @@ def run_end_to_end_test():
 
     # Start environment if needed (Python-based status)
     run_command(
-        "pixi run status",
+        "./p3 status",
         "Checking environment status",
         check=False,
     )
@@ -84,7 +84,7 @@ def run_end_to_end_test():
     test_success = False
     try:
         # Build F2 dataset (faster test) using pixi environment
-        run_command("pixi run build-f2", "Building F2 dataset", timeout=300)  # 5 minutes
+        run_command("./p3 build run f2", "Building F2 dataset", timeout=300)  # 5 minutes
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
@@ -113,7 +113,7 @@ def run_end_to_end_test():
 
     # Validate build results
     build_status = run_command(
-        "pixi run build-status",
+        "./p3 build-status",
         "Checking build status",
     )
 
@@ -226,7 +226,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    run_command("pixi run format", "Formatting Python code with black and isort")
+    run_command("./p3 format", "Formatting Python code with black and isort")
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
@@ -256,7 +256,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_command("pixi run commit-data-changes", "Staging data directory changes")
+    run_command("./p3 commit-data-changes", "Staging data directory changes")
 
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()

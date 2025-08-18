@@ -51,10 +51,10 @@ pixi run build vti_3500
 pixi run build fast      # Fast 2-company subset (MSFT, NVDA)
 
 # PR creation with mandatory M7 testing
-pixi run create-pr "PR title" ISSUE_NUMBER  # Runs full M7 test (7 companies)
+p3 create-pr "PR title" ISSUE_NUMBER  # Runs full M7 test (7 companies)
 
 # Standalone M7 testing for PR validation
-pixi run test-m7-e2e     # Tests all 7 companies, creates .m7-test-passed marker
+p3 test-m7-e2e     # Tests all 7 companies, creates .m7-test-passed marker
 ```
 
 ### Configuration Combination
@@ -178,7 +178,7 @@ The configuration system supports a **two-tier testing strategy** optimized for 
 - **Purpose**: Mandatory validation before PR creation
 - **Companies**: 7 (All M7 companies)
 - **Duration**: ~5-10 minutes
-- **Usage**: `pixi run create-pr` (automatic) or `pixi run test-m7-e2e` (standalone)
+- **Usage**: `p3 create-pr` (automatic) or `p3 test-m7-e2e` (standalone)
 - **Data Sources**: YFinance + SEC Edgar (complete validation)
 
 ### Test Target Configuration (`stage_00_target_pre_pr.yml`)
@@ -202,8 +202,8 @@ quality_gates:
 The testing configuration integrates with the automated PR workflow:
 
 1. **Development**: Use `list_fast_2.yml` for rapid iteration
-2. **Pre-PR**: Run `pixi run test-m7-e2e` with full M7 validation
-3. **PR Creation**: `pixi run create-pr` enforces M7 test success
+2. **Pre-PR**: Run `p3 test-m7-e2e` with full M7 validation
+3. **PR Creation**: `p3 create-pr` enforces M7 test success
 4. **GitHub Validation**: Checks for `.m7-test-passed` marker file
 
 This ensures **quality without sacrificing development speed**.

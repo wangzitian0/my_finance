@@ -96,7 +96,7 @@
 pixi run install-extras
 
 # 2. 运行系统测试
-pixi run test-graph-rag
+p3 test-graph-rag
 
 # 3. 运行交互式演示
 pixi run demo-graph-rag

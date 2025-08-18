@@ -21,14 +21,14 @@ This directory contains **integration and end-to-end tests** for the my_finance 
 
 ### Complete Test Suite (All Modules)
 ```bash
-pixi run test                    # All tests (integration + modules)
-pixi run test-with-coverage      # With coverage report
+p3 test                    # All tests (integration + modules)
+p3 test-with-coverage      # With coverage report
 ```
 
 ### Integration Tests Only
 ```bash
 pytest tests/ -v                # Root integration tests
-pixi run test-all-user-cases     # User workflow tests
+p3 test-all-user-cases     # User workflow tests
 ```
 
 ### Module-Specific Tests
