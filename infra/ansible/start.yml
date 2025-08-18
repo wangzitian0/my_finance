@@ -6,21 +6,46 @@
   gather_facts: yes
   tasks:
     - name: Check if Podman machine is running
-      command: podman machine list
+      shell: |
+        # Use ARM podman if available, fallback to PATH podman
+        if [[ -x "/opt/homebrew/bin/podman" ]]; then
+          /opt/homebrew/bin/podman machine list
+        else
+          podman machine list
+        fi
       register: podman_machine_status
       changed_when: false
       failed_when: false
 
     - name: Start Podman machine if not running
       shell: |
-        if ! podman machine list | grep -q "Running"; then
+        # Use ARM podman if available, fallback to PATH podman
+        PODMAN_CMD="/opt/homebrew/bin/podman"
+        [[ -x "$PODMAN_CMD" ]] || PODMAN_CMD="podman"
+        
+        if ! $PODMAN_CMD machine list | grep -q "Running"; then
           echo "Starting Podman machine..."
-          podman machine start
+          # Check if machine exists first
+          if ! $PODMAN_CMD machine list | grep -q "podman-machine-default"; then
+            echo "No machine exists, creating new one with ARM64 podman..."
+            $PODMAN_CMD machine init --cpus 1 --memory 2048 --disk-size 10 --now
+          elif $PODMAN_CMD machine list | grep -q "Never"; then
+            echo "Machine never started successfully, recreating..."
+            $PODMAN_CMD machine rm -f podman-machine-default || true
+            $PODMAN_CMD machine init --cpus 1 --memory 1024 --disk-size 8
+            sleep 5
+            $PODMAN_CMD machine start
+          else
+            echo "Starting existing machine..."
+            $PODMAN_CMD machine start
+          fi
         else
           echo "Podman machine already running"
         fi
       register: podman_machine_start
-      changed_when: "'Starting' in podman_machine_start.stdout"
+      changed_when: "'Starting' in podman_machine_start.stdout or 'Creating' in podman_machine_start.stdout"
+      retries: 2
+      delay: 15
 
     - name: Start Neo4j container
       shell: |

@@ -144,6 +144,9 @@ cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
 create-build = "python scripts/manage_build_data.py create"
 release-build = "python scripts/manage_build_data.py release"
 
+# Data status reporting (Issue #91) - use existing build system
+data-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
+
 # --- Infrastructure Management ---
 shutdown-all = "python infra/shutdown_all.py"
 

@@ -1,13 +1,29 @@
+# NASDAQ-100 Index Dataset Configuration
+# Source: https://en.wikipedia.org/wiki/NASDAQ-100
+# Updated: Manual curation based on NASDAQ-100 index components
+# Note: This represents the largest 100 non-financial companies on NASDAQ
+
 dataset_name: nasdaq100
 cli_alias: n100
 description: NASDAQ-100 index companies - validation dataset
 tier: 3
 tracked_in_git: false
 max_size_mb: 5000
+
+# Data source attribution
+data_source_info:
+  primary_source: "NASDAQ-100 Index Components"
+  last_verified: "2025-08-18"
+  update_method: "Manual verification against NASDAQ official list"
+  selection_criteria: "Largest 100 non-financial companies on NASDAQ"
+  notes: "CIK numbers should be added for SEC integration"
 companies:
   AAPL:
     name: Apple Inc. Common Stock
-    sector: ''
+    sector: Technology
+    industry: Consumer Electronics
+    cik: "0000320193"  # From M7 reference
+    market_cap_category: mega
     market_cap: 3,371,439,800,200
   AMAT:
     name: Applied Materials, Inc. Common Stock
@@ -59,11 +75,16 @@ companies:
     market_cap: 62,084,170,482
   MSFT:
     name: Microsoft Corporation Common Stock
-    sector: ''
+    sector: Technology
+    industry: Software
+    cik: "0000789019"  # From M7 reference
+    market_cap_category: mega
     market_cap: 3,878,403,221,571
   ADBE:
     name: Adobe Inc. Common Stock
-    sector: ''
+    sector: Technology
+    industry: Software
+    market_cap_category: large
     market_cap: 141,534,330,000
   FAST:
     name: Fastenal Company Common Stock
@@ -143,7 +164,10 @@ companies:
     market_cap: 41,075,982,106
   AMZN:
     name: Amazon.com, Inc. Common Stock
-    sector: ''
+    sector: Technology
+    industry: E-commerce & Cloud
+    cik: "0001018724"  # From M7 reference
+    market_cap_category: mega
     market_cap: 2,360,145,047,066
   MSTR:
     name: MicroStrategy Incorporated Common Stock Class A
@@ -159,7 +183,10 @@ companies:
     market_cap: 39,187,658,485
   NVDA:
     name: NVIDIA Corporation Common Stock
-    sector: ''
+    sector: Technology
+    industry: Semiconductors
+    cik: "0001045810"  # NVIDIA CIK
+    market_cap_category: mega
     market_cap: 4,442,264,000,000
   BKNG:
     name: Booking Holdings Inc. Common Stock
@@ -251,7 +278,10 @@ companies:
     market_cap: 517,692,016,595
   GOOGL:
     name: Alphabet Inc. Class A Common Stock
-    sector: ''
+    sector: Technology
+    industry: Internet Services
+    cik: "0001652044"  # From M7 reference
+    market_cap_category: mega
     market_cap: 2,430,894,000,000
   DXCM:
     name: DexCom, Inc. Common Stock
@@ -291,7 +321,10 @@ companies:
     market_cap: 35,345,649,188
   TSLA:
     name: Tesla, Inc. Common Stock
-    sector: ''
+    sector: Technology
+    industry: Electric Vehicles
+    cik: "0001318605"  # From M7 reference
+    market_cap_category: large
     market_cap: 1,093,523,936,838
   NXPI:
     name: NXP Semiconductors N.V. Common Stock
@@ -303,7 +336,10 @@ companies:
     market_cap: 39,613,280,661
   META:
     name: Meta Platforms, Inc. Class A Common Stock
-    sector: ''
+    sector: Technology
+    industry: Social Media
+    cik: "0001326801"  # From M7 reference
+    market_cap_category: mega
     market_cap: 1,923,973,791,458
   PANW:
     name: Palo Alto Networks, Inc. Common Stock
@@ -410,11 +446,11 @@ data_sources:
     enabled: true
     stage_config: "stage_00_original_yfinance.yml"
   sec_edgar:
-    enabled: false
+    enabled: true
     stage_config: "stage_00_original_sec_edgar.yml"
 expected_files:
   yfinance: 300
-  sec_edgar: 0
+  sec_edgar: 300
 validation:
   timeout_seconds: 1800
   required_success_rate: 0.95

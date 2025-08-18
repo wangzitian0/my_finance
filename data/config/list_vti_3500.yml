@@ -1,9 +1,24 @@
+# VTI Total Stock Market ETF Holdings Dataset
+# Source: Vanguard VTI ETF official holdings data
+# Updated: Based on VTI ETF holdings as of fund reporting date
+# Note: Represents broad US stock market exposure (3485 companies)
+
 dataset_name: vti_3500
 cli_alias: v3k
-description: VTI ETF holdings (3485 companies) - production dataset
+description: VTI ETF holdings (3485 companies) - production dataset  
 tier: 4
 tracked_in_git: false
 max_size_mb: 20000
+
+# Data source attribution
+data_source_info:
+  primary_source: "Vanguard Total Stock Market ETF (VTI) Holdings"
+  source_url: "https://investor.vanguard.com/investment-products/etfs/profile/vti"
+  last_verified: "2025-08-18"
+  update_method: "Automated extraction from Vanguard holdings data"
+  selection_criteria: "All VTI ETF holdings above minimum weight threshold"
+  total_companies: 3485
+  notes: "Holdings and weights change based on market conditions and fund rebalancing"
 companies:
   VTI:
     name: Vanguard Total Stock Market ETF

@@ -49,6 +49,7 @@ def check_podman() -> Dict:
     # Check machine status
     machine_running, machine_info = run_command("podman machine list")
     machine_status = "Running" in machine_info if machine_running else False
+    never_started = "Never" in machine_info if machine_running else False
 
     # Check if we can connect to Podman
     can_connect, _ = run_command("podman info")
@@ -61,6 +62,10 @@ def check_podman() -> Dict:
         status_text = "⚠️ Machine Running but Not Connected"
         details = "Machine is running but podman commands fail"
         commands = ["podman machine stop", "podman machine start"]
+    elif never_started:
+        status_text = "❌ Machine Never Started (vfkit issue)"
+        details = f"Version: {version}, Machine exists but failed to start"
+        commands = ["pixi run env-start"]
     else:
         status_text = "❌ Machine Not Running"
         details = f"Version: {version}, Machine: Stopped"
