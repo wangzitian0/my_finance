@@ -410,11 +410,11 @@ data_sources:
     enabled: true
     stage_config: "stage_00_original_yfinance.yml"
   sec_edgar:
-    enabled: false
+    enabled: true
     stage_config: "stage_00_original_sec_edgar.yml"
 expected_files:
   yfinance: 300
-  sec_edgar: 0
+  sec_edgar: 300
 validation:
   timeout_seconds: 1800
   required_success_rate: 0.95
