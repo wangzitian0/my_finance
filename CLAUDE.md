@@ -63,6 +63,64 @@ p3 create-build                 # Create new timestamped build directory (branch
 p3 release-build                # Promote latest build to release with confirmation
 ```
 
+## Directory Management Principles
+
+**CRITICAL**: All data must follow the unified directory structure standard.
+
+### Standard Directory Format
+```
+stage_xx_yyyy/YYYYMMDD/TICKER/<files>
+```
+
+**Examples**:
+- `stage_00_original/20250818/AAPL/AAPL_yfinance_daily.json`
+- `stage_01_extract/20250818/AAPL/AAPL_sec_edgar_10k_001.txt`
+- `stage_02_transform/20250818/AAPL/AAPL_cleaned_financials.json`
+- `stage_03_load/20250818/AAPL/AAPL_graph_nodes.json`
+
+### Directory Management Library
+**Always use `common/directory_manager.py`** for all directory operations:
+
+```python
+from common.directory_manager import DirectoryManager
+
+dm = DirectoryManager()
+
+# Create standard directory
+path = dm.create_directory_structure("stage_00_original", "AAPL", "20250818")
+
+# Get standardized path
+file_path = dm.get_standard_path("stage_01_extract", "AAPL", "20250818", "AAPL_data.json")
+
+# List tickers in stage
+tickers = dm.list_tickers_in_stage("stage_00_original", "20250818")
+
+# Migrate legacy structures
+stats = dm.migrate_legacy_structure("stage_00_original", legacy_path, "20250818")
+```
+
+### Stage Definitions
+- **stage_00_original**: Raw data collection (SEC Edgar, YFinance)
+- **stage_01_extract**: Extracted and parsed data
+- **stage_02_transform**: Cleaned and normalized data
+- **stage_03_load**: Graph nodes and embeddings
+- **stage_04_analysis**: DCF analysis results
+- **stage_05_reporting**: Final reports and visualizations
+- **stage_99_build**: Build artifacts and manifests
+
+### File Naming Conventions
+- **Format**: `{TICKER}_{source}_{type}_{metadata}.{ext}`
+- **Examples**:
+  - `AAPL_yfinance_daily_1y.json`
+  - `AAPL_sec_edgar_10k_20231002.txt`
+  - `AAPL_graph_nodes_embedded.json`
+  - `AAPL_dcf_results_comprehensive.json`
+
+### Migration Requirements
+- **Never create non-standard directories**
+- **Always migrate legacy structures** using `scripts/migrate_directory_structure.py`
+- **Validate structure compliance** with `DirectoryManager.validate_structure()`
+
 ## Architecture Overview
 
 **See README.md for complete architecture details.** This is a SEC Filing-Enhanced Graph RAG-powered DCF valuation system with modular architecture:
@@ -92,17 +150,18 @@ p3 release-build                # Promote latest build to release with confirmat
   - `rag_orchestrator.py`: System coordination between ETL retrieval and answer generation
   - Responsible for question understanding and response generation
 
-- **SEC-Enhanced Data Storage Structure**:
-  - Stage 0: Original Data (`data/stage_00_original/`)
-    - SEC Edgar: `sec-edgar/<CIK>/{10k,10q,8k}/` (336 documents total)
-    - YFinance: `yfinance/<TICKER>/` (historical price and fundamental data)
-  - Stage 1 (Extract): `data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/`
-    - SEC documents: `<TICKER>_sec_edgar_{10k,10q,8k}_*.txt`
-    - YFinance data: `<TICKER>_yfinance_*.json`
-  - Stage 2 (Transform): `data/stage_02_transform/<date_partition>/{cleaned,enriched,normalized}/`  
-  - Stage 3 (Load): `data/stage_03_load/<date_partition>/{graph_nodes,embeddings,dcf_results,graph_rag_cache}/`
-    - Semantic embeddings: `embeddings_vectors.npy`, `embeddings_metadata.json`
-    - Vector indices: `vector_index.faiss`
+- **Unified Data Storage Structure**:
+  - Stage 00: Original Data (`data/stage_00_original/YYYYMMDD/TICKER/`)
+    - SEC Edgar: `TICKER_sec_edgar_{10k,10q,8k}_*.txt` (344 documents for M7)
+    - YFinance: `TICKER_yfinance_{daily,weekly,monthly}_*.json` (45+ tickers for N100)
+  - Stage 01: Extract (`data/stage_01_extract/YYYYMMDD/TICKER/`)
+    - Extracted documents: `TICKER_extracted_{type}_*.{json,txt}`
+  - Stage 02: Transform (`data/stage_02_transform/YYYYMMDD/TICKER/`)
+    - Cleaned data: `TICKER_cleaned_{type}_*.json`
+  - Stage 03: Load (`data/stage_03_load/YYYYMMDD/TICKER/`)
+    - Graph nodes: `TICKER_graph_nodes_*.json`
+    - Embeddings: `TICKER_embeddings_*.npy`
+    - Vector indices: `TICKER_vector_index_*.faiss`
   - Build tracking: `data/stage_99_build/build_<YYYYMMDD_HHMMSS>/` (main branch)
     - Build artifacts: `BUILD_MANIFEST.json`, `BUILD_MANIFEST.md`
     - SEC-enhanced DCF reports: `M7_LLM_DCF_Report_<YYYYMMDD_HHMMSS>.md`

@@ -104,19 +104,37 @@ SEC Edgar API → Document Parser → Semantic Embeddings → Vector Search → 
    Filings      Financial Data        384-dim Vectors    Similarity  SEC References
 ```
 
-### Data Flow Pipeline
+### Unified Directory Structure
+
+**Standard Format**: `stage_xx_yyyy/YYYYMMDD/TICKER/<files>`
 
 ```
-Stage 0: Original Data Collection (SEC Edgar + YFinance)
+Stage 00: Original Data (stage_00_original/20250818/TICKER/)
+    ├── TICKER_yfinance_daily_*.json    # Historical price data
+    ├── TICKER_sec_edgar_10k_*.txt      # Annual reports
+    ├── TICKER_sec_edgar_10q_*.txt      # Quarterly reports
+    └── TICKER_sec_edgar_8k_*.txt       # Current reports
     ↓
-Stage 1: Document Extraction (SEC filings, financial statements)
-    ↓  
-Stage 2: Data Transformation (text processing, embedding generation)
+Stage 01: Extract (stage_01_extract/20250818/TICKER/)
+    ├── TICKER_extracted_financials.json
+    └── TICKER_extracted_text.txt
     ↓
-Stage 3: Graph Loading (Neo4j nodes, vector indices, semantic cache)
+Stage 02: Transform (stage_02_transform/20250818/TICKER/)
+    ├── TICKER_cleaned_data.json
+    └── TICKER_normalized_metrics.json
     ↓
-Stage 99: Build Management (timestamped releases, validation reports)
+Stage 03: Load (stage_03_load/20250818/TICKER/)
+    ├── TICKER_graph_nodes.json
+    ├── TICKER_embeddings.npy
+    └── TICKER_vector_index.faiss
+    ↓
+Stage 99: Build Artifacts (stage_99_build/build_YYYYMMDD_HHMMSS/)
+    ├── BUILD_MANIFEST.json/md
+    ├── SEC_DCF_Integration_Process.md
+    └── M7_LLM_DCF_Report_*.md
 ```
+
+**Directory Management**: Use `common/directory_manager.py` for all directory operations to ensure compliance with the unified standard.
 
 ## Installation Details
 
