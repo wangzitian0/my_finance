@@ -1,4 +1,4 @@
-# Release Notes - Version 2025.08.18 (Build 20250818_161948)
+# Release Notes - Version 2025.08.18 (Build 20250818_162550)
 
 ## 🚀 Major Release: Comprehensive N100 Dataset with SEC Integration
 
@@ -8,7 +8,7 @@ This release completes GitHub issue #91 with comprehensive financial dataset cap
 
 #### 📊 NASDAQ-100 Dataset (N100)
 - **Complete NASDAQ-100 Coverage**: All 100 largest non-financial NASDAQ companies
-- **SEC Integration Ready**: 7/100 companies have CIK numbers for SEC Edgar integration
+- **SEC Integration Ready**: 7/100 companies have CIK numbers for SEC Edgar integration  
 - **Data Source Attribution**: Complete provenance documentation for all tickers
 - **Schema Standardization**: Consistent structure across F2/M7/N100/V3K configurations
 
@@ -36,6 +36,7 @@ This release completes GitHub issue #91 with comprehensive financial dataset cap
 - **ARM64 Support**: Fixed Podman architecture mismatch on Apple Silicon
 - **Auto-Detection**: Automatic architecture detection and correction
 - **Stable Commands**: Enhanced p3 command stability across platforms
+- **Command Consistency**: Updated CLAUDE.md to standardize p3 command usage
 
 #### 📁 Data Management
 - **Unified Repository**: Integrated data directory into main repository
@@ -54,10 +55,10 @@ This release completes GitHub issue #91 with comprehensive financial dataset cap
 
 ### 🔍 SEC Document Statistics
 
-- **Total Documents**: 344 SEC filings
-- **Coverage**: Apple Inc. (AAPL) complete historical 10-K series
+- **Total Documents**: 344+ SEC filings collected
+- **Coverage**: Apple Inc. (AAPL) and other M7 companies
 - **Document Types**: 10-K (Annual), 10-Q (Quarterly), 8-K (Current Events)
-- **Date Range**: 2017-2024 comprehensive coverage
+- **Date Range**: Multi-year historical coverage
 - **Integration**: Ready for semantic retrieval and DCF analysis
 
 ### 🛠 Technical Enhancements
@@ -83,17 +84,17 @@ companies:
     industry: "Consumer Electronics"
 ```
 
-#### Build Documentation
-- **SEC Integration Process**: Complete workflow documentation
-- **Data Provenance**: Source attribution for all datasets
-- **Schema Definitions**: Standardized data structures
-- **Validation Guidelines**: Quality assurance procedures
+#### p3 CLI Standardization
+- **Unified Commands**: All operations use `p3 <command>` syntax
+- **Environment Management**: `p3 activate`, `p3 env status`
+- **Testing**: `p3 e2e`, `p3 test`
+- **Data Operations**: `p3 build run`, `p3 create-pr`
 
 ### 🚧 Known Limitations
 
 #### Dependency Issues
 - **NumPy Import**: Circular import issue affecting DCF analysis
-- **Resolution**: Requires environment cleanup (separate from this release)
+- **Resolution**: Requires environment cleanup (tracked separately)
 
 #### Dataset Completeness
 - **N100 CIK Coverage**: 93/100 companies need CIK mapping for full SEC integration
@@ -118,14 +119,14 @@ This release establishes the foundation for institutional-grade financial analys
 
 ```bash
 # Generate N100 dataset with SEC integration
-pixi run build-dataset n100
+p3 build run n100
 
 # Create and release new builds
-pixi run create-build
-pixi run release-build
+p3 create-build
+p3 release-build
 
 # Run comprehensive validation
-pixi run test
+p3 e2e
 
 # Schema validation across all configurations
 python scripts/update_dataset_schemas.py
@@ -135,5 +136,6 @@ python scripts/update_dataset_schemas.py
 
 **Release Engineer**: Claude Code (Anthropic AI Assistant)  
 **Issue Reference**: #91 - Comprehensive 100-ticker dataset with SEC integration  
-**Build Date**: 2025-08-18 16:20:13  
-**Commit**: f165c16 - Complete issue #91: comprehensive N100 dataset with SEC integration
+**Build Date**: 2025-08-18 16:27:06  
+**Build ID**: build_20250818_162550  
+**Commit**: d0a9db4 - Complete issue #91 implementation with N100 dataset and SEC integration
