@@ -348,14 +348,40 @@ Fixes #{issue_number}
 
 🤖 Generated with [Claude Code](https://claude.ai/code)"""
 
-    # 8. Create PR using gh CLI
-    result = run_command(
-        f'gh pr create --title "{title}" --body "{body}"', "Creating PR with gh CLI"
+    # 8. Create or update PR using gh CLI
+    # First check if PR already exists
+    existing_pr_result = run_command(
+        f"gh pr list --head {current_branch} --json url,number --jq '.[0]'",
+        "Checking for existing PR",
+        check=False,
     )
+    
+    existing_pr_url = None
+    if existing_pr_result and existing_pr_result.stdout.strip() and existing_pr_result.stdout.strip() != "null":
+        try:
+            existing_pr_data = json.loads(existing_pr_result.stdout.strip())
+            if existing_pr_data and "url" in existing_pr_data:
+                existing_pr_url = existing_pr_data["url"]
+                pr_number = existing_pr_data["number"]
+                print(f"📝 Found existing PR #{pr_number}: {existing_pr_url}")
+                
+                # Update existing PR
+                result = run_command(
+                    f'gh pr edit {pr_number} --title "{title}" --body "{body}"', 
+                    "Updating existing PR"
+                )
+        except (json.JSONDecodeError, KeyError):
+            pass
+    
+    if not existing_pr_url:
+        # Create new PR
+        result = run_command(
+            f'gh pr create --title "{title}" --body "{body}"', "Creating new PR"
+        )
 
-    # Extract PR URL from output (check both stdout and stderr)
-    pr_url = None
-    if result:
+    # Extract PR URL from output or use existing PR URL
+    pr_url = existing_pr_url
+    if not pr_url and result:
         # Check stdout first (where gh pr create normally outputs the URL)
         if result.stdout:
             lines = result.stdout.split("\n")
@@ -392,7 +418,10 @@ Fixes #{issue_number}
             print("❌ Could not determine PR URL")
             return None
 
-    print(f"✅ PR Created: {pr_url}")
+    if existing_pr_url:
+        print(f"✅ PR Updated: {pr_url}")
+    else:
+        print(f"✅ PR Created: {pr_url}")
 
     # 9. Update commit message with actual PR URL
     pr_number = pr_url.split("/pull/")[-1]
