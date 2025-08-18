@@ -57,7 +57,9 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
                 tracker.fail_stage("stage_01_extract", "yfinance data collection failed")
                 return False
 
-        if yaml_config.get("enable_sec_edgar", False):
+        # Check SEC Edgar data source configuration
+        data_sources = yaml_config.get("data_sources", {})
+        if data_sources.get("sec_edgar", {}).get("enabled", False):
             success = build_sec_edgar_data(tier, yaml_config, tracker)
             if not success:
                 tracker.add_warning("stage_01_extract", "SEC Edgar data collection failed")
@@ -163,14 +165,14 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build SEC Edgar data using spider"""
     try:
-        from sec_edgar_spider import run_job
+        from ETL.sec_edgar_spider import run_job
 
         # Find SEC Edgar config for this tier
         config_manager = TestConfigManager()
         sec_config_map = {
             DatasetTier.TEST: "sec_edgar_test.yml",  # Create if needed
             DatasetTier.M7: "sec_edgar_m7.yml",
-            DatasetTier.NASDAQ100: "sec_edgar_nasdaq100.yml",
+            DatasetTier.N100: "sec_edgar_nasdaq100.yml",  # N100 maps to nasdaq100 config
         }
 
         sec_config_file = sec_config_map.get(tier)

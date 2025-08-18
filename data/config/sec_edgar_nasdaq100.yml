@@ -1,0 +1,35 @@
+# SEC Edgar configuration for NASDAQ-100 dataset
+# Using M7 subset for demonstration (can be expanded to full 100 companies)
+
+# M7 CIK numbers as provided in sec_edgar_spider.py
+tickers:
+  - "0000320193"  # AAPL - Apple Inc.
+  - "0000789019"  # MSFT - Microsoft Corporation
+  - "0001018724"  # AMZN - Amazon.com, Inc.
+  - "0001652044"  # GOOGL - Alphabet Inc.
+  - "0001326801"  # META - Meta Platforms, Inc.
+  - "0001318605"  # TSLA - Tesla, Inc.
+  - "0001065280"  # NFLX - Netflix, Inc.
+
+# Number of filings per type to fetch
+count: 8
+
+# Filing types to collect
+file_types:
+  - "10K"  # Annual reports
+  - "10Q"  # Quarterly reports  
+  - "8K"   # Current reports
+
+# User identification for SEC API
+email: "ZitianSG (wangzitian0@gmail.com)"
+
+# Data collection settings
+collection:
+  start_date: "2022-01-01"
+  rate_limit_seconds: 2
+  max_retries: 3
+  timeout_per_filing: 60
+
+# Note: This configuration uses M7 companies as a subset.
+# To implement full N100 dataset, CIK numbers for all 100 NASDAQ companies 
+# would need to be researched and added to the tickers list.
