@@ -50,7 +50,7 @@ p3 neo4j start                  # Start Neo4j container
 
 ### Development Commands (Unified p3)
 ```bash
-pixi shell                      # Activate environment
+p3 activate                     # Activate environment
 p3 refresh m7                   # Build stable test dataset
 p3 format                       # Format code
 p3 lint                         # Lint code
@@ -301,11 +301,11 @@ git push --force-with-lease
 - **Fast Development Testing**: `p3 e2e` (~1-2 minutes)
   - Quick validation during development
   - Sufficient for most code changes and bug fixes
-- **Standard PR Testing**: `pixi run e2e` or `pixi run e2e m7` (~5-10 minutes)  
+- **Standard PR Testing**: `p3 e2e` or `p3 e2e m7` (~5-10 minutes)  
   - **REQUIRED** before creating PRs
   - Full M7 validation (default scope)
   - Production-grade quality assurance
-- **Extended Testing**: `pixi run e2e n100` or `pixi run e2e v3k` (comprehensive validation)
+- **Extended Testing**: `p3 e2e n100` or `p3 e2e v3k` (comprehensive validation)
 
 ### Daily Development Workflow for Claude
 
@@ -315,7 +315,7 @@ git push --force-with-lease
 2. **ALWAYS stage data directory changes before main repo commits**
 3. **ALWAYS check and stage data changes first**
 4. **ALWAYS start from latest main (`git checkout main && git pull`)**
-5. **ALWAYS test mechanisms before coding (`pixi run build-dataset m7`)**
+5. **ALWAYS test mechanisms before coding (`p3 build run m7`)**
 6. **ALWAYS verify SEC data availability before semantic retrieval work**
 7. **ALWAYS use proper citations when working with SEC filing integration**
 
@@ -324,7 +324,7 @@ git push --force-with-lease
 ```bash
 # 1. Start session - ENSURE LATEST BASE
 git checkout main && git pull origin main    # CRITICAL: Latest main
- pixi shell                                   # Activate environment
+ p3 activate                                  # Activate environment
  p3 env status                                # Check all services
 
 # 2. Create branch from LATEST main
@@ -488,10 +488,10 @@ git checkout -b feature/task-v2
  p3 cleanup-branches --dry-run
 
 # Interactive cleanup with confirmation
-pixi run cleanup-branches
+p3 cleanup-branches
 
 # Automatic cleanup (for CI or regular maintenance)
-pixi run cleanup-branches-auto
+p3 cleanup-branches --auto
 ```
 
 **Manual cleanup if needed:**
@@ -508,7 +508,7 @@ git remote prune origin
 ```
 
 ### Session Management (CRITICAL)
-- **Always start with**: `pixi shell` and `p3 env status`
+- **Always start with**: `p3 activate` and `p3 env status`
 - **Always end with**: `p3 shutdown-all`
 - **Never leave services running** between sessions
 - **Check status frequently** during long development sessions
