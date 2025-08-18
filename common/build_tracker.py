@@ -556,6 +556,72 @@ class BuildTracker:
         except Exception:
             return None
 
+        # Enhanced dataset information for Issue #91
+        real_outputs = self.manifest.get("real_outputs", {})
+        status.update(
+            {
+                "dataset_summary": {
+                    "yfinance_files": len(real_outputs.get("yfinance_files", [])),
+                    "sec_edgar_files": len(real_outputs.get("sec_edgar_files", [])),
+                    "dcf_reports": len(real_outputs.get("dcf_reports", [])),
+                    "graph_rag_outputs": len(real_outputs.get("graph_rag_outputs", [])),
+                    "total_files": len(real_outputs.get("yfinance_files", []))
+                    + len(real_outputs.get("sec_edgar_files", [])),
+                    "companies_processed": self.manifest["statistics"].get(
+                        "companies_processed", 0
+                    ),
+                },
+                "build_info": {
+                    "start_time": self.manifest["build_info"]["start_time"],
+                    "end_time": self.manifest["build_info"]["end_time"],
+                    "duration": self._calculate_duration(),
+                    "command": self.manifest["build_info"]["command"],
+                },
+                "directory_structure": {
+                    "build_path": str(self.build_path),
+                    "artifacts_count": (
+                        len(list((self.build_path / "artifacts").glob("*")))
+                        if (self.build_path / "artifacts").exists()
+                        else 0
+                    ),
+                    "stage_logs_count": (
+                        len(list((self.build_path / "stage_logs").glob("*")))
+                        if (self.build_path / "stage_logs").exists()
+                        else 0
+                    ),
+                },
+            }
+        )
+
+        return status
+
+    def _calculate_duration(self) -> Optional[str]:
+        """Calculate build duration in human-readable format"""
+        start_time = self.manifest["build_info"]["start_time"]
+        end_time = self.manifest["build_info"]["end_time"]
+
+        if not start_time or not end_time:
+            return None
+
+        try:
+            start = datetime.fromisoformat(start_time)
+            end = datetime.fromisoformat(end_time)
+            duration = end - start
+
+            total_seconds = int(duration.total_seconds())
+            hours = total_seconds // 3600
+            minutes = (total_seconds % 3600) // 60
+            seconds = total_seconds % 60
+
+            if hours > 0:
+                return f"{hours}h {minutes}m {seconds}s"
+            elif minutes > 0:
+                return f"{minutes}m {seconds}s"
+            else:
+                return f"{seconds}s"
+        except Exception:
+            return None
+
     def _copy_sec_dcf_documentation(self) -> bool:
         """Generate SEC DCF integration process documentation directly in build artifacts"""
         try:
