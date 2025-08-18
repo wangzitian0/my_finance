@@ -1,0 +1,36 @@
+{
+  "stage": "stage_01_extract",
+  "build_id": "20250818_194041",
+  "tier": "f2",
+  "partition": "20250818",
+  "timestamp": "2025-08-18T19:40:41.425151",
+  "quality_metrics": {
+    "overall_success_rate": 0,
+    "yfinance_success_rate": 0,
+    "sec_edgar_success_rate": 0,
+    "total_files_expected": 0,
+    "total_files_actual": 0
+  },
+  "data_analysis": {
+    "yfinance": {
+      "error": "YFinance directory not found",
+      "success_rate": 0,
+      "actual_files": 0,
+      "expected_files": 0
+    },
+    "sec_edgar": {
+      "error": "SEC Edgar directory not found",
+      "success_rate": 0,
+      "actual_files": 0,
+      "expected_files": 0
+    }
+  },
+  "issues": [
+    "Data extraction success rate below 80%: 0.0%"
+  ],
+  "recommendations": [
+    "Check API connections and rate limits",
+    "Improve YFinance API reliability",
+    "Check SEC Edgar API access"
+  ]
+}

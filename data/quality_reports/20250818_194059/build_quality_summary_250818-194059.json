@@ -1,0 +1,28 @@
+{
+  "build_id": "20250818_194059",
+  "tier": "f2",
+  "generated_at": "2025-08-18T19:40:59.545364",
+  "stages_analyzed": [
+    "stage_01_extract",
+    "stage_02_transform",
+    "stage_03_load",
+    "stage_04_analysis",
+    "stage_05_reporting"
+  ],
+  "overall_health": "needs_attention",
+  "quality_summary": {
+    "average_success_rate": 33.333333333333336,
+    "stage_success_rates": {
+      "stage_01_extract": 0,
+      "stage_02_transform": 0,
+      "stage_03_load": 100
+    }
+  },
+  "recommendations": [
+    "Check API connections and rate limits",
+    "Check SEC Edgar API access",
+    "Check report generation logic",
+    "Check database connections and indexing",
+    "Improve YFinance API reliability"
+  ]
+}

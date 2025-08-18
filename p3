@@ -53,6 +53,8 @@ Status & Validation:
   cache-status           Check cache status
   verify-env             Verify environment dependencies
   check-integrity        Check data integrity
+  quality-report        Generate stage quality reports
+
 
 Scopes: f2 m7 n100 v3k (default: m7)
 

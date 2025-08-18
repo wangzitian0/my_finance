@@ -1,0 +1,13 @@
+{
+  "stage": "stage_02_transform",
+  "build_id": "20250818_194059",
+  "tier": "f2",
+  "partition": "20250818",
+  "timestamp": "2025-08-18T19:40:59.541441",
+  "quality_metrics": {},
+  "data_analysis": {},
+  "issues": [
+    "Stage 02 directory not found"
+  ],
+  "recommendations": []
+}

@@ -1,0 +1,22 @@
+{
+  "stage": "stage_05_reporting",
+  "build_id": "20250818_194059",
+  "tier": "f2",
+  "partition": "20250818",
+  "timestamp": "2025-08-18T19:40:59.543568",
+  "quality_metrics": {
+    "dcf_reports_generated": 0,
+    "manifests_created": 5,
+    "reporting_success_rate": 0
+  },
+  "data_analysis": {
+    "dcf_reports": 0,
+    "build_manifests": 5
+  },
+  "issues": [
+    "No DCF reports generated"
+  ],
+  "recommendations": [
+    "Check report generation logic"
+  ]
+}

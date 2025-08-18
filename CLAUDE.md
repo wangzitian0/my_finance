@@ -1,13 +1,15 @@
 # CLAUDE.md
 
-> IMPORTANT UPDATE (2025-08-12)
+> IMPORTANT UPDATE (2025-08-18)
 >
-> The `data` directory is now directly integrated into the main repository. 
-> The previous symlink/submodule structure has been merged for simpler management.
+> **Major System Enhancements Completed:**
+> - ✅ **Stage Data Quality Reporting System**: Integrated into build process with automatic quality analysis
+> - ✅ **DCF Report Generation & Tracking**: Complete SEC-enhanced DCF analysis with quality monitoring  
+> - ✅ **Git Conflict Resolution Framework**: Proven workflow for handling complex merge conflicts
+> - ✅ **Build Tracking Integration**: Quality reports auto-generated at each stage completion
+> - ✅ **Directory Structure Unification**: Standardized stage-based data management
 >
-> - New structure: `my_finance/data/` (regular directory, part of main repo)
-> - All data files are now tracked in the main repository
-> - No need for separate repository or symlink management
+> The `data` directory is directly integrated into the main repository with comprehensive quality monitoring.
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -50,7 +52,7 @@ p3 neo4j start                  # Start Neo4j container
 
 ### Development Commands (Unified p3)
 ```bash
-p3 activate                     # Activate environment
+pixi shell                      # Activate environment (CORRECTED)
 p3 refresh m7                   # Build stable test dataset
 p3 format                       # Format code
 p3 lint                         # Lint code
@@ -61,11 +63,54 @@ p3 test                         # Run tests
 ```bash
 p3 create-build                 # Create new timestamped build directory (branch-specific)
 p3 release-build                # Promote latest build to release with confirmation
+
+# Quality Reporting Commands (NEW)
+p3 build run m7                 # Full build with integrated quality reporting
+p3 e2e                          # End-to-end test with quality assessment
+# Quality reports automatically generated at: data/quality_reports/<build_id>/
 ```
+
+## Stage Data Quality Reporting System (NEW)
+
+**CRITICAL**: Every build stage now automatically generates quality reports with success rate analysis.
+
+### Quality Reporting Integration
+**Automatically activated during build process:**
+
+```python
+from common.build_tracker import BuildTracker
+from common.quality_reporter import setup_quality_reporter
+
+# Quality reporting is automatically integrated into BuildTracker
+tracker = BuildTracker()
+build_id = tracker.start_build('m7', 'p3 build run m7')
+
+# Each stage completion generates quality reports
+tracker.complete_stage('stage_01_extract', partition='20250818')
+# → Automatically creates: data/quality_reports/<build_id>/stage_01_extract_<timestamp>.json
+
+# Build completion generates comprehensive summary
+tracker.complete_build('completed')
+# → Automatically creates: data/quality_reports/<build_id>/quality_summary_<timestamp>.md
+```
+
+### Quality Report Structure
+- **Location**: `data/quality_reports/<build_id>/`
+- **Stage Reports**: `stage_XX_<name>_<timestamp>.json`
+- **Summary Reports**: `quality_summary_<timestamp>.{json,md}`
+- **Metrics Tracked**: Success rates, file counts, processing efficiency, issues, recommendations
+
+### Success Rate Analysis
+- **YFinance Data Collection**: Downloads vs expected files
+- **SEC Edgar Processing**: Document retrieval and parsing rates
+- **Data Transformation**: Cleaning and normalization efficiency
+- **Graph Loading**: Node creation and embedding generation
+- **DCF Analysis**: Company analysis completion rates
+- **Report Generation**: DCF report creation success
 
 ## Directory Management Principles
 
-**CRITICAL**: All data must follow the unified directory structure standard.
+**CRITICAL**: All data follows the unified stage-based directory structure with quality monitoring.
 
 ### Standard Directory Format
 ```
@@ -276,6 +321,16 @@ git push --force-with-lease
 - Issue #26: Cross-platform conda migration
 
 ### Recently Completed Issues
+- Issue #91: ✅ **COMPLETED** - Stage Data Quality Reporting System (2025-08-18)
+  - ✅ **Git conflict resolution**: Comprehensive rebase workflow for complex merge conflicts
+  - ✅ **Data cleanup**: Non-release old data cleanup and organization
+  - ✅ **Quality reporting system**: Integrated stage-by-stage quality analysis into build process
+  - ✅ **BuildTracker integration**: Quality reports auto-generated at each stage completion
+  - ✅ **DCF report tracking**: Enhanced detection and monitoring of DCF report generation
+  - ✅ **Success rate monitoring**: YFinance, SEC Edgar, transformation, loading efficiency tracking
+  - ✅ **Automated recommendations**: Issue detection and actionable improvement suggestions
+  - ✅ **Comprehensive documentation**: Complete SEC-DCF integration process documentation
+
 - Issue #80: ✅ **COMPLETED** - Eliminated .m7-test-passed file conflicts (2025-08-13)
   - Replaced file-based test validation with commit message validation
   - Updated create-pr script to embed M7 test results directly in commit messages
@@ -383,22 +438,22 @@ git push --force-with-lease
 ```bash
 # 1. Start session - ENSURE LATEST BASE
 git checkout main && git pull origin main    # CRITICAL: Latest main
- p3 activate                                  # Activate environment
- p3 env status                                # Check all services
+pixi shell                                   # Activate environment (CORRECTED)
+p3 env status                                # Check all services
 
 # 2. Create branch from LATEST main
 git checkout -b feature/description-fixes-N
 
 # 3. VALIDATE mechanisms before coding (CRITICAL)
- p3 build run m7             # Verify build system works (explicit M7)
- p3 e2e                      # End-to-end flow validation
+p3 build run m7             # Verify build system works (with quality reporting)
+p3 e2e                      # End-to-end flow validation (with quality analysis)
 rm -f common/latest_build   # Clear build symlinks if needed
 
-# 4. Work on tasks - USE PIXI COMMANDS ONLY
+# 4. Work on tasks - USE P3 COMMANDS ONLY
 # ... make code changes ...
- p3 format                   # Format code
- p3 lint                     # Check quality
- p3 test                     # Validate changes
+p3 format                   # Format code
+p3 lint                     # Check quality
+p3 test                     # Validate changes
 
 # 5. Handle data directory FIRST (CRITICAL)
  p3 commit-data-changes        # Stage any data directory changes
@@ -567,9 +622,74 @@ git remote prune origin
 ```
 
 ### Session Management (CRITICAL)
-- **Always start with**: `p3 activate` and `p3 env status`
+- **Always start with**: `pixi shell` and `p3 env status` (CORRECTED)
 - **Always end with**: `p3 shutdown-all`
 - **Never leave services running** between sessions
 - **Check status frequently** during long development sessions
 
 This ensures clean environment state and prevents port conflicts or resource issues.
+
+## Git Conflict Resolution Framework (NEW)
+
+**Proven workflow for handling complex merge conflicts based on Issue #91 experience:**
+
+### Conflict Prevention
+1. **Always start from latest main**: `git checkout main && git pull origin main`
+2. **Regular syncing**: `git fetch origin main` and check `git log --oneline HEAD..origin/main`
+3. **Early rebasing**: Rebase frequently during long-running branches
+4. **Test before pushing**: Always run `p3 e2e` before creating PRs
+
+### Conflict Resolution Process
+**When conflicts occur during rebase:**
+
+```bash
+# Step 1: Start rebase
+git rebase origin/main
+# → Git will pause at first conflict
+
+# Step 2: Analyze conflicts
+git status  # See conflicted files
+# Look for conflict markers: <<<<<<< HEAD, =======, >>>>>>> 
+
+# Step 3: Resolve conflicts methodically
+# Choose appropriate version (HEAD vs incoming) for each section
+# Remove conflict markers
+# Test functionality after each file
+
+# Step 4: Continue rebase
+git add .  # Stage resolved files
+git rebase --continue  # Continue to next conflict or complete
+
+# Step 5: Force push with lease (safer)
+git push --force-with-lease origin feature/branch-name
+
+# Step 6: Verify with quality testing
+p3 e2e  # Ensure everything still works after conflict resolution
+```
+
+### Common Conflict Patterns
+- **Build tracking code**: Usually take HEAD (current branch) version
+- **Import statements**: Merge both, removing duplicates
+- **Configuration files**: Merge functionality from both branches
+- **Method signatures**: Take the newer version and update callers
+- **Data structures**: Merge fields and update all references
+
+### Conflict Resolution Best Practices
+- ✅ **Resolve file by file**: Don't try to fix everything at once
+- ✅ **Test after each resolution**: Ensure functionality still works
+- ✅ **Keep detailed commit messages**: Document what conflicts were resolved
+- ✅ **Use quality reports**: Verify no regressions with `p3 e2e`
+- ❌ **Never force push without --force-with-lease**: Could overwrite others' work
+- ❌ **Never continue with unresolved conflicts**: Fix all conflicts before continuing
+
+### Emergency Recovery
+**If conflicts become too complex:**
+```bash
+# Abort current rebase
+git rebase --abort
+
+# Start fresh from latest main
+git checkout main && git pull
+git checkout -b feature/task-v2
+# Manually recreate your changes - cleaner than resolving complex conflicts
+```

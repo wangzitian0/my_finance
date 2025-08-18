@@ -1,0 +1,27 @@
+{
+  "stage": "stage_03_load",
+  "build_id": "20250818_194059",
+  "tier": "f2",
+  "partition": "20250818",
+  "timestamp": "2025-08-18T19:40:59.541765",
+  "quality_metrics": {
+    "load_rate": 0,
+    "input_files": 0,
+    "output_files": 0,
+    "tickers_processed_count": 0
+  },
+  "data_analysis": {
+    "graph_node_files": 0,
+    "embedding_files": 0,
+    "vector_index_files": 0,
+    "dcf_result_files": 0,
+    "tickers_processed": []
+  },
+  "issues": [
+    "Low load rate: 0.0%",
+    "Only 0 of 2 expected tickers processed"
+  ],
+  "recommendations": [
+    "Check database connections and indexing"
+  ]
+}
