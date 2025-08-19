@@ -14,6 +14,14 @@ reference_config: "list_magnificent_7.yml"
 selected_companies: ["MSFT", "NVDA"]  # Selected for speed and reliability
 ticker_count: 2
 
+# Data source attribution
+data_source_info:
+  primary_source: "Reference to Magnificent 7 dataset"
+  last_verified: "2025-08-19"
+  update_method: "Automatic selection from M7 configuration"
+  selection_criteria: "2 fastest-processing companies from M7 for development testing"
+  notes: "Subset of M7 companies optimized for rapid development iteration"
+
 # Fast data collection for PR validation
 data_sources:
   yfinance:
