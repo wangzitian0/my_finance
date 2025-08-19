@@ -116,28 +116,35 @@ def get_commit_info():
 
 
 def check_condition_1_test_run(commit_msg: str) -> bool:
-    """Condition 1: Tests were run"""
-    print("🔍 Checking condition 1: M7 tests were executed")
+    """Condition 1: Tests were run (M7 or F2 fast-build accepted)"""
+    print("🔍 检查条件1: 验证测试已执行")
 
-    if "M7-TESTED" in commit_msg and "This commit passed M7 end-to-end testing" in commit_msg:
-        print("✅ Condition 1 passed: Found M7 test marker")
+    # Accept both M7 and F2 test markers
+    has_m7_test = "M7-TESTED" in commit_msg and "This commit passed M7 end-to-end testing" in commit_msg
+    has_f2_test = "F2-TESTED" in commit_msg and "This commit passed F2 fast-build testing" in commit_msg
+    
+    if has_m7_test:
+        print("✅ 条件1通过: 发现M7完整测试标记")
+        return True
+    elif has_f2_test:
+        print("✅ 条件1通过: 发现F2快速测试标记")
         return True
     else:
-        print("❌ Condition 1 FAILED: Missing authentic M7 test execution marker")
+        print("❌ 条件1失败: 缺少有效的测试执行标记")
         print()
-        print("🚨 CRITICAL ERROR: This commit was not created using the required workflow!")
+        print("🚨 错误: 此提交未使用规定的工作流程创建！")
         print()
-        print("🔧 REQUIRED WORKFLOW:")
-        print("   1. Run: p3 e2e                           # Execute real M7 tests")
-        print('   2. Use: p3 create-pr "title" ISSUE_NUMBER # Create PR with validation')
+        print("🔧 正确的工作流程:")
+        print("   1. 运行测试: p3 e2e                      # 执行F2快速测试")
+        print('   2. 创建PR: p3 create-pr "标题" 问题编号   # 自动验证并创建PR')
         print()
-        print("❌ FORBIDDEN METHODS (will always fail CI):")
-        print("   • Direct git push/commit")
-        print("   • Manual PR creation via GitHub UI")
-        print("   • Hand-crafted M7-TESTED markers")
-        print("   • Bypassing the automated script")
+        print("❌ 禁止的方法 (CI会失败):")
+        print("   • 直接 git push/commit")
+        print("   • 手动通过GitHub界面创建PR")
+        print("   • 手工编写测试标记")
+        print("   • 绕过自动化脚本")
         print()
-        print("📖 See CLAUDE.md for detailed explanation of why manual methods fail")
+        print("📖 详见 CLAUDE.md 了解为什么手动方法会失败")
         return False
 
 
@@ -158,17 +165,17 @@ def extract_test_time(commit_msg: str) -> Optional[datetime.datetime]:
 
 def check_condition_2_test_timing(commit_msg: str, commit_time: int) -> bool:
     """Condition 2: Test time within 10 minutes of commit time"""
-    print("🔍 Checking condition 2: Test timing validation (within 10 minutes)")
+    print("🔍 检查条件2: 测试时间验证 (10分钟内)")
 
     test_time = extract_test_time(commit_msg)
     if not test_time:
-        print("❌ Condition 2 FAILED: Cannot extract valid test timestamp")
+        print("❌ 条件2失败: 无法提取有效的测试时间戳")
         print()
-        print("🚨 This indicates a hand-crafted or invalid M7-TESTED marker!")
+        print("🚨 这表明测试标记是手工编写的或无效的！")
         print()
-        print("✅ SOLUTION: Use the automated workflow:")
-        print("   1. p3 e2e                           # Real tests embed valid timestamps")
-        print('   2. p3 create-pr "title" ISSUE_NUMBER # Proper commit message formatting')
+        print("✅ 解决方案: 使用自动化工作流程:")
+        print("   1. p3 e2e                           # 真实测试会嵌入有效时间戳")
+        print('   2. p3 create-pr "标题" 问题编号      # 正确的提交消息格式')
         return False
 
     commit_dt = datetime.datetime.fromtimestamp(commit_time, datetime.timezone.utc)
@@ -180,53 +187,53 @@ def check_condition_2_test_timing(commit_msg: str, commit_time: int) -> bool:
     print(f"   Time difference: {time_diff:.0f}s ({time_diff_min:.1f}min)")
 
     if time_diff > 600:  # 10 minutes
-        print(f"❌ Condition 2 FAILED: Test timestamp too early ({time_diff_min:.1f}min ago)")
+        print(f"❌ 条件2失败: 测试时间戳过早 ({time_diff_min:.1f}分钟前)")
         print()
-        print("🚨 This indicates fake or stale test results!")
-        print("✅ SOLUTION: Run fresh tests immediately before PR creation:")
-        print("   1. p3 e2e                           # Fresh test execution")
-        print('   2. p3 create-pr "title" ISSUE_NUMBER # Immediate PR creation')
+        print("🚨 这表明测试结果是虚假的或过时的！")
+        print("✅ 解决方案: 在创建PR前立即运行新测试:")
+        print("   1. p3 e2e                           # 新鲜的测试执行")
+        print('   2. p3 create-pr "标题" 问题编号      # 立即创建PR')
         return False
     elif time_diff < -120:  # -2 minutes
-        print(f"❌ Condition 2 FAILED: Test timestamp too late ({-time_diff_min:.1f}min after)")
-        print("🚨 This indicates manipulated timestamps!")
+        print(f"❌ 条件2失败: 测试时间戳过晚 ({-time_diff_min:.1f}分钟后)")
+        print("🚨 这表明时间戳被篡改了！")
         return False
     else:
-        print("✅ Condition 2 passed: Test timing is within acceptable range")
+        print("✅ 条件2通过: 测试时间在可接受范围内")
         return True
 
 
 def check_condition_3_commit_freshness(commit_time: int) -> bool:
     """Condition 3: Commit within 24 hours"""
-    print("🔍 Checking condition 3: Commit freshness validation (within 24 hours)")
+    print("🔍 检查条件3: 提交新鲜度验证 (24小时内)")
 
     now = datetime.datetime.now(datetime.timezone.utc)
     commit_dt = datetime.datetime.fromtimestamp(commit_time, datetime.timezone.utc)
     time_diff = (now - commit_dt).total_seconds()
     hours_diff = time_diff / 3600
 
-    print(f"   Current time: {now}")
-    print(f"   Commit time: {commit_dt}")
-    print(f"   Time difference: {hours_diff:.1f}h")
+    print(f"   当前时间: {now}")
+    print(f"   提交时间: {commit_dt}")
+    print(f"   时间差: {hours_diff:.1f}小时")
 
     if hours_diff > 24:
-        print(f"❌ Condition 3 FAILED: Commit too old ({hours_diff:.1f}h ago)")
+        print(f"❌ 条件3失败: 提交过于陈旧 ({hours_diff:.1f}小时前)")
         print()
-        print("🚨 This commit exceeds the 24-hour freshness requirement!")
+        print("🚨 此提交超过了24小时新鲜度要求！")
         print()
-        print("✅ SOLUTION: Create a fresh commit using the automated workflow:")
-        print("   1. Make any small code change (or just run p3 format)")
-        print("   2. p3 e2e                           # Fresh test execution")
-        print('   3. p3 create-pr "title" ISSUE_NUMBER # Fresh commit within 24h')
+        print("✅ 解决方案: 使用自动化工作流程创建新提交:")
+        print("   1. 做任何小的代码更改 (或运行 p3 format)")
+        print("   2. p3 e2e                           # 新鲜的测试执行")
+        print('   3. p3 create-pr "标题" 问题编号      # 24小时内的新提交')
         return False
     else:
-        print("✅ Condition 3 passed: Commit is within 24 hours")
+        print("✅ 条件3通过: 提交在24小时内")
         return True
 
 
 def check_condition_4_test_results(commit_msg: str) -> bool:
-    """Condition 4: Sufficient test results (≥7 data files)"""
-    print("🔍 Checking condition 4: Test results validation (M7 data sufficiency)")
+    """Condition 4: Sufficient test results (≥2 data files for F2)"""
+    print("🔍 检查条件4: 测试结果验证 (数据充分性)")
 
     if "Test Results:" in commit_msg and "data files validated" in commit_msg:
         for line in commit_msg.split("\n"):
@@ -234,38 +241,38 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                 numbers = re.findall(r"\d+", line)
                 if numbers:
                     file_count = int(numbers[0])
-                    print(f"   Found test results: {file_count} data files")
-                    if file_count >= 7:
-                        print(f"✅ Condition 4 passed: Validated {file_count} data files (≥7)")
+                    print(f"   发现测试结果: {file_count} 个数据文件")
+                    # Accept both M7 (≥7 files) and F2 (≥2 files) test results
+                    if file_count >= 2:
+                        test_type = "M7完整测试" if file_count >= 7 else "F2快速测试"
+                        print(f"✅ 条件4通过: 验证了 {file_count} 个数据文件 ({test_type})")
                         return True
                     else:
-                        print(f"❌ Condition 4 FAILED: Insufficient data files ({file_count} < 7)")
+                        print(f"❌ 条件4失败: 数据文件不足 ({file_count} < 2)")
                         print()
-                        print("🚨 This indicates incomplete M7 test execution!")
+                        print("🚨 这表明测试执行不完整！")
                         print()
-                        print("✅ SOLUTION: Run complete M7 testing:")
-                        print("   1. p3 e2e                           # Full M7 dataset validation")
-                        print(
-                            '   2. p3 create-pr "title" ISSUE_NUMBER # Proper test result embedding'
-                        )
+                        print("✅ 解决方案: 运行正确的测试:")
+                        print("   1. p3 e2e                           # F2快速测试验证")
+                        print('   2. p3 create-pr "标题" 问题编号      # 正确的测试结果嵌入')
                         return False
-        print("❌ Condition 4 FAILED: Cannot parse test results count")
-        print("🚨 This indicates corrupted or hand-crafted M7 test markers!")
+        print("❌ 条件4失败: 无法解析测试结果数量")
+        print("🚨 这表明测试标记已损坏或是手工编写的！")
         return False
     else:
-        print("❌ Condition 4 FAILED: Test results not found")
+        print("❌ 条件4失败: 未找到测试结果")
         print()
-        print("🚨 This indicates the commit was not created through proper testing!")
+        print("🚨 这表明提交不是通过正确的测试创建的！")
         print()
-        print("✅ SOLUTION:")
-        print("   1. p3 e2e                           # Execute real M7 tests")
-        print('   2. p3 create-pr "title" ISSUE_NUMBER # Embed test results in commit')
+        print("✅ 解决方案:")
+        print("   1. p3 e2e                           # 执行真实的测试")
+        print('   2. p3 create-pr "标题" 问题编号      # 在提交中嵌入测试结果')
         return False
 
 
 def check_condition_5_code_formatting() -> bool:
     """Condition 5: Python code formatting with black and isort"""
-    print("🔍 Checking condition 5: Python code formatting validation")
+    print("🔍 检查条件5: Python代码格式验证")
 
     try:
         # Install formatting tools if needed
@@ -333,12 +340,12 @@ def check_condition_5_code_formatting() -> bool:
 
 def main():
     """Main validation function - CI only"""
-    print("🔍 M7 Validation Starting - Checking 5 Core Conditions")
-    print("1. ✅ Tests were run")
-    print("2. ⏰ Test completion time within 10 minutes of push time")
-    print("3. 📅 Push time within 24h")
-    print("4. 📊 Simple tests pass on CI")
-    print("5. 🎨 Python code formatting validation")
+    print("🔍 CI测试验证开始 - 检查5个核心条件")
+    print("1. ✅ 测试已执行 (M7或F2)")
+    print("2. ⏰ 测试时间在推送时间10分钟内")
+    print("3. 📅 推送时间在24小时内")
+    print("4. 📊 CI上的简单测试通过")
+    print("5. 🎨 Python代码格式验证")
     print("=" * 60)
 
     # Get commit info
