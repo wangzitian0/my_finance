@@ -72,20 +72,20 @@ This system implements a Graph Retrieval-Augmented Generation (Graph RAG) system
 ## Neo4j Data Model
 
 ### Core Node Types
-- **Stock**: 股票基本信息
-- **SECFiling**: SEC文件（10-K, 10-Q, 8-K）
-- **NewsEvent**: 新闻事件
-- **DCFValuation**: DCF估值数据
-- **FinancialMetrics**: 财务指标
-- **DocumentChunk**: 文档片段（用于语义检索）
+- **Stock**: Basic stock information
+- **SECFiling**: SEC documents (10-K, 10-Q, 8-K)
+- **NewsEvent**: News events
+- **DCFValuation**: DCF valuation data
+- **FinancialMetrics**: Financial metrics
+- **DocumentChunk**: Document chunks (for semantic retrieval)
 
 ### Relationship Types
-- **HAS_FILING**: 股票 -> SEC文件
-- **MENTIONED_IN**: 股票 -> 新闻事件
-- **HAS_VALUATION**: 股票 -> DCF估值
-- **HAS_METRIC**: 股票 -> 财务指标
-- **IMPACTS**: 新闻事件 -> DCF估值
-- **USES**: DCF估值 -> 财务指标
+- **HAS_FILING**: Stock -> SEC documents
+- **MENTIONED_IN**: Stock -> News events
+- **HAS_VALUATION**: Stock -> DCF valuation
+- **HAS_METRIC**: Stock -> Financial metrics
+- **IMPACTS**: News events -> DCF valuation
+- **USES**: DCF valuation -> Financial metrics
 
 ## Usage
 

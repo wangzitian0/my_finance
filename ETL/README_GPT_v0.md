@@ -132,7 +132,7 @@ CREATE (sus:Sustainability {
   ratingYear: 2025,
   ratingMonth: 1,
   highestControversy: 3.0
-  // 可继续添加其它 ESG 相关属性
+  // Can continue adding other ESG related attributes
 });
 MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_SUSTAINABILITY]->(sus);
@@ -147,7 +147,7 @@ CREATE (n:News {
   id: "d741448c-603b-42cd-9d3b-b04260b7a4bd",
   title: "What happened to Nissan? ...",
   pubDate: datetime("2025-02-08T16:00:05Z")
-  // 可添加其它新闻相关属性
+  // Can add other news related attributes
 });
 MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_NEWS]->(n);

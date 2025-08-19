@@ -1,81 +1,81 @@
 # Git Workflow Optimization
 
-## 概述
+## Overview
 
-本文档描述了项目的Git工作流程优化措施，包括自动分支清理、Git hooks和最佳实践。
+This document describes the Git workflow optimization measures for the project, including automatic branch cleanup, Git hooks, and best practices.
 
-## 核心原则
+## Core Principles
 
-1. **及时清理**: MR合并后立即清理相关分支
-2. **自动化**: 使用脚本和hooks自动执行常见任务
-3. **一致性**: 统一的commit格式和PR流程
-4. **安全性**: 防止意外的数据丢失或错误提交
+1. **Timely Cleanup**: Clean up related branches immediately after MR merge
+2. **Automation**: Use scripts and hooks to automatically execute common tasks
+3. **Consistency**: Unified commit format and PR process
+4. **Safety**: Prevent accidental data loss or erroneous commits
 
-## 分支清理系统
+## Branch Cleanup System
 
-### 自动分支清理脚本
+### Automatic Branch Cleanup Script
 
-位置: `scripts/cleanup_merged_branches.py`
+Location: `scripts/cleanup_merged_branches.py`
 
-功能:
-- 自动识别已合并的PR分支
-- 清理本地和远程的过时分支
-- 修剪远程引用
-- 支持交互式和自动模式
+Features:
+- Automatically identify merged PR branches
+- Clean up local and remote outdated branches
+- Prune remote references
+- Support interactive and automatic modes
 
-### 使用方法
+### Usage
 
 ```bash
-# 查看会被清理的分支 (安全)
+# View branches that would be cleaned up (safe)
 p3 cleanup-branches --dry-run
 
-# 交互式清理 (推荐)
+# Interactive cleanup (recommended)
 p3 cleanup-branches
 
-# 自动清理 (适用于CI或定期维护)
+# Automatic cleanup (for CI or regular maintenance)
 p3 cleanup-branches --auto
 ```
 
-### 清理规则
+### Cleanup Rules
 
-- **自动清理**: 最近30天内合并的PR分支
-- **保护分支**: main, master, develop, staging, production 永不删除
-- **安全检查**: 验证分支确实已合并才删除
-- **远程优先**: 先删除远程分支，再删除本地分支
+- **Automatic Cleanup**: PR branches merged within the last 30 days
+- **Protected Branches**: main, master, develop, staging, production are never deleted
+- **Safety Check**: Verify that branches are actually merged before deletion
+- **Remote Priority**: Delete remote branches first, then local branches
 
-## Git Hooks 系统
+## Git Hooks System
 
-### 自动安装
+### Automatic Installation
 
 ```bash
 pixi run install-git-hooks
 ```
 
-### Hook 功能
+### Hook Functions
 
 #### 1. Post-merge Hook
-- **触发时机**: git merge 或 git pull 成功后
-- **功能**: 
-  - 检测是否在main分支
-  - 自动清理合并的分支 (7天内)
-  - 修剪远程引用
-- **位置**: `.git/hooks/post-merge`
+- **Trigger**: After successful git merge or git pull
+- **Functions**: 
+  - Detect if on main branch
+  - Automatically clean merged branches (within 7 days)
+  - Prune remote references
+- **Location**: `.git/hooks/post-merge`
 
 #### 2. Pre-push Hook  
-- **触发时机**: git push 之前
-- **功能**:
-  - 检查分支是否落后main
-  - 警告未提交的更改
-  - 用户确认继续
-- **位置**: `.git/hooks/pre-push`
+- **Trigger**: Before git push
+- **Functions**:
+  - Check if branch is behind main
+  - Warn about uncommitted changes
+  - User confirmation to continue
+- **Location**: `.git/hooks/pre-push`
 
 #### 3. Commit-msg Hook
-- **触发时机**: git commit 之前
-- **功能**:
-  - 验证commit格式 (type: description)
-  - 检查issue引用
-  - 跳过Claude Code签名的commit
-- **位置**: `.git/hooks/commit-msg`
+- **Trigger**: Before git commit
+- **Functions**:
+  - Validate commit format (type: description)
+  - Check issue references
+  - Skip Claude Code signed commits
+- **Location**: `.git/hooks/commit-msg`
 
 ## Complete Workflow
 
@@ -147,43 +147,43 @@ git push origin --delete feature/description-fixes-123
 git branch -D feature/description-fixes-123
 ```
 
-## 维护命令
+## Maintenance Commands
 
-### 定期维护
+### Regular Maintenance
 
 ```bash
-# 每周运行一次，清理过时分支
+# Run weekly to clean up outdated branches
 p3 cleanup-branches --auto
 
-# 更新Git hooks
+# Update Git hooks
 pixi run install-git-hooks
 
-# 检查仓库健康状况
+# Check repository health
 git fsck
 git gc --prune=now
 ```
 
-### 紧急清理
+### Emergency Cleanup
 
 ```bash
-# 强制删除本地分支
+# Force delete local branch
 git branch -D branch-name
 
-# 删除远程分支
+# Delete remote branch
 git push origin --delete branch-name
 
-# 修剪所有远程引用
+# Prune all remote references
 git remote prune origin
 
-# 清理未跟踪的文件
+# Clean untracked files
 git clean -fd
 ```
 
-## 最佳实践
+## Best Practices
 
-### Commit 格式
+### Commit Format
 
-遵循约定式提交格式:
+Follow conventional commit format:
 ```
 type(scope): description
 
@@ -196,16 +196,16 @@ PR: https://github.com/owner/repo/pull/number
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
-**Type类型**:
-- `feat`: 新功能
-- `fix`: 错误修复
-- `docs`: 文档更改
-- `style`: 格式更改
-- `refactor`: 重构
-- `test`: 测试相关
-- `chore`: 构建/工具更改
+**Type Categories**:
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Format changes
+- `refactor`: Refactoring
+- `test`: Test-related
+- `chore`: Build/tooling changes
 
-### 分支命名
+### Branch Naming
 
 ```
 feature/description-fixes-ISSUE_NUMBER
@@ -213,70 +213,70 @@ bugfix/description-fixes-ISSUE_NUMBER
 hotfix/description-fixes-ISSUE_NUMBER
 ```
 
-### PR 最佳实践
+### PR Best Practices
 
-1. **一个PR一个功能**: 保持PR专注和可审查
-2. **详细描述**: 包含功能说明、测试结果、截图等
-3. **及时合并**: 避免long-running分支
-4. **合并后清理**: 立即删除feature分支
+1. **One Feature Per PR**: Keep PRs focused and reviewable
+2. **Detailed Description**: Include feature explanation, test results, screenshots, etc.
+3. **Timely Merge**: Avoid long-running branches
+4. **Post-merge Cleanup**: Immediately delete feature branches
 
-## 故障排除
+## Troubleshooting
 
-### 常见问题
+### Common Issues
 
-1. **分支无法删除**
+1. **Branch Cannot Be Deleted**
    ```bash
-   # 如果分支有未合并的更改，使用force删除
+   # If branch has unmerged changes, use force delete
    git branch -D branch-name
    ```
 
-2. **Hook 不执行**
+2. **Hook Not Executing**
    ```bash
-   # 检查hook文件权限
+   # Check hook file permissions
    ls -la .git/hooks/
    chmod +x .git/hooks/*
    ```
 
-3. **远程分支删除失败**
+3. **Remote Branch Deletion Failed**
    ```bash
-   # 检查是否有权限删除远程分支
+   # Check if you have permission to delete remote branch
    git push origin --delete branch-name
    ```
 
-### 调试模式
+### Debug Mode
 
 ```bash
-# 启用详细输出
+# Enable verbose output
 GIT_TRACE=1 git push origin branch-name
 
-# 检查hook执行
+# Check hook execution
 echo "test" | .git/hooks/commit-msg /tmp/test-msg
 ```
 
-## 配置选项
+## Configuration Options
 
-### 自定义清理规则
+### Custom Cleanup Rules
 
-编辑 `scripts/cleanup_merged_branches.py`:
+Edit `scripts/cleanup_merged_branches.py`:
 ```python
-# 修改天数阈值
-days_back = 14  # 默认30天
+# Modify days threshold
+days_back = 14  # Default 30 days
 
-# 修改保护分支列表
+# Modify protected branch list
 protected_branches = {'main', 'master', 'develop', 'custom-branch'}
 ```
 
-### Hook 配置
+### Hook Configuration
 
-编辑相应的hook文件在 `.git/hooks/` 目录中以自定义行为。
+Edit the corresponding hook files in the `.git/hooks/` directory to customize behavior.
 
-## 安全注意事项
+## Security Considerations
 
-1. **备份重要分支**: 删除前确认分支已正确合并
-2. **测试先行**: 使用 `--dry-run` 参数测试清理操作
-3. **权限控制**: 确保只有授权用户能删除远程分支
-4. **监控日志**: 定期检查hook和清理脚本的日志输出
+1. **Backup Important Branches**: Confirm branches are properly merged before deletion
+2. **Test First**: Use `--dry-run` parameter to test cleanup operations
+3. **Permission Control**: Ensure only authorized users can delete remote branches
+4. **Monitor Logs**: Regularly check hook and cleanup script log output
 
 ---
 
-*通过这些优化措施，项目的Git工作流程将更加高效、一致和安全。*
+*Through these optimization measures, the project's Git workflow will be more efficient, consistent, and secure.*
