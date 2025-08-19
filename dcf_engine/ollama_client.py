@@ -63,7 +63,9 @@ class OllamaClient:
 
         # Generation parameters - support both config formats and mock mode
         generation_config = self.config.get("generation", {})
-        self.max_tokens = llm_config.get("max_tokens", generation_config.get("max_tokens", 2048 if self.mock_mode else 4096))
+        self.max_tokens = llm_config.get(
+            "max_tokens", generation_config.get("max_tokens", 2048 if self.mock_mode else 4096)
+        )
         self.temperature = llm_config.get("temperature", generation_config.get("temperature", 0.3))
         self.top_p = llm_config.get("top_p", generation_config.get("top_p", 0.9))
 
