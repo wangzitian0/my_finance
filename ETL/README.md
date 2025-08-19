@@ -37,11 +37,11 @@
 ## 使用方式
 
 ```bash
-# 数据采集
-python run_job.py data/config/job_yfinance_m7.yml
-
-# Via pixi commands
+# Data collection - use p3 commands (preferred)
 p3 build run m7
+
+# Legacy direct call (deprecated)
+# python run_job.py data/config/job_yfinance_m7.yml
 ```
 
 ### SEC Edgar Spider (`sec_edgar_spider.py`)
@@ -184,8 +184,8 @@ Both spiders integrate with:
 # Build M7 dataset
 p3 build run m7
 
-# Run specific job
-python run_job.py <config_file.yml>
+# Run specific job (use p3 commands instead)
+p3 run-job
 
 # Check build status
 p3 build-status

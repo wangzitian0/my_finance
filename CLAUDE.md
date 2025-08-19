@@ -265,6 +265,7 @@ git push --force-with-lease
 - **Stage data directory changes FIRST** before main repo commits
 - **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
+- **Stock lists auto-update**: Stock lists (N100, VTI, etc.) should be automatically updated during build process via API calls, NOT through manual update commands
 
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories

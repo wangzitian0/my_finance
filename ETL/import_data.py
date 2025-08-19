@@ -9,12 +9,12 @@ from datetime import datetime, timedelta
 
 import yaml
 
-# 从 neomodel 导入 config，并设置数据库连接
+# Import config from neomodel and set database connection
 from neomodel import config
 
 config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
 
-# 使用项目根目录下的 common 模块，不在 ETL 目录下
+# Use common module from project root directory, not in ETL directory
 from common.logger import StreamToLogger, setup_logger
 from common.progress import create_progress_bar
 from common.snowflake import Snowflake
@@ -27,14 +27,14 @@ suppress_third_party_logs()
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
 
-# 导入模型（确保 ETL 在 PYTHONPATH 中）
+# Import models (ensure ETL is in PYTHONPATH)
 from models import FastInfo, Info, PriceData, Recommendations, Stock, Sustainability
 
 
 def import_json_file(file_path, logger):
     """
-    读取单个 JSON 文件，并将数据导入到 Neo4j（通过 Neomodel 模型）。
-    根据 JSON 中的 ticker 字段，先获取或创建 Stock 节点，然后创建 Info、FastInfo、PriceData、Recommendations 和 Sustainability 节点，并建立关系。
+    Read a single JSON file and import data to Neo4j (via Neomodel models).
+    Based on the ticker field in JSON, first get or create Stock node, then create Info, FastInfo, PriceData, Recommendations and Sustainability nodes, and establish relationships.
     """
     logger.info(f"Processing file: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
@@ -42,7 +42,7 @@ def import_json_file(file_path, logger):
 
     ticker = data.get("ticker")
     if not ticker:
-        logger.error("JSON 文件中缺少 ticker 字段。")
+        logger.error("Missing ticker field in JSON file.")
         return
 
     try:

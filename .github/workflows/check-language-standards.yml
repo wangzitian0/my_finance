@@ -1,0 +1,46 @@
+name: Language Standards Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  language-check:
+    name: "Check Language Standards"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: "Setup Python"
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: "Install ripgrep"
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ripgrep
+        
+    - name: "Language Standards Check - 3 Core Conditions"
+      run: |
+        echo "🔍 Running language standards validation..."
+        python3 ci_language_check.py
+        
+    - name: "Report Results"
+      if: failure()
+      run: |
+        echo "❌ Language standards check failed"
+        echo "💡 Please ensure all code comments and documentation use English"
+        echo "💡 Remove Chinese text from code files and use English equivalents"
+        echo "💡 Consider running: git grep -l '[\u4e00-\u9fff]' to find remaining Chinese text"

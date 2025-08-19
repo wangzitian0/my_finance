@@ -2,10 +2,9 @@
 
 ## ✅ Completed Implementation
 
-### 🌐 **Bilingual DCF Templates**
+### 🌐 **DCF Templates**
 - **English Template**: `templates/dcf/dcf_valuation_prompt_en.md`
-- **Chinese Template**: `templates/dcf/dcf_valuation_prompt_zh.md`
-- **Dual Output**: System generates both English and Chinese reports simultaneously
+- **Standard Output**: System generates English reports
 
 ### 🧠 **Thinking Process Integration**
 - **Real Semantic Retrieval**: System attempts to use actual SEC document retrieval first
