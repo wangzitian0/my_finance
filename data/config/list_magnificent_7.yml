@@ -59,6 +59,16 @@ companies:
     cik: "0001045810"
     market_cap_category: "large"
 
+ticker_count: 7
+
+# Data source attribution
+data_source_info:
+  primary_source: "Magnificent 7 technology companies (manual selection)"
+  last_verified: "2025-08-19"
+  update_method: "Manual curation of top technology companies"
+  selection_criteria: "7 largest technology companies by market cap and innovation impact"
+  notes: "Core technology companies for stable testing and SEC integration"
+
 # Data source configuration
 data_sources:
   yfinance:
@@ -78,3 +88,5 @@ expected_files:
 validation:
   timeout_seconds: 300
   required_success_rate: 1.0  # 100% for stable test dataset
+
+last_updated: "2025-08-19T12:00:00.000000"
