@@ -20,11 +20,17 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-import faiss
-import numpy as np
-import torch
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
+try:
+    import faiss
+    import numpy as np
+    import torch
+    from sentence_transformers import SentenceTransformer
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    ML_DEPENDENCIES_AVAILABLE = True
+except ImportError as e:
+    ML_DEPENDENCIES_AVAILABLE = False
+    print(f"ML dependencies not available: {e}")
 
 from common.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,

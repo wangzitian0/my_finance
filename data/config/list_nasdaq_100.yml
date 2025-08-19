@@ -1,83 +1,88 @@
-# NASDAQ-100 Index Dataset Configuration
-# Source: https://en.wikipedia.org/wiki/NASDAQ-100
-# Updated: Manual curation based on NASDAQ-100 index components
-# Note: This represents the largest 100 non-financial companies on NASDAQ
-
 dataset_name: nasdaq100
 cli_alias: n100
 description: NASDAQ-100 index companies - validation dataset
 tier: 3
 tracked_in_git: false
 max_size_mb: 5000
-
-# Data source attribution
 data_source_info:
-  primary_source: "NASDAQ-100 Index Components"
-  last_verified: "2025-08-18"
-  update_method: "Manual verification against NASDAQ official list"
-  selection_criteria: "Largest 100 non-financial companies on NASDAQ"
-  notes: "CIK numbers should be added for SEC integration"
+  primary_source: NASDAQ-100 Index Components
+  last_verified: '2025-08-18'
+  update_method: Manual verification against NASDAQ official list
+  selection_criteria: Largest 100 non-financial companies on NASDAQ
+  notes: CIK numbers should be added for SEC integration
 companies:
   AAPL:
     name: Apple Inc. Common Stock
     sector: Technology
     industry: Consumer Electronics
-    cik: "0000320193"  # From M7 reference
+    cik: 0000320193
     market_cap_category: mega
     market_cap: 3,371,439,800,200
   AMAT:
     name: Applied Materials, Inc. Common Stock
     sector: ''
     market_cap: 147,964,621,250
+    cik: 0000006951
   AMGN:
     name: Amgen Inc. Common Stock
     sector: ''
     market_cap: 153,481,580,102
+    cik: 0000318154
   CMCSA:
     name: Comcast Corporation Class A Common Stock
     sector: ''
     market_cap: 115,972,206,228
+    cik: 0001166691
   INTC:
     name: Intel Corporation Common Stock
     sector: ''
     market_cap: 90,385,050,000
+    cik: 0000050863
   KLAC:
     name: KLA Corporation Common Stock
     sector: ''
     market_cap: 120,363,504,757
+    cik: 0000319201
   PCAR:
     name: PACCAR Inc. Common Stock
     sector: ''
     market_cap: 51,013,794,533
+    cik: '0000075362'
   CTAS:
     name: Cintas Corporation Common Stock
     sector: ''
     market_cap: 90,218,698,073
+    cik: '0000723254'
   PAYX:
     name: Paychex, Inc. Common Stock
     sector: ''
     market_cap: 49,929,801,352
+    cik: '0000723531'
   LRCX:
     name: Lam Research Corporation Common Stock
     sector: ''
     market_cap: 130,470,036,000
+    cik: 0000707549
   ADSK:
     name: Autodesk, Inc. Common Stock
     sector: ''
     market_cap: 60,908,680,000
+    cik: 0000769397
   ROST:
     name: Ross Stores, Inc. Common Stock
     sector: ''
     market_cap: 47,912,560,621
+    cik: '0000745732'
   MNST:
     name: Monster Beverage Corporation
     sector: ''
     market_cap: 62,084,170,482
+    cik: 0000865752
   MSFT:
     name: Microsoft Corporation Common Stock
     sector: Technology
     industry: Software
-    cik: "0000789019"  # From M7 reference
+    cik: 0000789019
     market_cap_category: mega
     market_cap: 3,878,403,221,571
   ADBE:
@@ -86,368 +91,455 @@ companies:
     industry: Software
     market_cap_category: large
     market_cap: 141,534,330,000
+    cik: 0000796343
   FAST:
     name: Fastenal Company Common Stock
     sector: ''
     market_cap: 54,902,935,757
+    cik: 0000815556
   EA:
     name: Electronic Arts Inc. Common Stock
     sector: ''
     market_cap: 44,064,008,131
+    cik: '0000712515'
   CSCO:
     name: Cisco Systems, Inc. Common Stock (DE)
     sector: ''
     market_cap: 279,853,071,381
+    cik: 0000858877
   REGN:
     name: Regeneron Pharmaceuticals, Inc. Common Stock
     sector: ''
     market_cap: 57,862,784,085
+    cik: 0000872589
   IDXX:
     name: IDEXX Laboratories, Inc. Common Stock
     sector: ''
     market_cap: 52,171,861,004
+    cik: 0000874716
   VRTX:
     name: Vertex Pharmaceuticals Incorporated Common Stock
     sector: ''
     market_cap: 96,008,043,173
+    cik: 0000875320
   BIIB:
     name: Biogen Inc. Common Stock
     sector: ''
     market_cap: 18,766,668,544
+    cik: 0000875045
   ODFL:
     name: Old Dominion Freight Line, Inc. Common Stock
     sector: ''
     market_cap: 30,058,246,954
+    cik: 0000878927
   QCOM:
     name: QUALCOMM Incorporated Common Stock
     sector: ''
     market_cap: 159,659,630,000
+    cik: 0000804328
   GILD:
     name: Gilead Sciences, Inc. Common Stock
     sector: ''
     market_cap: 149,480,009,171
+    cik: 0000882095
   SNPS:
     name: Synopsys, Inc. Common Stock
     sector: ''
     market_cap: 95,597,757,121
+    cik: 0000883241
   SBUX:
     name: Starbucks Corporation Common Stock
     sector: ''
     market_cap: 104,280,858,000
+    cik: 0000829224
   INTU:
     name: Intuit Inc. Common Stock
     sector: ''
     market_cap: 196,961,687,230
+    cik: 0000896878
   MCHP:
     name: Microchip Technology Incorporated Common Stock
     sector: ''
     market_cap: 32,893,475,704
+    cik: 0000827054
   ORLY:
     name: O'Reilly Automotive, Inc. Common Stock
     sector: ''
     market_cap: 88,561,170,284
+    cik: 0000898173
   COST:
     name: Costco Wholesale Corporation Common Stock
     sector: ''
     market_cap: 438,483,534,012
+    cik: 0000909832
   CPRT:
     name: Copart, Inc. (DE) Common Stock
     sector: ''
     market_cap: 45,146,251,832
+    cik: 0000900075
   ASML:
     name: ASML Holding N.V. New York Registry Shares
     sector: ''
     market_cap: 283,679,480,073
+    cik: 0000937966
   TTWO:
     name: Take-Two Interactive Software, Inc. Common Stock
     sector: ''
     market_cap: 41,075,982,106
+    cik: 0000946581
   AMZN:
     name: Amazon.com, Inc. Common Stock
     sector: Technology
     industry: E-commerce & Cloud
-    cik: "0001018724"  # From M7 reference
+    cik: 0001018724
     market_cap_category: mega
     market_cap: 2,360,145,047,066
   MSTR:
     name: MicroStrategy Incorporated Common Stock Class A
     sector: ''
     market_cap: 113,492,067,037
+    cik: '0001050446'
   CTSH:
     name: Cognizant Technology Solutions Corporation Class A Common Stock
     sector: ''
     market_cap: 33,772,579,044
+    cik: 0001058290
   CSGP:
     name: CoStar Group, Inc. Common Stock
     sector: ''
     market_cap: 39,187,658,485
+    cik: '0001057352'
   NVDA:
     name: NVIDIA Corporation Common Stock
     sector: Technology
     industry: Semiconductors
-    cik: "0001045810"  # NVIDIA CIK
+    cik: 0001045810
     market_cap_category: mega
     market_cap: 4,442,264,000,000
   BKNG:
     name: Booking Holdings Inc. Common Stock
     sector: ''
     market_cap: 173,854,725,611
+    cik: '0001075531'
   'ON':
     name: ON Semiconductor Corporation Common Stock
     sector: ''
     market_cap: 19,262,675,023
+    cik: 0001097864
   ISRG:
     name: Intuitive Surgical, Inc. Common Stock
     sector: ''
     market_cap: 169,147,139,356
+    cik: '0001035267'
   MRVL:
     name: Marvell Technology, Inc. Common Stock
     sector: ''
     market_cap: 66,630,816,000
+    cik: 0001835632
   ADI:
     name: Analog Devices, Inc. Common Stock
     sector: ''
     market_cap: 111,194,333,278
+    cik: 0000006281
   AEP:
     name: American Electric Power Company, Inc. Common Stock
     sector: ''
     market_cap: 59,897,013,456
+    cik: 0000004904
   AMD:
     name: Advanced Micro Devices, Inc. Common Stock
     sector: ''
     market_cap: 279,583,510,741
+    cik: 0000002488
   ADP:
     name: Automatic Data Processing, Inc. Common Stock
     sector: ''
     market_cap: 123,019,703,088
+    cik: 0000008670
   AZN:
     name: AstraZeneca PLC American Depositary Shares
     sector: ''
     market_cap: 229,716,352,758
+    cik: 0000901832
   CDNS:
     name: Cadence Design Systems, Inc. Common Stock
     sector: ''
     market_cap: 95,123,534,100
+    cik: 0000813672
   CSX:
     name: CSX Corporation Common Stock
     sector: ''
     market_cap: 65,678,479,203
+    cik: 0000277948
   HON:
     name: Honeywell International Inc. Common Stock
     sector: ''
     market_cap: 137,423,360,845
+    cik: 0000773840
   MAR:
     name: Marriott International Class A Common Stock
     sector: ''
     market_cap: 70,027,978,727
+    cik: 0001048286
   MU:
     name: Micron Technology, Inc. Common Stock
     sector: ''
     market_cap: 138,458,157,496
+    cik: '0000723125'
   XEL:
     name: Xcel Energy Inc. Common Stock
     sector: ''
     market_cap: 42,981,897,413
+    cik: 0000072903
   EXC:
     name: Exelon Corporation Common Stock
     sector: ''
     market_cap: 45,156,531,915
+    cik: 0001109357
   PEP:
     name: PepsiCo, Inc. Common Stock
     sector: ''
     market_cap: 198,338,214,543
+    cik: '0000077476'
   ROP:
     name: Roper Technologies, Inc. Common Stock
     sector: ''
     market_cap: 56,764,139,884
+    cik: 0000882835
   TXN:
     name: Texas Instruments Incorporated Common Stock
     sector: ''
     market_cap: 167,017,589,317
+    cik: 0000097476
   AXON:
     name: Axon Enterprise, Inc. Common Stock
     sector: ''
     market_cap: 64,270,799,984
+    cik: 0001069183
   MDLZ:
     name: Mondelez International, Inc. Class A Common Stock
     sector: ''
     market_cap: 79,655,279,563
+    cik: 0001103982
   NFLX:
     name: Netflix, Inc. Common Stock
     sector: ''
     market_cap: 517,692,016,595
+    cik: 0001065280
   GOOGL:
     name: Alphabet Inc. Class A Common Stock
     sector: Technology
     industry: Internet Services
-    cik: "0001652044"  # From M7 reference
+    cik: '0001652044'
     market_cap_category: mega
     market_cap: 2,430,894,000,000
   DXCM:
     name: DexCom, Inc. Common Stock
     sector: ''
     market_cap: 30,529,287,380
+    cik: 0001093557
   TMUS:
     name: T-Mobile US, Inc. Common Stock
     sector: ''
     market_cap: 280,083,035,987
+    cik: 0001283699
   LULU:
     name: lululemon athletica inc. Common Stock
     sector: ''
     market_cap: 21,390,154,929
+    cik: 0001397187
   MELI:
     name: MercadoLibre, Inc. Common Stock
     sector: ''
     market_cap: 116,200,411,395
+    cik: 0001099590
   KDP:
     name: Keurig Dr Pepper Inc. Common Stock
     sector: ''
     market_cap: 47,029,029,359
+    cik: 0001418135
   AVGO:
     name: Broadcom Inc. Common Stock
     sector: ''
     market_cap: 1,429,384,830,518
+    cik: 0001730168
   VRSK:
     name: Verisk Analytics, Inc. Common Stock
     sector: ''
     market_cap: 37,362,577,545
+    cik: '0001442145'
   FTNT:
     name: Fortinet, Inc. Common Stock
     sector: ''
     market_cap: 57,077,105,124
+    cik: 0001262039
   CHTR:
     name: Charter Communications, Inc. Class A Common Stock New
     sector: ''
     market_cap: 35,345,649,188
+    cik: 0001091667
   TSLA:
     name: Tesla, Inc. Common Stock
     sector: Technology
     industry: Electric Vehicles
-    cik: "0001318605"  # From M7 reference
+    cik: 0001318605
     market_cap_category: large
     market_cap: 1,093,523,936,838
   NXPI:
     name: NXP Semiconductors N.V. Common Stock
     sector: ''
     market_cap: 51,723,830,310
+    cik: '0001413447'
   FANG:
     name: Diamondback Energy, Inc. Common Stock
     sector: ''
     market_cap: 39,613,280,661
+    cik: 0001539838
   META:
     name: Meta Platforms, Inc. Class A Common Stock
     sector: Technology
     industry: Social Media
-    cik: "0001326801"  # From M7 reference
+    cik: 0001326801
     market_cap_category: mega
     market_cap: 1,923,973,791,458
   PANW:
     name: Palo Alto Networks, Inc. Common Stock
     sector: ''
     market_cap: 112,135,756,000
+    cik: '0001327567'
   WDAY:
     name: Workday, Inc. Class A Common Stock
     sector: ''
     market_cap: 57,055,230,000
+    cik: 0001327811
   CDW:
     name: CDW Corporation Common Stock
     sector: ''
     market_cap: 20,989,378,312
+    cik: '0001402057'
   GOOG:
     name: Alphabet Inc. Class C Capital Stock
     sector: ''
     market_cap: 2,438,513,220,000
+    cik: '0001652044'
   PYPL:
     name: PayPal Holdings, Inc. Common Stock
     sector: ''
     market_cap: 64,086,783,407
+    cik: 0001633917
   SHOP:
     name: Shopify Inc. Class A Subordinate Voting Shares
     sector: ''
     market_cap: 191,363,678,473
+    cik: 0001594805
   KHC:
     name: The Kraft Heinz Company Common Stock
     sector: ''
     market_cap: 32,466,126,467
+    cik: 0001637459
   TEAM:
     name: Atlassian Corporation Class A Common Stock
     sector: ''
     market_cap: 41,811,929,717
+    cik: '0001650372'
   CCEP:
     name: Coca-Cola Europacific Partners plc Ordinary Shares
     sector: ''
     market_cap: 43,304,453,931
+    cik: '0001650107'
   TTD:
     name: The Trade Desk, Inc. Class A Common Stock
     sector: ''
     market_cap: 25,999,537,059
+    cik: 0001671933
   BKR:
     name: Baker Hughes Company Class A Common Stock
     sector: ''
     market_cap: 42,097,038,595
+    cik: '0001701605'
   ZS:
     name: Zscaler, Inc. Common Stock
     sector: ''
     market_cap: 42,221,552,333
+    cik: 0001713683
   PDD:
     name: PDD Holdings Inc. American Depositary Shares
     sector: ''
     market_cap: 160,476,836,064
+    cik: 0001737806
   CRWD:
     name: CrowdStrike Holdings, Inc. Class A Common Stock
     sector: ''
     market_cap: 106,286,898,839
+    cik: '0001535527'
   DDOG:
     name: Datadog, Inc. Class A Common Stock
     sector: ''
     market_cap: 44,491,856,750
+    cik: '0001561550'
   PLTR:
     name: Palantir Technologies Inc. Class A Common Stock
     sector: ''
     market_cap: 433,379,513,468
+    cik: '0001321655'
   ABNB:
     name: Airbnb, Inc. Class A Common Stock
     sector: ''
     market_cap: 73,515,839,761
+    cik: 0001559720
   DASH:
     name: DoorDash, Inc. Class A Common Stock
     sector: ''
     market_cap: 109,400,324,527
+    cik: 0001792789
   APP:
     name: Applovin Corporation Class A Common Stock
     sector: ''
     market_cap: 157,482,394,960
+    cik: 0001751008
   GFS:
     name: GlobalFoundries Inc. Ordinary Shares
     sector: ''
     market_cap: 17,483,103,463
+    cik: 0001709048
   CEG:
     name: 'Constellation Energy Corporation Common Stock '
     sector: ''
     market_cap: 103,559,325,383
+    cik: 0001868275
   WBD:
     name: 'Warner Bros. Discovery, Inc. Series A Common Stock '
     sector: ''
     market_cap: 26,688,825,200
+    cik: '0001437107'
   GEHC:
     name: 'GE HealthCare Technologies Inc. Common Stock '
     sector: ''
     market_cap: 33,329,028,701
+    cik: 0001932393
   LIN:
     name: Linde plc Ordinary Shares
     sector: ''
     market_cap: 220,565,665,662
+    cik: 0001707925
   ARM:
     name: Arm Holdings plc American Depositary Shares
     sector: ''
     market_cap: 149,409,187,059
+    cik: 0001973239
+  ANSS:
+    name: ANSYS, Inc. Common Stock
+    sector: Technology
+    industry: Software
+    market_cap: 28,900,000,000
+    cik: 0001013462
 data_sources:
   yfinance:
     enabled: true
-    stage_config: "stage_00_original_yfinance.yml"
+    stage_config: stage_00_original_yfinance.yml
   sec_edgar:
     enabled: true
-    stage_config: "stage_00_original_sec_edgar.yml"
+    stage_config: stage_00_original_sec_edgar.yml
 expected_files:
   yfinance: 300
   sec_edgar: 300

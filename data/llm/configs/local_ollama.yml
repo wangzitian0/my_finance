@@ -1,24 +1,63 @@
-ollama:
+# Local Ollama Configuration (Legacy - Updated to new format)
+# High-performance configuration for gpt-oss:20b model
+
+llm_service:
+  provider: "ollama"
   base_url: "http://localhost:11434"
-  model_name: "gpt-oss:20b"
+  model: "gpt-oss:20b"
   timeout: 90
-  max_tokens: 4096
+  max_retries: 3
+
+generation:
   temperature: 0.3
+  max_tokens: 4096
+  stream: false
   top_p: 0.9
 
+# Standard DCF generation settings
 dcf_generation:
-  debug_mode: true
-  save_intermediate_results: true
-  bilingual_output: true
   max_companies_per_batch: 3
+  enable_sec_integration: true
+  enable_semantic_retrieval: true
+  debug_mode: true
+  fast_mode: false
+  
+# Full context retrieval
+semantic_retrieval:
+  similarity_threshold: 0.7
+  max_results: 5
+  enable_context_compression: false
 
+# Comprehensive reporting
+reporting:
+  bilingual: true
+  include_charts: true
+  include_detailed_analysis: true
+  format: "markdown"
+
+# Standard performance settings
+performance:
+  enable_caching: true
+  parallel_processing: true
+  batch_size: 3
+  
+# Detailed logging
+logging:
+  level: "INFO"
+  log_llm_requests: true
+  log_responses: true
+  save_intermediate_results: true
+
+# FinLang embedding configuration
 finlang_embedding:
   model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  enable_semantic_search: true
+  cache_embeddings: true
   max_sequence_length: 512
   batch_size: 32
-  similarity_threshold: 0.7
 
-logging:
-  log_requests: true
-  log_responses: true
-  log_level: "INFO"
+# Ollama specific settings
+ollama:
+  keep_alive: "5m"
+  num_predict: -1
+  repeat_penalty: 1.1

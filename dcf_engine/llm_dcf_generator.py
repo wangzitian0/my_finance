@@ -30,13 +30,18 @@ class LLMDCFGenerator:
     4. Quality validation and debugging
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: Optional[str] = None, fast_mode: bool = False):
         """
         Initialize LLM DCF generator.
 
         Args:
             config_path: Path to configuration file
+            fast_mode: Use fast configuration for testing
         """
+        # Use fast config if requested
+        if fast_mode and not config_path:
+            config_path = "data/llm/configs/deepseek_fast.yml"
+
         self.config_path = config_path
         self.debug_dir = Path("data/llm")
         self.debug_dir.mkdir(parents=True, exist_ok=True)
@@ -45,9 +50,28 @@ class LLMDCFGenerator:
         self.embedding_model = FinLangEmbedding(config_path)
         self.ollama_client = OllamaClient(config_path)
 
-        # Debug settings
-        self.debug_mode = True
-        self.save_intermediate_results = True
+        # Load configuration for settings
+        self.config = self._load_config()
+
+        # Debug settings from config
+        dcf_config = self.config.get("dcf_generation", {})
+        self.debug_mode = dcf_config.get("debug_mode", True)
+        self.save_intermediate_results = dcf_config.get("save_intermediate_results", True)
+        self.fast_mode = dcf_config.get("fast_mode", fast_mode)
+
+    def _load_config(self) -> Dict[str, Any]:
+        """Load configuration from YAML file."""
+        import yaml
+
+        if not self.config_path:
+            return {}
+
+        try:
+            with open(self.config_path, "r", encoding="utf-8") as f:
+                return yaml.safe_load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load config from {self.config_path}: {e}")
+            return {}
 
     def _get_current_build_dir(self) -> Path:
         """Get current build directory for storing build-specific artifacts"""

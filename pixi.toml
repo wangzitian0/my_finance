@@ -16,10 +16,9 @@ git = "*"
 # Essential Python packages
 pip = "*"
 pyyaml = "*"
-requests = "*"
+requests = ">=2.32.4,<3"
 beautifulsoup4 = "*"
 pandas = ">=2.3.1,<3"
-numpy = "*"
 matplotlib = "*"
 seaborn = "*"
 jupyter = "*"
@@ -41,6 +40,9 @@ scikit-learn = "*"
 pytorch = "*"
 yfinance = ">=0.2.57,<0.3"
 faiss-cpu = ">=1.9.0,<2"
+numpy = ">=1.26.4,<2"
+sentence-transformers = ">=5.1.0,<6"
+pyarrow = ">=15,<17"
 
 [tasks]
 # Core commands from CLAUDE.md
@@ -184,3 +186,6 @@ check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stag
 # Keep legacy helpers if needed
 pr = "python infra/create_pr_with_improved_testing.py"
 test-only = "python infra/create_pr_with_improved_testing.py --test-only"
+
+[pypi-dependencies]
+sec-edgar = ">=0.0.2, <0.0.3"
