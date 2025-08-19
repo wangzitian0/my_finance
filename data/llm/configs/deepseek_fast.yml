@@ -2,11 +2,11 @@
 # Optimized for speed over accuracy - use for fast iteration and testing
 
 llm_service:
-  provider: "ollama"
+  provider: "mock"  # Use mock provider for fast testing
   base_url: "http://localhost:11434"
   model: "deepseek-r1:1.5b"
-  timeout: 30
-  max_retries: 2
+  timeout: 5  # Very fast timeout for mock mode
+  max_retries: 1
 
 generation:
   temperature: 0.3
