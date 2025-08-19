@@ -1,6 +1,6 @@
-# Common - 公共组件
+# Common - Shared Components
 
-管理不同模块间的交互，定义schema和共享工具。负责模块间协调和数据标准化。
+Manages interactions between different modules, defines schemas and shared tools. Responsible for inter-module coordination and data standardization.
 
 ## Core Components
 
