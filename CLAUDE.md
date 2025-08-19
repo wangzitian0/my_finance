@@ -50,11 +50,12 @@ p3 neo4j start                  # Start Neo4j container
 
 ### Development Commands (Unified p3)
 ```bash
-p3 activate                     # Activate environment
+pixi shell                      # Activate environment
 p3 refresh m7                   # Build stable test dataset
 p3 format                       # Format code
 p3 lint                         # Lint code
 p3 test                         # Run tests
+p3 e2e [scope]                  # End-to-end testing (f2/m7/n100/v3k scopes supported)
 ```
 
 ### Build Data Management Commands
@@ -217,6 +218,15 @@ git push --force-with-lease
 - Issue #26: Cross-platform conda migration
 
 ### Recently Completed Issues
+- Issue #78: ✅ **COMPLETED** - Pixi Command Maintenance and Infrastructure Improvements (2025-08-19)
+  - Extended e2e test commands with scope support (f2, m7, n100, v3k testing levels)
+  - Enhanced Python zsh tab completion with command descriptions and scope options
+  - Added comprehensive unit tests for p3 command infrastructure (execution + parsing tests)
+  - Implemented centralized data directory I/O operations with unified DataAccess utility
+  - Added English README documentation to 8 directories (infra, tests, docs, templates, data)
+  - Updated pixi.toml cleanup commands to use centralized data access
+  - Added stock list auto-update rule: API-based updates during build process (no manual commands)
+
 - Issue #80: ✅ **COMPLETED** - Eliminated .m7-test-passed file conflicts (2025-08-13)
   - Replaced file-based test validation with commit message validation
   - Updated create-pr script to embed M7 test results directly in commit messages
@@ -266,11 +276,13 @@ git push --force-with-lease
 - **Follow three-tier data strategy** when working with datasets (see `docs/data-tiers.md`)
 - **Reference CIK numbers** from README.md for SEC data work
 - **Stock lists auto-update**: Stock lists (N100, VTI, etc.) should be automatically updated during build process via API calls, NOT through manual update commands
+- **Centralized data access**: Always use `from common.data_access import data_access` instead of hardcoding `data/` paths
 
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories
 - **Management**: `ETL/manage.py`, `dcf_engine/build_knowledge_base.py`
 - **Configuration**: `data/config/*.yml`, `common/common_config.yml`
+- **Data access**: `common/data_access.py` (centralized path management)
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
@@ -279,6 +291,7 @@ git push --force-with-lease
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Use `p3 test` (NEVER direct python commands)
 - **Data directory**: Use `p3 commit-data-changes` to stage data changes
+- **Data access**: Always use `common/data_access.py` for path operations (NEVER hardcode data/ paths)
 
 ### Simplified Command System
 

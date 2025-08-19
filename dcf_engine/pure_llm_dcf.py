@@ -10,8 +10,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from .ollama_client import OllamaClient
 from common.data_access import data_access
+
+from .ollama_client import OllamaClient
 
 logger = logging.getLogger(__name__)
 

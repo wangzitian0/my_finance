@@ -13,9 +13,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from common.data_access import data_access
-
 import yaml
+
+from common.data_access import data_access
 
 try:
     import numpy as np
