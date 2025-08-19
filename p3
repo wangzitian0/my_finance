@@ -74,7 +74,30 @@ cmd_create_pr() {
 }
 
 cmd_e2e() {
-  pixi run test-e2e
+  scope="${1:-m7}"
+  
+  case "$scope" in
+    f2|test) 
+      echo "🧪 Running F2 end-to-end test..."
+      pixi run build-f2
+      ;;
+    m7)
+      echo "🧪 Running M7 end-to-end test..."
+      pixi run test-e2e
+      ;;
+    n100|nasdaq100)
+      echo "🧪 Running N100 end-to-end test..."
+      pixi run build-n100
+      ;;
+    v3k|vti)
+      echo "🧪 Running V3K end-to-end test..."
+      pixi run build-v3k
+      ;;
+    *)
+      echo "🧪 Running default M7 end-to-end test..."
+      pixi run test-e2e
+      ;;
+  esac
 }
 
 cmd_refresh() {

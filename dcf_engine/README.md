@@ -1,68 +1,68 @@
-# DCF Engine - DCF估值引擎
+# DCF Engine - Discounted Cash Flow Valuation Engine
 
-输入输出都是数据，专注于各种策略相关的逻辑实现。
+Data-focused implementation of various DCF valuation strategies and logic.
 
-## 组件结构
+## Component Structure
 
-### 核心引擎
-- `validator.py` - 策略验证器
-- `simple_m7_dcf.py` - 简化M7 DCF计算
-- `m7_dcf_analysis.py` - M7 DCF分析
-- `generate_dcf_report.py` - DCF报告生成
+### Core Engine
+- `validator.py` - Strategy validator
+- `simple_m7_dcf.py` - Simplified M7 DCF calculation
+- `m7_dcf_analysis.py` - M7 DCF analysis
+- `generate_dcf_report.py` - DCF report generation
 
-### 知识图谱
-- `build_knowledge_base.py` - 知识库构建
-- `demo_graph_rag.py` - Graph RAG演示
-- `build_nasdaq100_simple.py` - NASDAQ100简化构建
+### Knowledge Graph
+- `build_knowledge_base.py` - Knowledge base construction
+- `demo_graph_rag.py` - Graph RAG demonstration
+- `build_nasdaq100_simple.py` - NASDAQ100 simplified construction
 
-### 策略验证
-- `test_strategy_validation.py` - 策略验证测试
+### Strategy Validation
+- `test_strategy_validation.py` - Strategy validation testing
 
-### 文档
-- `dcf-engine.md` - DCF引擎架构文档
-- `STRATEGY_RELEASE_PROCESS.md` - 策略发布流程
+### Documentation
+- `dcf-engine.md` - DCF engine architecture documentation
+- `STRATEGY_RELEASE_PROCESS.md` - Strategy release process
 
-## 数据流
+## Data Flow
 
 ```
-DTS (数据输入) → DCF Engine (策略计算) → DTS (结果输出)
+DTS (Data Input) → DCF Engine (Strategy Calculation) → DTS (Result Output)
                      ↓
-                Common (Schema定义)
+                Common (Schema Definition)
 ```
 
-## 核心功能
+## Core Functionality
 
-### DCF估值计算
-- 多种DCF模型实现
-- 参数敏感性分析  
-- 情景分析和压力测试
+### DCF Valuation Calculation
+- Multiple DCF model implementations
+- Parameter sensitivity analysis  
+- Scenario analysis and stress testing
 
-### 策略验证
-- 历史回测
-- 统计显著性检验
-- 风险指标计算
+### Strategy Validation
+- Historical backtesting
+- Statistical significance testing
+- Risk metric calculation
 
-### 知识图谱增强
-- Graph RAG查询
-- 多源数据融合
-- 智能推理分析
+### Knowledge Graph Enhancement
+- Graph RAG queries
+- Multi-source data fusion
+- Intelligent reasoning analysis
 
-## 使用方式
+## Usage
 
 ```bash
-# 策略验证
+# Strategy validation
 pixi run validate-strategy
 
-# DCF分析
+# DCF analysis
 python dcf_engine/m7_dcf_analysis.py
 
-# 报告生成
+# Report generation
 python dcf_engine/generate_dcf_report.py
 ```
 
-## 设计原则
+## Design Principles
 
-1. **纯计算逻辑**: 不处理数据I/O，专注业务逻辑
-2. **策略可配置**: 支持多种DCF模型和参数
-3. **结果可追溯**: 记录计算过程和中间结果
-4. **性能优化**: 支持并行计算和缓存
+1. **Pure Calculation Logic**: No data I/O handling, focus on business logic
+2. **Configurable Strategies**: Support for multiple DCF models and parameters
+3. **Traceable Results**: Record calculation process and intermediate results
+4. **Performance Optimization**: Support parallel computing and caching

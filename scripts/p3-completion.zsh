@@ -1,6 +1,6 @@
 # zsh completion for p3 (scoped to my_finance)
 
-_p3_commands=(env podman neo4j format lint typecheck test e2e build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity)
+_p3_commands=(env podman neo4j format lint typecheck test e2e build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity fast-build)
 _p3_env_commands=(setup start stop status reset)
 _p3_podman_commands=(status)
 _p3_neo4j_commands=(logs connect restart stop start)
@@ -61,6 +61,16 @@ _p3() {
         compadd -x 'stop        Stop Neo4j container'
         compadd -x 'start       Start Neo4j container'
         compadd -a neo4j_cmds
+      fi
+      ;;
+    e2e)
+      if (( CURRENT == 3 )); then
+        compadd -x 'Scope  Description'
+        compadd -x 'f2     Fast 2 companies (development testing)'
+        compadd -x 'm7     Magnificent 7 (standard PR testing)'
+        compadd -x 'n100   NASDAQ 100 (validation testing)'
+        compadd -x 'v3k    VTI 3500+ (production testing)'
+        compadd -a scopes
       fi
       ;;
     refresh|build)
