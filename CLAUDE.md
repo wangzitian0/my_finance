@@ -166,25 +166,43 @@ p3 create-pr "Brief description" ISSUE_NUMBER
 p3 create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 ```
 
-#### Why Manual Git Commands Are Discouraged
-- `git push` without local testing → CI failure (by design)
-- GitHub UI for direct commit → No test validation in commit message → CI rejection
-- Manual PR creation → Missing test verification → Merge blocked
+#### ❌ Why Manual Git Commands WILL FAIL CI
 
-**All successful merges require the automated script workflow.**
+**⚠️ CRITICAL UNDERSTANDING**: Manual git workflows are designed to fail CI validation
 
-**⚠️ Manual git commands are DEPRECATED**. The automated script ensures:
-- ✅ End-to-end test runs successfully BEFORE PR creation/update
-- ✅ Data directory changes are managed as part of main repository
-- ✅ Commit messages include M7 test validation and PR URLs for GoLand integration
-- ✅ GitHub branch protection rules enforce test validation via commit message parsing
-- ✅ No conflict-prone marker files (.m7-test-passed eliminated)
+- **`git push` without M7 testing** → CI detects missing test validation → **AUTOMATIC REJECTION**
+- **GitHub UI direct commit** → No M7 test timestamp in commit message → **CI BLOCKS MERGE**
+- **Manual PR creation** → Missing automated test verification → **MERGE PROTECTION ACTIVATED**
+- **Hand-crafted commit messages** → CI detects fake M7-TESTED markers → **VALIDATION FAILURE**
 
-**CRITICAL**: ALWAYS use `p3 create-pr` for ALL PR operations:
+### 🚨 **CI Validation Logic** 
+
+The CI system validates:
+1. **Real M7 Test Execution**: Commit message must contain actual M7 test results with valid timestamps
+2. **Test Timing**: Test timestamp must be within reasonable time of commit (detects fake markers)  
+3. **Script Usage**: Only commits created via `p3 create-pr` contain proper validation markers
+4. **Data File Counts**: CI verifies actual data files were processed during testing
+5. **Host Information**: Valid test host and commit hash correlation
+
+**🛡️ CI Error Messages You'll See:**
+- ❌ `"M7 validation marker missing or invalid"`
+- ❌ `"Test timestamp outside acceptable range"`  
+- ❌ `"No evidence of actual M7 test execution"`
+- ❌ `"Commit message validation failed - use p3 create-pr"`
+
+### ✅ **Only the Automated Script Works**
+
+**`p3 create-pr` ensures:**
+- ✅ **Real M7 Testing**: Runs actual `p3 e2e` test before PR creation
+- ✅ **Valid Timestamps**: Embeds real test execution time and host info
+- ✅ **Proper Markers**: Adds authentic `✅ M7-TESTED` markers that CI recognizes
+- ✅ **Data Validation**: Includes actual data file counts from test run
+- ✅ **Branch Protection**: Satisfies GitHub branch protection requirements
+
+**MANDATORY USAGE - NO EXCEPTIONS:**
 - ✅ **Creating new PR**: `p3 create-pr "Description" ISSUE_NUMBER`
 - ✅ **Updating existing PR**: `p3 create-pr "Update description" ISSUE_NUMBER`
-- ✅ **Both operations require end-to-end testing** - no exceptions
-- ❌ **NEVER** use direct `git push` or manual PR updates
+- ❌ **NEVER** use direct `git push`, `gh pr create`, or manual commit messages
 
 **Legacy manual workflow (NOT RECOMMENDED)**:
 ```bash

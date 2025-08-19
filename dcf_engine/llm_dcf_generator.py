@@ -48,7 +48,7 @@ class LLMDCFGenerator:
 
         # Initialize components
         self.embedding_model = FinLangEmbedding(config_path)
-        self.ollama_client = OllamaClient(config_path)
+        self.ollama_client = OllamaClient(config_path, fast_mode=fast_mode)
 
         # Load configuration for settings
         self.config = self._load_config()

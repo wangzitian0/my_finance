@@ -97,6 +97,12 @@ build-m7 = "python ETL/build_dataset.py m7"
 build-n100 = "python ETL/build_dataset.py n100"
 build-v3k = "python ETL/build_dataset.py v3k"
 
+# Fast build variants with DeepSeek 1.5b
+fast-build-f2 = "python ETL/build_dataset.py f2 --fast-mode"
+fast-build-m7 = "python ETL/build_dataset.py m7 --fast-mode"
+fast-build-n100 = "python ETL/build_dataset.py n100 --fast-mode"
+fast-build-v3k = "python ETL/build_dataset.py v3k --fast-mode"
+
 # Legacy build commands (for backward compatibility)
 build-test = "python ETL/build_dataset.py f2"
 build-nasdaq100 = "python ETL/build_dataset.py n100"
@@ -131,7 +137,7 @@ neo4j-start = "podman start neo4j-finance"
 # --- Workflow Management ---
 # PR creation with automated testing
 create-pr = "python infra/create_pr_with_test.py"
-test-e2e = "python infra/create_pr_with_test.py --skip-pr"
+test-e2e = "python infra/create_pr_with_test.py --skip-pr-creation"
 
 # Data repository (symlink) management
 commit-data-changes = "python infra/commit_data_changes.py"

@@ -78,23 +78,23 @@ cmd_e2e() {
   
   case "$scope" in
     f2|test) 
-      echo "🧪 Running F2 end-to-end test..."
-      pixi run build-f2
+      echo "🧪 Running F2 end-to-end test with DeepSeek 1.5b (fast mode)..."
+      cmd_fast_build f2
       ;;
     m7)
-      echo "🧪 Running M7 end-to-end test..."
+      echo "🧪 Running M7 end-to-end test with DeepSeek 1.5b (fast mode)..."
       pixi run test-e2e
       ;;
     n100|nasdaq100)
-      echo "🧪 Running N100 end-to-end test..."
-      pixi run build-n100
+      echo "🧪 Running N100 end-to-end test with DeepSeek 1.5b (fast mode)..."
+      cmd_fast_build n100
       ;;
     v3k|vti)
-      echo "🧪 Running V3K end-to-end test..."
-      pixi run build-v3k
+      echo "🧪 Running V3K end-to-end test with DeepSeek 1.5b (fast mode)..."
+      cmd_fast_build v3k
       ;;
     *)
-      echo "🧪 Running default M7 end-to-end test..."
+      echo "🧪 Running default M7 end-to-end test with DeepSeek 1.5b (fast mode)..."
       pixi run test-e2e
       ;;
   esac
@@ -128,18 +128,10 @@ cmd_fast_build() {
   echo "🚀 Starting fast build with deepseek-r1:1.5b for $scope..."
   echo "   Configuration: deepseek_fast.yml"
   
-  # Check if deepseek-r1:1.5b model exists
-  if ! ollama list | grep -q "deepseek-r1:1.5b"; then
-    echo "⚠️  deepseek-r1:1.5b model not found. Running: ollama run deepseek-r1:1.5b"
-    ollama run deepseek-r1:1.5b &
-    sleep 5
-  fi
+  # Use fast-build pixi task with --fast-mode parameter
+  echo "   Using DeepSeek 1.5b fast mode for accelerated testing..."
   
-  # Set environment variable for fast mode
-  export DCF_FAST_MODE=true
-  export DCF_CONFIG_PATH="data/llm/configs/deepseek_fast.yml"
-  
-  pixi run "build-$scope"
+  pixi run "fast-build-$scope"
 }
 
 # Environment management

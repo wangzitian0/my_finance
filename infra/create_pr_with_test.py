@@ -63,9 +63,10 @@ def get_uncommitted_changes():
 
 
 def run_end_to_end_test():
-    """Run M7 end-to-end test with smart cleanup"""
+    """Run M7 end-to-end test with DeepSeek 1.5b for speed"""
     print("\n" + "=" * 60)
-    print("🧪 RUNNING MANDATORY END-TO-END TEST")
+    print("🧪 RUNNING MANDATORY END-TO-END TEST (FAST MODE)")
+    print("🚀 Using DeepSeek 1.5b model for accelerated testing")
     print("=" * 60)
 
     # Clean any existing build artifacts
@@ -83,8 +84,11 @@ def run_end_to_end_test():
 
     test_success = False
     try:
-        # Build F2 dataset (faster test) using pixi environment
-        run_command("./p3 build run f2", "Building F2 dataset", timeout=300)  # 5 minutes
+        # Use fast-build with DeepSeek 1.5b for faster F2 dataset testing
+        print("🏃 Running fast F2 build with DeepSeek 1.5b model...")
+        run_command(
+            "./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=180
+        )  # 3 minutes
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
