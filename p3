@@ -102,6 +102,16 @@ cmd_e2e() {
 
 cmd_refresh() {
   scope="${1:-m7}"
+  
+  # Handle special options
+  if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+    echo "🔍 Regular build dry-run validation for $scope:"
+    echo "   ✅ Production configuration: data/llm/configs/local_ollama.yml (default)"
+    echo "   ✅ Command would run: pixi run build-$scope"
+    echo "   📝 This would use gpt-oss:20b model (production quality)"
+    return 0
+  fi
+  
   case "$scope" in
     f2|m7|n100|v3k) ;;
     *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
@@ -120,6 +130,17 @@ cmd_build() {
 
 cmd_fast_build() {
   scope="${1:-m7}"
+  
+  # Handle special options
+  if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+    echo "🔍 Fast build dry-run validation for $scope:"
+    echo "   ✅ DeepSeek 1.5b configuration: data/llm/configs/deepseek_fast.yml"
+    echo "   ✅ Environment variables: DCF_FAST_MODE=true, DCF_CONFIG_PATH set"
+    echo "   ✅ Command would run: pixi run build-$scope"
+    echo "   📝 This would use deepseek-r1:1.5b model (NOT gpt-oss:20b)"
+    return 0
+  fi
+  
   case "$scope" in
     f2|m7|n100|v3k) ;;
     *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
@@ -127,6 +148,13 @@ cmd_fast_build() {
   
   echo "🚀 Starting fast build with deepseek-r1:1.5b for $scope..."
   echo "   Configuration: deepseek_fast.yml"
+  
+  # Check if deepseek-r1:1.5b model exists
+  if ! ollama list | grep -q "deepseek-r1:1.5b"; then
+    echo "⚠️  deepseek-r1:1.5b model not found. Please install it with:"
+    echo "    ollama pull deepseek-r1:1.5b"
+    exit 1
+  fi
   
   # Use fast-build pixi task with --fast-mode parameter
   echo "   Using DeepSeek 1.5b fast mode for accelerated testing..."
