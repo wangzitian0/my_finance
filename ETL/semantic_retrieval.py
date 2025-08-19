@@ -26,6 +26,7 @@ try:
     import torch
     from sentence_transformers import SentenceTransformer
     from sklearn.metrics.pairwise import cosine_similarity
+
     ML_DEPENDENCIES_AVAILABLE = True
 except ImportError as e:
     ML_DEPENDENCIES_AVAILABLE = False
