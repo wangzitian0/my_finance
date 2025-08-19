@@ -1,26 +1,26 @@
-# 项目架构说明
+# Project Architecture
 
-## 重构后的一级目录架构
+## Refactored Top-Level Directory Architecture
 
-基于数据流和职责分离的清晰分层架构：
+Clear layered architecture based on data flow and separation of responsibilities:
 
 ```
 my_finance/
-├── ETL/           # 数据处理管道：爬虫、数据加工清洗
-├── dts/           # 数据传输服务：抽象数据I/O，屏蔽存储细节
-├── dcf_engine/    # DCF估值引擎：策略逻辑、模型计算
-├── evaluation/    # 评估工具集：回测、LLM评估、性能分析
-├── common/        # 公共组件：模块协调、Schema定义、工具库
-├── infra/         # 基础设施：环境管理、部署、监控
-├── data/          # 数据存储：样例数据、配置文档
-├── tests/         # 测试框架：单元测试、集成测试
-└── graph_rag/     # Graph RAG组件：智能查询和推理
+├── ETL/           # Data processing pipeline: web scrapers, data processing & cleaning
+├── dts/           # Data transfer service: abstract data I/O, storage abstraction
+├── dcf_engine/    # DCF valuation engine: strategy logic, model calculations
+├── evaluation/    # Evaluation toolkit: backtesting, LLM evaluation, performance analysis
+├── common/        # Common components: module coordination, schema definitions, utilities
+├── infra/         # Infrastructure: environment management, deployment, monitoring
+├── data/          # Data storage: sample data, configuration documents
+├── tests/         # Testing framework: unit tests, integration tests
+└── graph_rag/     # Graph RAG components: intelligent queries and reasoning
 ```
 
-## 数据流架构
+## Data Flow Architecture
 
 ```
-原始数据源 → ETL → DTS → DCF Engine → Evaluation
+Raw Data Sources → ETL → DTS → DCF Engine → Evaluation
     ↓        ↓     ↓        ↓           ↓
   YFinance  爬虫  数据层   策略引擎    回测评估
   SEC Edgar 解析  缓存     模型计算    性能分析

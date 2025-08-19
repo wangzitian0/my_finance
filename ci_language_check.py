@@ -38,6 +38,7 @@ EXCLUDE_DIRS = {
     "data/test",
     "data/quality_reports",
     "data/log",
+    "templates",  # Templates directory - multilingual content allowed
 }
 
 # Files to exclude - TEMPORARY: allow Python files with Chinese comments during transition

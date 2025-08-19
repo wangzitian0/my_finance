@@ -217,6 +217,16 @@ git push --force-with-lease
 - Issue #26: Cross-platform conda migration
 
 ### Recently Completed Issues
+- Issue #95: ✅ **COMPLETED** - Standardization and cleanup of documentation and code practices (2025-08-19)
+  - ✅ **Language Standardization**: Created automated language standards checker with smart quote detection
+  - ✅ **CI Integration**: Added GitHub Actions workflow for PR language validation with template directory exemptions
+  - ✅ **Documentation Cleanup**: Converted major Chinese documentation (DCF Engine, ETL) to English
+  - ✅ **Data I/O Centralization**: Extended common/utils.py with unified JSON I/O functions
+  - ✅ **Workflow Standardization**: Updated pixi.toml commands to use unified p3 triggers
+  - ✅ **Template Exemptions**: Templates directory (`templates/`) excluded from language checks (multilingual content allowed)
+  - ✅ **README Structure**: Added comprehensive README files to all major directories with English documentation
+  - ✅ **M7 Test Integration**: Fixed pytest circular import issues and implemented proper CI validation
+
 - Issue #78: ✅ **COMPLETED** - Pixi Command Maintenance and Infrastructure Improvements (2025-08-19)
   - Extended e2e test commands with scope support (f2, m7, n100, v3k testing levels)
   - Enhanced Python zsh tab completion with command descriptions and scope options
