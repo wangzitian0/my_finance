@@ -1,32 +1,32 @@
-# Graph RAG系统设计
+# Graph RAG System Design
 
-## 核心理念
+## Core Concepts
 
-结合图数据库的关系优势和RAG的语义检索能力，构建专业的投资分析问答系统，支持复杂的多步推理和跨实体关联查询。
+Combine the relational advantages of graph databases with the semantic retrieval capabilities of RAG to build a professional investment analysis Q&A system that supports complex multi-step reasoning and cross-entity associative queries.
 
-## 系统架构
+## System Architecture
 
-### 1. 图结构语义层
+### 1. Graph Semantic Layer
 
-#### 实体关系图谱
+#### Entity Relationship Graph
 ```
-[公司] --HAS_FILING--> [SEC文件] --CONTAINS--> [财务指标]
-  |                                                    |
-  |--HAS_VALUATION--> [DCF估值] <--USES-- [财务指标]
+[Company] --HAS_FILING--> [SEC Filing] --CONTAINS--> [Financial Metrics]
+  |                                                      |
+  |--HAS_VALUATION--> [DCF Valuation] <--USES-- [Financial Metrics]
   |
-  |--MENTIONED_IN--> [新闻事件] --IMPACTS--> [DCF估值]
+  |--MENTIONED_IN--> [News Event] --IMPACTS--> [DCF Valuation]
   |
-  |--COVERED_BY--> [分析师报告] --PROVIDES--> [预测指标]
+  |--COVERED_BY--> [Analyst Report] --PROVIDES--> [Forecast Metrics]
 ```
 
-#### 语义向量嵌入
+#### Semantic Vector Embedding
 ```python
 class SemanticEmbedding:
     def __init__(self, embedding_model='sentence-transformers/all-MiniLM-L6-v2'):
         self.model = SentenceTransformer(embedding_model)
         
     def embed_document_sections(self, sec_filing):
-        """为SEC文件各章节生成语义嵌入"""
+        """Generate semantic embeddings for SEC filing sections"""
         sections = {
             'business_overview': sec_filing.sections.get('item_1', ''),
             'risk_factors': sec_filing.sections.get('item_1a', ''),
@@ -37,7 +37,7 @@ class SemanticEmbedding:
         embeddings = {}
         for section_name, content in sections.items():
             if content:
-                # 分块处理长文本
+                # Chunk processing for long text
                 chunks = self.chunk_text(content, max_length=512)
                 chunk_embeddings = self.model.encode(chunks)
                 embeddings[section_name] = {
@@ -49,15 +49,15 @@ class SemanticEmbedding:
         return embeddings
 ```
 
-### 2. 多模态检索引擎
+### 2. Multi-modal Retrieval Engine
 
-#### 结构化查询生成器
+#### Structured Query Generator
 ```python
 class StructuredQueryGenerator:
     def generate_cypher_query(self, natural_question):
-        """将自然语言问题转换为Cypher查询"""
+        """Convert natural language questions to Cypher queries"""
         
-        # 意图识别
+        # Intent recognition
         intent = self.classify_question_intent(natural_question)
         
         if intent == 'dcf_valuation':
@@ -70,8 +70,8 @@ class StructuredQueryGenerator:
             return self.generate_general_query(natural_question)
     
     def generate_dcf_query(self, question):
-        """生成DCF相关查询"""
-        # 提取公司ticker
+        """Generate DCF-related queries"""
+        # Extract company ticker
         ticker = self.extract_ticker_from_question(question)
         
         cypher = f"""
@@ -87,97 +87,97 @@ class StructuredQueryGenerator:
         return cypher
 ```
 
-#### 语义相似性检索
+#### Semantic Similarity Retrieval
 ```python
 class SemanticRetriever:
     def __init__(self, vector_store):
         self.vector_store = vector_store
         
     def retrieve_relevant_content(self, question, top_k=5):
-        """基于语义相似性检索相关内容"""
+        """Retrieve relevant content based on semantic similarity"""
         
-        # 生成问题向量
+        # Generate question vector
         question_embedding = self.embed_question(question)
         
-        # 检索相似文档片段
+        # Retrieve similar document chunks
         similar_chunks = self.vector_store.similarity_search(
             question_embedding, 
             top_k=top_k
         )
         
-        # 按相关性和时效性排序
+        # Rank by relevance and recency
         ranked_chunks = self.rank_by_relevance_and_recency(similar_chunks)
         
         return ranked_chunks
     
     def rank_by_relevance_and_recency(self, chunks):
-        """综合相关性和时效性排序"""
+        """Comprehensive ranking by relevance and recency"""
         current_date = datetime.now()
         
         for chunk in chunks:
-            # 相关性分数 (0-1)
+            # Relevance score (0-1)
             relevance_score = chunk['similarity_score']
             
-            # 时效性分数 (越新越高)
+            # Recency score (newer is higher)
             days_old = (current_date - chunk['document_date']).days
-            recency_score = max(0, 1 - days_old / 365)  # 一年后权重为0
+            recency_score = max(0, 1 - days_old / 365)  # Weight becomes 0 after one year
             
-            # 综合分数
+            # Comprehensive score
             chunk['final_score'] = 0.7 * relevance_score + 0.3 * recency_score
         
         return sorted(chunks, key=lambda x: x['final_score'], reverse=True)
 ```
 
-### 3. 智能问答生成器
+### 3. Intelligent Q&A Generator
 
-#### 上下文感知的回答生成
+#### Context-Aware Answer Generation
 ```python
 class IntelligentAnswerGenerator:
     def __init__(self, llm_client):
         self.llm_client = llm_client
         
     def generate_dcf_analysis_answer(self, question, graph_data, semantic_content):
-        """生成DCF分析回答"""
+        """Generate DCF analysis answers"""
         
-        # 构建上下文
+        # Build context
         context = self.build_dcf_context(graph_data, semantic_content)
         
         prompt = f"""
-        你是一个专业的投资分析师，基于以下信息回答用户关于DCF估值的问题。
+        You are a professional investment analyst. Answer the user's DCF valuation questions based on the following information.
         
-        用户问题: {question}
+        User Question: {question}
         
-        图数据库信息:
+        Graph Database Information:
         {context['structured_data']}
         
-        相关文档内容:
+        Relevant Document Content:
         {context['document_content']}
         
-        请提供详细的分析，包括:
-        1. 当前估值情况
-        2. 关键假设和风险因素
-        3. 敏感性分析
-        4. 投资建议
+        Please provide detailed analysis including:
+        1. Current valuation situation
+        2. Key assumptions and risk factors
+        3. Sensitivity analysis
+        4. Investment recommendations
         
-        引用具体的数据源和计算过程。
+        Cite specific data sources and calculation processes.
         """
         
         response = self.llm_client.generate(prompt, max_tokens=1000)
         
-        # 添加引用信息
+        # Add citation information
         enriched_response = self.add_citations(response, context['sources'])
         
         return enriched_response
     
     def build_dcf_context(self, graph_data, semantic_content):
-        """构建DCF分析上下文"""
+        """Build DCF analysis context"""
         context = {
             'structured_data': {},
             'document_content': [],
             'sources': []
         }
         
-        # 处理图数据库结果
+        # Process graph database results
         if graph_data.get('dcf_valuation'):
             dcf = graph_data['dcf_valuation']
             context['structured_data']['current_valuation'] = {
@@ -188,7 +188,7 @@ class IntelligentAnswerGenerator:
                 'valuation_date': dcf.valuation_date.isoformat()
             }
         
-        # 处理语义检索内容
+        # Process semantic retrieval content
         for chunk in semantic_content:
             context['document_content'].append({
                 'content': chunk['text'],
@@ -201,22 +201,22 @@ class IntelligentAnswerGenerator:
         return context
 ```
 
-### 4. 复杂推理链
+### 4. Complex Reasoning Chain
 
-#### 多步推理处理器
+#### Multi-step Reasoning Processor
 ```python
 class MultiStepReasoning:
     def process_complex_question(self, question):
-        """处理需要多步推理的复杂问题"""
+        """Process complex questions requiring multi-step reasoning"""
         
-        # 分解问题
+        # Decompose questions
         sub_questions = self.decompose_question(question)
         
         reasoning_chain = []
         accumulated_context = {}
         
         for sub_q in sub_questions:
-            # 获取子问题答案
+            # Get sub-question answers
             sub_answer = self.answer_sub_question(sub_q, accumulated_context)
             
             reasoning_chain.append({
@@ -225,10 +225,10 @@ class MultiStepReasoning:
                 'evidence': sub_answer['evidence']
             })
             
-            # 更新累积上下文
+            # Update accumulated context
             accumulated_context.update(sub_answer['context'])
         
-        # 综合最终答案
+        # Synthesize final answer
         final_answer = self.synthesize_final_answer(question, reasoning_chain)
         
         return {
@@ -238,18 +238,18 @@ class MultiStepReasoning:
         }
     
     def decompose_question(self, complex_question):
-        """分解复杂问题为子问题"""
+        """Decompose complex questions into sub-questions"""
         
-        # 示例：根据较新的各种新闻来帮我按照DCF计算估值
+        # Example: Help me calculate DCF valuation based on recent various news
         decomposition_prompt = f"""
-        将以下复杂问题分解为可以独立回答的子问题：
+        Decompose the following complex question into independently answerable sub-questions:
         
-        原问题: {complex_question}
+        Original Question: {complex_question}
         
-        请按逻辑顺序列出子问题，每个子问题应该可以通过查询数据库或文档来回答。
+        Please list sub-questions in logical order, where each sub-question can be answered by querying databases or documents.
         """
         
-        # 使用LLM分解问题
+        # Use LLM to decompose questions
         sub_questions = self.llm_client.generate_structured_output(
             decomposition_prompt, 
             output_format='list'
@@ -258,24 +258,24 @@ class MultiStepReasoning:
         return sub_questions
 ```
 
-### 5. 实时数据整合
+### 5. Real-time Data Integration
 
-#### 新闻事件影响分析
+#### News Event Impact Analysis
 ```python
 class NewsImpactAnalyzer:
     def analyze_news_impact_on_valuation(self, stock_ticker, days_back=30):
-        """分析最近新闻对估值的影响"""
+        """Analyze the impact of recent news on valuation"""
         
-        # 获取最近新闻
+        # Get recent news
         recent_news = self.get_recent_news_events(stock_ticker, days_back)
         
         impact_analysis = []
         
         for news in recent_news:
-            # 分析新闻对财务指标的潜在影响
+            # Analyze potential impact of news on financial metrics
             financial_impact = self.assess_financial_impact(news)
             
-            # 更新DCF模型参数
+            # Update DCF model parameters
             adjusted_dcf = self.adjust_dcf_for_news_impact(
                 stock_ticker, 
                 news, 
@@ -294,9 +294,9 @@ class NewsImpactAnalyzer:
         return impact_analysis
     
     def assess_financial_impact(self, news_event):
-        """评估新闻事件的财务影响"""
+        """Assess financial impact of news events"""
         
-        # 关键词匹配影响类别
+        # Keyword matching impact categories
         impact_categories = {
             'revenue': ['sales', 'revenue', 'contract', 'partnership'],
             'costs': ['layoffs', 'restructuring', 'efficiency'],
@@ -318,13 +318,13 @@ class NewsImpactAnalyzer:
         return detected_impacts
 ```
 
-### 6. 问答质量保证
+### 6. Q&A Quality Assurance
 
-#### 答案验证和置信度评估
+#### Answer Validation and Confidence Assessment
 ```python
 class AnswerQualityAssurance:
     def validate_answer_quality(self, question, answer, evidence):
-        """验证答案质量并计算置信度"""
+        """Validate answer quality and calculate confidence"""
         
         quality_metrics = {
             'evidence_strength': self.assess_evidence_strength(evidence),
@@ -333,7 +333,7 @@ class AnswerQualityAssurance:
             'source_reliability': self.assess_source_reliability(evidence)
         }
         
-        # 计算综合置信度
+        # Calculate comprehensive confidence
         confidence_score = (
             0.3 * quality_metrics['evidence_strength'] +
             0.25 * quality_metrics['logical_consistency'] +
@@ -341,7 +341,7 @@ class AnswerQualityAssurance:
             0.2 * quality_metrics['source_reliability']
         )
         
-        # 生成质量报告
+        # Generate quality report
         quality_report = {
             'confidence_score': confidence_score,
             'quality_metrics': quality_metrics,
@@ -351,19 +351,19 @@ class AnswerQualityAssurance:
         return quality_report
 ```
 
-## 用户交互界面
+## User Interaction Interface
 
-### 问答模式
-- **简单问答**：直接回答具体指标查询
-- **深度分析**：提供多角度分析和推理过程
-- **对比分析**：支持多公司横向对比
-- **时间序列分析**：历史趋势和预测
+### Q&A Modes
+- **Simple Q&A**: Direct answers to specific metric queries
+- **Deep Analysis**: Multi-perspective analysis and reasoning processes
+- **Comparative Analysis**: Support multi-company horizontal comparison
+- **Time Series Analysis**: Historical trends and forecasting
 
-### 可视化展示
-- **DCF计算过程**：分步骤展示计算逻辑
-- **敏感性分析图表**：参数变化对估值的影响
-- **数据来源标注**：清晰标示每个数据的来源和置信度
+### Visualization Display
+- **DCF Calculation Process**: Step-by-step display of calculation logic
+- **Sensitivity Analysis Charts**: Impact of parameter changes on valuation
+- **Data Source Annotation**: Clear indication of each data's source and confidence level
 
 ---
 
-*Graph RAG系统持续优化以提供更准确、更有洞察力的投资分析*
+*The Graph RAG system is continuously optimized to provide more accurate and insightful investment analysis*
