@@ -45,7 +45,7 @@ class OllamaClient:
         self.mock_mode = (
             fast_mode  # Direct parameter takes priority
             or config_fast_mode
-            or self.config.get("llm_service", {}).get("provider") == "mock" 
+            or self.config.get("llm_service", {}).get("provider") == "mock"
             or self.ci_fast_testing  # Keep CI support
         )
 
