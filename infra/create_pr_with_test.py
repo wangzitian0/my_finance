@@ -226,7 +226,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    run_command("./p3 format", "Formatting Python code with black and isort", timeout=30, check=False)
+    run_command(
+        "./p3 format", "Formatting Python code with black and isort", timeout=30, check=False
+    )
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()

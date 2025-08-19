@@ -19,11 +19,11 @@ class TestP3CommandParsing(TestCase):
         """Set up test environment once"""
         cls.repo_root = Path(__file__).parent.parent
         cls.p3_script = cls.repo_root / "p3"
-        
+
         # Ensure p3 script exists and is executable
         if not cls.p3_script.exists():
             raise FileNotFoundError(f"p3 script not found at {cls.p3_script}")
-        
+
         if not os.access(cls.p3_script, os.X_OK):
             os.chmod(cls.p3_script, 0o755)
 
@@ -32,12 +32,12 @@ class TestP3CommandParsing(TestCase):
         cmd = [str(self.p3_script)] + args
         try:
             result = subprocess.run(
-                cmd, 
-                capture_output=True, 
-                text=True, 
+                cmd,
+                capture_output=True,
+                text=True,
                 timeout=timeout,
                 check=False,
-                cwd=self.repo_root
+                cwd=self.repo_root,
             )
             return result
         except subprocess.TimeoutExpired:
@@ -48,6 +48,7 @@ class TestP3CommandParsing(TestCase):
                     self.returncode = 124  # Standard timeout exit code
                     self.stdout = ""
                     self.stderr = "Command timed out (expected for some commands)"
+
             return MockResult()
         except FileNotFoundError:
             self.fail(f"p3 script not found or not executable: {self.p3_script}")
@@ -82,7 +83,7 @@ class TestP3CommandParsing(TestCase):
         result = self.run_p3_command(["create-pr"])
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("title and issue number are required", result.stderr)
-        
+
         # Missing issue number
         result = self.run_p3_command(["create-pr", "Test title"])
         self.assertNotEqual(result.returncode, 0)
@@ -119,28 +120,47 @@ class TestP3CommandParsing(TestCase):
         completion_script = self.repo_root / "scripts" / "p3-completion.zsh"
         if not completion_script.exists():
             self.skipTest("Completion script not found")
-        
+
         completion_content = completion_script.read_text()
-        
+
         # Extract commands from completion script
         import re
-        commands_match = re.search(r'_p3_commands=\(([^)]+)\)', completion_content)
+
+        commands_match = re.search(r"_p3_commands=\(([^)]+)\)", completion_content)
         if not commands_match:
             self.fail("Could not find command list in completion script")
-        
+
         completion_commands = commands_match.group(1).split()
-        
+
         # Define expected core commands (from usage() function)
         expected_commands = {
-            "env", "podman", "neo4j", "format", "lint", "typecheck", "test", "e2e",
-            "build", "fast-build", "refresh", "create-build", "release-build", 
-            "clean", "build-status", "create-pr", "commit-data-changes", 
-            "cleanup-branches", "shutdown-all", "status", "cache-status", 
-            "verify-env", "check-integrity"
+            "env",
+            "podman",
+            "neo4j",
+            "format",
+            "lint",
+            "typecheck",
+            "test",
+            "e2e",
+            "build",
+            "fast-build",
+            "refresh",
+            "create-build",
+            "release-build",
+            "clean",
+            "build-status",
+            "create-pr",
+            "commit-data-changes",
+            "cleanup-branches",
+            "shutdown-all",
+            "status",
+            "cache-status",
+            "verify-env",
+            "check-integrity",
         }
-        
+
         completion_commands_set = set(completion_commands)
-        
+
         # Check that all expected commands are in completion
         missing_in_completion = expected_commands - completion_commands_set
         if missing_in_completion:
@@ -151,78 +171,93 @@ class TestP3CommandParsing(TestCase):
         # Test permissions
         self.assertTrue(os.access(self.p3_script, os.X_OK), "p3 script should be executable")
         self.assertTrue(os.access(self.p3_script, os.R_OK), "p3 script should be readable")
-        
+
         # Test shebang
-        with open(self.p3_script, 'r') as f:
+        with open(self.p3_script, "r") as f:
             first_line = f.readline().strip()
-        
+
         self.assertTrue(first_line.startswith("#!/"), "p3 script should have shebang")
         self.assertIn("sh", first_line, "p3 script should be shell script")
 
     def test_usage_function_contains_all_commands(self):
         """Test that usage function documents all major commands"""
-        with open(self.p3_script, 'r') as f:
+        with open(self.p3_script, "r") as f:
             script_content = f.read()
-        
+
         # Find usage function
         import re
-        usage_match = re.search(r'usage\(\) \{.*?^EOF\n^}', script_content, re.MULTILINE | re.DOTALL)
+
+        usage_match = re.search(
+            r"usage\(\) \{.*?^EOF\n^}", script_content, re.MULTILINE | re.DOTALL
+        )
         if not usage_match:
             self.fail("Could not find usage() function in p3 script")
-        
+
         usage_content = usage_match.group(0)
-        
+
         # Check that major command categories are documented
         expected_sections = [
             "Environment Management",
-            "Container Management", 
+            "Container Management",
             "Development Commands",
             "Build Management",
             "Workflow Management",
-            "Status & Validation"
+            "Status & Validation",
         ]
-        
+
         for section in expected_sections:
             self.assertIn(section, usage_content, f"Usage should document {section} section")
 
     def test_case_statement_completeness(self):
         """Test that case statement handles all documented commands"""
-        with open(self.p3_script, 'r') as f:
+        with open(self.p3_script, "r") as f:
             script_content = f.read()
-        
+
         # Extract main case statement
         import re
+
         case_match = re.search(r'case "\$1" in.*?esac', script_content, re.DOTALL)
         if not case_match:
             self.fail("Could not find main case statement in p3 script")
-        
+
         case_content = case_match.group(0)
-        
+
         # Check that key commands are handled
         key_commands = [
-            "env", "podman", "neo4j", "format", "lint", "test", "e2e",
-            "build", "refresh", "create-pr", "status", "help"
+            "env",
+            "podman",
+            "neo4j",
+            "format",
+            "lint",
+            "test",
+            "e2e",
+            "build",
+            "refresh",
+            "create-pr",
+            "status",
+            "help",
         ]
-        
+
         for cmd in key_commands:
             # Check if command is handled in case statement
-            pattern = rf'{cmd}\)'
+            pattern = rf"{cmd}\)"
             if not re.search(pattern, case_content):
                 self.fail(f"Command '{cmd}' not handled in main case statement")
 
     def test_error_handling_patterns(self):
         """Test consistent error handling patterns"""
-        with open(self.p3_script, 'r') as f:
+        with open(self.p3_script, "r") as f:
             script_content = f.read()
-        
+
         # Check for consistent error messages
         self.assertIn('echo "Unknown command:', script_content)
-        self.assertIn('exit 2', script_content)  # Standard error exit code
-        
+        self.assertIn("exit 2", script_content)  # Standard error exit code
+
         # Check for help on unknown commands
-        self.assertIn('usage', script_content)
+        self.assertIn("usage", script_content)
 
 
 if __name__ == "__main__":
     import unittest
+
     unittest.main()
