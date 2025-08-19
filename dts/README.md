@@ -1,50 +1,50 @@
 # DTS (Data Transport Service)
 
-数据传输服务层，负责数据导入导出线上库，为dcf_engine屏蔽输入输出的基建细节。
+Data transport service layer responsible for data import/export to online databases, abstracting infrastructure details from dcf_engine.
 
-## 职责
+## Responsibilities
 
-### 数据抽象层
-- **统一数据接口**: 为上层业务提供统一的数据访问API
-- **多源适配**: 支持Neo4j、MySQL、Redis等多种存储后端
-- **数据转换**: 在不同存储格式间进行数据转换
-- **缓存管理**: 提供智能缓存机制提升访问性能
+### Data Abstraction Layer
+- **Unified Data Interface**: Provides unified data access API for upper-level business logic
+- **Multi-source Adaptation**: Supports multiple storage backends like Neo4j, MySQL, Redis
+- **Data Transformation**: Handles data conversion between different storage formats
+- **Cache Management**: Provides intelligent caching mechanisms to improve access performance
 
-### 数据服务
-- **读取服务**: 高性能的数据查询和检索
-- **写入服务**: 批量数据导入和实时数据更新
-- **事务管理**: 确保数据一致性和完整性
-- **连接池管理**: 优化数据库连接使用
+### Data Services
+- **Read Services**: High-performance data querying and retrieval
+- **Write Services**: Batch data import and real-time data updates
+- **Transaction Management**: Ensures data consistency and integrity
+- **Connection Pool Management**: Optimizes database connection usage
 
-## 架构设计
+## Architecture Design
 
 ```
 dcf_engine
-    ↓ (调用)
-dts (数据抽象层)
-    ↓ (适配)
-数据存储层 (Neo4j/MySQL/Redis/配置中心)
+    ↓ (calls)
+dts (data abstraction layer)
+    ↓ (adapts)
+Data Storage Layer (Neo4j/MySQL/Redis/Configuration Center)
 ```
 
-## 待实现模块
+## Modules To Be Implemented
 
-### 核心模块
-- [ ] `data_adapter.py` - 数据适配器基类
-- [ ] `neo4j_adapter.py` - Neo4j数据适配器
-- [ ] `cache_manager.py` - 缓存管理器
-- [ ] `connection_pool.py` - 连接池管理
-- [ ] `data_validator.py` - 数据验证器
+### Core Modules
+- [ ] `data_adapter.py` - Data adapter base class
+- [ ] `neo4j_adapter.py` - Neo4j data adapter
+- [ ] `cache_manager.py` - Cache manager
+- [ ] `connection_pool.py` - Connection pool management
+- [ ] `data_validator.py` - Data validator
 
-### 服务接口
-- [ ] `reader_service.py` - 数据读取服务
-- [ ] `writer_service.py` - 数据写入服务
-- [ ] `query_builder.py` - 查询构建器
-- [ ] `schema_manager.py` - Schema管理器
+### Service Interfaces
+- [ ] `reader_service.py` - Data reading service
+- [ ] `writer_service.py` - Data writing service
+- [ ] `query_builder.py` - Query builder
+- [ ] `schema_manager.py` - Schema manager
 
-## 设计原则
+## Design Principles
 
-1. **抽象隔离**: 上层业务不依赖具体存储实现
-2. **高性能**: 通过缓存和连接池优化性能
-3. **可扩展**: 支持新增数据源和存储后端
-4. **容错性**: 处理网络异常和存储故障
-5. **监控友好**: 提供详细的性能和错误指标
+1. **Abstraction Isolation**: Upper-level business logic doesn't depend on specific storage implementations
+2. **High Performance**: Optimizes performance through caching and connection pooling
+3. **Extensibility**: Supports adding new data sources and storage backends
+4. **Fault Tolerance**: Handles network exceptions and storage failures
+5. **Monitoring Friendly**: Provides detailed performance and error metrics
