@@ -17,7 +17,7 @@ from common.build_tracker import BuildTracker
 from ETL.tests.test_config import DatasetTier, TestConfigManager
 
 
-def build_dataset(tier_name: str, config_path: str = None) -> bool:
+def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = False) -> bool:
     """
     Build dataset for specified tier using configuration.
 
@@ -91,7 +91,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         # Analysis stage - DCF calculations
         tracker.start_stage("stage_04_analysis")
         try:
-            companies_analyzed = run_dcf_analysis(tier, tracker)
+            companies_analyzed = run_dcf_analysis(tier, tracker, fast_mode=fast_mode)
             tracker.complete_stage(
                 "stage_04_analysis", partition=date_partition, companies_analyzed=companies_analyzed
             )
@@ -104,7 +104,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         # Reporting stage - Generate final reports
         tracker.start_stage("stage_05_reporting")
         try:
-            reports_generated = run_report_generation(tier, tracker)
+            reports_generated = run_report_generation(tier, tracker, fast_mode=fast_mode)
             tracker.complete_stage(
                 "stage_05_reporting", partition=date_partition, reports_generated=reports_generated
             )
@@ -204,7 +204,7 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
         return False
 
 
-def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
+def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool = False) -> int:
     """Run DCF analysis on available data with SEC document integration"""
     try:
         # Import SEC-integrated DCF analyzer
@@ -242,18 +242,12 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
             print(f"   ⚠️  No companies found in {tier.value} configuration")
             return 0
 
-        # Check for fast mode from environment
-        import os
-
-        fast_mode = os.getenv("DCF_FAST_MODE", "false").lower() == "true"
-        config_path = os.getenv("DCF_CONFIG_PATH", None)
-
         # Use SEC-integrated DCF generator with fast mode support
-        analyzer = LLMDCFGenerator(config_path=config_path, fast_mode=fast_mode)
+        analyzer = LLMDCFGenerator(config_path=None, fast_mode=fast_mode)
 
         if fast_mode:
-            print(f"   ⚡ Fast mode enabled with config: {config_path}")
-            tracker.log_stage_output("stage_04_analysis", f"Fast mode enabled: {config_path}")
+            print(f"   ⚡ Fast mode enabled for DCF analysis")
+            tracker.log_stage_output("stage_04_analysis", "Fast mode enabled for DCF analysis")
         companies_analyzed = 0
 
         for ticker in companies.keys():
@@ -281,7 +275,7 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         return 0
 
 
-def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
+def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool = False) -> int:
     """Generate final reports"""
     try:
         # Import DCF report generator
@@ -320,17 +314,12 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
         else:
             print(f"   📊 Generating report for {len(tickers)} companies: {', '.join(tickers)}")
 
-        # Check for fast mode from environment
-        import os
-
-        fast_mode = os.getenv("DCF_FAST_MODE", "false").lower() == "true"
-        config_path = os.getenv("DCF_CONFIG_PATH", None)
-
-        analyzer = LLMDCFGenerator(config_path=config_path, fast_mode=fast_mode)
+        # Use fast_mode parameter passed from caller
+        analyzer = LLMDCFGenerator(config_path=None, fast_mode=fast_mode)
 
         if fast_mode:
-            print(f"   ⚡ Fast mode report generation with config: {config_path}")
-            tracker.log_stage_output("stage_05_reporting", f"Fast mode enabled: {config_path}")
+            print(f"   ⚡ Fast mode report generation enabled")
+            tracker.log_stage_output("stage_05_reporting", "Fast mode enabled for report generation")
 
         # Generate DCF reports for each ticker
         reports_generated = 0
@@ -412,11 +401,12 @@ def main():
         help="Dataset tier to build (f2/m7/n100/v3k + legacy aliases)",
     )
     parser.add_argument("--config", help="Optional path to specific config file")
+    parser.add_argument("--fast-mode", action="store_true", help="Enable fast mode with DeepSeek 1.5b")
     parser.add_argument("--validate", action="store_true", help="Run validation after build")
 
     args = parser.parse_args()
 
-    success = build_dataset(args.tier, args.config)
+    success = build_dataset(args.tier, args.config, fast_mode=args.fast_mode)
 
     if success and args.validate:
         tier = DatasetTier(args.tier)

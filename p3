@@ -128,11 +128,10 @@ cmd_fast_build() {
   echo "🚀 Starting fast build with deepseek-r1:1.5b for $scope..."
   echo "   Configuration: deepseek_fast.yml"
   
-  # Use mock mode configuration (no Ollama needed)
-  echo "   Using mock mode configuration for instant responses..."
+  # Use fast-build pixi task with --fast-mode parameter
+  echo "   Using DeepSeek 1.5b fast mode for accelerated testing..."
   
-  # Use the mock-enabled deepseek_fast.yml configuration
-  pixi run "build-$scope" --config="data/llm/configs/deepseek_fast.yml"
+  pixi run "fast-build-$scope"
 }
 
 # Environment management
