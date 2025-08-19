@@ -38,7 +38,7 @@ class OllamaClient:
             fast_mode: Enable fast mode with mock responses
         """
         self.config = self._load_config(config_path)
-
+        
         # Check for fast mode (parameter, config, or CI environment)
         config_fast_mode = self.config.get("dcf_generation", {}).get("fast_mode", False)
         self.ci_fast_testing = os.getenv("CI_FAST_TESTING", "false").lower() == "true"
@@ -49,23 +49,24 @@ class OllamaClient:
             or self.ci_fast_testing  # Keep CI support
         )
 
+        # Support both old format (ollama section) and new format (llm_service section)
+        llm_config = self.config.get("llm_service", self.config.get("ollama", {}))
+        
         if self.mock_mode:
             logger.info("🚀 Running in mock mode for fast CI testing")
             self.base_url = "mock://localhost"
             self.model_name = "deepseek-r1:1.5b"
             self.timeout = 5
         else:
-            self.base_url = self.config.get("llm_service", {}).get(
-                "base_url", "http://localhost:11434"
-            )
-            self.model_name = self.config.get("llm_service", {}).get("model", "deepseek-r1:1.5b")
-            self.timeout = self.config.get("llm_service", {}).get("timeout", 45)
+            self.base_url = llm_config.get("base_url", "http://localhost:11434")
+            self.model_name = llm_config.get("model_name", llm_config.get("model", "gpt-oss:20b"))
+            self.timeout = llm_config.get("timeout", 45)
 
-        # Generation parameters
+        # Generation parameters - support both config formats and mock mode
         generation_config = self.config.get("generation", {})
-        self.max_tokens = generation_config.get("max_tokens", 2048 if self.mock_mode else 4096)
-        self.temperature = generation_config.get("temperature", 0.3)
-        self.top_p = generation_config.get("top_p", 0.9)
+        self.max_tokens = llm_config.get("max_tokens", generation_config.get("max_tokens", 2048 if self.mock_mode else 4096))
+        self.temperature = llm_config.get("temperature", generation_config.get("temperature", 0.3))
+        self.top_p = llm_config.get("top_p", generation_config.get("top_p", 0.9))
 
         # Debug settings
         self.debug_mode = self.config.get("dcf_generation", {}).get("debug_mode", True)
@@ -80,13 +81,15 @@ class OllamaClient:
 
         if not self.mock_mode:
             self._verify_ollama_connection()
+            self._ping_pong_test()
         else:
             logger.info("🏃 Skipping Ollama connection verification in mock mode")
 
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            config_path = "data/llm/configs/local_ollama.yml"
+            # Check for environment variable first (for fast-build)
+            config_path = os.getenv("DCF_CONFIG_PATH", "data/llm/configs/local_ollama.yml")
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:
@@ -136,6 +139,47 @@ class OllamaClient:
         except requests.exceptions.RequestException as e:
             logger.error(f"❌ Ollama server not reachable: {e}")
             logger.info("Make sure Ollama is running: ollama serve")
+
+    def _ping_pong_test(self):
+        """Perform a quick ping-pong test with the model to verify response time."""
+        try:
+            start_time = time.time()
+            logger.info(f"🏓 Ping-pong test with {self.model_name}...")
+            
+            # Simple test prompt
+            test_prompt = "Say only: PONG"
+            
+            response = requests.post(
+                f"{self.base_url}/api/generate",
+                json={
+                    "model": self.model_name,
+                    "prompt": test_prompt,
+                    "stream": False,
+                    "options": {
+                        "temperature": 0,
+                        "num_predict": 10,  # Very short response
+                    }
+                },
+                timeout=30  # Shorter timeout for ping test
+            )
+            
+            response_time = time.time() - start_time
+            
+            if response.status_code == 200:
+                result = response.json()
+                answer = result.get("response", "").strip()
+                logger.info(f"🏓 Ping-pong successful: '{answer}' ({response_time:.1f}s)")
+                
+                # Warn if response time is slow
+                if response_time > 15:
+                    logger.warning(f"⚠️  Model response slow ({response_time:.1f}s) - expect longer DCF generation")
+                elif response_time > 30:
+                    logger.error(f"❌ Model response very slow ({response_time:.1f}s) - consider using fast-build")
+            else:
+                logger.error(f"❌ Ping-pong failed: HTTP {response.status_code}")
+                
+        except Exception as e:
+            logger.warning(f"⚠️  Ping-pong test failed: {e}")
 
     def _save_connection_info(self, models: List[Dict]):
         """Save connection and model info for debugging."""

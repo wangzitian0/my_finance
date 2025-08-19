@@ -6,7 +6,9 @@ Supports test, M7, nasdaq100, and VTI tiers with build tracking.
 
 import argparse
 import json
+import os
 import sys
+import yaml
 from datetime import datetime
 from pathlib import Path
 
@@ -136,22 +138,49 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
 def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build yfinance data using spider"""
     try:
-        from yfinance_spider import run_job
+        from ETL.yfinance_spider import run_job
+        import tempfile
 
-        # Create temp config file path for the spider
+        # Get YFinance stage config from data sources
+        data_sources = yaml_config.get("data_sources", {})
+        yfinance_config = data_sources.get("yfinance", {})
+        if not yfinance_config.get("enabled", False):
+            print(f"   📈 YFinance collection disabled for {tier.value}")
+            return True
+
+        stage_config_name = yfinance_config.get("stage_config", "stage_00_original_yfinance.yml")
         config_manager = TestConfigManager()
-        config_path = config_manager.config_dir / config_manager.get_config(tier).config_file
+        yfinance_config_path = config_manager.config_dir / stage_config_name
+
+        # Extract tickers from main config
+        companies = yaml_config.get("companies", {})
+        tickers = list(companies.keys()) if companies else []
 
         print(f"   📈 Collecting yfinance data...")
-        print(f"   Tickers: {len(yaml_config.get('tickers', []))}")
+        print(f"   Tickers: {len(tickers)}")
+        print(f"   Config: {stage_config_name}")
+
+        # Create temporary config file with tickers added
+        with open(yfinance_config_path, 'r') as f:
+            yf_config = yaml.safe_load(f)
+
+        yf_config['tickers'] = tickers
+
+        # Write temporary config with tickers
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False) as temp_f:
+            yaml.dump(yf_config, temp_f, default_flow_style=False)
+            temp_config_path = temp_f.name
 
         # Log to build tracker
         tracker.log_stage_output(
-            "stage_01_extract", f"Starting yfinance collection for {tier.value}"
+            "stage_01_extract", f"Starting yfinance collection for {tier.value} with {len(tickers)} tickers"
         )
 
         # Run yfinance spider
-        run_job(str(config_path))
+        run_job(temp_config_path)
+
+        # Clean up temp file
+        os.unlink(temp_config_path)
 
         tracker.log_stage_output("stage_01_extract", "yfinance collection completed")
         return True

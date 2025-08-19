@@ -5,7 +5,7 @@ llm_service:
   provider: "ollama"
   base_url: "http://localhost:11434"
   model: "gpt-oss:20b"
-  timeout: 90
+  timeout: 120
   max_retries: 3
 
 generation:

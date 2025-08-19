@@ -5,8 +5,8 @@ llm_service:
   provider: "mock"  # Use mock provider for fast testing
   base_url: "http://localhost:11434"
   model: "deepseek-r1:1.5b"
-  timeout: 5  # Very fast timeout for mock mode
-  max_retries: 1
+  timeout: 60
+  max_retries: 2
 
 generation:
   temperature: 0.3
