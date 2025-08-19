@@ -70,7 +70,7 @@ quick-test = "python -m pytest tests/test_basic_structure.py -v"
 status = "python infra/comprehensive_env_status.py"
 
 # Quality assurance commands
-format = "python -m black --line-length 100 . && python -m isort ."
+format = "python -m black --line-length 100 ETL/ dcf_engine/ common/ graph_rag/ infra/ scripts/ tests/ *.py && python -m isort ETL/ dcf_engine/ common/ graph_rag/ infra/ scripts/ tests/ *.py"
 lint = "python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613"
 typecheck = "python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports"
 test = "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
