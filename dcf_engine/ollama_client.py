@@ -87,8 +87,8 @@ class OllamaClient:
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            # Check for environment variable first (for fast-build)
-            config_path = os.getenv("DCF_CONFIG_PATH", "data/llm/configs/local_ollama.yml")
+            # Use default production config
+            config_path = "data/llm/configs/local_ollama.yml"
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:

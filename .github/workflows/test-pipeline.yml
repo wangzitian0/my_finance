@@ -10,7 +10,6 @@ env:
   COVERAGE_THRESHOLD: 25
   # Fast CI testing with DeepSeek 1.5b
   DCF_FAST_MODE: true
-  DCF_CONFIG_PATH: data/llm/configs/deepseek_fast.yml
   CI_FAST_TESTING: true
 
 jobs:

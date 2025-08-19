@@ -135,7 +135,7 @@ cmd_fast_build() {
   if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
     echo "🔍 Fast build dry-run validation for $scope:"
     echo "   ✅ DeepSeek 1.5b configuration: data/llm/configs/deepseek_fast.yml"
-    echo "   ✅ Environment variables: DCF_FAST_MODE=true, DCF_CONFIG_PATH set"
+    echo "   ✅ Environment variables: DCF_FAST_MODE=true"
     echo "   ✅ Command would run: pixi run build-$scope"
     echo "   📝 This would use deepseek-r1:1.5b model (NOT gpt-oss:20b)"
     return 0

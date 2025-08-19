@@ -119,7 +119,6 @@ class TestMultiModelDCF(unittest.TestCase):
             os.environ,
             {
                 "DCF_FAST_MODE": "true",
-                "DCF_CONFIG_PATH": str(self.config_dir / "deepseek_fast.yml"),
             },
         ):
             # Import and test the build system
@@ -234,7 +233,6 @@ class TestMultiModelDCF(unittest.TestCase):
             os.environ,
             {
                 "DCF_FAST_MODE": "true",
-                "DCF_CONFIG_PATH": str(self.config_dir / "deepseek_fast.yml"),
             },
         ):
             if (self.config_dir / "deepseek_fast.yml").exists():
