@@ -9,12 +9,12 @@ from datetime import datetime, timedelta
 
 import yaml
 
-# 从 neomodel 导入 config，并设置数据库连接
+# Import config from neomodel and set database connection
 from neomodel import config
 
 config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
 
-# 使用项目根目录下的 common 模块，不在 ETL 目录下
+# Use common module from project root directory, not in ETL directory
 from common.logger import StreamToLogger, setup_logger
 from common.progress import create_progress_bar
 from common.snowflake import Snowflake
@@ -27,14 +27,14 @@ suppress_third_party_logs()
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
 
-# 导入模型（确保 ETL 在 PYTHONPATH 中）
+# Import models (ensure ETL is in PYTHONPATH)
 from models import FastInfo, Info, PriceData, Recommendations, Stock, Sustainability
 
 
 def import_json_file(file_path, logger):
     """
-    读取单个 JSON 文件，并将数据导入到 Neo4j（通过 Neomodel 模型）。
-    根据 JSON 中的 ticker 字段，先获取或创建 Stock 节点，然后创建 Info、FastInfo、PriceData、Recommendations 和 Sustainability 节点，并建立关系。
+    Read a single JSON file and import data to Neo4j (via Neomodel models).
+    Based on the ticker field in the JSON, first get or create a Stock node, then create Info, FastInfo, PriceData, Recommendations and Sustainability nodes, and establish relationships.
     """
     logger.info(f"Processing file: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
@@ -42,7 +42,7 @@ def import_json_file(file_path, logger):
 
     ticker = data.get("ticker")
     if not ticker:
-        logger.error("JSON 文件中缺少 ticker 字段。")
+        logger.error("Missing ticker field in JSON file.")
         return
 
     try:
@@ -56,7 +56,7 @@ def import_json_file(file_path, logger):
         )
         stock.save()
 
-    # 处理 info 节点
+    # Process info node
     info_data = data.get("info")
     if info_data:
         info_node = Info(
@@ -80,7 +80,7 @@ def import_json_file(file_path, logger):
         info_node.save()
         stock.info.connect(info_node)
 
-    # 处理 fast_info 节点
+    # Process fast_info node
     fast_info_data = data.get("fast_info")
     if fast_info_data:
         fast_info_node = FastInfo(
@@ -95,7 +95,7 @@ def import_json_file(file_path, logger):
         fast_info_node.save()
         stock.fast_info.connect(fast_info_node)
 
-    # 处理 recommendations 节点
+    # Process recommendations node
     rec_data = data.get("recommendations")
     if rec_data:
         rec_node = Recommendations(
@@ -109,14 +109,14 @@ def import_json_file(file_path, logger):
         rec_node.save()
         stock.recommendations.connect(rec_node)
 
-    # 处理 sustainability 节点
+    # Process sustainability node
     sus_data = data.get("sustainability", {}).get("esgScores")
     if sus_data:
         sus_node = Sustainability(esgScores=sus_data)
         sus_node.save()
         stock.sustainability.connect(sus_node)
 
-    # 处理历史股价数据，假设 history 部分为字典，各字段为数组
+    # Process historical stock price data, assuming history section is a dictionary with arrays for each field
     history_data = data.get("history")
     if history_data:
         opens = history_data.get("Open", [])
@@ -124,7 +124,7 @@ def import_json_file(file_path, logger):
         lows = history_data.get("Low", [])
         closes = history_data.get("Close", [])
         volumes = history_data.get("Volume", [])
-        # 如果 JSON 中有日期字段，则应使用；此处使用基准日期作为示例
+        # If there's a date field in JSON, it should be used; here using base date as example
         base_date = datetime(2025, 1, 1)
         count = min(len(opens), len(highs), len(lows), len(closes), len(volumes))
         for i in range(count):
@@ -144,8 +144,8 @@ def import_json_file(file_path, logger):
 
 def import_all_json_files(source, tickers, logger):
     """
-    针对传入的 tickers 列表，从 data/stage_00_original/<source>/<ticker> 目录中读取所有 JSON 文件，
-    并调用 import_json_file() 将数据写入 Neo4j。
+    For the given tickers list, read all JSON files from data/stage_00_original/<source>/<ticker> directories,
+    and call import_json_file() to write data to Neo4j.
     """
     total_files = 0
     for ticker in tickers:
@@ -218,10 +218,10 @@ def import_all_json_files(source, tickers, logger):
 
 def run_job(config_path):
     """
-    根据 YAML 配置文件（例如 config.yml），读取配置后从 data/stage_00_original/<source>/<ticker>/ 中读取 JSON 文件并导入 Neo4j。
-    配置文件应包含：
+    Based on YAML configuration file (e.g. config.yml), read configuration and import JSON files from data/stage_00_original/<source>/<ticker>/ to Neo4j.
+    Configuration file should contain:
       - tickers: list of ticker symbols
-      - source: 数据来源名称（例如 "yfinance"）
+      - source: data source name (e.g. "yfinance")
     """
     with open(config_path, "r", encoding="utf-8") as f:
         config_data = yaml.safe_load(f)

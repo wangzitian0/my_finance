@@ -11,14 +11,14 @@ def get_db_path():
 
 def ensure_common_tables():
     """
-    创建通用数据库表：
-    1) fetch_log: 记录数据抓取状态
-    2) stock_price: 存储股票历史数据
+    Create common database tables:
+    1) fetch_log: Record data fetch status
+    2) stock_price: Store stock historical data
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    # 创建 fetch_log 表
+    # Create fetch_log table
     create_fetch_log_sql = """
     CREATE TABLE IF NOT EXISTS fetch_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,7 +32,7 @@ def ensure_common_tables():
     """
     cursor.execute(create_fetch_log_sql)
 
-    # 创建 stock_price 表
+    # Create stock_price table
     create_stock_price_sql = """
     CREATE TABLE IF NOT EXISTS stock_price (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,9 +55,9 @@ def ensure_common_tables():
 
 def can_fetch(ticker: str, dimension: str, cooldown_minutes=60) -> bool:
     """
-    1. 如果上次拉取失败 (success=0)，必须重试
-    2. 如果上次拉取成功，但数据过旧（超过冷却时间），允许拉取
-    3. 否则不拉取
+    1. If last fetch failed (success=0), must retry
+    2. If last fetch succeeded, but data is stale (beyond cooldown time), allow fetch
+    3. Otherwise don't fetch
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
@@ -73,16 +73,16 @@ def can_fetch(ticker: str, dimension: str, cooldown_minutes=60) -> bool:
     now = datetime.now()
 
     if not row:
-        return True  # 如果没有记录，必须拉取
+        return True  # If no record exists, must fetch
 
     last_fetch_time, last_success_time, success = row
     last_fetch_dt = datetime.strptime(last_fetch_time, "%Y-%m-%d %H:%M:%S")
 
-    # 如果上次失败，必须重试
+    # If last attempt failed, must retry
     if success == 0:
         return True
 
-    # 如果成功了，检查数据是否过旧
+    # If succeeded, check if data is stale
     if last_success_time:
         last_success_dt = datetime.strptime(last_success_time, "%Y-%m-%d %H:%M:%S")
         if now - last_success_dt > timedelta(minutes=cooldown_minutes):
@@ -93,10 +93,10 @@ def can_fetch(ticker: str, dimension: str, cooldown_minutes=60) -> bool:
 
 def update_fetch_time(ticker: str, dimension: str, success: bool):
     """
-    在 fetch_log 中更新:
-    - `last_fetch_time` （无论成功与否都更新）
-    - `success=1` 代表成功, 并记录 `last_success_time`
-    - `success=0` 代表失败, 但保留 `last_success_time` 不变
+    Update in fetch_log:
+    - `last_fetch_time` (always updated regardless of success)
+    - `success=1` represents success, and record `last_success_time`
+    - `success=0` represents failure, but keep `last_success_time` unchanged
     """
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

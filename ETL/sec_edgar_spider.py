@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-请先安装 lxml 库：
+Please install lxml library first:
     pip install lxml
 
-以下是7姐妹（7大科技公司）的 CIK 号码：
+CIK numbers for the Magnificent 7 (7 major tech companies):
   - Apple (AAPL):       0000320193
   - Microsoft (MSFT):   0000789019
   - Amazon (AMZN):      0001018724
@@ -12,8 +12,8 @@
   - Tesla (TSLA):       0001318605
   - Netflix (NFLX):     0001065280
 
-建议在配置文件中直接使用上述 CIK 号码替代股票代码（ticker），
-这样程序将直接使用 CIK 查询 filings 数据，避免内部转换时请求 /files/company_tickers.json 导致的错误。
+It's recommended to use the above CIK numbers directly in configuration files instead of ticker symbols,
+so the program will directly use CIK to query filings data, avoiding errors from internal conversion requests to /files/company_tickers.json.
 """
 
 import warnings
@@ -34,10 +34,10 @@ from tqdm import tqdm
 
 from common.metadata_manager import MetadataManager
 
-# 设置日志输出级别为 DEBUG
+# Set log output level to DEBUG
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# 定义保存数据的基础目录：data/stage_01_extract/sec_edgar/
+# Define base directory for saving data: data/stage_01_extract/sec_edgar/
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract", "sec_edgar")
 if not os.path.exists(STAGE_01_EXTRACT_DIR):
@@ -46,10 +46,10 @@ if not os.path.exists(STAGE_01_EXTRACT_DIR):
 
 def is_file_recent(filepath, hours=1):
     """
-    检查文件是否在过去指定的小时内被修改
-    参数：
-      filepath: 文件路径
-      hours: 小时数
+    Check if file was modified within the specified hours
+    Parameters:
+      filepath: file path
+      hours: number of hours
     """
     if os.path.exists(filepath):
         mtime = datetime.fromtimestamp(os.path.getmtime(filepath))
@@ -59,17 +59,17 @@ def is_file_recent(filepath, hours=1):
 
 def run_job(config_path):
     """
-    主任务：从 YAML 配置文件加载配置，并依次处理每个 CIK 与 filing 类型，
-    直接调用 secedgar.filings 对象的 save() 方法保存 filings 数据。
-    数据将保存在：data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/ 目录下。
-    参数：
-      config_path: 配置文件路径
+    Main task: Load configuration from YAML config file, and process each CIK and filing type in sequence,
+    directly calling secedgar.filings object's save() method to save filings data.
+    Data will be saved in: data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/ directory.
+    Parameters:
+      config_path: configuration file path
     """
-    logging.info(f"加载配置文件: {config_path}")
+    logging.info(f"Loading configuration file: {config_path}")
     with open(config_path, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
-    # 直接使用 CIK 号码（例如 "0000320193"）
+    # Directly use CIK numbers (e.g. "0000320193")
     cik_list = config.get("tickers", [])
     count = config.get("count", 8)
     file_types = config.get("file_types", ["10K", "10Q", "13F", "8K"])
@@ -79,7 +79,7 @@ def run_job(config_path):
     metadata_manager = MetadataManager(STAGE_01_EXTRACT_DIR)
 
     total_tasks = len(cik_list) * len(file_types)
-    logging.info(f"开始处理任务, 总计 {total_tasks} 个任务")
+    logging.info(f"Starting to process tasks, total {total_tasks} tasks")
     pbar = tqdm(total=total_tasks, desc="Tickers Progress", unit="task")
 
     filing_type_map = {
@@ -90,7 +90,7 @@ def run_job(config_path):
     }
 
     for cik in cik_list:
-        logging.info(f"直接使用 CIK 查询: {cik}")
+        logging.info(f"Directly query using CIK: {cik}")
         # Map CIK to ticker for new directory structure
         cik_to_ticker = {
             "0000320193": "AAPL",
@@ -136,10 +136,10 @@ def run_job(config_path):
                     count=count,
                     user_agent=email,
                 )
-                # 直接设置 cik_lookup 内部映射，避免调用 /files/company_tickers.json
+                # Directly set cik_lookup internal mapping, avoiding calls to /files/company_tickers.json
                 filings_obj.cik_lookup._lookup_dict = {cik: cik}
                 filings_obj.save(output_dir)
-                logging.info(f"成功保存 {cik} {ft} filings 至 {output_dir}")
+                logging.info(f"Successfully saved {cik} {ft} filings to {output_dir}")
 
                 # Update metadata for all downloaded files
                 if os.path.exists(output_dir):
@@ -156,15 +156,15 @@ def run_job(config_path):
                 metadata_manager.mark_download_failed(
                     "sec-edgar", cik, ft.lower(), config_info, error_msg
                 )
-                logging.exception(f"处理 {cik} {ft} filings 时出错: {e}")
+                logging.exception(f"Error processing {cik} {ft} filings: {e}")
                 logging.info(
-                    "请检查 /files/company_tickers.json 的访问权限，若仍有问题请手动下载该文件。"
+                    "Please check access permissions for /files/company_tickers.json, if issues persist please manually download the file."
                 )
             pbar.update(1)
             time.sleep(3)
 
     pbar.close()
-    logging.info("所有任务处理完成")
+    logging.info("All tasks processing completed")
 
 
 if __name__ == "__main__":
@@ -175,6 +175,6 @@ if __name__ == "__main__":
         sys.exit(1)
     config_file = sys.argv[1]
     if not os.path.exists(config_file):
-        logging.error(f"配置文件 {config_file} 不存在。")
+        logging.error(f"Configuration file {config_file} does not exist.")
         sys.exit(1)
     run_job(config_file)

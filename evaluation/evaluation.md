@@ -1,34 +1,34 @@
-# 评估框架
+# Evaluation Framework
 
-## 核心评估理念
+## Core Evaluation Philosophy
 
-建立多维度的质量评估体系，通过自动化评估和人工验证相结合，持续优化投资分析系统的准确性和可用性。
+Establish a multi-dimensional quality evaluation system that combines automated evaluation and manual verification to continuously optimize the accuracy and usability of the investment analysis system.
 
-## 评估维度
+## Evaluation Dimensions
 
-### 1. DCF估值准确性评估
+### 1. DCF Valuation Accuracy Evaluation
 
-#### 历史回测验证
+#### Historical Backtesting Validation
 ```python
 class DCFAccuracyEvaluator:
     def backtest_valuation_accuracy(self, ticker, lookback_years=3):
-        """回测DCF估值准确性"""
+        """Backtest DCF valuation accuracy"""
         
         results = []
         historical_dates = self.get_historical_evaluation_dates(ticker, lookback_years)
         
         for eval_date in historical_dates:
-            # 重建历史时点的DCF模型
+            # Reconstruct historical DCF model
             historical_dcf = self.reconstruct_historical_dcf(ticker, eval_date)
             
-            # 获取后续实际股价表现
+            # Get subsequent actual stock price performance
             actual_performance = self.get_actual_performance(
                 ticker, 
                 start_date=eval_date,
                 horizon_months=[3, 6, 12, 24]
             )
             
-            # 计算预测准确性
+            # Calculate prediction accuracy
             accuracy_metrics = {
                 'prediction_date': eval_date,
                 'predicted_value': historical_dcf['intrinsic_value'],
@@ -49,7 +49,7 @@ class DCFAccuracyEvaluator:
         return self.aggregate_accuracy_results(results)
     
     def calculate_direction_accuracy(self, predicted_upside, actual_returns):
-        """计算方向预测准确性"""
+        """Calculate direction prediction accuracy"""
         direction_scores = {}
         
         for horizon, actual_return in actual_returns.items():
@@ -61,10 +61,10 @@ class DCFAccuracyEvaluator:
         return direction_scores
 ```
 
-#### 同行业对比基准
+#### Industry Benchmark Comparison
 ```python
 def evaluate_vs_industry_benchmark(self, predictions, industry_ticker_list):
-    """与行业基准对比评估"""
+    """Evaluate against industry benchmark"""
     
     industry_performance = {}
     
@@ -77,7 +77,7 @@ def evaluate_vs_industry_benchmark(self, predictions, industry_ticker_list):
                 'actual_return_12m': actual_returns['12_month']
             }
     
-    # 计算行业整体准确性
+    # Calculate overall industry accuracy
     industry_metrics = {
         'average_direction_accuracy_6m': np.mean([
             (p['predicted_upside'] > 0) == (p['actual_return_6m'] > 0)
@@ -96,9 +96,9 @@ def evaluate_vs_industry_benchmark(self, predictions, industry_ticker_list):
     return industry_metrics
 ```
 
-### 2. 问答系统质量评估
+### 2. Q&A System Quality Evaluation
 
-#### 自动化评估指标
+#### Automated Evaluation Metrics
 ```python
 class QASystemEvaluator:
     def __init__(self):
@@ -111,36 +111,36 @@ class QASystemEvaluator:
         ]
     
     def evaluate_answer_quality(self, question, generated_answer, ground_truth=None):
-        """评估问答质量"""
+        """Evaluate Q&A quality"""
         
         evaluation_results = {}
         
-        # 1. 相关性评估
+        # 1. Relevance assessment
         evaluation_results['relevance_score'] = self.assess_relevance(
             question, generated_answer
         )
         
-        # 2. 事实准确性检查
+        # 2. Factual accuracy check
         evaluation_results['factual_accuracy'] = self.verify_factual_accuracy(
             generated_answer
         )
         
-        # 3. 完整性评估
+        # 3. Completeness assessment
         evaluation_results['completeness_score'] = self.assess_completeness(
             question, generated_answer
         )
         
-        # 4. 引用质量
+        # 4. Citation quality
         evaluation_results['citation_quality'] = self.evaluate_citations(
             generated_answer
         )
         
-        # 5. 推理连贯性
+        # 5. Reasoning coherence
         evaluation_results['reasoning_coherence'] = self.assess_reasoning_quality(
             generated_answer
         )
         
-        # 计算综合分数
+        # Calculate overall score
         evaluation_results['overall_score'] = self.calculate_overall_score(
             evaluation_results
         )
@@ -148,30 +148,30 @@ class QASystemEvaluator:
         return evaluation_results
     
     def assess_relevance(self, question, answer):
-        """评估答案与问题的相关性"""
-        # 使用语义相似度模型
+        """Evaluate relevance between answer and question"""
+        # Use semantic similarity model
         question_embedding = self.embedding_model.encode(question)
         answer_embedding = self.embedding_model.encode(answer)
         
         similarity = cosine_similarity([question_embedding], [answer_embedding])[0][0]
         
-        # 关键词匹配增强
+        # Keyword matching enhancement
         question_keywords = self.extract_financial_keywords(question)
         answer_keywords = self.extract_financial_keywords(answer)
         
         keyword_overlap = len(set(question_keywords) & set(answer_keywords)) / len(question_keywords)
         
-        # 综合相关性分数
+        # Comprehensive relevance score
         relevance_score = 0.7 * similarity + 0.3 * keyword_overlap
         
         return min(1.0, relevance_score)
 ```
 
-#### 人工评估工作流
+#### Human Evaluation Workflow
 ```python
 class HumanEvaluationWorkflow:
     def create_evaluation_tasks(self, qa_samples, evaluation_criteria):
-        """创建人工评估任务"""
+        """Create human evaluation tasks"""
         
         evaluation_tasks = []
         
@@ -189,34 +189,34 @@ class HumanEvaluationWorkflow:
             
             evaluation_tasks.append(task)
         
-        # 保存到评估队列
+        # Save to evaluation queue
         self.save_evaluation_tasks(evaluation_tasks)
         
         return evaluation_tasks
     
     def record_human_feedback(self, task_id, reviewer_scores, reviewer_comments):
-        """记录人工评估反馈"""
+        """Record human evaluation feedback"""
         
         feedback_record = {
             'task_id': task_id,
-            'reviewer_scores': reviewer_scores,  # {metric: score} 形式
+            'reviewer_scores': reviewer_scores,  # {metric: score} format
             'reviewer_comments': reviewer_comments,
             'review_date': datetime.now().isoformat(),
             'reviewer_confidence': reviewer_scores.get('reviewer_confidence', 0.8)
         }
         
-        # 保存反馈记录
+        # Save feedback record
         self.save_feedback_record(feedback_record)
         
-        # 更新系统性能指标
+        # Update system performance metrics
         self.update_system_performance_metrics(feedback_record)
         
         return feedback_record
 ```
 
-### 3. 数据质量评估
+### 3. Data Quality Evaluation
 
-#### 实时数据质量监控
+#### Real-time Data Quality Monitoring
 ```python
 class DataQualityContinuousMonitor:
     def __init__(self):
@@ -228,26 +228,26 @@ class DataQualityContinuousMonitor:
         }
     
     def monitor_data_streams(self):
-        """持续监控数据流质量"""
+        """Continuously monitor data stream quality"""
         
         quality_report = {
             'timestamp': datetime.now().isoformat(),
             'data_sources': {}
         }
         
-        # 监控各数据源
+        # Monitor various data sources
         for source in ['sec_edgar', 'yfinance', 'news_apis', 'analyst_reports']:
             source_quality = self.evaluate_data_source_quality(source)
             quality_report['data_sources'][source] = source_quality
             
-            # 检查是否触发告警
+            # Check if alert should be triggered
             if source_quality['overall_score'] < 0.8:
                 self.trigger_quality_alert(source, source_quality)
         
         return quality_report
     
     def evaluate_data_source_quality(self, source_name):
-        """评估单个数据源质量"""
+        """Evaluate individual data source quality"""
         
         recent_data = self.get_recent_data(source_name, hours=24)
         
@@ -258,7 +258,7 @@ class DataQualityContinuousMonitor:
             'consistency': self.calculate_consistency(recent_data)
         }
         
-        # 加权计算总分
+        # Weighted calculation of total score
         weights = {'completeness': 0.3, 'timeliness': 0.2, 'accuracy': 0.3, 'consistency': 0.2}
         overall_score = sum(quality_metrics[metric] * weights[metric] 
                            for metric in quality_metrics)
@@ -271,13 +271,13 @@ class DataQualityContinuousMonitor:
         }
 ```
 
-### 4. 用户体验评估
+### 4. User Experience Evaluation
 
-#### 响应时间和性能监控
+#### Response Time and Performance Monitoring
 ```python
 class PerformanceMonitor:
     def track_response_times(self, endpoint, response_time_ms):
-        """跟踪API响应时间"""
+        """Track API response times"""
         
         performance_record = {
             'endpoint': endpoint,
@@ -286,15 +286,15 @@ class PerformanceMonitor:
             'user_session': self.get_current_session_id()
         }
         
-        # 保存性能记录
+        # Save performance records
         self.save_performance_record(performance_record)
         
-        # 检查是否需要性能告警
+        # Check if performance alert is needed
         if response_time_ms > self.get_response_time_threshold(endpoint):
             self.trigger_performance_alert(endpoint, response_time_ms)
     
     def generate_performance_report(self, time_period='24h'):
-        """生成性能报告"""
+        """Generate performance report"""
         
         performance_data = self.get_performance_data(time_period)
         
@@ -310,13 +310,13 @@ class PerformanceMonitor:
         return report
 ```
 
-## 评估数据管理
+## Evaluation Data Management
 
-### 1. 评估结果存储
+### 1. Evaluation Result Storage
 ```python
 class EvaluationDataManager:
     def save_evaluation_result(self, evaluation_type, result_data):
-        """保存评估结果到数据库"""
+        """Save evaluation results to database"""
         
         evaluation_record = {
             'evaluation_id': generate_evaluation_id(),
@@ -327,14 +327,14 @@ class EvaluationDataManager:
             'evaluator': result_data.get('evaluator', 'automatic')
         }
         
-        # 保存到评估历史表
+        # Save to evaluation history table
         self.db.evaluation_history.insert(evaluation_record)
         
-        # 更新当前性能指标
+        # Update current performance metrics
         self.update_current_performance_metrics(evaluation_type, result_data)
     
     def get_performance_trends(self, metric_name, time_range='30d'):
-        """获取性能趋势数据"""
+        """Get performance trend data"""
         
         historical_data = self.db.evaluation_history.find({
             'evaluation_timestamp': {'$gte': self.calculate_start_date(time_range)},
@@ -351,11 +351,11 @@ class EvaluationDataManager:
         return trend_data
 ```
 
-### 2. 评估报告生成
+### 2. Evaluation Report Generation
 ```python
 class EvaluationReportGenerator:
     def generate_weekly_report(self):
-        """生成周度评估报告"""
+        """Generate weekly evaluation report"""
         
         report_data = {
             'report_period': f"{datetime.now() - timedelta(days=7)} to {datetime.now()}",
@@ -367,22 +367,22 @@ class EvaluationReportGenerator:
             'recommendations': self.generate_improvement_recommendations()
         }
         
-        # 生成报告文件
+        # Generate report file
         report_file = self.generate_report_file(report_data)
         
-        # 发送给相关人员
+        # Send to relevant personnel
         self.distribute_report(report_file)
         
         return report_data
 ```
 
-## 持续改进机制
+## Continuous Improvement Mechanism
 
-### 1. A/B测试框架
+### 1. A/B Testing Framework
 ```python
 class ABTestingFramework:
     def create_ab_experiment(self, experiment_name, variants, traffic_split):
-        """创建A/B测试实验"""
+        """Create A/B test experiment"""
         
         experiment = {
             'experiment_id': generate_experiment_id(),
@@ -398,7 +398,7 @@ class ABTestingFramework:
         return experiment
     
     def evaluate_experiment_results(self, experiment_id):
-        """评估A/B测试结果"""
+        """Evaluate A/B test results"""
         
         experiment = self.get_experiment(experiment_id)
         results = {}
@@ -407,7 +407,7 @@ class ABTestingFramework:
             variant_metrics = self.get_variant_metrics(experiment_id, variant_name)
             results[variant_name] = variant_metrics
         
-        # 统计显著性检验
+        # Statistical significance test
         statistical_results = self.perform_statistical_tests(results)
         
         return {
@@ -420,4 +420,4 @@ class ABTestingFramework:
 
 ---
 
-*评估框架持续优化，确保投资分析系统的质量和可靠性*
+*Evaluation framework continuously optimized to ensure quality and reliability of investment analysis system*
