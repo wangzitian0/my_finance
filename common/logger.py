@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 
 from .config import load_common_config
+from .data_access import data_access
 from .snowflake import Snowflake
 
 
@@ -50,11 +51,9 @@ def setup_logger(job_id, date_str=None):
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")
 
     # Build log file path: data/log/<job_id>/<date_str>.txt
-    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    log_base_dir = os.path.join(root_dir, "data", "log")
-    log_dir = os.path.join(log_base_dir, job_id)
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"{date_str}.txt")
+    log_dir = data_access.get_log_dir(job_id)
+    data_access.ensure_dir_exists(log_dir)
+    log_file = log_dir / f"{date_str}.txt"
 
     logger_name = f"{job_id}_{date_str}"
     logger = logging.getLogger(logger_name)

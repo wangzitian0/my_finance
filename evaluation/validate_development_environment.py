@@ -9,12 +9,14 @@ import os
 import sys
 from pathlib import Path
 
+from common.data_access import data_access
+
 
 def validate_m7_data():
     """Validate M7 data availability"""
     print("🔍 Validating M7 data...")
 
-    data_dir = Path("data/stage_01_extract/yfinance")
+    data_dir = data_access.get_source_dir("yfinance", "stage_01_extract")
     if not data_dir.exists():
         print("❌ M7 YFinance data directory not found")
         return False
@@ -44,7 +46,7 @@ def validate_configuration():
     """Validate configuration files"""
     print("\n🔧 Validating configuration files...")
 
-    config_files = ["data/config/job_yfinance_m7.yml", "data/config/sec_edgar_m7.yml"]
+    config_files = [data_access.get_config_file("job_yfinance_m7"), data_access.get_config_file("sec_edgar_m7")]
 
     all_exist = True
     for config_file in config_files:

@@ -13,6 +13,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from common.data_access import data_access
+
 import yaml
 
 try:
@@ -56,14 +58,14 @@ class FinLangEmbedding:
         # Debug and logging setup
         self.debug_mode = self.config.get("dcf_generation", {}).get("debug_mode", True)
         self.log_embeddings = self.config.get("logging", {}).get("log_embeddings", False)
-        self.debug_dir = Path("data/llm")
+        self.debug_dir = data_access.base_dir / "llm"
 
         self._initialize_model()
 
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            config_path = "data/llm/configs/local_ollama.yml"
+            config_path = str(data_access.base_dir / "llm" / "configs" / "local_ollama.yml")
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:
@@ -127,7 +129,7 @@ class FinLangEmbedding:
             "device": str(self.model.device) if hasattr(self.model, "device") else "unknown",
         }
 
-        debug_file = Path("data/log") / "finlang_model_info.json"
+        debug_file = data_access.get_log_dir() / "finlang_model_info.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "w", encoding="utf-8") as f:
@@ -212,7 +214,7 @@ class FinLangEmbedding:
             "embedding_sample": embedding[:5],  # First 5 dimensions for debugging
         }
 
-        log_file = Path("data/log") / "embedding_log.jsonl"
+        log_file = data_access.get_log_dir() / "embedding_log.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(log_file, "a", encoding="utf-8") as f:
@@ -337,7 +339,7 @@ class FinLangEmbedding:
             ],
         }
 
-        debug_file = Path("data/log") / "similarity_debug.jsonl"
+        debug_file = data_access.get_log_dir() / "similarity_debug.jsonl"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "a", encoding="utf-8") as f:
@@ -401,7 +403,7 @@ class FinLangEmbedding:
 
         # Save test results
         if self.debug_mode:
-            test_file = Path("data/log") / "embedding_quality_test.json"
+            test_file = data_access.get_log_dir() / "embedding_quality_test.json"
             test_file.parent.mkdir(parents=True, exist_ok=True)
 
             with open(test_file, "w", encoding="utf-8") as f:

@@ -105,9 +105,9 @@ build-vti = "python ETL/build_dataset.py v3k"
 build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
 
 # Build cleanup and maintenance
-clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
-clean = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'"
-build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/stage_99_build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
+clean-builds = "python -c 'import shutil; from common.data_access import data_access; build_dir = data_access.get_build_dir(); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
+clean = "python -c 'import shutil; from common.data_access import data_access; build_dir = data_access.get_build_dir(); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'"
+build-size = "python -c 'import subprocess; from common.data_access import data_access; result = subprocess.run([\"du\", \"-sh\", str(data_access.get_build_dir())], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
 
 # --- Environment Management (Ansible + Podman) ---
 # Initial environment setup (now uses Podman instead of Minikube)

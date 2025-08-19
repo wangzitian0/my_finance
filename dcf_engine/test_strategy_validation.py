@@ -9,6 +9,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from common.data_access import data_access
+
 
 def test_strategy_framework():
     """Test the strategy validation framework structure."""
@@ -43,7 +45,7 @@ def test_strategy_framework():
     # Test 3: Check if reports directory is writable
     print("\n3. Testing reports directory...")
 
-    reports_dir = Path("data/reports")
+    reports_dir = data_access.base_dir / "reports"
     test_file = reports_dir / "test_write.tmp"
 
     try:
