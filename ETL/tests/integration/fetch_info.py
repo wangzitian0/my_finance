@@ -11,8 +11,8 @@ from common import can_fetch, get_db_path, update_fetch_time
 
 def fetch_info(ticker_symbol: str, cooldown_minutes=60):
     """
-    拉取 ticker.info, 存入 stock_info 表. 带冷却判断.
-    返回 (ticker, dimension, message).
+    Fetch ticker.info, store in stock_info table. With cooldown check.
+    Returns (ticker, dimension, message).
     """
     dimension = "INFO"
     if not can_fetch(ticker_symbol, dimension, cooldown_minutes):
