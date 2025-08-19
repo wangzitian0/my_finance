@@ -11,7 +11,9 @@ def main():
     config_dir = os.path.join(os.getcwd(), "data", "config")
     config_files = glob.glob(os.path.join(config_dir, "*.yml"))
     if not config_files:
-        print("Configuration file not found. Please create task configuration files in data/config/ directory first.")
+        print(
+            "Configuration file not found. Please create task configuration files in data/config/ directory first."
+        )
         sys.exit(1)
 
     print("Found configuration files:")
