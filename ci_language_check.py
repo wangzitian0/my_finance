@@ -80,7 +80,7 @@ def should_check_file(file_path: Path) -> bool:
     for exclude_dir in EXCLUDE_DIRS:
         if exclude_dir in file_path.parts:
             return False
-    
+
     # Special handling for data directory - only check data/config
     file_parts = file_path.parts
     if "data" in file_parts:
