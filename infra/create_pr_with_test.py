@@ -86,7 +86,9 @@ def run_end_to_end_test():
     try:
         # Use fast-build with DeepSeek 1.5b for faster F2 dataset testing
         print("🏃 Running fast F2 build with DeepSeek 1.5b model...")
-        run_command("./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=180)  # 3 minutes
+        run_command(
+            "./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=180
+        )  # 3 minutes
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
