@@ -121,25 +121,25 @@ class QualityReporter:
 
             # Smart partition selection: try partition, then latest, then find any available
             partition_paths_to_try = []
-            
+
             if partition:
                 partition_paths_to_try.append(yfinance_path / partition)
-            
+
             # Always try latest as fallback
             partition_paths_to_try.append(yfinance_path / "latest")
-            
+
             # Find any available partition
             if yfinance_path.exists():
                 for item in yfinance_path.iterdir():
                     if item.is_dir() and item.name not in ["latest"]:
                         partition_paths_to_try.append(item)
-            
+
             partition_path = None
             for path_to_try in partition_paths_to_try:
                 if path_to_try.exists() and any(path_to_try.iterdir()):
                     partition_path = path_to_try
                     break
-            
+
             if not partition_path:
                 return {
                     "success_rate": 0,
@@ -194,25 +194,25 @@ class QualityReporter:
 
             # Smart partition selection: try partition, then latest, then find any available
             partition_paths_to_try = []
-            
+
             if partition:
                 partition_paths_to_try.append(sec_path / partition)
-            
+
             # Always try latest as fallback
             partition_paths_to_try.append(sec_path / "latest")
-            
+
             # Find any available partition
             if sec_path.exists():
                 for item in sec_path.iterdir():
                     if item.is_dir() and item.name not in ["latest", "sec-edgar"]:
                         partition_paths_to_try.append(item)
-            
+
             partition_path = None
             for path_to_try in partition_paths_to_try:
                 if path_to_try.exists() and any(path_to_try.iterdir()):
                     partition_path = path_to_try
                     break
-            
+
             if not partition_path:
                 return {
                     "success_rate": 0,

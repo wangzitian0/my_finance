@@ -244,12 +244,13 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
 
         # Check for fast mode from environment
         import os
+
         fast_mode = os.getenv("DCF_FAST_MODE", "false").lower() == "true"
         config_path = os.getenv("DCF_CONFIG_PATH", None)
-        
+
         # Use SEC-integrated DCF generator with fast mode support
         analyzer = LLMDCFGenerator(config_path=config_path, fast_mode=fast_mode)
-        
+
         if fast_mode:
             print(f"   ⚡ Fast mode enabled with config: {config_path}")
             tracker.log_stage_output("stage_04_analysis", f"Fast mode enabled: {config_path}")
@@ -321,39 +322,38 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
 
         # Check for fast mode from environment
         import os
+
         fast_mode = os.getenv("DCF_FAST_MODE", "false").lower() == "true"
         config_path = os.getenv("DCF_CONFIG_PATH", None)
-        
+
         analyzer = LLMDCFGenerator(config_path=config_path, fast_mode=fast_mode)
-        
+
         if fast_mode:
             print(f"   ⚡ Fast mode report generation with config: {config_path}")
             tracker.log_stage_output("stage_05_reporting", f"Fast mode enabled: {config_path}")
 
         # Generate DCF reports for each ticker
         reports_generated = 0
-        
+
         if not tickers:
             tickers = ["MSFT", "NVDA"]  # F2 default
-            
+
         for ticker in tickers:
             try:
                 report = analyzer.generate_comprehensive_dcf_report(ticker)
                 if report:
                     reports_generated += 1
                     tracker.log_stage_output(
-                        "stage_05_reporting", 
-                        f"DCF report generated for {ticker}"
+                        "stage_05_reporting", f"DCF report generated for {ticker}"
                     )
             except Exception as e:
                 tracker.log_stage_output(
-                    "stage_05_reporting", 
-                    f"Failed to generate report for {ticker}: {e}"
+                    "stage_05_reporting", f"Failed to generate report for {ticker}: {e}"
                 )
                 print(f"   ❌ Error generating report for {ticker}: {e}")
-        
+
         print(f"   ✅ Generated {reports_generated} DCF reports")
-        
+
         # Track completion
         tracker.log_stage_output("stage_05_reporting", f"Generated {reports_generated} DCF reports")
         return reports_generated

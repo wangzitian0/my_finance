@@ -41,7 +41,7 @@ class LLMDCFGenerator:
         # Use fast config if requested
         if fast_mode and not config_path:
             config_path = "data/llm/configs/deepseek_fast.yml"
-        
+
         self.config_path = config_path
         self.debug_dir = Path("data/llm")
         self.debug_dir.mkdir(parents=True, exist_ok=True)
@@ -52,7 +52,7 @@ class LLMDCFGenerator:
 
         # Load configuration for settings
         self.config = self._load_config()
-        
+
         # Debug settings from config
         dcf_config = self.config.get("dcf_generation", {})
         self.debug_mode = dcf_config.get("debug_mode", True)
@@ -62,10 +62,10 @@ class LLMDCFGenerator:
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         import yaml
-        
+
         if not self.config_path:
             return {}
-            
+
         try:
             with open(self.config_path, "r", encoding="utf-8") as f:
                 return yaml.safe_load(f)
