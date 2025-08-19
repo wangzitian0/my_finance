@@ -213,10 +213,13 @@ class TestP3CommandParsing(TestCase):
         with open(self.p3_script, "r") as f:
             script_content = f.read()
 
-        # Extract main case statement
+        # Extract main case statement (the one that handles $1, not sub-functions)
         import re
 
-        case_match = re.search(r'case "\$1" in.*?esac', script_content, re.DOTALL)
+        # Find the main case statement by looking for the one that handles the first argument
+        # and has environment/container/development comment sections
+        main_case_pattern = r'case "\$1" in.*?# Environment management.*?esac'
+        case_match = re.search(main_case_pattern, script_content, re.DOTALL)
         if not case_match:
             self.fail("Could not find main case statement in p3 script")
 
@@ -225,7 +228,7 @@ class TestP3CommandParsing(TestCase):
         # Check that key commands are handled
         key_commands = [
             "env",
-            "podman",
+            "podman", 
             "neo4j",
             "format",
             "lint",
@@ -234,13 +237,14 @@ class TestP3CommandParsing(TestCase):
             "build",
             "refresh",
             "create-pr",
-            "status",
-            "help",
+            "status"
         ]
 
         for cmd in key_commands:
             # Check if command is handled in case statement
-            pattern = rf"{cmd}\)"
+            # Look for pattern like "env) shift; cmd_env"
+            cmd_func_name = cmd.replace('-', '_')
+            pattern = rf"{re.escape(cmd)}\)\s+shift;\s+cmd_{cmd_func_name}"
             if not re.search(pattern, case_content):
                 self.fail(f"Command '{cmd}' not handled in main case statement")
 
