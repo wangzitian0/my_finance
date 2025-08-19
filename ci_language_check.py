@@ -45,10 +45,9 @@ EXCLUDE_DIRS = {
 EXCLUDE_FILES = {
     # This checker itself (contains Chinese in comments for documentation)
     "ci_language_check.py",
-    
     # Temporarily exclude Python files with Chinese comments (TODO: clean these up)
     "ETL/build_dataset.py",
-    "ETL/build_schema.py", 
+    "ETL/build_schema.py",
     "ETL/check_coverage.py",
     "ETL/fetch_ticker_lists.py",
     "ETL/graph_data_integration.py",
@@ -63,7 +62,7 @@ EXCLUDE_FILES = {
     "ETL/spider/metadata_manager.py",
     "ETL/update_data_paths.py",
     "common/build_tracker.py",
-    "common/common_config.py", 
+    "common/common_config.py",
     "common/logger.py",
     "dcf_engine/build_knowledge_base.py",
     "dcf_engine/legacy_testing/generate_dcf_report.py",
@@ -92,7 +91,7 @@ def should_check_file(file_path: Path) -> bool:
     # Skip if in excluded files list
     if file_path.name in EXCLUDE_FILES:
         return False
-        
+
     # Skip if full relative path is in excluded files
     relative_path = str(file_path)
     if relative_path in EXCLUDE_FILES:

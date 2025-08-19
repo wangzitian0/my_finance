@@ -21,40 +21,40 @@ my_finance/
 
 ```
 Raw Data Sources → ETL → DTS → DCF Engine → Evaluation
-    ↓        ↓     ↓        ↓           ↓
-  YFinance  爬虫  数据层   策略引擎    回测评估
-  SEC Edgar 解析  缓存     模型计算    性能分析
-           清洗   抽象     风险分析    LLM评估
+    ↓        ↓         ↓        ↓           ↓
+  YFinance  Spider   Data Layer Strategy Engine Backtesting
+  SEC Edgar Parsing   Cache    Model Calc   Performance
+            Cleaning  Abstract Risk Analysis LLM Evaluation
 ```
 
-## 核心组件职责
+## Core Component Responsibilities
 
-### 📊 ETL - 数据处理管道
-**职责**: 爬虫、数据加工清洗，从原始数据到结构化输出
-- **数据采集**: YFinance、SEC Edgar爬虫
-- **数据解析**: 文档解析、格式转换
-- **数据清洗**: 质量检查、标准化处理
-- **数据构建**: 多层级数据集构建
+### 📊 ETL - Data Processing Pipeline
+**Responsibility**: Web scraping, data processing & cleaning from raw data to structured output
+- **Data Collection**: YFinance, SEC Edgar spiders
+- **Data Parsing**: Document parsing, format conversion
+- **Data Cleaning**: Quality checks, standardization
+- **Data Building**: Multi-tier dataset construction
 
-### 🔌 DTS - 数据传输服务  
-**职责**: 数据导入导出线上库，为dcf_engine屏蔽基建细节
-- **数据抽象**: 统一数据访问接口
-- **多源适配**: 支持Neo4j、MySQL、Redis等
-- **缓存管理**: 智能缓存提升性能
-- **连接池**: 优化数据库连接使用
+### 🔌 DTS - Data Transfer Service  
+**Responsibility**: Data import/export with online databases, abstracting infrastructure details for dcf_engine
+- **Data Abstraction**: Unified data access interface
+- **Multi-source Adaptation**: Support for Neo4j, MySQL, Redis, etc.
+- **Cache Management**: Intelligent caching for performance
+- **Connection Pool**: Optimized database connection usage
 
-### 🎯 DCF Engine - 估值引擎
-**职责**: 输入输出都是数据，专注策略逻辑
-- **DCF计算**: 多种估值模型实现
-- **策略验证**: 历史回测、统计检验
-- **知识图谱**: Graph RAG增强分析
-- **结果生成**: 报告和分析输出
+### 🎯 DCF Engine - Valuation Engine
+**Responsibility**: Data input/output focused, concentrate on strategy logic
+- **DCF Calculation**: Multiple valuation model implementations
+- **Strategy Validation**: Historical backtesting, statistical testing
+- **Knowledge Graph**: Graph RAG enhanced analysis
+- **Result Generation**: Report and analysis output
 
-### 📈 Evaluation - 评估工具集
-**职责**: LLM模板、策略回测工具链、性能评估
-- **策略回测**: 历史性能验证
-- **LLM评估**: 提示词和响应质量
-- **性能指标**: 收益、风险、稳定性分析
+### 📈 Evaluation - Evaluation Toolkit
+**Responsibility**: LLM templates, strategy backtesting toolkit, performance evaluation
+- **Strategy Backtesting**: Historical performance validation
+- **LLM Evaluation**: Prompt and response quality assessment
+- **Performance Metrics**: Return, risk, stability analysis
 - **可视化**: 结果展示和报告
 
 ### 🔧 Common - 公共组件
