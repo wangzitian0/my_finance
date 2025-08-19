@@ -36,20 +36,20 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
                                 Retrieval  Engine    Evaluation
 ```
 
-### 核心组件
+### Core Components
 
-- **`ETL/`** - 数据处理管道：SEC文档爬虫、语义嵌入、数据清洗
-- **`dcf_engine/`** - SEC增强DCF引擎：语义检索、引用管理、估值模型
-- **`graph_rag/`** - 图形检索增强生成：SEC文档语义搜索、相关性排序
-- **`evaluation/`** - 评估工具集：回测、LLM评估、性能分析
+- **`ETL/`** - Data Processing Pipeline: SEC document crawling, semantic embedding, data cleaning
+- **`dcf_engine/`** - SEC-Enhanced DCF Engine: Semantic retrieval, citation management, valuation models
+- **`graph_rag/`** - Graph Retrieval-Augmented Generation: SEC document semantic search, relevance ranking
+- **`evaluation/`** - Evaluation Toolkit: Backtesting, LLM evaluation, performance analysis
 
-### 支撑组件
+### Supporting Components
 
-- **`common/`** - 公共组件：模块协调、Schema定义、构建追踪
-- **`infra/`** - 基础设施：Pixi环境管理、Ansible自动化、Podman容器
-- **`data/`** - 分阶段数据存储：SEC文档、嵌入向量、构建清单
-- **`spider/`** - 数据爬虫：SEC Edgar API、YFinance集成
-- **`parser/`** - 文档解析：SEC文档结构化、财务数据提取
+- **`common/`** - Common Components: Module coordination, schema definition, build tracking
+- **`infra/`** - Infrastructure: Pixi environment management, Ansible automation, Podman containers
+- **`data/`** - Staged Data Storage: SEC documents, embedding vectors, build manifests
+- **`spider/`** - Data Crawlers: SEC Edgar API, YFinance integration
+- **`parser/`** - Document Parsing: SEC document structuring, financial data extraction
 
 ## Development Commands
 
