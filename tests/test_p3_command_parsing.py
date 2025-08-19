@@ -228,7 +228,7 @@ class TestP3CommandParsing(TestCase):
         # Check that key commands are handled
         key_commands = [
             "env",
-            "podman", 
+            "podman",
             "neo4j",
             "format",
             "lint",
@@ -237,13 +237,13 @@ class TestP3CommandParsing(TestCase):
             "build",
             "refresh",
             "create-pr",
-            "status"
+            "status",
         ]
 
         for cmd in key_commands:
             # Check if command is handled in case statement
             # Look for pattern like "env) shift; cmd_env"
-            cmd_func_name = cmd.replace('-', '_')
+            cmd_func_name = cmd.replace("-", "_")
             pattern = rf"{re.escape(cmd)}\)\s+shift;\s+cmd_{cmd_func_name}"
             if not re.search(pattern, case_content):
                 self.fail(f"Command '{cmd}' not handled in main case statement")
