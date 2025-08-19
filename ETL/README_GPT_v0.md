@@ -1,41 +1,41 @@
-下面提供一种可能的 Neo4j 图谱建模方案和部分示例 Cypher 语句，供你参考。注意，实际方案需要根据查询需求和数据规模进一步调整，这里只给出一种思路：
+Below provides a possible Neo4j graph modeling approach and some example Cypher statements for your reference. Note that the actual approach needs to be further adjusted based on query requirements and data scale, this only gives one possible approach:
 
 ---
 
-## 1. 模型设计思路
+## 1. Model Design Approach
 
-- **Stock 节点**  
-  作为图谱中核心节点，存放顶层字段（ticker、period、interval、fetched_at）以及部分不常变的基本属性。
+- **Stock Node**  
+  As the core node in the graph, storing top-level fields (ticker, period, interval, fetched_at) and some stable basic attributes.
 
-- **Info、FastInfo、Recommendations、Sustainability 节点**  
-  将 info、fast_info、recommendations、sustainability 等分离出来，作为独立的节点，并通过关系（例如 HAS_INFO、HAS_FAST_INFO 等）与 Stock 关联。这样做便于独立查询、更新以及后续扩展。
+- **Info, FastInfo, Recommendations, Sustainability Nodes**  
+  Separate info, fast_info, recommendations, sustainability etc. as independent nodes, and associate with Stock through relationships (e.g., HAS_INFO, HAS_FAST_INFO, etc.). This facilitates independent querying, updating and future extensions.
 
-- **历史股价数据**  
-  将 JSON 中 history 部分（包含 Open、High、Low、Close、Volume 等）拆分为多个 PriceData 节点。每个 PriceData 节点对应一条记录（通常包含日期，如果 JSON 没有，可在导入时关联日期信息），并与 Stock 节点通过关系（例如 HAS_PRICE）连接。
+- **Historical Stock Price Data**  
+  Split the history part in JSON (containing Open, High, Low, Close, Volume, etc.) into multiple PriceData nodes. Each PriceData node corresponds to one record (usually contains date, if JSON doesn't have it, can associate date information during import), and connects with Stock node through relationships (e.g., HAS_PRICE).
 
-- **其它数据**  
-  对于 dividends、splits、earnings、quarterly_earnings、balance_sheet、cashflow、calendar 等部分，可以选择：
-  - 直接存为 Stock 节点的属性（如果数据量不大且查询简单），或  
-  - 构建独立的节点（如 BalanceSheet、Cashflow 等）并与 Stock 建立关系  
-  以便对每个报告日期或季度的数据进行查询。
+- **Other Data**  
+  For dividends, splits, earnings, quarterly_earnings, balance_sheet, cashflow, calendar, etc., you can choose:
+  - Store directly as Stock node properties (if data volume is small and queries are simple), or  
+  - Build independent nodes (like BalanceSheet, Cashflow, etc.) and establish relationships with Stock  
+  to enable querying data for each report date or quarter.
 
-- **持有人和新闻**  
-  对于 major_holders、institutional_holders、news、options 等数据，可考虑建立对应节点（例如 Holder、News）并与 Stock 通过关系（HAS_MAJOR_HOLDER、HAS_NEWS、HAS_OPTION）连接。
+- **Holders and News**  
+  For major_holders, institutional_holders, news, options, etc., consider establishing corresponding nodes (e.g., Holder, News) and connecting with Stock through relationships (HAS_MAJOR_HOLDER, HAS_NEWS, HAS_OPTION).
 
 ---
 
-## 2. 示例 Cypher 语句
+## 2. Example Cypher Statements
 
-下面给出一组示例代码，描述如何创建约束、创建节点并建立关系。
+Below gives a set of example code describing how to create constraints, create nodes and establish relationships.
 
-### 2.1 创建约束  
-保证 Stock 节点的 ticker 唯一：
+### 2.1 Create Constraints  
+Ensure Stock node's ticker is unique:
 
 ```cypher
 CREATE CONSTRAINT stock_ticker_unique IF NOT EXISTS ON (s:Stock) ASSERT s.ticker IS UNIQUE;
 ```
 
-### 2.2 创建 Stock 节点
+### 2.2 Create Stock Node
 
 ```cypher
 CREATE (s:Stock {
@@ -46,7 +46,7 @@ CREATE (s:Stock {
 });
 ```
 
-### 2.3 创建 Info 节点并关联
+### 2.3 Create Info Node and Associate
 
 ```cypher
 CREATE (i:Info {
@@ -70,7 +70,7 @@ MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_INFO]->(i);
 ```
 
-### 2.4 创建 FastInfo 节点并关联
+### 2.4 Create FastInfo Node and Associate
 
 ```cypher
 CREATE (f:FastInfo {
@@ -86,12 +86,12 @@ MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_FAST_INFO]->(f);
 ```
 
-### 2.5 创建历史价格节点
+### 2.5 Create Historical Price Nodes
 
-假设你在数据预处理时已经将 history 部分转换为一组记录，并且每条记录有日期（例如 date、open、high、low、close、volume），示例如下：
+Assuming you have converted the history part to a set of records during data preprocessing, and each record has date (e.g., date, open, high, low, close, volume), example as follows:
 
 ```cypher
-// 示例：创建一条价格记录（实际应对整个数组循环插入）
+// Example: create one price record (in practice should loop through the entire array)
 CREATE (p:PriceData {
   date: date("2025-02-01"),
   open: 189.56,
@@ -104,9 +104,9 @@ MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_PRICE]->(p);
 ```
 
-在实际导入时，你可能需要使用 APOC 批量导入或者 UNWIND 语句将数组拆分为多条记录。
+In actual import, you might need to use APOC batch import or UNWIND statements to split arrays into multiple records.
 
-### 2.6 创建 Recommendations 节点
+### 2.6 Create Recommendations Node
 
 ```cypher
 CREATE (r:Recommendations {
@@ -121,7 +121,7 @@ MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_RECOMMENDATIONS]->(r);
 ```
 
-### 2.7 创建 Sustainability 节点
+### 2.7 Create Sustainability Node
 
 ```cypher
 CREATE (sus:Sustainability {
@@ -138,9 +138,9 @@ MATCH (s:Stock {ticker: "TSLA"})
 CREATE (s)-[:HAS_SUSTAINABILITY]->(sus);
 ```
 
-### 2.8 新闻、持有人等
+### 2.8 News, Holders, etc.
 
-类似地，对于 news、major_holders、institutional_holders、options 等数据，可以分别建立 News、Holder、Option 等节点，并与 Stock 通过关系连接。例如：
+Similarly, for news, major_holders, institutional_holders, options, etc., you can establish News, Holder, Option, etc. nodes respectively and connect with Stock through relationships. For example:
 
 ```cypher
 CREATE (n:News {
@@ -155,18 +155,18 @@ CREATE (s)-[:HAS_NEWS]->(n);
 
 ---
 
-## 3. 注意事项
+## 3. Important Notes
 
-- **数据预处理**  
-  由于 JSON 中某些字段（例如 history 的各个数组）需要转换为“每条记录一个节点”的结构，建议在数据导入前先进行预处理，构造包含日期、open、high、low、close、volume 等字段的列表。
+- **Data Preprocessing**  
+  Since some fields in JSON (e.g., various arrays in history) need to be converted to "one node per record" structure, it's recommended to preprocess data before import, constructing lists containing date, open, high, low, close, volume, etc. fields.
 
-- **属性与节点设计**  
-  如果某部分数据更新频率低或查询场景较简单，也可以考虑直接将数据存储为 Stock 节点的属性（例如 dividends、splits 可能只是空对象或简单的键值对）。  
-  对于查询需求较多或关联较复杂的部分，单独建模为节点能获得更高的灵活性。
+- **Property vs Node Design**  
+  If some data has low update frequency or simple query scenarios, you can consider storing data directly as Stock node properties (e.g., dividends, splits might just be empty objects or simple key-value pairs).  
+  For parts with more query requirements or complex associations, modeling separately as nodes can achieve higher flexibility.
 
-- **索引与约束**  
-  根据数据查询的关键字段（例如 ticker、priceData.date 等）创建适当的索引和约束，可以提升查询效率。
+- **Indexes and Constraints**  
+  Create appropriate indexes and constraints based on key fields for data queries (e.g., ticker, priceData.date, etc.) to improve query efficiency.
 
 ---
 
-以上即是一种基于你给出的 JSON 结构和 DOT 模型构建的 Neo4j 存储方案示例。你可以根据自己的业务需求和查询场景进一步调整节点的划分和属性设计。
+The above is an example Neo4j storage solution based on the JSON structure and DOT model you provided. You can further adjust the node division and property design based on your business requirements and query scenarios.

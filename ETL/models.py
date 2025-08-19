@@ -32,7 +32,7 @@ class Info(StructuredNode):
     sectorDisp = StringProperty()
     longBusinessSummary = StringProperty()
     fullTimeEmployees = IntegerProperty()
-    companyOfficers = JSONProperty()  # 保存公司高管数组信息
+    companyOfficers = JSONProperty()  # Store company officers array information
 
 
 class FastInfo(StructuredNode):
@@ -46,7 +46,7 @@ class FastInfo(StructuredNode):
 
 
 class PriceData(StructuredNode):
-    # 历史股价数据，每条记录对应一个日期
+    # Historical stock price data, each record corresponds to one date
     date = DateTimeProperty()
     open = FloatProperty()
     high = FloatProperty()
@@ -56,7 +56,7 @@ class PriceData(StructuredNode):
 
 
 class Recommendations(StructuredNode):
-    period = JSONProperty()  # 如 {"0": "0m", "1": "-1m", ...}
+    period = JSONProperty()  # e.g., {"0": "0m", "1": "-1m", ...}
     strongBuy = JSONProperty()
     buy = JSONProperty()
     hold = JSONProperty()
@@ -65,7 +65,7 @@ class Recommendations(StructuredNode):
 
 
 class Sustainability(StructuredNode):
-    esgScores = JSONProperty()  # 存储ESG各项分数数据
+    esgScores = JSONProperty()  # Store ESG scoring data
 
 
 class SECFiling(StructuredNode):

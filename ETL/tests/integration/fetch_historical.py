@@ -8,10 +8,10 @@ from common import can_fetch, get_db_path, update_fetch_time
 
 def fetch_historical(ticker_symbol: str, period="1y", interval="1d", cooldown_minutes=60):
     """
-    1. 先检查 `can_fetch()`，如果不需要拉取则返回
-    2. 调用 yfinance 获取数据
-    3. 如果成功，更新数据库，并记录 success=1
-    4. 如果失败，仍然更新 fetch_log，但 success=0
+    1. First check `can_fetch()`, return if no need to fetch
+    2. Call yfinance to get data
+    3. If successful, update database and record success=1
+    4. If failed, still update fetch_log, but success=0
     """
     dimension = f"HISTORICAL_{interval}"
 

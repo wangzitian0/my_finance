@@ -7,15 +7,15 @@ from common import get_db_path
 
 def init_db_schema():
     """
-    建立或更新主要业务表:
-      - stock_price: 行情
-      - stock_info: 最新info
-      - quarterly_balance_sheet: 季度财务示例 (可扩展更多)
+    Create or update main business tables:
+      - stock_price: market data
+      - stock_info: latest info
+      - quarterly_balance_sheet: quarterly financial example (expandable)
     """
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    # 1) 行情表
+    # 1) Market data table
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS stock_price (
@@ -29,7 +29,7 @@ def init_db_schema():
     """
     )
 
-    # 2) info表
+    # 2) Info table
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS stock_info (
@@ -42,7 +42,7 @@ def init_db_schema():
     """
     )
 
-    # 3) 季度财务 (演示)
+    # 3) Quarterly financial (demo)
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS quarterly_balance_sheet (

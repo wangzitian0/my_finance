@@ -10,8 +10,8 @@ from common import can_fetch, get_db_path, update_fetch_time
 
 def fetch_quarterly_balance(ticker_symbol: str, cooldown_minutes=60):
     """
-    拉取 ticker.quarterly_balance_sheet -> quarterly_balance_sheet 表.
-    带冷却. 返回 (ticker, dimension, message).
+    Fetch ticker.quarterly_balance_sheet -> quarterly_balance_sheet table.
+    With cooldown. Returns (ticker, dimension, message).
     """
     dimension = "Q_BALANCE"
     if not can_fetch(ticker_symbol, dimension, cooldown_minutes):
@@ -27,8 +27,8 @@ def fetch_quarterly_balance(ticker_symbol: str, cooldown_minutes=60):
     conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
-    # quarterly_balance_sheet 的 DF： 行=项目，列=日期
-    df_t = df.T  # 行=日期, 列=项目
+    # quarterly_balance_sheet DF: rows=items, columns=dates
+    df_t = df.T  # rows=dates, columns=items
     insert_sql = """
     INSERT OR REPLACE INTO quarterly_balance_sheet
     (ticker, statement_date, item_name, value)
@@ -37,7 +37,7 @@ def fetch_quarterly_balance(ticker_symbol: str, cooldown_minutes=60):
 
     row_count = 0
     for date_idx, row_series in df_t.iterrows():
-        # date_idx 可能是Timestamp
+        # date_idx might be Timestamp
         date_str = str(date_idx.date()) if hasattr(date_idx, "date") else str(date_idx)
         for item_name, val in row_series.items():
             real_val = float(val) if val is not None else None

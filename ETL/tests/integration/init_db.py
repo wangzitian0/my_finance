@@ -5,7 +5,7 @@ from common import ensure_common_tables
 
 def main():
     ensure_common_tables()
-    # 在此添加其他初始化逻辑，例如拉取特定股票的数据
+    # Add other initialization logic here, such as fetching data for specific stocks
     result = fetch_historical("AAPL")
     print(result)
 
