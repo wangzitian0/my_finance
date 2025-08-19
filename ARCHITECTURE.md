@@ -1,141 +1,106 @@
-# 项目架构说明
+# Project Architecture
 
-## 重构后的一级目录架构
+## Refactored Top-Level Directory Architecture
 
-基于数据流和职责分离的清晰分层架构：
+Clear layered architecture based on data flow and separation of responsibilities:
 
 ```
 my_finance/
-├── ETL/           # 数据处理管道：爬虫、数据加工清洗
-├── dts/           # 数据传输服务：抽象数据I/O，屏蔽存储细节
-├── dcf_engine/    # DCF估值引擎：策略逻辑、模型计算
-├── evaluation/    # 评估工具集：回测、LLM评估、性能分析
-├── common/        # 公共组件：模块协调、Schema定义、工具库
-├── infra/         # 基础设施：环境管理、部署、监控
-├── data/          # 数据存储：样例数据、配置文档
-├── tests/         # 测试框架：单元测试、集成测试
-└── graph_rag/     # Graph RAG组件：智能查询和推理
+├── ETL/           # Data processing pipeline: web scrapers, data processing & cleaning
+├── dts/           # Data transfer service: abstract data I/O, storage abstraction
+├── dcf_engine/    # DCF valuation engine: strategy logic, model calculations
+├── evaluation/    # Evaluation toolkit: backtesting, LLM evaluation, performance analysis
+├── common/        # Common components: module coordination, schema definitions, utilities
+├── infra/         # Infrastructure: environment management, deployment, monitoring
+├── data/          # Data storage: sample data, configuration documents
+├── tests/         # Testing framework: unit tests, integration tests
+└── graph_rag/     # Graph RAG components: intelligent queries and reasoning
 ```
 
-## 数据流架构
+## Data Flow Architecture
 
 ```
-原始数据源 → ETL → DTS → DCF Engine → Evaluation
-    ↓        ↓     ↓        ↓           ↓
-  YFinance  爬虫  数据层   策略引擎    回测评估
-  SEC Edgar 解析  缓存     模型计算    性能分析
-           清洗   抽象     风险分析    LLM评估
+Raw Data Sources → ETL → DTS → DCF Engine → Evaluation
+    ↓        ↓         ↓        ↓           ↓
+  YFinance  Spider   Data Layer Strategy Engine Backtesting
+  SEC Edgar Parsing   Cache    Model Calc   Performance
+            Cleaning  Abstract Risk Analysis LLM Evaluation
 ```
 
-## 核心组件职责
+## Core Component Responsibilities
 
-### 📊 ETL - 数据处理管道
-**职责**: 爬虫、数据加工清洗，从原始数据到结构化输出
-- **数据采集**: YFinance、SEC Edgar爬虫
-- **数据解析**: 文档解析、格式转换
-- **数据清洗**: 质量检查、标准化处理
-- **数据构建**: 多层级数据集构建
+### 📊 ETL - Data Processing Pipeline
+**Responsibility**: Web scraping, data processing & cleaning from raw data to structured output
+- **Data Collection**: YFinance, SEC Edgar spiders
+- **Data Parsing**: Document parsing, format conversion
+- **Data Cleaning**: Quality checks, standardization
+- **Data Building**: Multi-tier dataset construction
 
-### 🔌 DTS - 数据传输服务  
-**职责**: 数据导入导出线上库，为dcf_engine屏蔽基建细节
-- **数据抽象**: 统一数据访问接口
-- **多源适配**: 支持Neo4j、MySQL、Redis等
-- **缓存管理**: 智能缓存提升性能
-- **连接池**: 优化数据库连接使用
+### 🔌 DTS - Data Transfer Service  
+**Responsibility**: Data import/export with online databases, abstracting infrastructure details for dcf_engine
+- **Data Abstraction**: Unified data access interface
+- **Multi-source Adaptation**: Support for Neo4j, MySQL, Redis, etc.
+- **Cache Management**: Intelligent caching for performance
+- **Connection Pool**: Optimized database connection usage
 
-### 🎯 DCF Engine - 估值引擎
-**职责**: 输入输出都是数据，专注策略逻辑
-- **DCF计算**: 多种估值模型实现
-- **策略验证**: 历史回测、统计检验
-- **知识图谱**: Graph RAG增强分析
-- **结果生成**: 报告和分析输出
+### 🎯 DCF Engine - Valuation Engine
+**Responsibility**: Data input/output focused, concentrate on strategy logic
+- **DCF Calculation**: Multiple valuation model implementations
+- **Strategy Validation**: Historical backtesting, statistical testing
+- **Knowledge Graph**: Graph RAG enhanced analysis
+- **Result Generation**: Report and analysis output
 
-### 📈 Evaluation - 评估工具集
-**职责**: LLM模板、策略回测工具链、性能评估
-- **策略回测**: 历史性能验证
-- **LLM评估**: 提示词和响应质量
-- **性能指标**: 收益、风险、稳定性分析
-- **可视化**: 结果展示和报告
+### 📈 Evaluation - Evaluation Toolkit
+**Responsibility**: LLM templates, strategy backtesting toolkit, performance evaluation
+- **Strategy Backtesting**: Historical performance validation
+- **LLM Evaluation**: Prompt and response quality assessment
+- **Performance Metrics**: Return, risk, stability analysis
+- **Visualization**: Result presentation and reporting
 
-### 🔧 Common - 公共组件
-**职责**: 管理模块交互，定义Schema和共享工具
-- **Schema定义**: 数据结构标准
-- **模块协调**: 组件间通信
-- **工具库**: 日志、配置、工具函数
-- **元数据管理**: 数据血缘和生命周期
+### 🔧 Common - Common Components
+**Responsibility**: Manage module interactions, define schemas and shared utilities
+- **Schema Definition**: Unified data models across components
+- **Utility Functions**: Shared tools and helper functions
+- **Module Coordination**: Inter-component communication
+- **Configuration Management**: Centralized config handling
 
-### 🏗️ Infra - 基础设施
-**职责**: 全局性基础设施，环境和部署
-- **环境管理**: Docker、K8s、数据库
-- **部署自动化**: Ansible、CI/CD
-- **开发工具**: Git工具、代码质量
-- **监控运维**: 系统监控、日志管理
+### 🏗️ Infra - Infrastructure
+**Responsibility**: Environment management, containerized deployment, monitoring & alerting
+- **Environment Management**: Ansible automated deployment
+- **Containerization**: Service management using Podman
+- **Database**: Neo4j graph database management
+- **Monitoring**: System status and performance monitoring
 
-## 设计原则
+### 🧪 Tests - Testing Framework
+**Responsibility**: Quality assurance through comprehensive testing
+- **Unit Testing**: Component-level testing
+- **Integration Testing**: Cross-component validation
+- **End-to-End Testing**: Full pipeline validation
+- **Performance Testing**: Load and stress testing
 
-### 1. 数据流清晰
-- **单向数据流**: ETL → DTS → DCF Engine → Evaluation
-- **责任分离**: 每个组件专注自己的核心职责
-- **接口标准化**: 通过common定义标准接口
+### 🧠 Graph RAG - Knowledge Graph & RAG
+**Responsibility**: Intelligent query processing and reasoning
+- **Graph Database**: Knowledge representation in Neo4j
+- **Semantic Retrieval**: Context-aware information retrieval
+- **LLM Integration**: Natural language query processing
+- **Reasoning Engine**: Intelligent analysis and insights
 
-### 2. 模块解耦
-- **独立部署**: 每个组件可独立开发和部署
-- **接口抽象**: 通过DTS抽象数据访问
-- **配置驱动**: 行为通过配置文件控制
+## Key Design Principles
 
-### 3. 可扩展性
-- **水平扩展**: 支持多实例部署
-- **插件化**: 支持新增数据源和策略
-- **版本管理**: 组件版本独立管理
+1. **Separation of Concerns**: Each component has a clear, single responsibility
+2. **Data Flow Driven**: Architecture follows natural data processing flow
+3. **Modular Design**: Components are loosely coupled, highly cohesive
+4. **Scalable**: Architecture supports horizontal and vertical scaling
+5. **Testable**: Each component can be tested independently
+6. **Configuration Driven**: Behavior controlled through external configuration
+7. **Performance Oriented**: Optimized for financial data processing workloads
 
-### 4. 运维友好
-- **监控完整**: 全链路监控和告警
-- **日志结构化**: 便于分析和调试
-- **自动化**: 部署、测试、运维自动化
+## Integration Patterns
 
-## 使用场景
+- **Data Pipeline**: ETL → DTS → DCF Engine → Evaluation
+- **Knowledge Enhancement**: Graph RAG integrated across all analysis components
+- **Configuration**: Common component provides centralized configuration
+- **Infrastructure**: Infra component supports all other components
+- **Quality Assurance**: Tests component validates all functionality
 
-### 开发人员
-```bash
-# 数据处理
-p3 build run m7              # ETL数据构建
-pixi run metadata-rebuild      # 元数据管理
-
-# 策略开发  
-pixi run dcf-analysis          # DCF分析
-pixi run validate-strategy     # 策略验证
-
-# 环境管理
-p3 env status            # 环境检查
-p3 shutdown-all          # 服务关闭
-```
-
-### 运维人员
-```bash
-# 部署管理
-ansible-playbook infra/ansible/setup.yml
-kubectl apply -f infra/k8s/
-
-# 监控运维
-python infra/env_status.py
-python infra/monitoring.py
-```
-
-### 研究人员
-```bash
-# 策略评估
-python evaluation/backtest_engine.py
-python evaluation/llm_evaluator.py
-
-# 数据分析
-python dcf_engine/demo_graph_rag.py
-python graph_rag/semantic_retriever.py
-```
-
-## 升级优势
-
-1. **架构清晰**: 一级目录直接体现业务流程
-2. **职责明确**: 每个组件专注核心功能  
-3. **易于理解**: 新人可快速理解项目结构
-4. **便于维护**: 模块化降低维护成本
-5. **扩展友好**: 支持新增功能和组件
+This architecture ensures clean separation of concerns while maintaining efficient data flow for financial analysis and DCF valuation workflows.

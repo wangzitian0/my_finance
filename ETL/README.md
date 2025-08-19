@@ -1,43 +1,43 @@
-# ETL - 数据处理管道
+# ETL - Data Processing Pipeline
 
-爬虫、数据加工清洗的完整ETL流程。从原始数据采集到结构化数据输出。
+Complete ETL pipeline for web scraping and data processing. From raw data collection to structured data output.
 
-## 组件结构
+## Component Structure
 
-### 数据采集 (Spider)
-- `yfinance_spider.py` - Yahoo Finance数据爬虫
-- `sec_edgar_spider.py` - SEC Edgar文件爬虫  
-- `fetch_ticker_lists.py` - 股票代码列表获取
+### Data Collection (Spider)
+- `yfinance_spider.py` - Yahoo Finance data spider
+- `sec_edgar_spider.py` - SEC Edgar file spider  
+- `fetch_ticker_lists.py` - Stock ticker list fetcher
 
-### 数据解析 (Parser)
-- `sec_parser.py` - SEC文档解析器
-- `rcts.py` - RCTS格式解析器
+### Data Parsing (Parser)
+- `sec_parser.py` - SEC document parser
+- `rcts.py` - RCTS format parser
 
-### 数据处理
-- `build_dataset.py` - 数据集构建工具
-- `migrate_data_structure.py` - 数据结构迁移
-- `check_coverage.py` - 数据覆盖率检查
-- `retry_failed.py` - 失败重试工具
-- `update_data_paths.py` - 路径更新工具
+### Data Processing
+- `build_dataset.py` - Dataset construction tool
+- `migrate_data_structure.py` - Data structure migration
+- `check_coverage.py` - Data coverage checker
+- `retry_failed.py` - Failed task retry tool
+- `update_data_paths.py` - Path update tool
 
-### 数据建模
-- `models.py` - Neo4j数据模型定义
-- `build_schema.py` - Schema构建工具
-- `import_data.py` - 数据导入工具
+### Data Modeling
+- `models.py` - Neo4j data model definitions
+- `build_schema.py` - Schema construction tool
+- `import_data.py` - Data import tool
 
-## 数据流程
+## Data Flow
 
 ```
-原始数据源 → Spider采集 → Parser解析 → ETL处理 → DTS输出
-    ↓           ↓          ↓         ↓        ↓
-  YFinance   原始文件   结构化数据  清洗数据  标准接口
+Raw Data Sources → Spider Collection → Parser Processing → ETL Pipeline → DTS Output
+    ↓                ↓                  ↓                ↓              ↓
+  YFinance        Raw Files       Structured Data    Clean Data    Standard API
   SEC Edgar
 ```
 
-## 使用方式
+## Usage
 
 ```bash
-# 数据采集
+# Data collection
 python run_job.py data/config/job_yfinance_m7.yml
 
 # Via pixi commands
