@@ -1,0 +1,49 @@
+# DeepSeek-R1 1.5B Fast Configuration for Development Testing
+# Optimized for speed over accuracy - use for fast iteration and testing
+
+llm_service:
+  provider: "ollama"
+  base_url: "http://localhost:11434"
+  model: "deepseek-r1:1.5b"
+  timeout: 30
+  max_retries: 2
+
+generation:
+  temperature: 0.3
+  max_tokens: 2048
+  stream: false
+  seed: 42
+
+# Fast DCF generation settings
+dcf_generation:
+  max_companies_per_batch: 5
+  enable_sec_integration: true
+  enable_semantic_retrieval: true
+  debug_mode: true
+  fast_mode: true
+  
+# Reduced context for speed
+semantic_retrieval:
+  similarity_threshold: 0.7
+  max_results: 3
+  enable_context_compression: true
+
+# Quick report settings
+reporting:
+  bilingual: false  # English only for speed
+  include_charts: false
+  include_detailed_analysis: false
+  format: "markdown"
+
+# Performance optimizations
+performance:
+  enable_caching: true
+  parallel_processing: false  # Disable for small model
+  batch_size: 1
+  
+# Logging for debugging
+logging:
+  level: "INFO"
+  log_llm_requests: true
+  log_responses: false  # Disable to reduce I/O
+  save_intermediate_results: true

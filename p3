@@ -34,6 +34,7 @@ Development Commands:
   test                   Run tests (pytest)
   e2e                    End-to-end validation
   build run [scope]      Build dataset (default: m7)
+  fast-build [scope]     Fast build with deepseek-r1:1.5b (testing)
   refresh [scope]        Alias for build run
 
 Build Management:
@@ -92,6 +93,30 @@ cmd_build() {
   else
     cmd_refresh "$@"
   fi
+}
+
+cmd_fast_build() {
+  scope="${1:-m7}"
+  case "$scope" in
+    f2|m7|n100|v3k) ;;
+    *) echo "Invalid scope: $scope (expected one of: f2 m7 n100 v3k)" >&2; exit 2;;
+  esac
+  
+  echo "🚀 Starting fast build with deepseek-r1:1.5b for $scope..."
+  echo "   Configuration: deepseek_fast.yml"
+  
+  # Check if deepseek-r1:1.5b model exists
+  if ! ollama list | grep -q "deepseek-r1:1.5b"; then
+    echo "⚠️  deepseek-r1:1.5b model not found. Running: ollama run deepseek-r1:1.5b"
+    ollama run deepseek-r1:1.5b &
+    sleep 5
+  fi
+  
+  # Set environment variable for fast mode
+  export DCF_FAST_MODE=true
+  export DCF_CONFIG_PATH="data/llm/configs/deepseek_fast.yml"
+  
+  pixi run "build-$scope"
 }
 
 # Environment management
@@ -210,6 +235,7 @@ case "$1" in
   test) shift; cmd_test "$@" ;;
   e2e) shift; cmd_e2e "$@" ;;
   build) shift; cmd_build "$@" ;;
+  fast-build) shift; cmd_fast_build "$@" ;;
   refresh) shift; cmd_refresh "$@" ;;
   
   # Build management
