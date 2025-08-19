@@ -186,3 +186,6 @@ check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stag
 # Keep legacy helpers if needed
 pr = "python infra/create_pr_with_improved_testing.py"
 test-only = "python infra/create_pr_with_improved_testing.py --test-only"
+
+[pypi-dependencies]
+sec-edgar = ">=0.0.2, <0.0.3"
