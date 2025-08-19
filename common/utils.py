@@ -1,11 +1,12 @@
+import json
 import os
 import re
 import warnings
-import json
-import yaml
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, Union, Optional
+from typing import Any, Dict, Optional, Union
+
+import yaml
 
 
 def suppress_third_party_logs():
@@ -126,21 +127,22 @@ def ensure_path_exists(path):
 
 # Data I/O Centralization Functions
 
+
 def read_json_file(file_path: Union[str, Path], default: Any = None) -> Any:
     """
     Centralized JSON file reading with error handling.
-    
+
     Args:
         file_path: Path to the JSON file
         default: Default value to return if file doesn't exist or has errors
-        
+
     Returns:
         Parsed JSON data or default value
     """
     file_path = Path(file_path)
-    
+
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         if default is not None:
@@ -152,10 +154,12 @@ def read_json_file(file_path: Union[str, Path], default: Any = None) -> Any:
         raise IOError(f"Error reading {file_path}: {e}")
 
 
-def write_json_file(file_path: Union[str, Path], data: Any, ensure_dir: bool = True, indent: int = 2) -> None:
+def write_json_file(
+    file_path: Union[str, Path], data: Any, ensure_dir: bool = True, indent: int = 2
+) -> None:
     """
     Centralized JSON file writing with error handling.
-    
+
     Args:
         file_path: Path to write the JSON file
         data: Data to serialize to JSON
@@ -163,12 +167,12 @@ def write_json_file(file_path: Union[str, Path], data: Any, ensure_dir: bool = T
         indent: JSON indentation for pretty printing
     """
     file_path = Path(file_path)
-    
+
     if ensure_dir:
         ensure_path_exists(file_path.parent)
-    
+
     try:
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=indent, ensure_ascii=False)
     except Exception as e:
         raise IOError(f"Error writing JSON to {file_path}: {e}")
@@ -177,18 +181,18 @@ def write_json_file(file_path: Union[str, Path], data: Any, ensure_dir: bool = T
 def read_yaml_file(file_path: Union[str, Path], default: Any = None) -> Any:
     """
     Centralized YAML file reading with error handling.
-    
+
     Args:
         file_path: Path to the YAML file
         default: Default value to return if file doesn't exist or has errors
-        
+
     Returns:
         Parsed YAML data or default value
     """
     file_path = Path(file_path)
-    
+
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return yaml.safe_load(f)
     except FileNotFoundError:
         if default is not None:
@@ -203,40 +207,42 @@ def read_yaml_file(file_path: Union[str, Path], default: Any = None) -> Any:
 def write_yaml_file(file_path: Union[str, Path], data: Any, ensure_dir: bool = True) -> None:
     """
     Centralized YAML file writing with error handling.
-    
+
     Args:
         file_path: Path to write the YAML file
         data: Data to serialize to YAML
         ensure_dir: Whether to create parent directories if they don't exist
     """
     file_path = Path(file_path)
-    
+
     if ensure_dir:
         ensure_path_exists(file_path.parent)
-    
+
     try:
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             yaml.safe_dump(data, f, default_flow_style=False, allow_unicode=True)
     except Exception as e:
         raise IOError(f"Error writing YAML to {file_path}: {e}")
 
 
-def read_text_file(file_path: Union[str, Path], default: str = None, encoding: str = 'utf-8') -> str:
+def read_text_file(
+    file_path: Union[str, Path], default: str = None, encoding: str = "utf-8"
+) -> str:
     """
     Centralized text file reading with error handling.
-    
+
     Args:
         file_path: Path to the text file
         default: Default value to return if file doesn't exist
         encoding: File encoding (default: utf-8)
-        
+
     Returns:
         File contents as string or default value
     """
     file_path = Path(file_path)
-    
+
     try:
-        with open(file_path, 'r', encoding=encoding) as f:
+        with open(file_path, "r", encoding=encoding) as f:
             return f.read()
     except FileNotFoundError:
         if default is not None:
@@ -246,10 +252,12 @@ def read_text_file(file_path: Union[str, Path], default: str = None, encoding: s
         raise IOError(f"Error reading text file {file_path}: {e}")
 
 
-def write_text_file(file_path: Union[str, Path], content: str, ensure_dir: bool = True, encoding: str = 'utf-8') -> None:
+def write_text_file(
+    file_path: Union[str, Path], content: str, ensure_dir: bool = True, encoding: str = "utf-8"
+) -> None:
     """
     Centralized text file writing with error handling.
-    
+
     Args:
         file_path: Path to write the text file
         content: Text content to write
@@ -257,34 +265,36 @@ def write_text_file(file_path: Union[str, Path], content: str, ensure_dir: bool 
         encoding: File encoding (default: utf-8)
     """
     file_path = Path(file_path)
-    
+
     if ensure_dir:
         ensure_path_exists(file_path.parent)
-    
+
     try:
-        with open(file_path, 'w', encoding=encoding) as f:
+        with open(file_path, "w", encoding=encoding) as f:
             f.write(content)
     except Exception as e:
         raise IOError(f"Error writing text to {file_path}: {e}")
 
 
-def list_files_by_pattern(directory: Union[str, Path], pattern: str = "*", recursive: bool = True) -> list[Path]:
+def list_files_by_pattern(
+    directory: Union[str, Path], pattern: str = "*", recursive: bool = True
+) -> list[Path]:
     """
     List files matching a pattern in a directory.
-    
+
     Args:
         directory: Directory to search in
         pattern: Glob pattern to match (default: all files)
         recursive: Whether to search recursively (default: True)
-        
+
     Returns:
         List of Path objects matching the pattern
     """
     directory = Path(directory)
-    
+
     if not directory.exists():
         return []
-    
+
     if recursive:
         return list(directory.rglob(pattern))
     else:
@@ -294,11 +304,11 @@ def list_files_by_pattern(directory: Union[str, Path], pattern: str = "*", recur
 def safe_file_operation(operation_func, *args, **kwargs):
     """
     Wrapper for safe file operations with consistent error handling.
-    
+
     Args:
         operation_func: Function to execute (read_json_file, write_text_file, etc.)
         *args, **kwargs: Arguments to pass to the operation function
-        
+
     Returns:
         Result of the operation or raises standardized exceptions
     """
@@ -315,18 +325,18 @@ def safe_file_operation(operation_func, *args, **kwargs):
 def get_file_info(file_path: Union[str, Path]) -> Optional[Dict[str, Any]]:
     """
     Get file information including size, modification time, etc.
-    
+
     Args:
         file_path: Path to the file
-        
+
     Returns:
         Dictionary with file information or None if file doesn't exist
     """
     file_path = Path(file_path)
-    
+
     if not file_path.exists():
         return None
-    
+
     stat = file_path.stat()
     return {
         "path": str(file_path),
