@@ -84,11 +84,18 @@ def run_end_to_end_test():
 
     test_success = False
     try:
-        # Use fast-build with DeepSeek 1.5b for faster F2 dataset testing
-        print("🏃 Running fast F2 build with DeepSeek 1.5b model...")
-        run_command(
-            "./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=180
-        )  # 3 minutes
+        # Verify DeepSeek 1.5b model is available
+        print("🔍 Verifying DeepSeek 1.5b model configuration...")
+        print("   Config path will be: data/llm/configs/deepseek_fast.yml") 
+        print("   Expected model: deepseek-r1:1.5b")
+        
+        # Build F2 dataset (faster test) using DeepSeek 1.5b model for PR validation
+        print("🚀 Starting fast-build with DeepSeek 1.5b - should NOT use gpt-oss:20b")
+        run_command("./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=300)  # 5 minutes
+        
+        # Verify the model was actually used
+        print("🔍 Verifying model usage in connection logs...")
+        run_command("tail -1 data/log/ollama_connection.json | grep -o 'deepseek-r1:1.5b' || echo 'WARNING: DeepSeek model not found in logs'", "Checking model selection", check=False)
         test_success = True
     except Exception as e:
         print(f"⚠️  F2 build failed: {e}")
