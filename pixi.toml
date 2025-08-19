@@ -131,7 +131,7 @@ neo4j-start = "podman start neo4j-finance"
 # --- Workflow Management ---
 # PR creation with automated testing
 create-pr = "python infra/create_pr_with_test.py"
-test-e2e = "python infra/create_pr_with_test.py --skip-pr"
+test-e2e = "python infra/create_pr_with_test.py --skip-pr-creation"
 
 # Data repository (symlink) management
 commit-data-changes = "python infra/commit_data_changes.py"
