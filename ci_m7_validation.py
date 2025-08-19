@@ -120,9 +120,13 @@ def check_condition_1_test_run(commit_msg: str) -> bool:
     print("🔍 Checking condition 1: Test execution verification")
 
     # Accept both M7 and F2 test markers
-    has_m7_test = "M7-TESTED" in commit_msg and "This commit passed M7 end-to-end testing" in commit_msg
-    has_f2_test = "F2-TESTED" in commit_msg and "This commit passed F2 fast-build testing" in commit_msg
-    
+    has_m7_test = (
+        "M7-TESTED" in commit_msg and "This commit passed M7 end-to-end testing" in commit_msg
+    )
+    has_f2_test = (
+        "F2-TESTED" in commit_msg and "This commit passed F2 fast-build testing" in commit_msg
+    )
+
     if has_m7_test:
         print("✅ Condition 1 passed: Found M7 complete test marker")
         return True
@@ -140,7 +144,7 @@ def check_condition_1_test_run(commit_msg: str) -> bool:
         print()
         print("❌ Forbidden methods (CI will fail):")
         print("   • Direct git push/commit")
-        print("   • Manual GitHub UI PR creation")  
+        print("   • Manual GitHub UI PR creation")
         print("   • Hand-crafted test markers")
         print("   • Bypassing automation scripts")
         print()
@@ -245,7 +249,9 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                     # Accept both M7 (≥7 files) and F2 (≥2 files) test results
                     if file_count >= 2:
                         test_type = "M7 complete test" if file_count >= 7 else "F2 fast test"
-                        print(f"✅ Condition 4 passed: Validated {file_count} data files ({test_type})")
+                        print(
+                            f"✅ Condition 4 passed: Validated {file_count} data files ({test_type})"
+                        )
                         return True
                     else:
                         print(f"❌ Condition 4 FAILED: Insufficient data files ({file_count} < 2)")
@@ -254,7 +260,9 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                         print()
                         print("✅ Solution: Run proper testing:")
                         print("   1. p3 e2e                           # F2 fast test validation")
-                        print('   2. p3 create-pr "title" ISSUE       # Proper test result embedding')
+                        print(
+                            '   2. p3 create-pr "title" ISSUE       # Proper test result embedding'
+                        )
                         return False
         print("❌ Condition 4 FAILED: Cannot parse test results count")
         print("🚨 This indicates corrupted or hand-crafted test markers!")
