@@ -16,10 +16,9 @@ git = "*"
 # Essential Python packages
 pip = "*"
 pyyaml = "*"
-requests = "*"
+requests = ">=2.32.4,<3"
 beautifulsoup4 = "*"
 pandas = ">=2.3.1,<3"
-numpy = "*"
 matplotlib = "*"
 seaborn = "*"
 jupyter = "*"
@@ -41,6 +40,7 @@ scikit-learn = "*"
 pytorch = "*"
 yfinance = ">=0.2.57,<0.3"
 faiss-cpu = ">=1.9.0,<2"
+numpy = ">=1.26.4,<2"
 
 [tasks]
 # Core commands from CLAUDE.md

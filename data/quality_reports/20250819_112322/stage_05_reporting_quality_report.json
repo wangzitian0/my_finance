@@ -1,0 +1,11 @@
+{
+  "success_rate": 0.0,
+  "reports_generated": 0,
+  "expected_reports": 1,
+  "status": "failed",
+  "stage": "stage_05_reporting",
+  "partition": "20250819",
+  "timestamp": "2025-08-19T11:23:26.233024",
+  "build_id": "20250819_112322",
+  "tier_name": "n100"
+}
