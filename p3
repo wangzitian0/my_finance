@@ -128,18 +128,11 @@ cmd_fast_build() {
   echo "🚀 Starting fast build with deepseek-r1:1.5b for $scope..."
   echo "   Configuration: deepseek_fast.yml"
   
-  # Check if deepseek-r1:1.5b model exists
-  if ! ollama list | grep -q "deepseek-r1:1.5b"; then
-    echo "⚠️  deepseek-r1:1.5b model not found. Running: ollama run deepseek-r1:1.5b"
-    ollama run deepseek-r1:1.5b &
-    sleep 5
-  fi
+  # Use mock mode configuration (no Ollama needed)
+  echo "   Using mock mode configuration for instant responses..."
   
-  # Set environment variable for fast mode
-  export DCF_FAST_MODE=true
-  export DCF_CONFIG_PATH="data/llm/configs/deepseek_fast.yml"
-  
-  pixi run "build-$scope"
+  # Use the mock-enabled deepseek_fast.yml configuration
+  pixi run "build-$scope" --config="data/llm/configs/deepseek_fast.yml"
 }
 
 # Environment management

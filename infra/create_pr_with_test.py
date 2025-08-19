@@ -68,13 +68,6 @@ def run_end_to_end_test():
     print("🧪 RUNNING MANDATORY END-TO-END TEST (FAST MODE)")
     print("🚀 Using DeepSeek 1.5b model for accelerated testing")
     print("=" * 60)
-    
-    # Force enable fast mode environment variables for local testing
-    import os
-    os.environ["DCF_FAST_MODE"] = "true"
-    os.environ["DCF_CONFIG_PATH"] = "data/llm/configs/deepseek_fast.yml"
-    os.environ["CI_FAST_TESTING"] = "true"  # Enable mock mode
-    print("🏃 Fast mode environment variables set")
 
     # Clean any existing build artifacts
     run_command(

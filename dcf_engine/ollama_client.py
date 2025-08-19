@@ -29,19 +29,24 @@ class OllamaClient:
     recommendations using the gpt-oss:20b model.
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: Optional[str] = None, fast_mode: bool = False):
         """
         Initialize Ollama client.
 
         Args:
             config_path: Path to configuration file
+            fast_mode: Enable fast mode with mock responses
         """
         self.config = self._load_config(config_path)
 
-        # Check for CI fast testing mode
+        # Check for fast mode (parameter, config, or CI environment)
+        config_fast_mode = self.config.get("dcf_generation", {}).get("fast_mode", False)
         self.ci_fast_testing = os.getenv("CI_FAST_TESTING", "false").lower() == "true"
         self.mock_mode = (
-            self.config.get("llm_service", {}).get("provider") == "mock" or self.ci_fast_testing
+            fast_mode  # Direct parameter takes priority
+            or config_fast_mode
+            or self.config.get("llm_service", {}).get("provider") == "mock" 
+            or self.ci_fast_testing  # Keep CI support
         )
 
         if self.mock_mode:
