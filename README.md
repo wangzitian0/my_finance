@@ -26,13 +26,14 @@ p3 clean                      # Clean local build artifacts
 p3 shutdown-all               # Clean shutdown
 ```
 
-## 系统架构
+## System Architecture
 
-### 数据流架构
+### Data Flow Architecture
 ```
 SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
         ↓                ↓       ↓          ↓          ↓
-   SEC Filing Data    数据层  语义检索   策略引擎   回测评估
+   SEC Filing Data   Data Layer Semantic   Strategy  Backtesting
+                                Retrieval  Engine    Evaluation
 ```
 
 ### 核心组件
