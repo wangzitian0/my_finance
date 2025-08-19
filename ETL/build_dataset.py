@@ -8,9 +8,10 @@ import argparse
 import json
 import os
 import sys
-import yaml
 from datetime import datetime
 from pathlib import Path
+
+import yaml
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -138,8 +139,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
 def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build yfinance data using spider"""
     try:
-        from ETL.yfinance_spider import run_job
         import tempfile
+
+        from ETL.yfinance_spider import run_job
 
         # Get YFinance stage config from data sources
         data_sources = yaml_config.get("data_sources", {})
@@ -161,19 +163,20 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
         print(f"   Config: {stage_config_name}")
 
         # Create temporary config file with tickers added
-        with open(yfinance_config_path, 'r') as f:
+        with open(yfinance_config_path, "r") as f:
             yf_config = yaml.safe_load(f)
 
-        yf_config['tickers'] = tickers
+        yf_config["tickers"] = tickers
 
         # Write temporary config with tickers
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False) as temp_f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as temp_f:
             yaml.dump(yf_config, temp_f, default_flow_style=False)
             temp_config_path = temp_f.name
 
         # Log to build tracker
         tracker.log_stage_output(
-            "stage_01_extract", f"Starting yfinance collection for {tier.value} with {len(tickers)} tickers"
+            "stage_01_extract",
+            f"Starting yfinance collection for {tier.value} with {len(tickers)} tickers",
         )
 
         # Run yfinance spider

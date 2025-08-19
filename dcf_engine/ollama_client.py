@@ -38,7 +38,6 @@ class OllamaClient:
             fast_mode: Enable fast mode with mock responses
         """
         self.config = self._load_config(config_path)
-        
         # Check for fast mode (parameter, config, or CI environment)
         config_fast_mode = self.config.get("dcf_generation", {}).get("fast_mode", False)
         self.ci_fast_testing = os.getenv("CI_FAST_TESTING", "false").lower() == "true"
@@ -51,7 +50,7 @@ class OllamaClient:
 
         # Support both old format (ollama section) and new format (llm_service section)
         llm_config = self.config.get("llm_service", self.config.get("ollama", {}))
-        
+
         if self.mock_mode:
             logger.info("🚀 Running in mock mode for fast CI testing")
             self.base_url = "mock://localhost"
@@ -145,10 +144,10 @@ class OllamaClient:
         try:
             start_time = time.time()
             logger.info(f"🏓 Ping-pong test with {self.model_name}...")
-            
+
             # Simple test prompt
             test_prompt = "Say only: PONG"
-            
+
             response = requests.post(
                 f"{self.base_url}/api/generate",
                 json={
@@ -158,26 +157,30 @@ class OllamaClient:
                     "options": {
                         "temperature": 0,
                         "num_predict": 10,  # Very short response
-                    }
+                    },
                 },
-                timeout=30  # Shorter timeout for ping test
+                timeout=30,  # Shorter timeout for ping test
             )
-            
+
             response_time = time.time() - start_time
-            
+
             if response.status_code == 200:
                 result = response.json()
                 answer = result.get("response", "").strip()
                 logger.info(f"🏓 Ping-pong successful: '{answer}' ({response_time:.1f}s)")
-                
+
                 # Warn if response time is slow
                 if response_time > 15:
-                    logger.warning(f"⚠️  Model response slow ({response_time:.1f}s) - expect longer DCF generation")
+                    logger.warning(
+                        f"⚠️  Model response slow ({response_time:.1f}s) - expect longer DCF generation"
+                    )
                 elif response_time > 30:
-                    logger.error(f"❌ Model response very slow ({response_time:.1f}s) - consider using fast-build")
+                    logger.error(
+                        f"❌ Model response very slow ({response_time:.1f}s) - consider using fast-build"
+                    )
             else:
                 logger.error(f"❌ Ping-pong failed: HTTP {response.status_code}")
-                
+
         except Exception as e:
             logger.warning(f"⚠️  Ping-pong test failed: {e}")
 
