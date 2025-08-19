@@ -245,7 +245,9 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                         print()
                         print("✅ SOLUTION: Run complete M7 testing:")
                         print("   1. p3 e2e                           # Full M7 dataset validation")
-                        print('   2. p3 create-pr "title" ISSUE_NUMBER # Proper test result embedding')
+                        print(
+                            '   2. p3 create-pr "title" ISSUE_NUMBER # Proper test result embedding'
+                        )
                         return False
         print("❌ Condition 4 FAILED: Cannot parse test results count")
         print("🚨 This indicates corrupted or hand-crafted M7 test markers!")
