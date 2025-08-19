@@ -157,7 +157,7 @@ def run_end_to_end_test():
         print(f"❌ FAIL: Expected at least 2 F2 files (MSFT + NVDA), found {total_files}")
         print("🔍 Build artifacts preserved for debugging")
         return False
-    
+
     print("✅ F2 FAST-BUILD TEST PASSED")
     print("📦 DeepSeek 1.5b model validated successfully")
     print("✅ Git status is clean - ready for PR creation!")
