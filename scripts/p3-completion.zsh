@@ -1,6 +1,6 @@
 # zsh completion for p3 (scoped to my_finance)
 
-_p3_commands=(env podman neo4j format lint typecheck test e2e build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity)
+_p3_commands=(env podman neo4j format lint typecheck test e2e build fast-build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity)
 _p3_env_commands=(setup start stop status reset)
 _p3_podman_commands=(status)
 _p3_neo4j_commands=(logs connect restart stop start)
@@ -23,13 +23,15 @@ _p3() {
     compadd -x 'lint        Lint code (pylint)'
     compadd -x 'typecheck   Type check with mypy'
     compadd -x 'test        Run tests (pytest)'
-    compadd -x 'e2e         End-to-end validation'
+    compadd -x 'e2e         End-to-end validation [scope]'
     compadd -x 'build       Build dataset (build run [scope])'
+    compadd -x 'fast-build  Fast build with deepseek-r1:1.5b [scope]'
     compadd -x 'refresh     Build dataset (alias for build run)'
     compadd -x 'create-pr   Create/update PR with testing'
     compadd -x 'clean       Clean build artifacts'
     compadd -x 'status      Quick environment status'
     compadd -x 'verify-env  Verify environment dependencies'
+    compadd -x 'check-integrity  Check data integrity'
     compadd -a cmds
     return
   fi
@@ -63,7 +65,7 @@ _p3() {
         compadd -a neo4j_cmds
       fi
       ;;
-    refresh|build)
+    refresh|build|fast-build)
       if (( CURRENT == 3 )) || (( CURRENT == 4 && $words[3] == "run" )); then
         compadd -x 'Scope  Description'
         compadd -x 'f2     Fast 2 companies (development)'
@@ -73,6 +75,16 @@ _p3() {
         compadd -a scopes
       elif (( CURRENT == 3 && $cmd == "build" )); then
         compadd "run"
+      fi
+      ;;
+    e2e)
+      if (( CURRENT == 3 )); then
+        compadd -x 'Scope  Description'
+        compadd -x 'f2     Fast 2 companies (development)'
+        compadd -x 'm7     Magnificent 7 (default/PR)'
+        compadd -x 'n100   NASDAQ 100 (validation)'
+        compadd -x 'v3k    VTI 3500+ (production)'
+        compadd -a scopes
       fi
       ;;
     cleanup-branches)

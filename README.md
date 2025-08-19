@@ -26,29 +26,31 @@ p3 clean                      # Clean local build artifacts
 p3 shutdown-all               # Clean shutdown
 ```
 
-## 系统架构
+## System Architecture
 
-### 数据流架构
+### Data Flow Architecture
 ```
 SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
         ↓                ↓       ↓          ↓          ↓
-   SEC Filing Data    数据层  语义检索   策略引擎   回测评估
+   SEC Filing Data   Data Layer  Semantic   Strategy   Backtesting
+                                Retrieval   Engine     & Analysis
 ```
 
-### 核心组件
+### Core Components
 
-- **`ETL/`** - 数据处理管道：SEC文档爬虫、语义嵌入、数据清洗
-- **`dcf_engine/`** - SEC增强DCF引擎：语义检索、引用管理、估值模型
-- **`graph_rag/`** - 图形检索增强生成：SEC文档语义搜索、相关性排序
-- **`evaluation/`** - 评估工具集：回测、LLM评估、性能分析
+- **`ETL/`** - Data processing pipeline: SEC document crawling, semantic embedding, data cleaning
+- **`dcf_engine/`** - SEC-enhanced DCF engine: semantic retrieval, citation management, valuation models
+- **`graph_rag/`** - Graph retrieval augmented generation: SEC document semantic search, relevance scoring
+- **`evaluation/`** - Evaluation toolkit: backtesting, LLM evaluation, performance analysis
 
-### 支撑组件
+### Supporting Components
 
-- **`common/`** - 公共组件：模块协调、Schema定义、构建追踪
-- **`infra/`** - 基础设施：Pixi环境管理、Ansible自动化、Podman容器
-- **`data/`** - 分阶段数据存储：SEC文档、嵌入向量、构建清单
-- **`spider/`** - 数据爬虫：SEC Edgar API、YFinance集成
-- **`parser/`** - 文档解析：SEC文档结构化、财务数据提取
+- **`common/`** - Shared components: module coordination, schema definitions, build tracking
+- **`infra/`** - Infrastructure: Pixi environment management, Ansible automation, Podman containers
+- **`data/`** - Stage-based data storage: SEC documents, embedding vectors, build manifests
+- **`scripts/`** - Utility scripts: maintenance, setup, data management tools
+- **`templates/`** - Templates: DCF analysis prompts, configuration templates
+- **`tests/`** - Test framework: unit tests, integration tests, end-to-end validation
 
 ## Development Commands
 
