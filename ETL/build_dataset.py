@@ -319,7 +319,9 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: b
 
         if fast_mode:
             print(f"   ⚡ Fast mode report generation enabled")
-            tracker.log_stage_output("stage_05_reporting", "Fast mode enabled for report generation")
+            tracker.log_stage_output(
+                "stage_05_reporting", "Fast mode enabled for report generation"
+            )
 
         # Generate DCF reports for each ticker
         reports_generated = 0
@@ -401,7 +403,9 @@ def main():
         help="Dataset tier to build (f2/m7/n100/v3k + legacy aliases)",
     )
     parser.add_argument("--config", help="Optional path to specific config file")
-    parser.add_argument("--fast-mode", action="store_true", help="Enable fast mode with DeepSeek 1.5b")
+    parser.add_argument(
+        "--fast-mode", action="store_true", help="Enable fast mode with DeepSeek 1.5b"
+    )
     parser.add_argument("--validate", action="store_true", help="Run validation after build")
 
     args = parser.parse_args()
