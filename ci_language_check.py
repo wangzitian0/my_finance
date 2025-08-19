@@ -26,18 +26,11 @@ CHECK_EXTENSIONS = {".py", ".md", ".yml", ".yaml", ".json"}
 EXCLUDE_DIRS = {
     ".git",
     ".pixi",
+    ".venv",
     "__pycache__",
     "node_modules",
     ".pytest_cache",
     "htmlcov",
-    "data/stage_00_original",
-    "data/stage_01_extract",
-    "data/stage_03_load",
-    "data/stage_99_build",
-    "data/release",
-    "data/test",
-    "data/quality_reports",
-    "data/log",
     "templates",  # Templates directory - multilingual content allowed
 }
 
@@ -87,6 +80,18 @@ def should_check_file(file_path: Path) -> bool:
     for exclude_dir in EXCLUDE_DIRS:
         if exclude_dir in file_path.parts:
             return False
+
+    # Special handling for data directory - only check data/config
+    file_parts = file_path.parts
+    if "data" in file_parts:
+        # Find data directory index
+        data_index = file_parts.index("data")
+        # If there's a subdirectory after data
+        if len(file_parts) > data_index + 1:
+            subdir = file_parts[data_index + 1]
+            # Only check data/config, skip all other data subdirectories
+            if subdir != "config":
+                return False
 
     # Skip if in excluded files list
     if file_path.name in EXCLUDE_FILES:
