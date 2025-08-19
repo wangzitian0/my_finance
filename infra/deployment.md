@@ -1,20 +1,20 @@
-# 部署指南
+# Deployment Guide
 
-## 部署架构选择
+## Deployment Architecture Options
 
-### 1. 开发环境部署
-**适用场景**: 本地开发、功能测试
-**硬件要求**: 8GB+ RAM, 4核+ CPU
-**部署方式**: Docker Compose
+### 1. Development Environment Deployment
+**Use Case**: Local development, feature testing
+**Hardware Requirements**: 8GB+ RAM, 4+ CPU cores
+**Deployment Method**: Docker Compose
 
-### 2. 生产环境部署  
-**适用场景**: 正式投资分析使用
-**硬件要求**: 16GB+ RAM, 8核+ CPU, SSD存储
-**部署方式**: Kubernetes + Ansible
+### 2. Production Environment Deployment  
+**Use Case**: Formal investment analysis usage
+**Hardware Requirements**: 16GB+ RAM, 8+ CPU cores, SSD storage
+**Deployment Method**: Kubernetes + Ansible
 
-## Docker Compose部署（推荐用于开发）
+## Docker Compose Deployment (Recommended for Development)
 
-### 1. 创建docker-compose.yml
+### 1. Create docker-compose.yml
 ```yaml
 version: '3.8'
 
@@ -74,36 +74,36 @@ networks:
     driver: bridge
 ```
 
-### 2. 部署命令
+### 2. Deployment Commands
 ```bash
-# 启动所有服务
+# Start all services
 docker-compose up -d
 
-# 查看服务状态
+# Check service status
 docker-compose ps
 
-# 查看日志
+# View logs
 docker-compose logs -f app
 
-# 停止服务
+# Stop services
 docker-compose down
 ```
 
-## Ansible自动化部署
+## Ansible Automated Deployment
 
-### 1. 生产环境初始化
+### 1. Production Environment Initialization
 ```bash
-# 编辑inventory文件
+# Edit inventory file
 vim ansible/inventory/production
 
-# 运行初始化playbook
+# Run initialization playbook
 ansible-playbook ansible/init.yml -i ansible/inventory/production --ask-become-pass
 
-# 部署应用
+# Deploy application
 ansible-playbook ansible/setup.yml -i ansible/inventory/production
 ```
 
-### 2. Ansible配置文件
+### 2. Ansible Configuration Files
 **ansible/inventory/production**:
 ```ini
 [finance_servers]
@@ -116,17 +116,17 @@ ansible_ssh_private_key_file=~/.ssh/your_key.pem
 
 **ansible/group_vars/all.yml**:
 ```yaml
-# 应用配置
+# Application configuration
 app_name: my_finance
 app_version: latest
 app_port: 8000
 
-# Neo4j配置
+# Neo4j configuration
 neo4j_version: 5.15
 neo4j_memory_heap: 4g
 neo4j_password: "{{ vault_neo4j_password }}"
 
-# 安全配置
+# Security configuration
 firewall_allowed_ports:
   - 22    # SSH
   - 80    # HTTP
@@ -134,9 +134,9 @@ firewall_allowed_ports:
   - 8000  # App
 ```
 
-## Kubernetes部署（企业级）
+## Kubernetes Deployment (Enterprise Level)
 
-### 1. Kubernetes配置文件
+### 1. Kubernetes Configuration Files
 
 **k8s/namespace.yaml**:
 ```yaml
@@ -241,66 +241,66 @@ spec:
           periodSeconds: 30
 ```
 
-### 2. 部署到Kubernetes
+### 2. Deploy to Kubernetes
 ```bash
-# 创建命名空间
+# Create namespace
 kubectl apply -f k8s/namespace.yaml
 
-# 创建密钥
+# Create secrets
 kubectl create secret generic finance-secrets \
   --from-literal=claude-api-key=your_claude_key \
   -n finance
 
-# 部署Neo4j
+# Deploy Neo4j
 kubectl apply -f k8s/neo4j-pvc.yaml
 kubectl apply -f k8s/neo4j-deployment.yaml
 kubectl apply -f k8s/neo4j-service.yaml
 
-# 部署应用
+# Deploy application
 kubectl apply -f k8s/app-deployment.yaml
 kubectl apply -f k8s/app-service.yaml
 
-# 检查部署状态
+# Check deployment status
 kubectl get pods -n finance
 kubectl get services -n finance
 ```
 
-## 环境配置管理
+## Environment Configuration Management
 
-### 1. 环境变量模板
+### 1. Environment Variable Template
 **.env.production**:
 ```bash
-# 数据库配置
+# Database configuration
 NEO4J_URI=bolt://neo4j:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=your_secure_password
 
-# LLM API配置
+# LLM API configuration
 CLAUDE_API_KEY=your_claude_api_key
 OPENAI_API_KEY=your_openai_api_key
 
-# 数据源API
+# Data source API
 ALPHA_VANTAGE_KEY=your_alpha_vantage_key
 FINNHUB_API_KEY=your_finnhub_key
 
-# 应用配置  
+# Application configuration  
 APP_ENV=production
 DEBUG=False
 LOG_LEVEL=INFO
 MAX_WORKERS=4
 
-# 安全配置
+# Security configuration
 SECRET_KEY=your_secret_key_here
 ALLOWED_HOSTS=your_domain.com,api.your_domain.com
 ```
 
-### 2. 配置验证脚本
+### 2. Configuration Validation Script
 ```python
 import os
 import sys
 
 def validate_environment():
-    """验证生产环境配置"""
+    """Validate production environment configuration"""
     
     required_vars = [
         'NEO4J_URI', 'NEO4J_USER', 'NEO4J_PASSWORD',
@@ -313,30 +313,30 @@ def validate_environment():
             missing_vars.append(var)
     
     if missing_vars:
-        print(f"错误: 缺少必需的环境变量: {', '.join(missing_vars)}")
+        print(f"Error: Missing required environment variables: {', '.join(missing_vars)}")
         sys.exit(1)
     
-    # 验证数据库连接
+    # Validate database connection
     try:
         from neomodel import config, db
         config.DATABASE_URL = os.getenv('NEO4J_URI')
         db.cypher_query("RETURN 1")
-        print("✓ Neo4j连接成功")
+        print("✓ Neo4j connection successful")
     except Exception as e:
-        print(f"✗ Neo4j连接失败: {e}")
+        print(f"✗ Neo4j connection failed: {e}")
         sys.exit(1)
     
-    print("✓ 环境配置验证通过")
+    print("✓ Environment configuration validation passed")
 
 if __name__ == "__main__":
     validate_environment()
 ```
 
-## 监控和日志
+## Monitoring and Logging
 
-### 1. 日志配置
+### 1. Logging Configuration
 ```yaml  
-# docker-compose.override.yml (生产环境)
+# docker-compose.override.yml (production environment)
 version: '3.8'
 
 services:
@@ -357,7 +357,7 @@ services:
         max-file: "3"
 ```
 
-### 2. 健康检查端点
+### 2. Health Check Endpoint
 ```python
 from fastapi import FastAPI, HTTPException
 from datetime import datetime
@@ -367,7 +367,7 @@ app = FastAPI()
 
 @app.get("/api/v1/health")
 async def health_check():
-    """系统健康检查"""
+    """System health check"""
     
     health_status = {
         "status": "healthy",
@@ -375,7 +375,7 @@ async def health_check():
         "components": {}
     }
     
-    # 检查Neo4j连接
+    # Check Neo4j connection
     try:
         from neomodel import db
         db.cypher_query("RETURN 1")
@@ -390,12 +390,12 @@ async def health_check():
         }
         health_status["status"] = "degraded"
     
-    # 检查磁盘空间
+    # Check disk space
     import shutil
     disk_usage = shutil.disk_usage("/")
     free_space_gb = disk_usage.free / (1024**3)
     
-    if free_space_gb < 5:  # 少于5GB
+    if free_space_gb < 5:  # Less than 5GB
         health_status["status"] = "degraded"
     
     health_status["components"]["disk"] = {
@@ -408,9 +408,9 @@ async def health_check():
     return health_status
 ```
 
-## 数据备份策略
+## Data Backup Strategy
 
-### 1. Neo4j数据备份
+### 1. Neo4j Data Backup
 ```bash
 #!/bin/bash
 # backup_neo4j.sh
@@ -419,68 +419,68 @@ BACKUP_DIR="/backup/neo4j"
 DATE=$(date +%Y%m%d_%H%M%S)
 BACKUP_NAME="neo4j_backup_${DATE}"
 
-# 创建备份目录
+# Create backup directory
 mkdir -p ${BACKUP_DIR}
 
-# 执行备份
+# Execute backup
 docker exec finance-neo4j neo4j-admin database dump \
   --database=neo4j \
   --to-path=/data/dumps/${BACKUP_NAME}.dump
 
-# 复制到备份目录
+# Copy to backup directory
 docker cp finance-neo4j:/data/dumps/${BACKUP_NAME}.dump ${BACKUP_DIR}/
 
-# 压缩备份
+# Compress backup
 gzip ${BACKUP_DIR}/${BACKUP_NAME}.dump
 
-# 删除7天前的备份
+# Delete backups older than 7 days
 find ${BACKUP_DIR} -name "*.gz" -mtime +7 -delete
 
-echo "备份完成: ${BACKUP_DIR}/${BACKUP_NAME}.dump.gz"
+echo "Backup completed: ${BACKUP_DIR}/${BACKUP_NAME}.dump.gz"
 ```
 
-### 2. 自动化备份计划
+### 2. Automated Backup Schedule
 ```bash
-# 添加到crontab
+# Add to crontab
 crontab -e
 
-# 每日凌晨2点执行备份
+# Execute backup daily at 2 AM
 0 2 * * * /path/to/backup_neo4j.sh >> /var/log/neo4j_backup.log 2>&1
 ```
 
-## 故障排除
+## Troubleshooting
 
-### 常见部署问题
+### Common Deployment Issues
 
-1. **Neo4j启动失败**
+1. **Neo4j startup failure**
 ```bash
-# 检查内存配置
+# Check memory configuration
 docker logs finance-neo4j
 
-# 调整内存限制
-# 在docker-compose.yml中修改:
+# Adjust memory limits
+# Modify in docker-compose.yml:
 # NEO4J_dbms_memory_heap_max__size=1g
 ```
 
-2. **应用连接数据库失败**
+2. **Application database connection failure**
 ```bash
-# 检查网络连接
+# Check network connectivity
 docker network ls
 docker network inspect finance_finance_network
 
-# 验证数据库可达性
+# Verify database reachability
 docker exec finance-app ping neo4j
 ```
 
-3. **端口冲突**
+3. **Port conflicts**
 ```bash
-# 检查端口占用
+# Check port usage
 netstat -tulpn | grep :7474
 
-# 修改端口映射
-# 在docker-compose.yml中修改端口
+# Modify port mapping
+# Change ports in docker-compose.yml
 ```
 
 ---
 
-*部署配置持续优化以确保系统稳定性和可维护性*
+*Deployment configuration is continuously optimized to ensure system stability and maintainability*

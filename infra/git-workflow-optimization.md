@@ -77,28 +77,28 @@ pixi run install-git-hooks
   - 跳过Claude Code签名的commit
 - **位置**: `.git/hooks/commit-msg`
 
-## 完整工作流程
+## Complete Workflow
 
-### 1. 开始新功能
+### 1. Start New Feature
 
 ```bash
-# 确保在最新的main分支
+# Ensure on latest main branch
 git checkout main
 git pull origin main
 
-# 创建feature分支
+# Create feature branch
 git checkout -b feature/description-fixes-ISSUE_NUMBER
 
-# 开发功能...
+# Develop feature...
 ```
 
-### 2. 提交和推送
+### 2. Commit and Push
 
 ```bash
-# 添加更改
+# Add changes
 git add .
 
-# 提交 (commit-msg hook会验证格式)
+# Commit (commit-msg hook will validate format)
 git commit -m "feat: Add new functionality
 
 Fixes #123
@@ -109,17 +109,17 @@ PR: https://github.com/wangzitian0/my_finance/pull/PLACEHOLDER
 
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
-# 推送 (pre-push hook会检查状态)
+# Push (pre-push hook will check status)
 git push -u origin feature/description-fixes-123
 ```
 
-### 3. 创建和管理PR
+### 3. Create and Manage PR
 
 ```bash
-# 创建PR
+# Create PR
 gh pr create --title "feat: Add new functionality" --body "..."
 
-# 更新commit with actual PR URL
+# Update commit with actual PR URL
 git commit --amend -m "feat: Add new functionality
 
 Fixes #123
@@ -133,16 +133,16 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 git push --force-with-lease
 ```
 
-### 4. MR合并后清理
+### 4. Post-MR Merge Cleanup
 
 ```bash
-# 检查PR状态
+# Check PR status
 gh pr view 456
 
-# 如果已合并，自动清理分支
+# If merged, automatically clean branches
 p3 cleanup-branches --auto
 
-# 或手动清理
+# Or manual cleanup
 git push origin --delete feature/description-fixes-123
 git branch -D feature/description-fixes-123
 ```
