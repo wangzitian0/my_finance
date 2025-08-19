@@ -38,7 +38,7 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 
 ### Core Components
 
-- **`ETL/`** - Data Processing Pipeline: SEC document crawling, semantic embedding, data cleaning
+- **`ETL/`** - Data Processing Pipeline: SEC/YFinance spiders, document parsing, semantic embedding, data cleaning
 - **`dcf_engine/`** - SEC-Enhanced DCF Engine: Semantic retrieval, citation management, valuation models
 - **`graph_rag/`** - Graph Retrieval-Augmented Generation: SEC document semantic search, relevance ranking
 - **`evaluation/`** - Evaluation Toolkit: Backtesting, LLM evaluation, performance analysis
@@ -48,8 +48,9 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 - **`common/`** - Common Components: Module coordination, schema definition, build tracking
 - **`infra/`** - Infrastructure: Pixi environment management, Ansible automation, Podman containers
 - **`data/`** - Staged Data Storage: SEC documents, embedding vectors, build manifests
-- **`spider/`** - Data Crawlers: SEC Edgar API, YFinance integration
-- **`parser/`** - Document Parsing: SEC document structuring, financial data extraction
+- **`scripts/`** - Utility Scripts: Build management, configuration updates, system maintenance
+- **`templates/`** - Template System: DCF prompts, configuration templates, standardized formats
+- **`tests/`** - Test Suite: Unit tests, integration tests, end-to-end validation
 
 ## Development Commands
 
@@ -189,12 +190,14 @@ ls data/stage_99_build/sec_recall_examples/
 - **[Project Roadmap](docs/PROJECT_ROADMAP.md)** - Development plan and milestones
 
 ### Implementation Guides
-- **[Data Collection](spider/README.md)** - YFinance and SEC Edgar spiders
+- **[Data Processing](ETL/README.md)** - Complete ETL pipeline with SEC/YFinance spiders and parsers
 - **[Data Management](common/README.md)** - Metadata system and utilities  
 - **[Build System](scripts/README.md)** - Dataset building and management
 - **[Data Pipeline](data/README.md)** - ETL structure and four-tier dataset strategy
 
 ### Component Documentation
-- **[ETL Processing](ETL/README.md)** - Data processing and transformation
 - **[Graph RAG](graph_rag/README.md)** - Retrieval-augmented generation
-- **[Local LLM](local_llm/README.md)** - Local language model integration# Test trigger
+- **[DCF Engine](dcf_engine/README.md)** - SEC-enhanced valuation engine
+- **[Evaluation](evaluation/README.md)** - Backtesting and performance analysis
+- **[Infrastructure](infra/README.md)** - Environment setup and deployment
+- **[Testing](tests/README.md)** - Test suite and validation

@@ -11,7 +11,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**IMPORTANT**: Always read and reference the README.md file first, as it contains the complete project information. This file supplements with Claude-specific instructions only.
+## 🚨 MANDATORY README.md CONSTRAINT
+
+**CRITICAL REQUIREMENT**: You MUST read and thoroughly understand the README.md file before making any changes to this codebase. This is non-negotiable and applies to every session.
+
+**Why this matters**:
+- README.md contains the complete project architecture and component relationships
+- Understanding the system prevents breaking dependencies and integration points
+- Each directory has specific capabilities that must be coordinated with parent directories
+- Changes without context can break the SEC filing integration and Graph RAG system
+
+**What you must do**:
+1. **Always read README.md first** - it contains the complete project information
+2. **Understand component relationships** - how ETL, Graph RAG, DCF Engine, and evaluation interact
+3. **Follow the staged data architecture** - respect the Stage 0-99 data flow pipeline
+4. **Maintain parent-child directory consistency** - update parent README files when child directories change
+
+**This file supplements README.md with Claude-specific instructions only.**
 
 ## Environment Setup and Dependencies
 
@@ -144,6 +160,32 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 **See README.md for complete git workflow.** Claude-specific requirements:
 
+### 📋 PRE-PR CHECKLIST - README UPDATE REQUIREMENT
+
+**CRITICAL**: Before creating any PR, you MUST verify and update README files for consistency:
+
+#### Directory Structure Validation
+1. **Check parent-child relationships**: Ensure parent directory README files contain accurate summaries of child directory capabilities
+2. **Verify component descriptions**: When you modify functionality in any directory, check if parent README descriptions need updates
+3. **Update capability summaries**: Parent directories must reflect current child directory features
+
+#### Required README Consistency Check
+```bash
+# Example: If you modified ETL/ directory capabilities
+# 1. Check if root README.md Core Components section accurately describes ETL/
+# 2. If ETL/ subdirectories changed, ensure ETL/README.md reflects those changes
+# 3. Update any capability descriptions that no longer match actual functionality
+```
+
+#### Common Update Scenarios
+- **Modified ETL pipeline**: Update root README.md "Core Components" → ETL description
+- **Changed Graph RAG features**: Update root README.md "Core Components" → graph_rag description  
+- **Enhanced DCF Engine**: Update root README.md "Core Components" → dcf_engine description
+- **New evaluation metrics**: Update root README.md "Core Components" → evaluation description
+- **Infrastructure changes**: Update root README.md "Supporting Components" → infra description
+
+**⚠️ PR REMINDER**: The create-pr script will remind you to check README consistency before finalizing the PR.
+
 ### MANDATORY PR Creation Workflow
 
 **CRITICAL**: PRs MUST be created using the automated script after local testing passes.
@@ -159,10 +201,18 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 # 1. MANDATORY: Run end-to-end test first
 p3 e2e                    # Standard M7 test (required for PRs)
 
-# 2. MANDATORY: Create PR only via unified CLI (includes test verification)
+# 2. CRITICAL: Verify README consistency before PR creation
+# Check if any modified directories need parent README updates:
+# - Modified ETL/: Check if root README "Core Components" → ETL description is accurate
+# - Modified dcf_engine/: Check if root README "Core Components" → dcf_engine description is accurate  
+# - Modified graph_rag/: Check if root README "Core Components" → graph_rag description is accurate
+# - Modified evaluation/: Check if root README "Core Components" → evaluation description is accurate
+# - Modified common/infra/scripts/tests: Check if root README "Supporting Components" is accurate
+
+# 3. MANDATORY: Create PR only via unified CLI (includes test verification)
 p3 create-pr "Brief description" ISSUE_NUMBER
 
-# 3. Optional: Create PR with custom description file
+# 4. Optional: Create PR with custom description file
 p3 create-pr "Brief description" ISSUE_NUMBER --description pr_body.md
 ```
 
@@ -376,6 +426,14 @@ rm -f common/latest_build   # Clear build symlinks if needed
  p3 format                   # Format code
  p3 lint                     # Check quality
  p3 test                     # Validate changes
+
+# 4.5. CRITICAL: Check README consistency after changes
+# If you modified any directories, verify parent README descriptions are still accurate:
+# - Changes to ETL/ → Check root README "Core Components" → ETL description
+# - Changes to dcf_engine/ → Check root README "Core Components" → dcf_engine description
+# - Changes to graph_rag/ → Check root README "Core Components" → graph_rag description
+# - Changes to evaluation/ → Check root README "Core Components" → evaluation description
+# - Changes to supporting components → Check root README "Supporting Components"
 
 # 5. Handle data directory FIRST (CRITICAL)
  p3 commit-data-changes        # Stage any data directory changes
