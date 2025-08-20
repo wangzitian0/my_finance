@@ -601,15 +601,18 @@ class OllamaClient:
             return {"success": False, "error": "Risk template not found"}
 
         # Format the prompt
+        logger.debug(f"🐛 Risk analysis - financial_data keys: {list(financial_data.keys()) if financial_data else 'None'}")
         formatted_prompt = self._format_risk_prompt(
             prompt_template, ticker, financial_data, semantic_results
         )
+        logger.debug(f"🐛 Risk analysis prompt formatted successfully")
 
         result = self.generate_completion(
             prompt=formatted_prompt,
             temperature=0.4,  # Slightly higher for nuanced risk assessment
             max_tokens=2500,
         )
+        logger.debug(f"🐛 Risk analysis completion result: {result.get('success', False)}")
 
         if result["success"] and self.debug_mode:
             self._save_generated_report("risk", ticker, result["response"], result)
@@ -622,6 +625,7 @@ class OllamaClient:
         dcf_results: Dict[str, Any],
         risk_analysis: Dict[str, Any],
         semantic_results: List[Dict[str, Any]],
+        financial_data: Dict[str, Any] = None,
     ) -> Dict[str, Any]:
         """
         Generate investment recommendation based on DCF and risk analysis.
@@ -646,7 +650,7 @@ class OllamaClient:
 
         # Format the prompt
         formatted_prompt = self._format_investment_prompt(
-            prompt_template, ticker, dcf_results, risk_analysis, semantic_results
+            prompt_template, ticker, dcf_results, risk_analysis, semantic_results, financial_data
         )
 
         result = self.generate_completion(
@@ -732,18 +736,27 @@ class OllamaClient:
         self, template: str, ticker: str, financial_data: Dict, semantic_results: List
     ) -> str:
         """Format risk analysis prompt template."""
+        logger.debug(f"🐛 _format_risk_prompt - financial_data type: {type(financial_data)}")
         company_info = financial_data.get("company_info", {})
         formatted_semantic = self._format_semantic_results(semantic_results)
 
-        return template.format(
-            ticker=ticker.upper(),
-            company_name=company_info.get("name", ticker),
-            market_cap=financial_data.get("market_cap", "Unknown"),
-            sector=company_info.get("sector", "Unknown"),
-            analysis_date=datetime.now().strftime("%Y-%m-%d"),
-            financial_risk_data=json.dumps(financial_data, indent=2),
-            semantic_search_results=formatted_semantic,
-        )
+        # Debug the template.format call
+        logger.debug(f"🐛 About to call template.format with financial_data keys: {list(financial_data.keys())}")
+        try:
+            result = template.format(
+                ticker=ticker.upper(),
+                company_name=company_info.get("name", ticker),
+                market_cap=financial_data.get("market_cap", "Unknown"),
+                sector=company_info.get("sector", "Unknown"),
+                analysis_date=datetime.now().strftime("%Y-%m-%d"),
+                financial_data=json.dumps(financial_data, indent=2),
+                semantic_results=formatted_semantic,
+            )
+            logger.debug(f"🐛 template.format succeeded")
+            return result
+        except Exception as e:
+            logger.error(f"🐛 template.format failed: {e}")
+            raise
 
     def _format_investment_prompt(
         self,
@@ -752,19 +765,18 @@ class OllamaClient:
         dcf_results: Dict,
         risk_analysis: Dict,
         semantic_results: List,
+        financial_data: Dict = None,
     ) -> str:
         """Format investment recommendation prompt template."""
         formatted_semantic = self._format_semantic_results(semantic_results)
 
         return template.format(
             ticker=ticker.upper(),
-            company_name=dcf_results.get("company_name", ticker),
-            current_price=dcf_results.get("current_price", "Unknown"),
-            investment_horizon="1-3 years",
-            risk_tolerance="Moderate",
-            valuation_results=json.dumps(dcf_results, indent=2),
+            analysis_date=datetime.now().strftime("%Y-%m-%d"),
+            dcf_results=json.dumps(dcf_results, indent=2),
             risk_analysis=json.dumps(risk_analysis, indent=2),
-            semantic_search_results=formatted_semantic,
+            financial_data=json.dumps(financial_data or {}, indent=2),
+            semantic_results=formatted_semantic,
         )
 
     def _format_semantic_results(self, semantic_results: List[Dict]) -> str:

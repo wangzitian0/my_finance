@@ -153,6 +153,8 @@ class LLMDCFGenerator:
 
             # Step 4: Generate risk analysis
             logger.info("⚠️ Generating risk analysis...")
+            # Debug: Check financial_data before risk analysis
+            logger.debug(f"🐛 Before risk analysis - financial_data keys: {list(financial_data.keys()) if financial_data else 'None'}")
             risk_result = self.ollama_client.generate_risk_analysis(
                 ticker=ticker, financial_data=financial_data, semantic_results=semantic_results
             )
@@ -172,6 +174,7 @@ class LLMDCFGenerator:
                 dcf_results=dcf_result if dcf_result["success"] else {},
                 risk_analysis=risk_result if risk_result["success"] else {},
                 semantic_results=semantic_results,
+                financial_data=financial_data,
             )
 
             if investment_result["success"]:
