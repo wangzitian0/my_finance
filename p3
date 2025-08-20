@@ -28,6 +28,7 @@ Container Management:
   neo4j start            Start Neo4j container
 
 Development Commands:
+  activate               Activate pixi environment (alias for pixi shell)
   format                 Format code (black + isort)
   lint                   Lint code (pylint)
   typecheck              Type check with mypy
@@ -60,7 +61,15 @@ Scopes: f2 m7 n100 v3k (default: m7)
 Tips:
   - Add completion: source ./scripts/p3-completion.zsh
   - Add to PATH:    export PATH="$REPO_ROOT:$PATH"
+  - All commands route through pixi tasks defined in pixi.toml
 EOF
+}
+
+cmd_activate() {
+  echo "📦 Activating pixi environment..."
+  echo "Run: pixi shell"
+  echo "Note: This command needs to be run directly as 'pixi shell'"
+  exit 0
 }
 
 cmd_create_pr() {
@@ -264,6 +273,9 @@ cmd_check_integrity() {
 }
 
 case "$1" in
+  # Pixi environment activation
+  activate) shift; cmd_activate "$@" ;;
+  
   # Environment management
   env) shift; cmd_env "$@" ;;
   
@@ -299,8 +311,6 @@ case "$1" in
   verify-env) shift; cmd_verify_env "$@" ;;
   check-integrity) shift; cmd_check_integrity "$@" ;;
   
-  # Legacy aliases
-  pr) shift; cmd_create_pr "$@" ;;
   
   # Help
   -h|--help|help|"") usage ;;

@@ -186,10 +186,8 @@ test-m7-e2e = "python infra/create_pr_with_test.py --skip-pr"
 verify-environment = "python -c 'import sys; print(f\"Python: {sys.version}\"); import torch, sklearn, sentence_transformers; print(\"✅ ML dependencies available\"); import neomodel; print(\"✅ Neo4j ORM available\")'"
 check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stage_00_original\", \"data/stage_01_extract\", \"data/stage_99_build\"]; [print(f\"📁 {d}: {\"✅ exists\" if Path(d).exists() else \"❌ missing\"}\") for d in dirs]'"
 
-# --- P3 ALIAS SYSTEM ---
-# Keep legacy helpers if needed
-pr = "python infra/create_pr_with_improved_testing.py"
-test-only = "python infra/create_pr_with_improved_testing.py --test-only"
+# --- REMOVED BROKEN COMMANDS ---
+# pr and test-only commands removed - use p3 create-pr instead
 
 [pypi-dependencies]
 sec-edgar = ">=0.0.2, <0.0.3"
