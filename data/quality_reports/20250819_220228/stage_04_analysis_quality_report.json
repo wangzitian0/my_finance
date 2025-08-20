@@ -1,0 +1,12 @@
+{
+  "success_rate": 1.0,
+  "companies_analyzed": 2,
+  "expected_companies": 2,
+  "companies_failed": 0,
+  "status": "completed",
+  "stage": "stage_04_analysis",
+  "partition": "20250819",
+  "timestamp": "2025-08-19T22:03:45.391768",
+  "build_id": "20250819_220228",
+  "tier_name": "f2"
+}

@@ -1,0 +1,22 @@
+{
+  "build_id": "20250819_201440",
+  "tier_name": "v3k",
+  "overall_build_health": 0.0020476190476190477,
+  "stages_completed": 3,
+  "stages_successful": 0,
+  "timestamp": "2025-08-19T20:17:42.280475",
+  "stage_summaries": {
+    "stage_01_extract": {
+      "success_rate": 0.006142857142857143,
+      "status": "unknown"
+    },
+    "stage_02_transform": {
+      "success_rate": 0,
+      "status": "no_data_found"
+    },
+    "stage_03_load": {
+      "success_rate": 0,
+      "status": "no_data_found"
+    }
+  }
+}
