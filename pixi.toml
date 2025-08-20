@@ -43,150 +43,132 @@ sentence-transformers = ">=5.1.0,<6"
 pyarrow = ">=15,<17"
 
 [tasks]
-# Core commands from CLAUDE.md
-activate = "echo 'Pixi environment activated'"
-etl-status = "python ETL/manage.py status"
-run-job = "python ETL/run_job.py"
+# === P3 UNIFIED COMMAND SYSTEM ===
+# ALL commands now route through ./p3 CLI per Issue #111
+# This eliminates direct python calls and provides consistent interface
 
-# Analysis and reporting commands (Pure LLM-powered)
-dcf-analysis = "python dcf_engine/pure_llm_dcf.py"
-dcf-report = "python dcf_engine/pure_llm_dcf.py"
-simple-dcf = "python dcf_engine/pure_llm_dcf.py"
+# Core Environment Commands
+activate = "./p3 activate"
+status = "./p3 status"
+cache-status = "./p3 cache-status"
 
-# Legacy/Testing commands (traditional DCF)
-dcf-analysis-legacy = "python dcf_engine/legacy_testing/m7_dcf_analysis.py"
-dcf-report-legacy = "python dcf_engine/legacy_testing/generate_dcf_report.py"
-simple-dcf-legacy = "python dcf_engine/legacy_testing/simple_m7_dcf.py"
-hybrid-dcf-legacy = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
+# Development Commands
+format = "./p3 format"
+lint = "./p3 lint"
+typecheck = "./p3 typecheck"
+test = "./p3 test"
+quick-test = "./p3 test --quick"
 
-# Install additional packages via pip (cross-platform)  
-pip-install = "pip install neomodel sentence-transformers"
+# Build Commands - Scope-based (f2/m7/n100/v3k)
+build = "./p3 build"
+build-f2 = "./p3 build f2"
+build-m7 = "./p3 build m7"
+build-n100 = "./p3 build n100"
+build-v3k = "./p3 build v3k"
 
-# Development workflow shortcuts
-dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 pr TITLE 81'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (add to ~/.zshrc)'"
-quick-test = "python -m pytest tests/test_basic_structure.py -v"
-status = "python infra/comprehensive_env_status.py"
+# Fast Build Commands
+fast-build-f2 = "./p3 fast-build f2"
+fast-build-m7 = "./p3 fast-build m7"
+fast-build-n100 = "./p3 fast-build n100"
+fast-build-v3k = "./p3 fast-build v3k"
 
-# Quality assurance commands
-format = "python -m black --line-length 100 . && python -m isort ."
-lint = "python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613"
-typecheck = "python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports"
-test = "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
+# Legacy Build Aliases
+build-test = "./p3 build f2"
+build-nasdaq100 = "./p3 build n100"
+build-vti = "./p3 build v3k"
+build-dataset = "./p3 build"
 
-# Schema and data management commands
-build-schema = "python ETL/build_schema.py"
-import-data = "python ETL/import_data.py"
-check-coverage = "python ETL/check_coverage.py"
+# Build Management
+build-status = "./p3 build-status"
+build-size = "./p3 build-size"
+clean = "./p3 clean"
+clean-builds = "./p3 clean"
+create-build = "./p3 create-build"
+release-build = "./p3 release-build"
 
-# Testing and validation commands
-test-yfinance = "python ETL/tests/integration/test_yfinance.py" 
-test-config = "python -m pytest ETL/tests/test_config.py -v"
-test-dcf-report = "python -m pytest dcf_engine/test_dcf_report.py -v"
+# ETL and Data Commands
+etl-status = "./p3 etl-status"
+run-job = "./p3 run-job"
+build-schema = "./p3 build-schema"
+import-data = "./p3 import-data"
+check-coverage = "./p3 check-coverage"
+migrate-data-structure = "./p3 migrate-data"
 
-# Build tracking and data migration tasks
-migrate-data-structure = "python ETL/migrate_data_structure.py"
-# Unified dataset building with configuration-driven approach
-build-dataset = "python ETL/build_dataset.py"
-build = "python ETL/build_dataset.py f2"  # Default to fast build for development
+# Analysis and Reporting
+dcf-analysis = "./p3 dcf-analysis"
+dcf-report = "./p3 dcf-report"
+simple-dcf = "./p3 dcf-analysis"
+generate-report = "./p3 generate-report"
+generate-report-legacy = "./p3 generate-report-legacy"
+validate-strategy = "./p3 validate-strategy"
+backtest = "./p3 backtest"
 
-# Four-tier build system: f2/m7/n100/v3k
-build-f2 = "python ETL/build_dataset.py f2"
-build-m7 = "python ETL/build_dataset.py m7" 
-build-n100 = "python ETL/build_dataset.py n100"
-build-v3k = "python ETL/build_dataset.py v3k"
+# Legacy Analysis Commands
+dcf-analysis-legacy = "./p3 dcf-analysis-legacy"
+dcf-report-legacy = "./p3 dcf-report-legacy"
+simple-dcf-legacy = "./p3 simple-dcf-legacy"
+hybrid-dcf-legacy = "./p3 hybrid-dcf-legacy"
 
-# Fast build variants with DeepSeek 1.5b
-fast-build-f2 = "python ETL/build_dataset.py f2 --fast-mode"
-fast-build-m7 = "python ETL/build_dataset.py m7 --fast-mode"
-fast-build-n100 = "python ETL/build_dataset.py n100 --fast-mode"
-fast-build-v3k = "python ETL/build_dataset.py v3k --fast-mode"
+# Environment Management
+setup-env = "./p3 env-setup"
+env-start = "./p3 env-start"
+env-stop = "./p3 env-stop"
+env-status = "./p3 env-status"
+env-reset = "./p3 env-reset"
 
-# Legacy build commands (for backward compatibility)
-build-test = "python ETL/build_dataset.py f2"
-build-nasdaq100 = "python ETL/build_dataset.py n100"
-build-vti = "python ETL/build_dataset.py v3k"
+# Container Management
+podman-status = "./p3 podman-status"
+neo4j-logs = "./p3 neo4j-logs"
+neo4j-connect = "./p3 neo4j-connect"
+neo4j-restart = "./p3 neo4j-restart"
+neo4j-stop = "./p3 neo4j-stop"
+neo4j-start = "./p3 neo4j-start"
 
-build-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
+# Workflow Management
+create-pr = "./p3 create-pr"
+test-e2e = "./p3 e2e"
+test-m7-e2e = "./p3 e2e m7"
+commit-data-changes = "./p3 commit-data-changes"
+cleanup-branches = "./p3 cleanup-branches"
+cleanup-branches-dry-run = "./p3 cleanup-branches --dry-run"
+cleanup-branches-auto = "./p3 cleanup-branches --auto"
 
-# Build cleanup and maintenance
-clean-builds = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 All builds cleaned\")'"
-clean = "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'"
-build-size = "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/stage_99_build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'"
+# Infrastructure Management
+shutdown-all = "./p3 shutdown-all"
 
-# --- Environment Management (Ansible + Podman) ---
-# Initial environment setup (now uses Podman instead of Minikube)
-setup-env = "pip install ansible psutil && ansible-playbook infra/ansible/init.yml"
-# Environment operations
-env-start = "ansible-playbook infra/ansible/start.yml"
-env-stop = "ansible-playbook infra/ansible/stop.yml" 
-env-status = "python infra/comprehensive_env_status.py"
-env-reset = "ansible-playbook infra/ansible/reset.yml"
-cache-status = "python infra/show_cache_status.py"
+# SEC Integration Commands
+test-sec-integration = "./p3 test-sec-integration"
+test-sec-recall = "./p3 test-sec-recall"
+verify-sec-data = "./p3 verify-sec-data"
+build-sec-library = "./p3 build-sec-library"
+test-semantic-retrieval = "./p3 test-semantic-retrieval"
 
-# --- Podman Management (Local Development) ---
-# Podman container operations
-podman-status = "podman ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
-neo4j-logs = "podman logs neo4j-finance"
-neo4j-connect = "podman exec -it neo4j-finance cypher-shell -u neo4j -p finance123"
-neo4j-restart = "podman restart neo4j-finance"
-neo4j-stop = "podman stop neo4j-finance"
-neo4j-start = "podman start neo4j-finance"
-
-# --- Workflow Management ---
-# PR creation with automated testing
-create-pr = "python infra/create_pr_with_test.py"
-test-e2e = "python infra/create_pr_with_test.py --skip-pr-creation"
-
-# Data repository (symlink) management
-commit-data-changes = "python infra/commit_data_changes.py"
-
-# Branch management
-cleanup-branches = "python infra/cleanup_merged_branches.py"
-cleanup-branches-dry-run = "python infra/cleanup_merged_branches.py --dry-run"
-cleanup-branches-auto = "python infra/cleanup_merged_branches.py --auto"
-
-# --- Build Data Management ---
-# Simple build management for multiple work trees
-create-build = "python scripts/manage_build_data.py create"
-release-build = "python scripts/manage_build_data.py release"
-
-# Data status reporting (Issue #91) - use existing build system
-data-status = "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'"
-
-# --- Infrastructure Management ---
-shutdown-all = "python infra/shutdown_all.py"
-
-# --- Ollama & Embedding Management ---
-# Setup Ollama and embedding models
-setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
+# LLM and Ollama Commands
+llm-dcf-report = "./p3 llm-dcf-report"
+hybrid-dcf-report = "./p3 hybrid-dcf-report"
+# Direct ollama commands (non-python)
 ollama-status = "curl -s http://localhost:11434/api/tags 2>/dev/null && echo 'Ollama: ✅ Running' || echo 'Ollama: ❌ Not running'"
 ollama-models = "ollama list"
-build-sec-library = "python dcf_engine/sec_document_manager.py"
 test-ollama = "ollama run gpt-oss:20b 'Explain DCF valuation in 2 sentences'"
-llm-dcf-report = "python dcf_engine/llm_dcf_generator.py --ticker AAPL"
-hybrid-dcf-report = "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py"
+setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
 
-# --- SEC Integration Commands ---
-# SEC filing analysis and integration
-test-sec-integration = "python dcf_engine/sec_integration_template.py"
-test-sec-recall = "python dcf_engine/sec_recall_usage_example.py"
-verify-sec-data = "python -c 'from pathlib import Path; from collections import Counter; sec_files = list(Path(\"data/stage_01_extract/sec_edgar\").rglob(\"*.txt\")); print(f\"📄 Found {len(sec_files)} total SEC documents\"); ticker_counts = Counter(f.name.split(\"_\")[0] for f in sec_files); print(\"📊 By ticker:\"); [print(f\"  - {ticker}: {count} files\") for ticker, count in sorted(ticker_counts.items())]'"
-test-semantic-retrieval = "python test_semantic_retrieval.py"
+# Testing Commands
+test-yfinance = "./p3 test-yfinance"
+test-config = "./p3 test-config"
+test-dcf-report = "./p3 test-dcf-report"
 
-# --- Missing commands for e2e tests ---
-# Aliases for existing functionality to match test expectations
-validate-strategy = "python ETL/manage.py validate"
-generate-report = "python dcf_engine/pure_llm_dcf.py"
-generate-report-legacy = "python dcf_engine/legacy_testing/generate_dcf_report.py"
-backtest = "echo 'Backtest simulation completed (placeholder)' && python dcf_engine/legacy_testing/simple_m7_dcf.py"
+# Status and Validation
+verify-environment = "./p3 verify-env"
+check-data-integrity = "./p3 check-integrity"
+data-status = "./p3 build-status"
 
-# --- Reproducibility & Testing Commands ---
-# Complete workflow validation
-test-m7-e2e = "python infra/create_pr_with_test.py --skip-pr"
-verify-environment = "python -c 'import sys; print(f\"Python: {sys.version}\"); import torch, sklearn, sentence_transformers; print(\"✅ ML dependencies available\"); import neomodel; print(\"✅ Neo4j ORM available\")'"
-check-data-integrity = "python -c 'from pathlib import Path; dirs = [\"data/stage_00_original\", \"data/stage_01_extract\", \"data/stage_99_build\"]; [print(f\"📁 {d}: {\"✅ exists\" if Path(d).exists() else \"❌ missing\"}\") for d in dirs]'"
+# Development Workflow Shortcuts
+dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 create-pr TITLE 111'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (add to ~/.zshrc)'"
 
-# --- REMOVED BROKEN COMMANDS ---
+# Install additional packages via pip (cross-platform)
+pip-install = "pip install neomodel sentence-transformers"
+
+# === REMOVED BROKEN COMMANDS ===
 # pr and test-only commands removed - use p3 create-pr instead
 
 [pypi-dependencies]
