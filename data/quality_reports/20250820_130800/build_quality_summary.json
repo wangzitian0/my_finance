@@ -1,0 +1,30 @@
+{
+  "build_id": "20250820_130800",
+  "tier_name": "f2",
+  "overall_build_health": 0.5,
+  "stages_completed": 5,
+  "stages_successful": 2,
+  "timestamp": "2025-08-20T13:08:01.794074",
+  "stage_summaries": {
+    "stage_01_extract": {
+      "success_rate": 0.5,
+      "status": "unknown"
+    },
+    "stage_02_transform": {
+      "success_rate": 0,
+      "status": "no_data_found"
+    },
+    "stage_03_load": {
+      "success_rate": 0,
+      "status": "no_data_found"
+    },
+    "stage_04_analysis": {
+      "success_rate": 1.0,
+      "status": "completed"
+    },
+    "stage_05_reporting": {
+      "success_rate": 1.0,
+      "status": "completed"
+    }
+  }
+}
