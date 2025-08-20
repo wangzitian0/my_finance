@@ -97,6 +97,6 @@ _p3() {
   esac
 }
 
-compdef -P _p3 **/my_finance/p3 p3
+compdef _p3 p3
 
 

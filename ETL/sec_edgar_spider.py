@@ -29,7 +29,14 @@ import time
 from datetime import datetime, timedelta
 
 import yaml
-from secedgar import FilingType, filings
+try:
+    from secedgar import FilingType, filings
+    SECEDGAR_AVAILABLE = True
+except ImportError:
+    print("⚠️ secedgar not available - SEC Edgar collection will be skipped")
+    FilingType = None
+    filings = None
+    SECEDGAR_AVAILABLE = False
 from tqdm import tqdm
 
 from common.metadata_manager import MetadataManager
@@ -65,6 +72,11 @@ def run_job(config_path):
     Parameters:
       config_path: configuration file path
     """
+    if not SECEDGAR_AVAILABLE:
+        logging.warning("secedgar library not available - skipping SEC Edgar data collection")
+        print("⚠️ SEC Edgar collection skipped - secedgar dependency not available")
+        return
+        
     logging.info(f"Loading configuration file: {config_path}")
     with open(config_path, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
