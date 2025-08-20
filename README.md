@@ -13,17 +13,36 @@ This system analyzes financial data to generate:
 
 ## Quick Start
 
+### ⚡ Unified p3 Command System
+
+All operations use the unified `p3` command interface:
+
 ```bash
 # Setup (once)
-p3 env setup
+p3 env setup                   # Complete environment setup
 
-# Daily workflow
-pixi shell                    # Enter environment (managed by pixi)
-p3 e2e                        # Quick validation (end-to-end)
-p3 refresh m7                 # Build test dataset with SEC filings
-./p3 pr "Description" 81      # If p3 not in PATH, run local script
-p3 clean                      # Clean local build artifacts
-p3 shutdown-all               # Clean shutdown
+# Daily workflow  
+p3 activate                    # Enter pixi environment
+p3 e2e                         # Quick validation (end-to-end)
+p3 build m7                    # Build test dataset with SEC filings
+p3 create-pr "Description" 111 # Create PR with automated testing
+p3 clean                       # Clean local build artifacts
+p3 shutdown-all                # Clean shutdown
+```
+
+### 🔧 Shell Integration (Optional)
+
+Add to your `~/.zshrc` for tab completion:
+```bash
+# Simple one-line setup
+source /path/to/my_finance/scripts/p3-completion.zsh
+```
+
+Then enjoy tab completion:
+```bash
+p3 <TAB>           # Shows all available commands
+p3 build <TAB>     # Shows scope options (f2/m7/n100/v3k)
+p3 env <TAB>       # Shows environment commands
 ```
 
 ## System Architecture
@@ -52,40 +71,61 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 - **`templates/`** - Template System: DCF prompts, configuration templates, standardized formats
 - **`tests/`** - Test Suite: Unit tests, integration tests, end-to-end validation
 
-## Development Commands
+## Unified Command Interface
 
-### SEC-Enhanced DCF Operations
+### 🎯 All Commands Through p3
+
+**The system provides a unified `p3` command interface** that routes all operations through the proper environment:
+
+### 📊 Analysis & Reporting
 ```bash
-p3 refresh m7               # Build M7 dataset with SEC filings (336 documents)
+p3 build m7                 # Build M7 dataset with SEC filings (336 documents)
+p3 fast-build f2            # Fast build with DeepSeek 1.5b (development)
 p3 dcf-analysis             # Generate Pure LLM DCF reports
+p3 generate-report          # Generate comprehensive analysis reports
 p3 backtest                 # Run historical performance test
 ```
 
-### Development Tools
+### 🛠️ Development Tools
 ```bash
 p3 format                   # Format code with black + isort
-p3 lint                     # Code quality check with pylint
+p3 lint                     # Code quality check with pylint  
 p3 typecheck                # Type checking with mypy
 p3 test                     # Run test suite with pytest
-p3 create-pr                # Create PR with automated M7 testing
+p3 e2e                      # End-to-end validation (F2 fast mode)
+p3 create-pr "Title" ISSUE  # Create PR with automated testing
 ```
 
-### Environment Management (Pixi + Ansible)
+### 🌐 Environment Management
 ```bash
 p3 env setup               # Complete environment setup (Podman + Neo4j)
 p3 env status              # Check environment health (all services)
 p3 env start               # Start all services (Podman + Neo4j)
-p3 env stop                # Stop services gracefully
+p3 env stop                # Stop services gracefully  
 p3 shutdown-all            # Complete shutdown with cleanup
 p3 env reset               # Reset environment (destructive)
 ```
 
-### Data Pipeline Operations
+### 📈 Scope-Based Data Pipeline
 ```bash
-p3 refresh f2              # Fast build (2 tickers)
-p3 refresh m7              # Magnificent 7 build (7 tickers + SEC data)
-p3 refresh n100            # NASDAQ 100 build 
-p3 refresh v3k             # Full VTI build (3500 tickers)
+# Build commands support scope parameters:
+p3 build f2                # Fast build (2 companies) - development
+p3 build m7                # Magnificent 7 (7 companies) - standard/PR testing
+p3 build n100              # NASDAQ 100 (validation testing)
+p3 build v3k               # VTI 3500+ (production testing)
+
+# Fast build variants (with DeepSeek 1.5b):
+p3 fast-build f2           # Accelerated F2 build for development
+p3 fast-build m7           # Accelerated M7 build for testing
+```
+
+### 💡 Command Discovery
+
+```bash
+p3 --help                  # Complete command documentation
+p3 status                  # Quick environment health check
+p3 <invalid-command>       # Shows available commands
+p3 build --help            # Scope-specific help
 ```
 
 ## SEC-Enhanced Strategy Reports

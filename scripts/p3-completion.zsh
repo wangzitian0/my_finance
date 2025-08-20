@@ -1,6 +1,6 @@
 # zsh completion for p3 (scoped to my_finance)
 
-_p3_commands=(env podman neo4j format lint typecheck test e2e build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity fast-build)
+_p3_commands=(activate env podman neo4j format lint typecheck test e2e build fast-build refresh create-build release-build clean build-status create-pr commit-data-changes cleanup-branches shutdown-all status cache-status verify-env check-integrity etl-status run-job build-schema import-data check-coverage migrate-data dcf-analysis dcf-report generate-report validate-strategy test-sec-integration test-sec-recall verify-sec-data build-sec-library llm-dcf-report hybrid-dcf-report)
 _p3_env_commands=(setup start stop status reset)
 _p3_podman_commands=(status)
 _p3_neo4j_commands=(logs connect restart stop start)
@@ -15,21 +15,25 @@ _p3() {
   scopes=(${_p3_scopes})
 
   if (( CURRENT == 2 )); then
-    compadd -x 'Command     Description'
-    compadd -x 'env         Environment management (setup/start/stop/status/reset)'
-    compadd -x 'podman      Container management (status)'
-    compadd -x 'neo4j       Neo4j management (logs/connect/restart/stop/start)'
-    compadd -x 'format      Format code (black + isort)'
-    compadd -x 'lint        Lint code (pylint)'
-    compadd -x 'typecheck   Type check with mypy'
-    compadd -x 'test        Run tests (pytest)'
-    compadd -x 'e2e         End-to-end validation'
-    compadd -x 'build       Build dataset (build run [scope])'
-    compadd -x 'refresh     Build dataset (alias for build run)'
-    compadd -x 'create-pr   Create/update PR with testing'
-    compadd -x 'clean       Clean build artifacts'
-    compadd -x 'status      Quick environment status'
-    compadd -x 'verify-env  Verify environment dependencies'
+    compadd -x 'Command        Description'
+    compadd -x 'activate       Activate pixi environment'
+    compadd -x 'env            Environment management (setup/start/stop/status/reset)'
+    compadd -x 'podman         Container management (status)'
+    compadd -x 'neo4j          Neo4j management (logs/connect/restart/stop/start)'
+    compadd -x 'format         Format code (black + isort)'
+    compadd -x 'lint           Lint code (pylint)'
+    compadd -x 'typecheck      Type check with mypy'
+    compadd -x 'test           Run tests (pytest)'
+    compadd -x 'e2e            End-to-end validation'
+    compadd -x 'build          Build dataset [scope]'
+    compadd -x 'fast-build     Fast build with DeepSeek 1.5b [scope]'
+    compadd -x 'refresh        Alias for build [scope]'
+    compadd -x 'create-pr      Create/update PR with testing'
+    compadd -x 'clean          Clean build artifacts'
+    compadd -x 'status         Quick environment status'
+    compadd -x 'dcf-analysis   Run DCF analysis'
+    compadd -x 'generate-report Generate analysis report'
+    compadd -x 'verify-env     Verify environment dependencies'
     compadd -a cmds
     return
   fi
