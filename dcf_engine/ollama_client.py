@@ -51,7 +51,9 @@ class OllamaClient:
             self.timeout = 5
         else:
             self.base_url = llm_config.get("base_url", "http://localhost:11434")
-            self.model_name = llm_config.get("model_name", llm_config.get("model", "deepseek-r1:1.5b"))
+            self.model_name = llm_config.get(
+                "model_name", llm_config.get("model", "deepseek-r1:1.5b")
+            )
             self.timeout = llm_config.get("timeout", 45)
 
         # Generation parameters - support both config formats and mock mode
@@ -594,7 +596,9 @@ class OllamaClient:
             return {"success": False, "error": "Risk template not found"}
 
         # Format the prompt
-        logger.debug(f"🐛 Risk analysis - financial_data keys: {list(financial_data.keys()) if financial_data else 'None'}")
+        logger.debug(
+            f"🐛 Risk analysis - financial_data keys: {list(financial_data.keys()) if financial_data else 'None'}"
+        )
         formatted_prompt = self._format_risk_prompt(
             prompt_template, ticker, financial_data, semantic_results
         )
@@ -734,7 +738,9 @@ class OllamaClient:
         formatted_semantic = self._format_semantic_results(semantic_results)
 
         # Debug the template.format call
-        logger.debug(f"🐛 About to call template.format with financial_data keys: {list(financial_data.keys())}")
+        logger.debug(
+            f"🐛 About to call template.format with financial_data keys: {list(financial_data.keys())}"
+        )
         try:
             result = template.format(
                 ticker=ticker.upper(),

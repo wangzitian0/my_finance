@@ -20,6 +20,7 @@ import warnings
 
 try:
     from bs4 import XMLParsedAsHTMLWarning
+
     warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 except ImportError:
     print("⚠️ Warning: beautifulsoup4 not available - some warnings may appear")
@@ -31,8 +32,10 @@ import time
 from datetime import datetime, timedelta
 
 import yaml
+
 try:
     from secedgar import FilingType, filings
+
     SECEDGAR_AVAILABLE = True
     print("✅ secedgar import successful")
 except ImportError as e:
@@ -80,7 +83,7 @@ def run_job(config_path):
         logging.warning("secedgar library not available - skipping SEC Edgar data collection")
         print("⚠️ SEC Edgar collection skipped - secedgar dependency not available")
         return
-        
+
     logging.info(f"Loading configuration file: {config_path}")
     with open(config_path, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
