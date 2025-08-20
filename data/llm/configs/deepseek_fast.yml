@@ -2,7 +2,7 @@
 # Optimized for speed over accuracy - use for fast iteration and testing
 
 llm_service:
-  provider: "mock"  # Use mock provider for fast testing
+  provider: "ollama"  # Use real Ollama service instead of mock
   base_url: "http://localhost:11434"
   model: "deepseek-r1:1.5b"
   timeout: 60
@@ -20,7 +20,7 @@ dcf_generation:
   enable_sec_integration: true
   enable_semantic_retrieval: true
   debug_mode: true
-  fast_mode: true
+  fast_mode: false  # Disable mock mode - use real LLM
   
 # Reduced context for speed
 semantic_retrieval:

@@ -29,7 +29,7 @@ mypy = "*"
 pytest = ">=8.4.1,<9"
 pytest-cov = ">=6.2.1,<7"
 python-dotenv = "*"
-click = "*"
+click = ">=8.2.1,<9"
 tqdm = "*"
 lxml = "*"
 # Neo4j Python driver (official driver for connecting to Neo4j)
@@ -40,6 +40,8 @@ attrs = ">=25.3.0,<26"
 faiss-cpu = ">=1.9.0,<2"
 pyarrow = ">=21.0.0,<22"
 python-dateutil = ">=2.9.0.post0,<3"
+pathspec = ">=0.12.1,<0.13"
+platformdirs = ">=4.3.8,<5"
 
 [tasks]
 # === P3 UNIFIED COMMAND SYSTEM ===

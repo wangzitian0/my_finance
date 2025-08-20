@@ -1,0 +1,10 @@
+{
+  "success_rate": 0,
+  "status": "no_data_found",
+  "error": "Transform partition not found",
+  "stage": "stage_02_transform",
+  "partition": "20250820",
+  "timestamp": "2025-08-20T17:25:23.182212",
+  "build_id": "20250820_172522",
+  "tier_name": "m7"
+}
