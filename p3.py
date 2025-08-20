@@ -30,36 +30,30 @@ class P3CLI:
             "env-stop": "pixi run env-stop",
             "env-status": "pixi run env-status",
             "env-reset": "pixi run env-reset",
-            
-            # Development Commands - converted from direct python calls
-            "format": "python -m black --line-length 100 . && python -m isort .",
-            "lint": "python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
-            "typecheck": "python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports",
-            "test": "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html",
-            
+            # Development Commands - routed through pixi for proper environment
+            "format": "pixi run -e default python -m black --line-length 100 . && pixi run -e default python -m isort .",
+            "lint": "pixi run -e default python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
+            "typecheck": "pixi run -e default python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports",
+            "test": "pixi run -e default python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html",
             # Build Commands - scope support built-in
-            "build": "python ETL/build_dataset.py {scope}",
-            "fast-build": "python ETL/build_dataset.py {scope} --fast-mode",
-            "refresh": "python ETL/build_dataset.py {scope}",  # Alias for build
-            
+            "build": "pixi run -e default python ETL/build_dataset.py {scope}",
+            "fast-build": "pixi run -e default python ETL/build_dataset.py {scope} --fast-mode",
+            "refresh": "pixi run -e default python ETL/build_dataset.py {scope}",  # Alias for build
             # Data Management
-            "create-build": "python scripts/manage_build_data.py create",
-            "release-build": "python scripts/manage_build_data.py release",
-            "commit-data-changes": "python infra/commit_data_changes.py",
-            "build-status": "python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
-            "clean": "python -c 'import shutil; from pathlib import Path; build_dir = Path(\"data/stage_99_build\"); [shutil.rmtree(d) for d in build_dir.glob(\"build_*\") if d.is_dir()]; print(\"🧹 Cleaned\")'",
-            
+            "create-build": "pixi run -e default python scripts/manage_build_data.py create",
+            "release-build": "pixi run -e default python scripts/manage_build_data.py release",
+            "commit-data-changes": "pixi run -e default python infra/commit_data_changes.py",
+            "build-status": "pixi run -e default python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
+            "clean": 'pixi run -e default python -c \'import shutil; from pathlib import Path; build_dir = Path("data/stage_99_build"); [shutil.rmtree(d) for d in build_dir.glob("build_*") if d.is_dir()]; print("🧹 Cleaned")\'',
             # PR and Git Workflow
-            "create-pr": "python infra/create_pr_with_test.py {title} {issue}",
-            "cleanup-branches": "python infra/cleanup_merged_branches.py",
-            "e2e": "python infra/create_pr_with_test.py --skip-pr-creation",
-            
+            "create-pr": "pixi run -e default python infra/create_pr_with_test.py {title} {issue}",
+            "cleanup-branches": "pixi run -e default python infra/cleanup_merged_branches.py",
+            "e2e": "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation",
             # Analysis and Reporting
-            "dcf-analysis": "python dcf_engine/pure_llm_dcf.py",
-            "dcf-report": "python dcf_engine/pure_llm_dcf.py",
-            "generate-report": "python dcf_engine/pure_llm_dcf.py",
-            "validate-strategy": "python ETL/manage.py validate",
-            
+            "dcf-analysis": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
+            "dcf-report": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
+            "generate-report": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
+            "validate-strategy": "pixi run -e default python ETL/manage.py validate",
             # Infrastructure Management
             "podman-status": "podman ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
             "neo4j-logs": "podman logs neo4j-finance",
@@ -67,50 +61,42 @@ class P3CLI:
             "neo4j-restart": "podman restart neo4j-finance",
             "neo4j-stop": "podman stop neo4j-finance",
             "neo4j-start": "podman start neo4j-finance",
-            
             # Status and Validation
-            "status": "python infra/comprehensive_env_status.py",
-            "cache-status": "python infra/show_cache_status.py",
-            "verify-env": "python -c 'import sys; print(f\"Python: {sys.version}\"); import torch, sklearn, sentence_transformers; print(\"✅ ML dependencies available\"); import neomodel; print(\"✅ Neo4j ORM available\")'",
-            "check-integrity": "python -c 'from pathlib import Path; dirs = [\"data/stage_00_original\", \"data/stage_01_extract\", \"data/stage_99_build\"]; [print(f\"📁 {d}: {\"✅ exists\" if Path(d).exists() else \"❌ missing\"}\") for d in dirs]'",
-            "shutdown-all": "python infra/shutdown_all.py",
-            
+            "status": "pixi run -e default python infra/comprehensive_env_status.py",
+            "cache-status": "pixi run -e default python infra/show_cache_status.py",
+            "verify-env": 'pixi run -e default python -c \'import sys; print(f"Python: {sys.version}"); import torch, sklearn, sentence_transformers; print("✅ ML dependencies available"); import neomodel; print("✅ Neo4j ORM available")\'',
+            "check-integrity": 'pixi run -e default python -c \'from pathlib import Path; dirs = ["data/stage_00_original", "data/stage_01_extract", "data/stage_99_build"]; [print(f"📁 {d}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
+            "shutdown-all": "pixi run -e default python infra/shutdown_all.py",
             # SEC Integration Commands
-            "test-sec-integration": "python dcf_engine/sec_integration_template.py",
-            "test-sec-recall": "python dcf_engine/sec_recall_usage_example.py",
-            "verify-sec-data": "python -c 'from pathlib import Path; from collections import Counter; sec_files = list(Path(\"data/stage_01_extract/sec_edgar\").rglob(\"*.txt\")); print(f\"📄 Found {len(sec_files)} total SEC documents\"); ticker_counts = Counter(f.name.split(\"_\")[0] for f in sec_files); print(\"📊 By ticker:\"); [print(f\"  - {ticker}: {count} files\") for ticker, count in sorted(ticker_counts.items())]'",
-            
+            "test-sec-integration": "pixi run -e default python dcf_engine/sec_integration_template.py",
+            "test-sec-recall": "pixi run -e default python dcf_engine/sec_recall_usage_example.py",
+            "verify-sec-data": 'pixi run -e default python -c \'from pathlib import Path; from collections import Counter; sec_files = list(Path("data/stage_01_extract/sec_edgar").rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
             # ETL and Data Commands
-            "etl-status": "python ETL/manage.py status",
-            "run-job": "python ETL/run_job.py",
-            "build-schema": "python ETL/build_schema.py",
-            "import-data": "python ETL/import_data.py",
-            "check-coverage": "python ETL/check_coverage.py",
-            "migrate-data": "python ETL/migrate_data_structure.py",
-            
+            "etl-status": "pixi run -e default python ETL/manage.py status",
+            "run-job": "pixi run -e default python ETL/run_job.py",
+            "build-schema": "pixi run -e default python ETL/build_schema.py",
+            "import-data": "pixi run -e default python ETL/import_data.py",
+            "check-coverage": "pixi run -e default python ETL/check_coverage.py",
+            "migrate-data": "pixi run -e default python ETL/migrate_data_structure.py",
             # Additional Build Commands
-            "build-size": "python -c 'from pathlib import Path; import subprocess; result = subprocess.run([\"du\", \"-sh\", \"data/stage_99_build\"], capture_output=True, text=True); print(f\"📦 Build directory size: {result.stdout.strip()}\")'",
-            
+            "build-size": 'pixi run -e default python -c \'from pathlib import Path; import subprocess; result = subprocess.run(["du", "-sh", "data/stage_99_build"], capture_output=True, text=True); print(f"📦 Build directory size: {result.stdout.strip()}")\'',
             # Ollama and LLM Commands
-            "build-sec-library": "python dcf_engine/sec_document_manager.py",
-            "llm-dcf-report": "python dcf_engine/llm_dcf_generator.py --ticker AAPL",
-            "hybrid-dcf-report": "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
-            
+            "build-sec-library": "pixi run -e default python dcf_engine/sec_document_manager.py",
+            "llm-dcf-report": "pixi run -e default python dcf_engine/llm_dcf_generator.py --ticker AAPL",
+            "hybrid-dcf-report": "pixi run -e default python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
             # Additional Analysis Commands
-            "generate-report-legacy": "python dcf_engine/legacy_testing/generate_dcf_report.py",
-            "backtest": "echo 'Backtest simulation completed (placeholder)' && python dcf_engine/legacy_testing/simple_m7_dcf.py",
-            "test-semantic-retrieval": "python test_semantic_retrieval.py",
-            
+            "generate-report-legacy": "pixi run -e default python dcf_engine/legacy_testing/generate_dcf_report.py",
+            "backtest": "echo 'Backtest simulation completed (placeholder)' && pixi run -e default python dcf_engine/legacy_testing/simple_m7_dcf.py",
+            "test-semantic-retrieval": "pixi run -e default python test_semantic_retrieval.py",
             # Legacy DCF Commands
-            "dcf-analysis-legacy": "python dcf_engine/legacy_testing/m7_dcf_analysis.py",
-            "dcf-report-legacy": "python dcf_engine/legacy_testing/generate_dcf_report.py", 
-            "simple-dcf-legacy": "python dcf_engine/legacy_testing/simple_m7_dcf.py",
-            "hybrid-dcf-legacy": "python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
-            
+            "dcf-analysis-legacy": "pixi run -e default python dcf_engine/legacy_testing/m7_dcf_analysis.py",
+            "dcf-report-legacy": "pixi run -e default python dcf_engine/legacy_testing/generate_dcf_report.py",
+            "simple-dcf-legacy": "pixi run -e default python dcf_engine/legacy_testing/simple_m7_dcf.py",
+            "hybrid-dcf-legacy": "pixi run -e default python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
             # Testing Commands
-            "test-yfinance": "python ETL/tests/integration/test_yfinance.py",
-            "test-config": "python -m pytest ETL/tests/test_config.py -v",
-            "test-dcf-report": "python -m pytest dcf_engine/test_dcf_report.py -v",
+            "test-yfinance": "pixi run -e default python ETL/tests/integration/test_yfinance.py",
+            "test-config": "pixi run -e default python -m pytest ETL/tests/test_config.py -v",
+            "test-dcf-report": "pixi run -e default python -m pytest dcf_engine/test_dcf_report.py -v",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -121,76 +107,78 @@ class P3CLI:
         """Resolve scope parameter, defaulting to m7."""
         if scope is None:
             return "m7"
-        
+
         valid_scopes = self._get_valid_scopes()
         if scope not in valid_scopes:
             print(f"❌ Invalid scope: {scope}")
             print(f"Valid scopes: {', '.join(valid_scopes)}")
             sys.exit(1)
-        
+
         return scope
 
     def _handle_scope_command(self, command: str, args: List[str]) -> str:
         """Handle commands that support scope parameters."""
         scope_commands = ["build", "fast-build", "refresh", "e2e"]
-        
+
         if command in scope_commands:
             scope = args[0] if args else None
             resolved_scope = self._resolve_scope(scope)
-            
+
             # Remove scope from args if it was provided
             remaining_args = args[1:] if args and args[0] in self._get_valid_scopes() else args
-            
+
             if command == "e2e":
                 # E2E command maps to different behavior based on scope
                 if resolved_scope == "f2":
-                    return "python infra/create_pr_with_test.py --skip-pr-creation --fast-mode"
+                    return "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation --fast-mode"
                 else:
-                    return "python infra/create_pr_with_test.py --skip-pr-creation"
+                    return (
+                        "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation"
+                    )
             else:
                 # Build commands use scope directly
                 cmd_template = self.commands[command]
                 return cmd_template.format(scope=resolved_scope)
-        
+
         return self.commands[command]
 
     def _handle_special_commands(self, command: str, args: List[str]) -> Optional[str]:
         """Handle special commands that need custom logic."""
-        
+
         if command == "activate":
             print("📦 Activating pixi environment...")
             print("Run: pixi shell")
             print("Note: This command needs to be run directly as 'pixi shell'")
             return None
-        
+
         if command == "create-pr":
             if len(args) < 2:
                 print("❌ Error: title and issue number are required")
-                print("Usage: p3 create-pr \"PR Title\" ISSUE_NUMBER")
+                print('Usage: p3 create-pr "PR Title" ISSUE_NUMBER')
                 sys.exit(1)
-            
+
             title, issue = args[0], args[1]
             remaining_args = args[2:]
-            cmd = f"python infra/create_pr_with_test.py \"{title}\" {issue}"
+            cmd = f'pixi run -e default python infra/create_pr_with_test.py "{title}" {issue}'
             if remaining_args:
                 cmd += " " + " ".join(remaining_args)
             return cmd
-        
+
         if command == "cleanup-branches":
-            cmd = "python infra/cleanup_merged_branches.py"
+            cmd = "pixi run -e default python infra/cleanup_merged_branches.py"
             if "--dry-run" in args:
                 cmd += " --dry-run"
             elif "--auto" in args:
                 cmd += " --auto"
             return cmd
-        
+
         if command == "test":
-            cmd = "python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
+            cmd = "pixi run -e default python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
             if "--quick" in args:
                 # Quick test mode - run basic structure test only
-                cmd = "python -m pytest tests/test_basic_structure.py -v"
+                cmd = "pixi run -e default python -m pytest tests/test_basic_structure.py -v"
             return cmd
-        
+
         return None
 
     def show_help(self):
@@ -301,23 +289,30 @@ Tips:
         special_cmd = self._handle_special_commands(command, cmd_args)
         if special_cmd is None and command == "activate":
             return  # activate command prints message and exits
-        
+
         if special_cmd:
             cmd_string = special_cmd
         else:
             # Handle scope-based commands
             cmd_string = self._handle_scope_command(command, cmd_args)
-            
+
             # Add remaining arguments
-            if command not in ["build", "fast-build", "refresh", "e2e", "create-pr", "cleanup-branches"]:
+            if command not in [
+                "build",
+                "fast-build",
+                "refresh",
+                "e2e",
+                "create-pr",
+                "cleanup-branches",
+            ]:
                 if cmd_args:
                     cmd_string += " " + " ".join(cmd_args)
 
         print(f"🚀 Executing: {cmd_string}")
-        
+
         # Change to project directory
         os.chdir(self.project_root)
-        
+
         # Execute the command
         result = subprocess.run(cmd_string, shell=True)
         sys.exit(result.returncode)
