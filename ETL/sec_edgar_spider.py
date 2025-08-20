@@ -18,9 +18,11 @@ so the program will directly use CIK to query filings data, avoiding errors from
 
 import warnings
 
-from bs4 import XMLParsedAsHTMLWarning
-
-warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+try:
+    from bs4 import XMLParsedAsHTMLWarning
+    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+except ImportError:
+    print("⚠️ Warning: beautifulsoup4 not available - some warnings may appear")
 
 import json
 import logging
@@ -32,8 +34,10 @@ import yaml
 try:
     from secedgar import FilingType, filings
     SECEDGAR_AVAILABLE = True
-except ImportError:
-    print("⚠️ secedgar not available - SEC Edgar collection will be skipped")
+    print("✅ secedgar import successful")
+except ImportError as e:
+    print(f"⚠️ secedgar not available: {e}")
+    print("SEC Edgar collection will be skipped")
     FilingType = None
     filings = None
     SECEDGAR_AVAILABLE = False

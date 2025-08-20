@@ -29,36 +29,29 @@ class OllamaClient:
     recommendations using the gpt-oss:20b model.
     """
 
-    def __init__(self, config_path: Optional[str] = None, fast_mode: bool = False):
+    def __init__(self, config_path: Optional[str] = None, mock_mode: bool = False):
         """
         Initialize Ollama client.
 
         Args:
             config_path: Path to configuration file
-            fast_mode: Enable fast mode with mock responses
+            mock_mode: Enable mock mode for testing (explicit parameter only)
         """
         self.config = self._load_config(config_path)
-        # Check for fast mode (parameter, config, or CI environment)
-        config_fast_mode = self.config.get("dcf_generation", {}).get("fast_mode", False)
-        self.ci_fast_testing = os.getenv("CI_FAST_TESTING", "false").lower() == "true"
-        self.mock_mode = (
-            fast_mode  # Direct parameter takes priority
-            or config_fast_mode
-            or self.config.get("llm_service", {}).get("provider") == "mock"
-            or self.ci_fast_testing  # Keep CI support
-        )
+        # Only use explicit parameter - no env vars or config-based mock mode
+        self.mock_mode = mock_mode
 
         # Support both old format (ollama section) and new format (llm_service section)
         llm_config = self.config.get("llm_service", self.config.get("ollama", {}))
 
         if self.mock_mode:
-            logger.info("🚀 Running in mock mode for fast CI testing")
+            logger.info("🚀 Running in EXPLICIT mock mode for testing")
             self.base_url = "mock://localhost"
-            self.model_name = "deepseek-r1:1.5b"
+            self.model_name = "mock-model"
             self.timeout = 5
         else:
             self.base_url = llm_config.get("base_url", "http://localhost:11434")
-            self.model_name = llm_config.get("model_name", llm_config.get("model", "gpt-oss:20b"))
+            self.model_name = llm_config.get("model_name", llm_config.get("model", "deepseek-r1:1.5b"))
             self.timeout = llm_config.get("timeout", 45)
 
         # Generation parameters - support both config formats and mock mode
@@ -89,8 +82,8 @@ class OllamaClient:
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            # Use default production config
-            config_path = "data/llm/configs/local_ollama.yml"
+            # Use DeepSeek fast config as default (no mock mode)
+            config_path = "data/llm/configs/deepseek_fast.yml"
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:
