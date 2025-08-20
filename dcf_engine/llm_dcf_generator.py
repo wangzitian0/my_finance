@@ -537,7 +537,13 @@ class LLMDCFGenerator:
         # DCF Valuation Section
         if "dcf_valuation" in components and components["dcf_valuation"]["success"]:
             report_sections.append("## 📊 DCF Valuation Analysis\n")
-            report_sections.append(components["dcf_valuation"]["response"])
+            # DCF valuation has different structure - uses 'reports' instead of 'response'
+            if "reports" in components["dcf_valuation"]:
+                # Use English report for the final compilation
+                en_report = components["dcf_valuation"]["reports"].get("en", "No English DCF report available")
+                report_sections.append(en_report)
+            elif "response" in components["dcf_valuation"]:
+                report_sections.append(components["dcf_valuation"]["response"])
             report_sections.append("\n---\n")
 
         # Risk Analysis Section
