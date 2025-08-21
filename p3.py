@@ -25,11 +25,11 @@ class P3CLI:
         return {
             # Environment Management
             "activate": "pixi shell",
-            "env-setup": "pixi run setup-env",
-            "env-start": "pixi run env-start",
-            "env-stop": "pixi run env-stop",
-            "env-status": "pixi run env-status",
-            "env-reset": "pixi run env-reset",
+            "env-setup": "ansible-playbook infra/ansible/setup.yml",
+            "env-start": "ansible-playbook infra/ansible/start.yml",
+            "env-stop": "ansible-playbook infra/ansible/stop.yml",
+            "env-status": "pixi run -e default python infra/comprehensive_env_status.py",
+            "env-reset": "ansible-playbook infra/ansible/reset.yml",
             # Development Commands - routed through pixi for proper environment
             "format": "pixi run -e default python -m black --line-length 100 . && pixi run -e default python -m isort .",
             "lint": "pixi run -e default python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
@@ -177,6 +177,9 @@ class P3CLI:
             if "--quick" in args:
                 # Quick test mode - run basic structure test only
                 cmd = "pixi run -e default python -m pytest tests/test_basic_structure.py -v"
+            elif "--protection" in args:
+                # Directory structure protection tests
+                cmd = "pixi run -e default python tests/test_directory_structure_protection.py"
             return cmd
 
         return None
@@ -210,6 +213,8 @@ Development Commands:
   lint                   Lint code (pylint)
   typecheck              Type check with mypy
   test                   Run tests (pytest)
+  test --quick           Run quick tests only
+  test --protection      Run directory structure protection tests
   e2e [scope]            End-to-end validation (default: m7)
   build [scope]          Build dataset (default: m7)
   fast-build [scope]     Fast build with deepseek-r1:1.5b

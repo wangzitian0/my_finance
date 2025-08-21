@@ -355,7 +355,7 @@ git push --force-with-lease
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories
 - **Management**: `ETL/manage.py`, `dcf_engine/build_knowledge_base.py`
-- **Configuration**: `data/config/*.yml`, `common/common_config.yml`
+- **Configuration**: `common/config/*.yml`, `common/common_config.yml`
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
@@ -608,3 +608,154 @@ git remote prune origin
 - **Check status frequently** during long development sessions
 
 This ensures clean environment state and prevents port conflicts or resource issues.
+
+## 🏗️ DRY and SSOT Architecture Principles
+
+**CRITICAL**: This project implements strict DRY (Don't Repeat Yourself) and SSOT (Single Source of Truth) principles for directory management and data architecture.
+
+### DRY Principle Implementation
+
+**Don't Repeat Yourself** - Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.
+
+**Key DRY Applications:**
+- **Directory Paths**: All paths defined once in `common/directory_manager.py`
+- **Configuration**: Single config files referenced by all components
+- **Data Schemas**: Unified schema definitions in `common/config/`
+- **Utility Functions**: Common operations centralized in `common/utils.py`
+
+**DRY Tools and Scripts:**
+- `scripts/migrate_config_paths.py` - Automated path migration
+- `common/directory_manager.py` - SSOT directory management
+- `common/config/directory_structure.yml` - Centralized directory config
+
+### SSOT Directory Management
+
+**Single Source of Truth** - All directory paths, data locations, and storage configurations are managed through a centralized system.
+
+**SSOT Implementation:**
+```python
+from common.directory_manager import directory_manager, DataLayer, get_data_path
+
+# ✅ CORRECT: Use SSOT directory manager
+raw_data_path = get_data_path(DataLayer.RAW_DATA, "sec-edgar", "20250821")
+config_path = directory_manager.get_config_path()
+
+# ❌ WRONG: Hard-coded paths
+raw_data_path = "data/stage_00_original/sec-edgar/20250821"  # Don't do this!
+```
+
+**Benefits of SSOT Directory Management:**
+- **Easy Storage Migration**: Change backend from local → cloud in one place
+- **Environment Flexibility**: Different paths for dev/test/prod
+- **Path Consistency**: Eliminate path-related bugs
+- **Future-Proof**: Support multiple storage backends
+
+### Five-Layer Data Architecture (Issue #122)
+
+**New Architecture** replaces legacy stage-based directories:
+
+```yaml
+# Legacy (DEPRECATED)        # New Five-Layer Architecture
+stage_00_original      →     layer_01_raw        # Immutable source data
+stage_01_extract       →     layer_02_delta      # Daily incremental changes  
+stage_02_transform     →     layer_03_index      # Vectors, entities, relationships
+stage_03_load          →     layer_04_rag        # Unified knowledge base
+stage_99_build         →     layer_05_results    # Analysis and reports
+```
+
+**Architecture Benefits:**
+- **90% storage efficiency** reduction through incremental processing
+- **<100ms query response** times with optimized indexing
+- **Single source of truth** for all financial data
+- **Easy scalability** to graph databases and cloud storage
+
+### SSOT Configuration Files
+
+**All configuration centralized in `common/config/`:**
+
+- `directory_structure.yml` - **SSOT** for all directory paths
+- `list_magnificent_7.yml` - M7 company definitions
+- `list_nasdaq_100.yml` - N100 company definitions
+- `stage_00_original_*.yml` - Data source configurations
+
+**Configuration Hierarchy:**
+```
+common/config/
+├── directory_structure.yml   # SSOT directory management
+├── list_*.yml                # Company/ticker lists  
+├── stage_*.yml               # Data source configs
+└── sec_edgar_*.yml           # SEC filing configurations
+```
+
+### Migration and Backward Compatibility
+
+**Automated Migration Tools:**
+```bash
+# Migrate all path references
+python scripts/migrate_config_paths.py
+
+# Check migration status  
+python -c "from common.directory_manager import directory_manager; print(directory_manager.get_storage_info())"
+
+# Migrate legacy data structure
+python -c "from common.directory_manager import directory_manager; directory_manager.migrate_legacy_data(dry_run=True)"
+```
+
+**Legacy Path Support:**
+- Old paths automatically mapped to new structure
+- Backward compatibility maintained during transition
+- Deprecation warnings for old path usage
+
+### Storage Backend Flexibility
+
+**Future Storage Support** (configured in `directory_structure.yml`):
+- `local_filesystem` - Current default
+- `aws_s3` - AWS S3 buckets
+- `gcp_gcs` - Google Cloud Storage  
+- `azure_blob` - Azure Blob Storage
+
+**Backend Migration Example:**
+```python
+# Change storage backend without touching business logic
+directory_manager = DirectoryManager(backend=StorageBackend.CLOUD_S3)
+# All paths automatically adapt to new backend
+```
+
+### Developer Guidelines
+
+**MANDATORY Rules for Directory/Path Usage:**
+
+1. **NEVER hard-code paths** - always use `directory_manager`
+2. **NEVER create new directories** without updating `directory_structure.yml` 
+3. **ALWAYS use DataLayer enums** instead of string paths
+4. **ALWAYS test path changes** with migration scripts
+5. **ALWAYS update documentation** when changing directory structure
+
+**Path Usage Examples:**
+```python
+# ✅ CORRECT: SSOT directory management
+from common.directory_manager import get_data_path, DataLayer
+
+# Get raw SEC data path
+sec_path = get_data_path(DataLayer.RAW_DATA, "sec-edgar", "20250821")
+
+# Get DCF reports path
+reports_path = get_data_path(DataLayer.QUERY_RESULTS, "dcf_reports")
+
+# ❌ WRONG: Hard-coded paths
+sec_path = "data/stage_00_original/sec-edgar/20250821"        # Don't do this!
+reports_path = "data/stage_99_build/dcf_reports"             # Don't do this!
+```
+
+**Configuration Updates:**
+```python
+# ✅ CORRECT: Use centralized config
+from common.directory_manager import directory_manager
+config = directory_manager.config
+
+# ❌ WRONG: Scattered config loading
+with open("some/hardcoded/path/config.yml") as f:           # Don't do this!
+    config = yaml.load(f)
+```
+
+This DRY/SSOT architecture ensures the project can easily migrate storage backends, maintain consistency, and scale efficiently while reducing maintenance overhead.

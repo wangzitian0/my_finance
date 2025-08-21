@@ -135,7 +135,7 @@ class TestDataIntegrity:
         assert result.returncode == 0, f"Status check failed: {result.stderr}"
 
         # Verify data directory structure (basic directory structure)
-        data_dirs = ["data/config"]
+        data_dirs = ["common/config"]
         for dir_path in data_dirs:
             assert Path(dir_path).exists(), f"Missing data directory: {dir_path}"
 

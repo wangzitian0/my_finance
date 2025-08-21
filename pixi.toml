@@ -157,6 +157,7 @@ setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
 test-yfinance = "./p3 test-yfinance"
 test-config = "./p3 test-config"
 test-dcf-report = "./p3 test-dcf-report"
+test-protection = "./p3 test --protection"
 
 # Status and Validation
 verify-environment = "./p3 verify-env"

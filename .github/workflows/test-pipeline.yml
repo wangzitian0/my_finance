@@ -21,23 +21,19 @@ jobs:
       with:
         submodules: false  # No submodules needed (data is now integrated)
         
-    - name: Setup Python
-      uses: actions/setup-python@v4
+    - name: Setup Pixi
+      uses: prefix-dev/setup-pixi@v0.8.1
       with:
-        python-version: '3.12'
-        
-    - name: Install Python dependencies
-      run: |
-        pip install pytest pytest-cov pyyaml requests
+        pixi-version: v0.34.0
         
     - name: Create basic test structure
       run: |
         # Ensure data directory structure exists for CI testing
-        mkdir -p data/config data/reports data/llm/configs test-results
-        echo "test_mode: true" > data/config/test_config.yml
+        mkdir -p common/config data/reports data/llm/configs test-results
+        echo "test_mode: true" > common/config/test_config.yml
         # Create mock config files for CI testing
-        echo "dataset_name: vti_3500" > data/config/list_vti_3500.yml
-        echo "cli_alias: v3k" >> data/config/list_vti_3500.yml
+        echo "dataset_name: vti_3500" > common/config/list_vti_3500.yml
+        echo "cli_alias: v3k" >> common/config/list_vti_3500.yml
         # Create DeepSeek fast config for CI testing
         cat > data/llm/configs/deepseek_fast.yml << EOF
         llm_service:
@@ -64,9 +60,15 @@ jobs:
           echo "VALIDATION_PASSED=true" >> .m7-test-passed
         fi
         
-    - name: Run simplified tests (CI-compatible only)
+    - name: Run directory structure protection tests
       run: |
-        pytest tests/test_basic_structure.py -v --tb=short
+        # Run the comprehensive directory structure protection tests
+        pixi run test-protection
+        
+    - name: Run quick structural tests
+      run: |
+        # Run quick tests using the unified testing system  
+        pixi run quick-test
         
     - name: Check test files exist
       run: |
@@ -80,4 +82,4 @@ jobs:
         name: test-results
         path: |
           tests/
-          data/config/
+          common/config/

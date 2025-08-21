@@ -103,7 +103,7 @@ class TestDatasetIntegrity(unittest.TestCase):
 
     def test_directory_structure_exists(self):
         """Test expected directory structure exists."""
-        expected_dirs = ["data/config", "data/stage_99_build", "common"]
+        expected_dirs = ["common/config", "data/stage_99_build", "common"]
 
         for dir_path in expected_dirs:
             self.assertTrue(Path(dir_path).exists(), f"Directory {dir_path} should exist")
@@ -111,10 +111,10 @@ class TestDatasetIntegrity(unittest.TestCase):
     def test_configuration_files_exist(self):
         """Test all tier configuration files exist."""
         expected_configs = [
-            "data/config/list_fast_2.yml",
-            "data/config/list_magnificent_7.yml",
-            "data/config/list_nasdaq_100.yml",
-            "data/config/list_vti_3500.yml",
+            "common/config/list_fast_2.yml",
+            "common/config/list_magnificent_7.yml",
+            "common/config/list_nasdaq_100.yml",
+            "common/config/list_vti_3500.yml",
         ]
 
         for config_path in expected_configs:

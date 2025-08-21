@@ -1,0 +1,159 @@
+# SSOT Directory Structure Configuration
+# This file defines the complete directory structure for the my_finance project
+# implementing the Five-Layer Data Architecture from Issue #122
+
+storage:
+  backend: "local_filesystem"  # Options: local_filesystem, aws_s3, gcp_gcs, azure_blob
+  root_path: "data"
+  versioning: true
+  compression: false
+
+# Five-Layer Data Architecture (Issue #122)
+layers:
+  layer_01_raw:
+    description: "Raw Data Layer - Immutable source data"
+    purpose: "Original, unmodified data from external sources"
+    retention: "permanent"
+    subdirs:
+      - "sec-edgar"     # SEC Edgar filings by CIK
+      - "yfinance"      # Yahoo Finance data by ticker
+      - "manual"        # Manual data inputs
+      - "reference"     # Reference data (CIK mappings, etc.)
+    partitioning:
+      - "by_date"       # YYYYMMDD format
+      - "by_source"     # sec-edgar, yfinance, etc.
+      - "by_ticker"     # Company ticker symbol
+    
+  layer_02_delta:
+    description: "Daily Delta Layer - Incremental changes"
+    purpose: "Track daily changes and updates to avoid full reprocessing"
+    retention: "90_days"
+    subdirs:
+      - "additions"     # New records added
+      - "modifications" # Updated records  
+      - "deletions"     # Deprecated/removed records
+      - "metadata"      # Change tracking metadata
+    partitioning:
+      - "by_date"       # YYYYMMDD format
+      - "by_change_type" # additions, modifications, deletions
+    storage_optimization:
+      enabled: true
+      method: "diff_based"  # Store only differences
+      
+  layer_03_index:
+    description: "Daily Index Layer - Vectors, entities, relationships"
+    purpose: "Processed data ready for graph/vector operations"
+    retention: "30_days"  # Can be regenerated from raw data
+    subdirs:
+      - "vectors"       # Sentence transformer embeddings
+      - "entities"      # Extracted entities (companies, people, concepts)
+      - "relationships" # Entity relationships
+      - "embeddings"    # Document/text embeddings
+      - "indices"       # Search indices (FAISS, etc.)
+    partitioning:
+      - "by_date"       # Processing date
+      - "by_model"      # Embedding model used
+    storage_optimization:
+      enabled: true
+      method: "vector_compression"
+      
+  layer_04_rag:
+    description: "Graph RAG Layer - Unified knowledge base" 
+    purpose: "Query-ready knowledge graph and vector store"
+    retention: "permanent"
+    subdirs:
+      - "graph_db"     # Neo4j graph database
+      - "vector_store" # Consolidated vector store
+      - "cache"        # Query result cache
+      - "snapshots"    # Point-in-time snapshots
+    partitioning:
+      - "by_version"    # Knowledge base version
+      - "by_domain"     # Financial domain segmentation
+    storage_optimization:
+      enabled: true
+      method: "graph_compression"
+      
+  layer_05_results:
+    description: "Query Results Layer - Analysis and reports"
+    purpose: "Final outputs, reports, and analysis results"
+    retention: "permanent"  # Business value
+    subdirs:
+      - "dcf_reports"   # DCF valuation reports
+      - "analytics"     # Analysis results
+      - "exports"       # Exported data sets
+      - "dashboards"    # Dashboard data
+      - "api_responses" # API response cache
+    partitioning:
+      - "by_date"       # Report generation date
+      - "by_type"       # dcf, analytics, etc.
+      - "by_ticker"     # Company focus
+    storage_optimization:
+      enabled: false    # Keep full fidelity for business use
+
+# Common directories (outside data layers)
+common:
+  config: "common/config"
+  logs: "logs"
+  temp: "temp" 
+  cache: "cache"
+  scripts: "scripts"
+  templates: "templates"
+
+# Legacy path mapping for backward compatibility
+legacy_mapping:
+  stage_00_original: "layer_01_raw"
+  stage_01_extract: "layer_02_delta"
+  stage_02_transform: "layer_03_index" 
+  stage_03_load: "layer_04_rag"
+  stage_99_build: "layer_05_results"
+  data/config: "common/config"  # Already migrated
+
+# Storage backend configurations
+backends:
+  local_filesystem:
+    compression: false
+    encryption: false
+    
+  aws_s3:
+    bucket_prefix: "my-finance"
+    region: "us-west-2"
+    compression: true
+    encryption: true
+    lifecycle_policies: true
+    
+  gcp_gcs:
+    bucket_prefix: "my-finance"
+    region: "us-west1"
+    compression: true
+    encryption: true
+    
+  azure_blob:
+    container_prefix: "my-finance"
+    region: "westus2"
+    compression: true
+    encryption: true
+
+# Performance optimizations per layer
+performance:
+  layer_01_raw:
+    indexing: "minimal"  # Raw data doesn't need heavy indexing
+    caching: false
+    
+  layer_02_delta:
+    indexing: "temporal"  # Index by date for fast delta queries
+    caching: false
+    
+  layer_03_index:
+    indexing: "full"     # Heavy indexing for vector/entity search
+    caching: true
+    cache_ttl: "24h"
+    
+  layer_04_rag:
+    indexing: "graph"    # Graph-specific indexing
+    caching: true
+    cache_ttl: "1h"      # Frequent queries, shorter TTL
+    
+  layer_05_results:
+    indexing: "business" # Business-logic indexing
+    caching: true
+    cache_ttl: "7d"      # Reports don't change often

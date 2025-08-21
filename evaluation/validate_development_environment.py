@@ -44,7 +44,7 @@ def validate_configuration():
     """Validate configuration files"""
     print("\n🔧 Validating configuration files...")
 
-    config_files = ["data/config/job_yfinance_m7.yml", "data/config/sec_edgar_m7.yml"]
+    config_files = ["common/config/job_yfinance_m7.yml", "common/config/sec_edgar_m7.yml"]
 
     all_exist = True
     for config_file in config_files:

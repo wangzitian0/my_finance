@@ -40,7 +40,7 @@ class TestPipelineBasics:
             "data/stage_02_transform",
             "data/stage_03_load",
             "data/build",
-            "data/config",
+            "common/config",
         ]
 
         for dir_name in required_dirs:
@@ -49,7 +49,7 @@ class TestPipelineBasics:
 
     def test_config_files_accessible(self):
         """Test configuration file access"""
-        config_dir = Path("data/config")
+        config_dir = Path("common/config")
         if config_dir.exists():
             # If config directory exists, check it's readable
             config_files = list(config_dir.glob("*.yml"))

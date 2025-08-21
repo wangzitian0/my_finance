@@ -38,7 +38,7 @@ Raw Data Sources → Spider Collection → Parser Processing → ETL Pipeline �
 
 ```bash
 # Data collection
-python run_job.py data/config/job_yfinance_m7.yml
+python run_job.py common/config/job_yfinance_m7.yml
 
 # Via pixi commands
 p3 build run m7
@@ -99,7 +99,7 @@ stage_01_extract/sec_edgar/
 
 ## Configuration Files
 
-Spiders use YAML configuration files located in `data/config/`:
+Spiders use YAML configuration files located in `common/config/`:
 
 ### M7 Configuration (`job_yfinance_m7.yml`)
 ```yaml

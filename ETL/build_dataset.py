@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Unified dataset builder that uses configurations from data/config/.
+Unified dataset builder that uses configurations from common/config/.
 Supports test, M7, nasdaq100, and VTI tiers with build tracking.
 """
 

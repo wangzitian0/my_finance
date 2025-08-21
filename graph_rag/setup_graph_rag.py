@@ -199,7 +199,7 @@ class GraphRAGSetup:
             "data/stage_00_original",
             "data/stage_01_extract/yfinance",
             "data/stage_00_original/sec",
-            "data/config",
+            "common/config",
             "data/log",
             "data/neo4j",
         ]

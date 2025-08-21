@@ -8,11 +8,11 @@ import sys
 
 
 def main():
-    config_dir = os.path.join(os.getcwd(), "data", "config")
+    config_dir = os.path.join(os.getcwd(), "common", "config")
     config_files = glob.glob(os.path.join(config_dir, "*.yml"))
     if not config_files:
         print(
-            "No configuration files found, please create task configuration files in data/config/ directory first."
+            "No configuration files found, please create task configuration files in common/config/ directory first."
         )
         sys.exit(1)
 

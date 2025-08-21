@@ -112,7 +112,7 @@ def cleanup_empty_directories(base_dir: Path) -> int:
         "data/stage_02_transform",
         "data/stage_03_load",
         "data/build",
-        "data/config",
+        "common/config",
         "data/reports",
         "tests/unit",
         "tests/integration",

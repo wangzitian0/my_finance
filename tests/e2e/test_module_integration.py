@@ -172,7 +172,7 @@ class TestModuleIntegrationWorkflow:
 
     def test_config_files_integration(self):
         """Test that all required configuration files exist"""
-        config_dir = Path("data/config")
+        config_dir = Path("common/config")
 
         required_configs = [
             "list_fast_2.yml",

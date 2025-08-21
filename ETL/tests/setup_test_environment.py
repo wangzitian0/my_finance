@@ -40,7 +40,7 @@ def setup_test_data():
         },
     }
 
-    config_file = Path("data/config/test_config.yml")
+    config_file = Path("common/config/test_config.yml")
     config_file.parent.mkdir(parents=True, exist_ok=True)
 
     import yaml
@@ -92,7 +92,7 @@ def validate_test_environment():
             return False
 
     required_files = [
-        "data/config/test_config.yml",
+        "common/config/test_config.yml",
         "tests/conftest.py",
         "tests/test_user_cases.py",
     ]
