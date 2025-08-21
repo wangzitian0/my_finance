@@ -772,3 +772,7 @@ with open("some/hardcoded/path/config.yml") as f:           # Don't do this!
 ```
 
 This DRY/SSOT architecture ensures the project can easily migrate storage backends, maintain consistency, and scale efficiently while reducing maintenance overhead.
+
+---
+
+*Updated with Five-Layer Data Architecture implementation - Issue #14 (2025-08-21)*
