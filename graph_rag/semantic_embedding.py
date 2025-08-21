@@ -18,11 +18,11 @@ try:
     from sentence_transformers import SentenceTransformer
 
     SENTENCE_TRANSFORMERS_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
-    logging.warning(
-        "sentence-transformers not available. Install with: pip install sentence-transformers"
-    )
+    error_msg = f"FATAL: sentence-transformers not available. Install with: pip install sentence-transformers. Error: {e}"
+    logging.error(error_msg)
+    raise ImportError(error_msg)
 
 logger = logging.getLogger(__name__)
 

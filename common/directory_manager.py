@@ -125,6 +125,20 @@ class DirectoryManager:
         """Get configuration directory path"""
         return self.root_path / self.config["common"]["config"]
     
+    def get_llm_config_path(self, config_name: Optional[str] = None) -> Path:
+        """Get path to LLM configuration files
+        
+        Args:
+            config_name: Optional specific config file name (e.g., 'deepseek_fast.yml')
+        
+        Returns:
+            Path to LLM config directory or specific config file
+        """
+        llm_config_dir = self.get_config_path() / "llm" / "configs"
+        if config_name:
+            return llm_config_dir / config_name
+        return llm_config_dir
+    
     def get_logs_path(self) -> Path:
         """Get logs directory path"""  
         return self.root_path / self.config["common"]["logs"]
@@ -231,6 +245,10 @@ def get_data_path(layer: DataLayer, subdir: str = None, partition: str = None) -
 def get_config_path() -> Path:
     """Get config path using SSOT directory manager"""
     return directory_manager.get_config_path()
+
+def get_llm_config_path(config_name: Optional[str] = None) -> Path:
+    """Get LLM config path using SSOT directory manager"""
+    return directory_manager.get_llm_config_path(config_name)
 
 def ensure_data_structure():
     """Ensure all data directories exist"""

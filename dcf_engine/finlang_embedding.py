@@ -15,16 +15,19 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
 
+# Import SSOT directory manager
+from common.directory_manager import get_llm_config_path
+
 try:
     import numpy as np
     from sentence_transformers import SentenceTransformer
 
     SENTENCE_TRANSFORMERS_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
-    logging.warning(
-        "sentence-transformers not available. Install with: pip install sentence-transformers"
-    )
+    error_msg = f"FATAL: sentence-transformers not available. Install with: pip install sentence-transformers. Error: {e}"
+    logging.error(error_msg)
+    raise ImportError(error_msg)
 
 logger = logging.getLogger(__name__)
 
@@ -56,14 +59,14 @@ class FinLangEmbedding:
         # Debug and logging setup
         self.debug_mode = self.config.get("dcf_generation", {}).get("debug_mode", True)
         self.log_embeddings = self.config.get("logging", {}).get("log_embeddings", False)
-        self.debug_dir = Path("data/llm")
+        self.debug_dir = get_llm_config_path().parent
 
         self._initialize_model()
 
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from YAML file."""
         if config_path is None:
-            config_path = "data/llm/configs/local_ollama.yml"
+            config_path = str(get_llm_config_path("local_ollama.yml"))
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:
@@ -90,9 +93,7 @@ class FinLangEmbedding:
 
     def _initialize_model(self):
         """Initialize the FinLang embedding model."""
-        if not SENTENCE_TRANSFORMERS_AVAILABLE:
-            logger.error("sentence-transformers not available")
-            return
+        # Note: SENTENCE_TRANSFORMERS_AVAILABLE check removed because import is now FATAL
 
         try:
             logger.info(f"Loading FinLang embedding model: {self.model_name}")

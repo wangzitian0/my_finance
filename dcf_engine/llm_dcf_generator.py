@@ -16,6 +16,9 @@ from typing import Any, Dict, List, Optional
 from .finlang_embedding import FinLangEmbedding
 from .ollama_client import OllamaClient
 
+# Import SSOT directory manager
+from common.directory_manager import get_llm_config_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -40,10 +43,10 @@ class LLMDCFGenerator:
         """
         # Use fast config if requested
         if fast_mode and not config_path:
-            config_path = "data/llm/configs/deepseek_fast.yml"
+            config_path = str(get_llm_config_path("deepseek_fast.yml"))
 
         self.config_path = config_path
-        self.debug_dir = Path("data/llm")
+        self.debug_dir = get_llm_config_path().parent
         self.debug_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize components
