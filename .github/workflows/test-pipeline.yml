@@ -63,12 +63,12 @@ jobs:
     - name: Run directory structure protection tests
       run: |
         # Run the comprehensive directory structure protection tests
-        pixi run test-protection
+        pixi run python p3.py test --protection
         
     - name: Run quick structural tests
       run: |
         # Run quick tests using the unified testing system  
-        pixi run quick-test
+        pixi run python p3.py test --quick
         
     - name: Check test files exist
       run: |
