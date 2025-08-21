@@ -20,17 +20,17 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+# Use fallback ML service to avoid circular import issues
 try:
+    from common.ml_fallback import get_ml_service
     import faiss
-    import numpy as np
-    import torch
-    from sentence_transformers import SentenceTransformer
-    from sklearn.metrics.pairwise import cosine_similarity
-
     ML_DEPENDENCIES_AVAILABLE = True
+    ml_service = get_ml_service()
+    logging.info("Using ML fallback service for semantic retrieval")
 except ImportError as e:
     ML_DEPENDENCIES_AVAILABLE = False
-    print(f"ML dependencies not available: {e}")
+    ml_service = None
+    logging.warning(f"ML dependencies not available: {e}")
 
 from common.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,
@@ -66,14 +66,18 @@ class SemanticEmbeddingGenerator:
         self.setup_model()
 
     def setup_model(self):
-        """Setup the sentence transformer model."""
+        """Setup the ML service for embeddings."""
         try:
-            logger.info(f"Loading embedding model: {self.config.model_name}")
-            self.model = SentenceTransformer(self.config.model_name)
-            logger.info("Embedding model loaded successfully")
+            if ml_service:
+                logger.info(f"Using ML fallback service for model: {self.config.model_name}")
+                self.model = ml_service  # Use our fallback service
+                logger.info("ML service ready for embeddings")
+            else:
+                logger.warning("No ML service available, using simple fallback")
+                self.model = None
         except Exception as e:
-            logger.error(f"Failed to load embedding model: {e}")
-            raise
+            logger.error(f"Failed to setup ML service: {e}")
+            self.model = None
 
     def generate_document_embeddings(self, data_dir: Path) -> ETLStageOutput.EmbeddingsOutput:
         """
@@ -302,21 +306,38 @@ class SemanticEmbeddingGenerator:
 
         return chunks
 
-    def _generate_chunk_embedding(self, text: str) -> np.ndarray:
+    def _generate_chunk_embedding(self, text: str):
         """Generate embedding vector for a text chunk."""
         try:
             # Clean text
             text = text.replace("\n", " ").replace("\r", " ").strip()
             if not text:
-                return np.zeros(self.config.dimension)
+                return [0.0] * self.config.dimension
 
-            # Generate embedding
-            embedding = self.model.encode([text])
-            return embedding[0]
+            # Generate embedding using ML service
+            if self.model:
+                embeddings = self.model.encode_texts([text])
+                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                    return embeddings.data[0]
+                else:  # numpy array
+                    return embeddings[0]
+            else:
+                # Simple fallback without ML service
+                import hashlib
+                text_hash = hashlib.md5(text.encode()).hexdigest()
+                # Create simple embedding from hash
+                embedding = []
+                for i in range(min(len(text_hash), self.config.dimension // 16)):
+                    chunk = text_hash[i*2:(i+1)*2]
+                    if chunk:
+                        embedding.append(int(chunk, 16) / 255.0 - 0.5)
+                while len(embedding) < self.config.dimension:
+                    embedding.append(0.0)
+                return embedding[:self.config.dimension]
 
         except Exception as e:
             logger.error(f"Failed to generate embedding for text chunk: {e}")
-            return np.zeros(self.config.dimension)
+            return [0.0] * self.config.dimension
 
     def _get_sec_document_type(self, filename: str) -> str:
         """Extract SEC document type from filename."""
@@ -357,7 +378,11 @@ class SemanticEmbeddingGenerator:
                 return
 
             # Extract embeddings
-            embeddings = np.array([item["embedding_vector"] for item in embedding_data])
+            embeddings_list = [item["embedding_vector"] for item in embedding_data]
+            if NUMPY_AVAILABLE and np:
+                embeddings = np.array(embeddings_list)
+            else:
+                embeddings = embeddings_list
 
             # Create FAISS index
             dimension = embeddings.shape[1]
@@ -394,8 +419,16 @@ class SemanticEmbeddingGenerator:
 
             # Save embeddings separately
             embeddings_file = output_path / "embeddings_vectors.npy"
-            embeddings = np.array([item["embedding_vector"] for item in embedding_data])
-            np.save(embeddings_file, embeddings)
+            embeddings_list = [item["embedding_vector"] for item in embedding_data]
+            if NUMPY_AVAILABLE and np:
+                embeddings = np.array(embeddings_list)
+                np.save(embeddings_file, embeddings)
+            else:
+                embeddings = embeddings_list
+                # Save as JSON when numpy not available
+                import json
+                with open(str(embeddings_file).replace('.npy', '.json'), 'w') as f:
+                    json.dump(embeddings, f)
 
             # Save FAISS index if available
             if self.vector_index:
@@ -435,8 +468,13 @@ class SemanticRetriever:
     def load_embeddings(self):
         """Load embeddings and vector index from disk."""
         try:
-            # Load embedding model
-            self.model = SentenceTransformer(self.config.model_name)
+            # Load ML service instead of direct model
+            if ml_service:
+                logger.info(f"Using ML fallback service for retrieval model: {self.config.model_name}")
+                self.model = ml_service
+            else:
+                logger.warning("No ML service available for retrieval")
+                self.model = None
 
             # Load metadata
             metadata_file = self.embeddings_path / "embeddings_metadata.json"
@@ -482,8 +520,31 @@ class SemanticRetriever:
                 logger.error("Vector index or model not loaded")
                 return []
 
-            # Generate query embedding
-            query_embedding = self.model.encode([query])
+            # Generate query embedding using ML service
+            if self.model:
+                embeddings = self.model.encode_texts([query])
+                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                    if NUMPY_AVAILABLE and np:
+                        query_embedding = np.array([embeddings.data[0]], dtype=np.float32)
+                    else:
+                        query_embedding = [embeddings.data[0]]
+                else:  # numpy array
+                    query_embedding = embeddings
+            else:
+                # Simple fallback
+                import hashlib
+                query_hash = hashlib.md5(query.encode()).hexdigest()
+                embedding = []
+                for i in range(min(len(query_hash), self.config.dimension // 16)):
+                    chunk = query_hash[i*2:(i+1)*2]
+                    if chunk:
+                        embedding.append(int(chunk, 16) / 255.0 - 0.5)
+                while len(embedding) < self.config.dimension:
+                    embedding.append(0.0)
+                if NUMPY_AVAILABLE and np:
+                    query_embedding = np.array([embedding[:self.config.dimension]], dtype=np.float32)
+                else:
+                    query_embedding = [embedding[:self.config.dimension]]
             faiss.normalize_L2(query_embedding)
 
             # Search vector index

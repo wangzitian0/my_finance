@@ -315,11 +315,35 @@ class LLMDCFGenerator:
         # Try to use real semantic retrieval if available
         try:
             # Check if we have a real semantic retrieval system
-            from ETL.semantic_retrieval import SemanticEmbeddingGenerator
+            from ETL.semantic_retrieval import SemanticRetriever
+            from pathlib import Path
 
             # Try to initialize and use real semantic retrieval
             try:
-                semantic_generator = SemanticEmbeddingGenerator()
+                # Try to find embeddings data
+                embeddings_paths = [
+                    Path("data/stage_03_load/embeddings"),
+                    Path("data/stage_99_build").glob("*/embeddings"),
+                ]
+                
+                embeddings_path = None
+                for path in embeddings_paths:
+                    if isinstance(path, Path) and path.exists():
+                        embeddings_path = path
+                        break
+                    elif hasattr(path, '__iter__'):
+                        for p in path:
+                            if p.exists():
+                                embeddings_path = p
+                                break
+                        if embeddings_path:
+                            break
+                
+                if embeddings_path:
+                    semantic_generator = SemanticRetriever(embeddings_path)
+                else:
+                    # No embeddings found, skip semantic retrieval
+                    raise Exception("No embeddings found")
                 thinking_log.append(
                     "✅ Semantic retrieval system found - attempting real document search"
                 )

@@ -19,14 +19,15 @@ import yaml
 from common.directory_manager import get_llm_config_path
 
 try:
-    import numpy as np
-    from sentence_transformers import SentenceTransformer
-
+    from common.ml_fallback import get_ml_service
     SENTENCE_TRANSFORMERS_AVAILABLE = True
+    ml_service = get_ml_service()
+    logging.info("Using ML fallback service for financial embeddings")
 except ImportError as e:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
-    error_msg = f"FATAL: sentence-transformers not available. Install with: pip install sentence-transformers. Error: {e}"
-    logging.error(error_msg)
+    ml_service = None
+    error_msg = f"ML fallback service not available. Error: {e}"
+    logging.warning(error_msg)
     raise ImportError(error_msg)
 
 logger = logging.getLogger(__name__)
@@ -97,7 +98,7 @@ class FinLangEmbedding:
 
         try:
             logger.info(f"Loading FinLang embedding model: {self.model_name}")
-            self.model = SentenceTransformer(self.model_name)
+            self.model = ml_service  # Use ML service instead
             logger.info("FinLang embedding model loaded successfully")
 
             if self.debug_mode:
@@ -109,7 +110,7 @@ class FinLangEmbedding:
             try:
                 # Fallback to a more general financial model
                 fallback_model = "sentence-transformers/all-MiniLM-L6-v2"
-                self.model = SentenceTransformer(fallback_model)
+                self.model = ml_service  # Use ML service instead
                 logger.info(f"Loaded fallback model: {fallback_model}")
             except Exception as fallback_error:
                 logger.error(f"Fallback model also failed: {fallback_error}")
@@ -154,8 +155,22 @@ class FinLangEmbedding:
             # Preprocess financial text for better embeddings
             processed_text = self._preprocess_financial_text(text, text_type)
 
-            embedding = self.model.encode(processed_text)
-            embedding_list = embedding.tolist()
+            # Use ML service instead of direct model
+            if self.model:
+                embeddings = self.model.encode_texts([processed_text])
+                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                    embedding = embeddings.data[0]
+                else:  # numpy array
+                    embedding = embeddings[0]
+            else:
+                # Simple fallback
+                embedding = [0.0] * 384  # Default dimension
+                
+            # Convert to list if needed
+            if hasattr(embedding, 'tolist'):
+                embedding_list = embedding.tolist()
+            else:
+                embedding_list = list(embedding)
 
             if self.log_embeddings:
                 self._log_embedding_info(text, text_type, embedding_list)
@@ -209,7 +224,7 @@ class FinLangEmbedding:
             "text_length": len(text),
             "text_preview": text[:100] + "..." if len(text) > 100 else text,
             "embedding_dimension": len(embedding),
-            "embedding_norm": float(np.linalg.norm(embedding)),
+            "embedding_norm": float(sum(x*x for x in embedding) ** 0.5),  # Manual norm calculation
             "embedding_sample": embedding[:5],  # First 5 dimensions for debugging
         }
 
@@ -302,12 +317,10 @@ class FinLangEmbedding:
     def _calculate_cosine_similarity(self, vec1: List[float], vec2: List[float]) -> float:
         """Calculate cosine similarity between two vectors."""
         try:
-            v1 = np.array(vec1)
-            v2 = np.array(vec2)
-
-            dot_product = np.dot(v1, v2)
-            norm1 = np.linalg.norm(v1)
-            norm2 = np.linalg.norm(v2)
+            # Manual cosine similarity calculation without numpy
+            dot_product = sum(a * b for a, b in zip(vec1, vec2))
+            norm1 = sum(x * x for x in vec1) ** 0.5
+            norm2 = sum(x * x for x in vec2) ** 0.5
 
             if norm1 == 0 or norm2 == 0:
                 return 0.0

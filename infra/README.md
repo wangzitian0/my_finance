@@ -27,7 +27,7 @@ Global infrastructure management focused on environment, deployment, monitoring,
 
 ```bash
 # Environment management
-p3 env status
+p3 env-status
 p3 shutdown-all
 
 # Git workflow

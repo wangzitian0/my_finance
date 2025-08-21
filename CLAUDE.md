@@ -47,11 +47,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Environment Commands (via p3)
 ```bash
-p3 env setup                    # Initial environment setup (installs Podman, Neo4j)
-p3 env start                    # Start all services (Podman + Neo4j)
-p3 env stop                     # Stop all services
-p3 env status                   # Check environment status
-p3 env reset                    # Reset everything (destructive)
+p3 env-setup                    # Initial environment setup (installs Podman, Neo4j)
+p3 env-start                    # Start all services (Podman + Neo4j)
+p3 env-stop                     # Stop all services
+p3 env-status                   # Check environment status
+p3 env-reset                    # Reset everything (destructive)
 ```
 
 ### Podman Commands (Local Development)
@@ -360,7 +360,7 @@ git push --force-with-lease
 
 ### Common Tasks
 - **Data collection**: Use `p3 build run m7` (NEVER direct python script invocations)
-- **Environment setup**: Use `p3 env setup`
+- **Environment setup**: Use `p3 env-setup`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Use `p3 test` (NEVER direct python commands)
 - **Data directory**: Use `p3 commit-data-changes` to stage data changes
@@ -411,7 +411,7 @@ git push --force-with-lease
 # 1. Start session - ENSURE LATEST BASE
 git checkout main && git pull origin main    # CRITICAL: Latest main
  p3 activate                                  # Activate environment
- p3 env status                                # Check all services
+ p3 env-status                               # Check all services
 
 # 2. Create branch from LATEST main
 git checkout -b feature/description-fixes-N
@@ -455,10 +455,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ```
 
 ### Environment Management Rules
-- **Setup once**: `p3 env setup` (only for new environments)
-- **Daily startup**: `p3 env status` (check before starting work)
+- **Setup once**: `p3 env-setup` (only for new environments)
+- **Daily startup**: `p3 env-status` (check before starting work)
 - **Daily shutdown**: `p3 shutdown-all` (ALWAYS run before ending session)
-- **Emergency reset**: `p3 env reset` (destructive - use carefully)
+- **Emergency reset**: `p3 env-reset` (destructive - use carefully)
 
 ### Git Workflow (MANDATORY for all changes)
 
@@ -602,7 +602,7 @@ git remote prune origin
 ```
 
 ### Session Management (CRITICAL)
-- **Always start with**: `p3 activate` and `p3 env status`
+- **Always start with**: `p3 activate` and `p3 env-status`
 - **Always end with**: `p3 shutdown-all`
 - **Never leave services running** between sessions
 - **Check status frequently** during long development sessions
