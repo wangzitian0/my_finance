@@ -168,7 +168,7 @@ class TestModuleIntegrationWorkflow:
 
         # Verify basic structure - config moved to common/config
         assert (data_dir / "stage_99_build").exists(), "Build directory not found"
-        
+
         # Config moved to main repo
         assert Path("common/config").exists(), "Config directory not found in common/"
 
