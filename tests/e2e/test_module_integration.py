@@ -166,9 +166,11 @@ class TestModuleIntegrationWorkflow:
         assert target.exists(), f"Symlink target not found: {target}"
         assert target.name == "my_finance_data", "Symlink should point to my_finance_data"
 
-        # Verify basic structure
-        assert (data_dir / "config").exists(), "Config directory not found"
+        # Verify basic structure - config moved to common/config
         assert (data_dir / "stage_99_build").exists(), "Build directory not found"
+        
+        # Config moved to main repo
+        assert Path("common/config").exists(), "Config directory not found in common/"
 
     def test_config_files_integration(self):
         """Test that all required configuration files exist"""
