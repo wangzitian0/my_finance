@@ -342,6 +342,137 @@ git push --force-with-lease
 
 **Always verify**: Data collection outputs and processing logs before committing changes.
 
+## 🤖 Claude Bot GitHub Integration
+
+**Automated AI assistance through GitHub comments** - Use `@claude` in issues or pull requests to trigger Claude Code actions.
+
+### Setup Requirements
+
+**Repository Secrets Configuration:**
+1. **ANTHROPIC_API_KEY** - Required for Claude Code API access
+   - Navigate to: Repository Settings → Secrets and variables → Actions
+   - Add new repository secret: `ANTHROPIC_API_KEY`
+   - Value: Your Anthropic API key from claude.ai console
+
+2. **GITHUB_TOKEN** - Automatically available (no setup required)
+   - Used for repository access and commenting
+   - Automatically provided by GitHub Actions
+
+### Usage Patterns
+
+**Basic Command Format:**
+```
+@claude <command>
+```
+
+**Supported Operations:**
+
+#### Code Implementation
+```bash
+@claude implement user authentication with OAuth
+@claude add SEC filing validation to ETL pipeline
+@claude create new DCF calculation method for growth companies
+@claude implement Graph RAG query optimization
+```
+
+#### Code Review and Analysis
+```bash
+@claude review this PR for security vulnerabilities
+@claude analyze code performance in ETL directory
+@claude check coding standards compliance
+@claude suggest improvements for memory usage
+```
+
+#### Bug Fixes and Testing
+```bash
+@claude fix the failing CI tests and merge when ready
+@claude debug the SEC filing parser issue
+@claude fix type errors in dcf_engine module
+@claude resolve the Neo4j connection timeout
+```
+
+#### Large-scale Refactoring
+```bash
+@claude refactor ETL pipeline to use new directory structure
+@claude migrate configuration files to common/config
+@claude update all hardcoded paths to use directory_manager
+@claude consolidate duplicate utility functions
+```
+
+#### Documentation and Maintenance
+```bash
+@claude update README files for consistency
+@claude generate API documentation for dcf_engine
+@claude create migration guide for new data architecture
+@claude document the Graph RAG implementation
+```
+
+### Workflow Integration
+
+**Automatic Execution:**
+- Triggers on comment creation in issues or PR reviews
+- Runs in isolated GitHub Actions environment
+- Uses project's existing CI/CD infrastructure
+- Respects repository permissions and branch protection
+
+**Environment Setup:**
+- Pixi environment with Python 3.12 + ML dependencies
+- Mock LLM configurations for CI testing
+- Fast build mode with DeepSeek 1.5b for quick responses
+- Access to all project utilities and scripts
+
+**Response Handling:**
+- ✅ Success: Comments with completion confirmation
+- ❌ Failure: Comments with error details and logs
+- 📋 Artifacts: Uploads relevant files and test results
+- ⏱️ Timeout: 30-minute execution limit for complex tasks
+
+### Security and Permissions
+
+**Access Control:**
+- Repository write permissions for code changes
+- Issue/PR commenting permissions for feedback
+- Actions permissions for workflow execution
+- No access to sensitive secrets beyond API keys
+
+**Safety Measures:**
+- All changes follow existing branch protection rules
+- CI validation still applies to bot-generated code
+- M7 testing requirements remain enforced
+- No direct main branch pushes (PR workflow required)
+
+**Best Practices:**
+- Use specific, actionable commands
+- Reference issue numbers when applicable
+- Review bot-generated code before merging
+- Monitor action logs for debugging
+
+### Limitations and Guidelines
+
+**Current Limitations:**
+- 30-minute timeout for complex operations
+- CI environment constraints (no full SEC data)
+- Fast mode LLM for response time optimization
+- Limited to repository-scoped operations
+
+**Usage Guidelines:**
+- **Be specific**: Clear, actionable commands work best
+- **Reference context**: Mention file paths, issue numbers, or PR details
+- **Review outputs**: Always review bot-generated code changes
+- **Monitor logs**: Check GitHub Actions logs for detailed execution info
+
+**Example Workflow:**
+```bash
+# In an issue or PR comment:
+@claude implement OAuth authentication for the web interface
+
+# Bot will:
+# 1. Analyze current codebase structure
+# 2. Implement OAuth integration following project patterns
+# 3. Create appropriate tests and documentation
+# 4. Comment back with results and next steps
+```
+
 ## Claude Code Integration Notes
 
 ### Development Patterns
