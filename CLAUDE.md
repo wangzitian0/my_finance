@@ -1,13 +1,13 @@
 # CLAUDE.md
 
-> IMPORTANT UPDATE (2025-08-12)
+> IMPORTANT ARCHITECTURE UPDATE (2025-08-21)
 >
-> The `data` directory is now directly integrated into the main repository. 
-> The previous symlink/submodule structure has been merged for simpler management.
+> **Clean Repository Structure**: The repository architecture has been optimized for maintainability:
 >
-> - New structure: `my_finance/data/` (regular directory, part of main repo)
-> - All data files are now tracked in the main repository
-> - No need for separate repository or symlink management
+> - **Main repository**: Contains only code, documentation, and configurations
+> - **Data submodule**: `data/` directory remains a submodule containing only build artifacts and generated data
+> - **Configuration migration**: All config files moved from `data/config/` to `common/config/`
+> - **Cleaner separation**: Core configurations tracked in main repo, data artifacts in submodule
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -355,7 +355,7 @@ git push --force-with-lease
 ### File Organization
 - **Core logic**: `spider/`, `ETL/`, `parser/` directories
 - **Management**: `ETL/manage.py`, `dcf_engine/build_knowledge_base.py`
-- **Configuration**: `common/config/*.yml`, `common/common_config.yml`
+- **Configuration**: `common/config/*.yml` (centralized configuration management)
 - **Documentation**: README.md (primary), `docs/` (detailed docs), this file (Claude-specific)
 
 ### Common Tasks
@@ -363,7 +363,7 @@ git push --force-with-lease
 - **Environment setup**: Use `p3 env-setup`
 - **Dependency management**: Always use `pixi add <package>` and `pixi install`
 - **Testing**: Use `p3 test` (NEVER direct python commands)
-- **Data directory**: Use `p3 commit-data-changes` to stage data changes
+- **Data directory**: Use `p3 commit-data-changes` to stage data changes (build artifacts only)
 
 ### Simplified Command System
 
@@ -435,8 +435,8 @@ rm -f common/latest_build   # Clear build symlinks if needed
 # - Changes to evaluation/ → Check root README "Core Components" → evaluation description
 # - Changes to supporting components → Check root README "Supporting Components"
 
-# 5. Handle data directory FIRST (CRITICAL)
- p3 commit-data-changes        # Stage any data directory changes
+# 5. Handle data directory FIRST if needed (CRITICAL)
+ p3 commit-data-changes        # Stage any data directory changes (build artifacts only)
 
 # 6. Then handle main repo changes
 git add . && git commit -m "Description
@@ -671,12 +671,15 @@ stage_99_build         →     layer_05_results    # Analysis and reports
 
 ### SSOT Configuration Files
 
-**All configuration centralized in `common/config/`:**
+**All configuration centralized in `common/config/` (migrated from `data/config/`):**
 
 - `directory_structure.yml` - **SSOT** for all directory paths
 - `list_magnificent_7.yml` - M7 company definitions
 - `list_nasdaq_100.yml` - N100 company definitions
+- `list_fast_2.yml` - Fast 2 companies for development testing
+- `list_vti_3500.yml` - VTI 3500+ companies for production
 - `stage_00_original_*.yml` - Data source configurations
+- `llm/` - LLM configurations and templates
 
 **Configuration Hierarchy:**
 ```
@@ -684,8 +687,18 @@ common/config/
 ├── directory_structure.yml   # SSOT directory management
 ├── list_*.yml                # Company/ticker lists  
 ├── stage_*.yml               # Data source configs
-└── sec_edgar_*.yml           # SEC filing configurations
+├── sec_edgar_*.yml           # SEC filing configurations
+└── llm/                      # LLM configs, templates, responses
+    ├── configs/              # LLM model configurations
+    ├── templates/            # Prompt templates
+    ├── responses/            # Generated responses cache
+    ├── semantic_results/     # Semantic retrieval results
+    └── thinking_process/     # LLM reasoning logs
 ```
+
+**Legacy Data Config:**
+- `data/config/` - **DEPRECATED** - Contains only legacy config files
+- All active configurations now in `common/config/` for better version control
 
 ### Migration and Backward Compatibility
 
