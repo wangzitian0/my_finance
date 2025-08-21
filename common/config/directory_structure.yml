@@ -4,7 +4,7 @@
 
 storage:
   backend: "local_filesystem"  # Options: local_filesystem, aws_s3, gcp_gcs, azure_blob
-  root_path: "data"
+  root_path: "build_data"
   versioning: true
   compression: false
 
@@ -106,7 +106,8 @@ legacy_mapping:
   stage_02_transform: "layer_03_index" 
   stage_03_load: "layer_04_rag"
   stage_99_build: "layer_05_results"
-  data/config: "common/config"  # Already migrated
+  data/config: "common/config"  # Migrated to main repo
+  data: "build_data"  # Data directory renamed to build_data submodule
 
 # Storage backend configurations
 backends:

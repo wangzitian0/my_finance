@@ -14,7 +14,9 @@ def validate_m7_data():
     """Validate M7 data availability"""
     print("🔍 Validating M7 data...")
 
-    data_dir = Path("data/stage_01_extract/yfinance")
+    from common.directory_manager import get_data_path, DataLayer
+    # Use centralized path management instead of hardcoded paths
+    data_dir = get_data_path(DataLayer.RAW_DATA, "yfinance").parent / "stage_01_extract" / "yfinance"
     if not data_dir.exists():
         print("❌ M7 YFinance data directory not found")
         return False
