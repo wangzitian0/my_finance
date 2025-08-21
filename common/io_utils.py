@@ -244,7 +244,9 @@ class IOUtils:
             f.write(json.dumps(data) + "\n")
 
     @staticmethod
-    def read_json_lines(file_path: Union[str, Path], encoding: str = "utf-8") -> List[Dict[str, Any]]:
+    def read_json_lines(
+        file_path: Union[str, Path], encoding: str = "utf-8"
+    ) -> List[Dict[str, Any]]:
         """
         Read JSON lines from a JSONL file.
 

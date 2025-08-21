@@ -22,8 +22,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 # Use fallback ML service to avoid circular import issues
 try:
-    from common.ml_fallback import get_ml_service
     import faiss
+
+    from common.ml_fallback import get_ml_service
+
     ML_DEPENDENCIES_AVAILABLE = True
     ml_service = get_ml_service()
     logging.info("Using ML fallback service for semantic retrieval")
@@ -317,23 +319,24 @@ class SemanticEmbeddingGenerator:
             # Generate embedding using ML service
             if self.model:
                 embeddings = self.model.encode_texts([text])
-                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                if hasattr(embeddings, "data"):  # SimpleArray from fallback
                     return embeddings.data[0]
                 else:  # numpy array
                     return embeddings[0]
             else:
                 # Simple fallback without ML service
                 import hashlib
+
                 text_hash = hashlib.md5(text.encode()).hexdigest()
                 # Create simple embedding from hash
                 embedding = []
                 for i in range(min(len(text_hash), self.config.dimension // 16)):
-                    chunk = text_hash[i*2:(i+1)*2]
+                    chunk = text_hash[i * 2 : (i + 1) * 2]
                     if chunk:
                         embedding.append(int(chunk, 16) / 255.0 - 0.5)
                 while len(embedding) < self.config.dimension:
                     embedding.append(0.0)
-                return embedding[:self.config.dimension]
+                return embedding[: self.config.dimension]
 
         except Exception as e:
             logger.error(f"Failed to generate embedding for text chunk: {e}")
@@ -427,7 +430,8 @@ class SemanticEmbeddingGenerator:
                 embeddings = embeddings_list
                 # Save as JSON when numpy not available
                 import json
-                with open(str(embeddings_file).replace('.npy', '.json'), 'w') as f:
+
+                with open(str(embeddings_file).replace(".npy", ".json"), "w") as f:
                     json.dump(embeddings, f)
 
             # Save FAISS index if available
@@ -470,7 +474,9 @@ class SemanticRetriever:
         try:
             # Load ML service instead of direct model
             if ml_service:
-                logger.info(f"Using ML fallback service for retrieval model: {self.config.model_name}")
+                logger.info(
+                    f"Using ML fallback service for retrieval model: {self.config.model_name}"
+                )
                 self.model = ml_service
             else:
                 logger.warning("No ML service available for retrieval")
@@ -523,7 +529,7 @@ class SemanticRetriever:
             # Generate query embedding using ML service
             if self.model:
                 embeddings = self.model.encode_texts([query])
-                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                if hasattr(embeddings, "data"):  # SimpleArray from fallback
                     if NUMPY_AVAILABLE and np:
                         query_embedding = np.array([embeddings.data[0]], dtype=np.float32)
                     else:
@@ -533,18 +539,21 @@ class SemanticRetriever:
             else:
                 # Simple fallback
                 import hashlib
+
                 query_hash = hashlib.md5(query.encode()).hexdigest()
                 embedding = []
                 for i in range(min(len(query_hash), self.config.dimension // 16)):
-                    chunk = query_hash[i*2:(i+1)*2]
+                    chunk = query_hash[i * 2 : (i + 1) * 2]
                     if chunk:
                         embedding.append(int(chunk, 16) / 255.0 - 0.5)
                 while len(embedding) < self.config.dimension:
                     embedding.append(0.0)
                 if NUMPY_AVAILABLE and np:
-                    query_embedding = np.array([embedding[:self.config.dimension]], dtype=np.float32)
+                    query_embedding = np.array(
+                        [embedding[: self.config.dimension]], dtype=np.float32
+                    )
                 else:
-                    query_embedding = [embedding[:self.config.dimension]]
+                    query_embedding = [embedding[: self.config.dimension]]
             faiss.normalize_L2(query_embedding)
 
             # Search vector index

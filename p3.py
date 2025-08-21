@@ -26,7 +26,7 @@ class P3CLI:
             # Environment Management (p3 calls ansible for infra, pixi for Python)
             "activate": "pixi shell",
             "env-setup": "ansible-playbook infra/ansible/setup.yml",
-            "env-start": "ansible-playbook infra/ansible/start.yml", 
+            "env-start": "ansible-playbook infra/ansible/start.yml",
             "env-stop": "ansible-playbook infra/ansible/stop.yml",
             "env-status": "pixi run python infra/comprehensive_env_status.py",
             "env-reset": "ansible-playbook infra/ansible/reset.yml",
@@ -132,9 +132,7 @@ class P3CLI:
                 if resolved_scope == "f2":
                     return "pixi run python infra/create_pr_with_test.py --skip-pr-creation --fast-mode"
                 else:
-                    return (
-                        "pixi run python infra/create_pr_with_test.py --skip-pr-creation"
-                    )
+                    return "pixi run python infra/create_pr_with_test.py --skip-pr-creation"
             else:
                 # Build commands use scope directly
                 cmd_template = self.commands[command]

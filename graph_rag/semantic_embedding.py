@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 # Use ML fallback service to avoid import issues
 try:
     from common.ml_fallback import get_ml_service
+
     SENTENCE_TRANSFORMERS_AVAILABLE = True
     ml_service = get_ml_service()
     logging.info("Using ML fallback service for graph RAG semantic embedding")
@@ -70,16 +71,16 @@ class SemanticEmbedding:
             # Use ML service instead of direct model
             if self.model:
                 embeddings = self.model.encode_texts([text])
-                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                if hasattr(embeddings, "data"):  # SimpleArray from fallback
                     embedding = embeddings.data[0]
                 else:  # numpy array
                     embedding = embeddings[0]
             else:
                 # Simple fallback
                 embedding = [0.0] * 384  # Default dimension
-                
+
             # Convert to list if needed
-            if hasattr(embedding, 'tolist'):
+            if hasattr(embedding, "tolist"):
                 return embedding.tolist()
             else:
                 return list(embedding)

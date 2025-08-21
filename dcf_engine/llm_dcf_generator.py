@@ -13,11 +13,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .finlang_embedding import FinLangEmbedding
-from .ollama_client import OllamaClient
-
 # Import SSOT directory manager
 from common.directory_manager import get_llm_config_path
+
+from .finlang_embedding import FinLangEmbedding
+from .ollama_client import OllamaClient
 
 logger = logging.getLogger(__name__)
 
@@ -315,8 +315,9 @@ class LLMDCFGenerator:
         # Try to use real semantic retrieval if available
         try:
             # Check if we have a real semantic retrieval system
-            from ETL.semantic_retrieval import SemanticRetriever
             from pathlib import Path
+
+            from ETL.semantic_retrieval import SemanticRetriever
 
             # Try to initialize and use real semantic retrieval
             try:
@@ -325,20 +326,20 @@ class LLMDCFGenerator:
                     Path("data/stage_03_load/embeddings"),
                     Path("data/stage_99_build").glob("*/embeddings"),
                 ]
-                
+
                 embeddings_path = None
                 for path in embeddings_paths:
                     if isinstance(path, Path) and path.exists():
                         embeddings_path = path
                         break
-                    elif hasattr(path, '__iter__'):
+                    elif hasattr(path, "__iter__"):
                         for p in path:
                             if p.exists():
                                 embeddings_path = p
                                 break
                         if embeddings_path:
                             break
-                
+
                 if embeddings_path:
                     semantic_generator = SemanticRetriever(embeddings_path)
                 else:

@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple
 # Avoid numpy import due to circular import issues in pixi environment
 try:
     import numpy as np
+
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False

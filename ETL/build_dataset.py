@@ -34,10 +34,11 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
 
     try:
         import time
+
         start_time = time.time()
-        
+
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Starting build process...")
-        
+
         # Initialize tier and config
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Initializing tier and config...")
         tier = DatasetTier(tier_name)
@@ -70,7 +71,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Building YFinance data...")
             yf_start = time.time()
             success = build_yfinance_data(tier, yaml_config, tracker)
-            print(f"⏱️ [{time.strftime('%H:%M:%S')}] YFinance data completed in {time.time() - yf_start:.1f}s, success: {success}")
+            print(
+                f"⏱️ [{time.strftime('%H:%M:%S')}] YFinance data completed in {time.time() - yf_start:.1f}s, success: {success}"
+            )
             if not success:
                 tracker.fail_stage("stage_01_extract", "yfinance data collection failed")
                 return False
@@ -82,7 +85,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Building SEC Edgar data...")
             sec_start = time.time()
             success = build_sec_edgar_data(tier, yaml_config, tracker)
-            print(f"⏱️ [{time.strftime('%H:%M:%S')}] SEC Edgar data completed in {time.time() - sec_start:.1f}s, success: {success}")
+            print(
+                f"⏱️ [{time.strftime('%H:%M:%S')}] SEC Edgar data completed in {time.time() - sec_start:.1f}s, success: {success}"
+            )
             if not success:
                 tracker.add_warning("stage_01_extract", "SEC Edgar data collection failed")
         else:
@@ -105,7 +110,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         tracker.complete_stage(
             "stage_02_transform", partition=date_partition, artifacts=["cleaned_data.json"]
         )
-        print(f"⏱️ [{time.strftime('%H:%M:%S')}] Transform stage completed in {time.time() - transform_start:.1f}s")
+        print(
+            f"⏱️ [{time.strftime('%H:%M:%S')}] Transform stage completed in {time.time() - transform_start:.1f}s"
+        )
 
         # Load stage (placeholder for now)
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Starting stage_03_load...")
@@ -117,13 +124,15 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
             partition=date_partition,
             artifacts=["graph_nodes.json", "dcf_results.json"],
         )
-        print(f"⏱️ [{time.strftime('%H:%M:%S')}] Load stage completed in {time.time() - load_start:.1f}s")
+        print(
+            f"⏱️ [{time.strftime('%H:%M:%S')}] Load stage completed in {time.time() - load_start:.1f}s"
+        )
 
         # Analysis stage - DCF calculations (SIMPLIFIED FOR TESTING)
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Starting stage_04_analysis (SIMPLIFIED)...")
         analysis_start = time.time()
         tracker.start_stage("stage_04_analysis")
-        
+
         if fast_mode:
             # Skip complex DCF analysis in fast mode
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex DCF analysis...")
@@ -133,11 +142,17 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
             )
         else:
             try:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis (fast_mode={fast_mode})...")
+                print(
+                    f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis (fast_mode={fast_mode})..."
+                )
                 companies_analyzed = run_dcf_analysis(tier, tracker, fast_mode=fast_mode)
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies")
+                print(
+                    f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies"
+                )
                 tracker.complete_stage(
-                    "stage_04_analysis", partition=date_partition, companies_analyzed=companies_analyzed
+                    "stage_04_analysis",
+                    partition=date_partition,
+                    companies_analyzed=companies_analyzed,
                 )
             except Exception as e:
                 print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
@@ -145,27 +160,37 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
                 tracker.complete_stage(
                     "stage_04_analysis", partition=date_partition, companies_analyzed=0
                 )
-        print(f"⏱️ [{time.strftime('%H:%M:%S')}] Analysis stage completed in {time.time() - analysis_start:.1f}s")
+        print(
+            f"⏱️ [{time.strftime('%H:%M:%S')}] Analysis stage completed in {time.time() - analysis_start:.1f}s"
+        )
 
         # Reporting stage - Generate final reports (SIMPLIFIED FOR TESTING)
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Starting stage_05_reporting (SIMPLIFIED)...")
         reporting_start = time.time()
         tracker.start_stage("stage_05_reporting")
-        
+
         if fast_mode:
             # Skip complex report generation in fast mode
-            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex report generation...")
+            print(
+                f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex report generation..."
+            )
             reports_generated = 1  # Simple placeholder report
             tracker.complete_stage(
                 "stage_05_reporting", partition=date_partition, reports_generated=reports_generated
             )
         else:
             try:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running report generation (fast_mode={fast_mode})...")
+                print(
+                    f"⏱️ [{time.strftime('%H:%M:%S')}] Running report generation (fast_mode={fast_mode})..."
+                )
                 reports_generated = run_report_generation(tier, tracker, fast_mode=fast_mode)
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation completed, generated {reports_generated} reports")
+                print(
+                    f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation completed, generated {reports_generated} reports"
+                )
                 tracker.complete_stage(
-                    "stage_05_reporting", partition=date_partition, reports_generated=reports_generated
+                    "stage_05_reporting",
+                    partition=date_partition,
+                    reports_generated=reports_generated,
                 )
             except Exception as e:
                 print(f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation failed: {e}")
@@ -173,7 +198,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
                 tracker.complete_stage(
                     "stage_05_reporting", partition=date_partition, reports_generated=0
                 )
-        print(f"⏱️ [{time.strftime('%H:%M:%S')}] Reporting stage completed in {time.time() - reporting_start:.1f}s")
+        print(
+            f"⏱️ [{time.strftime('%H:%M:%S')}] Reporting stage completed in {time.time() - reporting_start:.1f}s"
+        )
 
         # Scan filesystem for actual outputs
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Scanning filesystem for outputs...")

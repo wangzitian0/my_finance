@@ -20,6 +20,7 @@ from common.directory_manager import get_llm_config_path
 
 try:
     from common.ml_fallback import get_ml_service
+
     SENTENCE_TRANSFORMERS_AVAILABLE = True
     ml_service = get_ml_service()
     logging.info("Using ML fallback service for financial embeddings")
@@ -158,16 +159,16 @@ class FinLangEmbedding:
             # Use ML service instead of direct model
             if self.model:
                 embeddings = self.model.encode_texts([processed_text])
-                if hasattr(embeddings, 'data'):  # SimpleArray from fallback
+                if hasattr(embeddings, "data"):  # SimpleArray from fallback
                     embedding = embeddings.data[0]
                 else:  # numpy array
                     embedding = embeddings[0]
             else:
                 # Simple fallback
                 embedding = [0.0] * 384  # Default dimension
-                
+
             # Convert to list if needed
-            if hasattr(embedding, 'tolist'):
+            if hasattr(embedding, "tolist"):
                 embedding_list = embedding.tolist()
             else:
                 embedding_list = list(embedding)
@@ -224,7 +225,9 @@ class FinLangEmbedding:
             "text_length": len(text),
             "text_preview": text[:100] + "..." if len(text) > 100 else text,
             "embedding_dimension": len(embedding),
-            "embedding_norm": float(sum(x*x for x in embedding) ** 0.5),  # Manual norm calculation
+            "embedding_norm": float(
+                sum(x * x for x in embedding) ** 0.5
+            ),  # Manual norm calculation
             "embedding_sample": embedding[:5],  # First 5 dimensions for debugging
         }
 
