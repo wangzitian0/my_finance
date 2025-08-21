@@ -1,0 +1,44 @@
+# Yahoo Finance Data Source Configuration
+# Modular configuration for yfinance data collection
+
+source: yfinance
+description: "Yahoo Finance real-time and historical stock market data"
+
+# Data collection periods with Object IDs (OIDs)
+data_periods:
+  daily_3mo:
+    period: "3mo"
+    interval: "1d"
+    description: "3 months daily data for short-term analysis"
+    min_data_points: 60
+    
+  weekly_5y:
+    period: "5y"
+    interval: "1wk"
+    description: "5 years weekly data for medium-term trends"
+    min_data_points: 250
+    
+  monthly_max:
+    period: "max"
+    interval: "1mo"
+    description: "Maximum historical monthly data for long-term analysis"
+    min_data_points: 120
+
+# Collection settings
+max_retries: 3
+timeout_per_ticker: 30  # seconds
+rate_limit_delay: 1     # seconds between requests
+enable_validation: true
+
+# Data quality validation
+validation:
+  validate_price_data: true
+  validate_volume_data: true
+  min_price_threshold: 0.01
+  max_price_threshold: 100000
+  
+# Output format
+output:
+  format: "json"
+  timestamp_format: "%y%m%d-%H%M%S"
+  file_naming: "{ticker}_yfinance_{oid}_{timestamp}.json"
