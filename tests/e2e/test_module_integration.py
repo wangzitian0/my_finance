@@ -26,7 +26,7 @@ class TestModuleIntegrationWorkflow:
         assert result.returncode == 0, f"F2 build failed: {result.stderr}"
 
         # 3. Verify build artifacts
-        from common.directory_manager import get_data_path, DataLayer
+        from common.directory_manager import DataLayer, get_data_path
 
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists(), "Build directory not found"
@@ -169,7 +169,7 @@ class TestModuleIntegrationWorkflow:
         assert target.name == "my_finance_data", "Symlink should point to my_finance_data"
 
         # Verify basic structure - use centralized directory management for Issue #122
-        from common.directory_manager import get_data_path, DataLayer
+        from common.directory_manager import DataLayer, get_data_path
 
         build_dir = get_data_path(DataLayer.QUERY_RESULTS)
         # Check legacy path for backward compatibility
