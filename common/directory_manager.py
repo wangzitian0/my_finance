@@ -30,8 +30,12 @@ class DataLayer(Enum):
 
     RAW_DATA = "stage_00_raw"  # Raw Data Layer - Immutable source data
     DAILY_DELTA = "stage_01_daily_delta"  # Daily Delta Layer - Incremental changes
-    DAILY_INDEX = "stage_02_daily_index"  # Daily Index Layer - New embeddings, entities, relationships
-    GRAPH_RAG = "stage_03_graph_rag"  # Graph RAG Layer - Unified knowledge base (single source of truth)
+    DAILY_INDEX = (
+        "stage_02_daily_index"  # Daily Index Layer - New embeddings, entities, relationships
+    )
+    GRAPH_RAG = (
+        "stage_03_graph_rag"  # Graph RAG Layer - Unified knowledge base (single source of truth)
+    )
     QUERY_RESULTS = "stage_04_query_results"  # Query Results Layer - Analysis and reports
 
 

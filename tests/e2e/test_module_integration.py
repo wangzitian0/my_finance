@@ -27,6 +27,7 @@ class TestModuleIntegrationWorkflow:
 
         # 3. Verify build artifacts
         from common.directory_manager import get_data_path, DataLayer
+
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists(), "Build directory not found"
 
@@ -169,6 +170,7 @@ class TestModuleIntegrationWorkflow:
 
         # Verify basic structure - use centralized directory management for Issue #122
         from common.directory_manager import get_data_path, DataLayer
+
         build_dir = get_data_path(DataLayer.QUERY_RESULTS)
         # Check legacy path for backward compatibility
         legacy_build_dir = data_dir / "stage_99_build"

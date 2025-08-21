@@ -32,6 +32,7 @@ class TestStrategyAnalystWorkflow:
 
         # 3. Verify output reports - use centralized directory management
         from common.directory_manager import get_data_path, DataLayer
+
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists(), "Reports directory not found"
 
@@ -77,6 +78,7 @@ class TestRiskManagerWorkflow:
 
         # 2. Verify DCF report contains risk indicators
         from common.directory_manager import get_data_path, DataLayer
+
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
@@ -105,6 +107,7 @@ class TestInvestmentManagerWorkflow:
 
         # 2. Verify report files
         from common.directory_manager import get_data_path, DataLayer
+
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists()
 
@@ -124,6 +127,7 @@ class TestInvestmentManagerWorkflow:
 
         # Verify DCF report was generated (contains benchmark comparison info)
         from common.directory_manager import get_data_path, DataLayer
+
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
         assert len(dcf_reports) > 0, "No DCF reports generated"
