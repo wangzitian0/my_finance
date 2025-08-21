@@ -96,7 +96,7 @@ class TestDirectoryStructureProtection(unittest.TestCase):
 
         with open(gitmodules_file, "r") as f:
             gitmodules_content = f.read()
-            self.assertIn('[submodule "data"]', gitmodules_content)
+            self.assertIn('[submodule "build_data"]', gitmodules_content)
             self.assertIn("my_finance_data", gitmodules_content)
 
     def test_legacy_path_prevention(self):

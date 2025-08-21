@@ -14,8 +14,27 @@ def validate_m7_data():
     """Validate M7 data availability"""
     print("🔍 Validating M7 data...")
 
-    data_dir = Path("data/stage_01_extract/yfinance")
-    if not data_dir.exists():
+    from common.directory_manager import DataLayer, get_data_path
+
+    # Use centralized path management for Issue #122 architecture
+    # Check both raw data and daily delta for M7 data files
+    raw_data_dir = get_data_path(DataLayer.RAW_DATA, "yfinance")
+    delta_data_dir = get_data_path(DataLayer.DAILY_DELTA, "yfinance")
+
+    # For backward compatibility, also check old paths
+    legacy_dirs = [
+        raw_data_dir.parent / "stage_01_extract" / "yfinance",  # Legacy path
+        raw_data_dir,  # New raw data path
+        delta_data_dir,  # New delta path
+    ]
+
+    data_dir = None
+    for potential_dir in legacy_dirs:
+        if potential_dir.exists():
+            data_dir = potential_dir
+            break
+
+    if not data_dir:
         print("❌ M7 YFinance data directory not found")
         return False
 
@@ -44,7 +63,11 @@ def validate_configuration():
     """Validate configuration files"""
     print("\n🔧 Validating configuration files...")
 
-    config_files = ["common/config/job_yfinance_m7.yml", "common/config/sec_edgar_m7.yml"]
+    config_files = [
+        "common/config/list_magnificent_7.yml",
+        "common/config/stage_00_original_yfinance.yml",
+        "common/config/stage_00_original_sec_edgar.yml",
+    ]
 
     all_exist = True
     for config_file in config_files:

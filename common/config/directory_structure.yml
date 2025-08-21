@@ -4,15 +4,16 @@
 
 storage:
   backend: "local_filesystem"  # Options: local_filesystem, aws_s3, gcp_gcs, azure_blob
-  root_path: "data"
+  root_path: "build_data"
   versioning: true
   compression: false
 
 # Five-Layer Data Architecture (Issue #122)
+# Implements the official architecture as specified in GitHub Issue #122
 layers:
-  layer_01_raw:
+  stage_00_raw:
     description: "Raw Data Layer - Immutable source data"
-    purpose: "Original, unmodified data from external sources"
+    purpose: "Original, unmodified data from external sources (stage_00_raw)"
     retention: "permanent"
     subdirs:
       - "sec-edgar"     # SEC Edgar filings by CIK
@@ -24,9 +25,9 @@ layers:
       - "by_source"     # sec-edgar, yfinance, etc.
       - "by_ticker"     # Company ticker symbol
     
-  layer_02_delta:
-    description: "Daily Delta Layer - Incremental changes"
-    purpose: "Track daily changes and updates to avoid full reprocessing"
+  stage_01_daily_delta:
+    description: "Daily Delta Layer - Incremental daily changes"
+    purpose: "Track daily changes and updates to avoid full reprocessing (stage_01_daily_delta)"
     retention: "90_days"
     subdirs:
       - "additions"     # New records added
@@ -40,9 +41,9 @@ layers:
       enabled: true
       method: "diff_based"  # Store only differences
       
-  layer_03_index:
-    description: "Daily Index Layer - Vectors, entities, relationships"
-    purpose: "Processed data ready for graph/vector operations"
+  stage_02_daily_index:
+    description: "Daily Index Layer - New embeddings, entities, relationships"
+    purpose: "Daily incremental index processing (stage_02_daily_index)"
     retention: "30_days"  # Can be regenerated from raw data
     subdirs:
       - "vectors"       # Sentence transformer embeddings
@@ -57,9 +58,9 @@ layers:
       enabled: true
       method: "vector_compression"
       
-  layer_04_rag:
-    description: "Graph RAG Layer - Unified knowledge base" 
-    purpose: "Query-ready knowledge graph and vector store"
+  stage_03_graph_rag:
+    description: "Graph RAG Layer - Unified knowledge base (single source of truth)"
+    purpose: "Query-ready unified knowledge graph and vector store (stage_03_graph_rag)"
     retention: "permanent"
     subdirs:
       - "graph_db"     # Neo4j graph database
@@ -73,9 +74,9 @@ layers:
       enabled: true
       method: "graph_compression"
       
-  layer_05_results:
-    description: "Query Results Layer - Analysis and reports"
-    purpose: "Final outputs, reports, and analysis results"
+  stage_04_query_results:
+    description: "Query Results Layer - Query and analysis results"
+    purpose: "Final outputs, reports, and analysis results (stage_04_query_results)"
     retention: "permanent"  # Business value
     subdirs:
       - "dcf_reports"   # DCF valuation reports
@@ -99,14 +100,25 @@ common:
   scripts: "scripts"
   templates: "templates"
 
-# Legacy path mapping for backward compatibility
+# Legacy path mapping for backward compatibility (Issue #122)
 legacy_mapping:
-  stage_00_original: "layer_01_raw"
-  stage_01_extract: "layer_02_delta"
-  stage_02_transform: "layer_03_index" 
-  stage_03_load: "layer_04_rag"
-  stage_99_build: "layer_05_results"
-  data/config: "common/config"  # Already migrated
+  # Old stage naming → New Issue #122 architecture
+  stage_00_original: "stage_00_raw"
+  stage_01_extract: "stage_01_daily_delta"
+  stage_02_transform: "stage_02_daily_index" 
+  stage_03_load: "stage_03_graph_rag"
+  stage_99_build: "stage_04_query_results"
+  
+  # Old layer naming → New Issue #122 architecture  
+  layer_01_raw: "stage_00_raw"
+  layer_02_delta: "stage_01_daily_delta"
+  layer_03_index: "stage_02_daily_index"
+  layer_04_rag: "stage_03_graph_rag"
+  layer_05_results: "stage_04_query_results"
+  
+  # Directory migration
+  data/config: "common/config"  # Migrated to main repo
+  data: "build_data"  # Data directory renamed to build_data submodule
 
 # Storage backend configurations
 backends:
@@ -133,27 +145,32 @@ backends:
     compression: true
     encryption: true
 
-# Performance optimizations per layer
+# Performance optimizations per layer (Issue #122)
 performance:
-  layer_01_raw:
+  stage_00_raw:
     indexing: "minimal"  # Raw data doesn't need heavy indexing
     caching: false
+    target_response_time: "1000ms"  # Raw data access
     
-  layer_02_delta:
+  stage_01_daily_delta:
     indexing: "temporal"  # Index by date for fast delta queries
     caching: false
+    target_response_time: "500ms"  # Delta processing
     
-  layer_03_index:
+  stage_02_daily_index:
     indexing: "full"     # Heavy indexing for vector/entity search
     caching: true
     cache_ttl: "24h"
+    target_response_time: "200ms"  # Index lookup
     
-  layer_04_rag:
+  stage_03_graph_rag:
     indexing: "graph"    # Graph-specific indexing
     caching: true
     cache_ttl: "1h"      # Frequent queries, shorter TTL
+    target_response_time: "100ms"  # Target <100ms from Issue #122
     
-  layer_05_results:
+  stage_04_query_results:
     indexing: "business" # Business-logic indexing
     caching: true
     cache_ttl: "7d"      # Reports don't change often
+    target_response_time: "50ms"   # Cached results

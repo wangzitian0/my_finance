@@ -28,11 +28,11 @@ class StorageBackend(Enum):
 class DataLayer(Enum):
     """Five-Layer Data Architecture (Issue #122)"""
 
-    RAW_DATA = "layer_01_raw"  # Immutable source data
-    DAILY_DELTA = "layer_02_delta"  # Incremental changes
-    DAILY_INDEX = "layer_03_index"  # Vectors, entities, relationships
-    GRAPH_RAG = "layer_04_rag"  # Unified knowledge base
-    QUERY_RESULTS = "layer_05_results"  # Analysis and reports
+    RAW_DATA = "layer_01_raw"  # Raw Data Layer - Immutable source data
+    DAILY_DELTA = "layer_02_delta"  # Daily Delta Layer - Incremental changes
+    DAILY_INDEX = "layer_03_index"  # Daily Index Layer - Vectors, entities, relationships
+    GRAPH_RAG = "layer_04_rag"  # Graph RAG Layer - Unified knowledge base
+    QUERY_RESULTS = "layer_05_results"  # Query Results Layer - Analysis and reports
 
 
 class DirectoryManager:

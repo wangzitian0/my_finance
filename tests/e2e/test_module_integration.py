@@ -26,7 +26,9 @@ class TestModuleIntegrationWorkflow:
         assert result.returncode == 0, f"F2 build failed: {result.stderr}"
 
         # 3. Verify build artifacts
-        reports_dir = Path("data/stage_99_build")
+        from common.directory_manager import DataLayer, get_data_path
+
+        reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists(), "Build directory not found"
 
         # Check for build directories
@@ -166,9 +168,16 @@ class TestModuleIntegrationWorkflow:
         assert target.exists(), f"Symlink target not found: {target}"
         assert target.name == "my_finance_data", "Symlink should point to my_finance_data"
 
-        # Verify basic structure
-        assert (data_dir / "config").exists(), "Config directory not found"
-        assert (data_dir / "stage_99_build").exists(), "Build directory not found"
+        # Verify basic structure - use centralized directory management for Issue #122
+        from common.directory_manager import DataLayer, get_data_path
+
+        build_dir = get_data_path(DataLayer.QUERY_RESULTS)
+        # Check legacy path for backward compatibility
+        legacy_build_dir = data_dir / "stage_99_build"
+        assert build_dir.exists() or legacy_build_dir.exists(), "Build directory not found"
+
+        # Config moved to main repo
+        assert Path("common/config").exists(), "Config directory not found in common/"
 
     def test_config_files_integration(self):
         """Test that all required configuration files exist"""
