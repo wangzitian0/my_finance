@@ -1,65 +1,108 @@
-# ==============================================================================
-# MY_FINANCE DATA MANAGEMENT STRATEGY  
-# ==============================================================================
-# Three-tier data strategy:
-# - Tier 1 (M7): Complete execution process tracked in git (~500MB)
-# - Tier 2 (NASDAQ100): Individual stock results tracked in git (~5GB) 
-# - Tier 3 (VTI): Only final results tracked in git (~50GB builds ignored)
-# ==============================================================================
+# Build Data Submodule .gitignore
+# This submodule contains only build artifacts and generated data
+# Following Issue #122 Five-Layer Data Architecture
 
-# Build and log files (always ignore)
-build_report_*.json  
-*.log
-log/
+# ===============================================
+# ISSUE #122: Five-Layer Data Architecture
+# ===============================================
+# Track directory structure but ignore most content to keep repo clean
 
-# ==============================================================================
-# TIER 1 (M7) - FULLY TRACKED
-# ==============================================================================
-# All M7 data is tracked in git for stable development
+# Raw data layer (stage_00_raw) - Immutable source data
+stage_00_raw/*
+!stage_00_raw/.gitkeep
 
-# ==============================================================================  
-# TIER 2 (NASDAQ100) - INDIVIDUAL STOCK RESULTS TRACKED
-# ==============================================================================
-# Track individual stock results but ignore intermediate build files
-*_nasdaq100D1_*
-*_nasdaq100W7_*
-*_nasdaq100M30_*
-original/yfinance/**/README.md
+# Daily delta layer (stage_01_daily_delta) - Incremental changes
+stage_01_daily_delta/*
+!stage_01_daily_delta/.gitkeep
 
-# ==============================================================================
-# TIER 3 (VTI) - ONLY FINAL RESULTS TRACKED  
-# ==============================================================================
-# Ignore all VTI build data, only track final processed results
-*vti*
-*_us_all_*
-*_us-all_*
+# Daily index layer (stage_02_daily_index) - Embeddings, entities, relationships
+stage_02_daily_index/*
+!stage_02_daily_index/.gitkeep
 
-# ==============================================================================
-# SEC EDGAR DATA
-# ==============================================================================
-# Ignore SEC Edgar data for now (large files)
-original/sec-edgar/
+# Graph RAG layer (stage_03_graph_rag) - Unified knowledge base
+stage_03_graph_rag/*
+!stage_03_graph_rag/.gitkeep
 
-# ==============================================================================
-# CONFIGURATION MANAGEMENT
-# ==============================================================================
-# Track main configs, ignore auto-generated ones
-config/sec_edgar_nasdaq100.yml
-config/yfinance_us_all.yml
+# Query results layer (stage_04_query_results) - Analysis and reports
+stage_04_query_results/*
+!stage_04_query_results/.gitkeep
 
-# ==============================================================================
-# PYTHON AND DEVELOPMENT
-# ==============================================================================
+# ===============================================
+# LEGACY SUPPORT: Backward compatibility
+# ===============================================
+# Legacy stage directories (gradually being migrated to Issue #122)
+stage_00_original/
+stage_01_extract/
+stage_02_transform/
+stage_03_load/
+stage_99_build/
+
+# Legacy layer directories
+layer_01_raw/
+layer_02_delta/
+layer_03_index/
+layer_04_rag/
+layer_05_results/
+
+# ===============================================
+# SYSTEM FILES AND TEMPORARY DATA
+# ===============================================
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
-.DS_Store
-Thumbs.db
-# Build directories - gitignored in main strategy
-build/
-stage_99_build/
-stage_99_build_*/
+*.so
+.Python
+env/
+venv/
+.venv/
 
-# Auto-generated reports from builds
-reports/M7_DCF_Report_*.txt
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+log/
+logs/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Large data files (structure tracked, content ignored)
+*.csv
+*.json
+*.parquet
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ML models and vectors
+*.model
+*.bin
+*.vec
+*.npy
+*.npz
+
+# Cache
+.cache/
+cache/
