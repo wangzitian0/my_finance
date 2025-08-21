@@ -35,139 +35,40 @@ lxml = "*"
 # Neo4j Python driver (official driver for connecting to Neo4j)
 neo4j-python-driver = "*"
 yfinance = ">=0.2.57,<0.3"
-numpy = ">=1.26,<2"
 attrs = ">=25.3.0,<26"
 faiss-cpu = ">=1.9.0,<2"
 pyarrow = ">=21.0.0,<22"
 python-dateutil = ">=2.9.0.post0,<3"
 pathspec = ">=0.12.1,<0.13"
 platformdirs = ">=4.3.8,<5"
+numpy = ">=1.26.4,<2"
 
 [tasks]
-# === P3 UNIFIED COMMAND SYSTEM ===
-# ALL commands now route through ./p3 CLI per Issue #111
-# This eliminates direct python calls and provides consistent interface
+# === PIXI ENVIRONMENT MANAGEMENT ===
+# Pixi only manages dependencies and environment, does NOT call p3
+# Use p3 commands directly instead of pixi run
 
-# Core Environment Commands
-activate = "./p3 activate"
-status = "./p3 status"
-cache-status = "./p3 cache-status"
+# Environment activation (pixi's core responsibility)
+shell = "pixi shell"
 
-# Development Commands
-format = "./p3 format"
-lint = "./p3 lint"
-typecheck = "./p3 typecheck"
-test = "./p3 test"
-quick-test = "./p3 test --quick"
+# Direct Python execution for scripts that need pixi environment
+python = "python"
+pytest-direct = "python -m pytest"
+black-direct = "python -m black"
+mypy-direct = "python -m mypy"
 
-# Build Commands - Scope-based (f2/m7/n100/v3k)
-build = "./p3 build"
-build-f2 = "./p3 build f2"
-build-m7 = "./p3 build m7"
-build-n100 = "./p3 build n100"
-build-v3k = "./p3 build v3k"
+# Development environment validation
+check-env = "python -c 'import sys; print(f\"Python: {sys.version}\"); print(\"✅ Pixi environment ready\")'"
 
-# Fast Build Commands
-fast-build-f2 = "./p3 fast-build f2"
-fast-build-m7 = "./p3 fast-build m7"
-fast-build-n100 = "./p3 fast-build n100"
-fast-build-v3k = "./p3 fast-build v3k"
-
-# Legacy Build Aliases
-build-test = "./p3 build f2"
-build-nasdaq100 = "./p3 build n100"
-build-vti = "./p3 build v3k"
-build-dataset = "./p3 build"
-
-# Build Management
-build-status = "./p3 build-status"
-build-size = "./p3 build-size"
-clean = "./p3 clean"
-clean-builds = "./p3 clean"
-create-build = "./p3 create-build"
-release-build = "./p3 release-build"
-
-# ETL and Data Commands
-etl-status = "./p3 etl-status"
-run-job = "./p3 run-job"
-build-schema = "./p3 build-schema"
-import-data = "./p3 import-data"
-check-coverage = "./p3 check-coverage"
-migrate-data-structure = "./p3 migrate-data"
-
-# Analysis and Reporting
-dcf-analysis = "./p3 dcf-analysis"
-dcf-report = "./p3 dcf-report"
-simple-dcf = "./p3 dcf-analysis"
-generate-report = "./p3 generate-report"
-generate-report-legacy = "./p3 generate-report-legacy"
-validate-strategy = "./p3 validate-strategy"
-backtest = "./p3 backtest"
-
-# Legacy Analysis Commands
-dcf-analysis-legacy = "./p3 dcf-analysis-legacy"
-dcf-report-legacy = "./p3 dcf-report-legacy"
-simple-dcf-legacy = "./p3 simple-dcf-legacy"
-hybrid-dcf-legacy = "./p3 hybrid-dcf-legacy"
-
-# Environment Management
-setup-env = "./p3 env-setup"
-env-start = "./p3 env-start"
-env-stop = "./p3 env-stop"
-env-status = "./p3 env-status"
-env-reset = "./p3 env-reset"
-
-# Container Management
-podman-status = "./p3 podman-status"
-neo4j-logs = "./p3 neo4j-logs"
-neo4j-connect = "./p3 neo4j-connect"
-neo4j-restart = "./p3 neo4j-restart"
-neo4j-stop = "./p3 neo4j-stop"
-neo4j-start = "./p3 neo4j-start"
-
-# Workflow Management
-create-pr = "./p3 create-pr"
-test-e2e = "./p3 e2e"
-test-m7-e2e = "./p3 e2e m7"
-commit-data-changes = "./p3 commit-data-changes"
-cleanup-branches = "./p3 cleanup-branches"
-cleanup-branches-dry-run = "./p3 cleanup-branches --dry-run"
-cleanup-branches-auto = "./p3 cleanup-branches --auto"
-
-# Infrastructure Management
-shutdown-all = "./p3 shutdown-all"
-
-# SEC Integration Commands
-test-sec-integration = "./p3 test-sec-integration"
-test-sec-recall = "./p3 test-sec-recall"
-verify-sec-data = "./p3 verify-sec-data"
-build-sec-library = "./p3 build-sec-library"
-test-semantic-retrieval = "./p3 test-semantic-retrieval"
-
-# LLM and Ollama Commands
-llm-dcf-report = "./p3 llm-dcf-report"
-hybrid-dcf-report = "./p3 hybrid-dcf-report"
-# Direct ollama commands (non-python)
+# Direct service commands that don't require p3 (for system integration)
 ollama-status = "curl -s http://localhost:11434/api/tags 2>/dev/null && echo 'Ollama: ✅ Running' || echo 'Ollama: ❌ Not running'"
 ollama-models = "ollama list"
-test-ollama = "ollama run gpt-oss:20b 'Explain DCF valuation in 2 sentences'"
-setup-ollama = "ansible-playbook infra/ansible/ollama.yml"
 
-# Testing Commands
-test-yfinance = "./p3 test-yfinance"
-test-config = "./p3 test-config"
-test-dcf-report = "./p3 test-dcf-report"
-
-# Status and Validation
-verify-environment = "./p3 verify-env"
-check-data-integrity = "./p3 check-integrity"
-data-status = "./p3 build-status"
-
-# Development Workflow Shortcuts
-dev = "echo '🚀 Try: p3 refresh f2 | p3 e2e | p3 create-pr TITLE 111'; echo '💡 zsh completion: source ./scripts/p3-completion.zsh (add to ~/.zshrc)'"
-
-# Install additional packages via pip (cross-platform)
+# Package installation (pixi's responsibility)
 pip-install = "pip install neomodel sentence-transformers"
+
+# Quick development hints
+dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 e2e | p3 create-pr'; echo '💡 Completion: source ./scripts/p3-completion.zsh'"
 
 [pypi-dependencies]
 secedgar = ">=0.6.0, <0.7"

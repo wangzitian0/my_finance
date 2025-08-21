@@ -4,7 +4,7 @@
 
 - **Build ID**: 20250811_224018
 - **Configuration**: m7
-- **Command**: `p3 build run m7`
+- **Command**: `pixi run build-dataset m7`
 - **Status**: completed
 - **Start Time**: 2025-08-11T22:40:18.638387
 - **End Time**: 2025-08-11T22:40:19.332282

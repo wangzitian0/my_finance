@@ -12,17 +12,18 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-import numpy as np
-
+# Use ML fallback service to avoid import issues
 try:
-    from sentence_transformers import SentenceTransformer
+    from common.ml_fallback import get_ml_service
 
     SENTENCE_TRANSFORMERS_AVAILABLE = True
-except ImportError:
+    ml_service = get_ml_service()
+    logging.info("Using ML fallback service for graph RAG semantic embedding")
+except ImportError as e:
     SENTENCE_TRANSFORMERS_AVAILABLE = False
-    logging.warning(
-        "sentence-transformers not available. Install with: pip install sentence-transformers"
-    )
+    ml_service = None
+    error_msg = f"ML fallback service not available. Error: {e}"
+    logging.warning(error_msg)
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,7 @@ class SemanticEmbedding:
 
         if SENTENCE_TRANSFORMERS_AVAILABLE:
             try:
-                self.model = SentenceTransformer(embedding_model)
+                self.model = ml_service  # Use ML service instead
                 logger.info(f"Loaded embedding model: {embedding_model}")
             except Exception as e:
                 logger.error(f"Failed to load embedding model {embedding_model}: {e}")
@@ -67,8 +68,22 @@ class SemanticEmbedding:
             return None
 
         try:
-            embedding = self.model.encode(text)
-            return embedding.tolist()
+            # Use ML service instead of direct model
+            if self.model:
+                embeddings = self.model.encode_texts([text])
+                if hasattr(embeddings, "data"):  # SimpleArray from fallback
+                    embedding = embeddings.data[0]
+                else:  # numpy array
+                    embedding = embeddings[0]
+            else:
+                # Simple fallback
+                embedding = [0.0] * 384  # Default dimension
+
+            # Convert to list if needed
+            if hasattr(embedding, "tolist"):
+                return embedding.tolist()
+            else:
+                return list(embedding)
         except Exception as e:
             logger.error(f"Failed to generate embedding for text: {e}")
             return None

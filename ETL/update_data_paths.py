@@ -81,7 +81,7 @@ def main():
             files_to_update.append(str(file_path))
 
     # Find markdown and YAML files in docs and config
-    for pattern in ["docs/*.md", "data/config/*.yml", "*.md"]:
+    for pattern in ["docs/*.md", "common/config/*.yml", "*.md"]:
         for file_path in base_dir.glob(pattern):
             if ".git/" not in str(file_path):
                 files_to_update.append(str(file_path))

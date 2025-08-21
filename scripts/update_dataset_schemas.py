@@ -97,7 +97,7 @@ def validate_schema(config: Dict[str, Any], config_file: str) -> Dict[str, Any]:
 def main():
     """Main schema validation and reporting."""
 
-    config_dir = Path("data/config")
+    config_dir = Path("common/config")
     config_files = [
         "list_fast_2.yml",
         "list_magnificent_7.yml",

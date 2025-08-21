@@ -18,6 +18,9 @@ from typing import Any, Dict, List, Optional
 import requests
 import yaml
 
+# Import SSOT directory manager
+from common.directory_manager import get_llm_config_path
+
 logger = logging.getLogger(__name__)
 
 
@@ -68,7 +71,7 @@ class OllamaClient:
         self.debug_mode = self.config.get("dcf_generation", {}).get("debug_mode", True)
         self.log_requests = self.config.get("logging", {}).get("log_requests", not self.mock_mode)
         self.log_responses = self.config.get("logging", {}).get("log_responses", not self.mock_mode)
-        self.debug_dir = Path("data/llm")
+        self.debug_dir = get_llm_config_path().parent
 
         # Template directory
         self.template_dir = self.debug_dir / "templates"
@@ -85,7 +88,7 @@ class OllamaClient:
         """Load configuration from YAML file."""
         if config_path is None:
             # Use DeepSeek fast config as default (no mock mode)
-            config_path = "data/llm/configs/deepseek_fast.yml"
+            config_path = str(get_llm_config_path("deepseek_fast.yml"))
 
         try:
             with open(config_path, "r", encoding="utf-8") as f:

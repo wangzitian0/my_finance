@@ -1,7 +1,14 @@
 # ETL/models.py
 from datetime import datetime
 
-import numpy as np
+# Avoid numpy import due to circular import issues in pixi environment
+try:
+    import numpy as np
+
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None
 from neomodel import (
     ArrayProperty,
     BooleanProperty,

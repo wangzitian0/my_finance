@@ -81,7 +81,7 @@ def should_check_file(file_path: Path) -> bool:
         if exclude_dir in file_path.parts:
             return False
 
-    # Special handling for data directory - only check data/config
+    # Special handling for data directory - only check common/config
     file_parts = file_path.parts
     if "data" in file_parts:
         # Find data directory index
@@ -89,7 +89,7 @@ def should_check_file(file_path: Path) -> bool:
         # If there's a subdirectory after data
         if len(file_parts) > data_index + 1:
             subdir = file_parts[data_index + 1]
-            # Only check data/config, skip all other data subdirectories
+            # Only check common/config, skip all other data subdirectories
             if subdir != "config":
                 return False
 

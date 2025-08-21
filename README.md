@@ -19,7 +19,7 @@ All operations use the unified `p3` command interface:
 
 ```bash
 # Setup (once)
-p3 env setup                   # Complete environment setup
+p3 env-setup                   # Complete environment setup
 
 # Daily workflow  
 p3 activate                    # Enter pixi environment
@@ -42,7 +42,7 @@ Then enjoy tab completion:
 ```bash
 p3 <TAB>           # Shows all available commands
 p3 build <TAB>     # Shows scope options (f2/m7/n100/v3k)
-p3 env <TAB>       # Shows environment commands
+p3 env-<TAB>       # Shows environment commands
 ```
 
 ## System Architecture
@@ -98,12 +98,12 @@ p3 create-pr "Title" ISSUE  # Create PR with automated testing
 
 ### 🌐 Environment Management
 ```bash
-p3 env setup               # Complete environment setup (Podman + Neo4j)
-p3 env status              # Check environment health (all services)
-p3 env start               # Start all services (Podman + Neo4j)
-p3 env stop                # Stop services gracefully  
+p3 env-setup               # Complete environment setup (Podman + Neo4j)
+p3 env-status              # Check environment health (all services)
+p3 env-start               # Start all services (Podman + Neo4j)
+p3 env-stop                # Stop services gracefully  
 p3 shutdown-all            # Complete shutdown with cleanup
-p3 env reset               # Reset environment (destructive)
+p3 env-reset               # Reset environment (destructive)
 ```
 
 ### 📈 Scope-Based Data Pipeline
@@ -173,7 +173,7 @@ git clone https://github.com/wangzitian0/my_finance.git
 cd my_finance
 
 # One-command setup (installs everything)
-p3 env setup                 # Podman + Neo4j + Python ML stack + SEC data
+p3 env-setup                 # Podman + Neo4j + Python ML stack + SEC data
 ```
 
 **What gets installed**:
@@ -184,11 +184,11 @@ p3 env setup                 # Podman + Neo4j + Python ML stack + SEC data
 
 **Verification**:
 ```bash
-p3 env status                # Check all services
+p3 env-status                # Check all services
 p3 build-m7                  # Test with Magnificent 7 dataset
 ```
 
-**Troubleshooting**: Use `p3 env reset` for complete clean reset.
+**Troubleshooting**: Use `p3 env-reset` for complete clean reset.
 
 ## SEC Filing Integration
 

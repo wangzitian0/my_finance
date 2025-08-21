@@ -14,24 +14,15 @@ reference_config: "list_magnificent_7.yml"
 selected_companies: ["MSFT", "NVDA"]  # Selected for speed and reliability
 ticker_count: 2
 
-# Data source attribution
-data_source_info:
-  primary_source: "Reference to Magnificent 7 dataset"
-  last_verified: "2025-08-19"
-  update_method: "Automatic selection from M7 configuration"
-  selection_criteria: "2 fastest-processing companies from M7 for development testing"
-  notes: "Subset of M7 companies optimized for rapid development iteration"
-
 # Fast data collection for PR validation
 data_sources:
   yfinance:
     enabled: true
-    stage_config: "stage_00_original_yfinance.yml"
-    periods: ["daily_3mo"]  # Override: Single period for speed
+    periods: ["daily_3mo"]  # Single period for speed
     
   sec_edgar:
     enabled: false  # Disabled for PR speed
-    stage_config: "stage_00_original_sec_edgar.yml"
+    filing_types: []
 
 # Expected file counts
 expected_files:

@@ -77,7 +77,7 @@ companies:
 ### Next Steps for Full Schema Compliance
 
 1. **Complete N100 CIK Mapping**: Add CIK numbers for remaining 93 companies
-2. **Create M7 SEC Config**: Create `data/config/sec_edgar_m7.yml`
+2. **Create M7 SEC Config**: Create `common/config/sec_edgar_m7.yml`
 3. **Enhance V3K Metadata**: Add sector/industry for major holdings
 4. **Automate Schema Validation**: Fix yaml dependency for validation script
 

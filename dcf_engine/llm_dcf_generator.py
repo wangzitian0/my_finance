@@ -13,6 +13,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+# Import SSOT directory manager
+from common.directory_manager import get_llm_config_path
+
 from .finlang_embedding import FinLangEmbedding
 from .ollama_client import OllamaClient
 
@@ -40,10 +43,10 @@ class LLMDCFGenerator:
         """
         # Use fast config if requested
         if fast_mode and not config_path:
-            config_path = "data/llm/configs/deepseek_fast.yml"
+            config_path = str(get_llm_config_path("deepseek_fast.yml"))
 
         self.config_path = config_path
-        self.debug_dir = Path("data/llm")
+        self.debug_dir = get_llm_config_path().parent
         self.debug_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize components
@@ -312,11 +315,36 @@ class LLMDCFGenerator:
         # Try to use real semantic retrieval if available
         try:
             # Check if we have a real semantic retrieval system
-            from ETL.semantic_retrieval import SemanticEmbeddingGenerator
+            from pathlib import Path
+
+            from ETL.semantic_retrieval import SemanticRetriever
 
             # Try to initialize and use real semantic retrieval
             try:
-                semantic_generator = SemanticEmbeddingGenerator()
+                # Try to find embeddings data
+                embeddings_paths = [
+                    Path("data/stage_03_load/embeddings"),
+                    Path("data/stage_99_build").glob("*/embeddings"),
+                ]
+
+                embeddings_path = None
+                for path in embeddings_paths:
+                    if isinstance(path, Path) and path.exists():
+                        embeddings_path = path
+                        break
+                    elif hasattr(path, "__iter__"):
+                        for p in path:
+                            if p.exists():
+                                embeddings_path = p
+                                break
+                        if embeddings_path:
+                            break
+
+                if embeddings_path:
+                    semantic_generator = SemanticRetriever(embeddings_path)
+                else:
+                    # No embeddings found, skip semantic retrieval
+                    raise Exception("No embeddings found")
                 thinking_log.append(
                     "✅ Semantic retrieval system found - attempting real document search"
                 )

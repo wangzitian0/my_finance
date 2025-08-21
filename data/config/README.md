@@ -6,11 +6,11 @@ This directory contains the modular configuration system for the My Finance DCF 
 
 The configuration system is organized into two distinct categories:
 
-### 1. Stage Original Configurations (`stage_00_original_*.yml`)
+### 1. Data Source Configurations (`source_*.yml`)
 These files define **how** to collect data from different sources, independent of **which** companies to collect data for.
 
-- `stage_00_original_yfinance.yml` - Yahoo Finance data collection parameters
-- `stage_00_original_sec_edgar.yml` - SEC Edgar filings collection parameters
+- `source_yfinance.yml` - Yahoo Finance data collection parameters
+- `source_sec_edgar.yml` - SEC Edgar filings collection parameters
 
 ### 2. Ticker List Configurations (`list_*.yml`)  
 These files define **which** companies to process, with their CLI aliases and metadata.
@@ -23,10 +23,10 @@ These files define **which** companies to process, with their CLI aliases and me
 **Testing Datasets:**
 - `list_fast_2.yml` - Fast 2-company subset from M7 (CLI: `fast`) - For development
 
-### 3. Test Target Configurations (`stage_00_target_*.yml`)
+### 3. Test Target Configurations (`target_*.yml`)
 These files define **testing strategies** and requirements for different validation scenarios.
 
-- `stage_00_target_pre_pr.yml` - Pre-PR validation requirements using fast_2 ticker list
+- `target_pre_pr.yml` - Pre-PR validation requirements using fast_2 ticker list
 
 ## Usage
 
@@ -51,10 +51,10 @@ pixi run build vti_3500
 pixi run build fast      # Fast 2-company subset (MSFT, NVDA)
 
 # PR creation with mandatory M7 testing
-p3 create-pr "PR title" ISSUE_NUMBER  # Runs full M7 test (7 companies)
+pixi run create-pr "PR title" ISSUE_NUMBER  # Runs full M7 test (7 companies)
 
 # Standalone M7 testing for PR validation
-p3 test-m7-e2e     # Tests all 7 companies, creates .m7-test-passed marker
+pixi run test-m7-e2e     # Tests all 7 companies, creates .m7-test-passed marker
 ```
 
 ### Configuration Combination
@@ -64,8 +64,8 @@ The build system automatically combines:
 
 For example, `pixi run build n100` will:
 1. Load `list_nasdaq_100.yml` to get 100 NASDAQ companies
-2. Load `stage_00_original_yfinance.yml` for Yahoo Finance collection settings
-3. Load `stage_00_original_sec_edgar.yml` for SEC filing settings (if enabled)
+2. Load `source_yfinance.yml` for Yahoo Finance collection settings
+3. Load `source_sec_edgar.yml` for SEC filing settings (if enabled)
 4. Combine them to collect data for all 100 companies from both sources
 
 ## Auto-Generated Content
@@ -94,7 +94,7 @@ The Magnificent 7 list is manually maintained as it represents a stable set of c
 
 ## Configuration Fields
 
-### Stage Original Files (`stage_00_original_*.yml`)
+### Data Source Files (`source_*.yml`)
 ```yaml
 source: "yfinance"  # Source identifier
 description: "Data source description"
@@ -147,13 +147,13 @@ python ETL/fetch_ticker_lists.py
 ```
 
 ### Adding New Data Sources
-1. Create `stage_00_original_newservice.yml` with collection parameters
+1. Create `source_newservice.yml` with collection parameters
 2. Update ticker list files to enable the new source:
    ```yaml
    data_sources:
      newservice:
        enabled: true
-       stage_config: "stage_00_original_newservice.yml"
+       parameters: ["param1", "param2"]
    ```
 
 ### Adding New Ticker Lists
@@ -178,10 +178,10 @@ The configuration system supports a **two-tier testing strategy** optimized for 
 - **Purpose**: Mandatory validation before PR creation
 - **Companies**: 7 (All M7 companies)
 - **Duration**: ~5-10 minutes
-- **Usage**: `p3 create-pr` (automatic) or `p3 test-m7-e2e` (standalone)
+- **Usage**: `pixi run create-pr` (automatic) or `pixi run test-m7-e2e` (standalone)
 - **Data Sources**: YFinance + SEC Edgar (complete validation)
 
-### Test Target Configuration (`stage_00_target_pre_pr.yml`)
+### Test Target Configuration (`target_pre_pr.yml`)
 
 This configuration defines the testing strategy for pre-PR validation:
 
@@ -202,8 +202,8 @@ quality_gates:
 The testing configuration integrates with the automated PR workflow:
 
 1. **Development**: Use `list_fast_2.yml` for rapid iteration
-2. **Pre-PR**: Run `p3 test-m7-e2e` with full M7 validation
-3. **PR Creation**: `p3 create-pr` enforces M7 test success
+2. **Pre-PR**: Run `pixi run test-m7-e2e` with full M7 validation
+3. **PR Creation**: `pixi run create-pr` enforces M7 test success
 4. **GitHub Validation**: Checks for `.m7-test-passed` marker file
 
 This ensures **quality without sacrificing development speed**.

@@ -59,34 +59,22 @@ companies:
     cik: "0001045810"
     market_cap_category: "large"
 
-ticker_count: 7
-
-# Data source attribution
-data_source_info:
-  primary_source: "Magnificent 7 technology companies (manual selection)"
-  last_verified: "2025-08-19"
-  update_method: "Manual curation of top technology companies"
-  selection_criteria: "7 largest technology companies by market cap and innovation impact"
-  notes: "Core technology companies for stable testing and SEC integration"
-
 # Data source configuration
 data_sources:
   yfinance:
     enabled: true
-    stage_config: "stage_00_original_yfinance.yml"
+    periods: ["daily_3mo", "weekly_5y", "monthly_max"]
     
   sec_edgar:
     enabled: true
-    stage_config: "stage_00_original_sec_edgar.yml"
+    filing_types: ["10K", "10Q", "8K"]
 
-# Quality expectations (calculated based on stage configurations)
+# Quality expectations
 expected_files:
-  yfinance: 21  # 7 tickers × 3 periods (from stage_00_original_yfinance.yml)
-  sec_edgar: 231  # 7 tickers × 33 filings max (5+8+20 from stage_00_original_sec_edgar.yml)
+  yfinance: 21  # 7 tickers × 3 periods
+  sec_edgar: 147  # 7 tickers × 21 filings avg (5+8+8)
   
 # Validation settings
 validation:
   timeout_seconds: 300
   required_success_rate: 1.0  # 100% for stable test dataset
-
-last_updated: "2025-08-19T12:00:00.000000"

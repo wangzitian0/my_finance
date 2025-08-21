@@ -23,80 +23,80 @@ class P3CLI:
     def _load_command_mapping(self) -> Dict[str, str]:
         """Load command mappings from configuration."""
         return {
-            # Environment Management
+            # Environment Management (p3 calls ansible for infra, pixi for Python)
             "activate": "pixi shell",
-            "env-setup": "pixi run setup-env",
-            "env-start": "pixi run env-start",
-            "env-stop": "pixi run env-stop",
-            "env-status": "pixi run env-status",
-            "env-reset": "pixi run env-reset",
-            # Development Commands - routed through pixi for proper environment
-            "format": "pixi run -e default python -m black --line-length 100 . && pixi run -e default python -m isort .",
-            "lint": "pixi run -e default python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
-            "typecheck": "pixi run -e default python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports",
-            "test": "pixi run -e default python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html",
-            # Build Commands - scope support built-in
-            "build": "pixi run -e default python ETL/build_dataset.py {scope}",
-            "fast-build": "pixi run -e default python ETL/build_dataset.py {scope} --fast-mode",
-            "refresh": "pixi run -e default python ETL/build_dataset.py {scope}",  # Alias for build
-            # Data Management
-            "create-build": "pixi run -e default python scripts/manage_build_data.py create",
-            "release-build": "pixi run -e default python scripts/manage_build_data.py release",
-            "commit-data-changes": "pixi run -e default python infra/commit_data_changes.py",
-            "build-status": "pixi run -e default python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
-            "clean": 'pixi run -e default python -c \'import shutil; from pathlib import Path; build_dir = Path("data/stage_99_build"); [shutil.rmtree(d) for d in build_dir.glob("build_*") if d.is_dir()]; print("🧹 Cleaned")\'',
-            # PR and Git Workflow
-            "create-pr": "pixi run -e default python infra/create_pr_with_test.py {title} {issue}",
-            "cleanup-branches": "pixi run -e default python infra/cleanup_merged_branches.py",
-            "e2e": "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation",
-            # Analysis and Reporting
-            "dcf-analysis": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
-            "dcf-report": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
-            "generate-report": "pixi run -e default python dcf_engine/pure_llm_dcf.py",
-            "validate-strategy": "pixi run -e default python ETL/manage.py validate",
-            # Infrastructure Management
+            "env-setup": "ansible-playbook infra/ansible/setup.yml",
+            "env-start": "ansible-playbook infra/ansible/start.yml",
+            "env-stop": "ansible-playbook infra/ansible/stop.yml",
+            "env-status": "pixi run python infra/comprehensive_env_status.py",
+            "env-reset": "ansible-playbook infra/ansible/reset.yml",
+            # Development Commands (p3 calls pixi to manage Python execution)
+            "format": "pixi run python -m black --line-length 100 . && pixi run python -m isort .",
+            "lint": "pixi run python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
+            "typecheck": "pixi run python -m mypy ETL dcf_engine common graph_rag --ignore-missing-imports",
+            "test": "pixi run python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html",
+            # Build Commands (p3 calls pixi for Python execution)
+            "build": "pixi run python ETL/build_dataset.py {scope}",
+            "fast-build": "pixi run python ETL/build_dataset.py {scope} --fast-mode",
+            "refresh": "pixi run python ETL/build_dataset.py {scope}",  # Alias for build
+            # Data Management (p3 calls pixi for Python execution)
+            "create-build": "pixi run python scripts/manage_build_data.py create",
+            "release-build": "pixi run python scripts/manage_build_data.py release",
+            "commit-data-changes": "pixi run python infra/commit_data_changes.py",
+            "build-status": "pixi run python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
+            "clean": 'pixi run python -c \'import shutil; from pathlib import Path; build_dir = Path("data/stage_99_build"); [shutil.rmtree(d) for d in build_dir.glob("build_*") if d.is_dir()]; print("🧹 Cleaned")\'',
+            # PR and Git Workflow (p3 calls pixi for Python execution)
+            "create-pr": "pixi run python infra/create_pr_with_test.py {title} {issue}",
+            "cleanup-branches": "pixi run python infra/cleanup_merged_branches.py",
+            "e2e": "pixi run python infra/create_pr_with_test.py --skip-pr-creation",
+            # Analysis and Reporting (p3 calls pixi for Python execution)
+            "dcf-analysis": "pixi run python dcf_engine/pure_llm_dcf.py",
+            "dcf-report": "pixi run python dcf_engine/pure_llm_dcf.py",
+            "generate-report": "pixi run python dcf_engine/pure_llm_dcf.py",
+            "validate-strategy": "pixi run python ETL/manage.py validate",
+            # Infrastructure Management (direct system commands, not Python)
             "podman-status": "podman ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
             "neo4j-logs": "podman logs neo4j-finance",
             "neo4j-connect": "podman exec -it neo4j-finance cypher-shell -u neo4j -p finance123",
             "neo4j-restart": "podman restart neo4j-finance",
             "neo4j-stop": "podman stop neo4j-finance",
             "neo4j-start": "podman start neo4j-finance",
-            # Status and Validation
-            "status": "pixi run -e default python infra/comprehensive_env_status.py",
-            "cache-status": "pixi run -e default python infra/show_cache_status.py",
-            "verify-env": 'pixi run -e default python -c \'import sys; print(f"Python: {sys.version}"); import torch, sklearn, sentence_transformers; print("✅ ML dependencies available"); import neomodel; print("✅ Neo4j ORM available")\'',
-            "check-integrity": 'pixi run -e default python -c \'from pathlib import Path; dirs = ["data/stage_00_original", "data/stage_01_extract", "data/stage_99_build"]; [print(f"📁 {d}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
-            "shutdown-all": "pixi run -e default python infra/shutdown_all.py",
-            # SEC Integration Commands
-            "test-sec-integration": "pixi run -e default python dcf_engine/sec_integration_template.py",
-            "test-sec-recall": "pixi run -e default python dcf_engine/sec_recall_usage_example.py",
-            "verify-sec-data": 'pixi run -e default python -c \'from pathlib import Path; from collections import Counter; sec_files = list(Path("data/stage_01_extract/sec_edgar").rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
-            # ETL and Data Commands
-            "etl-status": "pixi run -e default python ETL/manage.py status",
-            "run-job": "pixi run -e default python ETL/run_job.py",
-            "build-schema": "pixi run -e default python ETL/build_schema.py",
-            "import-data": "pixi run -e default python ETL/import_data.py",
-            "check-coverage": "pixi run -e default python ETL/check_coverage.py",
-            "migrate-data": "pixi run -e default python ETL/migrate_data_structure.py",
-            # Additional Build Commands
-            "build-size": 'pixi run -e default python -c \'from pathlib import Path; import subprocess; result = subprocess.run(["du", "-sh", "data/stage_99_build"], capture_output=True, text=True); print(f"📦 Build directory size: {result.stdout.strip()}")\'',
+            # Status and Validation (p3 calls pixi for Python execution)
+            "status": "pixi run python infra/comprehensive_env_status.py",
+            "cache-status": "pixi run python infra/show_cache_status.py",
+            "verify-env": 'pixi run python -c \'import sys; print(f"Python: {sys.version}"); import torch, sklearn, sentence_transformers; print("✅ ML dependencies available"); import neomodel; print("✅ Neo4j ORM available")\'',
+            "check-integrity": 'pixi run python -c \'from pathlib import Path; dirs = ["data/stage_00_original", "data/stage_01_extract", "data/stage_99_build"]; [print(f"📁 {d}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
+            "shutdown-all": "pixi run python infra/shutdown_all.py",
+            # SEC Integration Commands (p3 calls pixi for Python execution)
+            "test-sec-integration": "pixi run python dcf_engine/sec_integration_template.py",
+            "test-sec-recall": "pixi run python dcf_engine/sec_recall_usage_example.py",
+            "verify-sec-data": 'pixi run python -c \'from pathlib import Path; from collections import Counter; sec_files = list(Path("data/stage_01_extract/sec_edgar").rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
+            # ETL and Data Commands (p3 calls pixi for Python execution)
+            "etl-status": "pixi run python ETL/manage.py status",
+            "run-job": "pixi run python ETL/run_job.py",
+            "build-schema": "pixi run python ETL/build_schema.py",
+            "import-data": "pixi run python ETL/import_data.py",
+            "check-coverage": "pixi run python ETL/check_coverage.py",
+            "migrate-data": "pixi run python ETL/migrate_data_structure.py",
+            # Additional Build Commands (p3 calls pixi for Python execution)
+            "build-size": 'pixi run python -c \'from pathlib import Path; import subprocess; result = subprocess.run(["du", "-sh", "data/stage_99_build"], capture_output=True, text=True); print(f"📦 Build directory size: {result.stdout.strip()}")\'',
             # Ollama and LLM Commands
-            "build-sec-library": "pixi run -e default python dcf_engine/sec_document_manager.py",
-            "llm-dcf-report": "pixi run -e default python dcf_engine/llm_dcf_generator.py --ticker AAPL",
-            "hybrid-dcf-report": "pixi run -e default python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
+            "build-sec-library": "pixi run python dcf_engine/sec_document_manager.py",
+            "llm-dcf-report": "pixi run python dcf_engine/llm_dcf_generator.py --ticker AAPL",
+            "hybrid-dcf-report": "pixi run python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
             # Additional Analysis Commands
-            "generate-report-legacy": "pixi run -e default python dcf_engine/legacy_testing/generate_dcf_report.py",
-            "backtest": "echo 'Backtest simulation completed (placeholder)' && pixi run -e default python dcf_engine/legacy_testing/simple_m7_dcf.py",
-            "test-semantic-retrieval": "pixi run -e default python test_semantic_retrieval.py",
+            "generate-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
+            "backtest": "echo 'Backtest simulation completed (placeholder)' && pixi run python dcf_engine/legacy_testing/simple_m7_dcf.py",
+            "test-semantic-retrieval": "pixi run python test_semantic_retrieval.py",
             # Legacy DCF Commands
-            "dcf-analysis-legacy": "pixi run -e default python dcf_engine/legacy_testing/m7_dcf_analysis.py",
-            "dcf-report-legacy": "pixi run -e default python dcf_engine/legacy_testing/generate_dcf_report.py",
-            "simple-dcf-legacy": "pixi run -e default python dcf_engine/legacy_testing/simple_m7_dcf.py",
-            "hybrid-dcf-legacy": "pixi run -e default python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
+            "dcf-analysis-legacy": "pixi run python dcf_engine/legacy_testing/m7_dcf_analysis.py",
+            "dcf-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
+            "simple-dcf-legacy": "pixi run python dcf_engine/legacy_testing/simple_m7_dcf.py",
+            "hybrid-dcf-legacy": "pixi run python dcf_engine/legacy_testing/hybrid_dcf_analyzer.py",
             # Testing Commands
-            "test-yfinance": "pixi run -e default python ETL/tests/integration/test_yfinance.py",
-            "test-config": "pixi run -e default python -m pytest ETL/tests/test_config.py -v",
-            "test-dcf-report": "pixi run -e default python -m pytest dcf_engine/test_dcf_report.py -v",
+            "test-yfinance": "pixi run python ETL/tests/integration/test_yfinance.py",
+            "test-config": "pixi run python -m pytest ETL/tests/test_config.py -v",
+            "test-dcf-report": "pixi run python -m pytest dcf_engine/test_dcf_report.py -v",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -130,11 +130,9 @@ class P3CLI:
             if command == "e2e":
                 # E2E command maps to different behavior based on scope
                 if resolved_scope == "f2":
-                    return "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation --fast-mode"
+                    return "pixi run python infra/create_pr_with_test.py --skip-pr-creation --fast-mode"
                 else:
-                    return (
-                        "pixi run -e default python infra/create_pr_with_test.py --skip-pr-creation"
-                    )
+                    return "pixi run python infra/create_pr_with_test.py --skip-pr-creation"
             else:
                 # Build commands use scope directly
                 cmd_template = self.commands[command]
@@ -159,13 +157,13 @@ class P3CLI:
 
             title, issue = args[0], args[1]
             remaining_args = args[2:]
-            cmd = f'pixi run -e default python infra/create_pr_with_test.py "{title}" {issue}'
+            cmd = f'pixi run python infra/create_pr_with_test.py "{title}" {issue}'
             if remaining_args:
                 cmd += " " + " ".join(remaining_args)
             return cmd
 
         if command == "cleanup-branches":
-            cmd = "pixi run -e default python infra/cleanup_merged_branches.py"
+            cmd = "pixi run python infra/cleanup_merged_branches.py"
             if "--dry-run" in args:
                 cmd += " --dry-run"
             elif "--auto" in args:
@@ -173,10 +171,13 @@ class P3CLI:
             return cmd
 
         if command == "test":
-            cmd = "pixi run -e default python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
+            cmd = "pixi run python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
             if "--quick" in args:
                 # Quick test mode - run basic structure test only
-                cmd = "pixi run -e default python -m pytest tests/test_basic_structure.py -v"
+                cmd = "pixi run python -m pytest tests/test_basic_structure.py -v"
+            elif "--protection" in args:
+                # Directory structure protection tests
+                cmd = "pixi run python tests/test_directory_structure_protection.py"
             return cmd
 
         return None
@@ -210,6 +211,8 @@ Development Commands:
   lint                   Lint code (pylint)
   typecheck              Type check with mypy
   test                   Run tests (pytest)
+  test --quick           Run quick tests only
+  test --protection      Run directory structure protection tests
   e2e [scope]            End-to-end validation (default: m7)
   build [scope]          Build dataset (default: m7)
   fast-build [scope]     Fast build with deepseek-r1:1.5b
