@@ -15,9 +15,25 @@ def validate_m7_data():
     print("🔍 Validating M7 data...")
 
     from common.directory_manager import get_data_path, DataLayer
-    # Use centralized path management instead of hardcoded paths
-    data_dir = get_data_path(DataLayer.RAW_DATA, "yfinance").parent / "stage_01_extract" / "yfinance"
-    if not data_dir.exists():
+    # Use centralized path management for Issue #122 architecture
+    # Check both raw data and daily delta for M7 data files
+    raw_data_dir = get_data_path(DataLayer.RAW_DATA, "yfinance")
+    delta_data_dir = get_data_path(DataLayer.DAILY_DELTA, "yfinance")
+    
+    # For backward compatibility, also check old paths
+    legacy_dirs = [
+        raw_data_dir.parent / "stage_01_extract" / "yfinance",  # Legacy path
+        raw_data_dir,  # New raw data path
+        delta_data_dir  # New delta path
+    ]
+    
+    data_dir = None
+    for potential_dir in legacy_dirs:
+        if potential_dir.exists():
+            data_dir = potential_dir
+            break
+    
+    if not data_dir:
         print("❌ M7 YFinance data directory not found")
         return False
 
