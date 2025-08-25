@@ -329,7 +329,31 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         # Handle GitButler workspace branches differently
         if is_gitbutler_workspace():
             print("🔄 GitButler workspace detected - creating new commit with F2 validation")
-            create_gitbutler_compatible_commit(title, issue_number, test_info)
+            # For GitButler, we need to create a proper commit with test validation
+            # First, let's check if we have changes to stage
+            status_check = run_command("git status --porcelain", "Checking git status", check=False)
+            if status_check and status_check.stdout.strip():
+                print("📝 Staging all changes for GitButler commit with F2 validation")
+                run_command("git add .", "Staging all changes")
+
+            # Create the proper commit with F2 test validation embedded
+            final_commit_msg = f"""{title}
+
+Fixes #{issue_number}
+
+✅ F2-TESTED: This commit passed F2 fast-build testing with DeepSeek 1.5b
+📊 Test Results: {test_info['data_files']} data files validated
+🕐 Test Time: {test_info['timestamp']}
+🔍 Test Host: {test_info['host']}
+📝 Commit Hash: {test_info['commit_hash']}
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"""
+
+            run_command(
+                f'git commit -m "{final_commit_msg}"', "Creating F2-validated commit for GitButler"
+            )
         else:
             # Amend commit with test validation info for traditional git workflow
             run_command(
