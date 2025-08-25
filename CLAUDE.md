@@ -191,6 +191,61 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 3. **Monitor CI status** - failed checks indicate serious problems
 4. **Consider upgrading branch protection** to enforce required status checks
 
+## 🚀 GitButler Multi-Window Parallel Development (NEW)
+
+### GitButler Setup for Window Isolation
+
+**GitButler's Core Advantage: Each Claude Code window automatically creates independent virtual branches, enabling true parallel development isolation.**
+
+#### One-Time Setup
+1. **Install GitButler Desktop**: Download from [git-butler.com](https://git-butler.com)
+2. **Install GitButler CLI**: In GitButler app → Settings → "Install GitButler CLI" 
+3. **Verify Installation**: `but --version`
+4. **Initialize Project**: `but init` (run once in project root)
+
+#### Multi-Window Parallel Development Workflow
+
+**Core Concept**: Each new Claude Code window automatically creates independent virtual branches, allowing multiple windows to work simultaneously without conflicts.
+
+```bash
+# Window 1: New feature development
+cd /path/to/my_finance
+claude code .  
+# GitButler auto-creates virtual-branch-1
+# Working on: SEC data integration feature
+
+# Window 2: Bug fix (concurrent)
+cd /path/to/my_finance  
+claude code .
+# GitButler auto-creates virtual-branch-2  
+# Working on: DCF calculation engine bug fix
+
+# Window 3: Documentation update (concurrent)
+cd /path/to/my_finance
+claude code .
+# GitButler auto-creates virtual-branch-3
+# Working on: README updates
+```
+
+### GitButler Commands Reference
+```bash
+but status                  # View all virtual branch status
+but log                     # View commit graph
+but --json                  # JSON format output
+```
+
+### Claude Code Automatic Integration
+Through hooks in `~/.claude/settings.json`, GitButler will:
+- **Pre-tool**: Create snapshots before file modifications
+- **Post-tool**: Automatically track file changes to corresponding virtual branch
+- **Stop**: Create commits when session ends
+
+### Important Notes
+- **Never use git commands**: GitButler completely takes over version control
+- **Each window isolated**: Multiple Claude windows don't interfere with each other
+- **Auto-commit**: All changes automatically tracked and committed
+- **Visual management**: Use GitButler Desktop app to view all branches
+
 ## Git Workflow and Issue Management
 
 **See README.md for complete git workflow.** Claude-specific requirements:
@@ -435,12 +490,36 @@ git push --force-with-lease
 1. **ALWAYS use `p3 <command>` instead of `python <script>.py`**
 2. **ALWAYS stage data directory changes before main repo commits**
 3. **ALWAYS check and stage data changes first**
-4. **ALWAYS start from latest main (`git checkout main && git pull`)**
+4. **NEVER use git commands** - GitButler completely takes over version control
 5. **ALWAYS test mechanisms before coding (`p3 build run m7`)**
 6. **ALWAYS verify SEC data availability before semantic retrieval work**
 7. **ALWAYS use proper citations when working with SEC filing integration**
+8. **PREFER GitButler multi-window parallel development mode**
 
-**ALWAYS follow this sequence when working on tasks:**
+**GitButler Multi-Window Parallel Workflow (RECOMMENDED):**
+
+```bash
+# Each new window is an independent workspace
+# Window 1: New feature development
+cd /path/to/my_finance
+claude code .
+# GitButler auto-creates virtual branch and tracks all changes
+# Work normally - all file modifications automatically isolated to this virtual branch
+
+# Window 2: Parallel bug fix (concurrent)
+cd /path/to/my_finance  
+claude code .
+# GitButler creates new independent virtual branch
+# Completely isolated from Window 1, can work simultaneously
+
+# Window 3: Documentation update (concurrent)
+cd /path/to/my_finance
+claude code .
+# Another independent virtual branch
+# Three windows work simultaneously without interference
+```
+
+**Traditional Workflow (only when GitButler unavailable):**
 
 ```bash
 # 1. Start session - ENSURE LATEST BASE
