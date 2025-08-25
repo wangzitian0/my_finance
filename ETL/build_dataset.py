@@ -244,9 +244,10 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
         config_manager = TestConfigManager()
         yfinance_config_path = config_manager.config_dir / stage_config_name
 
-        # Extract tickers from main config
-        companies = yaml_config.get("companies", {})
-        tickers = list(companies.keys()) if companies else []
+        # Extract tickers using UnifiedConfigLoader for compatibility
+        from common.unified_config_loader import UnifiedConfigLoader
+        unified_loader = UnifiedConfigLoader()
+        tickers = unified_loader.get_company_tickers(tier)
 
         print(f"   📈 Collecting yfinance data...")
         print(f"   Tickers: {len(tickers)}")
