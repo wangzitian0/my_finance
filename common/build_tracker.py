@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from common.directory_manager import DirectoryManager, DataLayer
+from common.directory_manager import DataLayer, DirectoryManager
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ class BuildTracker:
     def __init__(self, base_path: str = None):
         # Use DirectoryManager for SSOT directory management
         self.directory_manager = DirectoryManager()
-        
+
         if base_path is None:
             # Get build_data root path and add stage_04_query_results (maps stage_99_build)
             data_root = self.directory_manager.get_data_root()

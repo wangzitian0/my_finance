@@ -5,6 +5,9 @@ Provides consistent configuration management across different test scenarios.
 """
 
 import os
+
+# Add common directory to path for DirectoryManager
+import sys
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -12,8 +15,6 @@ from typing import Any, Dict, Optional
 
 import yaml
 
-# Add common directory to path for DirectoryManager
-import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from common.directory_manager import DirectoryManager
 

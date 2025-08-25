@@ -12,8 +12,8 @@ from typing import Any, Dict, List, Optional, Union
 
 import yaml
 
-from ETL.tests.test_config import DatasetTier
 from common.directory_manager import DirectoryManager
+from ETL.tests.test_config import DatasetTier
 
 
 @dataclass
