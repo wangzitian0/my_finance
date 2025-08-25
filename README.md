@@ -77,9 +77,9 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 
 ### Supporting Components
 
-- **`common/`** - Common Components: Module coordination, schema definition, build tracking
+- **`common/`** - Common Components: Module coordination, schema definition, build tracking, centralized configuration
 - **`infra/`** - Infrastructure: Pixi environment management, Ansible automation, Podman containers
-- **`data/`** - Staged Data Storage: SEC documents, embedding vectors, build manifests
+- **`build_data/`** - Staged Data Storage: SEC documents, embedding vectors, build manifests (Git subtree)
 - **`scripts/`** - Utility Scripts: Build management, configuration updates, system maintenance
 - **`templates/`** - Template System: DCF prompts, configuration templates, standardized formats
 - **`tests/`** - Test Suite: Unit tests, integration tests, end-to-end validation
@@ -272,7 +272,7 @@ ls data/stage_99_build/sec_recall_examples/
 - **[Data Processing](ETL/README.md)** - Complete ETL pipeline with SEC/YFinance spiders and parsers
 - **[Data Management](common/README.md)** - Metadata system and utilities  
 - **[Build System](scripts/README.md)** - Dataset building and management
-- **[Data Pipeline](data/README.md)** - ETL structure and four-tier dataset strategy
+- **[Data Pipeline](build_data/README.md)** - ETL structure and four-tier dataset strategy
 
 ### Component Documentation
 - **[Graph RAG](graph_rag/README.md)** - Retrieval-augmented generation

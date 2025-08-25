@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional, Union
 import yaml
 
 from ETL.tests.test_config import DatasetTier
+from common.directory_manager import DirectoryManager
 
 
 @dataclass
@@ -62,8 +63,9 @@ class UnifiedConfigLoader:
 
     def __init__(self, config_dir: Path = None):
         if config_dir is None:
-            project_root = Path(__file__).parent.parent
-            config_dir = project_root / "data" / "config"
+            # Use DirectoryManager to get the correct config path
+            directory_manager = DirectoryManager()
+            config_dir = directory_manager.get_config_path()
 
         self.config_dir = config_dir
 

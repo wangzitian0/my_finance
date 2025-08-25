@@ -12,6 +12,11 @@ from typing import Any, Dict, Optional
 
 import yaml
 
+# Add common directory to path for DirectoryManager
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from common.directory_manager import DirectoryManager
+
 
 class DatasetTier(Enum):
     """Data tiers for testing strategy - Four-tier system"""
@@ -94,11 +99,12 @@ class TestConfigManager:
 
     def __init__(self, base_path: str = None):
         if base_path is None:
-            # Use project root relative path
-            project_root = Path(__file__).parent.parent.parent
-            base_path = project_root
-        self.base_path = Path(base_path)
-        self.config_dir = self.base_path / "data" / "config"
+            # Use DirectoryManager to get correct config path
+            directory_manager = DirectoryManager()
+            self.config_dir = directory_manager.get_config_path()
+        else:
+            self.base_path = Path(base_path)
+            self.config_dir = self.base_path / "data" / "config"
 
     def get_config(self, tier: DatasetTier) -> TestConfig:
         """Get test configuration for specified tier"""
