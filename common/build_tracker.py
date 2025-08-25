@@ -13,6 +13,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from common.directory_manager import DataLayer, DirectoryManager
+
 logger = logging.getLogger(__name__)
 
 # Try to import quality reporter, handle gracefully if not available
@@ -27,13 +29,18 @@ except ImportError:
 
 class BuildTracker:
     def __init__(self, base_path: str = None):
+        # Use DirectoryManager for SSOT directory management
+        self.directory_manager = DirectoryManager()
+
         if base_path is None:
-            # Use project root relative path
-            project_root = Path(__file__).parent.parent
-            base_path = project_root / "data"
-        self.base_path = Path(base_path)
-        self.build_base_path = self.base_path / "stage_99_build"
-        self.build_base_path.mkdir(exist_ok=True)
+            # Get build_data root path and add stage_04_query_results (maps stage_99_build)
+            data_root = self.directory_manager.get_data_root()
+            self.base_path = data_root
+            self.build_base_path = data_root / "stage_04_query_results"
+        else:
+            self.base_path = Path(base_path).parent
+            self.build_base_path = Path(base_path)
+        self.build_base_path.mkdir(parents=True, exist_ok=True)
 
         self.build_id = self._generate_build_id()
         self.build_path = self.build_base_path / f"build_{self.build_id}"

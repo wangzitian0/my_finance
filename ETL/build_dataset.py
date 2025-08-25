@@ -67,7 +67,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Starting stage_01_extract...")
         tracker.start_stage("stage_01_extract")
 
-        if "yfinance" in yaml_config.get("source", ""):
+        # Check if yfinance is enabled in data_sources
+        data_sources = yaml_config.get("data_sources", {})
+        if data_sources.get("yfinance", {}).get("enabled", False):
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Building YFinance data...")
             yf_start = time.time()
             success = build_yfinance_data(tier, yaml_config, tracker)
@@ -242,9 +244,11 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
         config_manager = TestConfigManager()
         yfinance_config_path = config_manager.config_dir / stage_config_name
 
-        # Extract tickers from main config
-        companies = yaml_config.get("companies", {})
-        tickers = list(companies.keys()) if companies else []
+        # Extract tickers using UnifiedConfigLoader for compatibility
+        from common.unified_config_loader import UnifiedConfigLoader
+
+        unified_loader = UnifiedConfigLoader()
+        tickers = unified_loader.get_company_tickers(tier)
 
         print(f"   📈 Collecting yfinance data...")
         print(f"   Tickers: {len(tickers)}")

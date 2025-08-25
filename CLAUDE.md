@@ -1,13 +1,14 @@
 # CLAUDE.md
 
-> IMPORTANT ARCHITECTURE UPDATE (2025-08-21)
+> IMPORTANT ARCHITECTURE UPDATE (2025-08-25)
 >
 > **Clean Repository Structure**: The repository architecture has been optimized for maintainability:
 >
-> - **Main repository**: Contains only code, documentation, and configurations
-> - **Data submodule**: `data/` directory remains a submodule containing only build artifacts and generated data
-> - **Configuration migration**: All config files moved from `data/config/` to `common/config/`
-> - **Cleaner separation**: Core configurations tracked in main repo, data artifacts in submodule
+> - **Main repository**: Contains only code, documentation, and configurations  
+> - **Data subtree**: `build_data/` directory is now a Git subtree (replaced submodule for better workflow)
+> - **Configuration centralization**: All config files moved from `data/config/` to `common/config/`
+> - **Cleaner separation**: Core configurations tracked in main repo, data artifacts in subtree
+> - **Improved workflow**: Direct file management without submodule complexity
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
