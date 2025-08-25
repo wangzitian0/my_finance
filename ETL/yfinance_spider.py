@@ -20,11 +20,11 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from common.directory_manager import DataLayer, DirectoryManager
 from common.logger import setup_logger
 from common.metadata_manager import MetadataManager
 from common.progress import create_progress_bar
 from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
-from common.directory_manager import DirectoryManager, DataLayer
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
@@ -105,6 +105,7 @@ def fetch_stock_data(ticker, period, interval):
     All yfinance calls are wrapped in a warnings context to ignore DeprecationWarnings.
     """
     import warnings
+
     import yfinance as yf
 
     with warnings.catch_warnings():
