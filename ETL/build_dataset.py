@@ -246,6 +246,7 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
         # Extract tickers using UnifiedConfigLoader for compatibility
         from common.unified_config_loader import UnifiedConfigLoader
+
         unified_loader = UnifiedConfigLoader()
         tickers = unified_loader.get_company_tickers(tier)
 
