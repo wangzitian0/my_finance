@@ -328,15 +328,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
 
         # Handle GitButler workspace branches differently
         if is_gitbutler_workspace():
-            print("🔄 GitButler workspace detected - creating new commit with F2 validation")
-            # For GitButler, we need to create a proper commit with test validation
-            # First, let's check if we have changes to stage
-            status_check = run_command("git status --porcelain", "Checking git status", check=False)
-            if status_check and status_check.stdout.strip():
-                print("📝 Staging all changes for GitButler commit with F2 validation")
-                run_command("git add .", "Staging all changes")
+            print("🔄 GitButler workspace detected - adding F2 validation to existing commit")
 
-            # Create the proper commit with F2 test validation embedded
+            # For GitButler, amend the last commit with F2 test validation
             final_commit_msg = f"""{title}
 
 Fixes #{issue_number}
@@ -351,9 +345,23 @@ Fixes #{issue_number}
 
 Co-Authored-By: Claude <noreply@anthropic.com>"""
 
-            run_command(
-                f'git commit -m "{final_commit_msg}"', "Creating F2-validated commit for GitButler"
-            )
+            # Check if there are unstaged changes first
+            status_check = run_command("git status --porcelain", "Checking git status", check=False)
+            if status_check and status_check.stdout.strip():
+                print("📝 Staging remaining changes for GitButler")
+                run_command("git add .", "Staging all changes")
+                # Create new commit
+                run_command(
+                    f'git commit -m "{final_commit_msg}"',
+                    "Creating F2-validated commit for GitButler",
+                )
+            else:
+                # No new changes, amend the last commit with F2 validation
+                print("📝 No new changes - amending last commit with F2 validation")
+                run_command(
+                    f'git commit --amend -m "{final_commit_msg}"',
+                    "Amending GitButler commit with F2 validation",
+                )
         else:
             # Amend commit with test validation info for traditional git workflow
             run_command(
