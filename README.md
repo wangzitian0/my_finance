@@ -13,9 +13,9 @@ This system analyzes financial data to generate:
 
 ## Quick Start
 
-### ⚡ Unified p3 Command System + GitButler Multi-Window Development
+### ⚡ Unified p3 Command System
 
-Supports multi-window parallel development - each Claude Code window automatically isolated, enabling simultaneous work on different features without conflicts:
+All operations use the unified `p3` command interface:
 
 ```bash
 # Initial Setup (choose one method)
@@ -34,19 +34,7 @@ chmod +x ~/bin/p3
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
 source ~/.zshrc
 
-# GitButler Multi-Window Setup (one-time)
-but init                       # Initialize GitButler (project root)
-# Claude hooks auto-configured in ~/.claude/settings.json
-
-# Multi-Window Parallel Development Workflow
-# Window 1: Feature A development
-claude code .                  # Auto-creates virtual branch A, isolated work
-# Window 2: Bug fix (concurrent)  
-claude code .                  # Auto-creates virtual branch B, independent work
-# Window 3: Documentation update (concurrent)
-claude code .                  # Auto-creates virtual branch C, parallel work
-
-# Daily development commands (use in any window)
+# Daily workflow  
 p3 activate                    # Enter pixi environment
 p3 e2e                         # Quick validation (end-to-end)
 p3 build m7                    # Build test dataset with SEC filings
@@ -152,58 +140,6 @@ p3 status                  # Quick environment health check
 p3 <invalid-command>       # Shows available commands
 p3 build --help            # Scope-specific help
 ```
-
-## 🔄 Multi-Window Parallel Development
-
-### Window Isolation Workflow
-
-**Real-world example: Simultaneous development across multiple Claude Code sessions**
-
-```bash
-# Terminal Session 1: SEC Data Enhancement
-cd /path/to/my_finance
-claude code .
-# GitButler auto-creates virtual-branch-sec-enhancement
-# Work on: ETL/sec_edgar_spider.py improvements
-# Claude hooks automatically track: 
-# - File modifications to SEC spider
-# - New SEC parsing functions
-# - Updated configuration files
-
-# Terminal Session 2: DCF Engine Bug Fix (concurrent)  
-cd /path/to/my_finance
-claude code .
-# GitButler auto-creates virtual-branch-dcf-bugfix
-# Work on: dcf_engine/valuation_models.py fixes
-# Claude hooks automatically track:
-# - Bug fixes in DCF calculations
-# - Unit test updates
-# - Documentation corrections
-
-# Terminal Session 3: Infrastructure Updates (concurrent)
-cd /path/to/my_finance  
-claude code .
-# GitButler auto-creates virtual-branch-infra-update
-# Work on: infra/ script improvements
-# Claude hooks automatically track:
-# - Ansible playbook updates
-# - Container configurations
-# - CI/CD improvements
-```
-
-### Isolation Guarantees
-- **File-level isolation**: Changes in Window 1 don't affect Window 2/3
-- **Independent testing**: Each window can run `p3 e2e` independently  
-- **Concurrent commits**: GitButler manages commit sequences automatically
-- **Visual coordination**: Desktop app shows all parallel work streams
-- **Conflict prevention**: Virtual branch system eliminates merge conflicts
-
-### Production Benefits
-- **Faster development**: Work on multiple features simultaneously
-- **Context preservation**: Each window maintains its own development context
-- **Independent CI/CD**: Create PRs from any window when ready
-- **Risk reduction**: Isolated changes reduce chance of breaking other work
-- **Team coordination**: Visual branch management for complex projects
 
 ## SEC-Enhanced Strategy Reports
 
