@@ -82,9 +82,16 @@ def create_gitbutler_compatible_commit(title, issue_number, test_info=None):
 
 Co-Authored-By: Claude <noreply@anthropic.com>"""
 
-    # Create new commit instead of amending
-    run_command("git add .", "Staging all changes")
-    run_command(f'git commit -m "{commit_msg}"', "Creating GitButler-compatible commit")
+    # For GitButler workspace, check if there are changes to commit
+    status_result = run_command("git status --porcelain", "Checking git status", check=False)
+    if status_result and status_result.stdout.strip():
+        # Stage and commit changes
+        run_command("git add .", "Staging all changes")
+        run_command(f'git commit -m "{commit_msg}"', "Creating GitButler-compatible commit")
+    else:
+        # No new changes to commit - GitButler may have already committed everything
+        print("📝 No new changes to commit - GitButler has already managed the commits")
+        print("🔄 Using existing GitButler commit structure")
 
 
 def get_uncommitted_changes():
