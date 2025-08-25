@@ -14,7 +14,6 @@ import sys
 from datetime import datetime, timedelta
 
 import yaml
-import yfinance as yf
 
 # Add project root to path for imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -25,13 +24,17 @@ from common.logger import setup_logger
 from common.metadata_manager import MetadataManager
 from common.progress import create_progress_bar
 from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.directory_manager import DirectoryManager, DataLayer
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
 
-# Base directories
+# Base directories - use DirectoryManager for SSOT
+directory_manager = DirectoryManager()
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
+# Use legacy mapping: layer_02_delta -> stage_01_daily_delta
+data_root = directory_manager.get_data_root()
+STAGE_01_EXTRACT_DIR = str(data_root / "stage_01_daily_delta")
 
 
 class StreamToLogger(object):
@@ -102,6 +105,7 @@ def fetch_stock_data(ticker, period, interval):
     All yfinance calls are wrapped in a warnings context to ignore DeprecationWarnings.
     """
     import warnings
+    import yfinance as yf
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
@@ -174,12 +178,26 @@ def run_job(config_path):
 
     tickers = config.get("tickers", [])
     source = config.get("source", "yfinance")
-    data_periods = config.get("data_periods", [])
+    data_periods = config.get("data_periods", {})
 
-    for period_cfg in data_periods:
-        oid = period_cfg.get("oid")
-        period = period_cfg.get("period")
-        interval = period_cfg.get("interval")
+    # Handle both dict format (new) and list format (legacy)
+    if isinstance(data_periods, dict):
+        # New format: data_periods is a dict with period names as keys
+        period_items = [(oid, period_cfg) for oid, period_cfg in data_periods.items()]
+    else:
+        # Legacy format: data_periods is a list with oid inside each item
+        period_items = [(period_cfg.get("oid"), period_cfg) for period_cfg in data_periods]
+
+    for oid, period_cfg in period_items:
+        # Handle case where period_cfg might be a string (from periods list)
+        if isinstance(period_cfg, str):
+            # If period_cfg is a string, it's the period value itself
+            period = period_cfg
+            interval = "1d"  # Default interval
+        else:
+            # Normal dictionary format
+            period = period_cfg.get("period")
+            interval = period_cfg.get("interval")
 
         job_id = f"{source}_{oid}"
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")
