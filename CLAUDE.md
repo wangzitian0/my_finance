@@ -38,6 +38,41 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Ansible automation compatible with Pixi environment
 - Use `pixi info` to check environment details for IDE configuration
 
+## p3 Command Setup
+
+**IMPORTANT**: The p3 command requires proper setup to work globally:
+
+### Initial Setup (One-time)
+```bash
+# Method 1: Direct usage from project directory
+cd /path/to/my_finance
+./p3 <command>                  # Works immediately
+
+# Method 2: Global command setup (recommended)
+mkdir -p ~/bin
+cat > ~/bin/p3 << 'EOF'
+#!/bin/bash
+cd /path/to/my_finance          # Adjust this path
+pixi run python p3 "$@"
+EOF
+chmod +x ~/bin/p3
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+# Now p3 works globally
+p3 env-status                   # Test the command
+```
+
+### Common Issues and Solutions
+
+**Problem**: `zsh: command not found: p3`
+- **Cause**: p3 not in PATH or Pixi environment not activated
+- **Solution**: Use setup Method 2 above or run `./p3` from project directory
+
+**Problem**: Python version mismatch errors
+- **Cause**: System Python (3.13) vs Pixi Python (3.12)
+- **Solution**: Always use `pixi run python` or the p3 wrapper
+
 ## Command Line Architecture
 
 **Two-tier management system:**

@@ -18,8 +18,21 @@ This system analyzes financial data to generate:
 All operations use the unified `p3` command interface:
 
 ```bash
-# Setup (once)
-p3 env-setup                   # Complete environment setup
+# Initial Setup (choose one method)
+## Method 1: Use directly from project directory
+cd /path/to/my_finance
+./p3 env-setup                 # Complete environment setup
+
+## Method 2: Global command setup (recommended)
+mkdir -p ~/bin
+cat > ~/bin/p3 << 'EOF'
+#!/bin/bash
+cd /path/to/my_finance
+pixi run python p3 "$@"
+EOF
+chmod +x ~/bin/p3
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 
 # Daily workflow  
 p3 activate                    # Enter pixi environment
@@ -165,12 +178,24 @@ Stage 99: Build Management (timestamped releases, validation reports)
 **Prerequisites**: 
 - **Pixi** ([install guide](https://pixi.sh/latest/)) - Cross-platform package manager
 - **Docker/Podman** - Container runtime for Neo4j database
+- **Python 3.12+** - Required by Pixi environment (managed automatically)
 
 **Complete Setup**:
 ```bash
 # Clone repository
 git clone https://github.com/wangzitian0/my_finance.git
 cd my_finance
+
+# Setup p3 command globally (recommended)
+mkdir -p ~/bin
+cat > ~/bin/p3 << 'EOF'
+#!/bin/bash
+cd $(dirname "$0")/../../zitian/my_finance  # Adjust path as needed
+pixi run python p3 "$@"
+EOF
+chmod +x ~/bin/p3
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 
 # One-command setup (installs everything)
 p3 env-setup                 # Podman + Neo4j + Python ML stack + SEC data
@@ -188,7 +213,21 @@ p3 env-status                # Check all services
 p3 build-m7                  # Test with Magnificent 7 dataset
 ```
 
-**Troubleshooting**: Use `p3 env-reset` for complete clean reset.
+## Troubleshooting
+
+### Common Issues
+
+**`zsh: command not found: p3`**
+- **Solution**: Setup p3 globally using the method in Installation Details above
+- **Quick fix**: Use `./p3` from project directory
+
+**Python version errors**
+- **Issue**: System Python (3.13) conflicts with Pixi Python (3.12)
+- **Solution**: Always use the p3 wrapper which ensures correct environment
+
+**Pixi environment issues**
+- **Solution**: Run `pixi install` to refresh dependencies
+- **Nuclear option**: `p3 env-reset` for complete clean reset
 
 ## SEC Filing Integration
 
