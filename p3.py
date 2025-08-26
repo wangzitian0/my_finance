@@ -17,7 +17,33 @@ class P3CLI:
     """Unified p3 CLI system for my_finance project."""
 
     def __init__(self):
-        self.project_root = Path(__file__).parent
+        # Find the actual project root (handle worktrees)
+        current_path = Path(__file__).parent
+        
+        # If we're in a worktree, find the main project directory
+        if "worktree" in str(current_path):
+            # Go up to find the main project directory
+            parts = current_path.parts
+            try:
+                # Find the main project directory (before .git)
+                git_index = parts.index('.git')
+                main_project = Path(*parts[:git_index])
+                if (main_project / "pixi.toml").exists():
+                    self.project_root = main_project
+                else:
+                    self.project_root = current_path
+            except ValueError:
+                self.project_root = current_path
+        else:
+            # Look for the main project directory (contains pixi.toml)
+            while current_path != current_path.parent:
+                if (current_path / "pixi.toml").exists():
+                    self.project_root = current_path
+                    break
+                current_path = current_path.parent
+            else:
+                self.project_root = Path(__file__).parent
+        
         self.commands = self._load_command_mapping()
 
     def _load_command_mapping(self) -> Dict[str, str]:
@@ -88,6 +114,9 @@ class P3CLI:
             "generate-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
             "backtest": "echo 'Backtest simulation completed (placeholder)' && pixi run python dcf_engine/legacy_testing/simple_m7_dcf.py",
             "test-semantic-retrieval": "pixi run python test_semantic_retrieval.py",
+            # Git Hooks Management  
+            "install-hooks": f"pixi run python {self.project_root}/scripts/install_git_hooks.py",
+            "check-hooks": f'pixi run python {self.project_root}/scripts/check_git_hooks.py',
             # Legacy DCF Commands
             "dcf-analysis-legacy": "pixi run python dcf_engine/legacy_testing/m7_dcf_analysis.py",
             "dcf-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
@@ -250,6 +279,10 @@ Status & Validation:
   cache-status           Check cache status
   verify-env             Verify environment dependencies
   check-integrity        Check data integrity
+
+Git Hooks Management:
+  install-hooks          Install pre-push hook to enforce create-pr workflow
+  check-hooks            Check if git hooks are properly installed
 
 Scopes: f2 m7 n100 v3k (default: m7)
   f2     - Fast 2 companies (development testing)
