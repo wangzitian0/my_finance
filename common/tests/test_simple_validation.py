@@ -31,21 +31,36 @@ class TestPipelineBasics:
         assert json_str == '{"test": "value"}'
 
     def test_directory_structure(self):
-        """Verify basic directory structure exists"""
+        """Verify basic directory structure exists - Updated for Issue #122 five-layer architecture"""
         required_dirs = [
             "tests",
             "scripts",
             ".github/workflows",
-            "data/stage_01_extract",
-            "data/stage_02_transform",
-            "data/stage_03_load",
-            "data/build",
             "common/config",
+            # Note: build_data directory and five-layer structure are created on-demand
+            # by the new directory manager system, so we don't require them to exist
+            # in the base repository structure
         ]
 
         for dir_name in required_dirs:
             dir_path = Path(dir_name)
             assert dir_path.exists(), f"Required directory {dir_name} should exist"
+
+        # Test that the new directory manager can create the five-layer structure
+        from common import DataLayer, directory_manager
+
+        # Verify the five-layer enum is correct
+        expected_layers = ["RAW_DATA", "DAILY_DELTA", "DAILY_INDEX", "GRAPH_RAG", "QUERY_RESULTS"]
+        actual_layers = [layer.name for layer in DataLayer]
+        assert (
+            actual_layers == expected_layers
+        ), f"DataLayer enum should match expected: {expected_layers}"
+
+        # Test that path generation works
+        raw_path = directory_manager.get_layer_path(DataLayer.RAW_DATA)
+        assert str(raw_path).endswith(
+            "stage_00_raw"
+        ), "Raw data path should use new naming convention"
 
     def test_config_files_accessible(self):
         """Test configuration file access"""
