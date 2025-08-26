@@ -35,8 +35,8 @@ def get_commit_info():
                 print("🔍 Found merge commit, getting PR branch commits...")
                 print(f"🔍 Merge parents: {parents}")
 
-                # Fix: Check both parents directly to find PR commit with F2-TESTED marker
-                pr_commits = []
+                # Fix: Check both parents to find the most recent PR commit with test markers
+                candidates = []
                 for i, parent in enumerate(parents):
                     try:
                         print(f"🔍 Checking parent {i+1}: {parent[:8]}")
@@ -50,27 +50,32 @@ def get_commit_info():
                         )
                         parent_msg = result.stdout.strip()
 
+                        # Get commit timestamp from this parent
+                        result = subprocess.run(
+                            ["git", "log", "-1", "--pretty=%ct", parent],
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                        )
+                        commit_time = int(result.stdout.strip())
+
                         # Check if this parent has F2-TESTED or M7-TESTED marker
                         has_test_marker = "F2-TESTED" in parent_msg or "M7-TESTED" in parent_msg
-                        print(f"🔍 Parent {i+1} has test marker: {has_test_marker}")
+                        print(f"🔍 Parent {i+1} has test marker: {has_test_marker}, commit time: {commit_time}")
 
                         if has_test_marker:
-                            print(f"🔍 Found PR commit with test validation: {parent[:8]}")
-
-                            # Get commit timestamp from the PR commit
-                            result = subprocess.run(
-                                ["git", "log", "-1", "--pretty=%ct", parent],
-                                capture_output=True,
-                                text=True,
-                                check=True,
-                            )
-                            commit_time = int(result.stdout.strip())
-
-                            return parent_msg, commit_time
+                            candidates.append((parent_msg, commit_time, parent, i+1))
 
                     except Exception as e:
                         print(f"🔍 Error checking parent {i+1}: {e}")
                         continue
+
+                if candidates:
+                    # Sort by commit timestamp (most recent first) and prefer second parent if timestamps are close
+                    candidates.sort(key=lambda x: (-x[1], x[3]))  # Sort by -timestamp, then parent number
+                    chosen = candidates[0]
+                    print(f"🔍 Selected most recent PR commit: {chosen[2][:8]} (parent {chosen[3]})")
+                    return chosen[0], chosen[1]
 
                 # Fallback: if no parent has test markers, use the second parent (usually PR branch)
                 if len(parents) >= 2:
