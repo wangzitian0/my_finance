@@ -64,11 +64,7 @@ def run_command(cmd, description, timeout=None, check=True):
 def get_current_branch():
     """Get current git branch"""
     result = run_command("git branch --show-current", "Getting current branch")
-    branch = result.stdout.strip()
-    print(f"🐛 DEBUG: Raw branch output: {repr(result.stdout)}")
-    print(f"🐛 DEBUG: Stripped branch: {repr(branch)}")
-    print(f"🐛 DEBUG: Branch == 'main': {branch == 'main'}")
-    return branch
+    return result.stdout.strip()
 
 
 def get_uncommitted_changes():
