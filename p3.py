@@ -20,20 +20,27 @@ class P3CLI:
         # Find the actual project root (handle worktrees)
         current_path = Path(__file__).parent
 
-        # If we're in a worktree, find the main project directory
+        # CRITICAL FIX: In worktrees, stay in current directory for git operations
+        # The pixi.toml should be accessible from worktree via symlinks or relative paths
         if "worktree" in str(current_path):
-            # Go up to find the main project directory
+            # Stay in the worktree directory for proper git context
+            self.project_root = current_path
+
+            # Verify we can access pixi.toml (should be available via symlink or relative path)
             parts = current_path.parts
             try:
-                # Find the main project directory (before .git)
+                # Find the main project directory for pixi.toml reference only
                 git_index = parts.index(".git")
                 main_project = Path(*parts[:git_index])
-                if (main_project / "pixi.toml").exists():
-                    self.project_root = main_project
-                else:
-                    self.project_root = current_path
+                if (
+                    not (current_path / "pixi.toml").exists()
+                    and (main_project / "pixi.toml").exists()
+                ):
+                    # Note: We stay in worktree but know where pixi.toml is
+                    print(f"📍 Worktree detected: staying in {current_path}")
+                    print(f"📁 Pixi config referenced from: {main_project}")
             except ValueError:
-                self.project_root = current_path
+                pass
         else:
             # Look for the main project directory (contains pixi.toml)
             while current_path != current_path.parent:
