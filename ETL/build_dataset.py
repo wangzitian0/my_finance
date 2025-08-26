@@ -56,7 +56,7 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         build_id = tracker.start_build(tier.value, f"p3 build run {tier_name}")
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Build tracker initialized, ID: {build_id}")
 
-        # Load YAML configuration  
+        # Load YAML configuration
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Loading YAML configuration...")
         yaml_config = config
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] YAML config loaded: {list(yaml_config.keys())}")
@@ -286,13 +286,13 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
     """Build SEC Edgar data using orthogonal configuration system"""
     try:
-        from ETL.sec_edgar_spider import run_job
         from common.orthogonal_config import orthogonal_config
+        from ETL.sec_edgar_spider import run_job
 
         # Check if SEC Edgar is enabled in data sources (orthogonal config)
         data_sources = yaml_config.get("data_sources", {})
         sec_config = data_sources.get("sec_edgar", {})
-        
+
         if not sec_config.get("enabled", False):
             print(f"   ⚪ SEC Edgar disabled in {tier.value} configuration")
             return True
@@ -301,15 +301,13 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
         # Build runtime configuration using orthogonal system
         runtime_config = orthogonal_config.build_runtime_config(
-            stock_list=tier.value,
-            data_sources=['sec_edgar'], 
-            scenario='development'
+            stock_list=tier.value, data_sources=["sec_edgar"], scenario="development"
         )
-        
+
         # Extract SEC configuration from runtime config
-        sec_runtime_config = runtime_config['data_sources']['sec_edgar']
-        companies = runtime_config['stock_list']['companies']
-        
+        sec_runtime_config = runtime_config["data_sources"]["sec_edgar"]
+        companies = runtime_config["stock_list"]["companies"]
+
         print(f"   📄 Using orthogonal SEC config with {len(companies)} companies")
 
         tracker.log_stage_output(
@@ -318,39 +316,43 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
         # Create temporary config for SEC spider (preserving orthogonal approach)
         import tempfile
+
         import yaml
-        
+
         # Extract CIK numbers from companies
         ciks = []
         for ticker, company_data in companies.items():
-            if 'cik' in company_data:
-                ciks.append(company_data['cik'])
-        
+            if "cik" in company_data:
+                ciks.append(company_data["cik"])
+
         if not ciks:
             print(f"   ⚠️ No CIK numbers found for {tier.value} companies")
             return True
-            
+
         # Build SEC config from orthogonal data
         sec_spider_config = {
-            'tickers': ciks,
-            'count': 8,
-            'file_types': ['10K', '10Q', '8K'],
-            'email': sec_runtime_config['config'].get('user_agent', 'ZitianSG (wangzitian0@gmail.com)'),
-            'collection': sec_runtime_config['rate_limits']
+            "tickers": ciks,
+            "count": 8,
+            "file_types": ["10K", "10Q", "8K"],
+            "email": sec_runtime_config["config"].get(
+                "user_agent", "ZitianSG (wangzitian0@gmail.com)"
+            ),
+            "collection": sec_runtime_config["rate_limits"],
         }
-        
+
         # Write temporary config file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False) as temp_f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as temp_f:
             yaml.dump(sec_spider_config, temp_f, default_flow_style=False)
             temp_config_path = temp_f.name
 
         print(f"   📋 Generated SEC config from orthogonal system: {len(ciks)} CIKs")
-        
+
         # Run SEC Edgar spider with orthogonal config
         run_job(temp_config_path)
-        
+
         # Clean up temp file
         import os
+
         os.unlink(temp_config_path)
 
         tracker.log_stage_output("stage_01_extract", "Orthogonal SEC Edgar collection completed")
@@ -512,10 +514,11 @@ def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
         expected_counts = yaml_config.get("expected_files", {})
 
         # Get data paths from directory manager
-        from common.directory_manager import get_data_path, DataLayer
+        from common.directory_manager import DataLayer, get_data_path
+
         paths = {
             "yfinance": get_data_path(DataLayer.RAW_DATA, "yfinance"),
-            "sec_edgar": get_data_path(DataLayer.RAW_DATA, "sec_edgar")
+            "sec_edgar": get_data_path(DataLayer.RAW_DATA, "sec_edgar"),
         }
         extract_path = paths["extract"]
 

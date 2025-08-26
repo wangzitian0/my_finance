@@ -22,10 +22,10 @@ from common.directory_manager import DirectoryManager
 class DatasetTier(Enum):
     """Data tiers for testing strategy - Four-tier system"""
 
-    F2 = "f2"    # Fast 2 companies (development testing)
-    M7 = "m7"    # Magnificent 7 (standard/PR testing)
+    F2 = "f2"  # Fast 2 companies (development testing)
+    M7 = "m7"  # Magnificent 7 (standard/PR testing)
     N100 = "n100"  # NASDAQ 100 (validation testing)
-    V3K = "v3k"    # VTI 3500+ (production testing)
+    V3K = "v3k"  # VTI 3500+ (production testing)
 
 
 @dataclass
