@@ -3,9 +3,8 @@ name: Auto-Label Issues
 on:
   issues:
     types: [opened, edited]
-  # Uncomment to also label issues when they are reopened  
-  # issues:
-  #   types: [opened, edited, reopened]
+    # Uncomment to also label issues when they are reopened:
+    # types: [opened, edited, reopened]
 
 permissions:
   issues: write
@@ -221,12 +220,10 @@ jobs:
               console.log(`✅ Successfully added ${uniqueLabels.length} labels to issue #${issue.number}`);
               
               // Add a comment explaining the automatic labeling
-              const comment = `🏷️ **Automatic labeling complete**
-              
-This issue has been automatically labeled based on its title and content:
-${uniqueLabels.map(label => `- \`${label}\``).join('\n')}
-
-_Labels can be manually adjusted if needed._`;
+              const comment = "🏷️ **Automatic labeling complete**\n\n" +
+                "This issue has been automatically labeled based on its title and content:\n" +
+                uniqueLabels.map(label => "- `" + label + "`").join('\n') + "\n\n" +
+                "_Labels can be manually adjusted if needed._";
               
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
