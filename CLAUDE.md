@@ -1,5 +1,7 @@
 # CLAUDE.md - Claude Code Instructions
 
+<!-- Test comment added for sub-agent activation testing - 2025-08-26 -->
+
 > **Clean Repository Structure** (2025-08-26): Main repository contains only code, documentation, and configurations. Data subtree at `build_data/` with centralized configs at `common/config/`.
 
 This file provides guidance to Claude Code when working with this SEC Filing-Enhanced Graph RAG-powered DCF valuation system.
