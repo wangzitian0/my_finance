@@ -345,13 +345,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     try:
         # Set environment variable to identify this as a p3 create-pr push
         import os
+
         original_env = os.environ.copy()
         os.environ["P3_CREATE_PR_PUSH"] = "true"
-        
+
         push_result = run_command(
             f"git push -u origin {current_branch}", f"Pushing branch {current_branch}", check=False
         )
-        
+
         # Restore original environment
         os.environ.clear()
         os.environ.update(original_env)
