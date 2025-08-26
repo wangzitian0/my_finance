@@ -1,3 +1,0 @@
-[submodule "build_data"]
-	path = build_data
-	url = git@github.com:wangzitian0/my_finance_data.git
