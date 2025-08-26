@@ -165,11 +165,13 @@ def check_condition_1_test_run(commit_msg: str) -> bool:
         print()
         print("❌ THESE METHODS WILL ALWAYS FAIL CI:")
         print("   • Direct git push/commit commands")
-        print("   • Manual GitHub UI PR creation") 
+        print("   • Manual GitHub UI PR creation")
         print("   • Hand-crafted F2-TESTED/M7-TESTED markers")
         print("   • Bypassing the p3 create-pr automation")
         print()
-        print("💡 WHY: The automated script embeds real test results, timestamps, and validation data")
+        print(
+            "💡 WHY: The automated script embeds real test results, timestamps, and validation data"
+        )
         print("   that cannot be replicated manually. This prevents fake test markers.")
         print()
         print("📖 For detailed explanation: CLAUDE.md → 'Why Manual Git Commands WILL FAIL CI'")
@@ -270,15 +272,23 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                 if numbers:
                     file_count = int(numbers[0])
                     print(f"   Found test results: {file_count} data files")
-                    
+
                     # Accept both M7 (≥7 files) and F2 (≥2 files) test results
                     if file_count >= 7:
-                        print(f"✅ Condition 4 passed: Validated {file_count} data files (M7 complete test)")
-                        print("   M7 testing provides comprehensive validation across all 7 companies")
+                        print(
+                            f"✅ Condition 4 passed: Validated {file_count} data files (M7 complete test)"
+                        )
+                        print(
+                            "   M7 testing provides comprehensive validation across all 7 companies"
+                        )
                         return True
                     elif file_count >= 2:
-                        print(f"✅ Condition 4 passed: Validated {file_count} data files (F2 fast test)")
-                        print("   F2 testing provides sufficient validation for PR approval (MSFT + NVDA)")
+                        print(
+                            f"✅ Condition 4 passed: Validated {file_count} data files (F2 fast test)"
+                        )
+                        print(
+                            "   F2 testing provides sufficient validation for PR approval (MSFT + NVDA)"
+                        )
                         return True
                     else:
                         print(f"❌ Condition 4 FAILED: Insufficient data files ({file_count} < 2)")
@@ -286,13 +296,17 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                         print("🚨 ROOT CAUSE: Test execution was incomplete or failed!")
                         print()
                         print("📊 MINIMUM REQUIREMENTS:")
-                        print("   • F2 test: ≥2 data files (MSFT + NVDA)")  
+                        print("   • F2 test: ≥2 data files (MSFT + NVDA)")
                         print("   • M7 test: ≥7 data files (all Magnificent 7)")
                         print()
                         print("🔧 SOLUTION - Run complete tests:")
                         print("   1. p3 e2e f2                        # F2 fast test (≥2 files)")
-                        print("   2. p3 e2e m7                        # M7 complete test (≥7 files)")
-                        print('   3. p3 create-pr "title" ISSUE       # Embed test results properly')
+                        print(
+                            "   2. p3 e2e m7                        # M7 complete test (≥7 files)"
+                        )
+                        print(
+                            '   3. p3 create-pr "title" ISSUE       # Embed test results properly'
+                        )
                         print()
                         print("🔍 DEBUG: Check if build system completed successfully")
                         return False
@@ -300,11 +314,13 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
         print()
         print("🚨 ROOT CAUSE: Corrupted or manually crafted test markers!")
         print()
-        print("💡 EXPLANATION: Real tests embed parseable file counts like 'Test Results: 7 data files validated'")
+        print(
+            "💡 EXPLANATION: Real tests embed parseable file counts like 'Test Results: 7 data files validated'"
+        )
         print("   Manual commit messages cannot replicate this exact format.")
         print()
         print("🔧 SOLUTION: Use real automated testing:")
-        print("   1. p3 e2e f2                        # Real F2 test with file counting")  
+        print("   1. p3 e2e f2                        # Real F2 test with file counting")
         print("   2. p3 e2e m7                        # Real M7 test with file counting")
         print('   3. p3 create-pr "title" ISSUE       # Automated commit message generation')
         return False
@@ -318,8 +334,12 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
         print("   Where X ≥ 2 for F2 tests or X ≥ 7 for M7 tests")
         print()
         print("🔧 COMPLETE SOLUTION:")
-        print("   1. p3 e2e f2                        # Execute real F2 tests (generates test results)")
-        print("   2. p3 e2e m7                        # Execute real M7 tests (generates test results)")  
+        print(
+            "   1. p3 e2e f2                        # Execute real F2 tests (generates test results)"
+        )
+        print(
+            "   2. p3 e2e m7                        # Execute real M7 tests (generates test results)"
+        )
         print('   3. p3 create-pr "title" ISSUE       # Creates commit with embedded test results')
         print()
         print("❌ NEVER manually create test result markers - they will not pass validation!")
@@ -400,7 +420,7 @@ def main():
     print("=" * 70)
     print("Checking 5 core conditions for PR approval:")
     print("1. ✅ Test Execution     - F2 fast test OR M7 complete test")
-    print("2. ⏰ Test Timing       - Tests run within 10 minutes of push")  
+    print("2. ⏰ Test Timing       - Tests run within 10 minutes of push")
     print("3. 📅 Commit Freshness  - Push within 24 hours of creation")
     print("4. 📊 Test Results      - Sufficient data files validated")
     print("5. 🎨 Code Formatting   - Python code follows black + isort standards")
@@ -444,7 +464,7 @@ def main():
         print("✅ COMMIT APPROVED FOR MERGE")
         print("✅ This commit meets all quality requirements")
         print("✅ Automated testing workflow was followed correctly")
-        print("✅ Either F2 fast testing or M7 complete testing was executed") 
+        print("✅ Either F2 fast testing or M7 complete testing was executed")
         print()
         print("🚀 This PR is ready for review and merge!")
         sys.exit(0)

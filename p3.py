@@ -19,14 +19,14 @@ class P3CLI:
     def __init__(self):
         # Find the actual project root (handle worktrees)
         current_path = Path(__file__).parent
-        
+
         # If we're in a worktree, find the main project directory
         if "worktree" in str(current_path):
             # Go up to find the main project directory
             parts = current_path.parts
             try:
                 # Find the main project directory (before .git)
-                git_index = parts.index('.git')
+                git_index = parts.index(".git")
                 main_project = Path(*parts[:git_index])
                 if (main_project / "pixi.toml").exists():
                     self.project_root = main_project
@@ -43,7 +43,7 @@ class P3CLI:
                 current_path = current_path.parent
             else:
                 self.project_root = Path(__file__).parent
-        
+
         self.commands = self._load_command_mapping()
 
     def _load_command_mapping(self) -> Dict[str, str]:
@@ -114,9 +114,9 @@ class P3CLI:
             "generate-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
             "backtest": "echo 'Backtest simulation completed (placeholder)' && pixi run python dcf_engine/legacy_testing/simple_m7_dcf.py",
             "test-semantic-retrieval": "pixi run python test_semantic_retrieval.py",
-            # Git Hooks Management  
+            # Git Hooks Management
             "install-hooks": f"pixi run python {self.project_root}/scripts/install_git_hooks.py",
-            "check-hooks": f'pixi run python {self.project_root}/scripts/check_git_hooks.py',
+            "check-hooks": f"pixi run python {self.project_root}/scripts/check_git_hooks.py",
             # Legacy DCF Commands
             "dcf-analysis-legacy": "pixi run python dcf_engine/legacy_testing/m7_dcf_analysis.py",
             "dcf-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",

@@ -80,18 +80,18 @@ def run_end_to_end_test(scope="m7"):
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "./p3 fast-build f2"
+            "build_cmd": "./p3 fast-build f2",
         },
         "m7": {
-            "name": "M7 COMPLETE VALIDATION", 
+            "name": "M7 COMPLETE VALIDATION",
             "description": "Magnificent 7 companies with full testing",
             "min_files": 7,
-            "build_cmd": "./p3 build m7"
-        }
+            "build_cmd": "./p3 build m7",
+        },
     }
-    
+
     test_info = scope_info.get(scope, scope_info["m7"])
-    
+
     print("\n" + "=" * 60)
     print(f"🧪 RUNNING {test_info['name']}")
     print(f"🚀 {test_info['description']}")
@@ -150,10 +150,14 @@ def run_end_to_end_test(scope="m7"):
                     print(f"📁 Found {count} existing files in {location}")
 
         if existing_files >= test_info["min_files"]:
-            print(f"✅ Found {existing_files} existing data files - sufficient for {scope.upper()} validation")
+            print(
+                f"✅ Found {existing_files} existing data files - sufficient for {scope.upper()} validation"
+            )
             test_success = True
         else:
-            print(f"❌ Only found {existing_files} files - insufficient for {scope.upper()} validation (need {test_info['min_files']})")
+            print(
+                f"❌ Only found {existing_files} files - insufficient for {scope.upper()} validation (need {test_info['min_files']})"
+            )
             return False
 
     # Validate build results
@@ -182,7 +186,9 @@ def run_end_to_end_test(scope="m7"):
 
     # Check if we have sufficient files for the chosen scope
     if total_files < test_info["min_files"]:
-        print(f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files, found {total_files}")
+        print(
+            f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files, found {total_files}"
+        )
         print("🔍 Build artifacts preserved for debugging")
         return False
 
@@ -309,12 +315,12 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         original_msg = current_commit.stdout.strip()
 
         # Add test validation to commit message based on scope
-        test_type = "F2-TESTED" if test_info['scope'] == "F2" else f"{test_info['scope']}-TESTED"
+        test_type = "F2-TESTED" if test_info["scope"] == "F2" else f"{test_info['scope']}-TESTED"
         test_description = {
-            "F2": "F2 fast-build testing with DeepSeek 1.5b", 
-            "M7": "M7 end-to-end testing"
-        }.get(test_info['scope'], f"{test_info['scope']} testing")
-        
+            "F2": "F2 fast-build testing with DeepSeek 1.5b",
+            "M7": "M7 end-to-end testing",
+        }.get(test_info["scope"], f"{test_info['scope']} testing")
+
         updated_msg = f"""{original_msg}
 
 ✅ {test_type}: This commit passed {test_description}
@@ -324,8 +330,13 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 📝 Commit Hash: {test_info['commit_hash']}"""
 
         # Amend commit with test validation info
-        run_command(f'git commit --amend -m "{updated_msg}"', f"Updating commit with {test_info['scope']} test info")
-        print(f"📝 {test_info['scope']} test validation included in commit message - no marker file needed")
+        run_command(
+            f'git commit --amend -m "{updated_msg}"',
+            f"Updating commit with {test_info['scope']} test info",
+        )
+        print(
+            f"📝 {test_info['scope']} test validation included in commit message - no marker file needed"
+        )
 
     # 6. Push current branch (handle potential conflicts)
     print(f"🔄 Pushing branch {current_branch}...")
@@ -507,7 +518,7 @@ Fixes #{issue_number}
     print(f"🔗 PR URL: {pr_url}")
     print(f"🏷️  Issue: #{issue_number}")
     print(f"🌿 Branch: {current_branch}")
-    scope_name = test_info['scope'] if test_info else scope.upper()
+    scope_name = test_info["scope"] if test_info else scope.upper()
     print(f"✅ {scope_name} test passed")
     if scope == "f2":
         print("✅ F2 fast-build with DeepSeek 1.5b validated")
@@ -664,8 +675,10 @@ Examples:
         "--skip-pr-creation", action="store_true", help="Only run end-to-end test, skip PR creation"
     )
     parser.add_argument(
-        "--scope", default="m7", choices=["f2", "m7", "n100", "v3k"], 
-        help="Test scope: f2 (fast 2 companies), m7 (Magnificent 7), n100 (NASDAQ 100), v3k (VTI 3500+)"
+        "--scope",
+        default="m7",
+        choices=["f2", "m7", "n100", "v3k"],
+        help="Test scope: f2 (fast 2 companies), m7 (Magnificent 7), n100 (NASDAQ 100), v3k (VTI 3500+)",
     )
 
     args = parser.parse_args()
