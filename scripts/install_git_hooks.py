@@ -19,9 +19,9 @@ def install_pre_push_hook():
 
     # Handle worktree case where .git is a file pointing to the actual git directory
     if git_dir.is_file():
-        with open(git_dir, 'r') as f:
+        with open(git_dir, "r") as f:
             git_path_line = f.read().strip()
-            if git_path_line.startswith('gitdir: '):
+            if git_path_line.startswith("gitdir: "):
                 # Extract the git directory path
                 actual_git_dir = Path(git_path_line[8:])  # Remove 'gitdir: ' prefix
                 # Get the main .git directory (parent of worktrees)

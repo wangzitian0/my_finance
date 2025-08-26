@@ -234,6 +234,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # Initialize push environment for later use
     import os
+
     push_env = os.environ.copy()
     push_env["P3_CREATE_PR_PUSH"] = "true"
 
@@ -350,7 +351,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     try:
         # Use subprocess with modified environment instead of run_command
         import subprocess
-        
+
         print(f"🔄 Pushing branch {current_branch} with p3 authorization...")
         push_result = subprocess.run(
             ["git", "push", "-u", "origin", current_branch],
@@ -403,7 +404,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
                 print(f"❌ Push failed with error: {push_result.stderr}")
                 if "pre-push hook" in push_result.stderr:
                     print("💡 This indicates the pre-push hook blocked the push")
-                    print("🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection")
+                    print(
+                        "🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection"
+                    )
                 sys.exit(1)
     except Exception as e:
         print(f"❌ Push failed with exception: {e}")
@@ -545,7 +548,7 @@ Fixes #{issue_number}
 
     # Amend commit with updated message
     run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with PR URL")
-    
+
     # Force push the updated commit with p3 authorization
     print("🔄 Force pushing updated commit with p3 authorization...")
     final_push_result = subprocess.run(
@@ -554,7 +557,7 @@ Fixes #{issue_number}
         capture_output=True,
         text=True,
     )
-    
+
     if final_push_result.returncode != 0:
         print(f"❌ Final push failed: {final_push_result.stderr}")
         sys.exit(1)
