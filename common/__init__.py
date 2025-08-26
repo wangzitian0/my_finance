@@ -6,7 +6,7 @@ This module provides centralized access to common functionality used across the 
 
 Issue #122: Five-Layer Data Architecture Implementation
 - Unified directory management with SSOT principles
-- Storage backend abstraction for cloud migration  
+- Storage backend abstraction for cloud migration
 - Comprehensive configuration management system
 - Legacy path mapping for backward compatibility
 - DRY architecture eliminating hardcoded paths
@@ -18,47 +18,47 @@ Key Components:
 - DataLayer enum: Five-layer data architecture implementation
 """
 
-# Import core components for easy access
-from .directory_manager import (
-    DirectoryManager,
-    DataLayer,
-    StorageBackend,
-    directory_manager,
-    get_data_path,
-    get_config_path,
-    get_build_path,
-    get_source_path,
-    ensure_data_structure
-)
-
+from .build_tracker import BuildTracker
 from .config_manager import (
     ConfigManager,
-    ConfigType,
     ConfigSchema,
+    ConfigType,
     config_manager,
-    get_config,
     get_company_list,
-    get_llm_config,
+    get_config,
     get_data_source_config,
-    reload_configs
-)
-
-from .storage_backends import (
-    StorageManager,
-    StorageBackendInterface,
-    LocalFilesystemBackend,
-    create_storage_manager_from_config
+    get_llm_config,
+    reload_configs,
 )
 
 # Legacy imports for backward compatibility
 from .data_access import data_access
-from .build_tracker import BuildTracker
-from .utils import *
+
+# Import core components for easy access
+from .directory_manager import (
+    DataLayer,
+    DirectoryManager,
+    StorageBackend,
+    directory_manager,
+    ensure_data_structure,
+    get_build_path,
+    get_config_path,
+    get_data_path,
+    get_source_path,
+)
 from .logger import setup_logger
+from .storage_backends import (
+    LocalFilesystemBackend,
+    StorageBackendInterface,
+    StorageManager,
+    create_storage_manager_from_config,
+)
+from .utils import *
 
 # Version information
 __version__ = "2.0.0"
 __version_info__ = (2, 0, 0)
+
 
 # Compatibility layer for gradual migration
 def get_legacy_data_path(*args, **kwargs):
@@ -67,10 +67,11 @@ def get_legacy_data_path(*args, **kwargs):
     Redirects to new directory manager system.
     """
     import warnings
+
     warnings.warn(
         "get_legacy_data_path is deprecated. Use get_data_path with DataLayer enum instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     if args and isinstance(args[0], str):
         # Try to map legacy path to new system
@@ -80,24 +81,39 @@ def get_legacy_data_path(*args, **kwargs):
             return get_data_path(layer, *args[1:], **kwargs)
     return data_access.get_data_path(*args, **kwargs)
 
+
 __all__ = [
     # Core directory management
-    'DirectoryManager', 'DataLayer', 'StorageBackend', 'directory_manager',
-    'get_data_path', 'get_config_path', 'get_build_path', 'get_source_path', 
-    'ensure_data_structure',
-    
+    "DirectoryManager",
+    "DataLayer",
+    "StorageBackend",
+    "directory_manager",
+    "get_data_path",
+    "get_config_path",
+    "get_build_path",
+    "get_source_path",
+    "ensure_data_structure",
     # Configuration management
-    'ConfigManager', 'ConfigType', 'ConfigSchema', 'config_manager',
-    'get_config', 'get_company_list', 'get_llm_config', 'get_data_source_config',
-    'reload_configs',
-    
+    "ConfigManager",
+    "ConfigType",
+    "ConfigSchema",
+    "config_manager",
+    "get_config",
+    "get_company_list",
+    "get_llm_config",
+    "get_data_source_config",
+    "reload_configs",
     # Storage backends
-    'StorageManager', 'StorageBackendInterface', 'LocalFilesystemBackend',
-    'create_storage_manager_from_config',
-    
+    "StorageManager",
+    "StorageBackendInterface",
+    "LocalFilesystemBackend",
+    "create_storage_manager_from_config",
     # Legacy compatibility
-    'data_access', 'BuildTracker', 'setup_logger', 'get_legacy_data_path',
-    
+    "data_access",
+    "BuildTracker",
+    "setup_logger",
+    "get_legacy_data_path",
     # Version info
-    '__version__', '__version_info__'
+    "__version__",
+    "__version_info__",
 ]

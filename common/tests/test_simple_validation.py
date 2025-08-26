@@ -34,7 +34,7 @@ class TestPipelineBasics:
         """Verify basic directory structure exists - Updated for Issue #122 five-layer architecture"""
         required_dirs = [
             "tests",
-            "scripts", 
+            "scripts",
             ".github/workflows",
             "common/config",
             # Note: build_data directory and five-layer structure are created on-demand
@@ -45,18 +45,22 @@ class TestPipelineBasics:
         for dir_name in required_dirs:
             dir_path = Path(dir_name)
             assert dir_path.exists(), f"Required directory {dir_name} should exist"
-        
+
         # Test that the new directory manager can create the five-layer structure
-        from common import directory_manager, DataLayer
-        
+        from common import DataLayer, directory_manager
+
         # Verify the five-layer enum is correct
-        expected_layers = ['RAW_DATA', 'DAILY_DELTA', 'DAILY_INDEX', 'GRAPH_RAG', 'QUERY_RESULTS']
+        expected_layers = ["RAW_DATA", "DAILY_DELTA", "DAILY_INDEX", "GRAPH_RAG", "QUERY_RESULTS"]
         actual_layers = [layer.name for layer in DataLayer]
-        assert actual_layers == expected_layers, f"DataLayer enum should match expected: {expected_layers}"
-        
+        assert (
+            actual_layers == expected_layers
+        ), f"DataLayer enum should match expected: {expected_layers}"
+
         # Test that path generation works
         raw_path = directory_manager.get_layer_path(DataLayer.RAW_DATA)
-        assert str(raw_path).endswith("stage_00_raw"), "Raw data path should use new naming convention"
+        assert str(raw_path).endswith(
+            "stage_00_raw"
+        ), "Raw data path should use new naming convention"
 
     def test_config_files_accessible(self):
         """Test configuration file access"""

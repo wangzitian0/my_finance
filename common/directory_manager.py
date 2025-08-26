@@ -9,7 +9,7 @@ affecting the entire codebase.
 
 Issue #122: Five-Layer Data Architecture Implementation
 - stage_00_raw: Raw Data Layer - Immutable source data
-- stage_01_daily_delta: Daily Delta Layer - Incremental changes  
+- stage_01_daily_delta: Daily Delta Layer - Incremental changes
 - stage_02_daily_index: Daily Index Layer - Vectors, entities, relationships
 - stage_03_graph_rag: Graph RAG Layer - Unified knowledge base
 - stage_04_query_results: Query Results Layer - Analysis and reports
@@ -42,7 +42,7 @@ class StorageBackend(Enum):
 
 class DataLayer(Enum):
     """Five-Layer Data Architecture (Issue #122)
-    
+
     Maps to directory_structure.yml configuration for flexible storage backends.
     Uses stage-based naming for consistency with existing codebase.
     """
@@ -104,7 +104,13 @@ class DirectoryManager:
                 },
                 "stage_04_query_results": {
                     "description": "Query Results Layer - Query and analysis results",
-                    "subdirs": ["dcf_reports", "analytics", "exports", "dashboards", "api_responses"],
+                    "subdirs": [
+                        "dcf_reports",
+                        "analytics",
+                        "exports",
+                        "dashboards",
+                        "api_responses",
+                    ],
                 },
             },
             "common": {"config": "common/config", "logs": "logs", "temp": "temp", "cache": "cache"},
@@ -166,51 +172,58 @@ class DirectoryManager:
         if config_name:
             return llm_config_dir / config_name
         return llm_config_dir
-    
-    def get_build_path(self, build_timestamp: Optional[str] = None, branch: Optional[str] = None) -> Path:
+
+    def get_build_path(
+        self, build_timestamp: Optional[str] = None, branch: Optional[str] = None
+    ) -> Path:
         """Get build directory path for backward compatibility with data_access.py
-        
+
         Args:
             build_timestamp: Specific build timestamp (YYYYMMDD_HHMMSS format)
             branch: Branch name for feature branch builds
-            
+
         Returns:
             Path to build directory
         """
         results_layer = self.get_layer_path(DataLayer.QUERY_RESULTS)
-        
+
         if branch and branch != "main":
             build_base = results_layer.parent / f"stage_04_query_results_{branch}"
         else:
             build_base = results_layer
-            
+
         if build_timestamp:
             return build_base / f"build_{build_timestamp}"
         else:
             return build_base
-            
-    def get_source_path(self, source: str, layer: DataLayer = DataLayer.RAW_DATA, 
-                       date_partition: Optional[str] = None, ticker: Optional[str] = None) -> Path:
+
+    def get_source_path(
+        self,
+        source: str,
+        layer: DataLayer = DataLayer.RAW_DATA,
+        date_partition: Optional[str] = None,
+        ticker: Optional[str] = None,
+    ) -> Path:
         """Get source-specific directory path
-        
+
         Args:
             source: Data source (yfinance, sec-edgar, etc.)
             layer: Data layer enum
             date_partition: Optional date partition
             ticker: Optional ticker symbol
-            
+
         Returns:
             Path to source directory
         """
         layer_path = self.get_layer_path(layer)
         source_path = layer_path / source
-        
+
         if date_partition:
             source_path = source_path / date_partition
-            
+
         if ticker:
             source_path = source_path / ticker
-            
+
         return source_path
 
     def get_logs_path(self) -> Path:
@@ -239,7 +252,7 @@ class DirectoryManager:
             "layer_03_index": DataLayer.DAILY_INDEX,
             "layer_04_rag": DataLayer.GRAPH_RAG,
             "layer_05_results": DataLayer.QUERY_RESULTS,
-            # Build data references  
+            # Build data references
             "build_data": DataLayer.QUERY_RESULTS,
             "data": DataLayer.RAW_DATA,
         }
@@ -347,8 +360,12 @@ def get_build_path(build_timestamp: Optional[str] = None, branch: Optional[str] 
     return directory_manager.get_build_path(build_timestamp, branch)
 
 
-def get_source_path(source: str, layer: DataLayer = DataLayer.RAW_DATA, 
-                   date_partition: Optional[str] = None, ticker: Optional[str] = None) -> Path:
+def get_source_path(
+    source: str,
+    layer: DataLayer = DataLayer.RAW_DATA,
+    date_partition: Optional[str] = None,
+    ticker: Optional[str] = None,
+) -> Path:
     """Get source-specific directory path using SSOT directory manager"""
     return directory_manager.get_source_path(source, layer, date_partition, ticker)
 
