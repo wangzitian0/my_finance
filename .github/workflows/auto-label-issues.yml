@@ -3,9 +3,8 @@ name: Auto-Label Issues
 on:
   issues:
     types: [opened, edited]
-  # Uncomment to also label issues when they are reopened  
-  # issues:
-  #   types: [opened, edited, reopened]
+    # Uncomment to also label issues when they are reopened:
+    # types: [opened, edited, reopened]
 
 permissions:
   issues: write
