@@ -1,0 +1,108 @@
+# Build Data Submodule .gitignore
+# This submodule contains only build artifacts and generated data
+# Following Issue #122 Five-Layer Data Architecture
+
+# ===============================================
+# ISSUE #122: Five-Layer Data Architecture
+# ===============================================
+# Track directory structure but ignore most content to keep repo clean
+
+# Raw data layer (stage_00_raw) - Immutable source data
+stage_00_raw/*
+!stage_00_raw/.gitkeep
+
+# Daily delta layer (stage_01_daily_delta) - Incremental changes
+stage_01_daily_delta/*
+!stage_01_daily_delta/.gitkeep
+
+# Daily index layer (stage_02_daily_index) - Embeddings, entities, relationships
+stage_02_daily_index/*
+!stage_02_daily_index/.gitkeep
+
+# Graph RAG layer (stage_03_graph_rag) - Unified knowledge base
+stage_03_graph_rag/*
+!stage_03_graph_rag/.gitkeep
+
+# Query results layer (stage_04_query_results) - Analysis and reports
+stage_04_query_results/*
+!stage_04_query_results/.gitkeep
+
+# ===============================================
+# LEGACY SUPPORT: Backward compatibility
+# ===============================================
+# Legacy stage directories (gradually being migrated to Issue #122)
+stage_00_original/
+stage_01_extract/
+stage_02_transform/
+stage_03_load/
+stage_99_build/
+
+# Legacy layer directories
+layer_01_raw/
+layer_02_delta/
+layer_03_index/
+layer_04_rag/
+layer_05_results/
+
+# ===============================================
+# SYSTEM FILES AND TEMPORARY DATA
+# ===============================================
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+log/
+logs/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Large data files (structure tracked, content ignored)
+*.csv
+*.json
+*.parquet
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ML models and vectors
+*.model
+*.bin
+*.vec
+*.npy
+*.npz
+
+# Cache
+.cache/
+cache/
