@@ -32,10 +32,23 @@ data/stage_03_load/*/*
 # Build directories - completely ignored (including structure)
 data/stage_99_build*/
 
-# LLM responses - should not be tracked
+# LLM responses and artifacts - should not be tracked but directory structure kept
 data/llm/responses/*.md
 data/llm/responses/*.json
 !data/llm/responses/.gitkeep
+
+# Common config LLM responses - temporary artifacts not tracked
+common/config/llm/responses/*.md
+common/config/llm/responses/*.json
+!common/config/llm/responses/.gitkeep
+
+# LLM thinking process - temporary artifacts not tracked  
+common/config/llm/thinking_process/*.txt
+!common/config/llm/thinking_process/.gitkeep
+
+# LLM semantic results - temporary artifacts not tracked
+common/config/llm/semantic_results/*.json
+!common/config/llm/semantic_results/.gitkeep
 
 # Log files - should not be tracked
 data/log/
@@ -43,6 +56,37 @@ data/quality_reports/
 
 # Test data - should not be tracked
 data/test/
+
+# Build data directories - track structure but not content
+build_data/stage_00_raw/*
+!build_data/stage_00_raw/.gitkeep
+!build_data/stage_00_raw/*/
+build_data/stage_00_raw/*/*
+!build_data/stage_00_raw/*/.gitkeep
+
+build_data/stage_01_daily_delta/*
+!build_data/stage_01_daily_delta/.gitkeep
+!build_data/stage_01_daily_delta/*/
+build_data/stage_01_daily_delta/*/*
+!build_data/stage_01_daily_delta/*/.gitkeep
+
+build_data/stage_02_daily_index/*
+!build_data/stage_02_daily_index/.gitkeep
+!build_data/stage_02_daily_index/*/
+build_data/stage_02_daily_index/*/*
+!build_data/stage_02_daily_index/*/.gitkeep
+
+build_data/stage_03_graph_rag/*
+!build_data/stage_03_graph_rag/.gitkeep
+!build_data/stage_03_graph_rag/*/
+build_data/stage_03_graph_rag/*/*
+!build_data/stage_03_graph_rag/*/.gitkeep
+
+build_data/stage_04_query_results/*
+!build_data/stage_04_query_results/.gitkeep
+!build_data/stage_04_query_results/*/
+build_data/stage_04_query_results/*/*
+!build_data/stage_04_query_results/*/.gitkeep
 
 # Latest build symlink (dynamic, should not be tracked)
 common/latest_build
