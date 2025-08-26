@@ -92,11 +92,15 @@ class TestDirectoryStructureProtection(unittest.TestCase):
         self.assertTrue(data_dir.exists(), "Data directory must exist as subtree")
 
         # .gitmodules should NOT exist (we use subtree now)
-        self.assertFalse(gitmodules_file.exists(), ".gitmodules file should not exist (using subtree)")
+        self.assertFalse(
+            gitmodules_file.exists(), ".gitmodules file should not exist (using subtree)"
+        )
 
         # build_data should not have a .git file (characteristic of subtree)
         build_data_git = data_dir / ".git"
-        self.assertFalse(build_data_git.exists(), "build_data should not have .git file (subtree characteristic)")
+        self.assertFalse(
+            build_data_git.exists(), "build_data should not have .git file (subtree characteristic)"
+        )
 
     def test_legacy_path_prevention(self):
         """Test that legacy paths are not used in new code"""
