@@ -196,6 +196,46 @@ Since GitHub branch protection doesn't enforce required status checks, our autom
 
 **See README.md for complete git workflow.** Claude-specific requirements:
 
+### 🚨 **CRITICAL: Repository Protection Philosophy**
+
+**This repository implements a strict protection model:**
+- ✅ **p3 create-pr workflow**: Fully supported and encouraged
+- ❌ **Direct git push**: Intentionally blocked to enforce quality standards
+- 🎯 **Design Goal**: Ensure all code passes automated testing before reaching remote
+
+**Why This Protection Exists:**
+1. **Quality Assurance**: All changes must pass M7/F2 tests before PR creation
+2. **Regulatory Compliance**: Financial software requires exceptional reliability standards  
+3. **Audit Trail**: Complete documentation of all changes with proper issue tracking
+4. **Process Enforcement**: Prevents untested code from bypassing validation
+
+**When Encountering Blocks:**
+- ✅ **Correct Response**: Analyze and fix the underlying issue
+- ❌ **Wrong Response**: Try to bypass or circumvent protection mechanisms  
+- 💡 **Remember**: The protection is intentional and valuable
+
+### 🔧 **Common Issues and Solutions**
+
+**Problem: p3 create-pr fails with "Cannot create PR from main branch"**
+- **Cause**: Script running in wrong directory context (common in worktrees)
+- **Solution**: Check P3CLI path handling in `p3.py` for proper worktree support
+- **Debug**: Run `git branch --show-current` to verify actual branch context
+
+**Problem: "Direct git push blocked" when using p3 create-pr**
+- **Cause**: Pre-push hook not recognizing automated workflow  
+- **Solution**: Ensure `P3_CREATE_PR_PUSH` environment variable is set in create-pr script
+- **Verify**: Check pre-push hook has proper detection logic for p3 workflows
+
+**Problem: Branch detection issues in pixi environment**
+- **Cause**: Working directory changes when pixi runs commands
+- **Solution**: Ensure git commands execute in correct directory context
+- **Fix**: Modify P3CLI to stay in worktree directory for git operations
+
+**Problem: Testing failures preventing PR creation**  
+- **Cause**: Code quality issues, missing dependencies, or environment problems
+- **Solution**: Fix the underlying testing issues, don't skip validation
+- **Process**: Run `p3 e2e f2` locally, analyze failures, fix code, then retry
+
 ### 📋 PRE-PR CHECKLIST - README UPDATE REQUIREMENT
 
 **CRITICAL**: Before creating any PR, you MUST verify and update README files for consistency:
@@ -679,7 +719,7 @@ The system utilizes **15 specialized sub-agents** organized into functional doma
 
 ### Agent Usage Guidelines
 
-**When Claude Code Will Automatically Use Sub-Agents:**
+**Claude Code will automatically use sub-agents when appropriate for:**
 - Complex multi-step tasks requiring specialized domain knowledge
 - Web platform development (frontend + backend coordination)
 - System architecture design and optimization
@@ -687,6 +727,8 @@ The system utilizes **15 specialized sub-agents** organized into functional doma
 - Performance optimization and scalability analysis
 - Database design and management tasks
 - API design and integration work
+
+**The system automatically selects the most appropriate agent** based on task context and requirements. Users should focus on clearly describing their goals rather than manually selecting agents.
 
 **Agent Coordination Patterns:**
 - **Sequential Workflows**: Full analysis pipeline (data → analysis → compliance → reporting)
@@ -718,28 +760,41 @@ The system utilizes **15 specialized sub-agents** organized into functional doma
 
 ### Sub-Agent Development Guidelines
 
-**MANDATORY Rules for Sub-Agent Usage:**
+**IMPORTANT: These guidelines are for Claude Code's internal operation. Users do not need to manage agents directly.**
 
-1. **NEVER manually edit agent files** - they are managed by Claude Code
-2. **ALWAYS use Task tool** to delegate to appropriate agents
-3. **RESPECT agent specialization** - route tasks to the most qualified agent
-4. **MAINTAIN consistency** - follow established agent patterns and interfaces
-5. **PROVIDE clear context** - give agents sufficient information for autonomous operation
+**Claude Code Agent Management:**
 
-**Agent Task Delegation Examples:**
+1. **Agent files are automatically managed** - maintained by Claude Code's internal systems
+2. **Task routing is automatic** - Claude Code selects the most appropriate agent based on context
+3. **Agent specialization is respected** - each agent focuses on their domain expertise  
+4. **Consistency is maintained** - agents follow established patterns and interfaces
+5. **Context is automatically provided** - agents receive sufficient information for autonomous operation
+
+**User Guidelines:**
+- **Focus on clear task descriptions** rather than trying to select specific agents
+- **Describe your goals and requirements** - let Claude Code choose the right approach
+- **Trust the automatic routing** - the system is designed to select optimal agents
+
+**Example Tasks and Automatic Agent Selection:**
 ```bash
-# Web development task → web-frontend-agent & web-backend-agent
+# Web development task
 User: "Build new portfolio analytics dashboard"
+# → Claude Code automatically coordinates web-frontend-agent & web-backend-agent
 
-# Security analysis → security-engineer-agent  
+# Security analysis
 User: "Analyze system for vulnerabilities"
+# → Claude Code automatically uses security-engineer-agent
 
-# Performance issue → performance-engineer-agent
+# Performance optimization
 User: "Optimize query response times"
+# → Claude Code automatically uses performance-engineer-agent
 
-# Database optimization → database-admin-agent
-User: "Optimize PostgreSQL performance for financial data"
+# Database optimization
+User: "Optimize PostgreSQL performance for financial data"  
+# → Claude Code automatically uses database-admin-agent
 ```
+
+**Note**: Users simply describe what they want to accomplish. Claude Code handles agent selection and coordination automatically.
 
 ### Production-Ready Architecture Benefits
 
