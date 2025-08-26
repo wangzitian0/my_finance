@@ -2,7 +2,7 @@ name: Fast Test Pipeline (F2)
 
 on:
   push:
-    branches: [ main, 'feature/**' ]
+    branches: [ main, 'feature/**', 'hotfix/**' ]
   pull_request:
     branches: [ main ]
 
@@ -113,15 +113,7 @@ jobs:
         
         # Check build status using the same logic as the main test
         echo "🔍 Checking build completion status"
-        build_status=$(pixi run python -c "
-from common.build_tracker import BuildTracker
-try:
-    bt = BuildTracker.get_latest_build()
-    status = bt.get_build_status() if bt else 'No builds found'
-    print(status)
-except Exception as e:
-    print(f'Error: {e}')
-" 2>/dev/null || echo "Build tracker not available")
+        build_status=$(pixi run python -c "from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else 'No builds found')" 2>/dev/null || echo "Build tracker not available")
         
         echo "📊 Build status: $build_status"
         
