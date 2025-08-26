@@ -61,10 +61,12 @@ def get_commit_info():
 
                         # Check if this parent has F2-TESTED or M7-TESTED marker
                         has_test_marker = "F2-TESTED" in parent_msg or "M7-TESTED" in parent_msg
-                        print(f"🔍 Parent {i+1} has test marker: {has_test_marker}, commit time: {commit_time}")
+                        print(
+                            f"🔍 Parent {i+1} has test marker: {has_test_marker}, commit time: {commit_time}"
+                        )
 
                         if has_test_marker:
-                            candidates.append((parent_msg, commit_time, parent, i+1))
+                            candidates.append((parent_msg, commit_time, parent, i + 1))
 
                     except Exception as e:
                         print(f"🔍 Error checking parent {i+1}: {e}")
@@ -72,9 +74,13 @@ def get_commit_info():
 
                 if candidates:
                     # Sort by commit timestamp (most recent first) and prefer second parent if timestamps are close
-                    candidates.sort(key=lambda x: (-x[1], x[3]))  # Sort by -timestamp, then parent number
+                    candidates.sort(
+                        key=lambda x: (-x[1], x[3])
+                    )  # Sort by -timestamp, then parent number
                     chosen = candidates[0]
-                    print(f"🔍 Selected most recent PR commit: {chosen[2][:8]} (parent {chosen[3]})")
+                    print(
+                        f"🔍 Selected most recent PR commit: {chosen[2][:8]} (parent {chosen[3]})"
+                    )
                     return chosen[0], chosen[1]
 
                 # Fallback: if no parent has test markers, use the second parent (usually PR branch)
