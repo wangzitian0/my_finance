@@ -128,9 +128,8 @@ class P3CLI:
             remaining_args = args[1:] if args and args[0] in self._get_valid_scopes() else args
 
             if command == "e2e":
-                # E2E command uses skip-pr-creation for all scopes
-                # TODO: Implement f2-specific optimizations in create_pr_with_test.py if needed
-                return "pixi run python infra/create_pr_with_test.py --skip-pr-creation"
+                # E2E command passes scope to create_pr_with_test.py for proper F2/M7 testing
+                return f"pixi run python infra/create_pr_with_test.py --skip-pr-creation --scope {resolved_scope}"
             else:
                 # Build commands use scope directly
                 cmd_template = self.commands[command]

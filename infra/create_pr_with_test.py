@@ -73,11 +73,28 @@ def get_uncommitted_changes():
     return result.stdout.strip() if result else ""
 
 
-def run_end_to_end_test():
-    """Run F2 fast-build test with DeepSeek 1.5b validation"""
+def run_end_to_end_test(scope="m7"):
+    """Run end-to-end test with specified scope (f2 fast or m7 complete)"""
+    scope_info = {
+        "f2": {
+            "name": "F2 FAST-BUILD VALIDATION",
+            "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
+            "min_files": 2,
+            "build_cmd": "./p3 fast-build f2"
+        },
+        "m7": {
+            "name": "M7 COMPLETE VALIDATION", 
+            "description": "Magnificent 7 companies with full testing",
+            "min_files": 7,
+            "build_cmd": "./p3 build m7"
+        }
+    }
+    
+    test_info = scope_info.get(scope, scope_info["m7"])
+    
     print("\n" + "=" * 60)
-    print("🧪 RUNNING F2 FAST-BUILD VALIDATION")
-    print("🚀 Using DeepSeek 1.5b model for accelerated testing")
+    print(f"🧪 RUNNING {test_info['name']}")
+    print(f"🚀 {test_info['description']}")
     print("=" * 60)
 
     # Clean any existing build artifacts
@@ -100,11 +117,11 @@ def run_end_to_end_test():
         print(f"   Config path will be: {COMMON_CONFIG}/llm/configs/deepseek_fast.yml")
         print("   Expected model: deepseek-r1:1.5b")
 
-        # Build F2 dataset (faster test) using DeepSeek 1.5b model for PR validation
-        print("🚀 Starting fast-build with DeepSeek 1.5b - should NOT use gpt-oss:20b")
+        # Build dataset using appropriate scope and model
+        print(f"🚀 Starting {scope.upper()} build - {test_info['description']}")
         run_command(
-            "./p3 fast-build f2", "Building F2 dataset with DeepSeek 1.5b", timeout=300
-        )  # 5 minutes
+            test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=600
+        )  # 10 minutes for broader scope support
 
         # Verify the model was actually used
         print("🔍 Verifying model usage in connection logs...")
@@ -132,11 +149,11 @@ def run_end_to_end_test():
                     existing_files += count
                     print(f"📁 Found {count} existing files in {location}")
 
-        if existing_files >= 2:  # At least 1 file per F2 ticker
-            print(f"✅ Found {existing_files} existing data files - sufficient for validation")
+        if existing_files >= test_info["min_files"]:
+            print(f"✅ Found {existing_files} existing data files - sufficient for {scope.upper()} validation")
             test_success = True
         else:
-            print(f"❌ Only found {existing_files} files - insufficient for F2 validation")
+            print(f"❌ Only found {existing_files} files - insufficient for {scope.upper()} validation (need {test_info['min_files']})")
             return False
 
     # Validate build results
@@ -161,21 +178,21 @@ def run_end_to_end_test():
                 total_files += count
                 print(f"📁 Found {count} files in {location}")
 
-    print(f"📊 Total F2 data files found: {total_files}")
+    print(f"📊 Total {scope.upper()} data files found: {total_files}")
 
-    # For F2, we only need at least 2 files (MSFT + NVDA)
-    if total_files < 2:
-        print(f"❌ FAIL: Expected at least 2 F2 files (MSFT + NVDA), found {total_files}")
+    # Check if we have sufficient files for the chosen scope
+    if total_files < test_info["min_files"]:
+        print(f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files, found {total_files}")
         print("🔍 Build artifacts preserved for debugging")
         return False
 
-    print("✅ F2 FAST-BUILD TEST PASSED")
-    print("📦 DeepSeek 1.5b model validated successfully")
+    print(f"✅ {test_info['name']} PASSED")
+    print(f"📦 {test_info['description']} validated successfully")
     print("✅ Git status is clean - ready for PR creation!")
     return total_files  # Return file count for test validation
 
 
-def create_test_marker(file_count: int):
+def create_test_marker(file_count: int, scope="m7"):
     """Create test validation information for commit message"""
     import socket
     from datetime import datetime, timezone
@@ -184,21 +201,25 @@ def create_test_marker(file_count: int):
     commit_result = run_command("git rev-parse HEAD", "Getting commit hash", check=False)
     commit_hash = commit_result.stdout.strip() if commit_result else "unknown"
 
+    # Scope-specific company counts
+    company_counts = {"f2": 2, "m7": 7, "n100": 100, "v3k": 3500}
+
     # Create test validation data to be embedded in commit message
     test_info = {
         "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "host": socket.gethostname(),
-        "companies": 7,
+        "scope": scope.upper(),
+        "companies": company_counts.get(scope, 7),
         "data_files": file_count,
         "commit_hash": commit_hash,
         "validation_passed": True,
     }
 
-    print("📝 Created M7 test validation info for commit message")
+    print(f"📝 Created {scope.upper()} test validation info for commit message")
     return test_info
 
 
-def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=False):
+def create_pr_workflow(title, issue_number, description_file=None, skip_test=False, scope="m7"):
     """Complete PR creation workflow"""
 
     print("\n" + "=" * 60)
@@ -260,15 +281,16 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
     else:
         print("✅ Code already properly formatted")
 
-    # 3. MANDATORY: Run M7 end-to-end test (unless explicitly skipped)
+    # 3. MANDATORY: Run end-to-end test (unless explicitly skipped)
     test_info = None
-    if not skip_m7_test:
-        test_result = run_end_to_end_test()
+    if not skip_test:
+        test_result = run_end_to_end_test(scope)
         if isinstance(test_result, int) and test_result > 0:
             # Test passed, create test validation info
-            test_info = create_test_marker(test_result)
+            test_info = create_test_marker(test_result, scope)
+            print(f"✅ {scope.upper()} test passed - proceeding with PR creation")
         else:
-            print("❌ M7 test failed - PR creation aborted")
+            print(f"❌ {scope.upper()} test failed - PR creation aborted")
             sys.exit(1)
     else:
         print("⚠️  SKIPPING M7 TEST - NOT RECOMMENDED")
@@ -286,18 +308,24 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_m7_test=
         current_commit = run_command("git log -1 --pretty=%B", "Getting current commit message")
         original_msg = current_commit.stdout.strip()
 
-        # Add F2 fast-build validation to commit message
+        # Add test validation to commit message based on scope
+        test_type = "F2-TESTED" if test_info['scope'] == "F2" else f"{test_info['scope']}-TESTED"
+        test_description = {
+            "F2": "F2 fast-build testing with DeepSeek 1.5b", 
+            "M7": "M7 end-to-end testing"
+        }.get(test_info['scope'], f"{test_info['scope']} testing")
+        
         updated_msg = f"""{original_msg}
 
-✅ F2-TESTED: This commit passed F2 fast-build testing with DeepSeek 1.5b
+✅ {test_type}: This commit passed {test_description}
 📊 Test Results: {test_info['data_files']} data files validated
 🕐 Test Time: {test_info['timestamp']}
 🔍 Test Host: {test_info['host']}
 📝 Commit Hash: {test_info['commit_hash']}"""
 
         # Amend commit with test validation info
-        run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with F2 test info")
-        print("📝 F2 fast-build validation included in commit message - no marker file needed")
+        run_command(f'git commit --amend -m "{updated_msg}"', f"Updating commit with {test_info['scope']} test info")
+        print(f"📝 {test_info['scope']} test validation included in commit message - no marker file needed")
 
     # 6. Push current branch (handle potential conflicts)
     print(f"🔄 Pushing branch {current_branch}...")
@@ -479,8 +507,12 @@ Fixes #{issue_number}
     print(f"🔗 PR URL: {pr_url}")
     print(f"🏷️  Issue: #{issue_number}")
     print(f"🌿 Branch: {current_branch}")
-    print("✅ F2 fast-build test passed with DeepSeek 1.5b")
-    print("✅ Model selection validated (NO gpt-oss:20b)")
+    scope_name = test_info['scope'] if test_info else scope.upper()
+    print(f"✅ {scope_name} test passed")
+    if scope == "f2":
+        print("✅ F2 fast-build with DeepSeek 1.5b validated")
+    else:
+        print(f"✅ {scope_name} complete testing validated")
     print("✅ Data directory changes staged")
     print("✅ Commit message updated with PR URL")
 
@@ -629,14 +661,18 @@ Examples:
         "--skip-m7-test", action="store_true", help="Skip M7 test (NOT RECOMMENDED)"
     )
     parser.add_argument(
-        "--skip-pr-creation", action="store_true", help="Only run M7 test, skip PR creation"
+        "--skip-pr-creation", action="store_true", help="Only run end-to-end test, skip PR creation"
+    )
+    parser.add_argument(
+        "--scope", default="m7", choices=["f2", "m7", "n100", "v3k"], 
+        help="Test scope: f2 (fast 2 companies), m7 (Magnificent 7), n100 (NASDAQ 100), v3k (VTI 3500+)"
     )
 
     args = parser.parse_args()
 
     if args.skip_pr_creation:
-        # Only run M7 test
-        success = run_end_to_end_test()
+        # Only run end-to-end test with specified scope
+        success = run_end_to_end_test(args.scope)
         sys.exit(0 if success else 1)
 
     # Validate required arguments for PR creation
@@ -649,7 +685,7 @@ Examples:
 
     try:
         pr_url = create_pr_workflow(
-            args.title, args.issue_number, args.description, args.skip_m7_test
+            args.title, args.issue_number, args.description, args.skip_m7_test, args.scope
         )
 
         if pr_url:
