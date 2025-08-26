@@ -196,12 +196,7 @@ class P3CLI:
             return cmd
 
         if command == "cleanup-branches":
-            cmd = "pixi run python infra/cleanup_merged_branches.py"
-            if "--dry-run" in args:
-                cmd += " --dry-run"
-            elif "--auto" in args:
-                cmd += " --auto"
-            return cmd
+            return "pixi run python infra/cleanup_merged_branches.py"
 
         if command == "test":
             cmd = "pixi run python -m pytest tests/ -v --cov=ETL --cov=dcf_engine --cov-report=html"
