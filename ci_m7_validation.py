@@ -40,7 +40,7 @@ def get_commit_info():
                 for i, parent in enumerate(parents):
                     try:
                         print(f"🔍 Checking parent {i+1}: {parent[:8]}")
-                        
+
                         # Get commit message from this parent
                         result = subprocess.run(
                             ["git", "log", "-1", "--pretty=%B", parent],
@@ -49,14 +49,14 @@ def get_commit_info():
                             check=True,
                         )
                         parent_msg = result.stdout.strip()
-                        
+
                         # Check if this parent has F2-TESTED or M7-TESTED marker
-                        has_test_marker = ("F2-TESTED" in parent_msg or "M7-TESTED" in parent_msg)
+                        has_test_marker = "F2-TESTED" in parent_msg or "M7-TESTED" in parent_msg
                         print(f"🔍 Parent {i+1} has test marker: {has_test_marker}")
-                        
+
                         if has_test_marker:
                             print(f"🔍 Found PR commit with test validation: {parent[:8]}")
-                            
+
                             # Get commit timestamp from the PR commit
                             result = subprocess.run(
                                 ["git", "log", "-1", "--pretty=%ct", parent],
@@ -65,18 +65,18 @@ def get_commit_info():
                                 check=True,
                             )
                             commit_time = int(result.stdout.strip())
-                            
+
                             return parent_msg, commit_time
-                            
+
                     except Exception as e:
                         print(f"🔍 Error checking parent {i+1}: {e}")
                         continue
-                
+
                 # Fallback: if no parent has test markers, use the second parent (usually PR branch)
                 if len(parents) >= 2:
                     print("🔍 No test markers found, using second parent as fallback")
                     fallback_parent = parents[1]
-                    
+
                     result = subprocess.run(
                         ["git", "log", "-1", "--pretty=%B", fallback_parent],
                         capture_output=True,
@@ -84,7 +84,7 @@ def get_commit_info():
                         check=True,
                     )
                     commit_msg = result.stdout.strip()
-                    
+
                     result = subprocess.run(
                         ["git", "log", "-1", "--pretty=%ct", fallback_parent],
                         capture_output=True,
@@ -92,7 +92,7 @@ def get_commit_info():
                         check=True,
                     )
                     commit_time = int(result.stdout.strip())
-                    
+
                     return commit_msg, commit_time
                 else:
                     print("🔍 Cannot determine PR commit, falling back to HEAD")
