@@ -13,11 +13,28 @@ from pathlib import Path
 def install_pre_push_hook():
     """Install pre-push hook to enforce create-pr workflow"""
 
-    # Find the main .git directory
+    # Find the main .git directory (handle worktrees)
     project_root = Path(__file__).parent.parent
-    main_git_dir = project_root / ".git"
+    git_dir = project_root / ".git"
 
-    if not main_git_dir.exists():
+    # Handle worktree case where .git is a file pointing to the actual git directory
+    if git_dir.is_file():
+        with open(git_dir, "r") as f:
+            git_path_line = f.read().strip()
+            if git_path_line.startswith("gitdir: "):
+                # Extract the git directory path
+                actual_git_dir = Path(git_path_line[8:])  # Remove 'gitdir: ' prefix
+                # Get the main .git directory (parent of worktrees)
+                main_git_dir = actual_git_dir.parent.parent
+                print(f"📁 Detected worktree, main git dir: {main_git_dir}")
+            else:
+                print("❌ Invalid .git file format")
+                return False
+    elif git_dir.is_dir():
+        # Regular git repository
+        main_git_dir = git_dir
+        print(f"📁 Regular git repository: {main_git_dir}")
+    else:
         print("❌ .git directory not found")
         return False
 
@@ -42,6 +59,12 @@ NC='\\033[0m' # No Color
 
 # Get current branch
 current_branch=$(git branch --show-current)
+
+# Check if this push is coming from p3 create-pr script
+if [ -n "$P3_CREATE_PR_PUSH" ]; then
+    echo -e "${GREEN}✅ Automated p3 create-pr push authorized${NC}"
+    exit 0
+fi
 
 # Allow push to main branch only from automated workflows (CI/CD)
 if [ "$current_branch" = "main" ]; then

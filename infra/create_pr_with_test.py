@@ -232,6 +232,12 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     print("🚀 STARTING PR CREATION WORKFLOW")
     print("=" * 60)
 
+    # Initialize push environment for later use
+    import os
+
+    push_env = os.environ.copy()
+    push_env["P3_CREATE_PR_PUSH"] = "true"
+
     # 1. Check current state
     current_branch = get_current_branch()
     print(f"📍 Current branch: {current_branch}")
@@ -343,20 +349,23 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     # 6. Push current branch (handle potential conflicts)
     print(f"🔄 Pushing branch {current_branch}...")
     try:
-        # Set environment variable to identify this as a p3 create-pr push
-        import os
+        # Use subprocess with modified environment instead of run_command
+        import subprocess
 
-        original_env = os.environ.copy()
-        os.environ["P3_CREATE_PR_PUSH"] = "true"
-
-        push_result = run_command(
-            f"git push -u origin {current_branch}", f"Pushing branch {current_branch}", check=False
+        print(f"🔄 Pushing branch {current_branch} with p3 authorization...")
+        push_result = subprocess.run(
+            ["git", "push", "-u", "origin", current_branch],
+            env=push_env,
+            capture_output=True,
+            text=True,
         )
 
-        # Restore original environment
-        os.environ.clear()
-        os.environ.update(original_env)
-        if push_result and push_result.returncode != 0:
+        if push_result.returncode == 0:
+            print(f"✅ Successfully pushed {current_branch}")
+            if push_result.stdout.strip():
+                print(f"   Output: {push_result.stdout.strip()}")
+        else:
+            # Handle push failures
             if "non-fast-forward" in push_result.stderr or "rejected" in push_result.stderr:
                 print("⚠️  Remote branch has diverged. Attempting to resolve...")
                 # Fetch and rebase
@@ -365,22 +374,40 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
                     f"git rebase origin/{current_branch}", "Rebasing on remote changes", check=False
                 )
                 if rebase_result and rebase_result.returncode == 0:
-                    # Try push again after rebase
-                    run_command(
-                        f"git push origin {current_branch}",
-                        f"Pushing rebased branch {current_branch}",
+                    # Try push again after rebase with authorization
+                    print("🔄 Retrying push after rebase...")
+                    retry_result = subprocess.run(
+                        ["git", "push", "origin", current_branch],
+                        env=push_env,
+                        capture_output=True,
+                        text=True,
                     )
+                    if retry_result.returncode != 0:
+                        print(f"❌ Retry push failed: {retry_result.stderr}")
+                        sys.exit(1)
+                    else:
+                        print(f"✅ Successfully pushed {current_branch} after rebase")
                 else:
                     print("❌ Rebase failed. Using force-with-lease for safety...")
-                    run_command(
-                        f"git push --force-with-lease origin {current_branch}",
-                        f"Force pushing branch {current_branch}",
+                    force_result = subprocess.run(
+                        ["git", "push", "--force-with-lease", "origin", current_branch],
+                        env=push_env,
+                        capture_output=True,
+                        text=True,
                     )
+                    if force_result.returncode != 0:
+                        print(f"❌ Force push failed: {force_result.stderr}")
+                        sys.exit(1)
+                    else:
+                        print(f"✅ Successfully force-pushed {current_branch}")
             else:
                 print(f"❌ Push failed with error: {push_result.stderr}")
+                if "pre-push hook" in push_result.stderr:
+                    print("💡 This indicates the pre-push hook blocked the push")
+                    print(
+                        "🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection"
+                    )
                 sys.exit(1)
-        else:
-            print(f"✅ Successfully pushed {current_branch}")
     except Exception as e:
         print(f"❌ Push failed with exception: {e}")
         sys.exit(1)
@@ -521,7 +548,21 @@ Fixes #{issue_number}
 
     # Amend commit with updated message
     run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with PR URL")
-    run_command("git push --force-with-lease", "Force pushing updated commit")
+
+    # Force push the updated commit with p3 authorization
+    print("🔄 Force pushing updated commit with p3 authorization...")
+    final_push_result = subprocess.run(
+        ["git", "push", "--force-with-lease"],
+        env=push_env,  # Reuse the environment with P3_CREATE_PR_PUSH
+        capture_output=True,
+        text=True,
+    )
+
+    if final_push_result.returncode != 0:
+        print(f"❌ Final push failed: {final_push_result.stderr}")
+        sys.exit(1)
+    else:
+        print("✅ Updated commit pushed successfully")
 
     print("\n" + "=" * 60)
     print("🎉 PR CREATION WORKFLOW COMPLETED")
