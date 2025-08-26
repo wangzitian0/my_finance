@@ -118,7 +118,15 @@ legacy_mapping:
   
   # Directory migration
   data/config: "common/config"  # Migrated to main repo
-  data: "build_data"  # Data directory renamed to build_data submodule
+  data: "build_data"  # Data directory renamed to build_data subtree
+
+# Data layer enum mapping (for DataLayer enum in directory_manager.py)
+data_layer_mapping:
+  RAW_DATA: "stage_00_raw"
+  DAILY_DELTA: "stage_01_daily_delta" 
+  DAILY_INDEX: "stage_02_daily_index"
+  GRAPH_RAG: "stage_03_graph_rag"
+  QUERY_RESULTS: "stage_04_query_results"
 
 # Storage backend configurations
 backends:

@@ -6,12 +6,27 @@ Centralized directory path management for the entire project.
 This module implements DRY and SSOT principles for directory management,
 ensuring that all data storage locations can be easily changed without
 affecting the entire codebase.
+
+Issue #122: Five-Layer Data Architecture Implementation
+- stage_00_raw: Raw Data Layer - Immutable source data
+- stage_01_daily_delta: Daily Delta Layer - Incremental changes  
+- stage_02_daily_index: Daily Index Layer - Vectors, entities, relationships
+- stage_03_graph_rag: Graph RAG Layer - Unified knowledge base
+- stage_04_query_results: Query Results Layer - Analysis and reports
+
+Features:
+- Backend abstraction (local_filesystem, aws_s3, gcp_gcs, azure_blob)
+- Legacy path mapping for backward compatibility
+- Unified interface replacing data_access.py functionality
+- Storage optimization configurations per layer
+- Performance targets: <100ms query response (Issue #122)
 """
 
 import os
+from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Union
 
 import yaml
 
@@ -26,13 +41,17 @@ class StorageBackend(Enum):
 
 
 class DataLayer(Enum):
-    """Five-Layer Data Architecture (Issue #122)"""
+    """Five-Layer Data Architecture (Issue #122)
+    
+    Maps to directory_structure.yml configuration for flexible storage backends.
+    Uses stage-based naming for consistency with existing codebase.
+    """
 
-    RAW_DATA = "layer_01_raw"  # Raw Data Layer - Immutable source data
-    DAILY_DELTA = "layer_02_delta"  # Daily Delta Layer - Incremental changes
-    DAILY_INDEX = "layer_03_index"  # Daily Index Layer - Vectors, entities, relationships
-    GRAPH_RAG = "layer_04_rag"  # Graph RAG Layer - Unified knowledge base
-    QUERY_RESULTS = "layer_05_results"  # Query Results Layer - Analysis and reports
+    RAW_DATA = "stage_00_raw"  # Raw Data Layer - Immutable source data
+    DAILY_DELTA = "stage_01_daily_delta"  # Daily Delta Layer - Incremental changes
+    DAILY_INDEX = "stage_02_daily_index"  # Daily Index Layer - Vectors, entities, relationships
+    GRAPH_RAG = "stage_03_graph_rag"  # Graph RAG Layer - Unified knowledge base
+    QUERY_RESULTS = "stage_04_query_results"  # Query Results Layer - Analysis and reports
 
 
 class DirectoryManager:
@@ -65,36 +84,43 @@ class DirectoryManager:
     def _default_config(self) -> Dict:
         """Default directory structure configuration"""
         return {
-            "storage": {"backend": "local_filesystem", "root_path": "data"},
+            "storage": {"backend": "local_filesystem", "root_path": "build_data"},
             "layers": {
-                "layer_01_raw": {
-                    "description": "Immutable source data",
-                    "subdirs": ["sec-edgar", "yfinance", "manual"],
+                "stage_00_raw": {
+                    "description": "Raw Data Layer - Immutable source data",
+                    "subdirs": ["sec-edgar", "yfinance", "manual", "reference"],
                 },
-                "layer_02_delta": {
-                    "description": "Daily incremental changes",
-                    "subdirs": ["additions", "modifications", "deletions"],
+                "stage_01_daily_delta": {
+                    "description": "Daily Delta Layer - Incremental daily changes",
+                    "subdirs": ["additions", "modifications", "deletions", "metadata"],
                 },
-                "layer_03_index": {
-                    "description": "New vectors, entities, relationships",
-                    "subdirs": ["vectors", "entities", "relationships", "embeddings"],
+                "stage_02_daily_index": {
+                    "description": "Daily Index Layer - New embeddings, entities, relationships",
+                    "subdirs": ["vectors", "entities", "relationships", "embeddings", "indices"],
                 },
-                "layer_04_rag": {
-                    "description": "Unified knowledge base",
-                    "subdirs": ["graph_db", "vector_store", "cache"],
+                "stage_03_graph_rag": {
+                    "description": "Graph RAG Layer - Unified knowledge base",
+                    "subdirs": ["graph_db", "vector_store", "cache", "snapshots"],
                 },
-                "layer_05_results": {
-                    "description": "Analysis and reports",
-                    "subdirs": ["dcf_reports", "analytics", "exports"],
+                "stage_04_query_results": {
+                    "description": "Query Results Layer - Query and analysis results",
+                    "subdirs": ["dcf_reports", "analytics", "exports", "dashboards", "api_responses"],
                 },
             },
             "common": {"config": "common/config", "logs": "logs", "temp": "temp", "cache": "cache"},
-            "legacy": {
-                "stage_00_original": "layer_01_raw",
-                "stage_01_extract": "layer_02_delta",
-                "stage_02_transform": "layer_03_index",
-                "stage_03_load": "layer_04_rag",
-                "stage_99_build": "layer_05_results",
+            "legacy_mapping": {
+                "stage_00_original": "stage_00_raw",
+                "stage_01_extract": "stage_01_daily_delta",
+                "stage_02_transform": "stage_02_daily_index",
+                "stage_03_load": "stage_03_graph_rag",
+                "stage_99_build": "stage_04_query_results",
+                "layer_01_raw": "stage_00_raw",
+                "layer_02_delta": "stage_01_daily_delta",
+                "layer_03_index": "stage_02_daily_index",
+                "layer_04_rag": "stage_03_graph_rag",
+                "layer_05_results": "stage_04_query_results",
+                "data/config": "common/config",
+                "data": "build_data",
             },
         }
 
@@ -140,6 +166,52 @@ class DirectoryManager:
         if config_name:
             return llm_config_dir / config_name
         return llm_config_dir
+    
+    def get_build_path(self, build_timestamp: Optional[str] = None, branch: Optional[str] = None) -> Path:
+        """Get build directory path for backward compatibility with data_access.py
+        
+        Args:
+            build_timestamp: Specific build timestamp (YYYYMMDD_HHMMSS format)
+            branch: Branch name for feature branch builds
+            
+        Returns:
+            Path to build directory
+        """
+        results_layer = self.get_layer_path(DataLayer.QUERY_RESULTS)
+        
+        if branch and branch != "main":
+            build_base = results_layer.parent / f"stage_04_query_results_{branch}"
+        else:
+            build_base = results_layer
+            
+        if build_timestamp:
+            return build_base / f"build_{build_timestamp}"
+        else:
+            return build_base
+            
+    def get_source_path(self, source: str, layer: DataLayer = DataLayer.RAW_DATA, 
+                       date_partition: Optional[str] = None, ticker: Optional[str] = None) -> Path:
+        """Get source-specific directory path
+        
+        Args:
+            source: Data source (yfinance, sec-edgar, etc.)
+            layer: Data layer enum
+            date_partition: Optional date partition
+            ticker: Optional ticker symbol
+            
+        Returns:
+            Path to source directory
+        """
+        layer_path = self.get_layer_path(layer)
+        source_path = layer_path / source
+        
+        if date_partition:
+            source_path = source_path / date_partition
+            
+        if ticker:
+            source_path = source_path / ticker
+            
+        return source_path
 
     def get_logs_path(self) -> Path:
         """Get logs directory path"""
@@ -161,6 +233,15 @@ class DirectoryManager:
             "stage_02_transform": DataLayer.DAILY_INDEX,
             "stage_03_load": DataLayer.GRAPH_RAG,
             "stage_99_build": DataLayer.QUERY_RESULTS,
+            # Legacy layer names
+            "layer_01_raw": DataLayer.RAW_DATA,
+            "layer_02_delta": DataLayer.DAILY_DELTA,
+            "layer_03_index": DataLayer.DAILY_INDEX,
+            "layer_04_rag": DataLayer.GRAPH_RAG,
+            "layer_05_results": DataLayer.QUERY_RESULTS,
+            # Build data references  
+            "build_data": DataLayer.QUERY_RESULTS,
+            "data": DataLayer.RAW_DATA,
         }
         return mapping.get(legacy_stage)
 
@@ -196,7 +277,10 @@ class DirectoryManager:
         data_root = self.get_data_root()
 
         # Check for legacy directories
-        for legacy_stage, new_layer in self.config["legacy_mapping"].items():
+        legacy_mapping = self.config.get("legacy_mapping", {})
+        for legacy_stage, new_stage in legacy_mapping.items():
+            if "/" in legacy_stage:  # Skip config mappings like "data/config"
+                continue
             legacy_path = data_root / legacy_stage
             if legacy_path.exists():
                 new_layer_enum = self.map_legacy_path(legacy_stage)
@@ -256,6 +340,17 @@ def get_config_path() -> Path:
 def get_llm_config_path(config_name: Optional[str] = None) -> Path:
     """Get LLM config path using SSOT directory manager"""
     return directory_manager.get_llm_config_path(config_name)
+
+
+def get_build_path(build_timestamp: Optional[str] = None, branch: Optional[str] = None) -> Path:
+    """Get build directory path using SSOT directory manager"""
+    return directory_manager.get_build_path(build_timestamp, branch)
+
+
+def get_source_path(source: str, layer: DataLayer = DataLayer.RAW_DATA, 
+                   date_partition: Optional[str] = None, ticker: Optional[str] = None) -> Path:
+    """Get source-specific directory path using SSOT directory manager"""
+    return directory_manager.get_source_path(source, layer, date_partition, ticker)
 
 
 def ensure_data_structure():
