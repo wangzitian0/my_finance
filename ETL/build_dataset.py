@@ -136,7 +136,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         if fast_mode:
             # Skip complex DCF analysis in fast mode
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex DCF analysis...")
-            companies_analyzed = len(config.get("expected_tickers", [])) if config.get("expected_tickers") else 2
+            companies_analyzed = (
+                len(config.get("expected_tickers", [])) if config.get("expected_tickers") else 2
+            )
             tracker.complete_stage(
                 "stage_04_analysis", partition=date_partition, companies_analyzed=companies_analyzed
             )
