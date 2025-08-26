@@ -1,0 +1,244 @@
+name: Auto-Label Issues
+
+on:
+  issues:
+    types: [opened, edited]
+  # Uncomment to also label issues when they are reopened  
+  # issues:
+  #   types: [opened, edited, reopened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  auto-label:
+    name: Automatically Label Issue
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Auto Label Issue
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // Get issue content
+          const issue = context.payload.issue;
+          const title = issue.title.toLowerCase();
+          const body = (issue.body || '').toLowerCase();
+          const content = `${title} ${body}`;
+          
+          console.log(`Processing issue #${issue.number}: "${issue.title}"`);
+          console.log(`Content length: ${content.length} characters`);
+          
+          const labelsToAdd = [];
+          
+          // Priority Labels
+          const criticalKeywords = [
+            'critical', 'urgent', 'emergency', 'broken', 'production down', 
+            'security', 'data loss', 'corruption', 'crash', 'failure',
+            'p0', 'priority: p0', 'immediate'
+          ];
+          const highKeywords = [
+            'important', 'high priority', 'blocking', 'regression', 'major bug',
+            'performance', 'memory leak', 'timeout', 'error', 'exception',
+            'p1', 'priority: p1', 'high'
+          ];
+          const lowKeywords = [
+            'nice to have', 'low priority', 'minor', 'cosmetic', 'p3', 
+            'priority: p3', ' low ', 'low-priority'
+          ];
+          
+          if (criticalKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('priority: P0-critical');
+          } else if (highKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('priority: P1-high');
+          } else if (lowKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('priority: P3-low');
+          } else {
+            labelsToAdd.push('priority: P2-medium');
+          }
+          
+          // Type Labels
+          const bugKeywords = [
+            'bug', 'error', 'issue', 'problem', 'fix', 'broken', 'incorrect',
+            'fail', 'exception', 'crash', 'not working'
+          ];
+          const featureKeywords = [
+            'feature', 'enhancement', 'implement', 'add', 'create', 'new',
+            'improve', 'extend', 'support'
+          ];
+          const docKeywords = [
+            'documentation', 'doc', 'readme', 'guide', 'tutorial', 'example',
+            'comment', 'explain', 'clarify'
+          ];
+          const refactorKeywords = [
+            'refactor', 'cleanup', 'reorganize', 'restructure', 'optimize',
+            'simplify', 'architecture'
+          ];
+          const cicdKeywords = [
+            ' ci ', 'ci/cd', 'github action', 'github workflow', 'ci pipeline', 'automation',
+            'deploy', 'build pipeline', 'test automation'
+          ];
+          const adrKeywords = [
+            'adr', 'architecture decision', 'decision record', 'design decision'
+          ];
+          
+          // Check for explicit type prefixes first
+          if (title.includes('[bug]')) {
+            labelsToAdd.push('type: bug');
+          } else if (title.includes('[feature]')) {
+            labelsToAdd.push('type: feature');
+          } else if (title.includes('[documentation]') || title.includes('[doc')) {
+            labelsToAdd.push('type: docs');
+          } else if (title.includes('[refactor]')) {
+            labelsToAdd.push('type: refactor');
+          } else if (title.includes('[adr]')) {
+            labelsToAdd.push('type: adr');
+          } else if (bugKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: bug');
+          } else if (featureKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: feature');
+          } else if (docKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: docs');
+          } else if (refactorKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: refactor');
+          } else if (adrKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: adr');
+          }
+          
+          // Check for CI/CD regardless (can be combined with other types)
+          if (cicdKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type: ci/cd');
+          }
+          
+          // Component Labels  
+          const infraKeywords = [
+            'infrastructure', 'infra', 'docker', 'container', 'podman', 'deployment',
+            'environment', 'setup', 'ansible', 'pixi', 'database', 'neo4j'
+          ];
+          const dataStorageKeywords = [
+            'data storage', 'storage', 'directory', 'file system', 'data layer',
+            'stage_', 'layer_', 'build_data', 'sec-edgar', 'yfinance'
+          ];
+          const etlKeywords = [
+            'etl', 'etl pipeline', 'spider', 'parser', 'extraction', 'transform',
+            'semantic embedding', 'data processing'
+          ];
+          const dcfKeywords = [
+            'dcf', 'valuation', 'dcf_engine', 'financial', 'calculation'
+          ];
+          const graphRagKeywords = [
+            'graph rag', 'graph_rag', 'semantic retrieval', 'vector search',
+            'retrieval-augmented generation', 'rag system'
+          ];
+          
+          if (infraKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('component: infrastructure');
+          }
+          if (dataStorageKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('component: data-storage');
+          }
+          if (etlKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('component: etl');
+          }
+          if (dcfKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('component: dcf-engine');
+          }
+          if (graphRagKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('component: graph-rag');
+          }
+          
+          // Phase Labels
+          const mvpKeywords = [
+            'mvp', 'minimum viable product', 'prototype', 'basic', 'initial'
+          ];
+          const productionKeywords = [
+            'production', 'prod', 'live', 'release', 'deployment'
+          ];
+          
+          if (mvpKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('phase: MVP');
+          }
+          if (productionKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('phase: production');
+          }
+          
+          // Status Labels  
+          const blockedKeywords = [
+            'blocked', 'waiting for', 'dependency', 'depends on', 'prerequisite'
+          ];
+          const triageKeywords = [
+            'need', 'question', 'unclear', 'investigate', 'research', 'help wanted'
+          ];
+          
+          if (blockedKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status: blocked');
+          }
+          if (triageKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status: needs-triage');
+          }
+          
+          // Effort estimation (only add if there are clear indicators)
+          const largeEffortKeywords = [
+            'major refactor', 'migration', 'restructure', 'major',
+            'complete overhaul', 'system overhaul', 'large effort'
+          ];
+          const mediumEffortKeywords = [
+            ' implement ', 'enhance', 'extend', 'integration', ' feature '
+          ];
+          
+          // Only add effort labels if there are explicit indicators or very long content
+          if (largeEffortKeywords.some(keyword => content.includes(keyword)) || 
+              content.length > 1500) {
+            labelsToAdd.push('effort: large');
+          } else if (mediumEffortKeywords.some(keyword => content.includes(keyword)) || 
+                     content.length > 800) {
+            labelsToAdd.push('effort: medium');
+          }
+          // Don't auto-assign small effort - let it be manual
+          
+          // Remove duplicates
+          const uniqueLabels = [...new Set(labelsToAdd)];
+          
+          console.log(`Labels to add: ${uniqueLabels.join(', ')}`);
+          
+          // Apply labels if any were determined
+          if (uniqueLabels.length > 0) {
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: uniqueLabels
+              });
+              
+              console.log(`✅ Successfully added ${uniqueLabels.length} labels to issue #${issue.number}`);
+              
+              // Add a comment explaining the automatic labeling
+              const comment = `🏷️ **Automatic labeling complete**
+              
+This issue has been automatically labeled based on its title and content:
+${uniqueLabels.map(label => `- \`${label}\``).join('\n')}
+
+_Labels can be manually adjusted if needed._`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comment
+              });
+              
+            } catch (error) {
+              console.error(`❌ Error adding labels: ${error.message}`);
+              // Don't fail the workflow if labeling fails
+            }
+          } else {
+            console.log(`ℹ️ No labels determined for issue #${issue.number}`);
+          }
