@@ -97,6 +97,15 @@ class P3CLI:
             "test-yfinance": "pixi run python ETL/tests/integration/test_yfinance.py",
             "test-config": "pixi run python -m pytest ETL/tests/test_config.py -v",
             "test-dcf-report": "pixi run python -m pytest dcf_engine/test_dcf_report.py -v",
+            # Claude Squad Multi-Window Commands
+            "squad": "export PATH=\"$HOME/.local/bin:$PATH\" && cs",
+            "squad-dev": "export PATH=\"$HOME/.local/bin:$PATH\" && cs -p 'claude' --autoyes || bash .claude-squad/templates/development.sh",
+            "squad-test": "export PATH=\"$HOME/.local/bin:$PATH\" && cs -p 'claude' --autoyes || bash .claude-squad/templates/testing.sh",
+            "squad-docs": "export PATH=\"$HOME/.local/bin:$PATH\" && cs -p 'claude' --autoyes || bash .claude-squad/templates/documentation.sh",
+            "squad-research": "export PATH=\"$HOME/.local/bin:$PATH\" && cs -p 'claude' --autoyes || bash .claude-squad/templates/research.sh",
+            "squad-pr": "export PATH=\"$HOME/.local/bin:$PATH\" && cs -p 'claude' --autoyes || bash .claude-squad/templates/pr_review.sh",
+            "squad-list": "export PATH=\"$HOME/.local/bin:$PATH\" && cs debug",
+            "squad-reset": "export PATH=\"$HOME/.local/bin:$PATH\" && cs reset",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -178,6 +187,26 @@ class P3CLI:
                 cmd = "pixi run python tests/test_directory_structure_protection.py"
             return cmd
 
+        # Claude Squad multi-window commands
+        if command.startswith("squad"):
+            if command == "squad":
+                print("🚀 Starting Claude Squad...")
+                print("Available sessions:")
+                print("  p3 squad-dev      - Development session")
+                print("  p3 squad-test     - Testing session")
+                print("  p3 squad-docs     - Documentation session")
+                print("  p3 squad-research - Research session")
+                print("  p3 squad-pr       - PR review session")
+                print("  p3 squad-list     - List active sessions")
+                print("  p3 squad-reset    - Reset all sessions")
+                return None
+            elif command in ["squad-dev", "squad-test", "squad-docs", "squad-research", "squad-pr"]:
+                # These commands are handled in the main command mapping
+                return self.commands[command]
+            elif command in ["squad-list", "squad-reset"]:
+                # Direct pass-through commands
+                return self.commands[command]
+
         return None
 
     def show_help(self):
@@ -234,6 +263,16 @@ Workflow Management:
   commit-data-changes    Stage data directory changes
   cleanup-branches       Clean merged branches (--dry-run, --auto)
   shutdown-all           Stop all services
+
+Multi-Window Development (Claude Squad):
+  squad                  Show available squad sessions
+  squad-dev              Development session with main workflow
+  squad-test             Testing session with validation commands
+  squad-docs             Documentation session for README updates
+  squad-research         Research session for code exploration
+  squad-pr               PR review session with git workflow
+  squad-list             List active sessions and debug info
+  squad-reset            Reset all claude-squad sessions
 
 Analysis & Reporting:
   dcf-analysis           Run DCF analysis

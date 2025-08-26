@@ -1,0 +1,114 @@
+# Claude Squad Configuration for my_finance project
+# Multi-window development workflow configuration
+
+# Default program configuration
+default_program: "claude"
+
+# Auto-accept mode for non-interactive sessions
+auto_yes: false
+
+# Project-specific session templates
+session_templates:
+  development:
+    name: "dev-{{timestamp}}"
+    description: "Main development session"
+    program: "claude"
+    working_directory: "/Users/SP14016/zitian/my_finance"
+    initial_commands:
+      - "p3 activate"
+      - "p3 env-status"
+    
+  testing:
+    name: "test-{{timestamp}}"
+    description: "Testing and validation session"
+    program: "claude"
+    working_directory: "/Users/SP14016/zitian/my_finance"
+    initial_commands:
+      - "p3 activate"
+      - "p3 e2e"
+    
+  documentation:
+    name: "docs-{{timestamp}}"
+    description: "Documentation and README updates"
+    program: "claude"
+    working_directory: "/Users/SP14016/zitian/my_finance"
+    initial_commands:
+      - "p3 activate"
+    
+  research:
+    name: "research-{{timestamp}}"
+    description: "Code exploration and research"
+    program: "claude"
+    working_directory: "/Users/SP14016/zitian/my_finance"
+    initial_commands:
+      - "p3 activate"
+    
+  pr_review:
+    name: "pr-{{timestamp}}"
+    description: "PR creation and review"
+    program: "claude"
+    working_directory: "/Users/SP14016/zitian/my_finance"
+    initial_commands:
+      - "p3 activate"
+      - "git status"
+
+# Workspace management
+workspace:
+  # Use git worktrees for isolation
+  use_git_worktrees: true
+  
+  # Base directory for worktrees
+  worktree_base: "/Users/SP14016/zitian/my_finance_worktrees"
+  
+  # Cleanup old worktrees automatically
+  auto_cleanup: true
+  
+  # Maximum number of concurrent sessions
+  max_sessions: 5
+
+# tmux configuration
+tmux:
+  # Session prefix for better organization
+  session_prefix: "my_finance"
+  
+  # Default window name
+  default_window_name: "claude"
+  
+  # Terminal settings
+  terminal: "screen-256color"
+  
+  # Mouse support
+  mouse: true
+  
+  # Status bar configuration
+  status_bar:
+    position: "bottom"
+    left: "#[fg=green]#S #[fg=blue]#I:#P"
+    right: "#[fg=cyan]%Y-%m-%d %H:%M"
+
+# Integration with p3 CLI
+p3_integration:
+  # Commands to run before starting Claude sessions
+  pre_session_commands:
+    - "p3 env-status"
+  
+  # Commands to run when closing sessions
+  post_session_commands:
+    - "p3 shutdown-all"
+  
+  # Automatically activate pixi environment
+  auto_activate: true
+
+# Git integration
+git:
+  # Automatically create feature branches for new sessions
+  auto_create_branches: true
+  
+  # Branch naming pattern
+  branch_pattern: "feature/multi-session-{{session_name}}-{{timestamp}}"
+  
+  # Base branch for new feature branches
+  base_branch: "main"
+  
+  # Automatically sync with main before creating branches
+  auto_sync: true

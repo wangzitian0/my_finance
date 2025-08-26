@@ -1,0 +1,84 @@
+name: Claude Issue Assistant
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+  contents: read
+  pull-requests: read
+  id-token: write
+
+jobs:
+  claude-issue-assistant:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Claude Issue Analysis and Labeling
+        id: claude-analysis
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Direct prompt for issue analysis and labeling
+          direct_prompt: |
+            Please analyze this GitHub issue and help with organization by:
+
+            ## 1. Adding Appropriate Labels
+            Based on the issue content, add relevant labels from these categories:
+
+            **Priority Labels:**
+            - `P0-critical` - Critical bugs, security issues, or blocking problems
+            - `P1-high` - Important features or significant bugs affecting users
+            - `P2-medium` - Standard improvements, minor bugs, or routine tasks
+            - `P3-low` - Nice-to-have features or minor improvements
+
+            **Type Labels:**
+            - `type:bug` - Bug reports and fixes
+            - `type:enhancement` - New features and improvements
+            - `type:documentation` - Documentation updates and changes
+            - `type:testing` - Testing-related issues and improvements
+            - `type:refactoring` - Code restructuring and cleanup
+            - `type:architecture` - Architecture decisions and major system changes
+
+            **Phase Labels (My Finance Project Specific):**
+            - `phase:etl` - ETL pipeline, data collection, spiders (spider/, ETL/)
+            - `phase:dcf-engine` - DCF calculation engine and valuation (dcf_engine/)
+            - `phase:graph-rag` - Graph RAG, Neo4j, semantic retrieval (graph_rag/)
+            - `phase:data-analysis` - Data analysis and evaluation (evaluation/)
+
+            **Component Labels:**
+            - `component:sec-integration` - SEC Edgar filing integration and parsing
+            - `component:yahoo-finance` - Yahoo Finance data collection and processing
+            - `component:github-workflow` - CI/CD, GitHub Actions, and automation
+            - `component:claude-integration` - Claude AI integration and automation
+            - `component:pixi` - Pixi environment management and dependencies
+
+            **Infrastructure Labels:**
+            - `infra:containers` - Docker/Podman container issues and configuration
+            - `infra:database` - Neo4j database and graph storage
+            - `infra:environment` - Environment setup, dependencies, and configuration
+
+            ## 2. Provide Helpful Analysis
+            Add a comment with:
+            - **Summary**: Brief analysis of the issue and its scope
+            - **Technical Context**: Relevant system components and dependencies
+            - **Implementation Guidance**: Suggested approach or next steps
+            - **Related Issues**: References to similar or related issues if applicable
+            - **Testing Considerations**: What should be tested when implementing
+
+            ## Project Context
+            This is a SEC Filing-Enhanced Graph RAG-powered DCF valuation system with:
+            - **ETL Pipeline**: SEC document processing and YFinance data collection
+            - **Graph RAG**: Neo4j-based semantic retrieval with SEC filing integration
+            - **DCF Engine**: Financial valuation calculations with LLM enhancement
+            - **Data Tiers**: F2 (dev) → M7 (test) → N100 (validation) → VTI (production)
+            - **Build System**: p3 command line tool with Pixi environment management
+
+            Be thorough in your analysis and helpful in your suggestions. Focus on providing actionable guidance that helps contributors understand the issue's context and implementation approach.
