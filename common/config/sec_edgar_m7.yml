@@ -1,0 +1,40 @@
+# SEC Edgar configuration for Magnificent 7 (M7) dataset
+# 7 technology companies for stable testing and development
+
+# CIK numbers for M7 companies
+tickers:
+  - "0000320193"  # AAPL
+  - "0000789019"  # MSFT
+  - "0001652044"  # GOOGL
+  - "0001018724"  # AMZN
+  - "0001318605"  # TSLA
+  - "0001326801"  # META
+  - "0001045810"  # NVDA
+
+# Number of filings per type to fetch
+count: 8
+
+# Filing types to collect
+file_types:
+  - "10K"  # Annual reports
+  - "10Q"  # Quarterly reports
+  - "8K"   # Current reports
+
+# User identification for SEC API
+email: "ZitianSG (wangzitian0@gmail.com)"
+
+# Data collection settings
+collection:
+  start_date: "2022-01-01"
+  rate_limit_seconds: 2
+  max_retries: 3
+  timeout_per_filing: 60
+
+# M7 companies with CIK numbers:
+# AAPL - Apple Inc.
+# MSFT - Microsoft Corporation
+# GOOGL - Alphabet Inc. Class A
+# AMZN - Amazon.com Inc.
+# TSLA - Tesla Inc.
+# META - Meta Platforms Inc.
+# NVDA - NVIDIA Corporation

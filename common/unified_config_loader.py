@@ -75,10 +75,6 @@ class UnifiedConfigLoader:
             DatasetTier.M7: "list_magnificent_7.yml",
             DatasetTier.N100: "list_nasdaq_100.yml",
             DatasetTier.V3K: "list_vti_3500.yml",
-            # Legacy aliases
-            DatasetTier.TEST: "list_fast_2.yml",
-            DatasetTier.NASDAQ100: "list_nasdaq_100.yml",
-            DatasetTier.VTI: "list_vti_3500.yml",
         }
 
     def load_config(self, tier: DatasetTier) -> UnifiedDatasetConfig:

@@ -1,0 +1,43 @@
+# Development Scenario Configuration
+description: "Fast development and testing environment"
+
+# Available data sources for this scenario
+data_sources:
+  - "yfinance"
+  - "sec_edgar"
+
+processing_mode: "test"  # test, incremental, full
+
+# Quality thresholds (relaxed for development)
+quality_thresholds:
+  min_success_rate: 0.8
+  max_error_rate: 0.2
+  timeout_minutes: 10
+
+# Output settings
+output_formats:
+  - "json"
+  - "csv"
+  
+output_settings:
+  save_intermediate: true
+  debug_mode: true
+  verbose_logging: true
+
+# Resource limits
+resource_limits:
+  max_concurrent_requests: 5
+  memory_limit_mb: 1024
+  disk_space_mb: 500
+
+# Fast development optimizations
+optimizations:
+  cache_enabled: true
+  skip_validation: false
+  parallel_processing: true
+  
+# Development-specific features
+development:
+  hot_reload: true
+  mock_data_fallback: true
+  extended_logging: true

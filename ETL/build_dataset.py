@@ -17,7 +17,8 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from common.build_tracker import BuildTracker
-from ETL.tests.test_config import DatasetTier, TestConfigManager
+from common.config_loader import config_loader
+from ETL.tests.test_config import DatasetTier
 
 
 def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = False) -> bool:
@@ -42,15 +43,12 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         # Initialize tier and config
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Initializing tier and config...")
         tier = DatasetTier(tier_name)
-        config_manager = TestConfigManager()
-        config = config_manager.get_config(tier)
+        config = config_loader.load_dataset_config(tier.value)
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Config loaded in {time.time() - start_time:.1f}s")
 
         print(f"🔧 Building {tier.value} dataset...")
-        print(f"   Configuration: {config.config_file}")
-        print(
-            f"   Expected tickers: {len(config.expected_tickers) if config.expected_tickers else 'dynamic'}"
-        )
+        print(f"   Configuration: list_{tier.value}.yml")
+        print(f"   Expected tickers: {config.get('ticker_count', 'unknown')}")
 
         # Initialize build tracker
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Initializing build tracker...")
@@ -60,7 +58,7 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
 
         # Load YAML configuration
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Loading YAML configuration...")
-        yaml_config = config_manager.load_yaml_config(tier)
+        yaml_config = config
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] YAML config loaded: {list(yaml_config.keys())}")
 
         # Start extract stage
@@ -138,7 +136,9 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         if fast_mode:
             # Skip complex DCF analysis in fast mode
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex DCF analysis...")
-            companies_analyzed = len(config.expected_tickers) if config.expected_tickers else 2
+            companies_analyzed = (
+                len(config.get("expected_tickers", [])) if config.get("expected_tickers") else 2
+            )
             tracker.complete_stage(
                 "stage_04_analysis", partition=date_partition, companies_analyzed=companies_analyzed
             )
@@ -241,8 +241,7 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
             return True
 
         stage_config_name = yfinance_config.get("stage_config", "stage_00_original_yfinance.yml")
-        config_manager = TestConfigManager()
-        yfinance_config_path = config_manager.config_dir / stage_config_name
+        yfinance_config_path = config_loader.get_config_path(stage_config_name)
 
         # Extract tickers using UnifiedConfigLoader for compatibility
         from common.unified_config_loader import UnifiedConfigLoader
@@ -287,44 +286,83 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
 
 def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
-    """Build SEC Edgar data using spider"""
+    """Build SEC Edgar data using orthogonal configuration system"""
     try:
+        from common.orthogonal_config import orthogonal_config
         from ETL.sec_edgar_spider import run_job
 
-        # Find SEC Edgar config for this tier
-        config_manager = TestConfigManager()
-        sec_config_map = {
-            DatasetTier.TEST: "sec_edgar_test.yml",  # Create if needed
-            DatasetTier.M7: "sec_edgar_m7.yml",
-            DatasetTier.N100: "sec_edgar_nasdaq100.yml",  # N100 maps to nasdaq100 config
-        }
+        # Check if SEC Edgar is enabled in data sources (orthogonal config)
+        data_sources = yaml_config.get("data_sources", {})
+        sec_config = data_sources.get("sec_edgar", {})
 
-        sec_config_file = sec_config_map.get(tier)
-        if not sec_config_file:
-            print(f"   ⚪ SEC Edgar not configured for {tier.value}")
+        if not sec_config.get("enabled", False):
+            print(f"   ⚪ SEC Edgar disabled in {tier.value} configuration")
             return True
 
-        sec_config_path = config_manager.config_dir / sec_config_file
+        print(f"   📊 Collecting SEC Edgar data using orthogonal config...")
 
-        if not sec_config_path.exists():
-            print(f"   ⚪ SEC Edgar config not found: {sec_config_file}")
-            return True
-
-        print(f"   📊 Collecting SEC Edgar data...")
-
-        tracker.log_stage_output(
-            "stage_01_extract", f"Starting SEC Edgar collection for {tier.value}"
+        # Build runtime configuration using orthogonal system
+        runtime_config = orthogonal_config.build_runtime_config(
+            stock_list=tier.value, data_sources=["sec_edgar"], scenario="development"
         )
 
-        # Run SEC Edgar spider
-        run_job(str(sec_config_path))
+        # Extract SEC configuration from runtime config
+        sec_runtime_config = runtime_config["data_sources"]["sec_edgar"]
+        companies = runtime_config["stock_list"]["companies"]
 
-        tracker.log_stage_output("stage_01_extract", "SEC Edgar collection completed")
+        print(f"   📄 Using orthogonal SEC config with {len(companies)} companies")
+
+        tracker.log_stage_output(
+            "stage_01_extract", f"Starting orthogonal SEC Edgar collection for {tier.value}"
+        )
+
+        # Create temporary config for SEC spider (preserving orthogonal approach)
+        import tempfile
+
+        import yaml
+
+        # Extract CIK numbers from companies
+        ciks = []
+        for ticker, company_data in companies.items():
+            if "cik" in company_data:
+                ciks.append(company_data["cik"])
+
+        if not ciks:
+            print(f"   ⚠️ No CIK numbers found for {tier.value} companies")
+            return True
+
+        # Build SEC config from orthogonal data
+        sec_spider_config = {
+            "tickers": ciks,
+            "count": 8,
+            "file_types": ["10K", "10Q", "8K"],
+            "email": sec_runtime_config["config"].get(
+                "user_agent", "ZitianSG (wangzitian0@gmail.com)"
+            ),
+            "collection": sec_runtime_config["rate_limits"],
+        }
+
+        # Write temporary config file
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as temp_f:
+            yaml.dump(sec_spider_config, temp_f, default_flow_style=False)
+            temp_config_path = temp_f.name
+
+        print(f"   📋 Generated SEC config from orthogonal system: {len(ciks)} CIKs")
+
+        # Run SEC Edgar spider with orthogonal config
+        run_job(temp_config_path)
+
+        # Clean up temp file
+        import os
+
+        os.unlink(temp_config_path)
+
+        tracker.log_stage_output("stage_01_extract", "Orthogonal SEC Edgar collection completed")
         return True
 
     except Exception as e:
-        print(f"   ❌ SEC Edgar collection failed: {e}")
-        tracker.log_stage_output("stage_01_extract", f"SEC Edgar error: {e}")
+        print(f"   ❌ Orthogonal SEC Edgar collection failed: {e}")
+        tracker.log_stage_output("stage_01_extract", f"Orthogonal SEC Edgar error: {e}")
         return False
 
 
@@ -341,18 +379,14 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool =
         )
 
         # Get companies list based on tier configuration
-        config_manager = TestConfigManager()
-        yaml_config = config_manager.load_yaml_config(tier)
+        yaml_config = config_loader.load_dataset_config(tier.value)
 
         # Extract company tickers from configuration
         companies = {}
-        if tier.value in ["f2", "test"] and "reference_config" in yaml_config:
+        if tier.value == "f2" and "reference_config" in yaml_config:
             # For F2, load companies from reference config and filter by selected_companies
-            import yaml
-
-            ref_config_path = config_manager.config_dir / yaml_config["reference_config"]
-            with open(ref_config_path, "r") as f:
-                ref_config = yaml.safe_load(f)
+            ref_config_name = yaml_config["reference_config"]
+            ref_config = config_loader._load_config_file(ref_config_name)
 
             selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
             all_companies = ref_config.get("companies", {})
@@ -412,18 +446,14 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: b
         )
 
         # Get companies list based on tier configuration
-        config_manager = TestConfigManager()
-        yaml_config = config_manager.load_yaml_config(tier)
+        yaml_config = config_loader.load_dataset_config(tier.value)
 
         # Extract company tickers from configuration
         tickers = []
-        if tier.value in ["f2", "test"] and "reference_config" in yaml_config:
+        if tier.value == "f2" and "reference_config" in yaml_config:
             # For F2, load companies from reference config and filter by selected_companies
-            import yaml
-
-            ref_config_path = config_manager.config_dir / yaml_config["reference_config"]
-            with open(ref_config_path, "r") as f:
-                ref_config = yaml.safe_load(f)
+            ref_config_name = yaml_config["reference_config"]
+            ref_config = config_loader._load_config_file(ref_config_name)
 
             selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
             all_companies = ref_config.get("companies", {})
@@ -482,10 +512,16 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: b
 def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
     """Validate the built dataset"""
     try:
-        config_manager = TestConfigManager()
-        expected_counts = config_manager.get_expected_file_count(tier)
+        yaml_config = config_loader.load_dataset_config(tier.value)
+        expected_counts = yaml_config.get("expected_files", {})
 
-        paths = config_manager.get_data_paths(tier)
+        # Get data paths from directory manager
+        from common.directory_manager import DataLayer, get_data_path
+
+        paths = {
+            "yfinance": get_data_path(DataLayer.RAW_DATA, "yfinance"),
+            "sec_edgar": get_data_path(DataLayer.RAW_DATA, "sec_edgar"),
+        }
         extract_path = paths["extract"]
 
         # Count actual files in latest partition
