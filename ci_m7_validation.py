@@ -35,64 +35,67 @@ def get_commit_info():
                 print("🔍 Found merge commit, getting PR branch commits...")
                 print(f"🔍 Merge parents: {parents}")
 
-                # Try different approaches to get PR commits
-                git_commands = [
-                    f"{parents[0]}..HEAD^",  # Original approach
-                    f"{parents[1]}..HEAD^",  # Try second parent
-                    f"{parents[0]}..{parents[1]}",  # Between parents
-                ]
-
+                # Fix: Check both parents directly to find PR commit with F2-TESTED marker
                 pr_commits = []
-                for cmd in git_commands:
+                for i, parent in enumerate(parents):
                     try:
-                        print(f"🔍 Trying git log command: {cmd}")
+                        print(f"🔍 Checking parent {i+1}: {parent[:8]}")
+                        
+                        # Get commit message from this parent
                         result = subprocess.run(
-                            ["git", "log", "--pretty=%H", cmd],
+                            ["git", "log", "-1", "--pretty=%B", parent],
                             capture_output=True,
                             text=True,
                             check=True,
                         )
-                        commits = [
-                            line.strip()
-                            for line in result.stdout.strip().split("\n")
-                            if line.strip()
-                        ]
-                        print(
-                            f"🔍 Found {len(commits)} commits: {commits[:3] if commits else 'none'}"
-                        )
-                        if commits:
-                            pr_commits = commits
-                            break
+                        parent_msg = result.stdout.strip()
+                        
+                        # Check if this parent has F2-TESTED or M7-TESTED marker
+                        has_test_marker = ("F2-TESTED" in parent_msg or "M7-TESTED" in parent_msg)
+                        print(f"🔍 Parent {i+1} has test marker: {has_test_marker}")
+                        
+                        if has_test_marker:
+                            print(f"🔍 Found PR commit with test validation: {parent[:8]}")
+                            
+                            # Get commit timestamp from the PR commit
+                            result = subprocess.run(
+                                ["git", "log", "-1", "--pretty=%ct", parent],
+                                capture_output=True,
+                                text=True,
+                                check=True,
+                            )
+                            commit_time = int(result.stdout.strip())
+                            
+                            return parent_msg, commit_time
+                            
                     except Exception as e:
-                        print(f"🔍 Command failed: {e}")
+                        print(f"🔍 Error checking parent {i+1}: {e}")
                         continue
-
-                if pr_commits:
-                    # Use the most recent commit from the PR
-                    latest_pr_commit = pr_commits[0]
-                    print(f"🔍 Checking latest PR commit: {latest_pr_commit[:8]}")
-
-                    # Get commit message from the actual PR commit
+                
+                # Fallback: if no parent has test markers, use the second parent (usually PR branch)
+                if len(parents) >= 2:
+                    print("🔍 No test markers found, using second parent as fallback")
+                    fallback_parent = parents[1]
+                    
                     result = subprocess.run(
-                        ["git", "log", "-1", "--pretty=%B", latest_pr_commit],
+                        ["git", "log", "-1", "--pretty=%B", fallback_parent],
                         capture_output=True,
                         text=True,
                         check=True,
                     )
                     commit_msg = result.stdout.strip()
-
-                    # Get commit timestamp from the actual PR commit
+                    
                     result = subprocess.run(
-                        ["git", "log", "-1", "--pretty=%ct", latest_pr_commit],
+                        ["git", "log", "-1", "--pretty=%ct", fallback_parent],
                         capture_output=True,
                         text=True,
                         check=True,
                     )
                     commit_time = int(result.stdout.strip())
-
+                    
                     return commit_msg, commit_time
                 else:
-                    print("🔍 No PR commits found, falling back to HEAD")
+                    print("🔍 Cannot determine PR commit, falling back to HEAD")
 
         # Not in PR context or no merge commit detected, use HEAD
         print("🔍 Using HEAD commit...")
