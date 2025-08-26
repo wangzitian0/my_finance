@@ -28,10 +28,15 @@ except ImportError:
 import json
 import logging
 import os
+import sys
 import time
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import yaml
+
+# Add project root to path for common imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
     from secedgar import FilingType, filings

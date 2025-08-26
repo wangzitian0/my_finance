@@ -1,0 +1,58 @@
+# M7: Magnificent 7 technology companies
+description: "Magnificent 7 technology companies - stable test dataset"
+tier: "m7"
+tracked_in_git: true
+max_size_mb: 500
+
+companies:
+  AAPL:
+    name: "Apple Inc."
+    sector: "Technology"
+    industry: "Consumer Electronics"
+    cik: "0000320193"
+    market_cap_category: "mega"
+    
+  MSFT:
+    name: "Microsoft Corporation"
+    sector: "Technology"
+    industry: "Software"
+    cik: "0000789019"
+    market_cap_category: "mega"
+    
+  GOOGL:
+    name: "Alphabet Inc. Class A"
+    sector: "Technology"
+    industry: "Internet Services"
+    cik: "0001652044"
+    market_cap_category: "mega"
+    
+  AMZN:
+    name: "Amazon.com Inc."
+    sector: "Technology"
+    industry: "E-commerce & Cloud"
+    cik: "0001018724"
+    market_cap_category: "mega"
+    
+  TSLA:
+    name: "Tesla Inc."
+    sector: "Technology"
+    industry: "Electric Vehicles"
+    cik: "0001318605"
+    market_cap_category: "large"
+    
+  META:
+    name: "Meta Platforms Inc."
+    sector: "Technology"
+    industry: "Social Media"
+    cik: "0001326801"
+    market_cap_category: "large"
+    
+  NVDA:
+    name: "NVIDIA Corporation"
+    sector: "Technology"
+    industry: "Semiconductors"
+    cik: "0001045810"
+    market_cap_category: "large"
+
+selection_criteria: "7 largest technology companies by market cap and innovation impact"
+last_updated: "2025-08-26T19:45:00.000000"

@@ -16,9 +16,9 @@ git = "*"
 # Essential Python packages
 pip = "*"
 pyyaml = ">=6.0.2,<7"
-requests = ">=2.32.4,<3"
-beautifulsoup4 = "*"
-pandas = ">=2.3.1,<3"
+requests = ">=2.32.5,<3"
+beautifulsoup4 = ">=4.13.5,<5"
+pandas = ">=2.3.2,<3"
 matplotlib = "*"
 seaborn = "*"
 jupyter = "*"
@@ -41,7 +41,7 @@ pyarrow = ">=21.0.0,<22"
 python-dateutil = ">=2.9.0.post0,<3"
 pathspec = ">=0.12.1,<0.13"
 platformdirs = ">=4.3.8,<5"
-numpy = ">=1.24.0,<1.27"
+numpy = ">=1.26.4,<2"
 
 [tasks]
 # === PIXI ENVIRONMENT MANAGEMENT ===

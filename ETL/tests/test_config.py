@@ -22,15 +22,10 @@ from common.directory_manager import DirectoryManager
 class DatasetTier(Enum):
     """Data tiers for testing strategy - Four-tier system"""
 
-    F2 = "f2"  # Fast 2 companies
-    M7 = "m7"  # Magnificent 7
-    N100 = "n100"  # NASDAQ 100
-    V3K = "v3k"  # VTI 3500+
-
-    # Legacy aliases for backward compatibility
-    TEST = "test"  # Maps to F2
-    NASDAQ100 = "nasdaq100"  # Maps to N100
-    VTI = "vti"  # Maps to V3K
+    F2 = "f2"    # Fast 2 companies (development testing)
+    M7 = "m7"    # Magnificent 7 (standard/PR testing)
+    N100 = "n100"  # NASDAQ 100 (validation testing)
+    V3K = "v3k"    # VTI 3500+ (production testing)
 
 
 @dataclass
@@ -86,16 +81,6 @@ class TestConfigManager:
         DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="list_magnificent_7.yml"),
         DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="list_nasdaq_100.yml"),
         DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="list_vti_3500.yml"),
-        # Legacy aliases (for backward compatibility)
-        DatasetTier.TEST: TestConfig(
-            tier=DatasetTier.TEST, config_file="list_fast_2.yml"  # Maps to F2
-        ),
-        DatasetTier.NASDAQ100: TestConfig(
-            tier=DatasetTier.NASDAQ100, config_file="list_nasdaq_100.yml"  # Maps to N100
-        ),
-        DatasetTier.VTI: TestConfig(
-            tier=DatasetTier.VTI, config_file="list_vti_3500.yml"  # Maps to V3K
-        ),
     }
 
     def __init__(self, base_path: str = None):

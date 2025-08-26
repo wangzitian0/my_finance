@@ -1,0 +1,42 @@
+# Yahoo Finance Data Source Configuration
+description: "Yahoo Finance API for historical prices and financial data"
+enabled: true
+
+data_types:
+  - "historical_prices"
+  - "financial_statements" 
+  - "company_info"
+  - "recommendations"
+
+api_config:
+  base_url: "https://query1.finance.yahoo.com"
+  user_agent: "my_finance/1.0"
+  timeout_seconds: 30
+  
+  # Data collection periods
+  periods:
+    daily_3mo:
+      period: "3mo"
+      interval: "1d"
+      description: "Daily data for last 3 months"
+      
+    weekly_5y:
+      period: "5y" 
+      interval: "1wk"
+      description: "Weekly data for last 5 years"
+      
+    monthly_max:
+      period: "max"
+      interval: "1mo"
+      description: "Monthly data for maximum available period"
+
+rate_limits:
+  requests_per_second: 2
+  requests_per_minute: 60
+  retry_after_seconds: 5
+  max_retries: 3
+
+output_format:
+  file_extension: ".json"
+  compression: false
+  timestamp_format: "%Y%m%d_%H%M%S"
