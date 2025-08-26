@@ -83,21 +83,20 @@ class TestDirectoryStructureProtection(unittest.TestCase):
                 f"Configuration file {config_file} must exist in common/config",
             )
 
-    def test_data_submodule_structure(self):
-        """Test data directory is properly configured as submodule"""
-        data_dir = self.project_root / "data"
+    def test_data_subtree_structure(self):
+        """Test data directory is properly configured as subtree (not submodule)"""
+        data_dir = self.project_root / "build_data"
         gitmodules_file = self.project_root / ".gitmodules"
 
-        # Data should exist (as submodule)
-        self.assertTrue(data_dir.exists(), "Data directory must exist as submodule")
+        # Data should exist (as subtree)
+        self.assertTrue(data_dir.exists(), "Data directory must exist as subtree")
 
-        # .gitmodules should exist and reference data
-        self.assertTrue(gitmodules_file.exists(), ".gitmodules file must exist")
+        # .gitmodules should NOT exist (we use subtree now)
+        self.assertFalse(gitmodules_file.exists(), ".gitmodules file should not exist (using subtree)")
 
-        with open(gitmodules_file, "r") as f:
-            gitmodules_content = f.read()
-            self.assertIn('[submodule "build_data"]', gitmodules_content)
-            self.assertIn("my_finance_data", gitmodules_content)
+        # build_data should not have a .git file (characteristic of subtree)
+        build_data_git = data_dir / ".git"
+        self.assertFalse(build_data_git.exists(), "build_data should not have .git file (subtree characteristic)")
 
     def test_legacy_path_prevention(self):
         """Test that legacy paths are not used in new code"""
