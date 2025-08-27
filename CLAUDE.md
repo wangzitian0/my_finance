@@ -189,6 +189,107 @@ if (PR_NUMBER % 10 === 0) {
 4. **Follow p3 command workflow** - Never use direct python scripts
 5. **Test before PR creation** - `p3 e2e` is mandatory
 6. **Update parent READMEs** - When modifying directory functionality
+7. **ENGLISH-ONLY POLICY** - All technical content must use English
+
+## 🌐 ENGLISH-ONLY CODING STANDARDS
+
+**CRITICAL**: All technical content in this quantitative trading platform must use English for international standards compliance and professional development practices.
+
+### Mandatory English Usage
+
+#### ✅ MUST BE IN ENGLISH:
+- **Code**: All variable names, function names, class names, module names
+- **Comments**: All code comments, docstrings, and inline documentation
+- **Configuration Files**: All config keys, values, and documentation
+- **Log Messages**: All logging output, error messages, and debug information
+- **Documentation**: README files, technical specifications, API docs
+- **Git Commits**: All commit messages, PR titles, and descriptions
+- **Issue Tracking**: Issue titles, descriptions, and comments
+- **Database Schema**: Table names, column names, constraints, indexes
+
+#### ✅ ACCEPTABLE NON-ENGLISH:
+- **Templates**: User-facing templates for multi-language support (e.g., `templates/` directory)
+- **Test Data**: Sample data strings for testing internationalization features
+- **Build Artifacts**: Generated content that may contain localized data
+- **User Interface Strings**: UI text meant for localization (must be in separate i18n files)
+
+### Implementation Guidelines
+
+#### Code Examples
+
+```python
+# ✅ CORRECT: English code
+def calculate_dcf_valuation(company_ticker, growth_rate, discount_rate):
+    """Calculate DCF valuation for a given company.
+    
+    Args:
+        company_ticker: Stock ticker symbol (e.g., 'AAPL')
+        growth_rate: Annual growth rate as decimal (e.g., 0.05 for 5%)
+        discount_rate: Discount rate as decimal (e.g., 0.10 for 10%)
+    
+    Returns:
+        Calculated DCF value as float
+    """
+    logger.info(f"Starting DCF calculation for {company_ticker}")
+    # Implementation here
+    logger.info("DCF calculation completed successfully")
+    return dcf_value
+
+# ❌ INCORRECT: Non-English code
+def 计算DCF估值(公司代码, 增长率, 折现率):  # Don't do this
+    """计算给定公司的DCF估值"""  # Don't do this
+    logger.info(f"开始计算 {公司代码} 的DCF")  # Don't do this
+```
+
+#### Configuration Examples
+
+```yaml
+# ✅ CORRECT: English configuration
+database_config:
+  host: "localhost"
+  port: 5432
+  database_name: "quantitative_trading"
+  connection_timeout: 30
+  retry_attempts: 3
+  
+# ❌ INCORRECT: Non-English configuration  
+数据库配置:  # Don't do this
+  主机: "localhost"  # Don't do this
+```
+
+#### Git Commit Examples
+
+```bash
+# ✅ CORRECT: English commit messages
+git commit -m "Implement SEC filing data integration for M7 companies
+
+Added semantic embedding generation and vector search capabilities
+for enhanced Graph RAG query processing with regulatory backing.
+
+Fixes #123"
+
+# ❌ INCORRECT: Non-English commit messages
+git commit -m "实现SEC文件数据集成"  # Don't do this
+```
+
+### Enforcement Mechanisms
+
+1. **Pre-commit Hooks**: Automated language validation for code and comments
+2. **CI/CD Validation**: GitHub Actions check for English-only policy compliance
+3. **Agent Enforcement**: Sub-agents will validate and suggest English alternatives
+4. **Code Review Requirements**: All PRs must pass English-only validation
+
+### Exception Handling
+
+**For Legacy Code**: When working with existing non-English content:
+1. **Refactor Gradually**: Update to English during normal maintenance
+2. **Document Exceptions**: Clearly mark temporary non-English content with TODO comments
+3. **Migration Plan**: Create issues to track English conversion progress
+
+**For International Features**: When building localization features:
+1. **Separate Concerns**: Keep internationalized content in dedicated i18n directories
+2. **English Default**: Always provide English as the primary/fallback language
+3. **Template Isolation**: Non-English content only in `templates/` or `i18n/` directories
 
 ## Quick Setup
 
