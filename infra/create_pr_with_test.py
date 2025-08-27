@@ -65,13 +65,13 @@ def get_current_branch():
     """Get current git branch, handling worktree scenarios"""
     # First check if we have a worktree branch from environment or command line
     import os
-    
+
     # Check for P3_WORKTREE_BRANCH environment variable (set by p3 wrapper)
     worktree_branch = os.environ.get("P3_WORKTREE_BRANCH")
     if worktree_branch:
         print(f"📍 Using worktree branch from environment: {worktree_branch}")
         return worktree_branch
-    
+
     # Check if we're executing from a worktree directory
     cwd = os.getcwd()
     if "/.git/worktree/" in cwd:
@@ -84,7 +84,7 @@ def get_current_branch():
                 branch_name = branch_name.replace("-", "/", 1)
             print(f"📍 Detected worktree branch from path: {branch_name}")
             return branch_name
-    
+
     # Fallback to standard git command
     result = run_command("git branch --show-current", "Getting current branch")
     return result.stdout.strip()
