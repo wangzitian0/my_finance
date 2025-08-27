@@ -6,13 +6,79 @@
 
 This file provides guidance to Claude Code when working with this SEC Filing-Enhanced Graph RAG-powered DCF valuation system.
 
+## 🤖 MANDATORY SUB-AGENT ORCHESTRATION
+
+**CRITICAL**: ALL non-trivial tasks MUST be routed through the agent-coordinator for optimal sub-agent utilization.
+
+### Sub-Agent First Policy
+
+1. **Primary Routing**: Use `agent-coordinator` as the central task distributor for ALL complex operations
+2. **Intelligent Delegation**: Let agent-coordinator automatically select the most appropriate specialized agent
+3. **Direct Tool Usage**: Only use direct tools for trivial single-step operations (file reads, simple edits)
+
+### Task Routing Guidelines
+
+```bash
+# ✅ CORRECT: Route through agent-coordinator
+Use Task tool with subagent_type="agent-coordinator" for:
+- Any git operations (create PR, branch management, releases)
+- Development workflows (testing, quality checks, deployment)
+- Data processing (ETL, SEC integration, analysis)
+- Infrastructure operations (environment setup, monitoring)
+- Web development (frontend, backend, API design)
+- Architecture decisions (RAG system, database design)
+
+# ❌ AVOID: Direct tool usage for complex operations
+Don't use Bash/Edit/Write directly for multi-step processes
+```
+
+### Agent Selection Priority
+
+1. **agent-coordinator**: For ALL task orchestration and complex workflows
+2. **Specialized agents**: Automatically selected by coordinator based on task context
+3. **Direct tools**: Only for immediate single-step operations
+
+### Decision Matrix: When to Use Sub-Agents
+
+| Task Type | Use Agent-Coordinator | Direct Tools |
+|-----------|---------------------|--------------|
+| PR Creation | ✅ Always | ❌ Never |
+| Git Operations | ✅ Always | ❌ Never |
+| Code Quality/Testing | ✅ Always | ❌ Never |
+| Data Processing | ✅ Always | ❌ Never |
+| Infrastructure Setup | ✅ Always | ❌ Never |
+| Web Development | ✅ Always | ❌ Never |
+| Architecture Design | ✅ Always | ❌ Never |
+| Single File Read | ❌ Rarely | ✅ Preferred |
+| Simple File Edit | ❌ Rarely | ✅ Preferred |
+| Quick Status Check | ❌ Rarely | ✅ Preferred |
+
+### Sub-Agent Routing Examples
+
+```typescript
+// ✅ CORRECT: Multi-step workflow via agent-coordinator
+"I need to create a PR for the current changes with full validation"
+→ Task(agent-coordinator) → Delegates to git-ops-agent + dev-quality-agent
+
+// ✅ CORRECT: Complex development task
+"Implement new DCF calculation feature with testing"
+→ Task(agent-coordinator) → Orchestrates multiple agents in sequence
+
+// ❌ INCORRECT: Direct tool for complex operation  
+Bash("p3 create-pr ...") // Should route through agent-coordinator
+
+// ✅ CORRECT: Simple file operation
+Read("path/to/file.py") // Direct tool is appropriate
+```
+
 ## 🚨 CRITICAL REQUIREMENTS
 
 1. **ALWAYS read README.md first** - Contains complete project architecture
-2. **Use `common/config/` for all configurations** - Centralized SSOT system
-3. **Follow p3 command workflow** - Never use direct python scripts
-4. **Test before PR creation** - `p3 e2e` is mandatory
-5. **Update parent READMEs** - When modifying directory functionality
+2. **ALWAYS route through agent-coordinator** - For optimal sub-agent utilization
+3. **Use `common/config/` for all configurations** - Centralized SSOT system
+4. **Follow p3 command workflow** - Never use direct python scripts
+5. **Test before PR creation** - `p3 e2e` is mandatory
+6. **Update parent READMEs** - When modifying directory functionality
 
 ## Quick Setup
 
@@ -57,7 +123,47 @@ chmod +x ~/bin/p3 && echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
 2. Always verify M7 tests pass locally
 3. Monitor CI status for failures
 
+## Sub-Agent Workflow Examples
+
+### Git Operations (via agent-coordinator → git-ops-agent)
+
+```bash
+# Instead of direct p3 create-pr, use:
+Task tool with subagent_type="agent-coordinator":
+"Route PR creation task: Create PR for current branch with M7 testing validation"
+
+# Instead of direct git commands, use:
+Task tool with subagent_type="agent-coordinator":
+"Route git operations: Branch cleanup, merge conflict resolution, release management"
+```
+
+### Development Quality (via agent-coordinator → dev-quality-agent)
+
+```bash
+# Instead of direct p3 e2e/lint/format, use:
+Task tool with subagent_type="agent-coordinator":
+"Route development quality task: Run full testing suite with code quality validation"
+```
+
+### Data Processing (via agent-coordinator → data-engineer-agent)
+
+```bash
+# Instead of direct data operations, use:
+Task tool with subagent_type="agent-coordinator":
+"Route data processing task: SEC filing integration with M7 companies analysis"
+```
+
+### Infrastructure Management (via agent-coordinator → infra-ops-agent)
+
+```bash
+# Instead of direct environment commands, use:
+Task tool with subagent_type="agent-coordinator":
+"Route infrastructure task: Environment setup and service monitoring"
+```
+
 ## Git Workflow
+
+**IMPORTANT**: All git operations should be routed through agent-coordinator for optimal sub-agent utilization.
 
 **See README.md for complete workflow.** Claude requirements:
 
