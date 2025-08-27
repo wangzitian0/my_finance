@@ -9,13 +9,13 @@ for robust sub-agent execution with graceful error handling.
 import asyncio
 import logging
 import random
+import signal
+import sys
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Tuple
 from threading import Event, Lock, Thread
-import signal
-import sys
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 
 class CircuitState(Enum):
@@ -92,7 +92,9 @@ class SubAgentCircuitBreaker:
                 if time.time() - self.last_failure_time >= self.config.recovery_timeout:
                     self.state = CircuitState.HALF_OPEN
                     self.success_count = 0
-                    self.logger.info(f"Circuit breaker transitioning to HALF_OPEN for {self.agent_type}")
+                    self.logger.info(
+                        f"Circuit breaker transitioning to HALF_OPEN for {self.agent_type}"
+                    )
                     return True
                 return False
             elif self.state == CircuitState.HALF_OPEN:
@@ -126,7 +128,10 @@ class SubAgentCircuitBreaker:
             if self.state in [CircuitState.CLOSED, CircuitState.HALF_OPEN]:
                 if self.failure_count >= self.config.failure_threshold:
                     self.state = CircuitState.OPEN
-                    self.logger.warning(f"Circuit breaker OPENED for {self.agent_type} after {self.failure_count} failures")
+                    self.logger.warning(
+                        f"Circuit breaker OPENED for {self.agent_type} "
+                        f"after {self.failure_count} failures"
+                    )
     
     def get_success_rate(self) -> float:
         """Calculate recent success rate for pattern analysis."""
@@ -181,7 +186,9 @@ class AdaptiveRetryManager:
                 duration = time.time() - start_time
                 
                 self._record_execution(True, duration)
-                self.logger.debug(f"Successful execution on attempt {attempt + 1} for {self.agent_type}")
+                self.logger.debug(
+                    f"Successful execution on attempt {attempt + 1} for {self.agent_type}"
+                )
                 return result
                 
             except Exception as e:
@@ -191,10 +198,15 @@ class AdaptiveRetryManager:
                 
                 if attempt < self.config.max_attempts - 1:
                     delay = self._calculate_retry_delay(attempt)
-                    self.logger.warning(f"Attempt {attempt + 1} failed for {self.agent_type}, retrying in {delay:.2f}s: {str(e)}")
+                    self.logger.warning(
+                        f"Attempt {attempt + 1} failed for {self.agent_type}, "
+                        f"retrying in {delay:.2f}s: {str(e)}"
+                    )
                     await asyncio.sleep(delay)
                 else:
-                    self.logger.error(f"All {self.config.max_attempts} attempts failed for {self.agent_type}")
+                    self.logger.error(
+                        f"All {self.config.max_attempts} attempts failed for {self.agent_type}"
+                    )
         
         raise last_exception
     

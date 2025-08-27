@@ -10,15 +10,15 @@ import asyncio
 import logging
 import time
 import uuid
-from typing import Any, Callable, Dict, List, Optional, Tuple
 from dataclasses import dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from .error_recovery import (
-    get_circuit_breaker,
-    get_retry_manager, 
-    get_task_manager,
+    CircuitState,
     TaskState,
-    CircuitState
+    get_circuit_breaker,
+    get_retry_manager,
+    get_task_manager,
 )
 
 
@@ -38,7 +38,13 @@ class AgentExecutionResult:
 class AgentExecutionError(Exception):
     """Custom exception for agent execution failures."""
     
-    def __init__(self, message: str, agent_type: str, task_id: str, original_error: Optional[Exception] = None):
+    def __init__(
+        self,
+        message: str,
+        agent_type: str,
+        task_id: str,
+        original_error: Optional[Exception] = None,
+    ):
         super().__init__(message)
         self.agent_type = agent_type
         self.task_id = task_id
@@ -99,7 +105,9 @@ class ResilientAgentExecutor:
         try:
             # Check circuit breaker
             if not self.circuit_breaker.can_execute():
-                self.logger.warning(f"Circuit breaker OPEN for {self.agent_type}, execution blocked")
+                self.logger.warning(
+                    f"Circuit breaker OPEN for {self.agent_type}, execution blocked"
+                )
                 return AgentExecutionResult(
                     success=False,
                     error=AgentExecutionError(
@@ -260,7 +268,9 @@ class AgentCoordinatorIntegration:
         
         # If primary fails and fallback available, try fallback
         if not result.success and fallback_agent and fallback_agent != agent_type:
-            self.logger.warning(f"Primary agent {agent_type} failed, trying fallback {fallback_agent}")
+            self.logger.warning(
+                f"Primary agent {agent_type} failed, trying fallback {fallback_agent}"
+            )
             
             fallback_executor = self.get_executor(fallback_agent)
             fallback_result = await fallback_executor.execute(
@@ -268,7 +278,9 @@ class AgentCoordinatorIntegration:
             )
             
             if fallback_result.success:
-                self.logger.info(f"Fallback agent {fallback_agent} succeeded where {agent_type} failed")
+                self.logger.info(
+                    f"Fallback agent {fallback_agent} succeeded where {agent_type} failed"
+                )
                 return fallback_result
         
         return result
@@ -337,7 +349,9 @@ class AgentCoordinatorIntegration:
             "agent_executors": executor_health,
             "healthy_agents": healthy_agents,
             "total_agents": total_agents,
-            "system_health_percentage": (healthy_agents / total_agents * 100) if total_agents > 0 else 100,
+            "system_health_percentage": (
+                (healthy_agents / total_agents * 100) if total_agents > 0 else 100
+            ),
             "timestamp": time.time()
         }
 

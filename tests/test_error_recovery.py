@@ -7,35 +7,35 @@ with focus on preventing cascading failures and handling 80%+ transient failures
 """
 
 import asyncio
-import pytest
-import time
-from unittest.mock import AsyncMock, Mock, patch
-from typing import Any
-
-import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+import sys
+import time
+from typing import Any
+from unittest.mock import AsyncMock, Mock, patch
 
-from common.error_recovery import (
-    SubAgentCircuitBreaker,
-    AdaptiveRetryManager,
-    TaskInterruptionManager,
-    CircuitState,
-    TaskState,
-    CircuitBreakerConfig,
-    RetryConfig,
-    get_circuit_breaker,
-    get_retry_manager,
-    get_task_manager,
-    get_system_status
-)
+import pytest
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from common.agent_executor import (
-    ResilientAgentExecutor,
     AgentCoordinatorIntegration,
-    AgentExecutionResult,
     AgentExecutionError,
-    resilient_agent_call
+    AgentExecutionResult,
+    ResilientAgentExecutor,
+    resilient_agent_call,
+)
+from common.error_recovery import (
+    AdaptiveRetryManager,
+    CircuitBreakerConfig,
+    CircuitState,
+    RetryConfig,
+    SubAgentCircuitBreaker,
+    TaskInterruptionManager,
+    TaskState,
+    get_circuit_breaker,
+    get_retry_manager,
+    get_system_status,
+    get_task_manager,
 )
 
 
@@ -85,7 +85,9 @@ class TestSubAgentCircuitBreaker:
     
     def test_half_open_to_closed_on_success(self):
         """Test half-open transitions to closed after successful executions."""
-        config = CircuitBreakerConfig(failure_threshold=2, recovery_timeout=0.1, success_threshold=2)
+        config = CircuitBreakerConfig(
+            failure_threshold=2, recovery_timeout=0.1, success_threshold=2
+        )
         cb = SubAgentCircuitBreaker("test-agent", config)
         
         # Trip circuit and wait for half-open
@@ -616,7 +618,9 @@ class TestPerformanceAndStress:
         results = await asyncio.gather(*tasks, return_exceptions=True)
         
         # Most should succeed (allowing for some circuit breaker trips)
-        successful_results = [r for r in results if isinstance(r, AgentExecutionResult) and r.success]
+        successful_results = [
+            r for r in results if isinstance(r, AgentExecutionResult) and r.success
+        ]
         success_rate = len(successful_results) / len(results)
         
         # Should maintain high success rate even under load
