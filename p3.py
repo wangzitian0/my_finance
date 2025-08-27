@@ -440,7 +440,7 @@ Tips:
         # Change to project directory
         # CRITICAL FIX: For worktrees, ensure we stay in the current git context
         original_cwd = os.getcwd()
-        
+
         # Only change directory if we're not already in a proper git worktree
         if "worktree" in str(Path.cwd()) and Path.cwd() == self.project_root:
             # Already in correct worktree directory - don't change
@@ -449,7 +449,7 @@ Tips:
             os.chdir(self.project_root)
 
         print(f"📍 Executing in directory: {os.getcwd()}")
-        
+
         # Execute the command
         result = subprocess.run(validated_cmd, shell=True)
         sys.exit(result.returncode)
