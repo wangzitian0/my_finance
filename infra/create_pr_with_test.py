@@ -227,128 +227,128 @@ def create_test_marker(file_count: int, scope="f2"):
 
 def generate_pr_description(current_branch, issue_number, test_info, scope="f2"):
     """Generate intelligent PR description from git commits and changes"""
-    
+
     # Get commit messages from this branch
     commits_result = run_command(
         f"git log origin/main..HEAD --pretty=format:'%s' --reverse",
         "Getting commit messages",
-        check=False
+        check=False,
     )
-    commit_messages = commits_result.stdout.strip().split('\n') if commits_result else []
-    
+    commit_messages = commits_result.stdout.strip().split("\n") if commits_result else []
+
     # Get changed files summary
     diff_stat_result = run_command(
-        "git diff origin/main...HEAD --stat",
-        "Getting change statistics",
-        check=False
+        "git diff origin/main...HEAD --stat", "Getting change statistics", check=False
     )
-    
+
     # Get file changes for categorization
     files_changed_result = run_command(
-        "git diff origin/main...HEAD --name-only",
-        "Getting changed files",
-        check=False
+        "git diff origin/main...HEAD --name-only", "Getting changed files", check=False
     )
-    changed_files = files_changed_result.stdout.strip().split('\n') if files_changed_result else []
-    
+    changed_files = files_changed_result.stdout.strip().split("\n") if files_changed_result else []
+
     # Categorize changes
     categories = {
-        'infra': [],
-        'etl': [],
-        'dcf_engine': [],
-        'graph_rag': [],
-        'common': [],
-        'scripts': [],
-        'tests': [],
-        'docs': [],
-        'config': [],
-        'other': []
+        "infra": [],
+        "etl": [],
+        "dcf_engine": [],
+        "graph_rag": [],
+        "common": [],
+        "scripts": [],
+        "tests": [],
+        "docs": [],
+        "config": [],
+        "other": [],
     }
-    
+
     for file in changed_files:
         if not file:
             continue
         file_lower = file.lower()
-        if 'infra/' in file:
-            categories['infra'].append(file)
-        elif 'etl/' in file_lower or 'ETL/' in file:
-            categories['etl'].append(file)
-        elif 'dcf_engine/' in file:
-            categories['dcf_engine'].append(file)
-        elif 'graph_rag/' in file:
-            categories['graph_rag'].append(file)
-        elif 'common/' in file:
-            categories['common'].append(file)
-        elif 'scripts/' in file or file == 'p3.py':
-            categories['scripts'].append(file)
-        elif 'test' in file_lower:
-            categories['tests'].append(file)
-        elif file.endswith('.md') or file in ['README', 'CLAUDE.md']:
-            categories['docs'].append(file)
-        elif 'config' in file_lower or file.endswith('.yml') or file.endswith('.yaml'):
-            categories['config'].append(file)
+        if "infra/" in file:
+            categories["infra"].append(file)
+        elif "etl/" in file_lower or "ETL/" in file:
+            categories["etl"].append(file)
+        elif "dcf_engine/" in file:
+            categories["dcf_engine"].append(file)
+        elif "graph_rag/" in file:
+            categories["graph_rag"].append(file)
+        elif "common/" in file:
+            categories["common"].append(file)
+        elif "scripts/" in file or file == "p3.py":
+            categories["scripts"].append(file)
+        elif "test" in file_lower:
+            categories["tests"].append(file)
+        elif file.endswith(".md") or file in ["README", "CLAUDE.md"]:
+            categories["docs"].append(file)
+        elif "config" in file_lower or file.endswith(".yml") or file.endswith(".yaml"):
+            categories["config"].append(file)
         else:
-            categories['other'].append(file)
-    
+            categories["other"].append(file)
+
     # Extract first non-automated commit message as summary
     summary = ""
     for msg in commit_messages:
         if msg and "Format code with black" not in msg and "Generated with Claude" not in msg:
             summary = msg
             break
-    
+
     if not summary:
         summary = f"Updates for issue #{issue_number}"
-    
+
     # Build key changes list from categorized files
     key_changes = []
-    
-    if categories['infra']:
-        key_changes.append(f"**Infrastructure**: Modified {len(categories['infra'])} files ({', '.join([Path(f).name for f in categories['infra'][:3]])}{'...' if len(categories['infra']) > 3 else ''})")
-    
-    if categories['scripts']:
-        key_changes.append(f"**Scripts/CLI**: Updated {len(categories['scripts'])} files ({', '.join([Path(f).name for f in categories['scripts'][:3]])}{'...' if len(categories['scripts']) > 3 else ''})")
-    
-    if categories['etl']:
+
+    if categories["infra"]:
+        key_changes.append(
+            f"**Infrastructure**: Modified {len(categories['infra'])} files ({', '.join([Path(f).name for f in categories['infra'][:3]])}{'...' if len(categories['infra']) > 3 else ''})"
+        )
+
+    if categories["scripts"]:
+        key_changes.append(
+            f"**Scripts/CLI**: Updated {len(categories['scripts'])} files ({', '.join([Path(f).name for f in categories['scripts'][:3]])}{'...' if len(categories['scripts']) > 3 else ''})"
+        )
+
+    if categories["etl"]:
         key_changes.append(f"**ETL Pipeline**: Changed {len(categories['etl'])} files")
-    
-    if categories['dcf_engine']:
+
+    if categories["dcf_engine"]:
         key_changes.append(f"**DCF Engine**: Modified {len(categories['dcf_engine'])} files")
-    
-    if categories['common']:
+
+    if categories["common"]:
         key_changes.append(f"**Common/Shared**: Updated {len(categories['common'])} files")
-    
-    if categories['tests']:
+
+    if categories["tests"]:
         key_changes.append(f"**Tests**: Modified {len(categories['tests'])} test files")
-    
-    if categories['docs']:
+
+    if categories["docs"]:
         key_changes.append(f"**Documentation**: Updated {len(categories['docs'])} files")
-    
-    if categories['config']:
+
+    if categories["config"]:
         key_changes.append(f"**Configuration**: Changed {len(categories['config'])} config files")
-    
+
     # If no categorized changes, show generic summary
     if not key_changes:
         key_changes = ["Code improvements and optimizations", "Bug fixes and enhancements"]
-    
+
     # Format key changes as bullet points
-    key_changes_text = '\n'.join([f"- {change}" for change in key_changes])
-    
+    key_changes_text = "\n".join([f"- {change}" for change in key_changes])
+
     # Build test results section based on scope
     test_name = {
         "f2": "F2 Fast-Build Test",
-        "m7": "M7 Complete Test", 
+        "m7": "M7 Complete Test",
         "n100": "N100 Validation Test",
-        "v3k": "V3K Production Test"
+        "v3k": "V3K Production Test",
     }.get(scope, f"{scope.upper()} Test")
-    
+
     test_description = {
         "f2": "Fast 2 companies with DeepSeek 1.5b",
         "m7": "Magnificent 7 companies",
         "n100": "NASDAQ 100 companies",
-        "v3k": "VTI 3500+ companies"
+        "v3k": "VTI 3500+ companies",
     }.get(scope, f"{scope.upper()} dataset")
-    
+
     if test_info:
         test_results = f"""✅ **{test_name}**: PASSED ({test_description})
 - {test_info.get('data_files', 0)} data files validated
@@ -356,7 +356,7 @@ def generate_pr_description(current_branch, issue_number, test_info, scope="f2")
 - Build tracking verified"""
     else:
         test_results = f"⚠️ **Testing**: Skipped (not recommended)"
-    
+
     # Generate the complete PR body
     body = f"""## Summary
 
@@ -381,7 +381,7 @@ def generate_pr_description(current_branch, issue_number, test_info, scope="f2")
 Fixes #{issue_number}
 
 🤖 Generated with [Claude Code](https://claude.ai/code)"""
-    
+
     return body
 
 
