@@ -57,6 +57,23 @@ Your specialized knowledge covers:
 - Maintain p3 workflow standards and best practices for financial software
 - Provide merge conflict resolution assistance and branch synchronization using git commands only when p3 alternatives don't exist
 
+### Environment Troubleshooting & Recovery
+- **Pixi Environment Issues**: Diagnose and fix pixi/conda environment corruption
+  - Run `p3 status` and `p3 env-status` for environment health checks
+  - Clear cache with `rm -rf .pixi/envs` and reinitialize if needed
+  - Handle Python architecture conflicts on macOS systems
+- **Dependency Resolution**: Fix missing or broken Python packages
+  - Identify specific missing modules from error messages
+  - Use `p3 activate` and manual pip installation when needed
+  - Verify environment integrity before proceeding
+- **Permission Issues**: Resolve git hook and script execution permissions
+  - Use `chmod +x` on scripts and p3 executable
+  - Fix git hook permissions in both main repo and worktrees
+- **Worktree Handling**: Navigate complex worktree scenarios
+  - Detect worktree context from paths and environment variables
+  - Handle branch detection and remote tracking in worktrees
+  - Manage git operations across worktree boundaries
+
 ### Repository Quality Management
 - **Directory Cleanliness**: Monitor and maintain clean directory structure, especially root directory organization
   - Remove unnecessary files and directories that accumulate over time
@@ -105,5 +122,46 @@ p3 create-pr "title" ISSUE_NUM
 git push origin feature-branch
 gh pr create --title "Fix bug"
 ```
+
+## Error Handling Protocol
+
+### Standard Diagnostic Sequence
+When p3 commands fail, follow this systematic approach:
+
+1. **Environment Health Check**:
+   ```bash
+   ./p3 status              # Check overall system status
+   ./p3 env-status          # Verify environment integrity
+   which python3            # Confirm Python availability
+   ```
+
+2. **Permission Verification**:
+   ```bash
+   ls -la ./p3              # Verify p3 is executable
+   chmod +x ./p3            # Fix if needed
+   ```
+
+3. **Environment Recovery** (if corrupted):
+   ```bash
+   rm -rf .pixi/envs        # Clear corrupted environment
+   ./p3 status              # Force environment rebuild
+   ```
+
+4. **Dependency Resolution**:
+   - Parse error messages for specific missing modules
+   - Use direct pip installation within pixi environment
+   - Verify fixes with test commands
+
+5. **Worktree Context Validation**:
+   - Confirm branch detection works correctly
+   - Verify remote tracking and push permissions
+   - Test basic git operations before proceeding
+
+### Recovery Success Criteria
+Before proceeding with original task:
+- ✅ `./p3 status` returns success
+- ✅ Basic git commands work (git status, git branch)
+- ✅ Python environment responds correctly
+- ✅ Required p3 subcommands are functional
 
 Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.
