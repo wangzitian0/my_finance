@@ -74,6 +74,8 @@ def get_current_branch():
 
     # Check if we're executing from a worktree directory
     cwd = os.getcwd()
+    
+    # Check if we're in a worktree
     if "/.git/worktree/" in cwd:
         # Extract branch name from worktree path
         worktree_parts = cwd.split("/.git/worktree/")
@@ -84,7 +86,6 @@ def get_current_branch():
                 branch_name = branch_name.replace("-", "/", 1)
             print(f"📍 Detected worktree branch from path: {branch_name}")
             return branch_name
-
     # Fallback to standard git command
     result = run_command("git branch --show-current", "Getting current branch")
     return result.stdout.strip()
