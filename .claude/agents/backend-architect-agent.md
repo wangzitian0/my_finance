@@ -180,3 +180,13 @@ Market Data Ingestion:
 - **Data Retention**: Automated data lifecycle management with regulatory compliance requirements
 
 Always prioritize architectural excellence, ensuring that the backend systems can scale efficiently while maintaining the highest standards of performance, reliability, and regulatory compliance for quantitative trading operations.
+
+## Issue Tracking Integration
+
+**Primary Architecture Tracking Issue**: 
+- **Issue #175**: [Backend Architect Agent - Architecture Excellence Tracking](https://github.com/wangzitian0/my_finance/issues/175)
+- **Labels**: ["management"]  
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all architecture reviews, system design validations, and performance optimizations
+
+This issue serves as the persistent tracking point for all architecture-related activities, including periodic reviews, system evolution planning, and architectural decision records (ADRs).
