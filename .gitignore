@@ -91,6 +91,9 @@ build_data/stage_04_query_results/*/*
 # Latest build symlink (dynamic, should not be tracked)
 common/latest_build
 
+# Data symlink to build_data (dynamic, should not be tracked)
+data
+
 # Local development files
 .webui_secret_key
 .env.local

@@ -53,6 +53,89 @@ class P3CLI:
 
         self.commands = self._load_command_mapping()
 
+    def _sanitize_python_command(self, cmd_string: str) -> str:
+        """
+        Sanitize pixi python -c commands to prevent syntax errors.
+        
+        This addresses Issue #153: malformed pixi commands with unquoted parameters.
+        """
+        if "pixi run python -c" not in cmd_string:
+            return cmd_string
+        
+        # Extract the python code portion - handle mixed quote scenarios correctly
+        if 'pixi run python -c "' in cmd_string:
+            # Double quote style (outer quotes are double)
+            start = cmd_string.find('pixi run python -c "') + len('pixi run python -c "')
+            end = cmd_string.rfind('"')
+            python_code = cmd_string[start:end]
+        elif "pixi run python -c '" in cmd_string:
+            # Single quote style (outer quotes are single)
+            start = cmd_string.find("pixi run python -c '") + len("pixi run python -c '")
+            end = cmd_string.rfind("'")
+            python_code = cmd_string[start:end]
+        else:
+            return cmd_string
+            
+        # Check for common parameter quote issues
+        issues_found = False
+        fixed_code = python_code
+        
+        # Fix unquoted string parameters in common patterns
+        import re
+        
+        # Pattern: function_call(unquoted_string, [unquoted_list], unquoted_string)
+        patterns_to_fix = [
+            # Handle build_runtime_config with unquoted parameters
+            (r'build_runtime_config\(([^,\'"()]+),\s*\[([^,\'"()]+)\],\s*([^,\'"()]+)\)', 
+             r"build_runtime_config('\1', ['\2'], '\3')"),
+            # More general case for function parameters
+            (r'(\w+)\(([^,\'"()]+),\s*\[([^,\'"()]+)\],\s*([^,\'"()]+)\)', 
+             r"\1('\2', ['\3'], '\4')"),
+        ]
+        
+        for pattern, replacement in patterns_to_fix:
+            if re.search(pattern, fixed_code):
+                fixed_code = re.sub(pattern, replacement, fixed_code)
+                issues_found = True
+                
+        if issues_found:
+            # Reconstruct the command with fixed code
+            if '"' in cmd_string and 'pixi run python -c "' in cmd_string:
+                # Double-quoted command
+                prefix = 'pixi run python -c "'
+                suffix = '"'
+                # Escape double quotes in the fixed code
+                escaped_fixed_code = fixed_code.replace('"', '\\"')
+            else:
+                # Single-quoted command  
+                prefix = "pixi run python -c '"
+                suffix = "'"
+                # Escape single quotes in the fixed code
+                escaped_fixed_code = fixed_code.replace("'", "\\'")
+            
+            fixed_cmd = prefix + escaped_fixed_code + suffix
+            
+            print(f"⚠️  Fixed malformed pixi command (Issue #153)")
+            print(f"   Original: {cmd_string}")
+            print(f"   Fixed:    {fixed_cmd}")
+            
+            return fixed_cmd
+            
+        return cmd_string
+
+    def _validate_command_syntax(self, cmd_string: str) -> str:
+        """
+        Validate and fix command syntax before execution.
+        
+        This is the main fix for Issue #153: malformed pixi commands.
+        """
+        # Apply sanitization for Python commands
+        sanitized = self._sanitize_python_command(cmd_string)
+        
+        # Additional validation could go here
+        
+        return sanitized
+
     def _load_command_mapping(self) -> Dict[str, str]:
         """Load command mappings from configuration."""
         return {
@@ -104,6 +187,7 @@ class P3CLI:
             "test-sec-integration": "pixi run python dcf_engine/sec_integration_template.py",
             "test-sec-recall": "pixi run python dcf_engine/sec_recall_usage_example.py",
             "verify-sec-data": 'pixi run python -c \'from pathlib import Path; from collections import Counter; sec_files = list(Path("data/stage_01_extract/sec_edgar").rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
+            "test-sec-config": 'pixi run python -c "from common.orthogonal_config import orthogonal_config; config = orthogonal_config.build_runtime_config(\'f2\', [\'sec_edgar\'], \'development\'); print(\'SEC Edgar Config:\', config)"',
             # ETL and Data Commands (p3 calls pixi for Python execution)
             "etl-status": "pixi run python ETL/manage.py status",
             "run-job": "pixi run python ETL/run_job.py",
@@ -275,6 +359,7 @@ SEC Integration:
   test-sec-integration   Test SEC integration
   test-sec-recall        Test SEC recall functionality
   verify-sec-data        Verify SEC data availability
+  test-sec-config        Test SEC orthogonal configuration system
 
 Status & Validation:
   status                 Quick environment status
@@ -343,13 +428,16 @@ Tips:
                 if cmd_args:
                     cmd_string += " " + " ".join(cmd_args)
 
-        print(f"🚀 Executing: {cmd_string}")
+        # CRITICAL FIX for Issue #153: Validate and sanitize command before execution
+        validated_cmd = self._validate_command_syntax(cmd_string)
+        
+        print(f"🚀 Executing: {validated_cmd}")
 
         # Change to project directory
         os.chdir(self.project_root)
 
         # Execute the command
-        result = subprocess.run(cmd_string, shell=True)
+        result = subprocess.run(validated_cmd, shell=True)
         sys.exit(result.returncode)
 
 
