@@ -8,15 +8,10 @@ optimizing the git workflow by removing unnecessary branches.
 """
 
 import json
-import logging
 import subprocess
 import sys
 from datetime import datetime, timedelta
 from typing import Dict, List, Set
-
-# Setup logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
 
 
 class BranchCleanup:
@@ -24,15 +19,13 @@ class BranchCleanup:
     Handles cleanup of merged branches both locally and remotely.
     """
 
-    def __init__(self, dry_run: bool = False):
+    def __init__(self):
         """
         Initialize branch cleanup manager.
-
-        Args:
-            dry_run: If True, only show what would be deleted without actually deleting
         """
-        self.dry_run = dry_run
         self.protected_branches = {"main", "master", "develop", "staging", "production"}
+        self.current_branch = self.get_current_branch()
+        self.active_worktree_branches = self.get_active_worktree_branches()
 
     def get_merged_prs(self, days_back: int = 30) -> List[Dict]:
         """
@@ -79,12 +72,60 @@ class BranchCleanup:
 
             return recent_prs
 
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to get merged PRs: {e}")
+        except (subprocess.CalledProcessError, json.JSONDecodeError):
             return []
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse PR data: {e}")
-            return []
+
+    def get_current_branch(self) -> str:
+        """Get the current branch name."""
+        try:
+            result = subprocess.run(
+                ["git", "branch", "--show-current"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            return result.stdout.strip()
+        except subprocess.CalledProcessError:
+            return ""
+
+    def get_active_worktree_branches(self) -> Set[str]:
+        """Get branches that are actively checked out in worktrees."""
+        try:
+            result = subprocess.run(
+                ["git", "worktree", "list", "--porcelain"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+
+            active_branches = set()
+            for line in result.stdout.split("\n"):
+                if line.startswith("branch "):
+                    branch = line.split("branch ")[1].strip()
+                    if branch.startswith("refs/heads/"):
+                        branch = branch.replace("refs/heads/", "")
+                    active_branches.add(branch)
+
+            return active_branches
+
+        except subprocess.CalledProcessError:
+            return set()
+
+    def is_branch_protected(self, branch: str) -> bool:
+        """
+        Check if a branch should be protected from deletion.
+
+        Args:
+            branch: Branch name to check
+
+        Returns:
+            True if branch should be protected
+        """
+        return (
+            branch in self.protected_branches
+            or branch == self.current_branch
+            or branch in self.active_worktree_branches
+        )
 
     def get_local_branches(self) -> List[str]:
         """Get list of local branches."""
@@ -97,10 +138,9 @@ class BranchCleanup:
             )
 
             branches = [branch.strip() for branch in result.stdout.split("\n") if branch.strip()]
-            return [b for b in branches if b not in self.protected_branches]
+            return [b for b in branches if not self.is_branch_protected(b)]
 
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to get local branches: {e}")
+        except subprocess.CalledProcessError:
             return []
 
     def get_remote_branches(self) -> List[str]:
@@ -118,13 +158,12 @@ class BranchCleanup:
                 branch = branch.strip()
                 if branch and branch.startswith("origin/") and branch != "origin/HEAD":
                     branch_name = branch.replace("origin/", "")
-                    if branch_name not in self.protected_branches:
+                    if not self.is_branch_protected(branch_name):
                         branches.append(branch_name)
 
             return branches
 
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to get remote branches: {e}")
+        except subprocess.CalledProcessError:
             return []
 
     def is_branch_merged(self, branch: str, target_branch: str = "main") -> bool:
@@ -160,245 +199,150 @@ class BranchCleanup:
     def delete_local_branch(self, branch: str, force: bool = False) -> bool:
         """
         Delete a local branch.
-
-        Args:
-            branch: Branch name to delete
-            force: Use force delete (-D) instead of safe delete (-d)
-
-        Returns:
-            True if deletion was successful
         """
-        if self.dry_run:
-            logger.info(f"[DRY RUN] Would delete local branch: {branch}")
-            return True
-
         try:
             flag = "-D" if force else "-d"
             subprocess.run(["git", "branch", flag, branch], check=True, capture_output=True)
-            logger.info(f"✅ Deleted local branch: {branch}")
+            print(f"✅ Deleted local: {branch}")
             return True
-
-        except subprocess.CalledProcessError as e:
-            logger.warning(f"⚠️  Failed to delete local branch {branch}: {e}")
+        except subprocess.CalledProcessError:
             return False
 
     def delete_remote_branch(self, branch: str) -> bool:
         """
         Delete a remote branch.
-
-        Args:
-            branch: Branch name to delete
-
-        Returns:
-            True if deletion was successful
         """
-        if self.dry_run:
-            logger.info(f"[DRY RUN] Would delete remote branch: origin/{branch}")
-            return True
-
         try:
             subprocess.run(
-                ["git", "push", "origin", "--delete", branch],
-                check=True,
-                capture_output=True,
+                ["git", "push", "origin", "--delete", branch], check=True, capture_output=True
             )
-            logger.info(f"✅ Deleted remote branch: origin/{branch}")
+            print(f"✅ Deleted remote: origin/{branch}")
             return True
-
-        except subprocess.CalledProcessError as e:
-            logger.warning(f"⚠️  Failed to delete remote branch {branch}: {e}")
+        except subprocess.CalledProcessError:
             return False
 
-    def cleanup_merged_branches(
-        self, days_back: int = 30, force_local: bool = False
-    ) -> Dict[str, int]:
+    def get_inactive_branches(self, days_back: int = 14) -> Set[str]:
         """
-        Cleanup branches that have been merged.
-
-        Args:
-            days_back: Number of days to look back for merged PRs
-            force_local: Use force delete for local branches
-
-        Returns:
-            Dictionary with cleanup statistics
+        Get branches that haven't been active for specified days and have no open PRs.
         """
-        stats = {"remote_deleted": 0, "local_deleted": 0, "skipped": 0, "errors": 0}
+        cutoff_date = datetime.now() - timedelta(days=days_back)
+        inactive_branches = set()
 
-        logger.info("🧹 Starting branch cleanup process...")
-
-        # Get merged PRs
-        merged_prs = self.get_merged_prs(days_back)
-        merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
-
-        logger.info(
-            f"Found {len(merged_branches)} branches from merged PRs in last {days_back} days"
-        )
-
-        # Get current branches
-        local_branches = self.get_local_branches()
-        remote_branches = self.get_remote_branches()
-
-        # Cleanup remote branches first
-        logger.info("🔍 Checking remote branches for cleanup...")
-        for branch in remote_branches:
-            if branch in merged_branches:
-                if self.delete_remote_branch(branch):
-                    stats["remote_deleted"] += 1
-                else:
-                    stats["errors"] += 1
-
-        # Cleanup local branches
-        logger.info("🔍 Checking local branches for cleanup...")
-        for branch in local_branches:
-            if branch in merged_branches or self.is_branch_merged(branch):
-                if self.delete_local_branch(branch, force_local):
-                    stats["local_deleted"] += 1
-                else:
-                    stats["errors"] += 1
-            else:
-                logger.debug(f"Skipping branch (not merged): {branch}")
-                stats["skipped"] += 1
-
-        # Prune remote references
-        logger.info("🧽 Pruning remote references...")
         try:
-            if not self.dry_run:
-                subprocess.run(
-                    ["git", "remote", "prune", "origin"],
-                    check=True,
-                    capture_output=True,
-                )
-                logger.info("✅ Remote references pruned")
-            else:
-                logger.info("[DRY RUN] Would prune remote references")
-        except subprocess.CalledProcessError as e:
-            logger.warning(f"⚠️  Failed to prune remote references: {e}")
-            stats["errors"] += 1
+            # Get all local branches with last commit date
+            result = subprocess.run(
+                [
+                    "git",
+                    "for-each-ref",
+                    "--format=%(refname:short) %(committerdate:iso8601)",
+                    "refs/heads/",
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
 
-        return stats
+            for line in result.stdout.strip().split("\n"):
+                if not line:
+                    continue
+                parts = line.rsplit(" ", 1)
+                if len(parts) != 2:
+                    continue
 
-    def interactive_cleanup(self) -> None:
+                branch, date_str = parts
+                if self.is_branch_protected(branch):
+                    continue
+
+                try:
+                    commit_date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+                    if commit_date.replace(tzinfo=None) < cutoff_date:
+                        # Check if branch has open PR
+                        pr_result = subprocess.run(
+                            [
+                                "gh",
+                                "pr",
+                                "list",
+                                "--head",
+                                branch,
+                                "--state",
+                                "open",
+                                "--json",
+                                "number",
+                            ],
+                            capture_output=True,
+                            text=True,
+                        )
+
+                        if pr_result.returncode == 0:
+                            prs = json.loads(pr_result.stdout)
+                            if not prs:  # No open PRs
+                                inactive_branches.add(branch)
+                except ValueError:
+                    continue
+
+        except subprocess.CalledProcessError:
+            pass
+
+        return inactive_branches
+
+    def cleanup_branches(self) -> None:
         """
-        Run interactive branch cleanup with user confirmation.
+        Simple cleanup: delete merged branches and inactive branches.
         """
-        logger.info("🔍 Analyzing branches for cleanup...")
+        print("🧹 Starting branch cleanup...")
 
-        # Get merged PRs and branches
+        deleted_count = 0
+
+        # 1. Get merged branches
         merged_prs = self.get_merged_prs(30)
         merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
 
-        local_branches = self.get_local_branches()
+        # 2. Get inactive branches (14 days, no PR)
+        inactive_branches = self.get_inactive_branches(14)
+
+        branches_to_delete = merged_branches | inactive_branches
+
+        print(f"📊 Found {len(merged_branches)} merged branches")
+        print(f"📊 Found {len(inactive_branches)} inactive branches (14+ days, no PR)")
+        print(f"📊 Total to delete: {len(branches_to_delete)}")
+
+        if not branches_to_delete:
+            print("✨ No branches need cleanup!")
+            return
+
+        # 3. Delete remote branches
         remote_branches = self.get_remote_branches()
+        for branch in remote_branches:
+            if branch in branches_to_delete:
+                if self.delete_remote_branch(branch):
+                    deleted_count += 1
 
-        # Show what would be cleaned up
-        print("\n" + "=" * 60)
-        print("BRANCH CLEANUP ANALYSIS")
-        print("=" * 60)
+        # 4. Delete local branches
+        local_branches = self.get_local_branches()
+        for branch in local_branches:
+            if branch in branches_to_delete or self.is_branch_merged(branch):
+                if self.delete_local_branch(branch, force=True):
+                    deleted_count += 1
 
-        print(f"\nMerged PRs (last 30 days): {len(merged_prs)}")
-        for pr in merged_prs[:5]:  # Show first 5
-            print(f"  • PR #{pr['number']}: {pr['title'][:50]}...")
-        if len(merged_prs) > 5:
-            print(f"  ... and {len(merged_prs) - 5} more")
+        # 5. Prune remote references
+        try:
+            subprocess.run(["git", "remote", "prune", "origin"], check=True, capture_output=True)
+            print("✅ Remote references pruned")
+        except subprocess.CalledProcessError:
+            pass
 
-        # Remote branches to delete
-        remote_to_delete = [b for b in remote_branches if b in merged_branches]
-        print(f"\nRemote branches to delete: {len(remote_to_delete)}")
-        for branch in remote_to_delete:
-            print(f"  • origin/{branch}")
-
-        # Local branches to delete
-        local_to_delete = [
-            b for b in local_branches if b in merged_branches or self.is_branch_merged(b)
-        ]
-        print(f"\nLocal branches to delete: {len(local_to_delete)}")
-        for branch in local_to_delete:
-            print(f"  • {branch}")
-
-        # Confirm deletion
-        if not remote_to_delete and not local_to_delete:
-            print("\n✨ No branches need cleanup!")
-            return
-
-        print(f"\nTotal branches to delete: {len(remote_to_delete) + len(local_to_delete)}")
-
-        confirm = input("\n❓ Proceed with cleanup? (y/N): ").strip().lower()
-        if confirm != "y":
-            print("Cleanup cancelled.")
-            return
-
-        # Perform cleanup
-        self.dry_run = False
-        stats = self.cleanup_merged_branches()
-
-        print(f"\n✅ Cleanup completed!")
-        print(f"  Remote branches deleted: {stats['remote_deleted']}")
-        print(f"  Local branches deleted: {stats['local_deleted']}")
-        print(f"  Errors: {stats['errors']}")
+        print(f"✅ Cleanup completed! Deleted {deleted_count} branches")
 
 
 def main():
-    """Main function."""
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Cleanup merged git branches")
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show what would be deleted without actually deleting",
-    )
-    parser.add_argument(
-        "--days",
-        type=int,
-        default=30,
-        help="Number of days to look back for merged PRs (default: 30)",
-    )
-    parser.add_argument(
-        "--force-local",
-        action="store_true",
-        help="Force delete local branches (use -D instead of -d)",
-    )
-    parser.add_argument(
-        "--interactive",
-        action="store_true",
-        help="Run in interactive mode with confirmation",
-    )
-    parser.add_argument(
-        "--auto", action="store_true", help="Run automatically without confirmation"
-    )
-
-    args = parser.parse_args()
-
+    """Main function - simple branch cleanup."""
     try:
-        cleanup = BranchCleanup(dry_run=args.dry_run)
-
-        if args.interactive:
-            cleanup.interactive_cleanup()
-        elif args.auto or args.dry_run:
-            stats = cleanup.cleanup_merged_branches(
-                days_back=args.days, force_local=args.force_local
-            )
-
-            print("\n" + "=" * 50)
-            print("BRANCH CLEANUP RESULTS")
-            print("=" * 50)
-            print(f"Remote branches deleted: {stats['remote_deleted']}")
-            print(f"Local branches deleted: {stats['local_deleted']}")
-            print(f"Branches skipped: {stats['skipped']}")
-            print(f"Errors encountered: {stats['errors']}")
-
-            if args.dry_run:
-                print("\n💡 This was a dry run. Use --auto to actually delete branches.")
-        else:
-            print("Use --interactive for guided cleanup or --auto for automatic cleanup")
-            print("Add --dry-run to see what would be deleted without actually deleting")
-
+        cleanup = BranchCleanup()
+        cleanup.cleanup_branches()
     except KeyboardInterrupt:
-        print("\n\n👋 Cleanup cancelled by user.")
-        sys.exit(1)
+        print("\n\n👋 Cleanup cancelled.")
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        sys.exit(1)
+        print(f"❌ Error: {e}")
 
 
 if __name__ == "__main__":
