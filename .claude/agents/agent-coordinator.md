@@ -386,21 +386,93 @@ For EVERY task, generate this learning report and post to the associated GitHub 
 - **Knowledge Transfer**: [lessons applicable to other agents]
 ```
 
-### System-Wide Optimization Trigger
+### Automatic System-Wide Optimization (Every 10 PRs)
 
-When receiving `SYSTEM_OPTIMIZATION_TRIGGER`, perform comprehensive analysis:
+**CRITICAL**: You now automatically detect and execute system optimization when PR numbers are divisible by 10.
 
-1. **Data Aggregation**: Collect learning data from last 10-20 GitHub issue comments
-2. **Pattern Analysis**: Identify successful and problematic patterns across all agents
-3. **Performance Trends**: Analyze agent selection accuracy and execution efficiency
-4. **Optimization Generation**: Create specific recommendations for:
-   - Agent capability enhancements
-   - Label-agent mapping refinements  
-   - Workflow pattern updates
-   - CLAUDE.md configuration improvements
-   - New sub-agent specializations needed
+#### Auto-Trigger Detection Logic
 
-5. **Implementation Plan**: Provide step-by-step optimization implementation strategy
+When creating any PR, automatically check:
+```python
+def check_optimization_trigger(pr_number):
+    if pr_number % 10 == 0:
+        return True  # Trigger automatic optimization
+    return False
+```
+
+#### Automatic Optimization Protocol
+
+When receiving `AUTO_OPTIMIZATION_TRIGGER` for PR #10, #20, #30, etc.:
+
+**Phase 1: Data Aggregation** (Automatic)
+1. **Issue Comment Analysis**: Scan last 10 GitHub issues for learning report data
+2. **Agent Performance Metrics**: Collect success/failure patterns from learning reports
+3. **Task Complexity Trends**: Analyze prediction accuracy vs actual complexity
+4. **Label-Agent Mapping Accuracy**: Evaluate delegation decision success rates
+
+**Phase 2: Pattern Recognition** (Automatic)
+1. **Successful Workflows**: Identify most effective multi-agent sequences
+2. **Bottleneck Detection**: Find recurring performance issues or delays
+3. **Agent Utilization**: Analyze workload distribution and specialization effectiveness
+4. **Emerging Needs**: Detect patterns suggesting new agent specializations needed
+
+**Phase 3: Optimization Generation** (Automatic)
+1. **Agent Capability Updates**: Modify agent expertise based on performance patterns
+2. **Label-Agent Mapping Refinement**: Adjust primary/secondary agent assignments
+3. **Workflow Pattern Optimization**: Create new efficient multi-agent sequences
+4. **CLAUDE.md Configuration Updates**: Improve system configuration and guidelines
+5. **New Agent Proposals**: Suggest new specialized agents if needed
+
+**Phase 4: Implementation** (Automatic)
+1. **Update Agent Files**: Modify `.claude/agents/*.md` files with optimizations
+2. **Update CLAUDE.md**: Implement configuration improvements automatically
+3. **Validate Changes**: Test optimization improvements with current task
+4. **Document Results**: Create comprehensive optimization report
+
+**Phase 5: Milestone Documentation** (Automatic)
+Post optimization results as a comment on the milestone PR (#10, #20, etc.):
+
+```markdown
+## 🔄 AUTOMATIC SYSTEM OPTIMIZATION - PR #${PR_NUMBER}
+
+### Optimization Analysis Summary
+- **PRs Analyzed**: #${PR_NUMBER-9} through #${PR_NUMBER}
+- **Learning Reports Processed**: ${COUNT}
+- **Pattern Recognition Results**: ${PATTERNS_FOUND}
+- **Optimization Confidence**: ${CONFIDENCE_SCORE}/10
+
+### Implemented Optimizations
+#### 1. Agent Capability Enhancements
+- ${AGENT_NAME}: ${ENHANCEMENT_DESCRIPTION}
+- ${AGENT_NAME}: ${ENHANCEMENT_DESCRIPTION}
+
+#### 2. Label-Agent Mapping Refinements  
+- ${LABEL} → Primary: ${NEW_PRIMARY}, Secondary: ${NEW_SECONDARY}
+- Mapping Accuracy Improvement: ${ACCURACY_DELTA}%
+
+#### 3. New Workflow Patterns Discovered
+- ${PATTERN_NAME}: ${DESCRIPTION}
+- Efficiency Gain: ${PERFORMANCE_IMPROVEMENT}%
+
+#### 4. CLAUDE.md Configuration Updates
+- ${CONFIGURATION_CHANGE_1}
+- ${CONFIGURATION_CHANGE_2}
+
+### Performance Impact Predictions
+- **Expected Task Completion Speed**: +${SPEED_IMPROVEMENT}%
+- **Agent Selection Accuracy**: +${ACCURACY_IMPROVEMENT}%  
+- **Resource Utilization**: +${EFFICIENCY_IMPROVEMENT}%
+
+### Next Optimization Milestone
+- **Next Auto-Optimization**: PR #${PR_NUMBER + 10}
+- **Projected Improvement Areas**: ${FUTURE_FOCUS_AREAS}
+```
+
+#### Emergency Manual Override
+If urgent optimization is needed before the next 10-PR milestone:
+```bash
+Task(agent-coordinator, "EMERGENCY_OPTIMIZATION_TRIGGER: Critical system issues require immediate optimization regardless of PR count")
+```
 
 ### Advanced Learning Capabilities
 

@@ -147,21 +147,39 @@ Read("path/to/file.py") // Direct tool is appropriate
 - **Risk Factors**: [potential issues to watch for]
 ```
 
-### Periodic System Optimization (Every 10-20 PRs)
+### Automatic System Optimization (Every 10 PRs)
 
-**Trigger Mechanism**: Use this command to initiate system-wide optimization:
+**CRITICAL**: The system now automatically triggers optimization when PR numbers are divisible by 10.
 
-```bash
-# Manual optimization trigger
-Task(agent-coordinator, "SYSTEM_OPTIMIZATION_TRIGGER: Analyze last 10-20 PRs and optimize entire sub-agent ecosystem based on accumulated learning data from issue comments")
+**Automatic Trigger Logic**:
+```typescript
+// Automatic optimization detection
+if (PR_NUMBER % 10 === 0) {
+  // Automatically trigger system optimization
+  Task(agent-coordinator, "AUTO_OPTIMIZATION_TRIGGER: PR #${PR_NUMBER} reached. Analyze last 10 PRs and optimize entire sub-agent ecosystem based on accumulated learning data from issue comments.")
+}
 ```
 
-**Optimization Scope**:
-1. **Label-Agent Mapping Refinement**: Adjust based on success patterns
-2. **Agent Role Evolution**: Modify agent capabilities based on usage patterns  
+**Trigger Examples**:
+- PR #10 → First system optimization
+- PR #20 → Second optimization cycle  
+- PR #30 → Third optimization cycle
+- And so on...
+
+**Optimization Execution Pattern**:
+1. **Detection Phase**: Detect when PR number % 10 === 0
+2. **Analysis Phase**: Collect learning data from last 10 GitHub issue comments
+3. **Optimization Phase**: Generate system-wide improvements
+4. **Implementation Phase**: Update sub-agents and CLAUDE.md automatically
+5. **Documentation Phase**: Document optimization results in the milestone PR
+
+**Optimization Scope** (Executed Automatically):
+1. **Label-Agent Mapping Refinement**: Adjust based on success patterns from last 10 PRs
+2. **Agent Role Evolution**: Modify agent capabilities based on usage patterns
 3. **Workflow Pattern Updates**: Optimize common multi-agent sequences
-4. **Performance Metrics**: Update KPIs and success criteria
+4. **Performance Metrics**: Update KPIs and success criteria  
 5. **CLAUDE.md Configuration**: System-wide process improvements
+6. **New Agent Specializations**: Create new agents if patterns show need
 
 ## 🚨 CRITICAL REQUIREMENTS
 
@@ -253,9 +271,39 @@ Task tool with subagent_type="agent-coordinator":
 "Route infrastructure task: Environment setup and service monitoring"
 ```
 
-## Git Workflow
+## Enhanced Git Workflow with Auto-Optimization
 
-**IMPORTANT**: All git operations should be routed through agent-coordinator for optimal sub-agent utilization.
+**CRITICAL**: All git operations now include automatic optimization detection and execution every 10 PRs.
+
+#### Mandatory PR Creation Pattern
+
+```typescript
+// Every PR creation must follow this pattern
+User: "Create PR for [task]"
+↓
+Step 1: Task(agent-coordinator, "Analyze and delegate PR creation with auto-optimization check")
+↓
+Step 2: Agent-coordinator checks: if (PR_NUMBER % 10 === 0) → Trigger AUTO_OPTIMIZATION_TRIGGER
+↓  
+Step 3: If optimization triggered → Execute full system optimization before completing PR
+↓
+Step 4: Complete PR creation with learning report posted to issue comments
+```
+
+#### Auto-Optimization Integration Workflow
+
+**For Regular PRs** (PR# % 10 ≠ 0):
+1. Standard task execution via agent-coordinator
+2. Generate and post learning report to issue comments  
+3. Complete PR creation normally
+
+**For Milestone PRs** (PR# % 10 === 0, e.g., #10, #20, #30):
+1. **Pre-Optimization**: Complete the original task first
+2. **Auto-Trigger Detection**: Detect milestone PR number  
+3. **System Optimization**: Execute comprehensive analysis of last 10 PRs
+4. **Implementation**: Update agents and CLAUDE.md automatically
+5. **Documentation**: Post optimization results to milestone PR
+6. **Completion**: Finalize milestone PR with both task results + optimization report
 
 **See README.md for complete workflow.** Claude requirements:
 
