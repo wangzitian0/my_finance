@@ -86,20 +86,20 @@ echo -e "${YELLOW}❌ This repository requires the use of automated PR workflow$
 echo -e "${YELLOW}❌ Direct git push commands are not permitted${NC}"
 echo
 echo -e "${BLUE}🔧 REQUIRED WORKFLOW:${NC}"
-echo -e "${GREEN}   1. p3 e2e f2                          # Run F2 fast tests${NC}"
-echo -e "${GREEN}   2. p3 create-pr \\"Title\\" ISSUE_NUM      # Create PR with validation${NC}"
+echo -e "${GREEN}   1. git rebase main                     # Rebase latest main${NC}"
+echo -e "${GREEN}   2. p3 create-pr \\"Title\\" ISSUE_NUM      # Auto: F2 test + markers + push + PR${NC}"
 echo
 echo -e "${BLUE}💡 WHY THIS RESTRICTION EXISTS:${NC}"
 echo -e "   • Ensures all code passes automated testing before merge"
-echo -e "   • Maintains commit message standards with test validation"
+echo -e "   • Maintains commit message standards with test markers"
 echo -e "   • Prevents untested code from reaching the main branch"
 echo -e "   • Enforces proper issue tracking and PR documentation"
 echo
 echo -e "${YELLOW}⚡ QUICK SOLUTION:${NC}"
 echo -e "${GREEN}   # Cancel this push and use the proper workflow:${NC}"
 echo -e "${GREEN}   git reset --soft HEAD~1                # Undo last commit (keep changes)${NC}"
-echo -e "${GREEN}   p3 e2e f2                              # Run fast tests${NC}"
-echo -e "${GREEN}   p3 create-pr \\"Brief description\\" ISSUE_NUM # Create PR properly${NC}"
+echo -e "${GREEN}   git rebase main                        # Rebase latest main${NC}"
+echo -e "${GREEN}   p3 create-pr \\"Brief description\\" ISSUE_NUM # Auto: test + markers + push + PR${NC}"
 echo
 
 # Double confirmation bypass (for emergency use only)
