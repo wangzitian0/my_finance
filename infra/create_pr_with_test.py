@@ -507,8 +507,8 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         # Add test validation to commit message based on scope
         test_type = "F2-TESTED" if test_info["scope"] == "F2" else f"{test_info['scope']}-TESTED"
         test_description = {
-            "F2": "F2 fast-build testing with DeepSeek 1.5b",
-            "M7": "M7 end-to-end testing",
+            "F2": "F2 fast-build testing",
+            "M7": "M7 end-to-end testing", 
             "N100": "N100 validation testing",
             "V3K": "V3K production testing",
         }.get(test_info["scope"], f"{test_info['scope']} testing")
