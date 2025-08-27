@@ -8,13 +8,27 @@ This file provides guidance to Claude Code when working with this SEC Filing-Enh
 
 ## 🤖 MANDATORY SUB-AGENT ORCHESTRATION
 
-**CRITICAL**: ALL non-trivial tasks MUST be routed through the agent-coordinator for optimal sub-agent utilization.
+**CRITICAL**: ALL tasks (except trivial file operations) MUST start with agent-coordinator for analysis and delegation.
 
-### Sub-Agent First Policy
+### Universal Entry Point Policy
 
-1. **Primary Routing**: Use `agent-coordinator` as the central task distributor for ALL complex operations
-2. **Intelligent Delegation**: Let agent-coordinator automatically select the most appropriate specialized agent
-3. **Direct Tool Usage**: Only use direct tools for trivial single-step operations (file reads, simple edits)
+1. **ALWAYS START WITH AGENT-COORDINATOR**: Every user request must begin with Task(agent-coordinator)
+2. **Analysis First**: Agent-coordinator analyzes the task and determines optimal sub-agent delegation
+3. **Learning Integration**: Each task contributes to the continuous learning and optimization system
+4. **Issue-Based Tracking**: All tasks link to GitHub issues for experience accumulation and pattern analysis
+
+### Mandatory Workflow Pattern
+
+```typescript
+// ✅ MANDATORY PATTERN: Start every task with agent-coordinator
+User Request: "Any development, git, data, or infrastructure task"
+↓
+Step 1: Task(agent-coordinator, "Analyze and delegate: [user request]")
+↓  
+Step 2: Agent-coordinator analyzes task complexity, issue labels, and delegates to appropriate agents
+↓
+Step 3: Specialized agents execute with full context and learning feedback
+```
 
 ### Task Routing Guidelines
 
@@ -70,6 +84,84 @@ Bash("p3 create-pr ...") // Should route through agent-coordinator
 // ✅ CORRECT: Simple file operation
 Read("path/to/file.py") // Direct tool is appropriate
 ```
+
+## 🏷️ ISSUE LABEL-AGENT MAPPING SYSTEM
+
+### Label-Based Agent Selection
+
+| Issue Label | Primary Agent | Secondary Agents | Priority Level |
+|-------------|---------------|------------------|----------------|
+| `git-ops` | git-ops-agent | dev-quality-agent | P0-Critical |
+| `infrastructure` | infra-ops-agent | monitoring-agent | P0-Critical |
+| `data-processing` | data-engineer-agent | monitoring-agent, database-admin-agent | P1-High |
+| `web-frontend` | web-frontend-agent | api-designer-agent, performance-engineer-agent | P1-High |
+| `web-backend` | web-backend-agent | database-admin-agent, security-engineer-agent | P1-High |
+| `security` | security-engineer-agent | compliance-risk-agent | P0-Critical |
+| `performance` | performance-engineer-agent | monitoring-agent, database-admin-agent | P1-High |
+| `dcf-engine` | quant-research-agent | data-engineer-agent, compliance-risk-agent | P1-High |
+| `graph-rag` | backend-architect-agent | data-engineer-agent, database-admin-agent | P1-High |
+| `testing` | dev-quality-agent | git-ops-agent | P1-High |
+| `compliance` | compliance-risk-agent | quant-research-agent | P0-Critical |
+| `api-design` | api-designer-agent | web-backend-agent, security-engineer-agent | P2-Medium |
+| `database` | database-admin-agent | performance-engineer-agent, security-engineer-agent | P1-High |
+| `monitoring` | monitoring-agent | infra-ops-agent, performance-engineer-agent | P2-Medium |
+| `architecture` | backend-architect-agent | performance-engineer-agent, security-engineer-agent | P1-High |
+
+## 🧠 CONTINUOUS LEARNING SYSTEM
+
+### Learning Workflow (Every Task)
+
+1. **Pre-Task Analysis**: Agent-coordinator analyzes issue labels and task complexity
+2. **Execution Tracking**: Primary and secondary agents document decisions and blockers
+3. **Post-Task Reflection**: Generate lessons learned and optimization suggestions
+4. **Issue Comments**: Post learning insights to the linked GitHub issue as comments
+
+### PR Learning Integration
+
+**MANDATORY**: Every PR must include learning feedback in the associated issue:
+
+```markdown
+## 🧠 Task Learning Report
+
+### Agent Performance Analysis
+- **Primary Agent Used**: [agent-name]
+- **Secondary Agents**: [list]  
+- **Task Complexity**: [Simple/Medium/Complex/Critical]
+- **Execution Time**: [duration]
+- **Success Metrics**: [specific measurements]
+
+### Lessons Learned
+- **What Worked Well**: [specific successes]
+- **Optimization Opportunities**: [areas for improvement]
+- **Agent Delegation Accuracy**: [was the right agent chosen?]
+- **Workflow Efficiency**: [bottlenecks, delays, or quick wins]
+
+### Proposed Optimizations
+- **Sub-Agent Improvements**: [specific agent enhancements needed]
+- **CLAUDE.md Updates**: [configuration or process changes]
+- **Label-Agent Mapping**: [mapping accuracy and suggested adjustments]
+
+### Next Task Predictions
+- **Similar Tasks**: [expected related work]
+- **Resource Requirements**: [computational, time, or expertise needs]
+- **Risk Factors**: [potential issues to watch for]
+```
+
+### Periodic System Optimization (Every 10-20 PRs)
+
+**Trigger Mechanism**: Use this command to initiate system-wide optimization:
+
+```bash
+# Manual optimization trigger
+Task(agent-coordinator, "SYSTEM_OPTIMIZATION_TRIGGER: Analyze last 10-20 PRs and optimize entire sub-agent ecosystem based on accumulated learning data from issue comments")
+```
+
+**Optimization Scope**:
+1. **Label-Agent Mapping Refinement**: Adjust based on success patterns
+2. **Agent Role Evolution**: Modify agent capabilities based on usage patterns  
+3. **Workflow Pattern Updates**: Optimize common multi-agent sequences
+4. **Performance Metrics**: Update KPIs and success criteria
+5. **CLAUDE.md Configuration**: System-wide process improvements
 
 ## 🚨 CRITICAL REQUIREMENTS
 
