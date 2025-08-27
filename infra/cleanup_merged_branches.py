@@ -97,7 +97,7 @@ class BranchCleanup:
                 text=True,
                 check=True,
             )
-            
+
             active_branches = set()
             for line in result.stdout.split("\n"):
                 if line.startswith("branch "):
@@ -105,19 +105,19 @@ class BranchCleanup:
                     if branch.startswith("refs/heads/"):
                         branch = branch.replace("refs/heads/", "")
                     active_branches.add(branch)
-            
+
             return active_branches
-            
+
         except subprocess.CalledProcessError:
             return set()
 
     def is_branch_protected(self, branch: str) -> bool:
         """
         Check if a branch should be protected from deletion.
-        
+
         Args:
             branch: Branch name to check
-            
+
         Returns:
             True if branch should be protected
         """
@@ -213,7 +213,9 @@ class BranchCleanup:
         Delete a remote branch.
         """
         try:
-            subprocess.run(["git", "push", "origin", "--delete", branch], check=True, capture_output=True)
+            subprocess.run(
+                ["git", "push", "origin", "--delete", branch], check=True, capture_output=True
+            )
             print(f"✅ Deleted remote: origin/{branch}")
             return True
         except subprocess.CalledProcessError:
@@ -225,44 +227,62 @@ class BranchCleanup:
         """
         cutoff_date = datetime.now() - timedelta(days=days_back)
         inactive_branches = set()
-        
+
         try:
             # Get all local branches with last commit date
-            result = subprocess.run([
-                "git", "for-each-ref", 
-                "--format=%(refname:short) %(committerdate:iso8601)",
-                "refs/heads/"
-            ], capture_output=True, text=True, check=True)
-            
-            for line in result.stdout.strip().split('\n'):
+            result = subprocess.run(
+                [
+                    "git",
+                    "for-each-ref",
+                    "--format=%(refname:short) %(committerdate:iso8601)",
+                    "refs/heads/",
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+
+            for line in result.stdout.strip().split("\n"):
                 if not line:
                     continue
-                parts = line.rsplit(' ', 1)
+                parts = line.rsplit(" ", 1)
                 if len(parts) != 2:
                     continue
-                    
+
                 branch, date_str = parts
                 if self.is_branch_protected(branch):
                     continue
-                    
+
                 try:
-                    commit_date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+                    commit_date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
                     if commit_date.replace(tzinfo=None) < cutoff_date:
                         # Check if branch has open PR
-                        pr_result = subprocess.run([
-                            "gh", "pr", "list", "--head", branch, "--state", "open", "--json", "number"
-                        ], capture_output=True, text=True)
-                        
+                        pr_result = subprocess.run(
+                            [
+                                "gh",
+                                "pr",
+                                "list",
+                                "--head",
+                                branch,
+                                "--state",
+                                "open",
+                                "--json",
+                                "number",
+                            ],
+                            capture_output=True,
+                            text=True,
+                        )
+
                         if pr_result.returncode == 0:
                             prs = json.loads(pr_result.stdout)
                             if not prs:  # No open PRs
                                 inactive_branches.add(branch)
                 except ValueError:
                     continue
-                    
+
         except subprocess.CalledProcessError:
             pass
-            
+
         return inactive_branches
 
     def cleanup_branches(self) -> None:
@@ -270,49 +290,48 @@ class BranchCleanup:
         Simple cleanup: delete merged branches and inactive branches.
         """
         print("🧹 Starting branch cleanup...")
-        
+
         deleted_count = 0
-        
+
         # 1. Get merged branches
         merged_prs = self.get_merged_prs(30)
         merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
-        
+
         # 2. Get inactive branches (14 days, no PR)
         inactive_branches = self.get_inactive_branches(14)
-        
+
         branches_to_delete = merged_branches | inactive_branches
-        
+
         print(f"📊 Found {len(merged_branches)} merged branches")
         print(f"📊 Found {len(inactive_branches)} inactive branches (14+ days, no PR)")
         print(f"📊 Total to delete: {len(branches_to_delete)}")
-        
+
         if not branches_to_delete:
             print("✨ No branches need cleanup!")
             return
-            
+
         # 3. Delete remote branches
         remote_branches = self.get_remote_branches()
         for branch in remote_branches:
             if branch in branches_to_delete:
                 if self.delete_remote_branch(branch):
                     deleted_count += 1
-        
-        # 4. Delete local branches  
+
+        # 4. Delete local branches
         local_branches = self.get_local_branches()
         for branch in local_branches:
             if branch in branches_to_delete or self.is_branch_merged(branch):
                 if self.delete_local_branch(branch, force=True):
                     deleted_count += 1
-        
+
         # 5. Prune remote references
         try:
             subprocess.run(["git", "remote", "prune", "origin"], check=True, capture_output=True)
             print("✅ Remote references pruned")
         except subprocess.CalledProcessError:
             pass
-            
-        print(f"✅ Cleanup completed! Deleted {deleted_count} branches")
 
+        print(f"✅ Cleanup completed! Deleted {deleted_count} branches")
 
 
 def main():
