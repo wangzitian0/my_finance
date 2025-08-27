@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 # Import pandas for timestamp handling if available
 try:
     import pandas as pd
+
     PANDAS_AVAILABLE = True
 except ImportError:
     PANDAS_AVAILABLE = False
@@ -56,30 +57,26 @@ def sanitize_data(obj, logger):
                     try:
                         # Convert pandas Timestamp to ISO format string
                         new_key = k.isoformat()
-                        logger.debug(
-                            f"Converted pandas Timestamp key {k} to ISO format: {new_key}"
-                        )
+                        logger.debug(f"Converted pandas Timestamp key {k} to ISO format: {new_key}")
                         new_dict[new_key] = sanitize_data(v, logger)
                         continue
                     except Exception as e:
                         logger.warning(
                             f"Failed to convert pandas Timestamp key {k} to ISO format: {e}. Using string representation."
                         )
-                
+
                 # Special handling for datetime objects
                 elif isinstance(k, datetime):
                     try:
                         new_key = k.isoformat()
-                        logger.debug(
-                            f"Converted datetime key {k} to ISO format: {new_key}"
-                        )
+                        logger.debug(f"Converted datetime key {k} to ISO format: {new_key}")
                         new_dict[new_key] = sanitize_data(v, logger)
                         continue
                     except Exception as e:
                         logger.warning(
                             f"Failed to convert datetime key {k} to ISO format: {e}. Using string representation."
                         )
-                
+
                 # For other unsupported key types, convert to string but preserve the value
                 logger.info(
                     f"Key {k} (type {type(k)}) is not a native JSON key type; converting to string while preserving value"
