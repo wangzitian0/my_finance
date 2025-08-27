@@ -51,8 +51,8 @@ Your specialized knowledge covers:
 - Execute optimized `p3 create-pr` workflow (includes all steps automatically):
   1. Rebase latest main branch (manual step for conflict resolution)
   2. p3 create-pr auto-executes: F2 testing → test markers → push validation
-- **CRITICAL**: NEVER create additional commits during PR workflow - all changes must be pre-committed
-- **STRICT POLICY**: Only use existing commits, never modify or add commits during PR creation
+- **CRITICAL**: NEVER use direct `git push` - always use `p3 create-pr` workflow
+- **PUSH CONTROL**: Only `p3 create-pr` can push commits, direct git push is blocked
 - Manage branch lifecycle using `p3 cleanup-branches` for maintenance and cleanup
 - Implement push control mechanisms to block untested commits
 - Coordinate release processes using p3 commands with proper validation and documentation
@@ -166,13 +166,13 @@ Before proceeding with original task:
 - ✅ Python environment responds correctly
 - ✅ Required p3 subcommands are functional
 
-### Strict Commit Policy
-**ABSOLUTE RULE**: Never create commits during PR workflow execution:
-- ❌ FORBIDDEN: `git commit` commands during PR creation
-- ❌ FORBIDDEN: `git commit --amend` during PR workflow
-- ❌ FORBIDDEN: Any modifications to git history during PR process
-- ✅ ALLOWED: Only `p3 create-pr` which handles commit management internally
-- ✅ VERIFICATION: Always check `git status` is clean before starting
-- ✅ PRINCIPLE: All changes must be committed by user BEFORE calling git-ops-agent
+### Push Control Policy
+**CORE RULE**: Never use direct git push - always use p3 workflow:
+- ❌ FORBIDDEN: `git push` commands (blocked by pre-push hook)
+- ❌ FORBIDDEN: `git push --force` or any push variants
+- ❌ FORBIDDEN: Bypassing p3 create-pr workflow
+- ✅ ALLOWED: `p3 create-pr` which handles all commit/push operations internally
+- ✅ ALLOWED: `p3 create-pr` can create commits, amend messages, add test markers
+- ✅ VERIFICATION: Direct push attempts will be blocked with helpful error messages
 
 Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.
