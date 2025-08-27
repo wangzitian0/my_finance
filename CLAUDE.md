@@ -334,6 +334,8 @@ chmod +x ~/bin/p3 && echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
 2. Always verify M7 tests pass locally
 3. Monitor CI status for failures
 
+**Command Quality**: The p3 CLI automatically validates and sanitizes commands before execution to prevent syntax errors (Issue #153 protection).
+
 ## Sub-Agent Workflow Examples
 
 ### Git Operations (via agent-coordinator → git-ops-agent)
@@ -419,6 +421,7 @@ Step 4: Complete PR creation with learning report posted to issue comments
 - **"Cannot create PR from main"**: Check worktree context with `git branch --show-current`
 - **"Direct push blocked"**: Ensure `P3_CREATE_PR_PUSH` environment variable set
 - **Testing failures**: Fix issues, don't skip validation - run `p3 e2e f2`
+- **Malformed pixi commands**: Automatic sanitization fixes unquoted parameters (Issue #153 resolved)
 
 ### Pre-PR Checklist
 
@@ -478,6 +481,8 @@ p3 create-pr "Brief description" ISSUE_NUMBER
 - **Scopes**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
 - **Key commands**: `env-status`, `e2e`, `create-pr`, `cleanup-branches`
 
+**Quality Assurance**: p3.py includes automatic command sanitization for malformed pixi commands (fixed Issue #153). String parameters like 'f2', ['sec_edgar'], 'development' are automatically quoted when syntax errors are detected.
+
 ### Testing
 - **Development**: `p3 e2e` (~1-2 min) - Quick validation
 - **PR Required**: `p3 e2e m7` (~5-10 min) - Full M7 validation
@@ -490,6 +495,12 @@ p3 create-pr "Brief description" ISSUE_NUMBER
 2. Start from latest main (`git checkout main && git pull`)
 3. Test before coding (`p3 e2e`)
 4. Check README consistency after directory changes
+
+**AI-Generated Command Guidelines**:
+- The p3 CLI automatically sanitizes malformed commands with unquoted parameters
+- String parameters will be auto-quoted: `f2` → `'f2'`, `[sec_edgar]` → `['sec_edgar']`
+- Watch for sanitization messages: "⚠️ Fixed malformed pixi command (Issue #153)"
+- Trust the automatic fixes - they prevent common syntax errors in pixi commands
 
 **Session Sequence**:
 ```bash
