@@ -24,16 +24,16 @@ Features:
 Issue #184: Moved to core/ as part of library restructuring
 """
 
+import hashlib
+import logging
 import os
 import subprocess
 import threading
 import time
-import hashlib
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Tuple
-import logging
+from typing import Dict, List, Optional, Tuple, Union
 
 try:
     import yaml
@@ -97,9 +97,9 @@ class DirectoryManager:
                 self.logger.warning("PyYAML not available, using default configuration")
                 self.config = self._default_config()
                 return
-                
+
             if config_path.exists():
-                with open(config_path, 'r', encoding='utf-8') as f:
+                with open(config_path, "r", encoding="utf-8") as f:
                     self.config = yaml.safe_load(f)
                     if not isinstance(self.config, dict):
                         raise ValueError("Configuration must be a dictionary")
@@ -111,7 +111,7 @@ class DirectoryManager:
             # Catch all exceptions to ensure graceful fallback
             self.logger.error(f"Error loading config: {e}, falling back to defaults")
             self.config = self._default_config()
-        
+
         # Clear cache when config reloads
         with self._cache_lock:
             self._path_cache.clear()
@@ -122,12 +122,12 @@ class DirectoryManager:
         for key in required_keys:
             if key not in self.config:
                 raise ValueError(f"Missing required configuration key: {key}")
-        
+
         # Validate storage configuration
         storage_config = self.config["storage"]
         if "backend" not in storage_config or "root_path" not in storage_config:
             raise ValueError("Storage configuration must have 'backend' and 'root_path'")
-        
+
         # Validate backend type
         backend_value = storage_config["backend"]
         valid_backends = [backend.value for backend in StorageBackend]
@@ -199,11 +199,11 @@ class DirectoryManager:
         # Input validation
         if not isinstance(layer, DataLayer):
             raise TypeError("layer must be a DataLayer enum")
-        
+
         # Sanitize partition if provided
         if partition is not None:
             partition = self._sanitize_path_component(str(partition))
-        
+
         # Check cache first
         cache_key = (layer, partition)
         with self._cache_lock:
@@ -211,19 +211,19 @@ class DirectoryManager:
                 self._cache_hits += 1
                 return self._path_cache[cache_key]
             self._cache_misses += 1
-        
+
         # Calculate path
         base_path = self.get_data_root() / layer.value
-        
+
         if partition:
             result_path = base_path / partition
         else:
             result_path = base_path
-        
+
         # Cache the result
         with self._cache_lock:
             self._path_cache[cache_key] = result_path
-        
+
         return result_path
 
     def get_subdir_path(
@@ -398,73 +398,78 @@ class DirectoryManager:
 
     def _sanitize_path_component(self, component: str) -> str:
         """Sanitize a path component for security and validity
-        
+
         Args:
             component: Path component to sanitize
-            
+
         Returns:
             Sanitized path component
-            
+
         Raises:
             ValueError: If component contains dangerous sequences
         """
         if not component or not isinstance(component, str):
             raise ValueError("Path component must be a non-empty string")
-        
+
         # Remove leading/trailing whitespace
         component = component.strip()
-        
+
         # Check for dangerous patterns
-        dangerous_patterns = ['..', '~', '$', '`', '|', ';', '&', '>', '<', '\x00']
+        dangerous_patterns = ["..", "~", "$", "`", "|", ";", "&", ">", "<", "\x00"]
         for pattern in dangerous_patterns:
             if pattern in component:
                 raise ValueError(f"Dangerous pattern '{pattern}' found in path component")
-        
+
         # Don't allow absolute paths
         if os.path.isabs(component):
             raise ValueError("Absolute paths not allowed in path components")
-        
+
         # Replace problematic characters (if needed)
         import re
-        if not re.match(r'^[\w\-./]+$', component):
+
+        if not re.match(r"^[\w\-./]+$", component):
             self.logger.warning(f"Path component contains special characters: {component}")
-        
+
         return component
 
     def _validate_path_within_root(self, path: Path) -> Path:
         """Validate that a path stays within the project root
-        
+
         Args:
             path: Path to validate
-            
+
         Returns:
             Validated path
-            
+
         Raises:
             ValueError: If path traverses outside project root
         """
         try:
             resolved_path = path.resolve()
             root_resolved = self.root_path.resolve()
-            
+
             # Check if the resolved path is within project root
             resolved_path.relative_to(root_resolved)
             return path
-            
-        except ValueError as e:
-            raise ValueError(f"Path traversal detected: {path} resolves outside project root") from e
 
-    def _secure_subprocess_run(self, args: List[str], timeout: int = 30, **kwargs) -> subprocess.CompletedProcess:
+        except ValueError as e:
+            raise ValueError(
+                f"Path traversal detected: {path} resolves outside project root"
+            ) from e
+
+    def _secure_subprocess_run(
+        self, args: List[str], timeout: int = 30, **kwargs
+    ) -> subprocess.CompletedProcess:
         """Execute subprocess with security validation and timeout
-        
+
         Args:
             args: Command arguments
             timeout: Maximum execution time in seconds
             **kwargs: Additional subprocess arguments
-            
+
         Returns:
             CompletedProcess result
-            
+
         Raises:
             ValueError: If arguments contain dangerous commands
             TimeoutError: If operation times out
@@ -472,75 +477,77 @@ class DirectoryManager:
         """
         # Validate arguments
         validated_args = self._validate_subprocess_args(args)
-        
+
         # Set secure defaults
         secure_kwargs = {
-            'timeout': min(timeout, 300),  # Max 5 minutes
-            'check': False,  # Don't raise on non-zero exit
-            'capture_output': True,
-            'text': True,
-            **kwargs
+            "timeout": min(timeout, 300),  # Max 5 minutes
+            "check": False,  # Don't raise on non-zero exit
+            "capture_output": True,
+            "text": True,
+            **kwargs,
         }
-        
+
         try:
             self.logger.debug(f"Executing subprocess: {' '.join(validated_args)}")
             result = subprocess.run(validated_args, **secure_kwargs)
             return result
         except subprocess.TimeoutExpired as e:
-            raise TimeoutError(f"Command timed out after {timeout}s: {' '.join(validated_args)}") from e
+            raise TimeoutError(
+                f"Command timed out after {timeout}s: {' '.join(validated_args)}"
+            ) from e
         except subprocess.SubprocessError as e:
             raise RuntimeError(f"Subprocess execution failed: {e}") from e
 
     def _validate_subprocess_args(self, args: List[str]) -> List[str]:
         """Validate subprocess arguments for security
-        
+
         Args:
             args: Command arguments to validate
-            
+
         Returns:
             Validated arguments
-            
+
         Raises:
             TypeError: If arguments are not properly typed
             ValueError: If dangerous commands are detected
         """
         if not isinstance(args, list):
             raise TypeError("Subprocess arguments must be a list")
-        
+
         validated_args = []
-        dangerous_commands = ['rm', 'del', 'format', 'mkfs', 'dd', 'chmod 777', 'sudo rm']
-        
+        dangerous_commands = ["rm", "del", "format", "mkfs", "dd", "chmod 777", "sudo rm"]
+
         for arg in args:
             if not isinstance(arg, (str, Path)):
                 raise TypeError(f"Invalid argument type: {type(arg)}")
-            
+
             arg_str = str(arg)
             for dangerous_cmd in dangerous_commands:
                 if dangerous_cmd in arg_str.lower():
                     raise ValueError(f"Dangerous command detected: {dangerous_cmd}")
-            
+
             validated_args.append(arg_str)
-        
+
         return validated_args
 
     def _calculate_directory_size(self, path: Path, timeout: int = 30) -> int:
         """Calculate directory size with timeout handling
-        
+
         Args:
             path: Directory path to calculate size for
             timeout: Maximum time to spend calculating in seconds
-            
+
         Returns:
             Total size in bytes
-            
+
         Raises:
             TimeoutError: If calculation times out
         """
         if not path.exists():
             return 0
-        
-        result = {'size': 0, 'error': None}
-        
+
+        result = {"size": 0, "error": None}
+
         def calculate():
             try:
                 total_size = 0
@@ -552,39 +559,39 @@ class DirectoryManager:
                         except (OSError, IOError):
                             # Skip files that can't be accessed
                             pass
-                result['size'] = total_size
+                result["size"] = total_size
             except Exception as e:
-                result['error'] = e
-        
+                result["error"] = e
+
         thread = threading.Thread(target=calculate)
         thread.daemon = True
         thread.start()
         thread.join(timeout)
-        
+
         if thread.is_alive():
             raise TimeoutError(f"Directory size calculation timed out after {timeout}s")
-        
-        if result['error']:
-            raise result['error']
-        
-        return result['size']
+
+        if result["error"]:
+            raise result["error"]
+
+        return result["size"]
 
     def get_cache_stats(self) -> Dict[str, int]:
         """Get caching performance statistics
-        
+
         Returns:
             Dictionary with cache statistics
         """
         with self._cache_lock:
             total_requests = self._cache_hits + self._cache_misses
             hit_rate = (self._cache_hits / total_requests * 100) if total_requests > 0 else 0
-            
+
             return {
-                'cache_hits': self._cache_hits,
-                'cache_misses': self._cache_misses,
-                'total_requests': total_requests,
-                'hit_rate_percent': round(hit_rate, 2),
-                'cached_items': len(self._path_cache)
+                "cache_hits": self._cache_hits,
+                "cache_misses": self._cache_misses,
+                "total_requests": total_requests,
+                "hit_rate_percent": round(hit_rate, 2),
+                "cached_items": len(self._path_cache),
             }
 
     def clear_cache(self):
