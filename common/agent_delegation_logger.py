@@ -43,9 +43,10 @@ class AgentDelegationLogger:
     def __init__(self, log_directory: Optional[Path] = None):
         """Initialize delegation logger."""
         if log_directory is None:
-            config_dir = Path(__file__).parent / "config" / "monitoring"
-            config_dir.mkdir(parents=True, exist_ok=True)
-            self.log_directory = config_dir
+            # Use centralized DirectoryManager for SSOT compliance
+            from .directory_manager import directory_manager
+
+            self.log_directory = directory_manager.get_logs_path()
         else:
             self.log_directory = Path(log_directory)
 
