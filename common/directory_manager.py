@@ -30,6 +30,7 @@ from typing import Dict, List, Optional, Union
 
 try:
     import yaml
+
     HAS_YAML = True
 except ImportError:
     HAS_YAML = False
