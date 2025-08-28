@@ -75,6 +75,5 @@ secedgar = ">=0.6.0, <0.7"
 aiohttp = ">=3.12.15, <4"
 typing-extensions = "*"
 neo4j = "*"
-pandas = "*"
 # ML dependencies moved to Docker container (infra/sentence-transformers.Dockerfile)
 # sentence-transformers, torch, scikit-learn removed to avoid numpy circular import
