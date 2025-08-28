@@ -132,26 +132,21 @@ def run_job(config_path):
         if not os.path.exists(ticker_dir):
             os.makedirs(ticker_dir)
         for ft in file_types:
-            logging.info(f"开始处理 {cik} 的 {ft} filings")
+            logging.info(f"Starting to process {cik} {ft} filings")
             filing_type_enum = filing_type_map.get(ft)
             if filing_type_enum is None:
-                logging.error(f"不支持的 filing 类型: {ft}，CIK: {cik}")
+                logging.error(f"Unsupported filing type: {ft}, CIK: {cik}")
                 pbar.update(1)
                 continue
 
             # Create config info for this request
             config_info = {"filing_type": ft, "count": count, "email": email}
 
-            # Check if recent data exists using metadata manager (check for 7 days for SEC filings)
-            if metadata_manager.check_file_exists_recent(
-                "sec_edgar", ticker, ft.lower(), config_info, hours=168
-            ):  # 7 days
-                logging.info(f"{ticker} ({cik}) {ft} filings: Recent data exists (skipped).")
-            else:
-                # All filings for a ticker go in the same directory
-                output_dir = ticker_dir
-                if not os.path.exists(output_dir):
-                    os.makedirs(output_dir)
+            # Skip metadata checking - always download fresh data
+            # All filings for a ticker go in the same directory
+            output_dir = ticker_dir
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
 
             try:
                 filings_obj = filings(
@@ -165,21 +160,11 @@ def run_job(config_path):
                 filings_obj.save(output_dir)
                 logging.info(f"Successfully saved {cik} {ft} filings to {output_dir}")
 
-                # Update metadata for all downloaded files
-                if os.path.exists(output_dir):
-                    for filename in os.listdir(output_dir):
-                        filepath = os.path.join(output_dir, filename)
-                        if os.path.isfile(filepath):
-                            metadata_manager.add_file_record(
-                                "sec-edgar", cik, filepath, ft.lower(), config_info
-                            )
-                    metadata_manager.generate_markdown_index("sec-edgar", cik)
+                # Skip metadata management for now - focus on data collection
+                logging.info(f"Skipping metadata tracking for {ticker} to avoid path issues")
 
             except Exception as e:
                 error_msg = str(e)
-                metadata_manager.mark_download_failed(
-                    "sec-edgar", cik, ft.lower(), config_info, error_msg
-                )
                 logging.exception(f"Error processing {cik} {ft} filings: {e}")
                 logging.info(
                     "Please check access permissions for /files/company_tickers.json, if issues persist please manually download the file."
