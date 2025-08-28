@@ -251,5 +251,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# Build quality reports - should not be tracked
+build_data/quality_reports/
+
 # Other
-.aider*build_data/quality_reports/
+.aider*
