@@ -28,7 +28,12 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-import yaml
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+    yaml = None
 
 
 class StorageBackend(Enum):
@@ -75,7 +80,7 @@ class DirectoryManager:
     def _load_config(self):
         """Load directory configuration from YAML file"""
         config_path = self.root_path / "common" / "config" / "directory_structure.yml"
-        if config_path.exists():
+        if config_path.exists() and HAS_YAML:
             with open(config_path) as f:
                 self.config = yaml.safe_load(f)
         else:
