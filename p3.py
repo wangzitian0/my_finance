@@ -17,7 +17,8 @@ from typing import Dict, List, Optional
 
 # Import execution monitoring
 try:
-    from common.execution_monitor import get_monitor, ExecutionResult
+    from common.execution_monitor import ExecutionResult, get_monitor
+
     MONITORING_ENABLED = True
 except ImportError:
     MONITORING_ENABLED = False
@@ -482,7 +483,7 @@ Tips:
 
             # Execute the command
             result = subprocess.run(validated_cmd, shell=True)
-            
+
             # Log execution result
             if monitor:
                 if result.returncode == 0:
@@ -490,18 +491,17 @@ Tips:
                 else:
                     error_msg = f"Command failed with exit code {result.returncode}"
                     monitor.log_execution(ExecutionResult.FAILURE, error_message=error_msg)
-            
+
             sys.exit(result.returncode)
 
         except Exception as e:
             # Log execution failure
             if monitor:
                 import traceback
+
                 stack_trace = traceback.format_exc()
                 monitor.log_execution(
-                    ExecutionResult.FAILURE,
-                    error_message=str(e),
-                    stack_trace=stack_trace
+                    ExecutionResult.FAILURE, error_message=str(e), stack_trace=stack_trace
                 )
             raise
 
