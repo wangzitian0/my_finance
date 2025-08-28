@@ -165,6 +165,36 @@ strategic_management:
 **LABELING**: Use standardized labels that map to agent specializations
 **TRACKING**: Maintain issue dependency relationships and progress visibility
 
+### Documentation and Planning Policy
+**CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
+
+#### Planning Management Rules
+```yaml
+ALWAYS_use_github_issues:
+  # Project Planning (NEVER create .md files)
+  - Architecture planning and design documents
+  - Implementation roadmaps and phase planning  
+  - Task breakdown and dependency tracking
+  - Progress reports and status updates
+  - Review findings and recommendations
+  - Optimization plans and strategies
+
+PROHIBITED_documentation_files:
+  - ARCHITECTURE_REVIEW.md
+  - IMPLEMENTATION_PLAN.md  
+  - OPTIMIZATION_ROADMAP.md
+  - PROJECT_STATUS.md
+  - Any planning or tracking .md files
+
+ALLOWED_documentation_only:
+  - README.md (project overview and setup)
+  - CLAUDE.md (global company policies)
+  - Module-specific README.md (technical documentation)
+  - API documentation (when required)
+```
+
+**ENFORCEMENT**: All planning, tracking, and architectural documentation MUST be managed through GitHub Issues with proper labels, milestones, and cross-references. Never create additional .md files for project management.
+
 ## 🛡️ OPERATIONAL RESILIENCE POLICY
 
 ### Error Management Standards

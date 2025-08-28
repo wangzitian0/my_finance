@@ -15,6 +15,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
 
+from common.core.directory_manager import directory_manager
+
 # Import SSOT directory manager
 from common.directory_manager import get_llm_config_path
 
@@ -130,7 +132,7 @@ class FinLangEmbedding:
             "device": str(self.model.device) if hasattr(self.model, "device") else "unknown",
         }
 
-        debug_file = Path("data/log") / "finlang_model_info.json"
+        debug_file = directory_manager.get_logs_path() / "finlang_model_info.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "w", encoding="utf-8") as f:
@@ -231,7 +233,7 @@ class FinLangEmbedding:
             "embedding_sample": embedding[:5],  # First 5 dimensions for debugging
         }
 
-        log_file = Path("data/log") / "embedding_log.jsonl"
+        log_file = directory_manager.get_logs_path() / "embedding_log.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(log_file, "a", encoding="utf-8") as f:
@@ -354,7 +356,7 @@ class FinLangEmbedding:
             ],
         }
 
-        debug_file = Path("data/log") / "similarity_debug.jsonl"
+        debug_file = directory_manager.get_logs_path() / "similarity_debug.jsonl"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "a", encoding="utf-8") as f:
@@ -418,7 +420,7 @@ class FinLangEmbedding:
 
         # Save test results
         if self.debug_mode:
-            test_file = Path("data/log") / "embedding_quality_test.json"
+            test_file = directory_manager.get_logs_path() / "embedding_quality_test.json"
             test_file.parent.mkdir(parents=True, exist_ok=True)
 
             with open(test_file, "w", encoding="utf-8") as f:

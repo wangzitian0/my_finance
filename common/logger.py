@@ -36,8 +36,11 @@ class StreamToLogger(object):
 def setup_logger(job_id, date_str=None):
     """
     Initialize logger based on configuration in common/common_config.yml.
-    Log write path: data/log/<job_id>/<date_str>.txt
+    Log write path: build_data/logs/<job_id>/<date_str>.txt
     """
+    # Import here to avoid circular dependency
+    from .core.directory_manager import directory_manager
+
     config = load_common_config()
     log_conf = config.get("logging", {})
     log_level = getattr(logging, log_conf.get("level", "INFO"))
@@ -49,12 +52,11 @@ def setup_logger(job_id, date_str=None):
     if date_str is None:
         date_str = datetime.now().strftime("%y%m%d-%H%M%S")
 
-    # Build log file path: data/log/<job_id>/<date_str>.txt
-    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    log_base_dir = os.path.join(root_dir, "data", "log")
-    log_dir = os.path.join(log_base_dir, job_id)
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"{date_str}.txt")
+    # Build log file path using DirectoryManager: build_data/logs/<job_id>/<date_str>.txt
+    log_base_dir = directory_manager.get_logs_path()
+    log_dir = log_base_dir / job_id
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f"{date_str}.txt"
 
     logger_name = f"{job_id}_{date_str}"
     logger = logging.getLogger(logger_name)
@@ -64,7 +66,7 @@ def setup_logger(job_id, date_str=None):
     # Disable propagation to prevent messages from outputting to root logger
     logger.propagate = False
     formatter = logging.Formatter(log_format)
-    fh = logging.FileHandler(log_file, encoding="utf-8")
+    fh = logging.FileHandler(str(log_file), encoding="utf-8")
     fh.setLevel(file_level)
     fh.setFormatter(formatter)
     logger.addHandler(fh)

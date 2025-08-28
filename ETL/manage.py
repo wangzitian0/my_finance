@@ -25,6 +25,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Import directory manager for centralized path management
+from common.core.directory_manager import directory_manager
+
 
 class FinanceManager:
     def __init__(self):
@@ -269,7 +272,8 @@ class FinanceManager:
         # Create data directories
         print("3. Creating data directories...")
         (self.data_dir / "original").mkdir(parents=True, exist_ok=True)
-        (self.data_dir / "log").mkdir(parents=True, exist_ok=True)
+        # Use centralized directory management for logs
+        directory_manager.get_logs_path().mkdir(parents=True, exist_ok=True)
         print("   ✅ Data directories created")
 
         # Validate setup

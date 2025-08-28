@@ -43,7 +43,7 @@ def main():
     print(f"Starting job with config: {os.path.basename(config_file)}")
     print(f"Executing spider: {spider_file}")
     print("Data will be saved under: data/stage_00_original/<source>/<ticker>/")
-    print("Logs will be stored under: data/log/<job_id>/<date_str>.txt")
+    print("Logs will be stored under: build_data/logs/<job_id>/<date_str>.txt")
 
     cmd = ["python3", spider_file, config_file]
     subprocess.run(cmd)

@@ -176,7 +176,7 @@ class P3CLI:
             "release-build": "pixi run python scripts/manage_build_data.py release",
             "commit-data-changes": "pixi run python infra/commit_data_changes.py",
             "build-status": "pixi run python -c 'from common.build_tracker import BuildTracker; bt=BuildTracker.get_latest_build(); print(bt.get_build_status() if bt else \"No builds found\")'",
-            "clean": 'pixi run python -c \'import shutil; from pathlib import Path; build_dir = Path("data/stage_99_build"); [shutil.rmtree(d) for d in build_dir.glob("build_*") if d.is_dir()]; print("🧹 Cleaned")\'',
+            "clean": 'pixi run python -c \'import shutil; from pathlib import Path; from common import get_data_path, DataLayer; build_dir = Path(get_data_path(DataLayer.QUERY_RESULTS)); [shutil.rmtree(d) for d in build_dir.glob("build_*") if d.is_dir()]; print("🧹 Cleaned")\'',
             # PR and Git Workflow (p3 calls pixi for Python execution)
             "create-pr": "pixi run python infra/create_pr_with_test.py {title} {issue}",
             "cleanup-branches": "pixi run python infra/cleanup_merged_branches.py",
@@ -197,12 +197,12 @@ class P3CLI:
             "status": "pixi run python infra/comprehensive_env_status.py",
             "cache-status": "pixi run python infra/show_cache_status.py",
             "verify-env": 'pixi run python -c \'import sys; print(f"Python: {sys.version}"); import torch, sklearn, sentence_transformers; print("✅ ML dependencies available"); import neomodel; print("✅ Neo4j ORM available")\'',
-            "check-integrity": 'pixi run python -c \'from pathlib import Path; dirs = ["data/stage_00_original", "data/stage_01_extract", "data/stage_99_build"]; [print(f"📁 {d}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
+            "check-integrity": 'pixi run python -c \'from pathlib import Path; from common import get_data_path, DataLayer; dirs = [get_data_path(DataLayer.RAW_DATA), get_data_path(DataLayer.DAILY_DELTA), get_data_path(DataLayer.QUERY_RESULTS)]; [print(f"📁 {Path(d).name}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
             "shutdown-all": "pixi run python infra/shutdown_all.py",
             # SEC Integration Commands (p3 calls pixi for Python execution)
             "test-sec-integration": "pixi run python dcf_engine/sec_integration_template.py",
             "test-sec-recall": "pixi run python dcf_engine/sec_recall_usage_example.py",
-            "verify-sec-data": 'pixi run python -c \'from pathlib import Path; from collections import Counter; sec_files = list(Path("data/stage_01_extract/sec_edgar").rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
+            "verify-sec-data": 'pixi run python -c \'from pathlib import Path; from collections import Counter; from common import get_source_path, DataLayer; sec_path = Path(get_source_path("sec-edgar", DataLayer.DAILY_DELTA)); sec_files = list(sec_path.rglob("*.txt")); print(f"📄 Found {len(sec_files)} total SEC documents"); ticker_counts = Counter(f.name.split("_")[0] for f in sec_files); print("📊 By ticker:"); [print(f"  - {ticker}: {count} files") for ticker, count in sorted(ticker_counts.items())]\'',
             "test-sec-config": "pixi run python -c \"from common.orthogonal_config import orthogonal_config; config = orthogonal_config.build_runtime_config('f2', ['sec_edgar'], 'development'); print('SEC Edgar Config:', config)\"",
             # ETL and Data Commands (p3 calls pixi for Python execution)
             "etl-status": "pixi run python ETL/manage.py status",
@@ -212,7 +212,7 @@ class P3CLI:
             "check-coverage": "pixi run python ETL/check_coverage.py",
             "migrate-data": "pixi run python ETL/migrate_data_structure.py",
             # Additional Build Commands (p3 calls pixi for Python execution)
-            "build-size": 'pixi run python -c \'from pathlib import Path; import subprocess; result = subprocess.run(["du", "-sh", "data/stage_99_build"], capture_output=True, text=True); print(f"📦 Build directory size: {result.stdout.strip()}")\'',
+            "build-size": 'pixi run python -c \'from pathlib import Path; import subprocess; from common import get_data_path, DataLayer; build_path = get_data_path(DataLayer.QUERY_RESULTS); result = subprocess.run(["du", "-sh", build_path], capture_output=True, text=True); print(f"📦 Build directory size: {result.stdout.strip()}")\'',
             # Ollama and LLM Commands
             "build-sec-library": "pixi run python dcf_engine/sec_document_manager.py",
             "llm-dcf-report": "pixi run python dcf_engine/llm_dcf_generator.py --ticker AAPL",

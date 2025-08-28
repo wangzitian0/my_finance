@@ -18,6 +18,9 @@ from typing import Any, Dict, List, Optional
 import requests
 import yaml
 
+# Import directory manager for centralized path management
+from common.core.directory_manager import directory_manager
+
 # Import SSOT directory manager
 from common.directory_manager import get_llm_config_path
 
@@ -194,7 +197,7 @@ class OllamaClient:
             "connection_status": "connected",
         }
 
-        debug_file = Path("data/log") / "ollama_connection.json"
+        debug_file = directory_manager.get_logs_path() / "ollama_connection.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "w", encoding="utf-8") as f:
@@ -821,7 +824,7 @@ Content: {content}
             "options": request_data["options"],
         }
 
-        log_file = Path("data/log") / "ollama_requests.jsonl"
+        log_file = directory_manager.get_logs_path() / "ollama_requests.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(log_file, "a", encoding="utf-8") as f:
@@ -844,7 +847,7 @@ Content: {content}
             "prompt_eval_count": response_data.get("prompt_eval_count", 0),
         }
 
-        log_file = Path("data/log") / "ollama_responses.jsonl"
+        log_file = directory_manager.get_logs_path() / "ollama_responses.jsonl"
         log_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(log_file, "a", encoding="utf-8") as f:
@@ -890,7 +893,7 @@ Request ID: {metadata.get('request_id', 'unknown')}
         result = self.generate_completion(prompt=test_prompt, max_tokens=50, temperature=0.1)
 
         if self.debug_mode and result["success"]:
-            test_file = Path("data/log") / "connection_test.json"
+            test_file = directory_manager.get_logs_path() / "connection_test.json"
             test_file.parent.mkdir(parents=True, exist_ok=True)
 
             with open(test_file, "w", encoding="utf-8") as f:
