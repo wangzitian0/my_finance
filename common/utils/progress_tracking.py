@@ -30,23 +30,23 @@ class ProgressTracker:
     def create_progress_bar(self, name: str, total: int, description: str = "Processing"):
         """
         Create a named progress bar.
-        
+
         Args:
             name: Unique name for the progress bar
             total: Total number of items to process
             description: Description for the progress bar
-            
+
         Returns:
             tqdm progress bar instance
         """
         if name in self.progress_bars:
             # Close existing progress bar with the same name
             self.progress_bars[name].close()
-        
+
         progress_bar = tqdm(total=total, desc=description, unit="item")
         self.progress_bars[name] = progress_bar
         self.states[name] = {"current": 0, "total": total}
-        
+
         return progress_bar
 
     def update_progress(self, name: str, increment: int = 1):

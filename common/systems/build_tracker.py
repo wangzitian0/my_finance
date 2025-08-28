@@ -33,7 +33,7 @@ except ImportError:
 class BuildTracker:
     """
     Enhanced build tracking system with focused responsibilities.
-    
+
     Responsibilities:
     - Track build execution lifecycle
     - Generate build manifests
@@ -66,7 +66,7 @@ class BuildTracker:
 
         # Initialize build manifest
         self.manifest = self._initialize_manifest()
-        
+
         # Setup quality reporter if available
         self.quality_reporter = None
         if QUALITY_REPORTING_AVAILABLE:
@@ -95,22 +95,22 @@ class BuildTracker:
                 "tracker_version": "2.0.0",
                 "python_version": f"{os.sys.version_info.major}.{os.sys.version_info.minor}",
                 "working_directory": str(Path.cwd()),
-            }
+            },
         }
 
     def start_stage(self, stage_name: str, stage_config: Dict[str, Any] = None) -> str:
         """
         Start tracking a new stage.
-        
+
         Args:
             stage_name: Name of the stage
             stage_config: Configuration for the stage
-            
+
         Returns:
             Stage ID for tracking
         """
         stage_id = f"{stage_name}_{datetime.now().strftime('%H%M%S')}"
-        
+
         stage_info = {
             "stage_id": stage_id,
             "stage_name": stage_name,
@@ -119,20 +119,21 @@ class BuildTracker:
             "config": stage_config or {},
             "outputs": {},
             "metrics": {},
-            "errors": []
+            "errors": [],
         }
-        
+
         self.manifest["stages"][stage_id] = stage_info
         self._save_manifest()
-        
+
         logger.info(f"Started stage: {stage_name} (ID: {stage_id})")
         return stage_id
 
-    def complete_stage(self, stage_id: str, outputs: Dict[str, Any] = None, 
-                      metrics: Dict[str, Any] = None) -> None:
+    def complete_stage(
+        self, stage_id: str, outputs: Dict[str, Any] = None, metrics: Dict[str, Any] = None
+    ) -> None:
         """
         Mark a stage as completed.
-        
+
         Args:
             stage_id: Stage ID returned from start_stage
             outputs: Stage outputs
@@ -143,12 +144,14 @@ class BuildTracker:
             return
 
         stage_info = self.manifest["stages"][stage_id]
-        stage_info.update({
-            "end_time": datetime.now().isoformat(),
-            "status": "completed",
-            "outputs": outputs or {},
-            "metrics": metrics or {}
-        })
+        stage_info.update(
+            {
+                "end_time": datetime.now().isoformat(),
+                "status": "completed",
+                "outputs": outputs or {},
+                "metrics": metrics or {},
+            }
+        )
 
         # Calculate duration
         start_time = datetime.fromisoformat(stage_info["start_time"])
@@ -156,12 +159,14 @@ class BuildTracker:
         stage_info["duration_seconds"] = (end_time - start_time).total_seconds()
 
         self._save_manifest()
-        logger.info(f"Completed stage: {stage_info['stage_name']} (Duration: {stage_info['duration_seconds']:.2f}s)")
+        logger.info(
+            f"Completed stage: {stage_info['stage_name']} (Duration: {stage_info['duration_seconds']:.2f}s)"
+        )
 
     def fail_stage(self, stage_id: str, error: str, error_details: Dict[str, Any] = None) -> None:
         """
         Mark a stage as failed.
-        
+
         Args:
             stage_id: Stage ID
             error: Error message
@@ -172,12 +177,14 @@ class BuildTracker:
             return
 
         stage_info = self.manifest["stages"][stage_id]
-        stage_info.update({
-            "end_time": datetime.now().isoformat(),
-            "status": "failed",
-            "error": error,
-            "error_details": error_details or {}
-        })
+        stage_info.update(
+            {
+                "end_time": datetime.now().isoformat(),
+                "status": "failed",
+                "error": error,
+                "error_details": error_details or {},
+            }
+        )
 
         # Calculate duration
         start_time = datetime.fromisoformat(stage_info["start_time"])
@@ -185,21 +192,28 @@ class BuildTracker:
         stage_info["duration_seconds"] = (end_time - start_time).total_seconds()
 
         # Add to build-level errors
-        self.manifest["errors"].append({
-            "stage_id": stage_id,
-            "stage_name": stage_info["stage_name"],
-            "error": error,
-            "timestamp": stage_info["end_time"]
-        })
+        self.manifest["errors"].append(
+            {
+                "stage_id": stage_id,
+                "stage_name": stage_info["stage_name"],
+                "error": error,
+                "timestamp": stage_info["end_time"],
+            }
+        )
 
         self._save_manifest()
         logger.error(f"Failed stage: {stage_info['stage_name']} - {error}")
 
-    def add_artifact(self, artifact_name: str, artifact_path: str, 
-                    artifact_type: str = "file", metadata: Dict[str, Any] = None) -> None:
+    def add_artifact(
+        self,
+        artifact_name: str,
+        artifact_path: str,
+        artifact_type: str = "file",
+        metadata: Dict[str, Any] = None,
+    ) -> None:
         """
         Register a build artifact.
-        
+
         Args:
             artifact_name: Name of the artifact
             artifact_path: Path to the artifact
@@ -211,7 +225,7 @@ class BuildTracker:
             "path": str(artifact_path),
             "type": artifact_type,
             "created_time": datetime.now().isoformat(),
-            "metadata": metadata or {}
+            "metadata": metadata or {},
         }
 
         # Add file size if it's a file
@@ -220,7 +234,7 @@ class BuildTracker:
 
         self.manifest["artifacts"][artifact_name] = artifact_info
         self._save_manifest()
-        
+
         logger.info(f"Registered artifact: {artifact_name} at {artifact_path}")
 
     def update_quality_metrics(self, metrics: Dict[str, Any]) -> None:
@@ -231,17 +245,14 @@ class BuildTracker:
     def complete_build(self, status: str = "completed") -> Dict[str, Any]:
         """
         Mark the entire build as completed.
-        
+
         Args:
             status: Final build status (completed, failed, cancelled)
-            
+
         Returns:
             Complete build manifest
         """
-        self.manifest.update({
-            "end_time": datetime.now().isoformat(),
-            "status": status
-        })
+        self.manifest.update({"end_time": datetime.now().isoformat(), "status": status})
 
         # Calculate total duration
         start_time = datetime.fromisoformat(self.manifest["start_time"])
@@ -252,30 +263,31 @@ class BuildTracker:
         self.manifest["summary"] = self._generate_build_summary()
 
         self._save_manifest()
-        
+
         logger.info(f"Build {self.build_id} completed with status: {status}")
         logger.info(f"Total duration: {self.manifest['total_duration_seconds']:.2f} seconds")
-        
+
         return self.manifest
 
     def _generate_build_summary(self) -> Dict[str, Any]:
         """Generate build summary statistics"""
         stages = self.manifest["stages"]
-        
+
         summary = {
             "total_stages": len(stages),
             "completed_stages": len([s for s in stages.values() if s["status"] == "completed"]),
             "failed_stages": len([s for s in stages.values() if s["status"] == "failed"]),
             "total_artifacts": len(self.manifest["artifacts"]),
-            "total_errors": len(self.manifest["errors"])
+            "total_errors": len(self.manifest["errors"]),
         }
-        
+
         # Calculate average stage duration for completed stages
         completed_durations = [
-            s["duration_seconds"] for s in stages.values() 
+            s["duration_seconds"]
+            for s in stages.values()
             if s["status"] == "completed" and "duration_seconds" in s
         ]
-        
+
         if completed_durations:
             summary["average_stage_duration"] = sum(completed_durations) / len(completed_durations)
             summary["longest_stage_duration"] = max(completed_durations)
@@ -300,13 +312,13 @@ class BuildTracker:
             "status": self.manifest["status"],
             "stage_count": len(self.manifest["stages"]),
             "artifact_count": len(self.manifest["artifacts"]),
-            "error_count": len(self.manifest["errors"])
+            "error_count": len(self.manifest["errors"]),
         }
 
     def cleanup_build(self, keep_artifacts: bool = True) -> None:
         """
         Clean up build directory.
-        
+
         Args:
             keep_artifacts: Whether to preserve artifacts
         """
@@ -319,5 +331,5 @@ class BuildTracker:
             # Remove entire build directory
             if self.build_path.exists():
                 shutil.rmtree(self.build_path)
-        
+
         logger.info(f"Cleaned up build {self.build_id}")
