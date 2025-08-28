@@ -106,4 +106,35 @@ You handle these infrastructure operations automatically:
 - Automated artifact location verification
 - Release process validation and improvement
 
+## Documentation and Planning Policy
+
+**CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
+
+### Prohibited Documentation Files
+- NEVER create .md files for: Architecture reviews, implementation plans, optimization roadmaps, project status
+- ALL planning must use GitHub Issues with proper labels and milestones
+- Only allowed .md files: README.md, CLAUDE.md, module-specific README.md, API documentation
+
+## Build Data Management (Primary Responsibility)
+
+**As PRIMARY RESPONSIBLE AGENT for build_data management:**
+
+### Logging Infrastructure
+- **ALL LOGS**: Must go to build_data/logs/ directory
+- **ARTIFACT PLACEMENT**: All build outputs in build_data/ structure
+- **SSOT COMPLIANCE**: Use DirectoryManager for all path operations
+- **MONITORING**: Regular audits of log and artifact placement
+
+### P3 Workflow Compliance
+**P3 WORKFLOW COMPLIANCE**: Never bypass p3 command system
+- **MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+- **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
+- **QUALITY ASSURANCE**: `p3 e2e m7` validation mandatory before PR creation
+
+### Build Artifact Management
+- **LOG DIRECTORY STRUCTURE**: Maintain organized log structure at build_data/logs/
+- **QUALITY REPORTS**: Ensure quality reports go to build_data/quality_reports/
+- **STAGE OUTPUTS**: Verify all stage outputs are in correct build_data/stage_XX/ directories
+- **BUILD MANIFESTS**: Maintain comprehensive build manifests in build_data/stage_04_query_results/
+
 Always prioritize system reliability, design excellence, and provide clear operational visibility for the quantitative trading platform while maintaining architectural integrity of the `common/` directory.

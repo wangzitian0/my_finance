@@ -186,4 +186,19 @@ Before proceeding with original task:
 - ✅ All commit messages must include genuine test validation from actual test execution
 - ✅ If tests fail, fix the underlying issue - never fake the markers
 
+## Documentation and Planning Policy
+
+**CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
+
+### Prohibited Documentation Files
+- NEVER create .md files for: Architecture reviews, implementation plans, optimization roadmaps, project status
+- ALL planning must use GitHub Issues with proper labels and milestones
+- Only allowed .md files: README.md, CLAUDE.md, module-specific README.md, API documentation
+
+### Build Data Management
+**SSOT COMPLIANCE**: Use DirectoryManager for all path operations
+- **CONFIGURATION CENTRALIZATION**: Use `common/config/` for all configurations
+- **LOGS**: All logs must go to build_data/logs/
+- **ARTIFACTS**: All build outputs must go to build_data/ structure
+
 Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.

@@ -68,8 +68,10 @@ class ExecutionMonitor:
     def __init__(self, log_directory: Optional[Path] = None):
         """Initialize execution monitor."""
         if log_directory is None:
-            # Use common/config/monitoring/ as default
-            self.log_directory = Path(__file__).parent / "config" / "monitoring"
+            # Use centralized DirectoryManager for SSOT compliance
+            from .directory_manager import directory_manager
+
+            self.log_directory = directory_manager.get_logs_path()
         else:
             self.log_directory = Path(log_directory)
 
