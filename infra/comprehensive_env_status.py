@@ -162,11 +162,11 @@ def check_python_deps() -> Dict:
     """Check key Python dependencies"""
     # Map package names to their import names
     deps_to_check = {
-        "pandas": "pandas", 
-        "numpy": "numpy", 
-        "neo4j": "neo4j", 
-        "requests": "requests", 
-        "pyyaml": "yaml"  # Package name vs import name
+        "pandas": "pandas",
+        "numpy": "numpy",
+        "neo4j": "neo4j",
+        "requests": "requests",
+        "pyyaml": "yaml",  # Package name vs import name
     }
     missing = []
 
