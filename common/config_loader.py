@@ -13,15 +13,15 @@ import yaml
 
 # Add common to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from common.directory_manager import DirectoryManager
+from common.core.directory_manager import directory_manager
 
 
 class ConfigLoader:
     """Unified configuration loader using common library"""
 
     def __init__(self):
-        self.directory_manager = DirectoryManager()
-        self.config_dir = self.directory_manager.get_config_path()
+        self.directory_manager = directory_manager
+        self.config_dir = directory_manager.get_config_path()
 
     def load_dataset_config(self, tier: str) -> Dict[str, Any]:
         """Load dataset configuration for given tier (f2, m7, n100, v3k)"""

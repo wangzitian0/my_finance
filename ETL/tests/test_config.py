@@ -16,7 +16,7 @@ from typing import Any, Dict, Optional
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from common.directory_manager import DirectoryManager
+from common.core.directory_manager import directory_manager
 
 
 class DatasetTier(Enum):
@@ -85,8 +85,7 @@ class TestConfigManager:
 
     def __init__(self, base_path: str = None):
         if base_path is None:
-            # Use DirectoryManager to get correct config path
-            directory_manager = DirectoryManager()
+            # Use directory_manager to get correct config path
             self.config_dir = directory_manager.get_config_path()
         else:
             self.base_path = Path(base_path)

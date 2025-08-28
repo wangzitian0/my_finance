@@ -74,5 +74,6 @@ dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 e2e | p3 creat
 secedgar = ">=0.6.0, <0.7"
 aiohttp = ">=3.12.15, <4"
 typing-extensions = "*"
+neo4j = "*"
 # ML dependencies moved to Docker container (infra/sentence-transformers.Dockerfile)
 # sentence-transformers, torch, scikit-learn removed to avoid numpy circular import

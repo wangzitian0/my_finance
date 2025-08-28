@@ -252,4 +252,4 @@ cython_debug/
 .pypirc
 
 # Other
-.aider*
+.aider*build_data/quality_reports/
