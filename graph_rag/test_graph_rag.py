@@ -22,11 +22,18 @@ from graph_rag import GraphRAGSystem
 from graph_rag.data_ingestion import GraphRAGDataIngestion
 from graph_rag.semantic_embedding import SemanticEmbedding
 
-# Setup logging
+# Setup logging using centralized directory management
+from common.core.directory_manager import directory_manager
+
+# Ensure logs directory exists
+log_dir = directory_manager.get_logs_path()
+log_dir.mkdir(parents=True, exist_ok=True)
+log_file = log_dir / "graph_rag_test.log"
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("data/log/graph_rag_test.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler(str(log_file)), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 

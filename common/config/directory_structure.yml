@@ -94,7 +94,7 @@ layers:
 # Common directories (outside data layers)
 common:
   config: "common/config"
-  logs: "logs"
+  logs: "build_data/logs"  # Logs are build artifacts - use build_data structure
   temp: "temp" 
   cache: "cache"
   scripts: "scripts"

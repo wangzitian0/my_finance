@@ -194,14 +194,17 @@ class GraphRAGSetup:
     def create_directories(self):
         """Create necessary directories for the Graph RAG system."""
 
+        # Use new directory management system
+        from pathlib import Path
+        from common import get_data_path, get_source_path, DataLayer
+        
         directories = [
-            "data",
-            "data/stage_00_original",
-            "data/stage_01_extract/yfinance",
-            "data/stage_00_original/sec",
-            "common/config",
-            "data/log",
-            "data/neo4j",
+            get_data_path(DataLayer.RAW_DATA),
+            get_source_path("yfinance", DataLayer.DAILY_DELTA),
+            get_source_path("sec-edgar", DataLayer.RAW_DATA),
+            "common/config",  # Config directory remains the same
+            str(Path(get_data_path(DataLayer.RAW_DATA)).parent / "log"),
+            str(Path(get_data_path(DataLayer.RAW_DATA)).parent / "neo4j"),
         ]
 
         logger.info("Creating project directories...")
