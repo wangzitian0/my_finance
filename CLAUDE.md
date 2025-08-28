@@ -18,18 +18,86 @@ This file establishes the global company policies and standards for all Claude C
 - **Specialized Agents**: Selected by agent-coordinator based on task requirements
 
 #### Task Classification Standards
+
+**MANDATORY AGENT-COORDINATOR ROUTING**:
 ```yaml
-direct_tool_operations:
-  - Single file read/write operations
-  - Simple status checks
-  - Quick configuration lookups
+ALWAYS_use_agent_coordinator:
+  # Git Operations (NEVER use direct tools)
+  - ALL git commands (status, diff, log, add, commit, push, rebase)
+  - PR creation and management  
+  - Branch operations and merging
+  - Release coordination and tagging
   
-agent_coordinator_required:
-  - All git operations and PR creation
-  - Multi-step development workflows
-  - Data processing and analysis tasks
-  - Infrastructure and deployment operations
-  - Quality assurance and testing processes
+  # Development Workflows (NEVER do directly)
+  - Code implementation (writing, editing code files)
+  - Multi-file refactoring and restructuring
+  - Testing and validation workflows
+  - Build and deployment processes
+  
+  # Complex Analysis Tasks
+  - Multi-file code analysis and search
+  - Architecture planning and system design
+  - Data processing and ETL operations
+  - Performance analysis and optimization
+  
+  # Infrastructure Operations  
+  - Environment setup and configuration
+  - System monitoring and diagnostics
+  - Quality assurance processes
+  - Documentation generation
+```
+
+**DIRECT TOOL USAGE ONLY**:
+```yaml
+simple_single_step_only:
+  # File Operations (READ-ONLY information gathering)
+  - Reading single files for information
+  - Directory listing for exploration
+  - File pattern searching (Glob, Grep) for analysis
+  - Simple configuration lookups
+  
+  # Status and Information Commands
+  - Quick system status checks (non-git)
+  - Environment variable checks
+  - Simple path validation
+  
+  # NOTE: If any task involves WRITING, MODIFYING, or EXECUTING 
+  # multiple steps, it MUST go through agent-coordinator
+```
+
+**KEY PRINCIPLE**: When in doubt, route through agent-coordinator. Direct tools are ONLY for read-only information gathering and simple status checks.
+
+#### Claude Code Operation Matrix
+
+| Operation Type | Tool Usage | Example |
+|---|---|---|
+| **Git Commands** | 🚫 NEVER Direct → ✅ agent-coordinator | `git status` → Task(agent-coordinator) |
+| **Code Writing** | 🚫 NEVER Direct → ✅ agent-coordinator | Writing functions → Task(backend-architect-agent) |
+| **Multi-file Edit** | 🚫 NEVER Direct → ✅ agent-coordinator | Refactoring → Task(dev-quality-agent) |
+| **PR Creation** | 🚫 NEVER Direct → ✅ agent-coordinator | `p3 create-pr` → Task(git-ops-agent) |
+| **File Reading** | ✅ Direct Tools OK | Read("path/file.py") |
+| **Directory Listing** | ✅ Direct Tools OK | LS("/path/to/dir") |
+| **Pattern Search** | ✅ Direct Tools OK | Grep("pattern", glob="*.py") |
+| **Status Check** | ✅ Direct Tools OK | Non-git status commands |
+
+#### Violation Examples to Avoid
+```bash
+# ❌ WRONG: Direct git commands
+Bash("git status")
+Bash("git add .")
+Bash("git commit -m 'message'")
+
+# ✅ CORRECT: Route through agent-coordinator
+Task(subagent_type="agent-coordinator", prompt="Handle git commit for changes")
+```
+
+```python
+# ❌ WRONG: Direct code implementation  
+Write("/path/file.py", "def new_function()...")
+Edit("/path/file.py", old="...", new="...")
+
+# ✅ CORRECT: Route through agent-coordinator
+Task(subagent_type="agent-coordinator", prompt="Implement new function in file.py")
 ```
 
 ## 🏷️ AGENT SPECIALIZATION DIRECTORY

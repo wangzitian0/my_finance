@@ -5,21 +5,22 @@ Common module for shared utilities and configurations.
 This module provides centralized access to common functionality used across the entire project.
 
 Issue #122: Five-Layer Data Architecture Implementation
+Issue #184: Core library restructuring with focused components
+
 - Unified directory management with SSOT principles
 - Storage backend abstraction for cloud migration
 - Comprehensive configuration management system
 - Legacy path mapping for backward compatibility
 - DRY architecture eliminating hardcoded paths
 
-Key Components:
-- DirectoryManager: SSOT directory path management
-- ConfigManager: Unified configuration loading and validation
-- StorageManager: Backend abstraction for local/cloud storage
-- DataLayer enum: Five-layer data architecture implementation
+New Structure:
+- core/: Core system components (DirectoryManager, ConfigManager, StorageManager)
+- utils/: Organized utility modules (I/O, logging, data processing, etc.)
+- systems/: Specialized system modules (BuildTracker, QualityReporter, etc.)
+- tests/: Comprehensive test structure
 """
 
-from .build_tracker import BuildTracker
-from .config_manager import (
+from .core.config_manager import (
     ConfigManager,
     ConfigSchema,
     ConfigType,
@@ -31,11 +32,8 @@ from .config_manager import (
     reload_configs,
 )
 
-# Legacy imports for backward compatibility
-from .data_access import data_access
-
-# Import core components for easy access
-from .directory_manager import (
+# Core components
+from .core.directory_manager import (
     DataLayer,
     DirectoryManager,
     StorageBackend,
@@ -46,41 +44,64 @@ from .directory_manager import (
     get_data_path,
     get_source_path,
 )
-from .logger import setup_logger
-from .storage_backends import (
+from .core.storage_manager import (
     LocalFilesystemBackend,
     StorageBackendInterface,
     StorageManager,
     create_storage_manager_from_config,
 )
-from .utils import *
+
+# System modules
+from .systems.build_tracker import BuildTracker
+from .systems.graph_rag_schema import (
+    DEFAULT_EMBEDDING_CONFIG,
+    MAGNIFICENT_7_CIKS,
+    MAGNIFICENT_7_TICKERS,
+    DCFValuationNode,
+    DocumentChunkNode,
+    DocumentType,
+    GraphNodeSchema,
+    GraphRAGQuery,
+    GraphRAGResponse,
+    GraphRelationship,
+    QueryIntent,
+    RelationshipType,
+    SECFilingNode,
+    SemanticSearchResult,
+    StockNode,
+    VectorEmbeddingConfig,
+)
+from .systems.metadata_manager import MetadataManager
+from .systems.quality_reporter import QualityReporter, setup_quality_reporter
+from .utils.data_processing import (
+    convert_timestamps_to_iso,
+    deep_merge_dicts,
+    filter_companies_by_criteria,
+    merge_company_lists,
+    normalize_ticker_symbol,
+    safe_json_serialize,
+    validate_company_data,
+)
+from .utils.id_generation import Snowflake, generate_snowflake_id, generate_snowflake_str
+from .utils.io_operations import is_file_recent, sanitize_data, suppress_third_party_logs
+
+# Utility modules
+from .utils.logging_setup import setup_logger
+from .utils.progress_tracking import create_progress_bar, get_global_progress_tracker
+
+# Legacy imports for backward compatibility
+try:
+    from .data_access import data_access
+except ImportError:
+    # Fallback if data_access is not available
+    data_access = None
+
+# Compatibility layer
+from .core.compatibility import get_legacy_data_path
 
 # Version information
-__version__ = "2.0.0"
-__version_info__ = (2, 0, 0)
-
-
-# Compatibility layer for gradual migration
-def get_legacy_data_path(*args, **kwargs):
-    """
-    Legacy compatibility function.
-    Redirects to new directory manager system.
-    """
-    import warnings
-
-    warnings.warn(
-        "get_legacy_data_path is deprecated. Use get_data_path with DataLayer enum instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    if args and isinstance(args[0], str):
-        # Try to map legacy path to new system
-        legacy_path = args[0]
-        layer = directory_manager.map_legacy_path(legacy_path)
-        if layer:
-            return get_data_path(layer, *args[1:], **kwargs)
-    return data_access.get_data_path(*args, **kwargs)
-
+__version__ = "2.1.0"  # Incremented for restructuring
+__version_info__ = (2, 1, 0)
 
 __all__ = [
     # Core directory management
@@ -103,15 +124,52 @@ __all__ = [
     "get_llm_config",
     "get_data_source_config",
     "reload_configs",
-    # Storage backends
+    # Storage management
     "StorageManager",
     "StorageBackendInterface",
     "LocalFilesystemBackend",
     "create_storage_manager_from_config",
+    # Utility functions
+    "setup_logger",
+    "suppress_third_party_logs",
+    "is_file_recent",
+    "sanitize_data",
+    "Snowflake",
+    "generate_snowflake_id",
+    "generate_snowflake_str",
+    "create_progress_bar",
+    "get_global_progress_tracker",
+    "normalize_ticker_symbol",
+    "validate_company_data",
+    "merge_company_lists",
+    "filter_companies_by_criteria",
+    "convert_timestamps_to_iso",
+    "safe_json_serialize",
+    "deep_merge_dicts",
+    # System modules
+    "BuildTracker",
+    "QualityReporter",
+    "setup_quality_reporter",
+    "MetadataManager",
+    # Graph RAG schema
+    "QueryIntent",
+    "DocumentType",
+    "VectorEmbeddingConfig",
+    "GraphNodeSchema",
+    "StockNode",
+    "SECFilingNode",
+    "DocumentChunkNode",
+    "DCFValuationNode",
+    "RelationshipType",
+    "GraphRelationship",
+    "SemanticSearchResult",
+    "GraphRAGQuery",
+    "GraphRAGResponse",
+    "MAGNIFICENT_7_TICKERS",
+    "MAGNIFICENT_7_CIKS",
+    "DEFAULT_EMBEDDING_CONFIG",
     # Legacy compatibility
     "data_access",
-    "BuildTracker",
-    "setup_logger",
     "get_legacy_data_path",
     # Version info
     "__version__",
