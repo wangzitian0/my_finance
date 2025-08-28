@@ -254,5 +254,8 @@ cython_debug/
 # Build quality reports - should not be tracked
 build_data/quality_reports/
 
+# Runtime logs directory - should not be tracked
+logs/
+
 # Other
 .aider*
