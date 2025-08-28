@@ -17,7 +17,6 @@ from common.core.directory_manager import directory_manager
 
 # Import SSOT directory manager
 from common.directory_manager import get_llm_config_path
-from common.core.directory_manager import directory_manager
 
 from .finlang_embedding import FinLangEmbedding
 from .ollama_client import OllamaClient
