@@ -18,7 +18,6 @@ from .id_generation import Snowflake
 # Configuration can be passed as parameters instead
 
 
-
 class DefaultRequestLogIDFilter(logging.Filter):
     def filter(self, record):
         if not hasattr(record, "request_logid"):
