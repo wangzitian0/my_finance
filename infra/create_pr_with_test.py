@@ -74,7 +74,7 @@ def get_current_branch():
 
     # Check if we're executing from a worktree directory
     cwd = os.getcwd()
-    
+
     # Check if we're in a worktree
     if "/.git/worktree/" in cwd:
         # Extract branch name from worktree path
@@ -508,7 +508,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         test_type = "F2-TESTED" if test_info["scope"] == "F2" else f"{test_info['scope']}-TESTED"
         test_description = {
             "F2": "F2 fast-build testing",
-            "M7": "M7 end-to-end testing", 
+            "M7": "M7 end-to-end testing",
             "N100": "N100 validation testing",
             "V3K": "V3K production testing",
         }.get(test_info["scope"], f"{test_info['scope']} testing")
