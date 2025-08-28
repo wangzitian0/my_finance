@@ -294,20 +294,19 @@ class P3CLI:
 
             title, issue = args[0], args[1]
             remaining_args = args[2:]
-            
+
             # Check if we're in a worktree and pass the branch info
             import os
+
             cwd = os.getcwd()
             env_var = ""
             if "/.git/worktree/" in cwd:
                 # Get actual branch in worktree
                 import subprocess
+
                 try:
                     result = subprocess.run(
-                        ["git", "branch", "--show-current"],
-                        capture_output=True,
-                        text=True,
-                        cwd=cwd
+                        ["git", "branch", "--show-current"], capture_output=True, text=True, cwd=cwd
                     )
                     if result.returncode == 0 and result.stdout.strip():
                         branch = result.stdout.strip()
@@ -315,7 +314,7 @@ class P3CLI:
                         print(f"📍 Detected worktree branch: {branch}")
                 except:
                     pass
-            
+
             cmd = f'{env_var}pixi run python infra/create_pr_with_test.py "{title}" {issue}'
             if remaining_args:
                 cmd += " " + " ".join(remaining_args)
