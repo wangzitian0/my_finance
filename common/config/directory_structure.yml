@@ -119,6 +119,7 @@ legacy_mapping:
   # Directory migration
   data/config: "common/config"  # Migrated to main repo
   data: "build_data"  # Data directory renamed to build_data subtree
+  data/log: "build_data/logs"  # Logs moved to build_data structure
 
 # Data layer enum mapping (for DataLayer enum in directory_manager.py)
 data_layer_mapping:

@@ -197,13 +197,14 @@ class GraphRAGSetup:
         # Use new directory management system
         from pathlib import Path
         from common import get_data_path, get_source_path, DataLayer
+        from common.core.directory_manager import directory_manager
         
         directories = [
             get_data_path(DataLayer.RAW_DATA),
             get_source_path("yfinance", DataLayer.DAILY_DELTA),
             get_source_path("sec-edgar", DataLayer.RAW_DATA),
             "common/config",  # Config directory remains the same
-            str(Path(get_data_path(DataLayer.RAW_DATA)).parent / "log"),
+            str(directory_manager.get_logs_path()),  # Use centralized log path management
             str(Path(get_data_path(DataLayer.RAW_DATA)).parent / "neo4j"),
         ]
 

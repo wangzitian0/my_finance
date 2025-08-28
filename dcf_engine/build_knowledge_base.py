@@ -30,11 +30,18 @@ from pathlib import Path
 
 import yaml
 
-# Setup logging
+# Import directory manager for centralized path management
+from common.core.directory_manager import directory_manager
+
+# Setup logging using centralized directory management
+log_dir = directory_manager.get_logs_path()
+log_dir.mkdir(parents=True, exist_ok=True)
+log_file = log_dir / "knowledge_base_build.log"
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("data/log/knowledge_base_build.log"), logging.StreamHandler()],
+    handlers=[logging.FileHandler(str(log_file)), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 

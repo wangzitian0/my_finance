@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional
 
 # Import SSOT directory manager
 from common.directory_manager import get_llm_config_path
+from common.core.directory_manager import directory_manager
 
 from .finlang_embedding import FinLangEmbedding
 from .ollama_client import OllamaClient
@@ -627,7 +628,7 @@ class LLMDCFGenerator:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         # Save full result data
-        debug_file = Path("data/log") / f"dcf_generation_{ticker}_{timestamp}.json"
+        debug_file = directory_manager.get_logs_path() / f"dcf_generation_{ticker}_{timestamp}.json"
         debug_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(debug_file, "w", encoding="utf-8") as f:
@@ -871,7 +872,7 @@ class LLMDCFGenerator:
             test_results["overall_status"] = "failure"
 
         # Save test results
-        test_file = Path("data/log") / "system_integration_test.json"
+        test_file = directory_manager.get_logs_path() / "system_integration_test.json"
         test_file.parent.mkdir(parents=True, exist_ok=True)
 
         with open(test_file, "w", encoding="utf-8") as f:
@@ -899,7 +900,7 @@ class LLMDCFGenerator:
         # Recent log files
         debug_info.append("\n## Recent Activity\n")
 
-        log_dir = Path("data/log")
+        log_dir = directory_manager.get_logs_path()
         if log_dir.exists():
             log_files = sorted(
                 log_dir.glob("*.json*"), key=lambda x: x.stat().st_mtime, reverse=True
