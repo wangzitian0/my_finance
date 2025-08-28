@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0",
+  "enabled": true,
+  "session_tracking": {
+    "enabled": true,
+    "correlation_id_header": "X-Claude-Session-ID",
+    "session_timeout_minutes": 60
+  },
+  "hooks": {
+    "user_prompt_submit": {
+      "enabled": true,
+      "capture_level": "full",
+      "sanitize": true,
+      "max_content_length": 50000,
+      "description": "Capture user prompts with sanitization for debugging and analysis"
+    },
+    "tool_invocation": {
+      "enabled": true,
+      "capture_requests": true,
+      "capture_responses": true,
+      "max_response_length": 10000,
+      "description": "Log all tool calls with requests and responses for execution tracking"
+    },
+    "ai_response": {
+      "enabled": true,
+      "capture_thinking": true,
+      "capture_final": true,
+      "max_thinking_length": 25000,
+      "max_response_length": 50000,
+      "description": "Capture AI thinking chains and final responses for quality analysis"
+    },
+    "error_handling": {
+      "enabled": true,
+      "capture_stack": true,
+      "capture_recovery": true,
+      "stack_trace_depth": 20,
+      "description": "Log errors with stack traces and recovery actions for debugging"
+    }
+  },
+  "storage": {
+    "backend": "execution_monitor",
+    "streaming": true,
+    "batch_size": 100,
+    "flush_interval_seconds": 30,
+    "max_file_size_mb": 100,
+    "retention_days": 30
+  },
+  "sanitization": {
+    "enabled": true,
+    "patterns": [
+      "password",
+      "passwd",
+      "token",
+      "key",
+      "secret",
+      "api_key",
+      "api-key",
+      "apikey",
+      "access_token",
+      "refresh_token",
+      "bearer",
+      "authorization",
+      "x-api-key",
+      "private_key",
+      "client_secret",
+      "auth_token"
+    ],
+    "replacement_text": "[SANITIZED]",
+    "case_insensitive": true,
+    "regex_patterns": [
+      "\\b[A-Za-z0-9]{32,}\\b",
+      "\\b[A-Fa-f0-9]{40}\\b",
+      "sk-[A-Za-z0-9]{48}",
+      "\\b(?:Bearer|Token)\\s+[A-Za-z0-9\\-_\\.]+",
+      "\\b[A-Za-z0-9+/]{32,}={0,2}\\b"
+    ]
+  },
+  "performance": {
+    "max_memory_mb": 256,
+    "async_processing": true,
+    "compression_enabled": true,
+    "indexing_enabled": true
+  },
+  "filters": {
+    "ignore_tool_types": [],
+    "ignore_error_types": [
+      "KeyboardInterrupt",
+      "SystemExit"
+    ],
+    "minimum_response_length": 10,
+    "exclude_system_prompts": false
+  }
+}
