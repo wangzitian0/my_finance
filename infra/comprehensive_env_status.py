@@ -160,19 +160,27 @@ def check_data_symlink() -> Dict:
 
 def check_python_deps() -> Dict:
     """Check key Python dependencies"""
-    deps_to_check = ["pandas", "numpy", "neo4j", "requests", "pyyaml"]
+    # Map package names to their import names
+    deps_to_check = {
+        "pandas": "pandas", 
+        "numpy": "numpy", 
+        "neo4j": "neo4j", 
+        "requests": "requests", 
+        "pyyaml": "yaml"  # Package name vs import name
+    }
     missing = []
 
-    for dep in deps_to_check:
-        success, _ = run_command(f"python -c 'import {dep}'")
+    for package_name, import_name in deps_to_check.items():
+        # Use pixi environment to ensure consistency with other p3 commands
+        success, _ = run_command(f"pixi run python -c 'import {import_name}'")
         if not success:
-            missing.append(dep)
+            missing.append(package_name)
 
     if not missing:
         return {
             "name": "Python Dependencies",
             "status": "✅ Ready",
-            "details": f"All key packages available: {', '.join(deps_to_check)}",
+            "details": f"All key packages available: {', '.join(deps_to_check.keys())}",
             "commands": [],
         }
     else:
