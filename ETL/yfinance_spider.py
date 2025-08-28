@@ -30,7 +30,6 @@ from common.utils import is_file_recent, sanitize_data, suppress_third_party_log
 suppress_third_party_logs()
 
 # Base directories - use DirectoryManager for SSOT
-directory_manager = DirectoryManager()
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 # Use legacy mapping: layer_02_delta -> stage_01_daily_delta
 data_root = directory_manager.get_data_root()
