@@ -132,10 +132,10 @@ def run_job(config_path):
         if not os.path.exists(ticker_dir):
             os.makedirs(ticker_dir)
         for ft in file_types:
-            logging.info(f"开始处理 {cik} 的 {ft} filings")
+            logging.info(f"Starting to process {cik} {ft} filings")
             filing_type_enum = filing_type_map.get(ft)
             if filing_type_enum is None:
-                logging.error(f"不支持的 filing 类型: {ft}，CIK: {cik}")
+                logging.error(f"Unsupported filing type: {ft}, CIK: {cik}")
                 pbar.update(1)
                 continue
 
