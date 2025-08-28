@@ -4,7 +4,7 @@
 Core system components for the common library.
 
 This module provides the fundamental infrastructure components:
-- DirectoryManager: SSOT directory path management
+- DirectoryManager: SSOT directory path management  
 - ConfigManager: Unified configuration system
 - StorageManager: Backend abstraction for local/cloud storage
 - Compatibility layer for legacy imports
@@ -12,17 +12,6 @@ This module provides the fundamental infrastructure components:
 Issue #184: Core library restructuring
 """
 
-from .config_manager import (
-    ConfigManager,
-    ConfigSchema,
-    ConfigType,
-    config_manager,
-    get_company_list,
-    get_config,
-    get_data_source_config,
-    get_llm_config,
-    reload_configs,
-)
 from .directory_manager import (
     DataLayer,
     DirectoryManager,
@@ -33,6 +22,17 @@ from .directory_manager import (
     get_config_path,
     get_data_path,
     get_source_path,
+)
+from .config_manager import (
+    ConfigManager,
+    ConfigSchema,
+    ConfigType,
+    config_manager,
+    get_company_list,
+    get_config,
+    get_data_source_config,
+    get_llm_config,
+    reload_configs,
 )
 from .storage_manager import (
     LocalFilesystemBackend,
@@ -51,18 +51,18 @@ except ImportError:
 __all__ = [
     # Directory management
     "DirectoryManager",
-    "DataLayer",
+    "DataLayer", 
     "StorageBackend",
     "directory_manager",
     "get_data_path",
-    "get_config_path",
+    "get_config_path", 
     "get_build_path",
     "get_source_path",
     "ensure_data_structure",
     # Configuration management
     "ConfigManager",
     "ConfigType",
-    "ConfigSchema",
+    "ConfigSchema", 
     "config_manager",
     "get_config",
     "get_company_list",
@@ -72,6 +72,6 @@ __all__ = [
     # Storage management
     "StorageManager",
     "StorageBackendInterface",
-    "LocalFilesystemBackend",
+    "LocalFilesystemBackend", 
     "create_storage_manager_from_config",
 ]
