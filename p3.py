@@ -5,12 +5,23 @@ Centralizes all development commands under one consistent interface
 
 This replaces the shell-based p3 script with a proper Python CLI system
 as specified in Issue #111.
+
+Enhanced with Agent Execution Monitoring System (Issue #180).
 """
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Dict, List, Optional
+
+# Import execution monitoring
+try:
+    from common.execution_monitor import get_monitor, ExecutionResult
+    MONITORING_ENABLED = True
+except ImportError:
+    MONITORING_ENABLED = False
+    print("⚠️  Execution monitoring not available")
 
 
 class P3CLI:
@@ -221,6 +232,10 @@ class P3CLI:
             "test-yfinance": "pixi run python ETL/tests/integration/test_yfinance.py",
             "test-config": "pixi run python -m pytest ETL/tests/test_config.py -v",
             "test-dcf-report": "pixi run python -m pytest dcf_engine/test_dcf_report.py -v",
+            # Monitoring Commands (Issue #180)
+            "monitoring-summary": "pixi run python -c 'from common.monitoring_dashboard import print_monitoring_summary; print_monitoring_summary(7)'",
+            "monitoring-report": "pixi run python -c 'from common.monitoring_dashboard import export_monitoring_report; print(f\"Report: {export_monitoring_report(7)}\")'",
+            "monitoring-stats": "pixi run python -c 'from common.execution_monitor import get_monitor; import json; print(json.dumps(get_monitor().get_execution_stats(7), indent=2))'",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -375,6 +390,11 @@ Git Hooks Management:
   install-hooks          Install pre-push hook to enforce create-pr workflow
   check-hooks            Check if git hooks are properly installed
 
+Agent Execution Monitoring (Issue #180):
+  monitoring-summary     Show 7-day agent execution monitoring summary
+  monitoring-report      Export comprehensive monitoring report to JSON
+  monitoring-stats       Show raw execution statistics (JSON format)
+
 Scopes: f2 m7 n100 v3k (default: m7)
   f2     - Fast 2 companies (development testing)
   m7     - Magnificent 7 (standard/PR testing)
@@ -409,50 +429,81 @@ Tips:
             self.show_available_commands()
             sys.exit(1)
 
-        # Handle special commands
-        special_cmd = self._handle_special_commands(command, cmd_args)
-        if special_cmd is None and command == "activate":
-            return  # activate command prints message and exits
+        # Initialize execution monitoring
+        monitor = None
+        if MONITORING_ENABLED:
+            monitor = get_monitor()
+            task_description = f"{command} {' '.join(cmd_args)}"
+            monitor.start_execution("p3-command", task_description, command)
 
-        if special_cmd:
-            cmd_string = special_cmd
-        else:
-            # Handle scope-based commands
-            cmd_string = self._handle_scope_command(command, cmd_args)
+        try:
+            # Handle special commands
+            special_cmd = self._handle_special_commands(command, cmd_args)
+            if special_cmd is None and command == "activate":
+                if monitor:
+                    monitor.log_execution(ExecutionResult.SUCCESS)
+                return  # activate command prints message and exits
 
-            # Add remaining arguments
-            if command not in [
-                "build",
-                "fast-build",
-                "refresh",
-                "e2e",
-                "create-pr",
-                "cleanup-branches",
-            ]:
-                if cmd_args:
-                    cmd_string += " " + " ".join(cmd_args)
+            if special_cmd:
+                cmd_string = special_cmd
+            else:
+                # Handle scope-based commands
+                cmd_string = self._handle_scope_command(command, cmd_args)
 
-        # CRITICAL FIX for Issue #153: Validate and sanitize command before execution
-        validated_cmd = self._validate_command_syntax(cmd_string)
+                # Add remaining arguments
+                if command not in [
+                    "build",
+                    "fast-build",
+                    "refresh",
+                    "e2e",
+                    "create-pr",
+                    "cleanup-branches",
+                ]:
+                    if cmd_args:
+                        cmd_string += " " + " ".join(cmd_args)
 
-        print(f"🚀 Executing: {validated_cmd}")
+            # CRITICAL FIX for Issue #153: Validate and sanitize command before execution
+            validated_cmd = self._validate_command_syntax(cmd_string)
 
-        # Change to project directory
-        # CRITICAL FIX: For worktrees, ensure we stay in the current git context
-        original_cwd = os.getcwd()
+            print(f"🚀 Executing: {validated_cmd}")
 
-        # Only change directory if we're not already in a proper git worktree
-        if "worktree" in str(Path.cwd()) and Path.cwd() == self.project_root:
-            # Already in correct worktree directory - don't change
-            pass
-        else:
-            os.chdir(self.project_root)
+            # Change to project directory
+            # CRITICAL FIX: For worktrees, ensure we stay in the current git context
+            original_cwd = os.getcwd()
 
-        print(f"📍 Executing in directory: {os.getcwd()}")
+            # Only change directory if we're not already in a proper git worktree
+            if "worktree" in str(Path.cwd()) and Path.cwd() == self.project_root:
+                # Already in correct worktree directory - don't change
+                pass
+            else:
+                os.chdir(self.project_root)
 
-        # Execute the command
-        result = subprocess.run(validated_cmd, shell=True)
-        sys.exit(result.returncode)
+            print(f"📍 Executing in directory: {os.getcwd()}")
+
+            # Execute the command
+            result = subprocess.run(validated_cmd, shell=True)
+            
+            # Log execution result
+            if monitor:
+                if result.returncode == 0:
+                    monitor.log_execution(ExecutionResult.SUCCESS)
+                else:
+                    error_msg = f"Command failed with exit code {result.returncode}"
+                    monitor.log_execution(ExecutionResult.FAILURE, error_message=error_msg)
+            
+            sys.exit(result.returncode)
+
+        except Exception as e:
+            # Log execution failure
+            if monitor:
+                import traceback
+                stack_trace = traceback.format_exc()
+                monitor.log_execution(
+                    ExecutionResult.FAILURE,
+                    error_message=str(e),
+                    stack_trace=stack_trace
+                )
+            raise
 
 
 def main():
