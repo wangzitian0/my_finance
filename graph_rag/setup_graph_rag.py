@@ -196,9 +196,10 @@ class GraphRAGSetup:
 
         # Use new directory management system
         from pathlib import Path
-        from common import get_data_path, get_source_path, DataLayer
+
+        from common import DataLayer, get_data_path, get_source_path
         from common.core.directory_manager import directory_manager
-        
+
         directories = [
             get_data_path(DataLayer.RAW_DATA),
             get_source_path("yfinance", DataLayer.DAILY_DELTA),

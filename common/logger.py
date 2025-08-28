@@ -40,7 +40,7 @@ def setup_logger(job_id, date_str=None):
     """
     # Import here to avoid circular dependency
     from .core.directory_manager import directory_manager
-    
+
     config = load_common_config()
     log_conf = config.get("logging", {})
     log_level = getattr(logging, log_conf.get("level", "INFO"))
