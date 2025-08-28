@@ -254,5 +254,39 @@ cython_debug/
 # Build quality reports - should not be tracked
 build_data/quality_reports/
 
+# ==============================================================================
+# LOG FILE EXCLUSIONS
+# ==============================================================================
+
+# All log files - comprehensive exclusion
+*.log
+*_logs*.json
+*_logs*.txt
+execution_logs*.json
+execution_logs*.txt
+claude_hooks*.json
+claude_hooks*.txt
+
+# Log directories - should not be tracked
+logs/
+**/logs/
+build_data/logs/
+
+# Prevent log files in config directories (SSOT compliance)
+common/config/**/execution_logs*.json
+common/config/**/execution_logs*.txt
+common/config/**/*_logs*.json
+common/config/**/*_logs*.txt
+common/config/**/claude_hooks*.json
+common/config/**/claude_hooks*.txt
+
+# Log files in any monitoring subdirectories
+**/monitoring/execution_logs*.json
+**/monitoring/execution_logs*.txt
+**/monitoring/*_logs*.json
+**/monitoring/*_logs*.txt
+**/monitoring/claude_hooks*.json
+**/monitoring/claude_hooks*.txt
+
 # Other
 .aider*
