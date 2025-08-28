@@ -7,8 +7,14 @@ Removes old directories and files that are no longer needed.
 import logging
 import os
 import shutil
+import sys
 from pathlib import Path
 from typing import List
+
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from common.core.directory_manager import directory_manager
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -107,13 +113,15 @@ def cleanup_empty_directories(base_dir: Path) -> int:
     removed_count = 0
 
     # Directories that should be preserved even if empty
+    data_root = directory_manager.get_data_root()
+    config_path = directory_manager.get_config_path()
+
     preserve_dirs = {
-        "data/stage_01_extract",
-        "data/stage_02_transform",
-        "data/stage_03_load",
-        "data/build",
-        "common/config",
-        "data/reports",
+        str(data_root / "stage_01_daily_delta"),
+        str(data_root / "stage_02_daily_index"),
+        str(data_root / "stage_03_graph_rag"),
+        str(data_root / "stage_04_query_results"),
+        str(config_path),
         "tests/unit",
         "tests/integration",
         "tests/e2e",

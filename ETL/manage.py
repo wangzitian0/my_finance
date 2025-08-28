@@ -212,7 +212,7 @@ class FinanceManager:
         print("Database Status:")
         try:
             result = subprocess.run(
-                ["docker", "ps", "--filter", "name=neo4j-finance"],
+                ["podman", "ps", "--filter", "name=neo4j-finance"],
                 capture_output=True,
                 text=True,
             )
@@ -221,7 +221,7 @@ class FinanceManager:
             else:
                 print("  🔴 Neo4j not running")
         except FileNotFoundError:
-            print("  ❓ Docker not found")
+            print("  ❓ Podman not found")
 
     def clean_tier(self, tier_name):
         """Clean old data for specified tier"""
@@ -289,7 +289,7 @@ class FinanceManager:
         print()
         print("Next steps:")
         print(
-            "  1. Start Neo4j: docker run -d --name neo4j-finance -p 7474:7474 -p 7687:7687 neo4j:5.15"
+            "  1. Start Neo4j: podman run -d --name neo4j-finance -p 7474:7474 -p 7687:7687 neo4j:5.15"
         )
         print("  2. Build M7 dataset: python manage.py build m7")
         print("  3. Check status: python manage.py status")

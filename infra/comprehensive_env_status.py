@@ -10,6 +10,16 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+try:
+    from common.core.directory_manager import directory_manager
+
+    DIRECTORY_MANAGER_AVAILABLE = True
+except ImportError:
+    DIRECTORY_MANAGER_AVAILABLE = False
+
 
 def run_command(cmd: str) -> Tuple[bool, str]:
     """Run a command and return success status and output"""
@@ -122,23 +132,45 @@ def check_neo4j() -> Dict:
 
 def check_data_symlink() -> Dict:
     """Check data directory symlink"""
-    data_path = Path("data")
+    if DIRECTORY_MANAGER_AVAILABLE:
+        # Use directory manager to get the proper data path
+        data_root = directory_manager.get_data_root()
+        data_path = Path("data")  # Legacy symlink location
 
-    if not data_path.exists():
-        return {
-            "name": "Data Directory Symlink",
-            "status": "❌ Missing",
-            "details": "data/ symlink not found",
-            "commands": ["p3 env setup"],
-        }
+        if not data_path.exists():
+            return {
+                "name": "Data Directory Symlink",
+                "status": "❌ Missing",
+                "details": f"data/ symlink not found, should point to {data_root}",
+                "commands": ["p3 env setup"],
+            }
 
-    if not data_path.is_symlink():
-        return {
-            "name": "Data Directory Symlink",
-            "status": "⚠️ Not a Symlink",
-            "details": "data/ exists but is not a symlink",
-            "commands": ["rm -rf data", "p3 env setup"],
-        }
+        if not data_path.is_symlink():
+            return {
+                "name": "Data Directory Symlink",
+                "status": "⚠️ Not a Symlink",
+                "details": f"data/ exists but is not a symlink, should point to {data_root}",
+                "commands": ["rm -rf data", "p3 env setup"],
+            }
+    else:
+        # Fallback to legacy behavior
+        data_path = Path("data")
+
+        if not data_path.exists():
+            return {
+                "name": "Data Directory Symlink",
+                "status": "❌ Missing",
+                "details": "data/ symlink not found",
+                "commands": ["p3 env setup"],
+            }
+
+        if not data_path.is_symlink():
+            return {
+                "name": "Data Directory Symlink",
+                "status": "⚠️ Not a Symlink",
+                "details": "data/ exists but is not a symlink",
+                "commands": ["rm -rf data", "p3 env setup"],
+            }
 
     target = data_path.resolve()
     if target.exists():

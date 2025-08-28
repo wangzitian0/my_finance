@@ -10,6 +10,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Union
 
+from .core.directory_manager import directory_manager
+
 
 class DataAccess:
     """
@@ -24,19 +26,11 @@ class DataAccess:
         Initialize DataAccess with optional base directory.
 
         Args:
-            base_dir: Base directory for data access. Defaults to 'data/' from project root.
+            base_dir: Base directory for data access. Defaults to using DirectoryManager SSOT.
         """
         if base_dir is None:
-            # Find project root by looking for pyproject.toml or pixi.toml
-            current = Path.cwd()
-            while current != current.parent:
-                if (current / "pixi.toml").exists() or (current / "pyproject.toml").exists():
-                    self.base_dir = current / "data"
-                    break
-                current = current.parent
-            else:
-                # Fallback to current working directory + data
-                self.base_dir = Path.cwd() / "data"
+            # Use DirectoryManager SSOT for data root
+            self.base_dir = directory_manager.get_data_root()
         else:
             self.base_dir = Path(base_dir)
 
@@ -115,7 +109,7 @@ class DataAccess:
     # Configuration directory access
     def get_config_dir(self) -> Path:
         """Get configuration directory path."""
-        return self.base_dir / "config"
+        return directory_manager.get_config_path()
 
     def get_config_file(self, config_name: str) -> Path:
         """
