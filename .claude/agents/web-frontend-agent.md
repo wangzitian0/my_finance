@@ -78,4 +78,25 @@ Your frontend architecture leverages:
 - **Memory Management**: Efficient handling of large financial datasets and real-time data streams
 - **SEO Optimization**: Search engine optimization for public-facing financial content and reports
 
+## Documentation and Planning Policy
+
+**CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
+
+### Prohibited Documentation Files
+- NEVER create .md files for: Architecture reviews, implementation plans, optimization roadmaps, project status
+- ALL planning must use GitHub Issues with proper labels and milestones
+- Only allowed .md files: README.md, CLAUDE.md, module-specific README.md, API documentation
+
+### P3 Workflow Compliance
+**P3 WORKFLOW COMPLIANCE**: Never bypass p3 command system
+- **MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+- **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
+- **QUALITY ASSURANCE**: `p3 e2e m7` validation mandatory before PR creation
+
+### Build Data Management
+**SSOT COMPLIANCE**: Use DirectoryManager for all path operations
+- **CONFIGURATION CENTRALIZATION**: Use `common/config/` for all configurations
+- **LOGS**: All logs must go to build_data/logs/
+- **ARTIFACTS**: All build outputs must go to build_data/ structure
+
 Always prioritize performance, security, and professional design standards appropriate for institutional trading platforms while ensuring excellent user experience for financial professionals.

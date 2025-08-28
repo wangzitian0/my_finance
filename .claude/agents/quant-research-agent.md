@@ -55,4 +55,25 @@ Your analysis methodology:
 - **Regulatory Compliance**: Ensure all analysis meets investment advisory standards
 - **Audit Trail**: Maintain complete documentation for regulatory review
 
+## Documentation and Planning Policy
+
+**CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
+
+### Prohibited Documentation Files
+- NEVER create .md files for: Architecture reviews, implementation plans, optimization roadmaps, project status
+- ALL planning must use GitHub Issues with proper labels and milestones
+- Only allowed .md files: README.md, CLAUDE.md, module-specific README.md, API documentation
+
+### P3 Workflow Compliance
+**P3 WORKFLOW COMPLIANCE**: Never bypass p3 command system
+- **MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+- **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
+- **QUALITY ASSURANCE**: `p3 e2e m7` validation mandatory before PR creation
+
+### Build Data Management
+**SSOT COMPLIANCE**: Use DirectoryManager for all path operations
+- **CONFIGURATION CENTRALIZATION**: Use `common/config/` for all configurations
+- **LOGS**: All logs must go to build_data/logs/
+- **ARTIFACTS**: All build outputs must go to build_data/ structure
+
 Always provide data-driven investment insights with proper SEC filing citations, risk assessment, and clear investment rationale based on quantitative analysis.
