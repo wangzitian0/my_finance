@@ -77,16 +77,33 @@ def get_current_branch():
 
     # Check if we're in a worktree
     if "/.git/worktree/" in cwd:
-        # Extract branch name from worktree path
-        worktree_parts = cwd.split("/.git/worktree/")
-        if len(worktree_parts) > 1:
-            branch_name = worktree_parts[1].split("/")[0]
-            # Worktree branches often use slash notation
-            if "-" in branch_name:
-                branch_name = branch_name.replace("-", "/", 1)
-            print(f"📍 Detected worktree branch from path: {branch_name}")
+        # Use git command to get actual branch in the worktree
+        # This works correctly even when worktree dir name doesn't match branch name
+        worktree_result = run_command(
+            f"cd {cwd} && git branch --show-current",
+            "Getting worktree branch",
+            check=False
+        )
+        if worktree_result and worktree_result.stdout.strip():
+            branch_name = worktree_result.stdout.strip()
+            print(f"📍 Detected worktree branch from git: {branch_name}")
             return branch_name
-    # Fallback to standard git command
+        
+        # Fallback: try to get branch from HEAD file in worktree
+        worktree_git_dir = os.path.join(cwd, ".git")
+        if os.path.isfile(worktree_git_dir):
+            with open(worktree_git_dir, 'r') as f:
+                gitdir_path = f.read().strip().replace("gitdir: ", "")
+                head_file = os.path.join(gitdir_path, "HEAD")
+                if os.path.isfile(head_file):
+                    with open(head_file, 'r') as f:
+                        ref = f.read().strip()
+                        if ref.startswith("ref: refs/heads/"):
+                            branch_name = ref.replace("ref: refs/heads/", "")
+                            print(f"📍 Detected worktree branch from HEAD: {branch_name}")
+                            return branch_name
+    
+    # Fallback to standard git command in current directory
     result = run_command("git branch --show-current", "Getting current branch")
     return result.stdout.strip()
 
