@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 """
-Unified Configuration Loader
-Handles loading and processing of dataset configurations with unified schema.
-Supports both direct company lists and reference-based configurations.
+DEPRECATED: Unified Configuration Loader - Replaced by config_manager.py
+
+Issue #185: Configuration SSOT Unification
+- This module is deprecated in favor of config_manager.py
+- All classes and functions redirect to config_manager with deprecation warnings
+- Legacy imports will continue to work but will show deprecation warnings
+
+Migration Guide:
+OLD: from common.unified_config_loader import load_tier_config, get_tier_tickers
+NEW: from common.config_manager import config_manager; config_manager.load_dataset_config(tier)
 """
 
 import os
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -59,9 +67,21 @@ class UnifiedDatasetConfig:
 
 
 class UnifiedConfigLoader:
-    """Loads and processes unified dataset configurations"""
+    """
+    DEPRECATED: Loads and processes unified dataset configurations
+    
+    This class is deprecated. Use config_manager.ConfigManager instead.
+    """
 
     def __init__(self, config_dir: Path = None):
+        warnings.warn(
+            "UnifiedConfigLoader from common.unified_config_loader is deprecated. "
+            "Use 'from common.config_manager import config_manager' instead. "
+            "This class will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        
         if config_dir is None:
             # Use DirectoryManager to get the correct config path
             directory_manager = DirectoryManager()
@@ -246,20 +266,102 @@ class UnifiedConfigLoader:
             return False
 
 
-# Backward compatibility helper functions
+# ============================================================================
+# DEPRECATED: Backward compatibility helper functions 
+# All functions redirect to config_manager with deprecation warnings
+# ============================================================================
+
 def load_tier_config(tier: DatasetTier) -> UnifiedDatasetConfig:
-    """Load configuration for tier (backward compatibility)"""
-    loader = UnifiedConfigLoader()
-    return loader.load_config(tier)
+    """
+    DEPRECATED: Load configuration for tier (backward compatibility)
+    Use config_manager.load_dataset_config() instead
+    """
+    warnings.warn(
+        "load_tier_config() from common.unified_config_loader is deprecated. "
+        "Use 'from common.config_manager import config_manager; config_manager.load_dataset_config(tier)' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    
+    # Redirect to config_manager if available
+    try:
+        from .config_manager import config_manager
+        
+        # Convert DatasetTier enum to string
+        tier_mapping = {
+            DatasetTier.F2: "f2",
+            DatasetTier.M7: "m7", 
+            DatasetTier.N100: "n100",
+            DatasetTier.V3K: "v3k",
+        }
+        tier_str = tier_mapping.get(tier, str(tier).lower())
+        return config_manager.load_dataset_config(tier_str)
+    except ImportError:
+        # Fallback to legacy implementation
+        loader = UnifiedConfigLoader()
+        return loader.load_config(tier)
 
 
 def get_tier_tickers(tier: DatasetTier) -> List[str]:
-    """Get ticker list for tier (backward compatibility)"""
-    loader = UnifiedConfigLoader()
-    return loader.get_company_tickers(tier)
+    """
+    DEPRECATED: Get ticker list for tier (backward compatibility)
+    Use config_manager.get_company_tickers() instead
+    """
+    warnings.warn(
+        "get_tier_tickers() from common.unified_config_loader is deprecated. "
+        "Use 'from common.config_manager import config_manager; config_manager.get_company_tickers(tier)' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    
+    # Redirect to config_manager if available
+    try:
+        from .config_manager import config_manager
+        
+        # Convert DatasetTier enum to string
+        tier_mapping = {
+            DatasetTier.F2: "f2",
+            DatasetTier.M7: "m7", 
+            DatasetTier.N100: "n100",
+            DatasetTier.V3K: "v3k",
+        }
+        tier_str = tier_mapping.get(tier, str(tier).lower())
+        return config_manager.get_company_tickers(tier_str)
+    except ImportError:
+        # Fallback to legacy implementation
+        loader = UnifiedConfigLoader()
+        return loader.get_company_tickers(tier)
 
 
 def get_tier_cik_mapping(tier: DatasetTier) -> Dict[str, str]:
-    """Get CIK mapping for tier (backward compatibility)"""
-    loader = UnifiedConfigLoader()
-    return loader.get_cik_mapping(tier)
+    """
+    DEPRECATED: Get CIK mapping for tier (backward compatibility)
+    Use config_manager.get_cik_mapping() instead
+    """
+    warnings.warn(
+        "get_tier_cik_mapping() from common.unified_config_loader is deprecated. "
+        "Use 'from common.config_manager import config_manager; config_manager.get_cik_mapping(tier)' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+    
+    # Redirect to config_manager if available
+    try:
+        from .config_manager import config_manager
+        
+        # Convert DatasetTier enum to string
+        tier_mapping = {
+            DatasetTier.F2: "f2",
+            DatasetTier.M7: "m7", 
+            DatasetTier.N100: "n100",
+            DatasetTier.V3K: "v3k",
+        }
+        tier_str = tier_mapping.get(tier, str(tier).lower())
+        return config_manager.get_cik_mapping(tier_str)
+    except ImportError:
+        # Fallback to legacy implementation
+        loader = UnifiedConfigLoader()
+        return loader.get_cik_mapping(tier)

@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Centralized data directory I/O operations for the my_finance system.
+DEPRECATED: Centralized data directory I/O operations for the my_finance system.
+
+Issue #185: Configuration SSOT Unification
+- This module is deprecated in favor of DirectoryManager SSOT system
+- All functions redirect to DirectoryManager with deprecation warnings
+- Legacy imports will continue to work but will show deprecation warnings
+
+Migration Guide:
+OLD: from common.data_access import data_access; data_access.get_stage_dir('stage_00_original')
+NEW: from common.directory_manager import directory_manager, DataLayer; directory_manager.get_layer_path(DataLayer.RAW_DATA)
+
 This module provides a unified interface for accessing all data directories and files.
 """
 
 import os
+import warnings
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Union
@@ -15,10 +26,14 @@ from .core.directory_manager import directory_manager
 
 class DataAccess:
     """
-    Centralized data access utility for consistent data directory operations.
-
-    This class provides methods to access different data stages, build directories,
-    configuration files, and logs in a consistent manner across the entire codebase.
+    DEPRECATED: Centralized data access utility for consistent data directory operations.
+    
+    This class is deprecated. Use DirectoryManager instead for SSOT path management.
+    All methods in this class now redirect to DirectoryManager with deprecation warnings.
+    
+    Migration:
+        OLD: from common.data_access import DataAccess; data_access = DataAccess()
+        NEW: from common.directory_manager import directory_manager
     """
 
     def __init__(self, base_dir: Optional[Union[str, Path]] = None):
@@ -28,6 +43,14 @@ class DataAccess:
         Args:
             base_dir: Base directory for data access. Defaults to using DirectoryManager SSOT.
         """
+        warnings.warn(
+            "DataAccess class from common.data_access is deprecated. "
+            "Use 'from common.directory_manager import directory_manager' instead. "
+            "This class will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        
         if base_dir is None:
             # Use DirectoryManager SSOT for data root
             self.base_dir = directory_manager.get_data_root()
@@ -291,28 +314,82 @@ class DataAccess:
 data_access = DataAccess()
 
 
-# Convenience functions for common operations
+# ============================================================================
+# DEPRECATED: Convenience functions with deprecation warnings
+# All functions redirect to DirectoryManager
+# ============================================================================
+
 def get_data_path(*args, **kwargs) -> Path:
-    """Convenience function to get data paths using the global DataAccess instance."""
+    """
+    DEPRECATED: Convenience function to get data paths using the global DataAccess instance.
+    Use directory_manager.get_data_root() instead.
+    """
+    warnings.warn(
+        "get_data_path() from common.data_access is deprecated. "
+        "Use 'from common.directory_manager import directory_manager; directory_manager.get_data_root()' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     return data_access.base_dir.joinpath(*args)
 
 
 def get_build_path(build_timestamp: Optional[str] = None, branch: Optional[str] = None) -> Path:
-    """Convenience function to get build directory paths."""
+    """
+    DEPRECATED: Convenience function to get build directory paths.
+    Use directory_manager.get_build_path() instead.
+    """
+    warnings.warn(
+        "get_build_path() from common.data_access is deprecated. "
+        "Use 'from common.directory_manager import directory_manager; directory_manager.get_build_path()' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     return data_access.get_build_dir(build_timestamp, branch)
 
 
 def get_config_path(config_name: str) -> Path:
-    """Convenience function to get configuration file paths."""
+    """
+    DEPRECATED: Convenience function to get configuration file paths.
+    Use directory_manager.get_config_path() instead.
+    """
+    warnings.warn(
+        "get_config_path() from common.data_access is deprecated. "
+        "Use 'from common.directory_manager import directory_manager; directory_manager.get_config_path()' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     return data_access.get_config_file(config_name)
 
 
 def get_log_path(job_id: str, timestamp: Optional[str] = None) -> Path:
-    """Convenience function to get log file paths."""
+    """
+    DEPRECATED: Convenience function to get log file paths.
+    Use directory_manager.get_logs_path() instead.
+    """
+    warnings.warn(
+        "get_log_path() from common.data_access is deprecated. "
+        "Use 'from common.directory_manager import directory_manager; directory_manager.get_logs_path()' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     return data_access.get_log_file(job_id, timestamp)
 
 
 def ensure_data_dir(*args, **kwargs) -> Path:
-    """Convenience function to ensure data directory exists."""
+    """
+    DEPRECATED: Convenience function to ensure data directory exists.
+    Use directory_manager.ensure_directories() instead.
+    """
+    warnings.warn(
+        "ensure_data_dir() from common.data_access is deprecated. "
+        "Use 'from common.directory_manager import directory_manager; directory_manager.ensure_directories()' instead. "
+        "This function will be removed in a future version.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     path = get_data_path(*args, **kwargs)
     return data_access.ensure_dir_exists(path)

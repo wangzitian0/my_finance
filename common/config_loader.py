@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 """
-Unified Configuration Loader
-Centralized configuration management using common library for all config files.
+DEPRECATED: Unified Configuration Loader - Replaced by config_manager.py
+
+Issue #185: Configuration SSOT Unification
+- This module is deprecated in favor of config_manager.py
+- All classes and functions redirect to config_manager with deprecation warnings
+- Legacy imports will continue to work but will show deprecation warnings
+
+Migration Guide:
+OLD: from common.config_loader import config_loader; config_loader.load_dataset_config('m7')
+NEW: from common.config_manager import config_manager; config_manager.load_dataset_config('m7')
 """
 
 import os
 import sys
+import warnings
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -17,9 +26,20 @@ from common.core.directory_manager import directory_manager
 
 
 class ConfigLoader:
-    """Unified configuration loader using common library"""
+    """
+    DEPRECATED: Unified configuration loader using common library
+    
+    This class is deprecated. Use config_manager.ConfigManager instead.
+    """
 
     def __init__(self):
+        warnings.warn(
+            "ConfigLoader from common.config_loader is deprecated. "
+            "Use 'from common.config_manager import config_manager' instead. "
+            "This class will be removed in a future version.",
+            DeprecationWarning,
+            stacklevel=2
+        )
         self.directory_manager = directory_manager
         self.config_dir = directory_manager.get_config_path()
 
@@ -87,5 +107,36 @@ class ConfigLoader:
         return (self.config_dir / filename).exists()
 
 
-# Global instance for easy import
+# Global instance for easy import (deprecated, redirects to config_manager)
 config_loader = ConfigLoader()
+
+# Add redirect to config_manager functionality
+try:
+    from .config_manager import config_manager
+    
+    # Override methods to redirect to config_manager
+    def _redirect_load_dataset_config(tier: str) -> Dict[str, Any]:
+        return config_manager.load_dataset_config(tier)
+    
+    def _redirect_load_sec_edgar_config(tier: str) -> Dict[str, Any]:
+        return config_manager.load_sec_edgar_config(tier)
+    
+    def _redirect_load_yfinance_config() -> Dict[str, Any]:
+        return config_manager.load_yfinance_config()
+    
+    def _redirect_get_available_tiers() -> list[str]:
+        return config_manager.get_available_tiers()
+    
+    def _redirect_config_exists(filename: str) -> bool:
+        return config_manager.config_exists(filename)
+    
+    # Monkey patch the global instance to redirect to config_manager
+    config_loader.load_dataset_config = _redirect_load_dataset_config
+    config_loader.load_sec_edgar_config = _redirect_load_sec_edgar_config  
+    config_loader.load_yfinance_config = _redirect_load_yfinance_config
+    config_loader.get_available_tiers = _redirect_get_available_tiers
+    config_loader.config_exists = _redirect_config_exists
+    
+except ImportError:
+    # If config_manager not available, use legacy implementation
+    pass
