@@ -100,6 +100,62 @@ data
 .env.development
 
 # ==============================================================================
+# AGENT DOCUMENTATION LIFECYCLE (HRBP SYSTEM)
+# ==============================================================================
+
+# Agent local documentation - track structure only, not content
+# Short-term operational data: performance logs, temp analysis, reports
+agents/local/*/performance/*
+!agents/local/*/performance/.gitkeep
+agents/local/*/analysis/*
+!agents/local/*/analysis/.gitkeep
+agents/local/*/reports/*
+!agents/local/*/reports/.gitkeep
+agents/local/*/temp/*
+!agents/local/*/temp/.gitkeep
+
+# Shared agent coordination - local only
+agents/local/shared/coordination/*
+!agents/local/shared/coordination/.gitkeep
+agents/local/shared/system/*
+!agents/local/shared/system/.gitkeep
+
+# Agent performance logs - comprehensive exclusion patterns
+**/agent_performance_*.json
+**/agent_performance_*.log
+**/agent_analysis_*.md
+**/agent_analysis_*.json
+**/agent_report_*.md
+**/agent_report_*.txt
+**/hrbp_*.json
+**/hrbp_*.log
+**/hrbp_*.md
+
+# Agent temporary files - pattern-based exclusion
+agents/local/**/temp_*
+agents/local/**/tmp_*
+agents/local/**/*_temp_*
+agents/local/**/*_tmp_*
+agents/local/**/coordination_log_*.json
+agents/local/**/performance_log_*.json
+
+# HRBP-specific local documentation patterns
+agents/local/hrbp-agent/**/*.json
+agents/local/hrbp-agent/**/*.log
+agents/local/hrbp-agent/**/*.md
+agents/local/hrbp-agent/**/*.txt
+!agents/local/hrbp-agent/**/.gitkeep
+!agents/local/hrbp-agent/**/README.md
+
+# Agent-coordinator local documentation patterns
+agents/local/agent-coordinator/**/*.json
+agents/local/agent-coordinator/**/*.log
+agents/local/agent-coordinator/**/*.md
+agents/local/agent-coordinator/**/*.txt
+!agents/local/agent-coordinator/**/.gitkeep
+!agents/local/agent-coordinator/**/README.md
+
+# ==============================================================================
 # PYTHON AND DEVELOPMENT
 # ==============================================================================
 

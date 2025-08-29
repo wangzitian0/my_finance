@@ -1,0 +1,115 @@
+# Agent Documentation Lifecycle Configuration
+# HRBP System Infrastructure for Agent Performance Management
+
+# Documentation lifecycle stages
+lifecycle_stages:
+  short_term:
+    description: "Local files - session-based operational data"
+    retention: "1-7 days"
+    location: "agents/local/{agent_name}/"
+    git_tracked: false
+    purpose: "Performance logs, temporary analysis, session data"
+    
+  medium_term:
+    description: "GitHub Issues - consolidated reports and tracking"
+    retention: "weeks to months"
+    location: "GitHub Issues with labels"
+    git_tracked: true
+    purpose: "Milestone tracking, consolidated reports, decision records"
+    
+  long_term:
+    description: "Agent description files - permanent policies and capabilities"
+    retention: "permanent"
+    location: "agents/{agent_name}.md or common/config/"
+    git_tracked: true
+    purpose: "Core capabilities, architectural decisions, permanent policies"
+
+# Agent directory structure
+agent_directories:
+  base_path: "agents/local"
+  structure:
+    performance: "Performance logs and metrics"
+    analysis: "Temporary analysis files" 
+    reports: "Local report drafts"
+    temp: "Temporary working files"
+  
+  shared:
+    coordination: "Inter-agent coordination logs"
+    system: "System-wide performance data"
+
+# File naming conventions
+naming_conventions:
+  performance_log: "performance_log_{YYYYMMDD}_{HHMMSS}.json"
+  analysis_report: "analysis_report_{YYYYMMDD}_{HHMMSS}.md"
+  temp_file: "temp_task_{task_id}_{YYYYMMDD}.txt"
+  coordination_log: "coordination_log_{YYYYMMDD}.json"
+  hrbp_analysis: "hrbp_analysis_{agent_name}_{YYYYMMDD}.json"
+
+# Integration points
+integration:
+  centralized_config: true
+  config_path: "common/config/"
+  uses_directory_manager: true
+  ssot_compliance: true
+  
+  p3_workflow:
+    env_status: "Can include agent performance metrics"
+    e2e_testing: "May generate local performance logs"
+    build_data: "Links to build_data structure for permanent storage"
+
+# HRBP-specific configuration
+hrbp_system:
+  agent_types:
+    - "hrbp-agent"
+    - "agent-coordinator"
+    - "git-ops-agent"
+    - "dev-quality-agent"
+    - "data-engineer-agent"
+    - "infra-ops-agent"
+    - "monitoring-agent"
+    - "backend-architect-agent"
+    
+  performance_metrics:
+    - "task_completion_time"
+    - "quality_scores"
+    - "error_rates"
+    - "coordination_efficiency"
+    - "resource_utilization"
+    
+  reporting_intervals:
+    local_logs: "per_session"
+    consolidated_reports: "weekly"
+    capability_assessments: "monthly"
+
+# Directory paths (SSOT integration)
+paths:
+  agents_local: "agents/local"
+  config_base: "common/config"
+  build_data_logs: "build_data/logs"
+  monitoring: "common/config/monitoring"
+  
+# File permissions and access patterns
+permissions:
+  local_files: "rw-r--r--"  # Readable by all, writable by agent
+  shared_files: "rw-rw-r--"  # Writable by agent group
+  temp_files: "rw-------"    # Private to session
+
+# Cleanup policies
+cleanup:
+  temp_files: "24_hours"
+  performance_logs: "7_days"
+  analysis_files: "30_days"
+  coordination_logs: "14_days"
+  
+# Storage optimization
+storage:
+  compression: false  # For local files
+  encryption: false   # Local development environment
+  backup_to_build_data: true  # Important logs backed up to build_data/logs
+  
+# Monitoring integration
+monitoring:
+  track_file_sizes: true
+  alert_disk_usage: "1GB"
+  monitor_agent_activity: true
+  performance_dashboards: true
