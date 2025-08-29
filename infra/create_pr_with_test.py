@@ -454,7 +454,16 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.5. CRITICAL: Sync with latest main and rebase
     print("\n🔄 Syncing with latest main branch...")
-    run_command("git fetch origin main", "Fetching latest main")
+    
+    # First, update local main branch to match remote
+    print("🔄 Updating local main branch...")
+    current_branch_backup = current_branch  # Save current branch
+    run_command("git checkout main", "Switching to main branch")
+    run_command("git pull origin main", "Pulling latest changes to main")
+    run_command(f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}")
+    
+    # Fetch origin to ensure we have latest refs
+    run_command("git fetch origin", "Fetching all latest changes")
 
     # Check if current branch is behind main
     behind_check = run_command(
@@ -465,15 +474,15 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         print(f"⚠️  Current branch is {commits_behind} commits behind origin/main")
 
         # Rebase onto latest main
-        print("🔄 Rebasing onto latest origin/main...")
-        run_command("git rebase origin/main", "Rebasing onto origin/main")
+        print("🔄 Rebasing onto latest main...")
+        run_command("git rebase main", "Rebasing onto latest main")
 
         # Data is now part of main repository, no separate handling needed
         print("ℹ️  Data directory is integrated in main repository")
 
         print("✅ Rebase completed - branch is now up to date")
     else:
-        print("✅ Branch is already up to date with origin/main")
+        print("✅ Branch is already up to date with main")
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
