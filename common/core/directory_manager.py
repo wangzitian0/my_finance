@@ -316,6 +316,45 @@ class DirectoryManager:
         """Get cache directory path"""
         return self.root_path / self.config["common"]["cache"]
 
+    def get_agents_local_path(self, agent_name: Optional[str] = None) -> Path:
+        """Get agent local documentation path
+        
+        Args:
+            agent_name: Specific agent name (e.g., 'hrbp-agent', 'agent-coordinator')
+                       If None, returns base agents/local path
+        
+        Returns:
+            Path to agent local directory
+        """
+        base_path = Path(self.config["agents"]["local"])
+        if agent_name:
+            return self.root_path / str(base_path).format(agent_name=agent_name)
+        return self.root_path / base_path
+
+    def get_agent_performance_path(self, agent_name: str) -> Path:
+        """Get agent performance logs path"""
+        performance_path = self.config["agents"]["performance"].format(agent_name=agent_name)
+        return self.root_path / performance_path
+
+    def get_agent_analysis_path(self, agent_name: str) -> Path:
+        """Get agent analysis files path"""
+        analysis_path = self.config["agents"]["analysis"].format(agent_name=agent_name)
+        return self.root_path / analysis_path
+
+    def get_agent_reports_path(self, agent_name: str) -> Path:
+        """Get agent reports path"""
+        reports_path = self.config["agents"]["reports"].format(agent_name=agent_name)
+        return self.root_path / reports_path
+
+    def get_agent_temp_path(self, agent_name: str) -> Path:
+        """Get agent temporary files path"""
+        temp_path = self.config["agents"]["temp"].format(agent_name=agent_name)
+        return self.root_path / temp_path
+
+    def get_agents_shared_path(self) -> Path:
+        """Get shared agent coordination path"""
+        return self.root_path / self.config["agents"]["shared"]
+
     def map_legacy_path(self, legacy_stage: str) -> Optional[DataLayer]:
         """Map legacy stage paths to new layer structure"""
         mapping = {
@@ -652,6 +691,36 @@ def get_source_path(
 ) -> Path:
     """Get source-specific directory path using SSOT directory manager"""
     return directory_manager.get_source_path(source, layer, date_partition, ticker)
+
+
+def get_agents_local_path(agent_name: Optional[str] = None) -> Path:
+    """Get agent local documentation path using SSOT directory manager"""
+    return directory_manager.get_agents_local_path(agent_name)
+
+
+def get_agent_performance_path(agent_name: str) -> Path:
+    """Get agent performance logs path using SSOT directory manager"""
+    return directory_manager.get_agent_performance_path(agent_name)
+
+
+def get_agent_analysis_path(agent_name: str) -> Path:
+    """Get agent analysis files path using SSOT directory manager"""
+    return directory_manager.get_agent_analysis_path(agent_name)
+
+
+def get_agent_reports_path(agent_name: str) -> Path:
+    """Get agent reports path using SSOT directory manager"""
+    return directory_manager.get_agent_reports_path(agent_name)
+
+
+def get_agent_temp_path(agent_name: str) -> Path:
+    """Get agent temporary files path using SSOT directory manager"""
+    return directory_manager.get_agent_temp_path(agent_name)
+
+
+def get_agents_shared_path() -> Path:
+    """Get shared agent coordination path using SSOT directory manager"""
+    return directory_manager.get_agents_shared_path()
 
 
 def ensure_data_structure():

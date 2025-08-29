@@ -1,0 +1,76 @@
+# HRBP Automation Configuration
+# 20-PR Cycle Automation for Human Resources Business Partner triggers
+# Issue #167 - HRBP review mechanism automation
+
+hrbp_automation:
+  # Core configuration
+  pr_cycle_threshold: 20  # Number of PRs to trigger HRBP cycle
+  enabled: true
+  emergency_override: false
+  
+  # Tracking configuration
+  tracking:
+    counter_file: "hrbp_pr_counter.json"
+    history_file: "hrbp_trigger_history.json" 
+    max_history_entries: 100
+    
+  # Trigger conditions
+  triggers:
+    pr_merge_to_main: true
+    manual_trigger: true
+    time_based: false  # Future: time-based triggers
+    
+  # HRBP workflows to trigger
+  workflows:
+    agent_performance_analysis: true
+    documentation_consolidation: true
+    cross_agent_evaluation: true
+    performance_optimization: true
+    
+  # Integration settings
+  integration:
+    git_hooks: true
+    p3_commands: true
+    monitoring_integration: true
+    
+  # Notification settings
+  notifications:
+    console_output: true
+    log_file: true
+    github_issue: false  # Future: create GitHub issue
+    
+  # Testing and validation
+  testing:
+    dry_run_mode: false
+    validation_checks: true
+    rollback_capability: true
+
+# Agent performance thresholds for HRBP evaluation
+agent_performance:
+  success_rate_minimum: 0.85  # 85% success rate required
+  average_execution_time_max: 30000  # 30 seconds max average
+  error_categories:
+    critical_max: 0  # No critical errors allowed
+    high_max: 2      # Max 2 high priority errors per cycle
+    medium_max: 5    # Max 5 medium priority errors per cycle
+  
+# Automation safety features
+safety:
+  max_consecutive_failures: 3
+  cooldown_period_hours: 24
+  manual_approval_required: false
+  backup_before_optimization: true
+
+# Documentation consolidation settings
+documentation:
+  source_directories:
+    - "common/"
+    - "infra/"
+    - "dcf_engine/"
+    - "ETL/"
+    - "graph_rag/"
+  target_format: "github_issues"
+  consolidation_rules:
+    merge_similar_topics: true
+    preserve_local_notes: true
+    create_cross_references: true

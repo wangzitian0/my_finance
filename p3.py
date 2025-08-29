@@ -224,6 +224,7 @@ class P3CLI:
             # Git Hooks Management
             "install-hooks": f"pixi run python {self.project_root}/scripts/install_git_hooks.py",
             "check-hooks": f"pixi run python {self.project_root}/scripts/check_git_hooks.py",
+            "install-hrbp-hooks": f"pixi run python {self.project_root}/scripts/install_hrbp_hooks.py",
             # Legacy DCF Commands
             "dcf-analysis-legacy": "pixi run python dcf_engine/legacy_testing/m7_dcf_analysis.py",
             "dcf-report-legacy": "pixi run python dcf_engine/legacy_testing/generate_dcf_report.py",
@@ -237,6 +238,12 @@ class P3CLI:
             "monitoring-summary": "pixi run python -c 'from common.monitoring_dashboard import print_monitoring_summary; print_monitoring_summary(7)'",
             "monitoring-report": "pixi run python -c 'from common.monitoring_dashboard import export_monitoring_report; print(f\"Report: {export_monitoring_report(7)}\")'",
             "monitoring-stats": "pixi run python -c 'from common.execution_monitor import get_monitor; import json; print(json.dumps(get_monitor().get_execution_stats(7), indent=2))'",
+            # HRBP Automation Commands (20-PR Cycle Automation)
+            "hrbp-status": "pixi run python infra/hrbp_automation.py status",
+            "hrbp-record-pr": "pixi run python infra/hrbp_automation.py record-pr {pr_number}",
+            "hrbp-manual-trigger": "pixi run python infra/hrbp_automation.py manual-trigger",
+            "hrbp-history": "pixi run python infra/hrbp_automation.py history",
+            "hrbp-config": "pixi run python infra/hrbp_automation.py config",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -333,6 +340,27 @@ class P3CLI:
                 cmd = "pixi run python tests/test_directory_structure_protection.py"
             return cmd
 
+        # HRBP Automation Commands
+        if command == "hrbp-record-pr":
+            if not args:
+                print("❌ Error: PR number is required")
+                print('Usage: p3 hrbp-record-pr PR_NUMBER')
+                sys.exit(1)
+            
+            pr_number = args[0]
+            cmd = f"pixi run python infra/hrbp_automation.py record-pr {pr_number}"
+            if len(args) > 1:
+                cmd += " " + " ".join(args[1:])
+            return cmd
+
+        if command in ["hrbp-status", "hrbp-manual-trigger", "hrbp-history", "hrbp-config"]:
+            # These commands don't need special parameter handling
+            base_cmd = command.replace("hrbp-", "")
+            cmd = f"pixi run python infra/hrbp_automation.py {base_cmd}"
+            if args:
+                cmd += " " + " ".join(args)
+            return cmd
+
         return None
 
     def show_help(self):
@@ -411,11 +439,19 @@ Status & Validation:
 Git Hooks Management:
   install-hooks          Install pre-push hook to enforce create-pr workflow
   check-hooks            Check if git hooks are properly installed
+  install-hrbp-hooks     Install post-merge hook for HRBP automation
 
 Agent Execution Monitoring (Issue #180):
   monitoring-summary     Show 7-day agent execution monitoring summary
   monitoring-report      Export comprehensive monitoring report to JSON
   monitoring-stats       Show raw execution statistics (JSON format)
+
+HRBP Automation (20-PR Cycle Management):
+  hrbp-status            Show current HRBP cycle status and progress
+  hrbp-record-pr PR_NUM  Record PR merge and check for HRBP trigger
+  hrbp-manual-trigger    Manually trigger HRBP cycle (emergency use)
+  hrbp-history           Show recent HRBP trigger history
+  hrbp-config            Show HRBP automation configuration
 
 Scopes: f2 m7 n100 v3k (default: m7)
   f2     - Fast 2 companies (development testing)
