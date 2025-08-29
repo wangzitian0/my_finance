@@ -130,63 +130,46 @@ def check_neo4j() -> Dict:
     }
 
 
-def check_data_symlink() -> Dict:
-    """Check data directory symlink"""
+def check_data_directory() -> Dict:
+    """Check build_data directory (current data architecture)"""
     if DIRECTORY_MANAGER_AVAILABLE:
         # Use directory manager to get the proper data path
         data_root = directory_manager.get_data_root()
-        data_path = Path("data")  # Legacy symlink location
 
-        if not data_path.exists():
+        if not data_root.exists():
             return {
-                "name": "Data Directory Symlink",
+                "name": "Data Directory",
                 "status": "❌ Missing",
-                "details": f"data/ symlink not found, should point to {data_root}",
+                "details": f"Data directory not found at {data_root}",
                 "commands": ["p3 env setup"],
             }
 
-        if not data_path.is_symlink():
+        # Check if legacy data symlink exists (should not)
+        legacy_data_path = Path("data")
+        if legacy_data_path.exists():
             return {
-                "name": "Data Directory Symlink",
-                "status": "⚠️ Not a Symlink",
-                "details": f"data/ exists but is not a symlink, should point to {data_root}",
-                "commands": ["rm -rf data", "p3 env setup"],
+                "name": "Data Directory",
+                "status": "⚠️ Legacy Data Symlink Found",
+                "details": f"Legacy data/ symlink found. Current architecture uses {data_root}",
+                "commands": ["rm -rf data", "# Data now at build_data/"],
             }
     else:
-        # Fallback to legacy behavior
-        data_path = Path("data")
+        # Fallback: check for build_data directory directly
+        data_root = Path("build_data")
 
-        if not data_path.exists():
+        if not data_root.exists():
             return {
-                "name": "Data Directory Symlink",
+                "name": "Data Directory",
                 "status": "❌ Missing",
-                "details": "data/ symlink not found",
+                "details": "build_data/ directory not found",
                 "commands": ["p3 env setup"],
             }
-
-        if not data_path.is_symlink():
-            return {
-                "name": "Data Directory Symlink",
-                "status": "⚠️ Not a Symlink",
-                "details": "data/ exists but is not a symlink",
-                "commands": ["rm -rf data", "p3 env setup"],
-            }
-
-    target = data_path.resolve()
-    if target.exists():
-        status_text = "✅ Ready"
-        details = f"Links to: {target}"
-        commands = []
-    else:
-        status_text = "❌ Broken Link"
-        details = f"Points to non-existent: {target}"
-        commands = ["p3 env setup"]
 
     return {
-        "name": "Data Directory Symlink",
-        "status": status_text,
-        "details": details,
-        "commands": commands,
+        "name": "Data Directory",
+        "status": "✅ Ready",
+        "details": f"Data architecture ready at {data_root}",
+        "commands": [],
     }
 
 
@@ -233,7 +216,7 @@ def main():
         check_pixi(),
         check_podman(),
         check_neo4j(),
-        check_data_symlink(),
+        check_data_directory(),
         check_python_deps(),
     ]
 
