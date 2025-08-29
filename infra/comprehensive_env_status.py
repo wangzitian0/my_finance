@@ -135,7 +135,7 @@ def check_data_directory() -> Dict:
     if DIRECTORY_MANAGER_AVAILABLE:
         # Use directory manager to get the proper data path
         data_root = directory_manager.get_data_root()
-        
+
         if not data_root.exists():
             return {
                 "name": "Data Directory",
@@ -166,7 +166,7 @@ def check_data_directory() -> Dict:
             }
 
     return {
-        "name": "Data Directory", 
+        "name": "Data Directory",
         "status": "✅ Ready",
         "details": f"Data architecture ready at {data_root}",
         "commands": [],
