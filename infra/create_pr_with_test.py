@@ -454,14 +454,16 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.5. CRITICAL: Sync with latest main and rebase
     print("\n🔄 Syncing with latest main branch...")
-    
+
     # First, update local main branch to match remote
     print("🔄 Updating local main branch...")
     current_branch_backup = current_branch  # Save current branch
     run_command("git checkout main", "Switching to main branch")
     run_command("git pull origin main", "Pulling latest changes to main")
-    run_command(f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}")
-    
+    run_command(
+        f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
+    )
+
     # Fetch origin to ensure we have latest refs
     run_command("git fetch origin", "Fetching all latest changes")
 
