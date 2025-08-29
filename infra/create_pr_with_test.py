@@ -578,7 +578,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         # Since we rebased onto origin/main, we MUST force push
         print(f"🔄 Force-pushing rebased branch {current_branch} with p3 authorization...")
         print("   Note: Force push is required after rebase to update remote branch")
-        
+
         push_result = subprocess.run(
             ["git", "push", "--force-with-lease", "origin", current_branch],
             env=push_env,
@@ -594,7 +594,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
             print(f"❌ Force push failed: {push_result.stderr}")
             if "pre-push hook" in push_result.stderr:
                 print("💡 This indicates the pre-push hook blocked the push")
-                print("🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection")
+                print(
+                    "🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection"
+                )
             else:
                 print("💡 Force push failed - this should not happen after clean rebase")
                 print("🔍 Debug info:")
