@@ -318,11 +318,11 @@ class DirectoryManager:
 
     def get_agents_local_path(self, agent_name: Optional[str] = None) -> Path:
         """Get agent local documentation path
-        
+
         Args:
             agent_name: Specific agent name (e.g., 'hrbp-agent', 'agent-coordinator')
                        If None, returns base agents/local path
-        
+
         Returns:
             Path to agent local directory
         """

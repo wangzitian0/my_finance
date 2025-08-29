@@ -453,27 +453,51 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         sys.exit(1)
 
     # 2.5. CRITICAL: Sync with latest main and rebase
-    print("\n🔄 Syncing with latest main branch...")
-    run_command("git fetch origin main", "Fetching latest main")
+    print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
 
-    # Check if current branch is behind main
-    behind_check = run_command(
-        "git log --oneline HEAD..origin/main", "Checking if branch is behind main", check=False
+    # Step 1: ALWAYS fetch latest changes from remote
+    run_command("git fetch origin", "Fetching all latest remote changes")
+
+    # Step 2: Update local main branch to match remote main
+    print("🔄 Ensuring local main branch matches remote main...")
+    current_branch_backup = current_branch  # Save current branch
+    run_command("git checkout main", "Switching to main branch")
+    run_command("git reset --hard origin/main", "Hard reset main to match origin/main")
+    run_command(
+        f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
     )
-    if behind_check and behind_check.stdout.strip():
-        commits_behind = len(behind_check.stdout.strip().split("\n"))
-        print(f"⚠️  Current branch is {commits_behind} commits behind origin/main")
+    print("✅ Local main branch is now identical to remote main")
 
-        # Rebase onto latest main
-        print("🔄 Rebasing onto latest origin/main...")
-        run_command("git rebase origin/main", "Rebasing onto origin/main")
+    # Step 3: ALWAYS rebase current feature branch onto origin/main
+    print("🔄 Rebasing feature branch onto latest origin/main...")
+    print("   This ensures clean PR history with no conflicts")
 
-        # Data is now part of main repository, no separate handling needed
-        print("ℹ️  Data directory is integrated in main repository")
+    rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
 
-        print("✅ Rebase completed - branch is now up to date")
+    if rebase_result and rebase_result.returncode == 0:
+        print("✅ Rebase completed successfully")
     else:
-        print("✅ Branch is already up to date with origin/main")
+        print("⚠️  Rebase encountered issues, checking status...")
+        # Check if we're in a rebase state
+        status_result = run_command("git status", "Checking git status", check=False)
+        if status_result and "rebase in progress" in status_result.stdout:
+            print("❌ Rebase has conflicts that require manual resolution")
+            print("💡 Please resolve conflicts manually and run 'git rebase --continue'")
+            print("   Then re-run this command")
+            sys.exit(1)
+        else:
+            print("✅ Rebase completed (no conflicts detected)")
+
+    # Step 4: Verify the rebase created a clean history
+    merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
+    main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
+
+    if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
+        print("✅ Feature branch is cleanly based on latest origin/main")
+    else:
+        print("⚠️  Warning: Branch may not be cleanly rebased, but proceeding...")
+        print(f"   Merge base: {merge_base.stdout.strip() if merge_base else 'unknown'}")
+        print(f"   Main HEAD: {main_head.stdout.strip() if main_head else 'unknown'}")
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
@@ -551,62 +575,34 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         # Use subprocess with modified environment instead of run_command
         import subprocess
 
-        print(f"🔄 Pushing branch {current_branch} with p3 authorization...")
+        # Since we rebased onto origin/main, we MUST force push
+        print(f"🔄 Force-pushing rebased branch {current_branch} with p3 authorization...")
+        print("   Note: Force push is required after rebase to update remote branch")
+
         push_result = subprocess.run(
-            ["git", "push", "-u", "origin", current_branch],
+            ["git", "push", "--force-with-lease", "origin", current_branch],
             env=push_env,
             capture_output=True,
             text=True,
         )
 
         if push_result.returncode == 0:
-            print(f"✅ Successfully pushed {current_branch}")
+            print(f"✅ Successfully force-pushed {current_branch}")
             if push_result.stdout.strip():
                 print(f"   Output: {push_result.stdout.strip()}")
         else:
-            # Handle push failures
-            if "non-fast-forward" in push_result.stderr or "rejected" in push_result.stderr:
-                print("⚠️  Remote branch has diverged. Attempting to resolve...")
-                # Fetch and rebase
-                run_command("git fetch origin", "Fetching latest changes")
-                rebase_result = run_command(
-                    f"git rebase origin/{current_branch}", "Rebasing on remote changes", check=False
+            print(f"❌ Force push failed: {push_result.stderr}")
+            if "pre-push hook" in push_result.stderr:
+                print("💡 This indicates the pre-push hook blocked the push")
+                print(
+                    "🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection"
                 )
-                if rebase_result and rebase_result.returncode == 0:
-                    # Try push again after rebase with authorization
-                    print("🔄 Retrying push after rebase...")
-                    retry_result = subprocess.run(
-                        ["git", "push", "origin", current_branch],
-                        env=push_env,
-                        capture_output=True,
-                        text=True,
-                    )
-                    if retry_result.returncode != 0:
-                        print(f"❌ Retry push failed: {retry_result.stderr}")
-                        sys.exit(1)
-                    else:
-                        print(f"✅ Successfully pushed {current_branch} after rebase")
-                else:
-                    print("❌ Rebase failed. Using force-with-lease for safety...")
-                    force_result = subprocess.run(
-                        ["git", "push", "--force-with-lease", "origin", current_branch],
-                        env=push_env,
-                        capture_output=True,
-                        text=True,
-                    )
-                    if force_result.returncode != 0:
-                        print(f"❌ Force push failed: {force_result.stderr}")
-                        sys.exit(1)
-                    else:
-                        print(f"✅ Successfully force-pushed {current_branch}")
             else:
-                print(f"❌ Push failed with error: {push_result.stderr}")
-                if "pre-push hook" in push_result.stderr:
-                    print("💡 This indicates the pre-push hook blocked the push")
-                    print(
-                        "🔧 Check if git hooks are properly installed with P3_CREATE_PR_PUSH detection"
-                    )
-                sys.exit(1)
+                print("💡 Force push failed - this should not happen after clean rebase")
+                print("🔍 Debug info:")
+                print(f"   stdout: {push_result.stdout}")
+                print(f"   stderr: {push_result.stderr}")
+            sys.exit(1)
     except Exception as e:
         print(f"❌ Push failed with exception: {e}")
         sys.exit(1)
@@ -721,8 +717,8 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     # Amend commit with updated message
     run_command(f'git commit --amend -m "{updated_msg}"', "Updating commit with PR URL")
 
-    # Force push the updated commit with p3 authorization
-    print("🔄 Force pushing updated commit with p3 authorization...")
+    # Force push the amended commit
+    print("🔄 Force-pushing amended commit with PR URL...")
     final_push_result = subprocess.run(
         ["git", "push", "--force-with-lease"],
         env=push_env,  # Reuse the environment with P3_CREATE_PR_PUSH
@@ -734,7 +730,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         print(f"❌ Final push failed: {final_push_result.stderr}")
         sys.exit(1)
     else:
-        print("✅ Updated commit pushed successfully")
+        print("✅ Updated commit with PR URL pushed successfully")
 
     # 10. Note PR for HRBP cycle tracking (PR will be tracked when it's actually merged to main)
     try:

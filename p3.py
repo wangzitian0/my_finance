@@ -344,9 +344,9 @@ class P3CLI:
         if command == "hrbp-record-pr":
             if not args:
                 print("❌ Error: PR number is required")
-                print('Usage: p3 hrbp-record-pr PR_NUMBER')
+                print("Usage: p3 hrbp-record-pr PR_NUMBER")
                 sys.exit(1)
-            
+
             pr_number = args[0]
             cmd = f"pixi run python infra/hrbp_automation.py record-pr {pr_number}"
             if len(args) > 1:
