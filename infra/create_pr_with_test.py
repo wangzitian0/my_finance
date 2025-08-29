@@ -454,24 +454,26 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.5. CRITICAL: Sync with latest main and rebase
     print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
-    
+
     # Step 1: ALWAYS fetch latest changes from remote
     run_command("git fetch origin", "Fetching all latest remote changes")
-    
+
     # Step 2: Update local main branch to match remote main
     print("🔄 Ensuring local main branch matches remote main...")
     current_branch_backup = current_branch  # Save current branch
     run_command("git checkout main", "Switching to main branch")
     run_command("git reset --hard origin/main", "Hard reset main to match origin/main")
-    run_command(f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}")
+    run_command(
+        f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
+    )
     print("✅ Local main branch is now identical to remote main")
-    
+
     # Step 3: ALWAYS rebase current feature branch onto origin/main
     print("🔄 Rebasing feature branch onto latest origin/main...")
     print("   This ensures clean PR history with no conflicts")
-    
+
     rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
-    
+
     if rebase_result and rebase_result.returncode == 0:
         print("✅ Rebase completed successfully")
     else:
@@ -485,11 +487,11 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
             sys.exit(1)
         else:
             print("✅ Rebase completed (no conflicts detected)")
-    
+
     # Step 4: Verify the rebase created a clean history
     merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
     main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
-    
+
     if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
         print("✅ Feature branch is cleanly based on latest origin/main")
     else:
