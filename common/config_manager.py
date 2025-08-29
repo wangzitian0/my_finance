@@ -89,7 +89,6 @@ class ConfigManager:
                 path="directory_structure.yml",
                 description="SSOT directory structure configuration",
             ),
-            
             # Company Lists (Dataset Tiers)
             "magnificent_7": ConfigSchema(
                 name="magnificent_7",
@@ -111,7 +110,6 @@ class ConfigManager:
                 path="list_vti_3500.yml",
                 description="VTI 3500+ companies for production (V3K tier)",
             ),
-            
             # SEC Edgar Configurations
             "sec_edgar_f2": ConfigSchema(
                 name="sec_edgar_f2",
@@ -120,7 +118,7 @@ class ConfigManager:
             ),
             "sec_edgar_m7": ConfigSchema(
                 name="sec_edgar_m7",
-                path="sec_edgar_m7.yml", 
+                path="sec_edgar_m7.yml",
                 description="SEC Edgar configuration for M7 tier",
             ),
             "sec_edgar_n100": ConfigSchema(
@@ -133,7 +131,6 @@ class ConfigManager:
                 path="sec_edgar_v3k.yml",
                 description="SEC Edgar configuration for V3K tier",
             ),
-            
             # Stage Configurations
             "stage_00_original_sec_edgar": ConfigSchema(
                 name="stage_00_original_sec_edgar",
@@ -150,7 +147,6 @@ class ConfigManager:
                 path="stage_00_target_pre_pr.yml",
                 description="Pre-PR target configuration",
             ),
-            
             # Common Config File
             "common_config": ConfigSchema(
                 name="common_config",
@@ -371,16 +367,16 @@ class ConfigManager:
         """
         tier_config_map = {
             "f2": "fast_2",
-            "m7": "magnificent_7", 
+            "m7": "magnificent_7",
             "n100": "nasdaq_100",
             "v3k": "vti_3500",
         }
-        
+
         config_name = tier_config_map.get(tier.lower())
         if not config_name:
             # Try direct tier name
             config_name = tier.lower()
-            
+
         return self.get_config(config_name)
 
     def load_sec_edgar_config(self, tier: str) -> Dict[str, Any]:
@@ -447,7 +443,7 @@ class ConfigManager:
         """
         config = self.load_dataset_config(tier)
         companies = config.get("companies", {})
-        
+
         if isinstance(companies, dict):
             return companies.get(ticker)
         elif isinstance(companies, list):
@@ -465,7 +461,7 @@ class ConfigManager:
         config = self.load_dataset_config(tier)
         companies = config.get("companies", {})
         cik_mapping = {}
-        
+
         if isinstance(companies, dict):
             for ticker, company_info in companies.items():
                 if company_info and company_info.get("cik"):
@@ -478,7 +474,7 @@ class ConfigManager:
                 cik = company.get("cik")
                 if ticker and cik:
                     cik_mapping[ticker] = str(cik).zfill(10)
-                    
+
         return cik_mapping
 
     def is_sec_enabled(self, tier: str) -> bool:
@@ -518,16 +514,16 @@ class ConfigManager:
             config = self.load_dataset_config(tier)
             if not config:
                 return False
-                
+
             companies = config.get("companies", {})
             if not companies:
                 return False
-                
+
             ticker_count = config.get("ticker_count", 0)
             actual_count = len(self.get_company_tickers(tier))
             if ticker_count != actual_count:
                 return False
-                
+
             return True
         except Exception:
             return False
@@ -540,13 +536,13 @@ class ConfigManager:
         """
         Load the common configuration from common_config.yml
         Replaces config.load_common_config()
-        
+
         DEPRECATED: Use config_manager.get_config('common_config') instead
         """
         warnings.warn(
             "load_common_config() is deprecated. Use config_manager.get_config('common_config') instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
         return self.get_config("common_config")
 
@@ -558,6 +554,7 @@ config_manager = ConfigManager()
 # ============================================================================
 # GLOBAL CONVENIENCE FUNCTIONS FOR BACKWARD COMPATIBILITY
 # ============================================================================
+
 
 def get_config(config_name: str) -> Dict[str, Any]:
     """Get configuration using global config manager"""
@@ -588,6 +585,7 @@ def reload_configs():
 # LEGACY SYSTEM COMPATIBILITY FUNCTIONS WITH DEPRECATION WARNINGS
 # ============================================================================
 
+
 # Replaces config.py functions
 def load_common_config() -> Dict[str, Any]:
     """
@@ -598,12 +596,12 @@ def load_common_config() -> Dict[str, Any]:
         "load_common_config() from config.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.get_config('common_config')' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.load_common_config()
 
 
-# Replaces config_loader.py functions  
+# Replaces config_loader.py functions
 def load_dataset_config(tier: str) -> Dict[str, Any]:
     """
     DEPRECATED: Load dataset configuration for given tier
@@ -613,7 +611,7 @@ def load_dataset_config(tier: str) -> Dict[str, Any]:
         "load_dataset_config() from config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.load_dataset_config(tier)' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.load_dataset_config(tier)
 
@@ -627,7 +625,7 @@ def load_sec_edgar_config(tier: str) -> Dict[str, Any]:
         "load_sec_edgar_config() from config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.load_sec_edgar_config(tier)' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.load_sec_edgar_config(tier)
 
@@ -641,7 +639,7 @@ def load_yfinance_config() -> Dict[str, Any]:
         "load_yfinance_config() from config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.load_yfinance_config()' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.load_yfinance_config()
 
@@ -656,7 +654,7 @@ def load_tier_config(tier: str) -> Dict[str, Any]:
         "load_tier_config() from unified_config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.load_dataset_config(tier)' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.load_dataset_config(tier)
 
@@ -670,7 +668,7 @@ def get_tier_tickers(tier: str) -> List[str]:
         "get_tier_tickers() from unified_config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.get_company_tickers(tier)' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.get_company_tickers(tier)
 
@@ -684,7 +682,7 @@ def get_tier_cik_mapping(tier: str) -> Dict[str, str]:
         "get_tier_cik_mapping() from unified_config_loader.py is deprecated. "
         "Use 'from common.config_manager import config_manager; config_manager.get_cik_mapping(tier)' instead.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return config_manager.get_cik_mapping(tier)
 
@@ -693,34 +691,35 @@ def get_tier_cik_mapping(tier: str) -> Dict[str, str]:
 # CLASS IMPORTS FOR COMPATIBILITY
 # ============================================================================
 
+
 # Allow imports like "from common.config_manager import ConfigLoader"
 class ConfigLoader:
     """
     DEPRECATED: Legacy ConfigLoader class for backward compatibility
     Use ConfigManager instead
     """
-    
+
     def __init__(self):
         warnings.warn(
             "ConfigLoader from config_loader.py is deprecated. "
             "Use 'from common.config_manager import config_manager' instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
         self._config_manager = config_manager
-    
+
     def load_dataset_config(self, tier: str) -> Dict[str, Any]:
         return self._config_manager.load_dataset_config(tier)
-    
+
     def load_sec_edgar_config(self, tier: str) -> Dict[str, Any]:
         return self._config_manager.load_sec_edgar_config(tier)
-    
+
     def load_yfinance_config(self) -> Dict[str, Any]:
         return self._config_manager.load_yfinance_config()
-    
+
     def get_available_tiers(self) -> List[str]:
         return self._config_manager.get_available_tiers()
-    
+
     def config_exists(self, filename: str) -> bool:
         return self._config_manager.config_exists(filename)
 
@@ -730,28 +729,28 @@ class UnifiedConfigLoader:
     DEPRECATED: Legacy UnifiedConfigLoader class for backward compatibility
     Use ConfigManager instead
     """
-    
+
     def __init__(self, config_dir: Path = None):
         warnings.warn(
             "UnifiedConfigLoader from unified_config_loader.py is deprecated. "
             "Use 'from common.config_manager import config_manager' instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
         self._config_manager = config_manager
-    
+
     def load_config(self, tier: str) -> Dict[str, Any]:
         return self._config_manager.load_dataset_config(tier)
-    
+
     def get_company_tickers(self, tier: str) -> List[str]:
         return self._config_manager.get_company_tickers(tier)
-    
+
     def get_cik_mapping(self, tier: str) -> Dict[str, str]:
         return self._config_manager.get_cik_mapping(tier)
-    
+
     def is_sec_enabled(self, tier: str) -> bool:
         return self._config_manager.is_sec_enabled(tier)
-    
+
     def validate_tier_config(self, tier: str) -> bool:
         return self._config_manager.validate_tier_config(tier)
 

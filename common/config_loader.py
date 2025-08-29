@@ -28,7 +28,7 @@ from common.core.directory_manager import directory_manager
 class ConfigLoader:
     """
     DEPRECATED: Unified configuration loader using common library
-    
+
     This class is deprecated. Use config_manager.ConfigManager instead.
     """
 
@@ -38,7 +38,7 @@ class ConfigLoader:
             "Use 'from common.config_manager import config_manager' instead. "
             "This class will be removed in a future version.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
         self.directory_manager = directory_manager
         self.config_dir = directory_manager.get_config_path()
@@ -113,30 +113,30 @@ config_loader = ConfigLoader()
 # Add redirect to config_manager functionality
 try:
     from .config_manager import config_manager
-    
+
     # Override methods to redirect to config_manager
     def _redirect_load_dataset_config(tier: str) -> Dict[str, Any]:
         return config_manager.load_dataset_config(tier)
-    
+
     def _redirect_load_sec_edgar_config(tier: str) -> Dict[str, Any]:
         return config_manager.load_sec_edgar_config(tier)
-    
+
     def _redirect_load_yfinance_config() -> Dict[str, Any]:
         return config_manager.load_yfinance_config()
-    
+
     def _redirect_get_available_tiers() -> list[str]:
         return config_manager.get_available_tiers()
-    
+
     def _redirect_config_exists(filename: str) -> bool:
         return config_manager.config_exists(filename)
-    
+
     # Monkey patch the global instance to redirect to config_manager
     config_loader.load_dataset_config = _redirect_load_dataset_config
-    config_loader.load_sec_edgar_config = _redirect_load_sec_edgar_config  
+    config_loader.load_sec_edgar_config = _redirect_load_sec_edgar_config
     config_loader.load_yfinance_config = _redirect_load_yfinance_config
     config_loader.get_available_tiers = _redirect_get_available_tiers
     config_loader.config_exists = _redirect_config_exists
-    
+
 except ImportError:
     # If config_manager not available, use legacy implementation
     pass

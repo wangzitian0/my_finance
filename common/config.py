@@ -21,9 +21,9 @@ import yaml
 def load_common_config():
     """
     DEPRECATED: Load the common configuration from common_config.yml in the common directory.
-    
+
     This function is deprecated. Use config_manager.get_config('common_config') instead.
-    
+
     Migration:
         OLD: from common.config import load_common_config; config = load_common_config()
         NEW: from common.config_manager import config_manager; config = config_manager.get_config('common_config')
@@ -33,13 +33,14 @@ def load_common_config():
         "Use 'from common.config_manager import config_manager; config_manager.get_config('common_config')' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
-    
+
     # Redirect to config_manager for actual functionality
     try:
         from .config_manager import config_manager
-        return config_manager.get_config('common_config')
+
+        return config_manager.get_config("common_config")
     except ImportError:
         # Fallback to legacy implementation if config_manager not available
         config_path = os.path.join(os.path.dirname(__file__), "common_config.yml")

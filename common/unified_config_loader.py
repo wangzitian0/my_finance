@@ -69,7 +69,7 @@ class UnifiedDatasetConfig:
 class UnifiedConfigLoader:
     """
     DEPRECATED: Loads and processes unified dataset configurations
-    
+
     This class is deprecated. Use config_manager.ConfigManager instead.
     """
 
@@ -79,9 +79,9 @@ class UnifiedConfigLoader:
             "Use 'from common.config_manager import config_manager' instead. "
             "This class will be removed in a future version.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
-        
+
         if config_dir is None:
             # Use DirectoryManager to get the correct config path
             directory_manager = DirectoryManager()
@@ -267,9 +267,10 @@ class UnifiedConfigLoader:
 
 
 # ============================================================================
-# DEPRECATED: Backward compatibility helper functions 
+# DEPRECATED: Backward compatibility helper functions
 # All functions redirect to config_manager with deprecation warnings
 # ============================================================================
+
 
 def load_tier_config(tier: DatasetTier) -> UnifiedDatasetConfig:
     """
@@ -281,17 +282,17 @@ def load_tier_config(tier: DatasetTier) -> UnifiedDatasetConfig:
         "Use 'from common.config_manager import config_manager; config_manager.load_dataset_config(tier)' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
-    
+
     # Redirect to config_manager if available
     try:
         from .config_manager import config_manager
-        
+
         # Convert DatasetTier enum to string
         tier_mapping = {
             DatasetTier.F2: "f2",
-            DatasetTier.M7: "m7", 
+            DatasetTier.M7: "m7",
             DatasetTier.N100: "n100",
             DatasetTier.V3K: "v3k",
         }
@@ -313,17 +314,17 @@ def get_tier_tickers(tier: DatasetTier) -> List[str]:
         "Use 'from common.config_manager import config_manager; config_manager.get_company_tickers(tier)' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
-    
+
     # Redirect to config_manager if available
     try:
         from .config_manager import config_manager
-        
+
         # Convert DatasetTier enum to string
         tier_mapping = {
             DatasetTier.F2: "f2",
-            DatasetTier.M7: "m7", 
+            DatasetTier.M7: "m7",
             DatasetTier.N100: "n100",
             DatasetTier.V3K: "v3k",
         }
@@ -345,17 +346,17 @@ def get_tier_cik_mapping(tier: DatasetTier) -> Dict[str, str]:
         "Use 'from common.config_manager import config_manager; config_manager.get_cik_mapping(tier)' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
-    
+
     # Redirect to config_manager if available
     try:
         from .config_manager import config_manager
-        
+
         # Convert DatasetTier enum to string
         tier_mapping = {
             DatasetTier.F2: "f2",
-            DatasetTier.M7: "m7", 
+            DatasetTier.M7: "m7",
             DatasetTier.N100: "n100",
             DatasetTier.V3K: "v3k",
         }

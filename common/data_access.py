@@ -27,10 +27,10 @@ from .core.directory_manager import directory_manager
 class DataAccess:
     """
     DEPRECATED: Centralized data access utility for consistent data directory operations.
-    
+
     This class is deprecated. Use DirectoryManager instead for SSOT path management.
     All methods in this class now redirect to DirectoryManager with deprecation warnings.
-    
+
     Migration:
         OLD: from common.data_access import DataAccess; data_access = DataAccess()
         NEW: from common.directory_manager import directory_manager
@@ -48,9 +48,9 @@ class DataAccess:
             "Use 'from common.directory_manager import directory_manager' instead. "
             "This class will be removed in a future version.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
-        
+
         if base_dir is None:
             # Use DirectoryManager SSOT for data root
             self.base_dir = directory_manager.get_data_root()
@@ -319,6 +319,7 @@ data_access = DataAccess()
 # All functions redirect to DirectoryManager
 # ============================================================================
 
+
 def get_data_path(*args, **kwargs) -> Path:
     """
     DEPRECATED: Convenience function to get data paths using the global DataAccess instance.
@@ -329,7 +330,7 @@ def get_data_path(*args, **kwargs) -> Path:
         "Use 'from common.directory_manager import directory_manager; directory_manager.get_data_root()' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return data_access.base_dir.joinpath(*args)
 
@@ -344,7 +345,7 @@ def get_build_path(build_timestamp: Optional[str] = None, branch: Optional[str] 
         "Use 'from common.directory_manager import directory_manager; directory_manager.get_build_path()' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return data_access.get_build_dir(build_timestamp, branch)
 
@@ -359,7 +360,7 @@ def get_config_path(config_name: str) -> Path:
         "Use 'from common.directory_manager import directory_manager; directory_manager.get_config_path()' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return data_access.get_config_file(config_name)
 
@@ -374,7 +375,7 @@ def get_log_path(job_id: str, timestamp: Optional[str] = None) -> Path:
         "Use 'from common.directory_manager import directory_manager; directory_manager.get_logs_path()' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     return data_access.get_log_file(job_id, timestamp)
 
@@ -389,7 +390,7 @@ def ensure_data_dir(*args, **kwargs) -> Path:
         "Use 'from common.directory_manager import directory_manager; directory_manager.ensure_directories()' instead. "
         "This function will be removed in a future version.",
         DeprecationWarning,
-        stacklevel=2
+        stacklevel=2,
     )
     path = get_data_path(*args, **kwargs)
     return data_access.ensure_dir_exists(path)
