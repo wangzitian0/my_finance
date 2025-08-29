@@ -233,6 +233,9 @@ class P3CLI:
             "test-yfinance": "pixi run python ETL/tests/integration/test_yfinance.py",
             "test-config": "pixi run python -m pytest ETL/tests/test_config.py -v",
             "test-dcf-report": "pixi run python -m pytest dcf_engine/test_dcf_report.py -v",
+            # Quality Gate Commands
+            "validate-quality": "pixi run python common/quality_gates.py {scope}",
+            "test-dcf-quality": "pixi run python -m pytest tests/test_dcf_report_quality.py -v",
             # Monitoring Commands (Issue #180)
             "monitoring-summary": "pixi run python -c 'from common.monitoring_dashboard import print_monitoring_summary; print_monitoring_summary(7)'",
             "monitoring-report": "pixi run python -c 'from common.monitoring_dashboard import export_monitoring_report; print(f\"Report: {export_monitoring_report(7)}\")'",
@@ -258,7 +261,7 @@ class P3CLI:
 
     def _handle_scope_command(self, command: str, args: List[str]) -> str:
         """Handle commands that support scope parameters."""
-        scope_commands = ["build", "fast-build", "refresh", "e2e"]
+        scope_commands = ["build", "fast-build", "refresh", "e2e", "validate-quality"]
 
         if command in scope_commands:
             scope = args[0] if args else None
@@ -270,6 +273,10 @@ class P3CLI:
             if command == "e2e":
                 # E2E command passes scope to create_pr_with_test.py for proper F2/M7 testing
                 return f"pixi run python infra/create_pr_with_test.py --skip-pr-creation --scope {resolved_scope}"
+            elif command == "validate-quality":
+                # Quality validation command with scope
+                cmd_template = self.commands[command]
+                return cmd_template.format(scope=resolved_scope)
             else:
                 # Build commands use scope directly
                 cmd_template = self.commands[command]
@@ -402,7 +409,9 @@ SEC Integration:
   verify-sec-data        Verify SEC data availability
   test-sec-config        Test SEC orthogonal configuration system
 
-Status & Validation:
+Quality Gates & Validation:
+  validate-quality [scope] Run comprehensive data pipeline quality validation
+  test-dcf-quality       Run DCF report quality validation tests
   status                 Quick environment status
   cache-status           Check cache status
   verify-env             Verify environment dependencies

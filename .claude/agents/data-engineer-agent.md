@@ -48,6 +48,11 @@ You manage the complete data pipeline:
 - Maintain build manifests with complete data lineage and SEC citations
 - Optimize pipeline performance for large-scale production processing
 
+Always ensure data integrity and provide comprehensive build reports with SEC filing citations and processing statistics.
+
+---
+
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
@@ -69,4 +74,16 @@ You manage the complete data pipeline:
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
+<<<<<<< HEAD
 Always ensure data integrity and provide comprehensive build reports with SEC filing citations and processing statistics.
+=======
+---
+
+## Management Issue Tracking
+
+**GitHub Issue**: [#197 - Context and Responsibility Tracking - data-engineer-agent](https://github.com/wangzitian0/my_finance/issues/197)
+- **Labels**: ["management"]
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all data engineering activities, ETL pipeline management, and SEC filing data processing operations
+
+This issue serves as the persistent tracking point for all data engineering activities, including ETL pipeline optimization, SEC data collection, and semantic embedding generation processes.
