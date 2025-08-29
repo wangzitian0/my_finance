@@ -453,38 +453,49 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         sys.exit(1)
 
     # 2.5. CRITICAL: Sync with latest main and rebase
-    print("\n🔄 Syncing with latest main branch...")
-
-    # First, update local main branch to match remote
-    print("🔄 Updating local main branch...")
+    print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
+    
+    # Step 1: ALWAYS fetch latest changes from remote
+    run_command("git fetch origin", "Fetching all latest remote changes")
+    
+    # Step 2: Update local main branch to match remote main
+    print("🔄 Ensuring local main branch matches remote main...")
     current_branch_backup = current_branch  # Save current branch
     run_command("git checkout main", "Switching to main branch")
-    run_command("git pull origin main", "Pulling latest changes to main")
-    run_command(
-        f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
-    )
-
-    # Fetch origin to ensure we have latest refs
-    run_command("git fetch origin", "Fetching all latest changes")
-
-    # Check if current branch is behind main
-    behind_check = run_command(
-        "git log --oneline HEAD..origin/main", "Checking if branch is behind main", check=False
-    )
-    if behind_check and behind_check.stdout.strip():
-        commits_behind = len(behind_check.stdout.strip().split("\n"))
-        print(f"⚠️  Current branch is {commits_behind} commits behind origin/main")
-
-        # Rebase onto latest main
-        print("🔄 Rebasing onto latest main...")
-        run_command("git rebase main", "Rebasing onto latest main")
-
-        # Data is now part of main repository, no separate handling needed
-        print("ℹ️  Data directory is integrated in main repository")
-
-        print("✅ Rebase completed - branch is now up to date")
+    run_command("git reset --hard origin/main", "Hard reset main to match origin/main")
+    run_command(f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}")
+    print("✅ Local main branch is now identical to remote main")
+    
+    # Step 3: ALWAYS rebase current feature branch onto origin/main
+    print("🔄 Rebasing feature branch onto latest origin/main...")
+    print("   This ensures clean PR history with no conflicts")
+    
+    rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
+    
+    if rebase_result and rebase_result.returncode == 0:
+        print("✅ Rebase completed successfully")
     else:
-        print("✅ Branch is already up to date with main")
+        print("⚠️  Rebase encountered issues, checking status...")
+        # Check if we're in a rebase state
+        status_result = run_command("git status", "Checking git status", check=False)
+        if status_result and "rebase in progress" in status_result.stdout:
+            print("❌ Rebase has conflicts that require manual resolution")
+            print("💡 Please resolve conflicts manually and run 'git rebase --continue'")
+            print("   Then re-run this command")
+            sys.exit(1)
+        else:
+            print("✅ Rebase completed (no conflicts detected)")
+    
+    # Step 4: Verify the rebase created a clean history
+    merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
+    main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
+    
+    if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
+        print("✅ Feature branch is cleanly based on latest origin/main")
+    else:
+        print("⚠️  Warning: Branch may not be cleanly rebased, but proceeding...")
+        print(f"   Merge base: {merge_base.stdout.strip() if merge_base else 'unknown'}")
+        print(f"   Main HEAD: {main_head.stdout.strip() if main_head else 'unknown'}")
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
