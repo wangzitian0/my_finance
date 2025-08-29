@@ -275,6 +275,10 @@ Task(hrbp-agent, "Conduct comprehensive agent performance review")
 - **Added strategic delegation** (HRBP and RevOps integration)
 - **Simplified workflow patterns** (focus on coordination, not implementation)
 
+**Core Principle**: Agent-coordinator analyzes, routes, and monitors - specialists execute and analyze details.
+
+---
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
@@ -296,4 +300,13 @@ Task(hrbp-agent, "Conduct comprehensive agent performance review")
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
-**Core Principle**: Agent-coordinator analyzes, routes, and monitors - specialists execute and analyze details.
+---
+
+## Management Issue Tracking
+
+**GitHub Issue**: [#211 - Context and Responsibility Tracking - agent-coordinator](https://github.com/wangzitian0/my_finance/issues/211)
+- **Labels**: ["management", "priority:P0-critical"]
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all orchestration activities, task delegation optimization, and cross-agent coordination management
+
+This issue serves as the persistent tracking point for all coordination activities, including multi-agent workflow orchestration, delegation optimization, and system-wide performance management.

@@ -124,6 +124,7 @@ def run_job(config_path):
             "0001318605": "TSLA",
             "0001326801": "META",
             "0001065280": "NFLX",
+            "0001045810": "NVDA",  # NVIDIA Corporation
         }
 
         ticker = cik_to_ticker.get(cik, f"CIK_{cik}")

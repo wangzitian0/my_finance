@@ -290,3 +290,6 @@ common/config/**/claude_hooks*.txt
 
 # Other
 .aider*
+
+# Generated documentation files
+QUALITY_GATES_IMPLEMENTATION.md

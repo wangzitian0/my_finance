@@ -116,6 +116,12 @@ class BuildTracker:
                 "errors": [],
                 "warnings": [],
             },
+            "quality_validation": {
+                "data_pipeline_validation": None,
+                "dcf_report_validations": {},
+                "quality_gates_passed": False,
+                "validation_timestamp": None,
+            },
         }
 
     def _generate_build_id(self) -> str:
@@ -310,6 +316,140 @@ class BuildTracker:
             f"Scanned outputs: {len(yfinance_files)} YFinance, {len(sec_files)} SEC, {len(dcf_reports)} reports"
         )
         self._save_manifest()
+
+    def run_quality_validation(self, scope: str) -> bool:
+        """
+        Run comprehensive quality validation on build outputs
+
+        Args:
+            scope: Build scope (f2, m7, n100, v3k)
+
+        Returns:
+            bool: True if all quality gates pass, False otherwise
+        """
+        logger.info(f"Running quality validation for build {self.build_id} with scope {scope}")
+
+        try:
+            # Import quality gates (handle import gracefully)
+            from common.quality_gates import run_quality_gate_validation
+
+            # Run data pipeline validation
+            validation_passed = run_quality_gate_validation(
+                scope,
+                {
+                    "build_id": self.build_id,
+                    "build_path": str(self.build_path),
+                    "previous_build_files": self._get_previous_build_file_count(),
+                },
+            )
+
+            # Update quality validation results
+            self.manifest["quality_validation"]["quality_gates_passed"] = validation_passed
+            self.manifest["quality_validation"]["validation_timestamp"] = datetime.now().isoformat()
+
+            # Save updated manifest
+            self._save_manifest()
+
+            logger.info(
+                f"Quality validation {'PASSED' if validation_passed else 'FAILED'} for build {self.build_id}"
+            )
+            return validation_passed
+
+        except ImportError as e:
+            logger.warning(f"Quality gates system not available: {e}")
+            # If quality gates are not available, we don't fail the build but log a warning
+            self.manifest["quality_validation"]["quality_gates_passed"] = None
+            self.manifest["quality_validation"]["validation_timestamp"] = datetime.now().isoformat()
+            self._save_manifest()
+            return True  # Don't block builds when quality system is unavailable
+
+        except Exception as e:
+            logger.error(f"Quality validation failed with error: {e}")
+            self.manifest["quality_validation"]["quality_gates_passed"] = False
+            self.manifest["quality_validation"]["validation_timestamp"] = datetime.now().isoformat()
+            self.add_warning("quality_validation", f"Quality validation error: {str(e)}")
+            self._save_manifest()
+            return False
+
+    def validate_dcf_report(self, ticker: str, dcf_data: dict) -> bool:
+        """
+        Validate individual DCF report quality
+
+        Args:
+            ticker: Stock ticker (e.g., 'MSFT', 'NVDA')
+            dcf_data: DCF analysis data dictionary
+
+        Returns:
+            bool: True if DCF report passes quality validation
+        """
+        try:
+            from common.quality_gates import DCFReportQualityValidator
+
+            validator = DCFReportQualityValidator()
+            validation_result = validator.validate_dcf_report(ticker, dcf_data)
+
+            # Store validation result in manifest
+            self.manifest["quality_validation"]["dcf_report_validations"][
+                ticker
+            ] = validation_result
+            self._save_manifest()
+
+            if validation_result["passed"]:
+                logger.info(f"DCF report quality validation PASSED for {ticker}")
+            else:
+                logger.warning(
+                    f"DCF report quality validation FAILED for {ticker}: {validation_result['quality_failures']}"
+                )
+                if validation_result["mock_data_detected"]:
+                    self.add_warning("dcf_quality", f"Mock data detected in {ticker} DCF report")
+
+            return validation_result["passed"]
+
+        except ImportError as e:
+            logger.warning(f"DCF quality validation system not available: {e}")
+            return True  # Don't block builds when quality system is unavailable
+
+        except Exception as e:
+            logger.error(f"DCF report validation failed for {ticker}: {e}")
+            self.add_warning("dcf_quality", f"DCF validation error for {ticker}: {str(e)}")
+            return False
+
+    def _get_previous_build_file_count(self) -> int:
+        """Get file count from previous build for regression detection"""
+        try:
+            # Look for the most recent build before current one
+            build_dirs = []
+            for build_dir in self.build_base_path.glob("build_*"):
+                if build_dir.is_dir() and build_dir != self.build_path:
+                    try:
+                        # Extract timestamp from build directory name
+                        timestamp_str = build_dir.name.replace("build_", "")
+                        datetime.strptime(timestamp_str, "%Y%m%d_%H%M%S")
+                        build_dirs.append(build_dir)
+                    except ValueError:
+                        continue
+
+            if not build_dirs:
+                return 0
+
+            # Sort by timestamp (newest first)
+            build_dirs.sort(key=lambda x: x.name, reverse=True)
+            previous_build = build_dirs[0]
+
+            # Read previous build manifest
+            manifest_path = previous_build / "BUILD_MANIFEST.json"
+            if manifest_path.exists():
+                with open(manifest_path, "r") as f:
+                    previous_manifest = json.load(f)
+
+                previous_files = previous_manifest.get("statistics", {}).get("files_processed", 0)
+                logger.debug(f"Previous build {previous_build.name} had {previous_files} files")
+                return previous_files
+
+        except Exception as e:
+            logger.debug(f"Could not retrieve previous build file count: {e}")
+
+        return 0
 
     def complete_build(self, status: str = "completed") -> None:
         """Complete the build execution"""

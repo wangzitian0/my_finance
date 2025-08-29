@@ -186,6 +186,11 @@ Before proceeding with original task:
 - ✅ All commit messages must include genuine test validation from actual test execution
 - ✅ If tests fail, fix the underlying issue - never fake the markers
 
+Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.
+
+---
+
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
@@ -201,4 +206,16 @@ Before proceeding with original task:
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
+<<<<<<< HEAD
 Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.
+=======
+---
+
+## Management Issue Tracking
+
+**GitHub Issue**: [#195 - Context and Responsibility Tracking - git-ops-agent](https://github.com/wangzitian0/my_finance/issues/195)
+- **Labels**: ["management"]
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all git operations, PR management workflows, and release coordination activities
+
+This issue serves as the persistent tracking point for all git operations, including branch management, PR automation, release coordination, and development workflow optimization.

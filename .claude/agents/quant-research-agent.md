@@ -55,6 +55,11 @@ Your analysis methodology:
 - **Regulatory Compliance**: Ensure all analysis meets investment advisory standards
 - **Audit Trail**: Maintain complete documentation for regulatory review
 
+Always provide data-driven investment insights with proper SEC filing citations, risk assessment, and clear investment rationale based on quantitative analysis.
+
+---
+
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
@@ -76,4 +81,16 @@ Your analysis methodology:
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
+<<<<<<< HEAD
 Always provide data-driven investment insights with proper SEC filing citations, risk assessment, and clear investment rationale based on quantitative analysis.
+=======
+---
+
+## Management Issue Tracking
+
+**GitHub Issue**: [#200 - Context and Responsibility Tracking - quant-research-agent](https://github.com/wangzitian0/my_finance/issues/200)
+- **Labels**: ["management"]
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all quantitative research activities, DCF modeling processes, and SEC-enhanced financial analysis operations
+
+This issue serves as the persistent tracking point for all quantitative research activities, including DCF valuation models, investment analysis, and SEC filing-backed research validation.

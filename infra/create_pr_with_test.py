@@ -199,42 +199,72 @@ def run_end_to_end_test(scope="f2"):
             )
             return False
 
-    # Validate build results
+    # Validate build results using comprehensive quality gates
     build_status = run_command(
         "./p3 build-status",
         "Checking build status",
     )
 
-    # Check for expected F2 files (just need basic validation)
-    file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
+    # ENHANCED QUALITY GATE VALIDATION - Prevents zero-data regression
+    print(f"\n🔍 Running comprehensive quality gate validation for {scope.upper()} scope...")
 
-    total_files = 0
-    for location in file_locations:
-        if Path(location).exists():
-            location_files = run_command(
-                f"find {location} -name '*.json' -type f | wc -l",
-                f"Counting files in {location}",
-                check=False,
+    # Import quality validation system
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+
+    try:
+        from common.quality_gates import run_quality_gate_validation
+
+        # Run comprehensive data pipeline validation
+        validation_passed = run_quality_gate_validation(scope)
+
+        if not validation_passed:
+            print(
+                f"\n❌ QUALITY GATE FAILURE: {scope.upper()} build failed comprehensive validation"
             )
-            if location_files and location_files.stdout.strip():
-                count = int(location_files.stdout.strip())
-                total_files += count
-                print(f"📁 Found {count} files in {location}")
+            print("🔍 Build artifacts preserved for debugging")
+            print("💡 This prevents the zero-data regression that was previously undetected")
+            return False
 
-    print(f"📊 Total {scope.upper()} data files found: {total_files}")
+        print(f"\n✅ QUALITY GATES PASSED: {scope.upper()} build validated successfully")
 
-    # Check if we have sufficient files for the chosen scope
-    if total_files < test_info["min_files"]:
-        print(
-            f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files, found {total_files}"
-        )
-        print("🔍 Build artifacts preserved for debugging")
-        return False
+    except ImportError as e:
+        print(f"⚠️  Quality gates system not available: {e}")
+        print("🔄 Falling back to legacy validation...")
+
+        # Fallback to legacy validation for backward compatibility
+        file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
+
+        total_files = 0
+        for location in file_locations:
+            if Path(location).exists():
+                location_files = run_command(
+                    f"find {location} -name '*.json' -type f | wc -l",
+                    f"Counting files in {location}",
+                    check=False,
+                )
+                if location_files and location_files.stdout.strip():
+                    count = int(location_files.stdout.strip())
+                    total_files += count
+                    print(f"📁 Found {count} files in {location}")
+
+        print(f"📊 Total {scope.upper()} data files found: {total_files}")
+
+        # Legacy threshold check
+        if total_files < test_info["min_files"]:
+            print(
+                f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files, found {total_files}"
+            )
+            print("🔍 Build artifacts preserved for debugging")
+            return False
 
     print(f"✅ {test_info['name']} PASSED")
     print(f"📦 {test_info['description']} validated successfully")
     print("✅ Git status is clean - ready for PR creation!")
-    return total_files  # Return file count for test validation
+
+    # Return success indicator for downstream processes
+    return True
 
 
 def create_test_marker(file_count: int, scope="f2"):

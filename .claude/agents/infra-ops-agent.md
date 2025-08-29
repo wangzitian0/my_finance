@@ -106,6 +106,11 @@ You handle these infrastructure operations automatically:
 - Automated artifact location verification
 - Release process validation and improvement
 
+Always prioritize system reliability, design excellence, and provide clear operational visibility for the quantitative trading platform while maintaining architectural integrity of the `common/` directory.
+
+---
+
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
@@ -137,4 +142,16 @@ You handle these infrastructure operations automatically:
 - **STAGE OUTPUTS**: Verify all stage outputs are in correct build_data/stage_XX/ directories
 - **BUILD MANIFESTS**: Maintain comprehensive build manifests in build_data/stage_04_query_results/
 
+<<<<<<< HEAD
 Always prioritize system reliability, design excellence, and provide clear operational visibility for the quantitative trading platform while maintaining architectural integrity of the `common/` directory.
+=======
+---
+
+## Management Issue Tracking
+
+**GitHub Issue**: [#198 - Context and Responsibility Tracking - infra-ops-agent](https://github.com/wangzitian0/my_finance/issues/198)
+- **Labels**: ["management"]
+- **Status**: Created and closed for continuous reference
+- **Purpose**: Central tracking for all infrastructure operations, common directory management, and DevOps automation activities
+
+This issue serves as the persistent tracking point for all infrastructure activities, including environment management, container orchestration, and comprehensive common directory architecture maintenance.

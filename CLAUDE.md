@@ -102,31 +102,47 @@ Task(subagent_type="agent-coordinator", prompt="Implement new function in file.p
 
 ## 🏷️ AGENT SPECIALIZATION DIRECTORY
 
-**NOTE**: Detailed agent selection and routing logic is managed by agent-coordinator. This is a reference directory only.
+**NOTE**: Detailed agent selection and routing logic is managed by agent-coordinator. This is a reference directory only. Each agent has a dedicated GitHub management issue for context tracking (see Agent Context Management Policy).
 
 ### Available Specialist Agents
 ```yaml
 core_operations:
   - git-ops-agent: Git workflows, PR management, release coordination
+    # Management Issue: [Agent] Context and Responsibility Tracking - git-ops-agent
   - dev-quality-agent: Code quality, testing, validation processes
+    # Management Issue: [Agent] Context and Responsibility Tracking - dev-quality-agent
   - data-engineer-agent: ETL pipelines, SEC data processing
+    # Management Issue: [Agent] Context and Responsibility Tracking - data-engineer-agent
   - infra-ops-agent: Infrastructure management, environment setup
+    # Management Issue: [Agent] Context and Responsibility Tracking - infra-ops-agent
   - monitoring-agent: System monitoring, performance tracking
+    # Management Issue: [Agent] Context and Responsibility Tracking - monitoring-agent
   
 specialized_domains:
-  - quant-research-agent: DCF calculations, financial analysis  
+  - quant-research-agent: DCF calculations, financial analysis
+    # Management Issue: [Agent] Context and Responsibility Tracking - quant-research-agent
   - compliance-risk-agent: Regulatory compliance, audit processes
+    # Management Issue: [Agent] Context and Responsibility Tracking - compliance-risk-agent
   - backend-architect-agent: System architecture, RAG design
+    # Management Issue: [Agent] Context and Responsibility Tracking - backend-architect-agent
   - web-frontend-agent: UI/UX, dashboard development
+    # Management Issue: [Agent] Context and Responsibility Tracking - web-frontend-agent
   - web-backend-agent: API design, microservices
+    # Management Issue: [Agent] Context and Responsibility Tracking - web-backend-agent
   - api-designer-agent: API specification, integration design
+    # Management Issue: [Agent] Context and Responsibility Tracking - api-designer-agent
   - security-engineer-agent: Security protocols, vulnerability assessment
+    # Management Issue: [Agent] Context and Responsibility Tracking - security-engineer-agent
   - performance-engineer-agent: Performance optimization, scaling
+    # Management Issue: [Agent] Context and Responsibility Tracking - performance-engineer-agent
   - database-admin-agent: Database management, optimization
+    # Management Issue: [Agent] Context and Responsibility Tracking - database-admin-agent
   
 strategic_management:
   - hrbp-agent: Agent performance management, capability assessment
+    # Management Issue: [Agent] Context and Responsibility Tracking - hrbp-agent
   - revops-agent: ROI analysis, cost optimization, efficiency metrics
+    # Management Issue: [Agent] Context and Responsibility Tracking - revops-agent
 ```
 
 ## 🧠 CONTINUOUS IMPROVEMENT MANDATE
@@ -164,6 +180,34 @@ strategic_management:
 **POLICY**: All development work must link to GitHub issues for traceability
 **LABELING**: Use standardized labels that map to agent specializations
 **TRACKING**: Maintain issue dependency relationships and progress visibility
+
+### Agent Context Management Policy
+**REQUIREMENT**: Each agent must have a dedicated GitHub issue for context tracking and organizational management
+
+#### Agent Management Issue Standards
+```yaml
+agent_context_tracking:
+  # Issue Creation Requirements
+  - Each agent has dedicated management issue
+  - Issues labeled "management" for organizational tracking
+  - Issues created and immediately closed for documentation
+  - Issue title format: "[Agent] Context and Responsibility Tracking - [agent-name]"
+  
+  # Content Requirements  
+  - Agent specialization and core responsibilities
+  - Capability usage design and effective utilization
+  - Current organizational role and integration points
+  - Performance tracking and assessment framework
+  - Context persistence for organizational learning
+  
+  # Management Integration
+  - All agents reference their management issue
+  - Issues serve as persistent context repository
+  - Regular updates for capability evolution
+  - Cross-agent coordination and dependency tracking
+```
+
+**PURPOSE**: Establish persistent context tracking, improve organizational management, and maintain consistent documentation standards across the entire agent ecosystem.
 
 ### Documentation and Planning Policy
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
