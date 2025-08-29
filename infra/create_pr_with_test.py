@@ -736,6 +736,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     else:
         print("✅ Updated commit pushed successfully")
 
+    # 10. Note PR for HRBP cycle tracking (PR will be tracked when it's actually merged to main)
+    try:
+        pr_number_int = int(pr_number)
+        print(f"📝 PR #{pr_number_int} will be tracked for HRBP automation when merged to main")
+        print("💡 Use 'p3 hrbp-record-pr {pr_number}' to manually record after merge")
+    except (ValueError, TypeError):
+        print("⚠️  Could not parse PR number for HRBP tracking")
+
     print("\n" + "=" * 60)
     print("🎉 PR CREATION WORKFLOW COMPLETED")
     print("=" * 60)
