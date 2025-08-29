@@ -52,6 +52,17 @@ from .core.storage_manager import (
 )
 
 # System modules
+from .systems.agent_coordinator import (
+    AgentCoordinator,
+    AgentType,
+    TaskComplexity,
+    TaskResult,
+    WorkflowPattern,
+    WorkflowTask,
+    delegate_task,
+    execute_automated_workflow,
+    get_agent_coordinator,
+)
 from .systems.build_tracker import BuildTracker
 from .systems.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,
@@ -147,6 +158,15 @@ __all__ = [
     "safe_json_serialize",
     "deep_merge_dicts",
     # System modules
+    "AgentCoordinator",
+    "AgentType",
+    "TaskComplexity",
+    "TaskResult",
+    "WorkflowPattern",
+    "WorkflowTask",
+    "delegate_task",
+    "execute_automated_workflow",
+    "get_agent_coordinator",
     "BuildTracker",
     "QualityReporter",
     "setup_quality_reporter",
