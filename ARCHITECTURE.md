@@ -1,1 +1,0 @@
-DELETED: Policy violation - planning documentation should use GitHub Issues instead of .md files

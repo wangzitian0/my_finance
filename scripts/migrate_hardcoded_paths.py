@@ -456,7 +456,7 @@ def main():
         migrator.generate_report(args.report)
     elif not args.report and not args.apply:
         # Generate default report for dry runs
-        report_file = project_root / "hardcoded_paths_migration_report.md"
+        report_file = project_root / "docs/reports/hardcoded_paths_migration_report.md"
         migrator.generate_report(report_file)
 
 
