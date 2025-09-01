@@ -11,7 +11,7 @@ import sys
 sys.path.append(".")
 
 # Import the functions we just implemented
-from infra.create_pr_with_test import is_worktree_environment, get_current_branch
+from infra.create_pr_with_test import get_current_branch, is_worktree_environment
 
 
 def main():

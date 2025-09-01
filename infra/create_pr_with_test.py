@@ -121,16 +121,16 @@ def get_uncommitted_changes():
 def is_worktree_environment():
     """Detect if we're running in a git worktree environment"""
     import os
-    
+
     # Check environment variable (set by p3 wrapper)
     if os.environ.get("P3_WORKTREE_BRANCH"):
         return True
-    
+
     # Check current working directory
     cwd = os.getcwd()
     if "/.git/worktree/" in cwd:
         return True
-    
+
     # Check if .git is a file (indicates worktree)
     git_file = os.path.join(cwd, ".git")
     if os.path.isfile(git_file):
@@ -141,48 +141,54 @@ def is_worktree_environment():
                     return True
         except:
             pass
-    
+
     # Check git worktree list command
     worktree_result = run_command("git worktree list", "Checking worktree list", check=False)
     if worktree_result and worktree_result.stdout:
         # If we have more than one line, we have worktrees
-        lines = [line.strip() for line in worktree_result.stdout.strip().split('\n') if line.strip()]
+        lines = [
+            line.strip() for line in worktree_result.stdout.strip().split("\n") if line.strip()
+        ]
         if len(lines) > 1:
             # Check if current directory is mentioned in worktree list
             for line in lines:
-                if cwd in line and not line.endswith('[bare]'):
+                if cwd in line and not line.endswith("[bare]"):
                     return True
-    
+
     return False
 
 
 def sync_with_main_safely(current_branch):
     """Safely sync with main branch, handling both regular git and worktree environments"""
     print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
-    
+
     # Step 1: ALWAYS fetch latest changes from remote
     run_command("git fetch origin", "Fetching all latest remote changes")
-    
+
     # Detect if we're in a worktree environment
     in_worktree = is_worktree_environment()
-    
+
     if in_worktree:
         print("🌿 Worktree environment detected - using safe sync method")
-        
+
         # SAFE METHOD FOR WORKTREES: Use fetch + rebase instead of checkout/reset
         print("🔄 Using worktree-safe synchronization (fetch + rebase)...")
         print("🔒 WORKTREE SAFETY: Avoiding 'git checkout main' and 'git reset --hard' operations")
         print("   These operations can cause data loss in worktree environments")
-        
+
         # Fetch origin/main to ensure we have latest remote state
-        run_command("git fetch origin main:refs/remotes/origin/main", "Updating origin/main reference")
-        
+        run_command(
+            "git fetch origin main:refs/remotes/origin/main", "Updating origin/main reference"
+        )
+
         # Verify we have the latest origin/main
         main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD")
         print(f"📍 Latest origin/main: {main_head.stdout.strip()}")
-        
+
         # Check if our current branch is up to date with origin/main
-        merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
+        merge_base = run_command(
+            "git merge-base HEAD origin/main", "Getting merge base", check=False
+        )
         if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
             print("✅ Feature branch is already up to date with origin/main")
             print("🌿 No rebase needed - worktree is safely synchronized")
@@ -191,7 +197,7 @@ def sync_with_main_safely(current_branch):
             print("🌿 Using safe rebase operation (no main branch checkout required)")
     else:
         print("📁 Regular git repository detected - using standard sync method")
-        
+
         # TRADITIONAL METHOD FOR REGULAR REPOSITORIES: checkout + reset (safe here)
         print("🔄 Ensuring local main branch matches remote main...")
         current_branch_backup = current_branch  # Save current branch
@@ -201,13 +207,13 @@ def sync_with_main_safely(current_branch):
             f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
         )
         print("✅ Local main branch is now identical to remote main")
-    
+
     # Step 2: ALWAYS rebase current feature branch onto origin/main (safe in both environments)
     print("🔄 Rebasing feature branch onto latest origin/main...")
     print("   This ensures clean PR history with no conflicts")
-    
+
     rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
-    
+
     if rebase_result and rebase_result.returncode == 0:
         print("✅ Rebase completed successfully")
     else:
@@ -221,11 +227,11 @@ def sync_with_main_safely(current_branch):
             sys.exit(1)
         else:
             print("✅ Rebase completed (no conflicts detected)")
-    
+
     # Step 3: Verify the rebase created a clean history
     merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
     main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
-    
+
     if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
         print("✅ Feature branch is cleanly based on latest origin/main")
         if in_worktree:
@@ -566,7 +572,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     # 1. Check current state and environment
     current_branch = get_current_branch()
     print(f"📍 Current branch: {current_branch}")
-    
+
     # Announce worktree safety status
     if is_worktree_environment():
         print("🌿 WORKTREE ENVIRONMENT DETECTED")
