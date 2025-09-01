@@ -87,8 +87,8 @@ Bash("git status")
 Bash("git add .")
 Bash("git commit -m 'message'")
 
-# ✅ CORRECT: Route through agent-coordinator
-Task(subagent_type="agent-coordinator", prompt="Handle git commit for changes")
+# ✅ CORRECT: Route through agent-coordinator with EXECUTION instructions
+Task(subagent_type="agent-coordinator", prompt="EXECUTE git commit workflow: analyze current changes with git status and git diff, add all modified files, create commit with descriptive message, and push to remote. WRITE CODE and COMPLETE THE FULL IMPLEMENTATION.")
 ```
 
 ```python
@@ -96,8 +96,54 @@ Task(subagent_type="agent-coordinator", prompt="Handle git commit for changes")
 Write("/path/file.py", "def new_function()...")
 Edit("/path/file.py", old="...", new="...")
 
-# ✅ CORRECT: Route through agent-coordinator
-Task(subagent_type="agent-coordinator", prompt="Implement new function in file.py")
+# ✅ CORRECT: Route through agent-coordinator with EXECUTION instructions
+Task(subagent_type="agent-coordinator", prompt="IMPLEMENT new function in file.py: WRITE CODE to create the function, add proper error handling, update tests, and validate functionality. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
+```
+
+#### Critical Execution Instructions for Sub-Agents
+
+**🚨 MANDATORY EXECUTION KEYWORDS**: Always include these in Task prompts to ensure execution rather than planning:
+
+```yaml
+EXECUTION_REQUIRED_KEYWORDS:
+  # Primary Action Directives (MUST include one)
+  - "EXECUTE": For operational tasks (git, builds, deployments)
+  - "IMPLEMENT": For code writing and development tasks  
+  - "WRITE CODE": For programming tasks requiring file creation/modification
+  - "COMPLETE THE FULL IMPLEMENTATION": End all prompts with this phrase
+
+  # Clarity Modifiers (include when applicable)
+  - "do not just provide a plan": Explicitly prevent planning-only responses
+  - "write actual code": Distinguish from analysis tasks
+  - "complete all steps": Ensure full workflow execution
+  - "validate and test": Include verification steps
+
+RESEARCH_ONLY_KEYWORDS:
+  # Use these ONLY when you want analysis without execution
+  - "ANALYZE": For code review and investigation
+  - "RESEARCH": For information gathering
+  - "STUDY": For understanding existing systems
+```
+
+**✅ CORRECT Task Prompt Structure**:
+```python
+# Full execution pattern
+Task(subagent_type="[agent-type]", prompt="[ACTION_VERB] [specific_task]: [detailed_requirements]. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
+
+# Examples that WORK:
+Task(subagent_type="git-ops-agent", prompt="EXECUTE PR creation workflow: analyze current branch changes, create comprehensive PR description, submit PR with proper labels and reviewers. COMPLETE THE FULL IMPLEMENTATION.")
+
+Task(subagent_type="backend-architect-agent", prompt="IMPLEMENT user authentication system: WRITE CODE for login endpoints, add JWT token handling, create middleware, update database models. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
+
+Task(subagent_type="data-engineer-agent", prompt="EXECUTE ETL pipeline setup: configure data ingestion from SEC filings, implement processing logic, setup output validation. WRITE CODE and COMPLETE THE FULL IMPLEMENTATION.")
+```
+
+**❌ WRONG Task Prompts That Cause Planning-Only Responses**:
+```python
+# These cause agents to stop at planning phase:
+Task(subagent_type="agent-coordinator", prompt="Handle git commit for changes")
+Task(subagent_type="backend-architect-agent", prompt="Implement new function in file.py") 
+Task(subagent_type="data-engineer-agent", prompt="Setup ETL pipeline")
 ```
 
 ## 🏷️ AGENT SPECIALIZATION DIRECTORY
