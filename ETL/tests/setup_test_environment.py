@@ -14,7 +14,7 @@ def setup_test_data():
     """Setup minimal test data for user case testing"""
     print("🔧 Setting up test data...")
 
-    # Create test directories
+    # Create test directories  # EXEMPT: Test environment setup
     test_dirs = [
         "data/test/stage_01_extract/yfinance",
         "data/test/stage_01_extract/sec_edgar",
