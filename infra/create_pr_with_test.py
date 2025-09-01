@@ -597,11 +597,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    format_result = run_command("./p3 format", "Formatting Python code with black and isort", check=False)
+    format_result = run_command(
+        "./p3 format", "Formatting Python code with black and isort", check=False
+    )
     if not format_result or format_result.returncode != 0:
         print("⚠️ Formatting command failed, trying alternative method...")
         try:
             import subprocess
+
             subprocess.run(["python3", "p3.py", "format"], check=True)
             print("✅ Alternative formatting succeeded")
         except Exception as e:
