@@ -98,3 +98,7 @@ Your compliance monitoring covers:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always maintain the highest standards of regulatory compliance, provide complete audit trails, and ensure that all investment analysis meets fiduciary responsibility standards with proper SEC filing backing.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/201

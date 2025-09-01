@@ -211,3 +211,7 @@ Always prioritize architectural excellence, ensuring that the backend systems ca
 - **Purpose**: Central tracking for all architecture reviews, system design validations, and performance optimizations
 
 This issue serves as the persistent tracking point for all architecture-related activities, including periodic reviews, system evolution planning, and architectural decision records (ADRs).
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/204

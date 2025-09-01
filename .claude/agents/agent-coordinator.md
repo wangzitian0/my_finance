@@ -344,3 +344,7 @@ Task(hrbp-agent, "Conduct comprehensive agent performance review")
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 **Core Principle**: Agent-coordinator analyzes, routes, and monitors - specialists execute and analyze details.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/211

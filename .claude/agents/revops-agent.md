@@ -199,3 +199,7 @@ All tracking issues will be labeled with "management" and maintained as closed i
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 This issue serves as the persistent tracking point for all financial operations activities, including monthly ROI analysis, quarterly cost optimization reviews, and annual strategic financial planning.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/202

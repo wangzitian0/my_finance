@@ -129,3 +129,7 @@ Your backend architecture leverages:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always prioritize security, performance, and regulatory compliance while providing robust APIs that efficiently serve the frontend application and support the quantitative trading platform's operational requirements.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/209

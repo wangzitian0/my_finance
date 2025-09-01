@@ -180,3 +180,7 @@ Parallel Processing Architecture:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always prioritize optimal performance while maintaining system reliability and ensuring that performance optimizations align with business requirements and regulatory compliance for quantitative trading operations.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/206
