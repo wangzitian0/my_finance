@@ -39,6 +39,17 @@
   - Configuration centralization (`common/config/`)  
   - Documentation currency planned
 
+### Phase 5: Completion & PR Creation ✅
+- [ ] **Task completion verification**:
+  - All implementation work finished
+  - Code tested and validated
+  - Documentation updated appropriately
+- [ ] **Automatic PR creation** (MANDATORY for significant changes):
+  - Route through `agent-coordinator` with EXECUTE keywords
+  - Use `p3 create-pr "title" ISSUE_NUM` workflow
+  - Include comprehensive change description
+  - Add proper labels and milestone assignment
+
 ---
 
 **❌ TASK EXECUTION WITHOUT COMPLETING THIS CHECKLIST VIOLATES COMPANY POLICY**
@@ -292,13 +303,15 @@ documentation_consistency:
 
 1. **ARCHITECTURE FIRST** - Always read README.md before starting any task
 2. **ORCHESTRATION MANDATORY** - Route complex tasks through agent-coordinator 
-3. **CONFIGURATION CENTRALIZATION** - Use `common/config/` for all configurations
-4. **P3 WORKFLOW COMPLIANCE** - Never bypass p3 command system
-5. **QUALITY ASSURANCE** - Test before PR creation (`p3 e2e` mandatory)
-6. **DOCUMENTATION CURRENCY** - Update parent READMEs when modifying functionality  
-7. **ENGLISH-ONLY STANDARD** - All technical content must use English
-8. **OPERATIONAL EXCELLENCE** - Monitor and handle system errors appropriately
-9. **PROJECT MANAGEMENT** - Break down oversized issues (>5 days) before execution
+3. **SSOT I/O ENFORCEMENT** - Only use `common.core.directory_manager` for ALL file operations (see `common/README.md`)
+4. **CONFIGURATION CENTRALIZATION** - Use `common/config/` for all configurations
+5. **P3 WORKFLOW COMPLIANCE** - Never bypass p3 command system
+6. **QUALITY ASSURANCE** - Test before PR creation (`p3 e2e` mandatory)
+7. **AUTOMATIC PR CREATION** - Always create PR after completing significant changes via `agent-coordinator`
+8. **DOCUMENTATION CURRENCY** - Update parent READMEs when modifying functionality  
+9. **ENGLISH-ONLY STANDARD** - All technical content must use English
+10. **OPERATIONAL EXCELLENCE** - Monitor and handle system errors appropriately
+11. **PROJECT MANAGEMENT** - Break down oversized issues (>5 days) before execution
 
 ## 📋 PROJECT MANAGEMENT STANDARDS
 
@@ -425,6 +438,33 @@ violation_severity:
 **CURRENT STATUS**: Limited agent implementation requires robust fallback strategies
 **POLICY**: All delegations must include fallback routing when primary agents unavailable
 **EVOLUTION**: Agent ecosystem will expand based on usage patterns and business needs
+
+## 🛠️ UNIFIED I/O CONSTRAINTS
+
+**CRITICAL**: All file I/O operations must use the SSOT DirectoryManager system exclusively. No exceptions.
+
+**ENFORCEMENT**: All PR creation must pass I/O compliance checks. Any non-SSOT I/O patterns will block PR approval.
+
+**📖 DETAILED RULES**: See `common/README.md` for complete I/O standards, violation levels, migration guide, and compliance validation procedures.
+
+### Quick Reference
+
+#### ✅ REQUIRED Pattern
+```python
+from common.core.directory_manager import directory_manager, DataLayer
+data_path = directory_manager.get_layer_path(DataLayer.RAW_DATA, partition="20250901")
+```
+
+#### ❌ PROHIBITED Patterns
+```python
+data_path = Path("build_data/stage_00_raw/20250901")  # FORBIDDEN
+from common.io_utils import load_json                 # REMOVED
+```
+
+#### Validation Command
+```bash
+bash scripts/validate_io_compliance.sh  # Run before PR creation
+```
 
 ## 🌐 ENGLISH-ONLY STANDARD
 
