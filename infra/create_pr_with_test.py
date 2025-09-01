@@ -158,6 +158,38 @@ def is_worktree_environment():
     return False
 
 
+def get_p3_command():
+    """Get the appropriate P3 command for the current environment"""
+    import os
+    # Check if we're in a worktree environment
+    if is_worktree_environment():
+        return ["python3", "p3.py"]
+    else:
+        # Check if ./p3 executable exists
+        if os.path.isfile("./p3"):
+            return ["./p3"]
+        else:
+            return ["python3", "p3.py"]
+
+
+def run_p3_command(cmd, description, timeout=None, check=True):
+    """Run a P3 command with proper worktree handling"""
+    p3_base = get_p3_command()
+    if isinstance(cmd, str):
+        # Parse command like "./p3 status" into ["status"]
+        parts = cmd.split()
+        if parts[0] in ["./p3", "p3", "python3"]:
+            # Remove the p3 prefix since we're adding our own
+            cmd_args = parts[1:] if len(parts) > 1 else []
+        else:
+            cmd_args = parts
+    else:
+        cmd_args = cmd
+    
+    full_cmd = p3_base + cmd_args
+    return run_command(" ".join(full_cmd), description, timeout=timeout, check=check)
+
+
 def sync_with_main_safely(current_branch):
     """Safely sync with main branch, handling both regular git and worktree environments"""
     print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
@@ -251,13 +283,13 @@ def run_end_to_end_test(scope="f2"):
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "./p3 fast-build f2",
+            "build_cmd": "fast-build f2",
         },
         "m7": {
             "name": "M7 COMPLETE VALIDATION",
             "description": "Magnificent 7 companies with full testing",
             "min_files": 7,
-            "build_cmd": "./p3 build m7",
+            "build_cmd": "build m7",
         },
     }
 
@@ -275,11 +307,7 @@ def run_end_to_end_test(scope="f2"):
     run_command("rm -f common/latest_build", "Cleaning latest build symlink", check=False)
 
     # Start environment if needed (Python-based status)
-    run_command(
-        "./p3 status",
-        "Checking environment status",
-        check=False,
-    )
+    run_p3_command("status", "Checking environment status", check=False)
 
     test_success = False
     try:
@@ -290,7 +318,7 @@ def run_end_to_end_test(scope="f2"):
 
         # Build dataset using appropriate scope and model
         print(f"🚀 Starting {scope.upper()} build - {test_info['description']}")
-        run_command(
+        run_p3_command(
             test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=600
         )  # 10 minutes for broader scope support
 
@@ -597,19 +625,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    format_result = run_command(
-        "./p3 format", "Formatting Python code with black and isort", check=False
-    )
-    if not format_result or format_result.returncode != 0:
-        print("⚠️ Formatting command failed, trying alternative method...")
-        try:
-            import subprocess
-
-            subprocess.run(["python3", "p3.py", "format"], check=True)
-            print("✅ Alternative formatting succeeded")
-        except Exception as e:
-            print(f"⚠️ Formatting failed: {e}")
-            print("Continuing without formatting - assuming code is already formatted")
+    format_result = run_p3_command("format", "Formatting Python code with black and isort", check=False)
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
@@ -640,7 +656,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_command("./p3 commit-data-changes", "Staging data directory changes")
+    run_p3_command("commit-data-changes", "Staging data directory changes")
 
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
