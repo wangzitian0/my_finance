@@ -54,14 +54,14 @@ class DataLayer(Enum):
     """Five-Layer Data Architecture (Issue #122)
 
     Maps to directory_structure.yml configuration for flexible storage backends.
-    Uses stage-based naming for consistency with existing codebase.
+    Uses stage-based naming for consistency with existing codebase structure.
     """
 
-    RAW_DATA = "layer_01_raw"  # Layer 1 - Immutable source data
-    DAILY_DELTA = "layer_02_delta"  # Layer 2 - Incremental changes
-    DAILY_INDEX = "layer_03_index"  # Layer 3 - Vectors, entities, relationships
-    GRAPH_RAG = "layer_04_rag"  # Layer 4 - Unified knowledge base
-    QUERY_RESULTS = "layer_05_results"  # Layer 5 - Analysis and reports
+    RAW_DATA = "stage_00_raw"  # Layer 0 - Immutable source data
+    DAILY_DELTA = "stage_01_daily_delta"  # Layer 1 - Incremental changes
+    DAILY_INDEX = "stage_02_daily_index"  # Layer 2 - Vectors, entities, relationships
+    GRAPH_RAG = "stage_03_graph_rag"  # Layer 3 - Unified knowledge base
+    QUERY_RESULTS = "stage_04_query_results"  # Layer 4 - Analysis and reports
 
 
 class DirectoryManager:

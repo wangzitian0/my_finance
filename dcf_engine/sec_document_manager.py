@@ -24,17 +24,23 @@ class SECDocumentManager:
             project_root = Path(__file__).parent.parent
             base_path = project_root / "data"
 
-        # Use common path utilities for consistent path management
-        from common.utils import ensure_path_exists, get_project_paths
+        # Use SSOT DirectoryManager for consistent path management
+        from common.core.directory_manager import DirectoryManager, DataLayer
 
-        paths = get_project_paths()
-        self.base_path = paths["data_root"]
-        self.sec_docs_path = paths["sec_edgar_original"]  # Use stage_00_original/sec-edgar
-        self.embeddings_path = paths["embeddings"]
+        dm = DirectoryManager()
+        
+        # SEC documents go to raw data layer
+        raw_data_path = dm.get_data_layer_path(DataLayer.RAW_DATA)
+        self.base_path = raw_data_path
+        self.sec_docs_path = raw_data_path / "sec-edgar"  # Use stage_00_raw/sec-edgar
+        
+        # Embeddings go to daily index layer
+        daily_index_path = dm.get_data_layer_path(DataLayer.DAILY_INDEX)
+        self.embeddings_path = daily_index_path / "embeddings"
 
         # Create directories
-        ensure_path_exists(self.sec_docs_path)
-        ensure_path_exists(self.embeddings_path)
+        self.sec_docs_path.mkdir(parents=True, exist_ok=True)
+        self.embeddings_path.mkdir(parents=True, exist_ok=True)
 
         # SEC API settings
         self.sec_base_url = "https://data.sec.gov"
