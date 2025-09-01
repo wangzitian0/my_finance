@@ -161,6 +161,7 @@ def is_worktree_environment():
 def get_p3_command():
     """Get the appropriate P3 command for the current environment"""
     import os
+
     # Check if we're in a worktree environment
     if is_worktree_environment():
         return ["python3", "p3.py"]
@@ -185,7 +186,7 @@ def run_p3_command(cmd, description, timeout=None, check=True):
             cmd_args = parts
     else:
         cmd_args = cmd
-    
+
     full_cmd = p3_base + cmd_args
     return run_command(" ".join(full_cmd), description, timeout=timeout, check=check)
 
@@ -625,7 +626,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    format_result = run_p3_command("format", "Formatting Python code with black and isort", check=False)
+    format_result = run_p3_command(
+        "format", "Formatting Python code with black and isort", check=False
+    )
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
