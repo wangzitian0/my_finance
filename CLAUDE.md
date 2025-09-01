@@ -1,5 +1,74 @@
 # CLAUDE.md - Global Company Policies
 
+## 🚨 MANDATORY TASK INITIATION PROTOCOL (READ FIRST)
+
+**BEFORE ANY TASK EXECUTION - COMPLETE THIS CHECKLIST:**
+
+### Phase 1: Foundation Knowledge ✅
+- [ ] **Read CLAUDE.md completely** (this file) - understand all company policies  
+- [ ] **Read README.md** - understand project architecture and setup
+- [ ] **Identify task complexity** - single-step vs multi-step vs multi-domain
+
+### Phase 2: Tool & Agent Selection ✅  
+- [ ] **Determine tool requirements**:
+  - Simple read/analysis → Direct tools (Read, Grep, Glob)
+  - Git operations → Use `p3` commands (NEVER direct git for PR creation)
+  - Complex workflows → Route through `agent-coordinator`
+- [ ] **Select appropriate specialist agents** from 17 available:
+  - Orchestration: agent-coordinator
+  - Core Ops: git-ops, dev-quality, data-engineer, infra-ops, monitoring  
+  - Specialized: quant-research, compliance-risk, backend-architect, web-frontend, web-backend, api-designer, security-engineer, performance-engineer, database-admin
+  - Strategic: hrbp, revops
+
+### Phase 3: Workflow Validation ✅
+- [ ] **Confirm routing decision**:
+  - Direct execution: Only for single-step read operations
+  - Agent-coordinator: All complex, multi-step, or multi-domain tasks
+  - P3 commands: All PR creation (`p3 create-pr "title" ISSUE_NUM`)
+- [ ] **Validate execution keywords** for agent tasks:
+  - Use "EXECUTE", "IMPLEMENT", "WRITE CODE" for action
+  - End with "COMPLETE THE FULL IMPLEMENTATION"
+
+### Phase 4: Quality Assurance ✅
+- [ ] **Pre-execution checks**:
+  - Issue linked and properly scoped (≤5 days)
+  - GitHub issue exists for context preservation
+  - Agent issue tracking confirmed (each agent → specific GitHub issue)
+- [ ] **Compliance verification**:
+  - English-only standard maintained
+  - Configuration centralization (`common/config/`)  
+  - Documentation currency planned
+
+---
+
+**❌ TASK EXECUTION WITHOUT COMPLETING THIS CHECKLIST VIOLATES COMPANY POLICY**
+
+**🎯 QUICK REFERENCE - MOST COMMON VIOLATIONS:**
+- Creating PRs with `gh pr create` instead of `p3 create-pr`
+- Using direct tools for complex multi-step tasks instead of agent-coordinator
+- Skipping README.md reading before architecture tasks
+- Creating .md planning files instead of using GitHub Issues
+
+---
+
+## 👥 ORGANIZATIONAL AUTHORITY STRUCTURE
+
+### HRBP Agent - CLAUDE.md Owner and Policy Manager
+**DESIGNATED AUTHORITY**: HRBP agent has exclusive responsibility for:
+- CLAUDE.md content design, updates, and version control
+- Agent definition file standardization and template enforcement  
+- Company policy compliance monitoring and violation tracking
+- Cross-agent communication protocol specifications
+- Policy exemption evaluation and approval processes
+
+**CHANGE MANAGEMENT**: All CLAUDE.md modifications must be:
+1. Proposed through HRBP agent via GitHub issue
+2. Reviewed for organizational impact and consistency
+3. Approved by HRBP agent before implementation
+4. Documented with rationale and effective date
+
+---
+
 <!-- Company Policy Document for SEC Filing-Enhanced Quantitative Trading Platform -->
 
 > **Clean Repository Structure** (2025-08-26): Main repository contains only code, documentation, and configurations. Data subtree at `build_data/` with centralized configs at `common/config/`.
@@ -175,6 +244,38 @@ strategic_management:
   - revops-agent: ROI analysis, cost optimization, efficiency metrics
 ```
 
+## 📋 AGENT DOCUMENTATION STANDARDS
+
+### Mandatory Agent File Structure (HRBP-Enforced)
+ALL agent definition files MUST include:
+
+```yaml
+required_sections:
+  - Precise role definition and scope boundaries
+  - GitHub issue tracking link for context preservation  
+  - CLAUDE.md policy compliance acknowledgment
+  - P3 workflow integration requirements
+  - Inter-agent communication protocols
+  - Performance metrics and success criteria
+
+documentation_consistency:
+  - Standardized description format and length
+  - Consistent terminology across all agents
+  - Regular review cycles (quarterly by HRBP)
+  - Version control for significant changes
+```
+
+**AGENT FILE TEMPLATE REQUIREMENTS**:
+- **Header Section**: Name, description, tools specification
+- **Core Expertise**: Detailed specialization areas and capabilities
+- **Primary Responsibilities**: Specific duties and scope boundaries
+- **Workflow Integration**: P3 command usage and agent-coordinator routing
+- **Quality Standards**: Compliance requirements and success metrics
+- **Issue Tracking**: Direct link to corresponding GitHub issue
+- **Policy Compliance**: Reference to CLAUDE.md adherence
+
+**STANDARDIZATION ENFORCEMENT**: HRBP agent conducts quarterly reviews of all agent definition files to ensure consistency, accuracy, and policy compliance.
+
 ## 🧠 CONTINUOUS IMPROVEMENT MANDATE
 
 ### Company Learning Policy
@@ -270,6 +371,48 @@ ALLOWED_documentation_only:
 ```
 
 **ENFORCEMENT**: All planning, tracking, and architectural documentation MUST be managed through GitHub Issues with proper labels, milestones, and cross-references. Never create additional .md files for project management.
+
+## 🚨 POLICY COMPLIANCE MONITORING
+
+### HRBP-Managed Violation Tracking System
+**IMPLEMENTATION**: GitHub issues labeled "policy-violation" managed by HRBP agent
+**ESCALATION**: Repeated violations trigger HRBP intervention and remediation protocols
+**REMEDIATION**: Mandatory agent retraining, documentation updates, and process improvements
+
+### Common Violations to Monitor
+**CRITICAL POLICY VIOLATIONS**:
+- **PR Creation Bypass**: Using `gh pr create` instead of mandatory `p3 create-pr`
+- **Agent-Coordinator Bypass**: Using direct tools for complex multi-step tasks
+- **Policy Reading Failure**: Skipping mandatory task initiation protocol checklist
+- **GitHub Issue Avoidance**: Creating .md planning files instead of using GitHub issues
+- **P3 Workflow Non-Compliance**: Bypassing required testing and validation steps
+
+### Violation Response Protocol
+```yaml
+violation_severity:
+  level_1_warning:
+    - First-time policy bypass
+    - Immediate correction with documentation reference
+    - HRBP notification for tracking
+    
+  level_2_intervention:
+    - Repeated violations (2+ instances)
+    - HRBP-mandated policy review session
+    - GitHub issue creation for violation tracking
+    
+  level_3_remediation:
+    - Persistent non-compliance (3+ instances)
+    - Formal HRBP assessment and retraining
+    - Agent definition file review and updates
+    - Management escalation consideration
+```
+
+### Performance Metrics and Tracking
+**HRBP MONITORING RESPONSIBILITIES**:
+- Weekly policy compliance rate analysis
+- Violation pattern identification and root cause analysis
+- Agent-specific compliance tracking and improvement planning
+- Quarterly compliance reporting and policy optimization recommendations
 
 ## 🛡️ OPERATIONAL RESILIENCE POLICY
 
