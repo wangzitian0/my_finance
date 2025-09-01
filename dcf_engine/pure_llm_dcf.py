@@ -108,18 +108,18 @@ Respond with exactly: 'PING_TEST_OK' if you understand this format."""
 
     def _get_current_build_dir(self) -> Path:
         """Get current build directory for storing build-specific artifacts using SSOT"""
-        from common.core.directory_manager import DirectoryManager, DataLayer
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
         # Use SSOT DirectoryManager for path management
         dm = DirectoryManager()
-        
+
         # Query results (DCF reports) should go to stage_04_query_results
         query_results_dir = dm.get_data_layer_path(DataLayer.QUERY_RESULTS)
-        
+
         # Create dcf_reports subdirectory for organized storage
         dcf_reports_dir = query_results_dir / "dcf_reports"
         dcf_reports_dir.mkdir(parents=True, exist_ok=True)
-        
+
         return dcf_reports_dir
 
     def load_company_data(self, ticker: str) -> Optional[Dict]:

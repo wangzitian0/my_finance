@@ -25,15 +25,15 @@ class SECDocumentManager:
             base_path = project_root / "data"
 
         # Use SSOT DirectoryManager for consistent path management
-        from common.core.directory_manager import DirectoryManager, DataLayer
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
         dm = DirectoryManager()
-        
+
         # SEC documents go to raw data layer
         raw_data_path = dm.get_data_layer_path(DataLayer.RAW_DATA)
         self.base_path = raw_data_path
         self.sec_docs_path = raw_data_path / "sec-edgar"  # Use stage_00_raw/sec-edgar
-        
+
         # Embeddings go to daily index layer
         daily_index_path = dm.get_data_layer_path(DataLayer.DAILY_INDEX)
         self.embeddings_path = daily_index_path / "embeddings"
