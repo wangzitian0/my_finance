@@ -44,6 +44,11 @@
   - All implementation work finished
   - Code tested and validated
   - Documentation updated appropriately
+- [ ] **Self-validation of design goals** (MANDATORY before PR):
+  - Execute validation commands to verify changes work as intended
+  - Check compliance with original requirements
+  - Validate no regressions introduced
+  - Confirm architectural integrity maintained
 - [ ] **Automatic PR creation** (MANDATORY for significant changes):
   - Route through `agent-coordinator` with EXECUTE keywords
   - Use `p3 create-pr "title" ISSUE_NUM` workflow
