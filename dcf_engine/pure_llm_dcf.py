@@ -107,19 +107,20 @@ Respond with exactly: 'PING_TEST_OK' if you understand this format."""
             raise Exception(f"LLM is not responsive: {e}")
 
     def _get_current_build_dir(self) -> Path:
-        """Get current build directory for storing build-specific artifacts"""
-        from common.utils import ensure_path_exists, get_current_build_dir, get_project_paths
+        """Get current build directory for storing build-specific artifacts using SSOT"""
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
-        # Try to get current build directory
-        build_dir = get_current_build_dir()
-        if build_dir:
-            return build_dir
+        # Use SSOT DirectoryManager for path management
+        dm = DirectoryManager()
 
-        # Fallback: create new build directory
-        paths = get_project_paths()
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        build_dir = paths["stage_99_build"] / f"build_{timestamp}"
-        return ensure_path_exists(build_dir)
+        # Query results (DCF reports) should go to stage_04_query_results
+        query_results_dir = dm.get_data_layer_path(DataLayer.QUERY_RESULTS)
+
+        # Create dcf_reports subdirectory for organized storage
+        dcf_reports_dir = query_results_dir / "dcf_reports"
+        dcf_reports_dir.mkdir(parents=True, exist_ok=True)
+
+        return dcf_reports_dir
 
     def load_company_data(self, ticker: str) -> Optional[Dict]:
         """Load financial data for a company"""
