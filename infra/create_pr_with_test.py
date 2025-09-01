@@ -361,10 +361,7 @@ def run_end_to_end_test(scope="f2"):
             return False
 
     # Validate build results
-    build_status = run_command(
-        "./p3 build-status",
-        "Checking build status",
-    )
+    build_status = run_p3_command("build-status", "Checking build status")
 
     # Check for expected F2 files (just need basic validation)
     file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
