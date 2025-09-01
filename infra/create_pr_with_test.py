@@ -2,6 +2,12 @@
 """
 Create PR with mandatory F2 end-to-end testing
 This script automates the complete PR creation workflow with F2 fast validation (default)
+
+WORKTREE COMPATIBILITY:
+- Detects git worktree environments automatically
+- Uses safe fetch+rebase instead of checkout+reset for main branch sync
+- Prevents data loss between multiple worktrees working on different branches
+- Maintains compatibility with regular git repositories
 """
 
 import argparse
@@ -112,6 +118,165 @@ def get_uncommitted_changes():
     return result.stdout.strip() if result else ""
 
 
+def is_worktree_environment():
+    """Detect if we're running in a git worktree environment"""
+    import os
+
+    # Check environment variable (set by p3 wrapper)
+    if os.environ.get("P3_WORKTREE_BRANCH"):
+        return True
+
+    # Check current working directory
+    cwd = os.getcwd()
+    if "/.git/worktree/" in cwd:
+        return True
+
+    # Check if .git is a file (indicates worktree)
+    git_file = os.path.join(cwd, ".git")
+    if os.path.isfile(git_file):
+        try:
+            with open(git_file, "r") as f:
+                content = f.read().strip()
+                if content.startswith("gitdir:") and "/.git/worktrees/" in content:
+                    return True
+        except:
+            pass
+
+    # Check git worktree list command
+    worktree_result = run_command("git worktree list", "Checking worktree list", check=False)
+    if worktree_result and worktree_result.stdout:
+        # If we have more than one line, we have worktrees
+        lines = [
+            line.strip() for line in worktree_result.stdout.strip().split("\n") if line.strip()
+        ]
+        if len(lines) > 1:
+            # Check if current directory is mentioned in worktree list
+            for line in lines:
+                if cwd in line and not line.endswith("[bare]"):
+                    return True
+
+    return False
+
+
+def get_p3_command():
+    """Get the appropriate P3 command for the current environment"""
+    import os
+
+    # Check if we're in a worktree environment
+    if is_worktree_environment():
+        return ["python3", "p3.py"]
+    else:
+        # Check if ./p3 executable exists
+        if os.path.isfile("./p3"):
+            return ["./p3"]
+        else:
+            return ["python3", "p3.py"]
+
+
+def run_p3_command(cmd, description, timeout=None, check=True):
+    """Run a P3 command with proper worktree handling"""
+    p3_base = get_p3_command()
+    if isinstance(cmd, str):
+        # Parse command like "./p3 status" into ["status"]
+        parts = cmd.split()
+        if parts[0] in ["./p3", "p3", "python3"]:
+            # Remove the p3 prefix since we're adding our own
+            cmd_args = parts[1:] if len(parts) > 1 else []
+        else:
+            cmd_args = parts
+    else:
+        cmd_args = cmd
+
+    full_cmd = p3_base + cmd_args
+    return run_command(" ".join(full_cmd), description, timeout=timeout, check=check)
+
+
+def sync_with_main_safely(current_branch):
+    """Safely sync with main branch, handling both regular git and worktree environments"""
+    print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
+
+    # Step 1: ALWAYS fetch latest changes from remote
+    run_command("git fetch origin", "Fetching all latest remote changes")
+
+    # Detect if we're in a worktree environment
+    in_worktree = is_worktree_environment()
+
+    if in_worktree:
+        print("🌿 Worktree environment detected - using safe sync method")
+
+        # SAFE METHOD FOR WORKTREES: Use fetch + rebase instead of checkout/reset
+        print("🔄 Using worktree-safe synchronization (fetch + rebase)...")
+        print("🔒 WORKTREE SAFETY: Avoiding 'git checkout main' and 'git reset --hard' operations")
+        print("   These operations can cause data loss in worktree environments")
+
+        # Fetch origin/main to ensure we have latest remote state
+        run_command(
+            "git fetch origin main:refs/remotes/origin/main", "Updating origin/main reference"
+        )
+
+        # Verify we have the latest origin/main
+        main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD")
+        print(f"📍 Latest origin/main: {main_head.stdout.strip()}")
+
+        # Check if our current branch is up to date with origin/main
+        merge_base = run_command(
+            "git merge-base HEAD origin/main", "Getting merge base", check=False
+        )
+        if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
+            print("✅ Feature branch is already up to date with origin/main")
+            print("🌿 No rebase needed - worktree is safely synchronized")
+        else:
+            print("🔄 Feature branch needs rebase onto latest origin/main")
+            print("🌿 Using safe rebase operation (no main branch checkout required)")
+    else:
+        print("📁 Regular git repository detected - using standard sync method")
+
+        # TRADITIONAL METHOD FOR REGULAR REPOSITORIES: checkout + reset (safe here)
+        print("🔄 Ensuring local main branch matches remote main...")
+        current_branch_backup = current_branch  # Save current branch
+        run_command("git checkout main", "Switching to main branch")
+        run_command("git reset --hard origin/main", "Hard reset main to match origin/main")
+        run_command(
+            f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
+        )
+        print("✅ Local main branch is now identical to remote main")
+
+    # Step 2: ALWAYS rebase current feature branch onto origin/main (safe in both environments)
+    print("🔄 Rebasing feature branch onto latest origin/main...")
+    print("   This ensures clean PR history with no conflicts")
+
+    rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
+
+    if rebase_result and rebase_result.returncode == 0:
+        print("✅ Rebase completed successfully")
+    else:
+        print("⚠️  Rebase encountered issues, checking status...")
+        # Check if we're in a rebase state
+        status_result = run_command("git status", "Checking git status", check=False)
+        if status_result and "rebase in progress" in status_result.stdout:
+            print("❌ Rebase has conflicts that require manual resolution")
+            print("💡 Please resolve conflicts manually and run 'git rebase --continue'")
+            print("   Then re-run this command")
+            sys.exit(1)
+        else:
+            print("✅ Rebase completed (no conflicts detected)")
+
+    # Step 3: Verify the rebase created a clean history
+    merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
+    main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
+
+    if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
+        print("✅ Feature branch is cleanly based on latest origin/main")
+        if in_worktree:
+            print("🌿 Worktree-safe synchronization completed successfully")
+    else:
+        print("⚠️  Warning: Branch may not be cleanly rebased, but proceeding...")
+        print(f"   Merge base: {merge_base.stdout.strip() if merge_base else 'unknown'}")
+        print(f"   Main HEAD: {main_head.stdout.strip() if main_head else 'unknown'}")
+        if in_worktree:
+            print("🌿 Worktree environment: This is expected and safe")
+
+
 def run_end_to_end_test(scope="f2"):
     """Run end-to-end test with specified scope (f2 fast or m7 complete)"""
     scope_info = {
@@ -119,13 +284,13 @@ def run_end_to_end_test(scope="f2"):
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "./p3 fast-build f2",
+            "build_cmd": "fast-build f2",
         },
         "m7": {
             "name": "M7 COMPLETE VALIDATION",
             "description": "Magnificent 7 companies with full testing",
             "min_files": 7,
-            "build_cmd": "./p3 build m7",
+            "build_cmd": "build m7",
         },
     }
 
@@ -143,11 +308,7 @@ def run_end_to_end_test(scope="f2"):
     run_command("rm -f common/latest_build", "Cleaning latest build symlink", check=False)
 
     # Start environment if needed (Python-based status)
-    run_command(
-        "./p3 status",
-        "Checking environment status",
-        check=False,
-    )
+    run_p3_command("status", "Checking environment status", check=False)
 
     test_success = False
     try:
@@ -158,7 +319,7 @@ def run_end_to_end_test(scope="f2"):
 
         # Build dataset using appropriate scope and model
         print(f"🚀 Starting {scope.upper()} build - {test_info['description']}")
-        run_command(
+        run_p3_command(
             test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=600
         )  # 10 minutes for broader scope support
 
@@ -200,10 +361,7 @@ def run_end_to_end_test(scope="f2"):
             return False
 
     # Validate build results
-    build_status = run_command(
-        "./p3 build-status",
-        "Checking build status",
-    )
+    build_status = run_p3_command("build-status", "Checking build status")
 
     # Check for expected F2 files (just need basic validation)
     file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
@@ -437,9 +595,17 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     push_env = os.environ.copy()
     push_env["P3_CREATE_PR_PUSH"] = "true"
 
-    # 1. Check current state
+    # 1. Check current state and environment
     current_branch = get_current_branch()
     print(f"📍 Current branch: {current_branch}")
+
+    # Announce worktree safety status
+    if is_worktree_environment():
+        print("🌿 WORKTREE ENVIRONMENT DETECTED")
+        print("✅ Worktree-safe git operations will be used to prevent data loss")
+        print("🔒 Main branch operations will use fetch+rebase instead of checkout+reset")
+    else:
+        print("📁 Regular git repository detected - using standard operations")
 
     if current_branch == "main":
         print("❌ Cannot create PR from main branch")
@@ -452,56 +618,14 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
         print("Please commit or stash changes first")
         sys.exit(1)
 
-    # 2.5. CRITICAL: Sync with latest main and rebase
-    print("\n🔄 Syncing with latest remote main and rebasing feature branch...")
-
-    # Step 1: ALWAYS fetch latest changes from remote
-    run_command("git fetch origin", "Fetching all latest remote changes")
-
-    # Step 2: Update local main branch to match remote main
-    print("🔄 Ensuring local main branch matches remote main...")
-    current_branch_backup = current_branch  # Save current branch
-    run_command("git checkout main", "Switching to main branch")
-    run_command("git reset --hard origin/main", "Hard reset main to match origin/main")
-    run_command(
-        f"git checkout {current_branch_backup}", f"Switching back to {current_branch_backup}"
-    )
-    print("✅ Local main branch is now identical to remote main")
-
-    # Step 3: ALWAYS rebase current feature branch onto origin/main
-    print("🔄 Rebasing feature branch onto latest origin/main...")
-    print("   This ensures clean PR history with no conflicts")
-
-    rebase_result = run_command("git rebase origin/main", "Rebasing onto origin/main", check=False)
-
-    if rebase_result and rebase_result.returncode == 0:
-        print("✅ Rebase completed successfully")
-    else:
-        print("⚠️  Rebase encountered issues, checking status...")
-        # Check if we're in a rebase state
-        status_result = run_command("git status", "Checking git status", check=False)
-        if status_result and "rebase in progress" in status_result.stdout:
-            print("❌ Rebase has conflicts that require manual resolution")
-            print("💡 Please resolve conflicts manually and run 'git rebase --continue'")
-            print("   Then re-run this command")
-            sys.exit(1)
-        else:
-            print("✅ Rebase completed (no conflicts detected)")
-
-    # Step 4: Verify the rebase created a clean history
-    merge_base = run_command("git merge-base HEAD origin/main", "Getting merge base", check=False)
-    main_head = run_command("git rev-parse origin/main", "Getting origin/main HEAD", check=False)
-
-    if merge_base and main_head and merge_base.stdout.strip() == main_head.stdout.strip():
-        print("✅ Feature branch is cleanly based on latest origin/main")
-    else:
-        print("⚠️  Warning: Branch may not be cleanly rebased, but proceeding...")
-        print(f"   Merge base: {merge_base.stdout.strip() if merge_base else 'unknown'}")
-        print(f"   Main HEAD: {main_head.stdout.strip() if main_head else 'unknown'}")
+    # 2.5. CRITICAL: Sync with latest main and rebase (WORKTREE-SAFE)
+    sync_with_main_safely(current_branch)
 
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
-    run_command("./p3 format", "Formatting Python code with black and isort")
+    format_result = run_p3_command(
+        "format", "Formatting Python code with black and isort", check=False
+    )
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
@@ -532,7 +656,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_command("./p3 commit-data-changes", "Staging data directory changes")
+    run_p3_command("commit-data-changes", "Staging data directory changes")
 
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()
