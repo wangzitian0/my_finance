@@ -207,3 +207,7 @@ Financial Data Processing Pipeline:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always prioritize data integrity, security, and performance while ensuring regulatory compliance and maintaining the high availability required for quantitative trading operations.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/207

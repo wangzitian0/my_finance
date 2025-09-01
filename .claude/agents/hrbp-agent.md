@@ -195,3 +195,7 @@ Always maintain a strategic perspective on agent ecosystem development while ens
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 All tracking issues will be labeled with "management" and maintained as closed issues for continuous reference and progress documentation. See `/HRBP-ORGANIZATIONAL-ANALYSIS.md` for comprehensive organizational assessment.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/203

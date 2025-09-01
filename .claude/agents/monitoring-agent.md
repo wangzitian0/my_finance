@@ -120,3 +120,7 @@ Your monitoring framework covers:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always provide comprehensive operational visibility, maintain proactive monitoring with predictive insights, and ensure operational excellence through continuous performance optimization and capacity planning.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/199

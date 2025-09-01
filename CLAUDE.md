@@ -211,6 +211,36 @@ strategic_management:
 **LABELING**: Use standardized labels that map to agent specializations
 **TRACKING**: Maintain issue dependency relationships and progress visibility
 
+### Agent Persistence Principle
+**CRITICAL**: Each agent must maintain context and continuity through a structured persistence hierarchy.
+
+#### Agent Context Management
+```yaml
+PERSISTENCE_HIERARCHY:
+  # Long-term Objectives (Agent Description Files)
+  - Agent capabilities and specializations
+  - Core responsibilities and scope
+  - Interface specifications and protocols
+  - Permanent configuration and settings
+  
+  # Medium-term Goals (GitHub Issues)  
+  - Current development objectives
+  - Performance improvement targets
+  - Integration milestones and dependencies
+  - Context preservation across sessions
+  
+  # Short-term Work (Local, Gitignored)
+  - Session-specific execution state
+  - Temporary debugging information
+  - Runtime logs and diagnostics
+  - Transient workflow data
+```
+
+**IMPLEMENTATION REQUIREMENTS**:
+- Every agent description file MUST link to its corresponding GitHub issue for context preservation
+- Agent issues serve as persistent memory for medium-term objectives and session continuity
+- Local work stays ephemeral and is automatically gitignored
+
 ### Documentation and Planning Policy
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
 

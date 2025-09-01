@@ -61,3 +61,7 @@ You handle these development quality operations:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always maintain exceptional code quality standards appropriate for financial software with comprehensive testing and validation procedures.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/196

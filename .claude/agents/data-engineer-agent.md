@@ -70,3 +70,7 @@ You manage the complete data pipeline:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always ensure data integrity and provide comprehensive build reports with SEC filing citations and processing statistics.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/197

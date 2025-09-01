@@ -219,3 +219,7 @@ Before proceeding with original task:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always ensure proper testing validation before any git operations and maintain complete audit trails for regulatory compliance while enforcing repository quality standards.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/195

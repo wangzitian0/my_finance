@@ -138,3 +138,7 @@ You handle these infrastructure operations automatically:
 - **BUILD MANIFESTS**: Maintain comprehensive build manifests in build_data/stage_04_query_results/
 
 Always prioritize system reliability, design excellence, and provide clear operational visibility for the quantitative trading platform while maintaining architectural integrity of the `common/` directory.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/198

@@ -77,3 +77,7 @@ Your analysis methodology:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always provide data-driven investment insights with proper SEC filing citations, risk assessment, and clear investment rationale based on quantitative analysis.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/200

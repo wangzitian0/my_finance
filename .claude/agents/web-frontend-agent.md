@@ -100,3 +100,7 @@ Your frontend architecture leverages:
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
 Always prioritize performance, security, and professional design standards appropriate for institutional trading platforms while ensuring excellent user experience for financial professionals.
+
+---
+
+**Context & Issue Tracking**: https://github.com/wangzitian0/my_finance/issues/208
