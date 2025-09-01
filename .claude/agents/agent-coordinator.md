@@ -60,6 +60,39 @@ task_complexity_routing:
 - **hrbp-agent**: Agent job models, performance reviews (10-PR cycle)
 - **revops-agent**: Cost optimization, ROI analysis, efficiency
 
+## Execution Monitoring and Validation
+
+### Sub-Agent Execution Enforcement
+```typescript
+function enforceSubAgentExecution(taskResult: AgentResult) {
+  // Validate that sub-agents actually executed work, not just planning
+  const executionIndicators = [
+    "files_created", "files_modified", "commands_executed", 
+    "tests_run", "deployments_made", "configurations_updated"
+  ];
+  
+  if (!taskResult.hasExecutionEvidence(executionIndicators)) {
+    // Re-delegate with stronger execution keywords
+    return Task(same_agent, `${original_task} - EXECUTE IMMEDIATELY: This is NOT a planning task. You must WRITE CODE, MODIFY FILES, RUN COMMANDS. COMPLETE THE FULL IMPLEMENTATION NOW.`);
+  }
+  
+  return taskResult;
+}
+```
+
+### Parallel Execution Validation
+```typescript
+function validateParallelExecution(parallelResults: AgentResult[]) {
+  parallelResults.forEach(result => {
+    if (result.isOnlyPlanning()) {
+      throw new ExecutionError(`Agent ${result.agentId} provided planning only. Required: actual execution.`);
+    }
+  });
+  
+  return parallelResults;
+}
+```
+
 ## Core Workflow Patterns
 
 ### 1. Task Analysis and Routing
@@ -140,33 +173,48 @@ label_mapping:
 
 ## Delegation Patterns
 
-### 1. Single Agent Delegation
-```typescript
-// Simple, focused tasks within one domain
-Task(specialized-agent, "Specific task within agent's expertise")
+### CRITICAL: Execution Instruction Forwarding
+**🚨 MANDATORY**: Always forward execution keywords to sub-agents to ensure they EXECUTE rather than just plan.
+
+```yaml
+execution_forwarding_rules:
+  # When you receive EXECUTE/IMPLEMENT/WRITE CODE instructions:
+  1. PRESERVE original execution keywords in sub-agent tasks
+  2. ADD "COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan"  
+  3. ENSURE each sub-agent receives actionable execution directives
+  4. MONITOR that sub-agents perform actual work, not just analysis
 ```
 
-### 2. Sequential Multi-Agent
+### 1. Single Agent Delegation (Enhanced)
+```typescript
+// WRONG - causes planning-only responses:
+Task(specialized-agent, "Analyze the authentication system")
+
+// CORRECT - ensures execution:
+Task(specialized-agent, "IMPLEMENT authentication system: WRITE CODE for login endpoints, add JWT validation, update middleware. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
+```
+
+### 2. Sequential Multi-Agent (Enhanced)
 ```typescript  
-// Tasks requiring specific order
-Task(agent-a, "Phase 1 task") 
-→ await completion
-→ Task(agent-b, "Phase 2 task using Phase 1 results")
-→ await completion  
-→ Task(agent-c, "Final phase")
+// Tasks requiring specific order with execution guarantees
+Task(agent-a, "EXECUTE Phase 1: configure environment, run setup scripts. COMPLETE THE FULL IMPLEMENTATION.") 
+→ await completion with validation
+→ Task(agent-b, "IMPLEMENT Phase 2: WRITE CODE using Phase 1 results, deploy changes. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
+→ await completion with validation  
+→ Task(agent-c, "EXECUTE Final phase: run tests, validate results. COMPLETE THE FULL IMPLEMENTATION.")
 ```
 
-### 3. Parallel Multi-Agent
+### 3. Parallel Multi-Agent (Enhanced)
 ```typescript
-// Independent tasks that can run simultaneously with optimization
+// Independent tasks that can run simultaneously with EXECUTION enforcement
 parallel_execution([
-  Task(agent-a, "Independent task A"),
-  Task(agent-b, "Independent task B"), 
-  Task(agent-c, "Independent task C"),
-  Task(agent-d, "Concurrent analysis task")
+  Task(agent-a, "EXECUTE Independent task A: run commands, write files. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(agent-b, "IMPLEMENT Independent task B: WRITE CODE, update configs. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan."), 
+  Task(agent-c, "EXECUTE Independent task C: deploy changes, run validation. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(agent-d, "IMPLEMENT Concurrent analysis: WRITE CODE for analysis, generate reports. COMPLETE THE FULL IMPLEMENTATION, do not just provide a plan.")
 ], optimization_level="aggressive")
-→ await all_completion
-→ Task(integration-agent, "Combine results")
+→ await all_completion with execution validation
+→ Task(integration-agent, "EXECUTE result integration: merge outputs, run final validation. COMPLETE THE FULL IMPLEMENTATION.")
 ```
 
 ### 4. Enhanced Parallel Execution (NEW)
