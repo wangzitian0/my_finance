@@ -6,7 +6,7 @@ Centralizes all development commands under one consistent interface
 This replaces the shell-based p3 script with a proper Python CLI system
 as specified in Issue #111.
 
-Enhanced with Agent Execution Monitoring System (Issue #180).
+Enhanced with Agent Execution Monitoring System (Issue #180) and P3 Version Management.
 """
 import os
 import subprocess
@@ -23,6 +23,15 @@ try:
 except ImportError:
     MONITORING_ENABLED = False
     print("⚠️  Execution monitoring not available")
+
+# Import version management
+try:
+    from p3_version import get_p3_version, print_version_info, get_version_manager
+    VERSION_ENABLED = True
+except ImportError:
+    VERSION_ENABLED = False
+    def get_p3_version(): return "unknown"
+    def print_version_info(): print("Version information not available")
 
 
 class P3CLI:
@@ -244,6 +253,12 @@ class P3CLI:
             "hrbp-manual-trigger": "pixi run python infra/hrbp_automation.py manual-trigger",
             "hrbp-history": "pixi run python infra/hrbp_automation.py history",
             "hrbp-config": "pixi run python infra/hrbp_automation.py config",
+            # Version Management Commands
+            "version": "python p3_version.py info",
+            "version-info": "python p3_version.py info", 
+            "version-increment": "python p3_version.py increment {level}",
+            "version-update": "python p3_version.py update-on-pull",
+            "install-version-hooks": "pixi run python scripts/install_version_hooks.py",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -292,6 +307,28 @@ class P3CLI:
             print("Run: pixi shell")
             print("Note: This command needs to be run directly as 'pixi shell'")
             return None
+
+        # Version commands
+        if command in ["version", "version-info"]:
+            if VERSION_ENABLED:
+                print_version_info()
+            else:
+                print("Version information not available")
+            return None
+
+        if command == "version-increment":
+            if not VERSION_ENABLED:
+                print("Version management not available")
+                return None
+            
+            level = args[0] if args and args[0] in ["major", "minor", "patch", "build"] else "patch"
+            return f"python p3_version.py increment {level}"
+
+        if command == "version-update":
+            if not VERSION_ENABLED:
+                print("Version management not available")
+                return None
+            return "python p3_version.py update-on-pull"
 
         if command == "create-pr":
             if len(args) < 2:
@@ -365,8 +402,9 @@ class P3CLI:
 
     def show_help(self):
         """Show comprehensive help information."""
-        help_text = """
-p3 - Unified developer commands (my_finance)
+        version_info = f" (v{get_p3_version()})" if VERSION_ENABLED else ""
+        help_text = f"""
+p3 - Unified developer commands (my_finance){version_info}
 
 Usage:
   p3 <command> [args...]
@@ -452,6 +490,13 @@ HRBP Automation (20-PR Cycle Management):
   hrbp-manual-trigger    Manually trigger HRBP cycle (emergency use)
   hrbp-history           Show recent HRBP trigger history
   hrbp-config            Show HRBP automation configuration
+
+Version Management:
+  version                Show current P3 version and git information
+  version-info           Same as version command (detailed info)
+  version-increment LEVEL Manually increment version (major|minor|patch|build)
+  version-update         Update version after git pull (auto-detects changes)
+  install-version-hooks  Install git hooks for automatic version updates
 
 Scopes: f2 m7 n100 v3k (default: m7)
   f2     - Fast 2 companies (development testing)
