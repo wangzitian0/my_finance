@@ -26,12 +26,17 @@ except ImportError:
 
 # Import version management
 try:
-    from p3_version import get_p3_version, print_version_info, get_version_manager
+    from p3_version import get_p3_version, get_version_manager, print_version_info
+
     VERSION_ENABLED = True
 except ImportError:
     VERSION_ENABLED = False
-    def get_p3_version(): return "unknown"
-    def print_version_info(): print("Version information not available")
+
+    def get_p3_version():
+        return "unknown"
+
+    def print_version_info():
+        print("Version information not available")
 
 
 class P3CLI:
@@ -255,7 +260,7 @@ class P3CLI:
             "hrbp-config": "pixi run python infra/hrbp_automation.py config",
             # Version Management Commands
             "version": "python p3_version.py info",
-            "version-info": "python p3_version.py info", 
+            "version-info": "python p3_version.py info",
             "version-increment": "python p3_version.py increment {level}",
             "version-update": "python p3_version.py update-on-pull",
             "version-check": "python p3_version.py check-updates",
@@ -322,7 +327,7 @@ class P3CLI:
             if not VERSION_ENABLED:
                 print("Version management not available")
                 return None
-            
+
             level = args[0] if args and args[0] in ["major", "minor", "patch", "build"] else "patch"
             return f"python p3_version.py increment {level}"
 
@@ -331,13 +336,13 @@ class P3CLI:
                 print("Version management not available")
                 return None
             return "python p3_version.py update-on-pull"
-            
+
         if command == "version-check":
             if not VERSION_ENABLED:
                 print("Version management not available")
                 return None
             return "python p3_version.py check-updates"
-            
+
         if command == "version-history":
             if not VERSION_ENABLED:
                 print("Version management not available")
