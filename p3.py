@@ -27,19 +27,21 @@ except ImportError:
 # Import version management (simplified)
 try:
     from p3_version_simple import get_version_string, increment_version
+
     VERSION_ENABLED = True
-    
+
     def get_p3_version():
         return get_version_string()
-    
+
     def print_version_info():
         print(f"P3 Version: {get_version_string()}")
+
 except ImportError:
     VERSION_ENABLED = False
-    
+
     def get_p3_version():
         return "unknown"
-    
+
     def print_version_info():
         print("Version information not available")
 
