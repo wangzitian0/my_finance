@@ -3,7 +3,7 @@
 Workflow-Oriented Environment Command: RESET
 "Fix environment issues" - clean restart everything
 
-Replaces 8 commands: env-stop, env-reset, neo4j-stop, neo4j-restart, 
+Replaces 8 commands: env-stop, env-reset, neo4j-stop, neo4j-restart,
 env-setup, env-start, podman-status, env-status
 """
 
@@ -41,45 +41,47 @@ def main():
     print("=" * 55)
     print("⚠️  This will stop services, clean up, and restart everything")
     print()
-    
+
     reset_steps = [
         # 1. Stop services
         ("podman stop neo4j-finance", "Stopping Neo4j", True),
         ("sleep 2", "Waiting for services to stop", True),
-        
         # 2. Cleanup and reset
         ("pixi clean", "Cleaning pixi cache", True),
         ("pixi install", "Reinstalling pixi environment", False),
-        
-        # 3. Restart services  
+        # 3. Restart services
         ("podman start neo4j-finance", "Starting Neo4j", False),
         ("sleep 3", "Waiting for Neo4j to initialize", True),
-        
         # 4. Verify reset results
-        ("podman ps --format 'table {{.Names}}\\t{{.Status}}'", "Checking container status", False, True),
+        (
+            "podman ps --format 'table {{.Names}}\\t{{.Status}}'",
+            "Checking container status",
+            False,
+            True,
+        ),
         ("pixi run python --version", "Verifying Python environment", False, True),
         ("pixi run python infra/comprehensive_env_status.py", "Final environment check", False),
     ]
-    
+
     success_count = 0
     total_steps = len(reset_steps)
-    
+
     for step in reset_steps:
         if len(step) == 3:
             cmd, desc, ignore_errors = step
             show_output = False
         else:
             cmd, desc, ignore_errors, show_output = step
-            
+
         if run_command(cmd, desc, ignore_errors, show_output):
             success_count += 1
-        
+
         # Brief pause between important steps
         if "stop" in desc.lower() or "start" in desc.lower():
             time.sleep(1)
-        
+
         print()  # Empty line separator
-    
+
     print("=" * 55)
     if success_count >= total_steps - 1:  # Allow 1 failure
         print("🎉 RESET COMPLETE - Environment has been reset successfully!")

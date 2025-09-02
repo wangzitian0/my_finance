@@ -3,7 +3,7 @@
 Workflow-Oriented Environment Command: READY
 "I want to start working" - ensure everything is ready
 
-Replaces 8 commands: env-status, env-start, neo4j-start, status, verify-env, 
+Replaces 8 commands: env-status, env-start, neo4j-start, status, verify-env,
 podman-status, cache-status, check-integrity
 """
 
@@ -21,7 +21,7 @@ def run_command(cmd, description, ignore_errors=False):
             print(f"✅ {description} - OK")
             if result.stdout.strip():
                 # Only show key information, avoid excessive output
-                lines = result.stdout.strip().split('\n')
+                lines = result.stdout.strip().split("\n")
                 for line in lines[:3]:  # Show only first 3 lines
                     if line.strip():
                         print(f"   {line}")
@@ -44,29 +44,34 @@ def run_command(cmd, description, ignore_errors=False):
 def main():
     print("🚀 READY - Getting everything ready for development")
     print("=" * 50)
-    
+
     steps = [
         # 1. Check basic environment
         ("pixi run python --version", "Python environment check", False),
-        
         # 2. Start necessary services
         ("podman start neo4j-finance", "Starting Neo4j", True),  # May already be running
-        
         # 3. Environment status check
-        ("pixi run python infra/comprehensive_env_status.py", "Comprehensive environment status", False),
-        
+        (
+            "pixi run python infra/comprehensive_env_status.py",
+            "Comprehensive environment status",
+            False,
+        ),
         # 4. Quick package verification
-        ("pixi run python -c 'import pandas, numpy, requests; print(\"Core packages OK\")'", "Core packages check", False),
+        (
+            "pixi run python -c 'import pandas, numpy, requests; print(\"Core packages OK\")'",
+            "Core packages check",
+            False,
+        ),
     ]
-    
+
     success_count = 0
     total_steps = len(steps)
-    
+
     for cmd, desc, ignore_errors in steps:
         if run_command(cmd, desc, ignore_errors):
             success_count += 1
         print()  # Empty line separator
-    
+
     print("=" * 50)
     if success_count == total_steps:
         print("🎉 READY - Everything is set up for development!")

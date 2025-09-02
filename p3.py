@@ -23,24 +23,24 @@ def ensure_worktree_python_isolation():
         # Import and use worktree isolation manager
         sys.path.insert(0, str(Path(__file__).parent / "scripts"))
         from worktree_isolation import WorktreeIsolationManager
-        
+
         manager = WorktreeIsolationManager()
         return manager.auto_switch_python()
     except ImportError:
         # Fallback to simple check
         worktree_root = Path(__file__).parent
         expected_python = worktree_root / ".pixi/envs/default/bin/python"
-        
+
         if not expected_python.exists():
             return True  # If no pixi environment, don't force requirement
-            
+
         if expected_python.resolve() != Path(sys.executable).resolve():
             # Try to auto-switch
             try:
                 os.execv(str(expected_python), [str(expected_python)] + sys.argv)
             except Exception:
                 return True  # Continue execution even if switch fails
-        
+
         return True
 
 
@@ -48,6 +48,7 @@ def check_worktree_environment():
     """Check worktree environment configuration - simplified version"""
     # Simplified check, avoid excessive output
     return True
+
 
 # Import execution monitoring
 try:
@@ -332,14 +333,14 @@ class P3CLI:
         """Handle special commands that need custom logic."""
 
         # === WORKFLOW-ORIENTED ENVIRONMENT COMMANDS (16→2 commands) ===
-        
+
         if command == "ready":
             """I want to start working - ensure everything is ready"""
             print("🚀 Getting everything ready for development...")
             return "pixi run python scripts/workflow_ready.py"
-                
+
         if command == "reset":
-            """Fix environment issues - clean restart everything"""  
+            """Fix environment issues - clean restart everything"""
             print("🔧 Resetting environment to fix issues...")
             return "pixi run python scripts/workflow_reset.py"
 
@@ -631,9 +632,9 @@ def main():
 if __name__ == "__main__":
     # Ensure correct worktree Python environment is used
     ensure_worktree_python_isolation()
-    
+
     # Check worktree environment configuration
     check_worktree_environment()
-    
+
     # Execute main program
     main()
