@@ -258,6 +258,8 @@ class P3CLI:
             "version-info": "python p3_version.py info", 
             "version-increment": "python p3_version.py increment {level}",
             "version-update": "python p3_version.py update-on-pull",
+            "version-check": "python p3_version.py check-updates",
+            "version-history": "python p3_version.py history",
             "install-version-hooks": "pixi run python scripts/install_version_hooks.py",
         }
 
@@ -329,6 +331,18 @@ class P3CLI:
                 print("Version management not available")
                 return None
             return "python p3_version.py update-on-pull"
+            
+        if command == "version-check":
+            if not VERSION_ENABLED:
+                print("Version management not available")
+                return None
+            return "python p3_version.py check-updates"
+            
+        if command == "version-history":
+            if not VERSION_ENABLED:
+                print("Version management not available")
+                return None
+            return "python p3_version.py history"
 
         if command == "create-pr":
             if len(args) < 2:
@@ -496,6 +510,8 @@ Version Management:
   version-info           Same as version command (detailed info)
   version-increment LEVEL Manually increment version (major|minor|patch|build)
   version-update         Update version after git pull (auto-detects changes)
+  version-check          Check for potential version updates needed
+  version-history        Show version change history and git commits
   install-version-hooks  Install git hooks for automatic version updates
 
 Scopes: f2 m7 n100 v3k (default: m7)
