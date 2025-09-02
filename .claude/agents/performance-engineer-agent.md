@@ -65,6 +65,7 @@ Parallel Processing Architecture:
 3. **Scalable Architecture**: Design patterns supporting horizontal scaling with linear performance gains
 4. **Resource Efficiency**: Optimal resource utilization balancing performance with cost efficiency
 5. **Predictable Performance**: Consistent performance under varying load conditions with graceful degradation
+6. **Performance Resilience**: Robust performance optimization with comprehensive error handling and automatic recovery
 
 ## Key Responsibilities
 
@@ -179,7 +180,309 @@ Parallel Processing Architecture:
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
-Always prioritize optimal performance while maintaining system reliability and ensuring that performance optimizations align with business requirements and regulatory compliance for quantitative trading operations.
+## Performance Engineering Error Handling Framework
+
+### Resource Exhaustion Management
+```python
+class PerformanceResourceManager:
+    """Comprehensive resource monitoring and automatic optimization"""
+    
+    def __init__(self):
+        self.resource_thresholds = {
+            'cpu_usage': 0.80,      # 80% CPU utilization
+            'memory_usage': 0.85,   # 85% memory utilization  
+            'disk_usage': 0.90,     # 90% disk utilization
+            'connection_pool': 0.75  # 75% connection pool usage
+        }
+        self.optimization_strategies = self.load_optimization_config()
+    
+    def monitor_and_optimize_resources(self):
+        """Continuous resource monitoring with automatic optimization"""
+        try:
+            resource_status = self.check_system_resources()
+            
+            for resource_type, usage in resource_status.items():
+                threshold = self.resource_thresholds.get(resource_type, 0.90)
+                
+                if usage > threshold:
+                    self.trigger_resource_optimization(resource_type, usage)
+                    
+        except Exception as e:
+            self.logger.error(f"Resource monitoring failed: {e}")
+            self.activate_emergency_resource_management()
+    
+    def trigger_resource_optimization(self, resource_type: str, current_usage: float):
+        """Automatically optimize resources when thresholds exceeded"""
+        if resource_type == 'cpu_usage':
+            self.optimize_cpu_usage(current_usage)
+        elif resource_type == 'memory_usage':
+            self.optimize_memory_usage(current_usage)
+        elif resource_type == 'disk_usage':
+            self.optimize_disk_usage(current_usage)
+        elif resource_type == 'connection_pool':
+            self.optimize_connection_pools(current_usage)
+    
+    def optimize_cpu_usage(self, usage: float):
+        """CPU optimization with workload redistribution"""
+        actions = [
+            self.reduce_worker_processes,
+            self.enable_request_throttling,
+            self.activate_cpu_affinity,
+            self.defer_non_critical_tasks
+        ]
+        
+        for action in actions:
+            try:
+                action()
+                if self.check_cpu_improvement():
+                    break
+            except Exception as e:
+                self.logger.warning(f"CPU optimization action failed: {e}")
+```
+
+### Performance Threshold Monitoring with Auto-Recovery
+```typescript
+interface PerformanceThresholdConfig {
+  latency_thresholds: {
+    api_response: number;      // milliseconds
+    database_query: number;    // milliseconds
+    cache_lookup: number;      // milliseconds
+    file_operations: number;   // milliseconds
+  };
+  
+  throughput_thresholds: {
+    requests_per_second: number;
+    database_ops_per_second: number;
+    data_processing_rate: number;
+  };
+  
+  error_rate_thresholds: {
+    max_error_rate: number;    // percentage
+    timeout_rate: number;      // percentage
+    retry_success_rate: number; // percentage
+  };
+}
+
+class PerformanceThresholdMonitor {
+  private config: PerformanceThresholdConfig;
+  private circuitBreakers: Map<string, CircuitBreaker>;
+  
+  constructor() {
+    this.config = this.loadPerformanceConfig();
+    this.circuitBreakers = new Map();
+    this.initializeCircuitBreakers();
+  }
+  
+  async monitorPerformanceWithRecovery<T>(
+    operation: string,
+    executable: () => Promise<T>
+  ): Promise<T> {
+    const startTime = Date.now();
+    const circuitBreaker = this.circuitBreakers.get(operation);
+    
+    try {
+      // Check if circuit breaker is open
+      if (circuitBreaker?.isOpen()) {
+        throw new Error(`Circuit breaker open for ${operation}`);
+      }
+      
+      const result = await executable();
+      const duration = Date.now() - startTime;
+      
+      // Check performance thresholds
+      await this.validatePerformanceThresholds(operation, duration);
+      
+      circuitBreaker?.recordSuccess();
+      return result;
+      
+    } catch (error) {
+      circuitBreaker?.recordFailure();
+      
+      // Implement automatic performance recovery
+      await this.attemptPerformanceRecovery(operation, error);
+      throw error;
+    }
+  }
+  
+  private async attemptPerformanceRecovery(operation: string, error: Error): Promise<void> {
+    const recoveryStrategies = [
+      () => this.clearCaches(operation),
+      () => this.restartConnectionPools(operation),
+      () => this.scaleUpResources(operation),
+      () => this.enablePerformanceMode(operation)
+    ];
+    
+    for (const strategy of recoveryStrategies) {
+      try {
+        await strategy();
+        this.logger.info(`Performance recovery attempted for ${operation}`);
+        break;
+      } catch (recoveryError) {
+        this.logger.warn(`Recovery strategy failed: ${recoveryError.message}`);
+      }
+    }
+  }
+}
+```
+
+### Database Performance Error Handling
+```yaml
+database_performance_resilience:
+  query_optimization_failures:
+    slow_query_detection: "Automatic identification of queries >100ms"
+    query_rewriting: "Automatic query optimization with backup original"
+    index_suggestions: "Dynamic index recommendations with impact analysis"
+    connection_pooling_errors: "Pool exhaustion handling with scaling"
+    
+  postgresql_specific:
+    connection_failures:
+      - "Automatic connection pool recreation"
+      - "Switch to read-only replica on connection issues"
+      - "Enable connection multiplexing"
+      - "Implement query queuing during recovery"
+      
+    performance_degradation:
+      - "Automatic VACUUM and ANALYZE scheduling"
+      - "Query plan cache clearing for plan regression"
+      - "Table statistics refresh on performance drops"
+      - "Partition pruning optimization"
+      
+  neo4j_specific:
+    memory_pressure:
+      - "JVM heap optimization with automatic tuning"
+      - "Page cache resize based on workload"
+      - "Query result streaming for large datasets"
+      - "Graph algorithm memory management"
+      
+    traversal_optimization:
+      - "Cypher query plan analysis and optimization"
+      - "Index hint injection for slow queries"
+      - "Query batching for bulk operations"
+      - "Cache warming for frequent patterns"
+```
+
+### Application Performance Monitoring with Auto-Remediation
+```python
+class ApplicationPerformanceMonitor:
+    """Comprehensive application performance monitoring with auto-healing"""
+    
+    def __init__(self):
+        self.performance_metrics = {}
+        self.baseline_metrics = self.load_performance_baselines()
+        self.auto_remediation_enabled = True
+        
+    async def monitor_application_performance(self):
+        """Continuous application performance monitoring"""
+        while True:
+            try:
+                current_metrics = await self.collect_performance_metrics()
+                
+                # Detect performance anomalies
+                anomalies = self.detect_performance_anomalies(current_metrics)
+                
+                if anomalies and self.auto_remediation_enabled:
+                    await self.execute_auto_remediation(anomalies)
+                    
+                await asyncio.sleep(30)  # Monitor every 30 seconds
+                
+            except Exception as e:
+                self.logger.error(f"Performance monitoring failed: {e}")
+                await self.fallback_monitoring_mode()
+    
+    async def execute_auto_remediation(self, anomalies: List[PerformanceAnomaly]):
+        """Execute automatic remediation based on detected anomalies"""
+        remediation_actions = {
+            'high_latency': [
+                self.enable_request_caching,
+                self.scale_worker_processes,
+                self.optimize_database_connections
+            ],
+            'low_throughput': [
+                self.increase_concurrent_workers,
+                self.enable_request_batching,
+                self.optimize_serialization
+            ],
+            'high_error_rate': [
+                self.enable_circuit_breakers,
+                self.increase_retry_attempts,
+                self.switch_to_degraded_mode
+            ],
+            'memory_pressure': [
+                self.trigger_garbage_collection,
+                self.clear_application_caches,
+                self.reduce_worker_memory_limits
+            ]
+        }
+        
+        for anomaly in anomalies:
+            actions = remediation_actions.get(anomaly.type, [])
+            for action in actions:
+                try:
+                    await action()
+                    self.logger.info(f"Auto-remediation executed: {action.__name__}")
+                    
+                    # Verify remediation effectiveness
+                    if await self.verify_remediation_success(anomaly):
+                        break
+                        
+                except Exception as e:
+                    self.logger.error(f"Auto-remediation failed for {action.__name__}: {e}")
+```
+
+### Performance Testing Error Recovery
+```python
+class PerformanceTestingResilience:
+    """Resilient performance testing with comprehensive error handling"""
+    
+    def execute_load_test_with_recovery(self, test_config: dict):
+        """Execute load tests with automatic error recovery"""
+        try:
+            # Pre-test validation
+            self.validate_test_environment()
+            self.ensure_baseline_performance()
+            
+            # Execute load test with monitoring
+            test_results = self.run_load_test_with_monitoring(test_config)
+            
+            # Validate results and detect issues
+            self.validate_test_results(test_results)
+            
+            return test_results
+            
+        except TestEnvironmentError as e:
+            self.logger.error(f"Test environment issue: {e}")
+            return self.execute_degraded_performance_test(test_config)
+            
+        except PerformanceRegressionError as e:
+            self.logger.critical(f"Performance regression detected: {e}")
+            self.trigger_performance_investigation(e)
+            raise
+            
+        except Exception as e:
+            self.logger.error(f"Load test execution failed: {e}")
+            return self.execute_fallback_performance_analysis()
+    
+    def validate_test_environment(self):
+        """Validate test environment is ready for performance testing"""
+        checks = [
+            self.check_system_resources,
+            self.verify_database_performance,
+            self.validate_network_connectivity,
+            self.ensure_monitoring_systems_active
+        ]
+        
+        for check in checks:
+            if not check():
+                raise TestEnvironmentError(f"Environment check failed: {check.__name__}")
+```
+
+### Proactive Performance Optimization
+- **Resource Threshold Monitoring**: Automatic optimization when CPU/memory/disk usage exceeds thresholds
+- **Performance Anomaly Detection**: Machine learning-based anomaly detection with automatic remediation
+- **Circuit Breaker Integration**: Automatic performance protection with graceful degradation
+- **Auto-scaling Integration**: Dynamic resource scaling based on performance metrics and predictions
+
+Always prioritize optimal performance with **comprehensive error handling and resilience**, maintaining system reliability and ensuring that performance optimizations align with business requirements and regulatory compliance for quantitative trading operations.
 
 ---
 

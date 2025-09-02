@@ -1,0 +1,453 @@
+# Sub-Agent Error Handling Templates
+# HRBP Sub-Agent Optimization - Issue #181  
+# Standardized error handling code templates for all sub-agents
+
+templates:
+  version: "1.0.0"
+  updated: "2025-09-02"
+  purpose: "Reduce sub-agent failure rates through standardized defensive programming patterns"
+
+# Universal Error Handling Template
+universal_error_handler:
+  python_template: |
+    ```python
+    import logging
+    import time
+    import random
+    from typing import Optional, Callable, Any
+    from functools import wraps
+    
+    class AgentErrorHandler:
+        def __init__(self, agent_name: str):
+            self.agent_name = agent_name
+            self.logger = logging.getLogger(f"agent.{agent_name}")
+            self.error_config = self.load_error_config()
+            
+        def load_error_config(self) -> dict:
+            """Load error handling configuration from common/config/agent_error_handling.yml"""
+            import yaml
+            with open("common/config/agent_error_handling.yml", "r") as f:
+                return yaml.safe_load(f)
+        
+        def with_retry(self, max_retries: int = 3, backoff_strategy: str = "exponential"):
+            """Decorator for retry logic with configurable backoff"""
+            def decorator(func: Callable) -> Callable:
+                @wraps(func)
+                def wrapper(*args, **kwargs) -> Any:
+                    last_exception = None
+                    
+                    for attempt in range(max_retries + 1):
+                        try:
+                            result = func(*args, **kwargs)
+                            if attempt > 0:
+                                self.logger.info(f"Success on attempt {attempt + 1} for {func.__name__}")
+                            return result
+                            
+                        except Exception as e:
+                            last_exception = e
+                            self.logger.warning(f"Attempt {attempt + 1} failed for {func.__name__}: {e}")
+                            
+                            if attempt < max_retries:
+                                delay = self.calculate_backoff_delay(attempt, backoff_strategy)
+                                self.logger.info(f"Retrying in {delay:.2f} seconds...")
+                                time.sleep(delay)
+                            else:
+                                self.logger.error(f"All {max_retries + 1} attempts failed for {func.__name__}")
+                    
+                    raise last_exception
+                return wrapper
+            return decorator
+        
+        def calculate_backoff_delay(self, attempt: int, strategy: str) -> float:
+            """Calculate delay based on backoff strategy"""
+            base_delay = 1.0
+            
+            if strategy == "exponential":
+                delay = base_delay * (2 ** attempt)
+            elif strategy == "linear":
+                delay = base_delay * (attempt + 1)
+            else:
+                delay = base_delay
+                
+            # Add jitter to prevent thundering herd
+            jitter = random.uniform(0.1, 0.3) * delay
+            return min(delay + jitter, 30.0)  # Cap at 30 seconds
+            
+        def validate_preconditions(self, checks: dict) -> bool:
+            """Validate pre-execution conditions"""
+            for check_name, check_func in checks.items():
+                try:
+                    if not check_func():
+                        self.logger.error(f"Precondition failed: {check_name}")
+                        return False
+                except Exception as e:
+                    self.logger.error(f"Precondition check error for {check_name}: {e}")
+                    return False
+            return True
+            
+        def execute_with_fallback(self, primary_func: Callable, fallback_func: Callable, *args, **kwargs) -> Any:
+            """Execute function with fallback on failure"""
+            try:
+                return primary_func(*args, **kwargs)
+            except Exception as e:
+                self.logger.warning(f"Primary function failed: {e}, trying fallback")
+                try:
+                    return fallback_func(*args, **kwargs)
+                except Exception as fallback_error:
+                    self.logger.error(f"Fallback also failed: {fallback_error}")
+                    raise e  # Raise original error
+    ```
+
+  typescript_template: |
+    ```typescript
+    interface ErrorHandlingConfig {
+      maxRetries: number;
+      backoffStrategy: "exponential" | "linear" | "constant";
+      baseDelay: number;
+      maxDelay: number;
+      enableJitter: boolean;
+    }
+    
+    class AgentErrorHandler {
+      private config: ErrorHandlingConfig;
+      private logger: Logger;
+      
+      constructor(private agentName: string) {
+        this.logger = new Logger(`agent.${agentName}`);
+        this.config = this.loadErrorConfig();
+      }
+      
+      private loadErrorConfig(): ErrorHandlingConfig {
+        // Load from common/config/agent_error_handling.yml
+        return {
+          maxRetries: 3,
+          backoffStrategy: "exponential",
+          baseDelay: 1000, // milliseconds
+          maxDelay: 30000,
+          enableJitter: true
+        };
+      }
+      
+      async withRetry<T>(
+        operation: () => Promise<T>,
+        config?: Partial<ErrorHandlingConfig>
+      ): Promise<T> {
+        const finalConfig = { ...this.config, ...config };
+        let lastError: Error;
+        
+        for (let attempt = 0; attempt <= finalConfig.maxRetries; attempt++) {
+          try {
+            const result = await operation();
+            if (attempt > 0) {
+              this.logger.info(`Success on attempt ${attempt + 1}`);
+            }
+            return result;
+          } catch (error) {
+            lastError = error as Error;
+            this.logger.warn(`Attempt ${attempt + 1} failed: ${error.message}`);
+            
+            if (attempt < finalConfig.maxRetries) {
+              const delay = this.calculateBackoffDelay(attempt, finalConfig);
+              await this.sleep(delay);
+            }
+          }
+        }
+        
+        throw lastError!;
+      }
+      
+      private calculateBackoffDelay(attempt: number, config: ErrorHandlingConfig): number {
+        let delay: number;
+        
+        switch (config.backoffStrategy) {
+          case "exponential":
+            delay = config.baseDelay * Math.pow(2, attempt);
+            break;
+          case "linear":
+            delay = config.baseDelay * (attempt + 1);
+            break;
+          default:
+            delay = config.baseDelay;
+        }
+        
+        if (config.enableJitter) {
+          delay += Math.random() * delay * 0.3;
+        }
+        
+        return Math.min(delay, config.maxDelay);
+      }
+      
+      private sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    }
+    ```
+
+# Agent-Specific Error Handling Templates
+
+# Database Operations Template (for backend-architect-agent, database-admin-agent)
+database_error_handling:
+  connection_validation: |
+    ```python
+    def validate_database_connection(connection_string: str, timeout: int = 10) -> bool:
+        """Validate database connection before operations"""
+        try:
+            conn = create_connection(connection_string, connect_timeout=timeout)
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+            conn.close()
+            return True
+        except (ConnectionError, TimeoutError, AuthenticationError) as e:
+            logger.error(f"Database connection validation failed: {e}")
+            return False
+    
+    def get_connection_with_retry(connection_string: str, max_retries: int = 3) -> Connection:
+        """Get database connection with retry logic and connection pooling"""
+        for attempt in range(max_retries):
+            try:
+                # Check connection pool health
+                if connection_pool.is_healthy():
+                    return connection_pool.get_connection(timeout=10)
+                else:
+                    connection_pool.reset()
+                    
+            except ConnectionPoolExhausted:
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                else:
+                    raise DatabaseConnectionError("Connection pool exhausted after retries")
+            except Exception as e:
+                logger.warning(f"Connection attempt {attempt + 1} failed: {e}")
+                if attempt == max_retries - 1:
+                    raise
+        
+        raise DatabaseConnectionError("Failed to establish connection after all retries")
+    ```
+
+# API Integration Template (for data-engineer-agent, quant-research-agent)  
+api_integration_handling:
+  rate_limiting_and_retry: |
+    ```python
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3.util.retry import Retry
+    
+    class APIErrorHandler:
+        def __init__(self, base_url: str):
+            self.base_url = base_url
+            self.session = self.create_resilient_session()
+            
+        def create_resilient_session(self) -> requests.Session:
+            """Create session with retry strategy and rate limiting"""
+            session = requests.Session()
+            
+            # Configure retry strategy
+            retry_strategy = Retry(
+                total=3,
+                status_forcelist=[429, 500, 502, 503, 504],
+                backoff_factor=1,
+                allowed_methods=["HEAD", "GET", "PUT", "DELETE", "OPTIONS", "TRACE"]
+            )
+            
+            adapter = HTTPAdapter(max_retries=retry_strategy)
+            session.mount("http://", adapter)
+            session.mount("https://", adapter)
+            
+            return session
+            
+        def api_call_with_circuit_breaker(self, endpoint: str, **kwargs) -> dict:
+            """Make API call with circuit breaker pattern"""
+            try:
+                response = self.session.get(f"{self.base_url}/{endpoint}", **kwargs)
+                response.raise_for_status()
+                return response.json()
+                
+            except requests.exceptions.Timeout:
+                logger.error(f"Timeout calling {endpoint}")
+                return self.get_cached_response(endpoint)
+                
+            except requests.exceptions.TooManyRedirects:
+                logger.error(f"Too many redirects for {endpoint}")
+                raise APIError(f"Redirect loop detected for {endpoint}")
+                
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 429:  # Rate limited
+                    retry_after = int(e.response.headers.get('Retry-After', 60))
+                    logger.warning(f"Rate limited, waiting {retry_after} seconds")
+                    time.sleep(retry_after)
+                    return self.api_call_with_circuit_breaker(endpoint, **kwargs)
+                else:
+                    raise APIError(f"HTTP error {e.response.status_code}: {e.response.text}")
+    ```
+
+# File System Operations Template (for all agents)
+file_system_handling:
+  safe_file_operations: |
+    ```python
+    import os
+    import shutil
+    import tempfile
+    from pathlib import Path
+    
+    class FileSystemErrorHandler:
+        @staticmethod
+        def safe_file_write(file_path: str, content: str, backup: bool = True) -> bool:
+            """Safely write file with backup and validation"""
+            try:
+                path = Path(file_path)
+                
+                # Validate parent directory exists and is writable
+                path.parent.mkdir(parents=True, exist_ok=True)
+                if not os.access(path.parent, os.W_OK):
+                    raise PermissionError(f"No write permission for {path.parent}")
+                
+                # Check disk space (require at least 100MB free)
+                if shutil.disk_usage(path.parent).free < 100 * 1024 * 1024:
+                    raise OSError("Insufficient disk space")
+                
+                # Create backup if file exists
+                backup_path = None
+                if backup and path.exists():
+                    backup_path = path.with_suffix(path.suffix + '.backup')
+                    shutil.copy2(path, backup_path)
+                
+                # Write to temporary file first, then atomic move
+                with tempfile.NamedTemporaryFile(
+                    mode='w', 
+                    dir=path.parent, 
+                    delete=False,
+                    suffix='.tmp'
+                ) as temp_file:
+                    temp_file.write(content)
+                    temp_path = Path(temp_file.name)
+                
+                # Atomic move
+                temp_path.replace(path)
+                
+                # Cleanup backup if write successful
+                if backup_path and backup_path.exists():
+                    backup_path.unlink()
+                    
+                return True
+                
+            except Exception as e:
+                logger.error(f"Failed to write file {file_path}: {e}")
+                
+                # Restore from backup if available
+                if backup_path and backup_path.exists():
+                    shutil.copy2(backup_path, path)
+                    backup_path.unlink()
+                    logger.info(f"Restored {file_path} from backup")
+                
+                return False
+    ```
+
+# Resource Monitoring Template
+resource_monitoring:
+  system_resource_check: |
+    ```python
+    import psutil
+    import logging
+    
+    class ResourceMonitor:
+        def __init__(self, memory_threshold: float = 0.8, cpu_threshold: float = 0.9):
+            self.memory_threshold = memory_threshold
+            self.cpu_threshold = cpu_threshold
+            self.logger = logging.getLogger("resource.monitor")
+            
+        def check_system_resources(self) -> dict:
+            """Check system resource availability before heavy operations"""
+            try:
+                memory = psutil.virtual_memory()
+                cpu_percent = psutil.cpu_percent(interval=1)
+                disk_usage = psutil.disk_usage('/')
+                
+                resource_status = {
+                    'memory_available': memory.percent / 100 < self.memory_threshold,
+                    'cpu_available': cpu_percent / 100 < self.cpu_threshold,
+                    'disk_space_sufficient': disk_usage.free > 1024**3,  # 1GB minimum
+                    'memory_percent': memory.percent,
+                    'cpu_percent': cpu_percent,
+                    'disk_free_gb': disk_usage.free / (1024**3)
+                }
+                
+                # Log resource warnings
+                if not resource_status['memory_available']:
+                    self.logger.warning(f"High memory usage: {memory.percent:.1f}%")
+                if not resource_status['cpu_available']:
+                    self.logger.warning(f"High CPU usage: {cpu_percent:.1f}%")
+                if not resource_status['disk_space_sufficient']:
+                    self.logger.warning(f"Low disk space: {resource_status['disk_free_gb']:.2f}GB")
+                    
+                return resource_status
+                
+            except Exception as e:
+                self.logger.error(f"Failed to check system resources: {e}")
+                # Assume resources are constrained if check fails
+                return {
+                    'memory_available': False,
+                    'cpu_available': False,
+                    'disk_space_sufficient': False,
+                    'memory_percent': 100,
+                    'cpu_percent': 100,
+                    'disk_free_gb': 0
+                }
+    ```
+
+# Usage Instructions for Sub-Agents
+usage_instructions:
+  integration_guide: |
+    # How to Integrate Error Handling Templates
+    
+    1. **Import the appropriate template** based on your agent's primary operations
+    2. **Initialize the error handler** in your agent's __init__ method
+    3. **Wrap critical operations** with retry logic and validation
+    4. **Implement pre-execution checks** for resources and dependencies
+    5. **Add fallback mechanisms** for each critical operation
+    6. **Log all errors** with appropriate severity levels
+    7. **Reference the error handling configuration** at common/config/agent_error_handling.yml
+    
+    Example Integration:
+    ```python
+    from common.config.sub_agent_error_templates import AgentErrorHandler
+    
+    class MySpecializedAgent:
+        def __init__(self):
+            self.error_handler = AgentErrorHandler("my-agent-name")
+            
+        def execute_critical_operation(self, data):
+            # Pre-execution validation
+            checks = {
+                'data_validation': lambda: self.validate_input_data(data),
+                'resource_availability': lambda: self.check_resources(),
+                'connectivity': lambda: self.test_connections()
+            }
+            
+            if not self.error_handler.validate_preconditions(checks):
+                raise AgentExecutionError("Precondition validation failed")
+            
+            # Execute with retry and fallback
+            @self.error_handler.with_retry(max_retries=3, backoff_strategy="exponential")
+            def primary_operation():
+                return self.process_data(data)
+                
+            def fallback_operation():
+                return self.process_data_with_cached_dependencies(data)
+                
+            return self.error_handler.execute_with_fallback(
+                primary_operation, 
+                fallback_operation
+            )
+    ```
+
+# Success Metrics for Error Handling Implementation
+success_metrics:
+  target_improvements:
+    - "Sub-agent failure rate: <5% (down from current 100% for backend-architect)"
+    - "Mean time to recovery: <30 seconds"
+    - "Error pattern detection accuracy: >90%"
+    - "Preventive error handling coverage: >95%"
+    - "Successful retry rate: >80%"
+    - "Fallback mechanism success rate: >70%"

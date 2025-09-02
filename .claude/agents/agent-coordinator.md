@@ -62,7 +62,7 @@ task_complexity_routing:
 
 ## Execution Monitoring and Validation
 
-### Sub-Agent Execution Enforcement
+### Sub-Agent Execution Enforcement with Error Handling
 ```typescript
 function enforceSubAgentExecution(taskResult: AgentResult) {
   // Validate that sub-agents actually executed work, not just planning
@@ -71,12 +71,37 @@ function enforceSubAgentExecution(taskResult: AgentResult) {
     "tests_run", "deployments_made", "configurations_updated"
   ];
   
+  // Check for execution evidence
   if (!taskResult.hasExecutionEvidence(executionIndicators)) {
-    // Re-delegate with stronger execution keywords
-    return Task(same_agent, `${original_task} - EXECUTE IMMEDIATELY: This is NOT a planning task. You must WRITE CODE, MODIFY FILES, RUN COMMANDS. COMPLETE THE FULL IMPLEMENTATION NOW.`);
+    // Re-delegate with stronger execution keywords and error handling requirements
+    return Task(same_agent, `${original_task} - EXECUTE IMMEDIATELY WITH ERROR HANDLING: This is NOT a planning task. You must WRITE CODE, MODIFY FILES, RUN COMMANDS with comprehensive error handling and retry logic. Implement defensive programming patterns. COMPLETE THE FULL IMPLEMENTATION NOW.`);
+  }
+  
+  // Validate error handling implementation
+  if (taskResult.hasExecutionEvidence(executionIndicators) && !taskResult.hasErrorHandling()) {
+    return Task(same_agent, `ENHANCE ${original_task} with defensive programming: Add comprehensive error handling, retry mechanisms, fallback strategies, and validation checks. Reference common/config/agent_error_handling.yml for standards. COMPLETE THE ERROR HANDLING IMPLEMENTATION.`);
   }
   
   return taskResult;
+}
+
+interface AgentErrorHandlingValidation {
+  // Validate that agents implement defensive programming
+  error_handling_checks: {
+    connection_validation: "Check for pre-execution connectivity tests";
+    retry_logic: "Verify retry mechanisms with exponential backoff";
+    fallback_strategies: "Ensure graceful degradation capabilities";
+    resource_monitoring: "Validate resource availability checks";
+    timeout_handling: "Confirm timeout and circuit breaker patterns";
+  };
+  
+  // Agent-specific error handling requirements
+  critical_error_patterns: {
+    database_operations: "Connection pooling, health checks, failover";
+    api_integrations: "Rate limiting, timeout handling, circuit breakers";
+    file_operations: "Path validation, permission checks, cleanup";
+    network_operations: "Retry with backoff, alternative endpoints";
+  };
 }
 ```
 

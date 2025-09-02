@@ -1,0 +1,185 @@
+# Agent Error Handling Standards Configuration
+# HRBP Sub-Agent Optimization - Issue #181
+# Standardized error handling patterns to reduce sub-agent execution failure rates
+
+error_handling_framework:
+  version: "1.0.0"
+  updated: "2025-09-02"
+  purpose: "Reduce sub-agent failure rates with defensive programming patterns"
+
+# Database Connection Error Handling (Primary Issue: 100% backend-architect-agent failures)
+database_connection:
+  retry_strategy:
+    max_retries: 3
+    backoff_strategy: "exponential"
+    base_delay: 1.0  # seconds
+    max_delay: 30.0  # seconds
+    jitter: true
+    
+  connection_validation:
+    pre_execution_check: true
+    timeout_seconds: 10
+    health_check_query: "SELECT 1"
+    
+  fallback_mechanisms:
+    - "Use cached connection pool"
+    - "Switch to read-only replica"
+    - "Defer to offline processing mode"
+    - "Escalate to human intervention"
+    
+  error_patterns:
+    connection_timeout: "Database connection timeout after {timeout}s"
+    connection_refused: "Database connection refused on {host}:{port}"
+    authentication_failed: "Database authentication failed for user {user}"
+    pool_exhausted: "Database connection pool exhausted ({active}/{max})"
+
+# File System Operation Error Handling
+file_system:
+  retry_strategy:
+    max_retries: 2
+    backoff_strategy: "linear"
+    base_delay: 0.5
+    
+  validation_checks:
+    path_existence: true
+    permission_check: true
+    disk_space_check: true
+    lock_detection: true
+    
+  fallback_mechanisms:
+    - "Use alternative file path"
+    - "Create missing directories"
+    - "Switch to temporary location"
+    - "Queue for later processing"
+
+# Network Operation Error Handling
+network_operations:
+  retry_strategy:
+    max_retries: 5
+    backoff_strategy: "exponential"
+    base_delay: 0.5
+    max_delay: 60.0
+    jitter: true
+    
+  timeout_configuration:
+    connection_timeout: 10
+    read_timeout: 30
+    total_timeout: 60
+    
+  error_recovery:
+    - "Switch to backup endpoint"
+    - "Use cached response if available"
+    - "Enable circuit breaker"
+    - "Log for manual intervention"
+
+# Sub-Agent Specific Error Handling Patterns
+agent_specific_patterns:
+  backend_architect_agent:
+    critical_errors:
+      - "database_connection_failure"
+      - "rag_system_unavailable" 
+      - "vector_database_timeout"
+      - "semantic_processing_error"
+    recovery_actions:
+      - "Validate database connectivity before execution"
+      - "Use connection pooling with health checks"
+      - "Implement circuit breaker for external services"
+      - "Fallback to cached data when appropriate"
+      
+  data_engineer_agent:
+    critical_errors:
+      - "sec_api_rate_limit"
+      - "etl_pipeline_failure"
+      - "data_validation_error"
+      - "storage_quota_exceeded"
+    recovery_actions:
+      - "Implement intelligent retry with exponential backoff"
+      - "Use data quality checkpoints"
+      - "Enable partial processing with resumable operations"
+      - "Monitor storage usage and implement cleanup"
+      
+  security_engineer_agent:
+    critical_errors:
+      - "encryption_key_unavailable"
+      - "authentication_service_down"
+      - "compliance_check_failed"
+      - "audit_log_write_failure"
+    recovery_actions:
+      - "Use backup key management service"
+      - "Implement offline authentication cache"
+      - "Enable compliance violation alerting"
+      - "Ensure audit log redundancy"
+      
+  performance_engineer_agent:
+    critical_errors:
+      - "resource_exhaustion"
+      - "performance_threshold_exceeded"
+      - "monitoring_system_failure"
+      - "optimization_algorithm_error"
+    recovery_actions:
+      - "Implement resource usage monitoring"
+      - "Enable auto-scaling mechanisms"
+      - "Use fallback monitoring systems"
+      - "Provide graceful degradation modes"
+
+# Standard Error Response Templates
+error_response_templates:
+  execution_failure:
+    message: "Agent execution failed: {error_type} - {error_message}"
+    suggested_action: "Implementing error recovery: {recovery_action}"
+    escalation_threshold: 2
+    
+  resource_unavailable:
+    message: "Required resource unavailable: {resource_type} - {resource_name}"
+    suggested_action: "Using fallback mechanism: {fallback_option}"
+    escalation_threshold: 1
+    
+  validation_error:
+    message: "Validation failed: {validation_type} - {validation_details}"
+    suggested_action: "Applying data correction: {correction_method}"
+    escalation_threshold: 3
+
+# Error Monitoring and Alerting
+monitoring:
+  error_rate_thresholds:
+    critical: 0.1   # 10% failure rate triggers immediate alert
+    warning: 0.05   # 5% failure rate triggers warning
+    info: 0.01      # 1% failure rate triggers info alert
+    
+  alert_channels:
+    - "GitHub Issue creation for patterns"
+    - "Build log error summary"
+    - "HRBP agent notification"
+    
+  metrics_collection:
+    error_frequency: "Per agent, per error type"
+    recovery_success_rate: "Per recovery mechanism"
+    escalation_rate: "Per agent, per time period"
+    mean_time_to_recovery: "Per error category"
+
+# Quality Assurance Integration
+quality_gates:
+  pre_execution:
+    - "Environment connectivity check"
+    - "Resource availability validation"
+    - "Configuration integrity verification"
+    - "Dependency health status"
+    
+  post_execution:
+    - "Output validation and verification"
+    - "Error log analysis"
+    - "Performance metrics collection"
+    - "Success criteria verification"
+
+# Continuous Improvement Framework
+improvement_process:
+  error_analysis_frequency: "Weekly"
+  pattern_identification: "Automated with ML"
+  recovery_strategy_updates: "Bi-weekly"
+  agent_optimization_cycle: "Monthly"
+  
+  success_metrics:
+    - "Sub-agent failure rate reduction (target: <5%)"
+    - "Mean time to recovery improvement (target: <30s)"
+    - "Error pattern detection accuracy (target: >90%)"
+    - "Preventive error handling coverage (target: >95%)"
