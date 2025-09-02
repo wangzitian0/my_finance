@@ -24,6 +24,25 @@ except ImportError:
     MONITORING_ENABLED = False
     print("⚠️  Execution monitoring not available")
 
+# Import version management (simplified)
+try:
+    from p3_version_simple import get_version_string, increment_version
+    VERSION_ENABLED = True
+    
+    def get_p3_version():
+        return get_version_string()
+    
+    def print_version_info():
+        print(f"P3 Version: {get_version_string()}")
+except ImportError:
+    VERSION_ENABLED = False
+    
+    def get_p3_version():
+        return "unknown"
+    
+    def print_version_info():
+        print("Version information not available")
+
 
 class P3CLI:
     """Unified p3 CLI system for my_finance project."""
@@ -244,6 +263,10 @@ class P3CLI:
             "hrbp-manual-trigger": "pixi run python infra/hrbp_automation.py manual-trigger",
             "hrbp-history": "pixi run python infra/hrbp_automation.py history",
             "hrbp-config": "pixi run python infra/hrbp_automation.py config",
+            # Version Management Commands (simplified)
+            "version": "python p3_version_simple.py info",
+            "version-info": "python p3_version_simple.py info",
+            "version-increment": "python p3_version_simple.py increment {level}",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -291,6 +314,24 @@ class P3CLI:
             print("📦 Activating pixi environment...")
             print("Run: pixi shell")
             print("Note: This command needs to be run directly as 'pixi shell'")
+            return None
+
+        # Version commands
+        if command in ["version", "version-info"]:
+            if VERSION_ENABLED:
+                print_version_info()
+            else:
+                print("Version information not available")
+            return None
+
+        if command == "version-increment":
+            if not VERSION_ENABLED:
+                print("Version management not available")
+                return None
+
+            level = args[0] if args and args[0] in ["major", "minor", "patch"] else "patch"
+            new_version = increment_version(level)
+            print(f"Version: {new_version}")
             return None
 
         if command == "create-pr":
