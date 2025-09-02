@@ -24,17 +24,22 @@ except ImportError:
     MONITORING_ENABLED = False
     print("⚠️  Execution monitoring not available")
 
-# Import version management
+# Import version management (simplified)
 try:
-    from p3_version import get_p3_version, get_version_manager, print_version_info
-
+    from p3_version_simple import get_version_string, increment_version
     VERSION_ENABLED = True
+    
+    def get_p3_version():
+        return get_version_string()
+    
+    def print_version_info():
+        print(f"P3 Version: {get_version_string()}")
 except ImportError:
     VERSION_ENABLED = False
-
+    
     def get_p3_version():
         return "unknown"
-
+    
     def print_version_info():
         print("Version information not available")
 
@@ -258,14 +263,10 @@ class P3CLI:
             "hrbp-manual-trigger": "pixi run python infra/hrbp_automation.py manual-trigger",
             "hrbp-history": "pixi run python infra/hrbp_automation.py history",
             "hrbp-config": "pixi run python infra/hrbp_automation.py config",
-            # Version Management Commands
-            "version": "python p3_version.py info",
-            "version-info": "python p3_version.py info",
-            "version-increment": "python p3_version.py increment {level}",
-            "version-update": "python p3_version.py update-on-pull",
-            "version-check": "python p3_version.py check-updates",
-            "version-history": "python p3_version.py history",
-            "install-version-hooks": "pixi run python scripts/install_version_hooks.py",
+            # Version Management Commands (simplified)
+            "version": "python p3_version_simple.py info",
+            "version-info": "python p3_version_simple.py info",
+            "version-increment": "python p3_version_simple.py increment {level}",
         }
 
     def _get_valid_scopes(self) -> List[str]:
@@ -328,26 +329,10 @@ class P3CLI:
                 print("Version management not available")
                 return None
 
-            level = args[0] if args and args[0] in ["major", "minor", "patch", "build"] else "patch"
-            return f"python p3_version.py increment {level}"
-
-        if command == "version-update":
-            if not VERSION_ENABLED:
-                print("Version management not available")
-                return None
-            return "python p3_version.py update-on-pull"
-
-        if command == "version-check":
-            if not VERSION_ENABLED:
-                print("Version management not available")
-                return None
-            return "python p3_version.py check-updates"
-
-        if command == "version-history":
-            if not VERSION_ENABLED:
-                print("Version management not available")
-                return None
-            return "python p3_version.py history"
+            level = args[0] if args and args[0] in ["major", "minor", "patch"] else "patch"
+            new_version = increment_version(level)
+            print(f"Version: {new_version}")
+            return None
 
         if command == "create-pr":
             if len(args) < 2:
