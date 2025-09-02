@@ -17,7 +17,26 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from common.build_tracker import BuildTracker
-from common.config_loader import config_loader
+
+
+# Simple config loader for F2 testing
+class SimpleConfigLoader:
+    def load_dataset_config(self, tier_name):
+        # Minimal config for F2 (MSFT + NVDA)
+        return {
+            "companies": {"MSFT": {"name": "Microsoft"}, "NVDA": {"name": "NVIDIA"}},
+            "tickers": ["MSFT", "NVDA"],
+            "timeout_seconds": 30,
+        }
+
+    def get_config_path(self, config_name):
+        return Path("common/config") / f"{config_name}.yml"
+
+    def _load_config_file(self, config_name):
+        return {}
+
+
+config_loader = SimpleConfigLoader()
 from ETL.tests.test_config import DatasetTier
 
 
