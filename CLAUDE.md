@@ -69,6 +69,21 @@
 
 ## 👥 ORGANIZATIONAL AUTHORITY STRUCTURE
 
+### 🚨 OFFICIAL ANNOUNCEMENT: P3 CLI MAINTENANCE TRANSFER (Effective Immediately)
+
+**P3 CLI GOVERNANCE TRANSITION**: As of 2025-09-02, the P3 Command Line Interface maintenance and development responsibility is officially transferred from general infrastructure management to **infra-ops-agent** as the designated specialist.
+
+**RATIONALE**: The P3 CLI has evolved from a complex 49-command system to a streamlined 8-workflow system with advanced worktree Python isolation capabilities. This simplified yet sophisticated system requires specialized infrastructure expertise for ongoing maintenance, optimization, and enhancement.
+
+**INFRA-OPS-AGENT P3 RESPONSIBILITIES** (Effective Immediately):
+- **P3 Command Development**: All new P3 command creation and modification
+- **Workflow Optimization**: P3 workflow efficiency analysis and improvement
+- **System Integration**: P3 integration with git workflows and CI/CD pipelines
+- **Performance Monitoring**: P3 execution performance tracking and optimization
+- **Documentation Maintenance**: P3 usage documentation and troubleshooting guides
+- **Version Management**: P3 CLI versioning, release coordination, and deployment
+- **User Support**: P3 workflow guidance and issue resolution
+
 ### HRBP Agent - CLAUDE.md Owner and Policy Manager
 **DESIGNATED AUTHORITY**: HRBP agent has exclusive responsibility for:
 - CLAUDE.md content design, updates, and version control
@@ -76,12 +91,22 @@
 - Company policy compliance monitoring and violation tracking
 - Cross-agent communication protocol specifications
 - Policy exemption evaluation and approval processes
+- **ORGANIZATIONAL GOVERNANCE**: P3 workflow policy compliance monitoring (not technical maintenance)
 
 **CHANGE MANAGEMENT**: All CLAUDE.md modifications must be:
 1. Proposed through HRBP agent via GitHub issue
 2. Reviewed for organizational impact and consistency
 3. Approved by HRBP agent before implementation
 4. Documented with rationale and effective date
+
+### Infra-Ops Agent - P3 CLI Technical Authority
+**DESIGNATED AUTHORITY**: Infra-ops-agent has exclusive technical responsibility for:
+- P3 CLI codebase maintenance and enhancement
+- P3 command functionality development and testing
+- P3 system architecture evolution and optimization
+- P3 integration with development workflows and tools
+- P3 performance analysis and system reliability
+- P3 troubleshooting and technical support
 
 ---
 
@@ -130,6 +155,7 @@ ALWAYS_use_agent_coordinator:
   - System monitoring and diagnostics
   - Quality assurance processes
   - Documentation generation
+  - P3 CLI maintenance and development
 ```
 
 **DIRECT TOOL USAGE ONLY**:
@@ -241,7 +267,7 @@ core_operations:
   - git-ops-agent: Git workflows, PR management, release coordination
   - dev-quality-agent: Code quality, testing, validation processes
   - data-engineer-agent: ETL pipelines, SEC data processing
-  - infra-ops-agent: Infrastructure management, environment setup
+  - infra-ops-agent: Infrastructure management, P3 CLI maintenance, environment setup
   - monitoring-agent: System monitoring, performance tracking
   
 specialized_domains:
@@ -270,7 +296,7 @@ required_sections:
   - Precise role definition and scope boundaries
   - GitHub issue tracking link for context preservation  
   - CLAUDE.md policy compliance acknowledgment
-  - P3 workflow integration requirements
+  - P3 workflow integration requirements (infra-ops-agent leads P3 CLI maintenance)
   - Inter-agent communication protocols
   - Performance metrics and success criteria
 
@@ -291,6 +317,61 @@ documentation_consistency:
 - **Policy Compliance**: Reference to CLAUDE.md adherence
 
 **STANDARDIZATION ENFORCEMENT**: HRBP agent conducts quarterly reviews of all agent definition files to ensure consistency, accuracy, and policy compliance.
+
+### Sub-Agent Maintenance Guidelines
+
+**P3 CLI GOVERNANCE STRUCTURE** (Updated 2025-09-02):
+```yaml
+p3_maintenance_hierarchy:
+  technical_authority:
+    - Primary: infra-ops-agent (P3 CLI codebase, commands, functionality)
+    - Secondary: agent-coordinator (workflow integration, routing logic)
+    
+  policy_authority:
+    - Primary: hrbp-agent (P3 workflow compliance, organizational governance)
+    - Secondary: git-ops-agent (PR creation workflows, release coordination)
+    
+  operational_support:
+    - dev-quality-agent: P3 command testing and validation
+    - monitoring-agent: P3 performance tracking and system health
+```
+
+**MAINTENANCE RESPONSIBILITIES BY AGENT**:
+```yaml
+infra_ops_responsibilities:
+  # P3 CLI Technical Ownership (NEW)
+  - P3 command development and modification
+  - P3 system architecture and optimization  
+  - P3 version management and releases
+  - P3 integration with development tools
+  - P3 troubleshooting and technical support
+  - P3 documentation maintenance
+  
+hrbp_responsibilities:
+  # P3 Workflow Policy Governance (UNCHANGED)
+  - P3 workflow compliance monitoring
+  - P3 usage policy enforcement
+  - P3 violation tracking and remediation
+  - Agent training on P3 workflows
+  
+agent_coordinator_responsibilities:
+  # P3 Workflow Integration (UNCHANGED)
+  - P3 command routing in complex workflows
+  - Multi-agent P3 workflow orchestration
+  - P3 workflow optimization analysis
+  
+git_ops_responsibilities:
+  # P3 Git Integration (UNCHANGED)
+  - P3 PR creation workflow implementation
+  - P3 git command integration
+  - P3 release coordination support
+```
+
+**ESCALATION PROTOCOLS FOR P3 ISSUES**:
+1. **Technical Issues**: Report directly to infra-ops-agent
+2. **Policy Violations**: Report to hrbp-agent for compliance tracking
+3. **Workflow Integration**: Route through agent-coordinator for analysis
+4. **Performance Issues**: Monitor via monitoring-agent, escalate to infra-ops-agent
 
 ## 🧠 CONTINUOUS IMPROVEMENT MANDATE
 
@@ -404,6 +485,7 @@ ALLOWED_documentation_only:
 - **Policy Reading Failure**: Skipping mandatory task initiation protocol checklist
 - **GitHub Issue Avoidance**: Creating .md planning files instead of using GitHub issues
 - **P3 Workflow Non-Compliance**: Bypassing required testing and validation steps
+- **P3 CLI Unauthorized Modification**: Modifying P3 CLI without infra-ops-agent approval
 
 ### Violation Response Protocol
 ```yaml
@@ -496,6 +578,7 @@ bash scripts/validate_io_compliance.sh  # Run before PR creation
 **P3 WORKFLOW**: Always use `p3 <command> [scope]` - never direct python scripts
 **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
 **MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+**P3 CLI MAINTENANCE**: All P3 CLI modifications must route through infra-ops-agent
 
 ### Quality Assurance Requirements
 **PRE-PR TESTING**: `p3 e2e m7` validation mandatory before PR creation

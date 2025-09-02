@@ -1,0 +1,5 @@
+{
+  "ansible_playbooks": "/Users/SP14016/zitian/my_finance/.git/worktree/hotfix-p3-test/infra/ansible",
+  "docker_configs": "/Users/SP14016/zitian/my_finance/.git/worktree/hotfix-p3-test/infra/docker",
+  "shared_scripts": "/Users/SP14016/zitian/my_finance/.git/worktree/hotfix-p3-test/scripts"
+}

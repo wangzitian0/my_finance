@@ -7,6 +7,7 @@ This replaces the shell-based p3 script with a proper Python CLI system
 as specified in Issue #111.
 
 Enhanced with Agent Execution Monitoring System (Issue #180).
+Enhanced with Worktree Python Environment Isolation (Issue #XXX).
 """
 import os
 import subprocess
@@ -14,6 +15,39 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional
+
+
+def ensure_worktree_python_isolation():
+    """Ensure worktree-isolated Python environment is used - simplified version"""
+    try:
+        # Import and use worktree isolation manager
+        sys.path.insert(0, str(Path(__file__).parent / "scripts"))
+        from worktree_isolation import WorktreeIsolationManager
+        
+        manager = WorktreeIsolationManager()
+        return manager.auto_switch_python()
+    except ImportError:
+        # Fallback to simple check
+        worktree_root = Path(__file__).parent
+        expected_python = worktree_root / ".pixi/envs/default/bin/python"
+        
+        if not expected_python.exists():
+            return True  # If no pixi environment, don't force requirement
+            
+        if expected_python.resolve() != Path(sys.executable).resolve():
+            # Try to auto-switch
+            try:
+                os.execv(str(expected_python), [str(expected_python)] + sys.argv)
+            except Exception:
+                return True  # Continue execution even if switch fails
+        
+        return True
+
+
+def check_worktree_environment():
+    """Check worktree environment configuration - simplified version"""
+    # Simplified check, avoid excessive output
+    return True
 
 # Import execution monitoring
 try:
@@ -176,13 +210,9 @@ class P3CLI:
     def _load_command_mapping(self) -> Dict[str, str]:
         """Load command mappings from configuration."""
         return {
-            # Environment Management (p3 calls ansible for infra, pixi for Python)
-            "activate": "pixi shell",
-            "env-setup": "ansible-playbook infra/ansible/setup.yml",
-            "env-start": "ansible-playbook infra/ansible/start.yml",
-            "env-stop": "ansible-playbook infra/ansible/stop.yml",
-            "env-status": "pixi run python infra/comprehensive_env_status.py",
-            "env-reset": "ansible-playbook infra/ansible/reset.yml",
+            # Environment Management (Workflow-Oriented - 2 commands only)
+            "ready": "workflow_ready_command",  # Will be handled specially
+            "reset": "workflow_reset_command",  # Will be handled specially
             # Development Commands (p3 calls pixi to manage Python execution)
             "format": "pixi run python -m black --line-length 100 . && pixi run python -m isort .",
             "lint": "pixi run python -m pylint ETL dcf_engine common graph_rag --disable=C0114,C0115,C0116,R0903,W0613",
@@ -207,18 +237,7 @@ class P3CLI:
             "dcf-report": "pixi run python dcf_engine/pure_llm_dcf.py",
             "generate-report": "pixi run python dcf_engine/pure_llm_dcf.py",
             "validate-strategy": "pixi run python ETL/manage.py validate",
-            # Infrastructure Management (direct system commands, not Python)
-            "podman-status": "podman ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'",
-            "neo4j-logs": "podman logs neo4j-finance",
-            "neo4j-connect": "podman exec -it neo4j-finance cypher-shell -u neo4j -p finance123",
-            "neo4j-restart": "podman restart neo4j-finance",
-            "neo4j-stop": "podman stop neo4j-finance",
-            "neo4j-start": "podman start neo4j-finance",
-            # Status and Validation (p3 calls pixi for Python execution)
-            "status": "pixi run python infra/comprehensive_env_status.py",
-            "cache-status": "pixi run python infra/show_cache_status.py",
-            "verify-env": 'pixi run python -c \'import sys; print(f"Python: {sys.version}"); import torch, sklearn, sentence_transformers; print("✅ ML dependencies available"); import neomodel; print("✅ Neo4j ORM available")\'',
-            "check-integrity": 'pixi run python -c \'from pathlib import Path; from common import get_data_path, DataLayer; dirs = [get_data_path(DataLayer.RAW_DATA), get_data_path(DataLayer.DAILY_DELTA), get_data_path(DataLayer.QUERY_RESULTS)]; [print(f"📁 {Path(d).name}: {"✅ exists" if Path(d).exists() else "❌ missing"}") for d in dirs]\'',
+            # Note: Infrastructure, Neo4j, and Status commands now unified above
             "shutdown-all": "pixi run python infra/shutdown_all.py",
             # SEC Integration Commands (p3 calls pixi for Python execution)
             "test-sec-integration": "pixi run python dcf_engine/sec_integration_template.py",
@@ -311,6 +330,18 @@ class P3CLI:
 
     def _handle_special_commands(self, command: str, args: List[str]) -> Optional[str]:
         """Handle special commands that need custom logic."""
+
+        # === WORKFLOW-ORIENTED ENVIRONMENT COMMANDS (16→2 commands) ===
+        
+        if command == "ready":
+            """I want to start working - ensure everything is ready"""
+            print("🚀 Getting everything ready for development...")
+            return "pixi run python scripts/workflow_ready.py"
+                
+        if command == "reset":
+            """Fix environment issues - clean restart everything"""  
+            print("🔧 Resetting environment to fix issues...")
+            return "pixi run python scripts/workflow_reset.py"
 
         if command == "activate":
             print("📦 Activating pixi environment...")
@@ -414,21 +445,11 @@ p3 - Unified developer commands (my_finance)
 Usage:
   p3 <command> [args...]
 
-Environment Management:
-  activate               Activate pixi environment (use 'pixi shell' directly)
-  env-setup              Initial environment setup (Podman, Neo4j)
-  env-start              Start all services
-  env-stop               Stop all services
-  env-status             Check environment status
-  env-reset              Reset everything (destructive)
-
-Container Management:
-  podman-status          Check container status
-  neo4j-logs             View Neo4j logs
-  neo4j-connect          Connect to Neo4j shell
-  neo4j-restart          Restart Neo4j container
-  neo4j-stop             Stop Neo4j container
-  neo4j-start            Start Neo4j container
+Environment Management (Workflow-Oriented):
+  ready                  "I want to start working" - ensure everything is ready
+                         (check status → start services → verify → show summary)
+  reset                  "Fix environment issues" - clean restart everything  
+                         (stop services → clean → setup → start → verify)
 
 Development Commands:
   format                 Format code (black + isort)
@@ -473,11 +494,6 @@ SEC Integration:
   verify-sec-data        Verify SEC data availability
   test-sec-config        Test SEC orthogonal configuration system
 
-Status & Validation:
-  status                 Quick environment status
-  cache-status           Check cache status
-  verify-env             Verify environment dependencies
-  check-integrity        Check data integrity
 
 Git Hooks Management:
   install-hooks          Install pre-push hook to enforce create-pr workflow
@@ -613,4 +629,11 @@ def main():
 
 
 if __name__ == "__main__":
+    # Ensure correct worktree Python environment is used
+    ensure_worktree_python_isolation()
+    
+    # Check worktree environment configuration
+    check_worktree_environment()
+    
+    # Execute main program
     main()

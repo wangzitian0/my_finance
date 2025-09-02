@@ -70,6 +70,25 @@ pip-install = "pip install neomodel"
 # Quick development hints
 dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 e2e | p3 create-pr'; echo '💡 Completion: source ./scripts/p3-completion.zsh'"
 
+# === WORKTREE ISOLATION MANAGEMENT ===
+# Automatic worktree Python environment isolation
+worktree-init = "python scripts/worktree_isolation.py init"
+worktree-status = "python scripts/worktree_isolation.py status"
+worktree-verify = "python scripts/worktree_isolation.py verify"
+
+# Global infrastructure management (ansible/docker reuse)
+global-setup = "python scripts/worktree_isolation.py setup-global"
+
+# === GLOBAL INFRASTRUCTURE REUSE ===
+# Ansible commands - 全局复用但使用worktree Python环境
+ansible-setup = "ansible-playbook infra/ansible/setup.yml"
+ansible-env-status = "ansible-playbook infra/ansible/roles/repo_code.yml --tags env_check"
+
+# Docker commands - 全局复用
+docker-neo4j-start = "cd infra && docker-compose up -d neo4j"
+docker-neo4j-stop = "cd infra && docker-compose stop neo4j"
+docker-status = "cd infra && docker-compose ps"
+
 [pypi-dependencies]
 secedgar = ">=0.6.0, <0.7"
 aiohttp = ">=3.12.15, <4"
