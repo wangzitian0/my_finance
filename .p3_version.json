@@ -1,8 +1,8 @@
 {
   "major": 1,
   "minor": 0,
-  "patch": 0,
-  "git_hash": "",
-  "git_branch": "",
-  "last_updated": "2025-09-02T12:56:00.000000"
+  "patch": 1,
+  "git_hash": "e6bd8104",
+  "git_branch": "hotfix/p3-simple-v2",
+  "last_updated": "2025-09-02T13:01:18.768037"
 }
