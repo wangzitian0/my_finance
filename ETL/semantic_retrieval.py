@@ -47,42 +47,24 @@ def _get_ml_service():
         return None
 
 
-# Check if we should skip all imports in dev mode
-import os
-
-SKIP_ML_IMPORTS = (
-    os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true"
-    or os.environ.get("SKIP_SEMANTIC_RETRIEVAL", "").lower() == "true"
-)
-
-if SKIP_ML_IMPORTS:
-    # In dev mode, skip all potentially problematic imports
+# Try to import faiss, but don't fail if it's not available
+try:
+    import faiss
+    FAISS_AVAILABLE = True
+    logging.info("FAISS available for vector indexing")
+except ImportError as e:
     FAISS_AVAILABLE = False
-    NUMPY_AVAILABLE = False
+    logging.warning(f"FAISS not available, using simple vector search: {e}")
     faiss = None
-    np = None
-    logging.info("Skipping FAISS and NumPy imports (dev mode)")
-else:
-    # Try to import faiss, but don't fail if it's not available
-    try:
-        import faiss
 
-        FAISS_AVAILABLE = True
-        logging.info("FAISS available for vector indexing")
-    except ImportError as e:
-        FAISS_AVAILABLE = False
-        logging.warning(f"FAISS not available, using simple vector search: {e}")
-        faiss = None
-
-    # Check numpy availability separately
+# Check numpy availability separately
+NUMPY_AVAILABLE = False
+np = None
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
     NUMPY_AVAILABLE = False
-    np = None
-    try:
-        import numpy as np
-
-        NUMPY_AVAILABLE = True
-    except ImportError:
-        NUMPY_AVAILABLE = False
 
 from common.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,
@@ -652,30 +634,15 @@ class SemanticRetriever:
         Returns:
             List of relevant content with similarity scores
         """
-        # Check if semantic retrieval should be skipped in dev mode
-        import os
-
-        if os.environ.get("SKIP_SEMANTIC_RETRIEVAL", "").lower() == "true":
-            logger.info("Skipping semantic retrieval (dev mode)")
-            return []
 
         top_k = top_k or self.config.max_results
         min_similarity = min_similarity or self.config.similarity_threshold
 
         try:
             if not self.vector_index or not self.model:
-                logger.error(
-                    f"Vector index or model not loaded - index: {self.vector_index is not None}, model: {self.model is not None}"
-                )
-                # In dev mode, return empty results instead of hanging
-                if os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true":
-                    logger.info("Returning empty results due to dev mode")
-                    return []
-                # Try to initialize with simple defaults
-                if not self.vector_index:
-                    self.vector_index = SimpleVectorIndex(384)
-                    logger.info("Created empty SimpleVectorIndex as fallback")
-                return []
+                error_msg = f"Vector index or model not loaded - index: {self.vector_index is not None}, model: {self.model is not None}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
 
             # Generate query embedding using ML service
             if self.model:

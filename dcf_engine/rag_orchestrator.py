@@ -232,7 +232,7 @@ class GraphRAGOrchestrator:
 
         except Exception as e:
             logger.error(f"Semantic retrieval failed: {e}")
-            return []
+            raise RuntimeError(f"Semantic retrieval failed: {e}") from e
 
     def _calculate_confidence_score(
         self,

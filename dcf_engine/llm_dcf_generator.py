@@ -217,10 +217,7 @@ class LLMDCFGenerator:
 
         except Exception as e:
             logger.error(f"❌ Error generating DCF report: {e}")
-            result["errors"].append(f"Generation error: {str(e)}")
-            result["success"] = False
-
-        return result
+            raise RuntimeError(f"DCF report generation failed for {ticker}: {e}") from e
 
     def _generate_mock_financial_data(self, ticker: str) -> Dict[str, Any]:
         """Generate mock financial data for testing purposes."""

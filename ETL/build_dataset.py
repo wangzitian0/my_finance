@@ -250,40 +250,23 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         analysis_start = time.time()
         tracker.start_stage("stage_04_analysis")
 
-        # Check if we should skip DCF analysis in dev mode
-        import os
-
-        skip_dcf = os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true"
-        print(
-            f"DEBUG: SKIP_DCF_ANALYSIS = '{os.environ.get('SKIP_DCF_ANALYSIS', 'NOT_SET')}', skip_dcf = {skip_dcf}"
-        )
-
-        if skip_dcf:
-            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Skipping DCF analysis (dev mode)")
-            companies_analyzed = 2  # F2 has 2 companies
+        try:
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis...")
+            companies_analyzed = run_dcf_analysis(tier, tracker)
+            print(
+                f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies"
+            )
             tracker.complete_stage(
                 "stage_04_analysis",
                 partition=date_partition,
                 companies_analyzed=companies_analyzed,
             )
-        else:
-            try:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis...")
-                companies_analyzed = run_dcf_analysis(tier, tracker)
-                print(
-                    f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies"
-                )
-                tracker.complete_stage(
-                    "stage_04_analysis",
-                    partition=date_partition,
-                    companies_analyzed=companies_analyzed,
-                )
-            except Exception as e:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
-                tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
-                tracker.complete_stage(
-                    "stage_04_analysis", partition=date_partition, companies_analyzed=0
-                )
+        except Exception as e:
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
+            tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
+            tracker.complete_stage(
+                "stage_04_analysis", partition=date_partition, companies_analyzed=0
+            )
         print(
             f"⏱️ [{time.strftime('%H:%M:%S')}] Analysis stage completed in {time.time() - analysis_start:.1f}s"
         )
@@ -478,6 +461,30 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
 def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
     """Run DCF analysis on available data with SEC document integration"""
+    
+    # Check critical dependencies before starting
+    print(f"   🔍 Checking DCF analysis dependencies...")
+    try:
+        # Test semantic retrieval availability
+        from ETL.semantic_retrieval import SemanticRetriever
+        from pathlib import Path as PathCheck
+        
+        # Try to create a minimal semantic retriever to test dependencies
+        test_path = PathCheck("build_data/stage_03_load/embeddings")
+        if not test_path.exists():
+            raise RuntimeError("Embeddings directory not found - semantic retrieval unavailable")
+            
+        test_retriever = SemanticRetriever(test_path)
+        # This will trigger the dependency check and raise an exception if dependencies are missing
+        test_retriever.load_embeddings()
+        print(f"   ✅ Semantic retrieval dependencies verified")
+        
+    except Exception as e:
+        error_msg = f"DCF analysis dependencies not available: {e}"
+        print(f"   ❌ {error_msg}")
+        tracker.log_stage_output("stage_04_analysis", error_msg)
+        raise RuntimeError(error_msg) from e
+    
     try:
         # Import SEC-integrated DCF analyzer
         sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -541,6 +548,30 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
 
 def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
     """Generate final reports"""
+    
+    # Check critical dependencies before starting (same as DCF analysis)
+    print(f"   🔍 Checking report generation dependencies...")
+    try:
+        # Test semantic retrieval availability
+        from ETL.semantic_retrieval import SemanticRetriever
+        from pathlib import Path as PathCheck
+        
+        # Try to create a minimal semantic retriever to test dependencies
+        test_path = PathCheck("build_data/stage_03_load/embeddings")
+        if not test_path.exists():
+            raise RuntimeError("Embeddings directory not found - semantic retrieval unavailable")
+            
+        test_retriever = SemanticRetriever(test_path)
+        # This will trigger the dependency check and raise an exception if dependencies are missing
+        test_retriever.load_embeddings()
+        print(f"   ✅ Report generation dependencies verified")
+        
+    except Exception as e:
+        error_msg = f"Report generation dependencies not available: {e}"
+        print(f"   ❌ {error_msg}")
+        tracker.log_stage_output("stage_05_reporting", error_msg)
+        raise RuntimeError(error_msg) from e
+    
     try:
         # Import DCF report generator
         sys.path.insert(0, str(Path(__file__).parent.parent))
