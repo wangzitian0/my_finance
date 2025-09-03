@@ -42,5 +42,5 @@
           ✅ Development environment reset complete.
           
           All data has been removed. To start fresh:
-          1. `p3 env setup` (if needed)
-          2. `p3 env start`
+          1. `p3 ready` (if needed)
+          2. `p3 ready`

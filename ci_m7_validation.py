@@ -159,15 +159,15 @@ def check_condition_1_test_run(commit_msg: str) -> bool:
         print('   ✅ M7-TESTED: "This commit passed M7 end-to-end testing"')
         print()
         print("🔧 SOLUTION - Use the automated workflow:")
-        print("   1. p3 e2e f2                           # Fast F2 test (MSFT + NVDA)")
-        print("   2. p3 e2e m7                           # Complete M7 test (all 7 companies)")
-        print('   3. p3 create-pr "Brief title" ISSUE    # Creates PR with proper validation')
+        print("   1. p3 test f2                          # Fast F2 test (MSFT + NVDA)")
+        print("   2. p3 test m7                          # Complete M7 test (all 7 companies)")
+        print('   3. p3 ship "Brief title" ISSUE        # Creates PR with proper validation')
         print()
         print("❌ THESE METHODS WILL ALWAYS FAIL CI:")
         print("   • Direct git push/commit commands")
         print("   • Manual GitHub UI PR creation")
         print("   • Hand-crafted F2-TESTED/M7-TESTED markers")
-        print("   • Bypassing the p3 create-pr automation")
+        print("   • Bypassing the p3 ship automation")
         print()
         print(
             "💡 WHY: The automated script embeds real test results, timestamps, and validation data"
@@ -204,8 +204,8 @@ def check_condition_2_test_timing(commit_msg: str, commit_time: int) -> bool:
         print("🚨 This indicates hand-crafted or invalid test markers!")
         print()
         print("✅ Solution: Use automated workflow:")
-        print("   1. p3 e2e                           # Real tests embed valid timestamps")
-        print('   2. p3 create-pr "title" ISSUE       # Proper commit message format')
+        print("   1. p3 test                          # Real tests embed valid timestamps")
+        print('   2. p3 ship "title" ISSUE            # Proper commit message format')
         return False
 
     commit_dt = datetime.datetime.fromtimestamp(commit_time, datetime.timezone.utc)
@@ -221,8 +221,8 @@ def check_condition_2_test_timing(commit_msg: str, commit_time: int) -> bool:
         print()
         print("🚨 This indicates fake or stale test results!")
         print("✅ Solution: Run fresh tests immediately before PR creation:")
-        print("   1. p3 e2e                           # Fresh test execution")
-        print('   2. p3 create-pr "title" ISSUE       # Immediate PR creation')
+        print("   1. p3 test                          # Fresh test execution")
+        print('   2. p3 ship "title" ISSUE            # Immediate PR creation')
         return False
     elif time_diff < -120:  # -2 minutes
         print(f"❌ Condition 2 FAILED: Test timestamp too late ({-time_diff_min:.1f}min after)")
@@ -252,9 +252,9 @@ def check_condition_3_commit_freshness(commit_time: int) -> bool:
         print("🚨 This commit exceeds the 24-hour freshness requirement!")
         print()
         print("✅ Solution: Create a fresh commit using automated workflow:")
-        print("   1. Make any small code change (or run p3 format)")
-        print("   2. p3 e2e                           # Fresh test execution")
-        print('   3. p3 create-pr "title" ISSUE       # Fresh commit within 24h')
+        print("   1. Make any small code change (or run p3 check)")
+        print("   2. p3 test                          # Fresh test execution")
+        print('   3. p3 ship "title" ISSUE            # Fresh commit within 24h')
         return False
     else:
         print("✅ Condition 3 passed: Commit is within 24 hours")
@@ -300,12 +300,12 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
                         print("   • M7 test: ≥7 data files (all Magnificent 7)")
                         print()
                         print("🔧 SOLUTION - Run complete tests:")
-                        print("   1. p3 e2e f2                        # F2 fast test (≥2 files)")
+                        print("   1. p3 test f2                       # F2 fast test (≥2 files)")
                         print(
-                            "   2. p3 e2e m7                        # M7 complete test (≥7 files)"
+                            "   2. p3 test m7                       # M7 complete test (≥7 files)"
                         )
                         print(
-                            '   3. p3 create-pr "title" ISSUE       # Embed test results properly'
+                            '   3. p3 ship "title" ISSUE            # Embed test results properly'
                         )
                         print()
                         print("🔍 DEBUG: Check if build system completed successfully")
@@ -320,9 +320,9 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
         print("   Manual commit messages cannot replicate this exact format.")
         print()
         print("🔧 SOLUTION: Use real automated testing:")
-        print("   1. p3 e2e f2                        # Real F2 test with file counting")
-        print("   2. p3 e2e m7                        # Real M7 test with file counting")
-        print('   3. p3 create-pr "title" ISSUE       # Automated commit message generation')
+        print("   1. p3 test f2                       # Real F2 test with file counting")
+        print("   2. p3 test m7                       # Real M7 test with file counting")
+        print('   3. p3 ship "title" ISSUE            # Automated commit message generation')
         return False
     else:
         print("❌ Condition 4 FAILED: Test results section not found")
@@ -335,12 +335,12 @@ def check_condition_4_test_results(commit_msg: str) -> bool:
         print()
         print("🔧 COMPLETE SOLUTION:")
         print(
-            "   1. p3 e2e f2                        # Execute real F2 tests (generates test results)"
+            "   1. p3 test f2                       # Execute real F2 tests (generates test results)"
         )
         print(
-            "   2. p3 e2e m7                        # Execute real M7 tests (generates test results)"
+            "   2. p3 test m7                       # Execute real M7 tests (generates test results)"
         )
-        print('   3. p3 create-pr "title" ISSUE       # Creates commit with embedded test results')
+        print('   3. p3 ship "title" ISSUE            # Creates commit with embedded test results')
         print()
         print("❌ NEVER manually create test result markers - they will not pass validation!")
         return False
@@ -398,9 +398,9 @@ def check_condition_5_code_formatting() -> bool:
                 print(f"   {isort_result.stderr}")
                 print()
             print("✅ SOLUTION: Fix formatting before creating PR:")
-            print("   1. p3 format                        # Auto-fix all formatting")
-            print("   2. p3 e2e                           # Validate after formatting")
-            print('   3. p3 create-pr "title" ISSUE_NUMBER # Clean, formatted PR')
+            print("   1. p3 check                         # Auto-fix all formatting")
+            print("   2. p3 test                          # Validate after formatting")
+            print('   3. p3 ship "title" ISSUE_NUMBER    # Clean, formatted PR')
             return False
 
     except Exception as e:
@@ -409,8 +409,8 @@ def check_condition_5_code_formatting() -> bool:
         print("🚨 This may indicate missing formatting tools or system issues!")
         print()
         print("✅ SOLUTION: Ensure clean environment:")
-        print("   1. p3 activate                      # Ensure proper environment")
-        print("   2. p3 format                        # Install and run formatters")
+        print("   1. p3 ready                         # Ensure proper environment")
+        print("   2. p3 check                         # Install and run formatters")
         return False
 
 
@@ -479,19 +479,19 @@ def main():
         print("   Manual git commands and GitHub UI commits cannot pass validation.")
         print()
         print("🔧 COMPLETE SOLUTION (follow this exact sequence):")
-        print("   1. p3 format                        # Fix code formatting issues")
-        print("   2. p3 e2e f2                        # Execute F2 fast testing (2 companies)")
-        print("      OR p3 e2e m7                     # Execute M7 complete testing (7 companies)")
-        print('   3. p3 create-pr "Brief desc" ISSUE   # Create/update PR with embedded validation')
+        print("   1. p3 check                         # Fix code formatting issues")
+        print("   2. p3 test f2                       # Execute F2 fast testing (2 companies)")
+        print("      OR p3 test m7                    # Execute M7 complete testing (7 companies)")
+        print('   3. p3 ship "Brief desc" ISSUE       # Create/update PR with embedded validation')
         print()
         print("⚡ QUICK FIX for simple changes:")
-        print("   Use F2 testing (p3 e2e f2) for faster PR approval - takes ~3-5 minutes")
+        print("   Use F2 testing (p3 test f2) for faster PR approval - takes ~3-5 minutes")
         print()
         print("❌ THESE METHODS WILL ALWAYS FAIL (don't waste time trying):")
         print("   • Direct git push/commit commands")
         print("   • Manual PR creation via GitHub web UI")
         print("   • Hand-crafting F2-TESTED or M7-TESTED markers")
-        print("   • Bypassing the p3 create-pr automation script")
+        print("   • Bypassing the p3 ship automation script")
         print()
         print("💡 WHY MANUAL METHODS FAIL:")
         print("   The automated script embeds cryptographic test evidence, timestamps,")

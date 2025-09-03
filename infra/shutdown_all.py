@@ -97,8 +97,8 @@ def main():
 
     print("\n🎉 Shutdown sequence completed!")
     print("\n💡 To restart services:")
-    print("   • Full setup: p3 env setup")
-    print("   • Start services: p3 env start")
+    print("   • Full setup: p3 ready")
+    print("   • Start services: p3 ready")
 
 
 if __name__ == "__main__":

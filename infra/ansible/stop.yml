@@ -33,7 +33,7 @@
           - Podman machine: Still running (for faster restart)
           
           🔄 To restart:
-          - `p3 env start`
+          - `p3 ready`
           
           🛠️  To fully shutdown:
           - `podman machine stop` (if you want to free all resources)

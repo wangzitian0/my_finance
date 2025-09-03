@@ -188,7 +188,7 @@ p3 build run m7
 python run_job.py <config_file.yml>
 
 # Check build status
-p3 build-status
+p3 debug  # Shows build status and environment
 
 # View latest build
 ls data/build/

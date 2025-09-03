@@ -66,7 +66,7 @@
       echo "🚀 Finance Pixi environment ready"
       echo "☕ Java: $(pixi run java -version 2>&1 | head -1)"
       echo "🐍 Python: $(pixi run python --version)"
-      echo "📊 Neo4j: Use 'p3 neo4j start' to start database"
+      echo "📊 Neo4j: Use 'p3 ready' to start database"
       echo "💡 Use 'pixi run <task>' to execute commands in the Pixi environment"
       echo "💡 Use 'pixi shell' to enter the Pixi shell"
     mode: '0755'

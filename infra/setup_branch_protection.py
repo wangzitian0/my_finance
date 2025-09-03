@@ -158,7 +158,7 @@ def main():
                 print("\n🎉 Branch protection setup completed successfully!")
                 print("\n📝 Next steps:")
                 print("   1. PRs now require M7 validation to pass")
-                print("   2. Use 'p3 create-pr' to create PRs with M7 testing")
+                print("   2. Use 'p3 ship' to create PRs with M7 testing")
                 print("   3. GitHub Actions will automatically run M7 tests on PRs")
             else:
                 print("\n⚠️ Changes applied but verification failed")

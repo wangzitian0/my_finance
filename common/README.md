@@ -579,13 +579,13 @@ common/
 
 ```bash
 # Environment management (uses common lib)
-p3 env-setup                    # Initialize with unified configs
-p3 env-status                   # Check using directory manager
+p3 ready                        # Initialize with unified configs
+p3 debug                        # Check using directory manager
 
 # Data operations (SSOT paths)
 p3 build m7                     # Uses get_data_path internally
-p3 create-build                 # Managed through BuildTracker
-p3 release-build                # Uses storage backend abstraction
+# Note: build-dataset command renamed to build in P3 v2
+# Use p3 build directly for all build operations
 ```
 
 ### Migration Commands

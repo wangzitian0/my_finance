@@ -43,7 +43,7 @@ def check_minikube():
             return ip
     else:
         print("  ❌ Minikube is not running")
-        print("  💡 Start with: p3 env start")
+        print("  💡 Start with: p3 ready")
 
     return False
 
@@ -62,7 +62,7 @@ def check_neo4j(minikube_ip):
     success, output = run_command(f"{kubectl_cmd} get deployment neo4j")
     if not success:
         print("  ❌ Neo4j deployment not found")
-        print("  💡 Deploy with: p3 env start")
+        print("  💡 Deploy with: p3 ready")
         return
 
     # Check pod status
@@ -113,17 +113,17 @@ def show_quick_commands():
     """Show commonly used commands."""
     print("\n🚀 Quick Commands:")
     print("  Environment:")
-    print("    p3 env start    - Start all services")
-    print("    p3 env stop     - Stop all services")
-    print("    p3 env reset    - Reset everything")
-    print("    p3 env status   - This status check")
+    print("    p3 ready    - Start all services")
+    print("    p3 reset     - Stop all services")
+    print("    p3 reset    - Reset everything")
+    print("    p3 debug   - This status check")
     print("\n  Development:")
     print("    p3 status       - Check data status")
     print("    p3 build run m7     - Build test dataset")
     print("    pixi run run-job      - Run data collection")
     print("\n  Code Quality:")
-    print("    p3 format       - Format code")
-    print("    p3 lint         - Lint code")
+    print("    p3 check        - Validate code (format + lint + test)")
+    print("    p3 test         - Comprehensive testing")
     print("    p3 test         - Run tests")
 
 
@@ -149,8 +149,8 @@ def main():
             print("  1. Install Pixi: https://pixi.sh/")
             print("  2. Run: pixi shell")
         if not minikube_ip:
-            print("  3. Run: p3 env setup")
-            print("  4. Run: p3 env start")
+            print("  3. Run: p3 ready")
+            print("  4. Run: p3 ready")
 
 
 if __name__ == "__main__":

@@ -28,13 +28,12 @@ Automated infrastructure management for:
 ### Environment Commands (via p3)
 ```bash
 # Initial setup (run once)
-p3 env-setup
+p3 ready         # Setup and start all services
 
 # Daily operations
-p3 env-start     # Start all services
-p3 env-stop      # Stop all services  
-p3 env-status    # Check service status
-p3 env-reset     # Reset everything (destructive)
+p3 ready         # Ensure environment ready (starts services)
+p3 debug         # Check service status
+p3 reset         # Reset everything (destructive)
 ```
 
 ### Direct Ansible Usage
@@ -125,9 +124,9 @@ ansible-playbook infra/ansible/stop.yml
 python infra/comprehensive_env_status.py
 
 # Service-specific checks
-p3 podman status
-p3 neo4j logs
+p3 debug
+p3 debug
 
 # Manual service restart
-p3 neo4j restart
+p3 reset
 ```
