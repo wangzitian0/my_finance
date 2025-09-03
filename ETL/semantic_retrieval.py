@@ -20,19 +20,60 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-# Use fallback ML service to avoid circular import issues
-try:
-    import faiss
+# Lazy import ML service to avoid circular import issues
+ML_DEPENDENCIES_AVAILABLE = False
+ml_service = None
+FAISS_AVAILABLE = False
 
-    from common.ml_fallback import get_ml_service
+def _get_ml_service():
+    """Lazy initialization of ML service"""
+    global ML_DEPENDENCIES_AVAILABLE, ml_service
+    
+    if ml_service is not None:
+        return ml_service
+        
+    try:
+        # Try to use ML service from Docker container
+        from common.ml_fallback import get_ml_service
+        ml_service = get_ml_service()
+        ML_DEPENDENCIES_AVAILABLE = True
+        logging.info("Using ML service for semantic retrieval")
+        return ml_service
+    except Exception as e:
+        logging.warning(f"ML service not available: {e}")
+        ML_DEPENDENCIES_AVAILABLE = False
+        return None
 
-    ML_DEPENDENCIES_AVAILABLE = True
-    ml_service = get_ml_service()
-    logging.info("Using ML fallback service for semantic retrieval")
-except ImportError as e:
-    ML_DEPENDENCIES_AVAILABLE = False
-    ml_service = None
-    logging.warning(f"ML dependencies not available: {e}")
+# Check if we should skip all imports in dev mode
+import os
+SKIP_ML_IMPORTS = os.environ.get('SKIP_DCF_ANALYSIS', '').lower() == 'true' or os.environ.get('SKIP_SEMANTIC_RETRIEVAL', '').lower() == 'true'
+
+if SKIP_ML_IMPORTS:
+    # In dev mode, skip all potentially problematic imports
+    FAISS_AVAILABLE = False
+    NUMPY_AVAILABLE = False
+    faiss = None  
+    np = None
+    logging.info("Skipping FAISS and NumPy imports (dev mode)")
+else:
+    # Try to import faiss, but don't fail if it's not available
+    try:
+        import faiss
+        FAISS_AVAILABLE = True
+        logging.info("FAISS available for vector indexing")
+    except ImportError as e:
+        FAISS_AVAILABLE = False
+        logging.warning(f"FAISS not available, using simple vector search: {e}")
+        faiss = None
+
+    # Check numpy availability separately
+    NUMPY_AVAILABLE = False
+    np = None
+    try:
+        import numpy as np
+        NUMPY_AVAILABLE = True
+    except ImportError:
+        NUMPY_AVAILABLE = False
 
 from common.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,
@@ -44,6 +85,49 @@ from common.graph_rag_schema import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+class SimpleVectorIndex:
+    """Simple vector index fallback when FAISS is not available"""
+    
+    def __init__(self, dimension):
+        self.dimension = dimension
+        self.vectors = []
+        self.ntotal = 0
+    
+    def add(self, vectors):
+        """Add vectors to the index"""
+        if hasattr(vectors, 'tolist'):
+            self.vectors.extend(vectors.tolist())
+        else:
+            self.vectors.extend(vectors)
+        self.ntotal = len(self.vectors)
+    
+    def search(self, query_vectors, k):
+        """Simple cosine similarity search"""
+        if not self.vectors:
+            return [], []
+        
+        # Simple dot product similarity
+        results = []
+        for query in (query_vectors.tolist() if hasattr(query_vectors, 'tolist') else query_vectors):
+            similarities = []
+            for idx, vec in enumerate(self.vectors):
+                # Simple dot product
+                similarity = sum(q * v for q, v in zip(query, vec))
+                similarities.append((similarity, idx))
+            
+            # Sort by similarity and get top k
+            similarities.sort(reverse=True)
+            top_k = similarities[:k]
+            
+            distances = [sim for sim, _ in top_k]
+            indices = [idx for _, idx in top_k]
+            results.append((distances, indices))
+        
+        if results:
+            return [results[0][0]], [results[0][1]]
+        return [], []
 
 
 class SemanticEmbeddingGenerator:
@@ -70,9 +154,10 @@ class SemanticEmbeddingGenerator:
     def setup_model(self):
         """Setup the ML service for embeddings."""
         try:
-            if ml_service:
+            service = _get_ml_service()
+            if service:
                 logger.info(f"Using ML fallback service for model: {self.config.model_name}")
-                self.model = ml_service  # Use our fallback service
+                self.model = service  # Use our fallback service
                 logger.info("ML service ready for embeddings")
             else:
                 logger.warning("No ML service available, using simple fallback")
@@ -382,18 +467,33 @@ class SemanticEmbeddingGenerator:
 
             # Extract embeddings
             embeddings_list = [item["embedding_vector"] for item in embedding_data]
-            if NUMPY_AVAILABLE and np:
-                embeddings = np.array(embeddings_list)
+            
+            # Get dimension
+            if embeddings_list and len(embeddings_list[0]) > 0:
+                dimension = len(embeddings_list[0])
             else:
-                embeddings = embeddings_list
-
-            # Create FAISS index
-            dimension = embeddings.shape[1]
-            self.vector_index = faiss.IndexFlatIP(dimension)  # Inner product (cosine similarity)
-
-            # Normalize vectors for cosine similarity
-            faiss.normalize_L2(embeddings)
-            self.vector_index.add(embeddings)
+                dimension = 384  # Default dimension
+            
+            # Create vector index
+            if FAISS_AVAILABLE:
+                # Use FAISS if available
+                import numpy as np
+                embeddings = np.array(embeddings_list)
+                self.vector_index = faiss.IndexFlatIP(dimension)
+                faiss.normalize_L2(embeddings)
+                self.vector_index.add(embeddings)
+            else:
+                # Use simple fallback
+                self.vector_index = SimpleVectorIndex(dimension)
+                # Normalize vectors manually
+                normalized = []
+                for vec in embeddings_list:
+                    norm = sum(v * v for v in vec) ** 0.5
+                    if norm > 0:
+                        normalized.append([v / norm for v in vec])
+                    else:
+                        normalized.append(vec)
+                self.vector_index.add(normalized)
 
             # Store metadata for retrieval
             self.document_metadata = {i: item for i, item in enumerate(embedding_data)}
@@ -434,10 +534,19 @@ class SemanticEmbeddingGenerator:
                 with open(str(embeddings_file).replace(".npy", ".json"), "w") as f:
                     json.dump(embeddings, f)
 
-            # Save FAISS index if available
-            if self.vector_index:
+            # Save vector index if available
+            if self.vector_index and FAISS_AVAILABLE:
                 index_file = output_path / "vector_index.faiss"
                 faiss.write_index(self.vector_index, str(index_file))
+            elif self.vector_index:
+                # Save simple index as JSON
+                index_file = output_path / "vector_index.json"
+                with open(index_file, 'w') as f:
+                    json.dump({
+                        'dimension': self.vector_index.dimension,
+                        'vectors': self.vector_index.vectors,
+                        'ntotal': self.vector_index.ntotal
+                    }, f)
 
             logger.info(f"Saved embeddings data to {output_path}")
 
@@ -473,11 +582,12 @@ class SemanticRetriever:
         """Load embeddings and vector index from disk."""
         try:
             # Load ML service instead of direct model
-            if ml_service:
+            service = _get_ml_service()
+            if service:
                 logger.info(
                     f"Using ML fallback service for retrieval model: {self.config.model_name}"
                 )
-                self.model = ml_service
+                self.model = service
             else:
                 logger.warning("No ML service available for retrieval")
                 self.model = None
@@ -489,11 +599,22 @@ class SemanticRetriever:
                     metadata_list = json.load(f)
                 self.document_metadata = {i: item for i, item in enumerate(metadata_list)}
 
-            # Load FAISS index
-            index_file = self.embeddings_path / "vector_index.faiss"
-            if index_file.exists():
-                self.vector_index = faiss.read_index(str(index_file))
-                logger.info(f"Loaded vector index with {self.vector_index.ntotal} vectors")
+            # Load vector index
+            if FAISS_AVAILABLE:
+                index_file = self.embeddings_path / "vector_index.faiss"
+                if index_file.exists():
+                    self.vector_index = faiss.read_index(str(index_file))
+                    logger.info(f"Loaded FAISS index with {self.vector_index.ntotal} vectors")
+            else:
+                # Load simple index from JSON
+                index_file = self.embeddings_path / "vector_index.json"
+                if index_file.exists():
+                    with open(index_file, 'r') as f:
+                        index_data = json.load(f)
+                    self.vector_index = SimpleVectorIndex(index_data['dimension'])
+                    self.vector_index.vectors = index_data['vectors']
+                    self.vector_index.ntotal = index_data['ntotal']
+                    logger.info(f"Loaded simple index with {self.vector_index.ntotal} vectors")
 
         except Exception as e:
             logger.error(f"Failed to load embeddings: {e}")
@@ -518,12 +639,26 @@ class SemanticRetriever:
         Returns:
             List of relevant content with similarity scores
         """
+        # Check if semantic retrieval should be skipped in dev mode
+        import os
+        if os.environ.get('SKIP_SEMANTIC_RETRIEVAL', '').lower() == 'true':
+            logger.info("Skipping semantic retrieval (dev mode)")
+            return []
+            
         top_k = top_k or self.config.max_results
         min_similarity = min_similarity or self.config.similarity_threshold
 
         try:
             if not self.vector_index or not self.model:
-                logger.error("Vector index or model not loaded")
+                logger.error(f"Vector index or model not loaded - index: {self.vector_index is not None}, model: {self.model is not None}")
+                # In dev mode, return empty results instead of hanging
+                if os.environ.get('SKIP_DCF_ANALYSIS', '').lower() == 'true':
+                    logger.info("Returning empty results due to dev mode")
+                    return []
+                # Try to initialize with simple defaults
+                if not self.vector_index:
+                    self.vector_index = SimpleVectorIndex(384)
+                    logger.info("Created empty SimpleVectorIndex as fallback")
                 return []
 
             # Generate query embedding using ML service
@@ -554,7 +689,17 @@ class SemanticRetriever:
                     )
                 else:
                     query_embedding = [embedding[: self.config.dimension]]
-            faiss.normalize_L2(query_embedding)
+            # Normalize query embedding
+            if FAISS_AVAILABLE:
+                faiss.normalize_L2(query_embedding)
+            else:
+                # Manual normalization
+                if isinstance(query_embedding, list):
+                    for vec in query_embedding:
+                        norm = sum(v * v for v in vec) ** 0.5
+                        if norm > 0:
+                            for i in range(len(vec)):
+                                vec[i] /= norm
 
             # Search vector index
             scores, indices = self.vector_index.search(
@@ -562,30 +707,32 @@ class SemanticRetriever:
             )
 
             results = []
-            for score, idx in zip(scores[0], indices[0]):
-                if score < min_similarity:
-                    continue
-
-                if idx in self.document_metadata:
-                    metadata = self.document_metadata[idx]
-
-                    # Apply content filter
-                    if content_filter and not self._matches_filter(metadata, content_filter):
+            # Handle empty results safely
+            if len(scores) > 0 and len(indices) > 0 and len(scores[0]) > 0:
+                for score, idx in zip(scores[0], indices[0]):
+                    if score < min_similarity:
                         continue
 
-                    result = SemanticSearchResult(
-                        node_id=metadata["node_id"],
-                        content=metadata["content"],
-                        similarity_score=float(score),
-                        metadata=metadata.get("metadata", {}),
-                        source_document=metadata["parent_document"],
-                        document_type=DocumentType(metadata["content_type"]),
-                    )
+                    if idx in self.document_metadata:
+                        metadata = self.document_metadata[idx]
 
-                    results.append(result)
+                        # Apply content filter
+                        if content_filter and not self._matches_filter(metadata, content_filter):
+                            continue
 
-                    if len(results) >= top_k:
-                        break
+                        result = SemanticSearchResult(
+                            node_id=metadata["node_id"],
+                            content=metadata["content"],
+                            similarity_score=float(score),
+                            metadata=metadata.get("metadata", {}),
+                            source_document=metadata["parent_document"],
+                            document_type=DocumentType(metadata["content_type"]),
+                        )
+
+                        results.append(result)
+
+                        if len(results) >= top_k:
+                            break
 
             logger.debug(f"Retrieved {len(results)} relevant content items for query")
             return results
