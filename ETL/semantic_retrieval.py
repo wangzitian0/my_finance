@@ -50,6 +50,7 @@ def _get_ml_service():
 # Try to import faiss, but don't fail if it's not available
 try:
     import faiss
+
     FAISS_AVAILABLE = True
     logging.info("FAISS available for vector indexing")
 except ImportError as e:
@@ -62,6 +63,7 @@ NUMPY_AVAILABLE = False
 np = None
 try:
     import numpy as np
+
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False
