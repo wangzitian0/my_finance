@@ -25,16 +25,18 @@ ML_DEPENDENCIES_AVAILABLE = False
 ml_service = None
 FAISS_AVAILABLE = False
 
+
 def _get_ml_service():
     """Lazy initialization of ML service"""
     global ML_DEPENDENCIES_AVAILABLE, ml_service
-    
+
     if ml_service is not None:
         return ml_service
-        
+
     try:
         # Try to use ML service from Docker container
         from common.ml_fallback import get_ml_service
+
         ml_service = get_ml_service()
         ML_DEPENDENCIES_AVAILABLE = True
         logging.info("Using ML service for semantic retrieval")
@@ -44,21 +46,27 @@ def _get_ml_service():
         ML_DEPENDENCIES_AVAILABLE = False
         return None
 
+
 # Check if we should skip all imports in dev mode
 import os
-SKIP_ML_IMPORTS = os.environ.get('SKIP_DCF_ANALYSIS', '').lower() == 'true' or os.environ.get('SKIP_SEMANTIC_RETRIEVAL', '').lower() == 'true'
+
+SKIP_ML_IMPORTS = (
+    os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true"
+    or os.environ.get("SKIP_SEMANTIC_RETRIEVAL", "").lower() == "true"
+)
 
 if SKIP_ML_IMPORTS:
     # In dev mode, skip all potentially problematic imports
     FAISS_AVAILABLE = False
     NUMPY_AVAILABLE = False
-    faiss = None  
+    faiss = None
     np = None
     logging.info("Skipping FAISS and NumPy imports (dev mode)")
 else:
     # Try to import faiss, but don't fail if it's not available
     try:
         import faiss
+
         FAISS_AVAILABLE = True
         logging.info("FAISS available for vector indexing")
     except ImportError as e:
@@ -71,6 +79,7 @@ else:
     np = None
     try:
         import numpy as np
+
         NUMPY_AVAILABLE = True
     except ImportError:
         NUMPY_AVAILABLE = False
@@ -89,42 +98,42 @@ logger = logging.getLogger(__name__)
 
 class SimpleVectorIndex:
     """Simple vector index fallback when FAISS is not available"""
-    
+
     def __init__(self, dimension):
         self.dimension = dimension
         self.vectors = []
         self.ntotal = 0
-    
+
     def add(self, vectors):
         """Add vectors to the index"""
-        if hasattr(vectors, 'tolist'):
+        if hasattr(vectors, "tolist"):
             self.vectors.extend(vectors.tolist())
         else:
             self.vectors.extend(vectors)
         self.ntotal = len(self.vectors)
-    
+
     def search(self, query_vectors, k):
         """Simple cosine similarity search"""
         if not self.vectors:
             return [], []
-        
+
         # Simple dot product similarity
         results = []
-        for query in (query_vectors.tolist() if hasattr(query_vectors, 'tolist') else query_vectors):
+        for query in query_vectors.tolist() if hasattr(query_vectors, "tolist") else query_vectors:
             similarities = []
             for idx, vec in enumerate(self.vectors):
                 # Simple dot product
                 similarity = sum(q * v for q, v in zip(query, vec))
                 similarities.append((similarity, idx))
-            
+
             # Sort by similarity and get top k
             similarities.sort(reverse=True)
             top_k = similarities[:k]
-            
+
             distances = [sim for sim, _ in top_k]
             indices = [idx for _, idx in top_k]
             results.append((distances, indices))
-        
+
         if results:
             return [results[0][0]], [results[0][1]]
         return [], []
@@ -467,17 +476,18 @@ class SemanticEmbeddingGenerator:
 
             # Extract embeddings
             embeddings_list = [item["embedding_vector"] for item in embedding_data]
-            
+
             # Get dimension
             if embeddings_list and len(embeddings_list[0]) > 0:
                 dimension = len(embeddings_list[0])
             else:
                 dimension = 384  # Default dimension
-            
+
             # Create vector index
             if FAISS_AVAILABLE:
                 # Use FAISS if available
                 import numpy as np
+
                 embeddings = np.array(embeddings_list)
                 self.vector_index = faiss.IndexFlatIP(dimension)
                 faiss.normalize_L2(embeddings)
@@ -541,12 +551,15 @@ class SemanticEmbeddingGenerator:
             elif self.vector_index:
                 # Save simple index as JSON
                 index_file = output_path / "vector_index.json"
-                with open(index_file, 'w') as f:
-                    json.dump({
-                        'dimension': self.vector_index.dimension,
-                        'vectors': self.vector_index.vectors,
-                        'ntotal': self.vector_index.ntotal
-                    }, f)
+                with open(index_file, "w") as f:
+                    json.dump(
+                        {
+                            "dimension": self.vector_index.dimension,
+                            "vectors": self.vector_index.vectors,
+                            "ntotal": self.vector_index.ntotal,
+                        },
+                        f,
+                    )
 
             logger.info(f"Saved embeddings data to {output_path}")
 
@@ -609,11 +622,11 @@ class SemanticRetriever:
                 # Load simple index from JSON
                 index_file = self.embeddings_path / "vector_index.json"
                 if index_file.exists():
-                    with open(index_file, 'r') as f:
+                    with open(index_file, "r") as f:
                         index_data = json.load(f)
-                    self.vector_index = SimpleVectorIndex(index_data['dimension'])
-                    self.vector_index.vectors = index_data['vectors']
-                    self.vector_index.ntotal = index_data['ntotal']
+                    self.vector_index = SimpleVectorIndex(index_data["dimension"])
+                    self.vector_index.vectors = index_data["vectors"]
+                    self.vector_index.ntotal = index_data["ntotal"]
                     logger.info(f"Loaded simple index with {self.vector_index.ntotal} vectors")
 
         except Exception as e:
@@ -641,18 +654,21 @@ class SemanticRetriever:
         """
         # Check if semantic retrieval should be skipped in dev mode
         import os
-        if os.environ.get('SKIP_SEMANTIC_RETRIEVAL', '').lower() == 'true':
+
+        if os.environ.get("SKIP_SEMANTIC_RETRIEVAL", "").lower() == "true":
             logger.info("Skipping semantic retrieval (dev mode)")
             return []
-            
+
         top_k = top_k or self.config.max_results
         min_similarity = min_similarity or self.config.similarity_threshold
 
         try:
             if not self.vector_index or not self.model:
-                logger.error(f"Vector index or model not loaded - index: {self.vector_index is not None}, model: {self.model is not None}")
+                logger.error(
+                    f"Vector index or model not loaded - index: {self.vector_index is not None}, model: {self.model is not None}"
+                )
                 # In dev mode, return empty results instead of hanging
-                if os.environ.get('SKIP_DCF_ANALYSIS', '').lower() == 'true':
+                if os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true":
                     logger.info("Returning empty results due to dev mode")
                     return []
                 # Try to initialize with simple defaults

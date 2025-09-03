@@ -19,7 +19,7 @@ logger = setup_logger(
     log_dir="build_data/logs/debug",
     build_id="f2_build_debug",
     use_file_handler=True,
-    use_console_handler=True
+    use_console_handler=True,
 )
 
 logger.info("=== Starting ETL/build_dataset.py ===")
@@ -37,7 +37,7 @@ import yaml
 
 logger.info("YAML imported")
 
-# Add project root to path  
+# Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 logger.info("Path setup completed")
@@ -52,6 +52,7 @@ NUMPY_ISSUE_DETECTED = False
 logger.info("Testing numpy import...")
 try:
     import numpy as np
+
     logger.info("Numpy imported successfully")
 except Exception as e:
     if "circular import" in str(e):
@@ -61,6 +62,8 @@ except Exception as e:
         logger.error(f"Numpy import error: {e}")
 
 logger.info("Creating SimpleConfigLoader...")
+
+
 class SimpleConfigLoader:
     def load_dataset_config(self, tier_name):
         # Minimal config for F2 (MSFT + NVDA) with disabled data sources for dev mode
@@ -69,9 +72,9 @@ class SimpleConfigLoader:
             "tickers": ["MSFT", "NVDA"],
             "timeout_seconds": 30,
             "data_sources": {
-                "yfinance": {"enabled": False},  # Disabled in dev mode 
-                "sec_edgar": {"enabled": False}  # Disabled in dev mode
-            }
+                "yfinance": {"enabled": False},  # Disabled in dev mode
+                "sec_edgar": {"enabled": False},  # Disabled in dev mode
+            },
         }
 
     def get_config_path(self, config_name):
@@ -86,6 +89,7 @@ logger.info("SimpleConfigLoader instance created")
 
 logger.info("About to import DatasetTier from ETL.tests.test_config...")
 from ETL.tests.test_config import DatasetTier
+
 logger.info("DatasetTier imported successfully")
 
 
@@ -104,6 +108,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 
     try:
         import time
+
         logger.info("Time module imported")
 
         start_time = time.time()
@@ -117,11 +122,11 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info("About to create DatasetTier instance...")
         tier = DatasetTier(tier_name)
         logger.info(f"DatasetTier created: {tier}")
-        
+
         logger.info("About to load dataset config...")
         config = config_loader.load_dataset_config(tier.value)
         logger.info(f"Config loaded: {config}")
-        
+
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Config loaded in {time.time() - start_time:.1f}s")
         logger.info(f"Config loaded in {time.time() - start_time:.1f}s")
 
@@ -137,7 +142,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info("About to create BuildTracker instance...")
         tracker = BuildTracker()
         logger.info("BuildTracker instance created")
-        
+
         logger.info("About to call tracker.start_build()...")
         build_id = tracker.start_build(tier.value, f"p3 build run {tier_name}")
         logger.info(f"Build started with ID: {build_id}")
@@ -172,7 +177,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info(f"yfinance_config: {yfinance_config}")
         yfinance_enabled = yfinance_config.get("enabled", False)
         logger.info(f"yfinance_enabled: {yfinance_enabled}")
-        
+
         if yfinance_enabled:
             logger.info("YFinance is enabled, building data...")
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Building YFinance data...")
@@ -247,9 +252,12 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 
         # Check if we should skip DCF analysis in dev mode
         import os
-        skip_dcf = os.environ.get('SKIP_DCF_ANALYSIS', '').lower() == 'true'
-        print(f"DEBUG: SKIP_DCF_ANALYSIS = '{os.environ.get('SKIP_DCF_ANALYSIS', 'NOT_SET')}', skip_dcf = {skip_dcf}")
-        
+
+        skip_dcf = os.environ.get("SKIP_DCF_ANALYSIS", "").lower() == "true"
+        print(
+            f"DEBUG: SKIP_DCF_ANALYSIS = '{os.environ.get('SKIP_DCF_ANALYSIS', 'NOT_SET')}', skip_dcf = {skip_dcf}"
+        )
+
         if skip_dcf:
             print(f"⏱️ [{time.strftime('%H:%M:%S')}] Skipping DCF analysis (dev mode)")
             companies_analyzed = 2  # F2 has 2 companies
@@ -662,7 +670,9 @@ def main():
 
     logger.info("About to parse arguments...")
     args = parser.parse_args()
-    logger.info(f"Arguments parsed: tier={args.tier}, config={args.config}, validate={args.validate}")
+    logger.info(
+        f"Arguments parsed: tier={args.tier}, config={args.config}, validate={args.validate}"
+    )
 
     logger.info("About to call build_dataset()...")
     success = build_dataset(args.tier, args.config)
