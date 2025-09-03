@@ -51,16 +51,17 @@ except ImportError as e:
     SECEDGAR_AVAILABLE = False
 from tqdm import tqdm
 
+from common.core.directory_manager import directory_manager, DataLayer
 from common.metadata_manager import MetadataManager
 
 # Set log output level to DEBUG
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# Define base directory for saving data: data/stage_01_extract/sec_edgar/
+# Use SSOT DirectoryManager for SEC Edgar data storage following SSOT principles
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract", "sec_edgar")
+STAGE_01_EXTRACT_DIR = directory_manager.get_subdir_path(DataLayer.DAILY_DELTA, "sec_edgar")
 if not os.path.exists(STAGE_01_EXTRACT_DIR):
-    os.makedirs(STAGE_01_EXTRACT_DIR)
+    os.makedirs(STAGE_01_EXTRACT_DIR, exist_ok=True)
 
 
 def is_file_recent(filepath, hours=1):
@@ -80,7 +81,7 @@ def run_job(config_path):
     """
     Main task: Load configuration from YAML config file, and process each CIK and filing type in sequence,
     directly calling secedgar.filings object's save() method to save filings data.
-    Data will be saved in: data/stage_01_extract/sec_edgar/<date_partition>/<ticker>/ directory.
+    Data will be saved using SSOT DirectoryManager paths following SSOT principles.
     Parameters:
       config_path: configuration file path
     """

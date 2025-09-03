@@ -15,6 +15,7 @@ from neomodel import config
 config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
 
 # Use common module from project root directory, not in ETL directory
+from common.core.directory_manager import directory_manager, DataLayer
 from common.logger import StreamToLogger, setup_logger
 from common.progress import create_progress_bar
 from common.snowflake import Snowflake
@@ -23,9 +24,9 @@ from common.utils import is_file_recent, sanitize_data, suppress_third_party_log
 # Optionally suppress third-party log messages (e.g. requests/urllib3)
 suppress_third_party_logs()
 
-# Base directories
+# Use SSOT DirectoryManager for all directory paths
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-STAGE_01_EXTRACT_DIR = os.path.join(BASE_DIR, "data", "stage_01_extract")
+STAGE_01_EXTRACT_DIR = directory_manager.get_layer_path(DataLayer.DAILY_DELTA)
 
 # Import models (ensure ETL is in PYTHONPATH)
 from models import FastInfo, Info, PriceData, Recommendations, Stock, Sustainability
@@ -144,8 +145,9 @@ def import_json_file(file_path, logger):
 
 def import_all_json_files(source, tickers, logger):
     """
-    For the given tickers list, read all JSON files from data/stage_00_original/<source>/<ticker> directories,
+    For the given tickers list, read all JSON files from SSOT data directories,
     and call import_json_file() to write data to Neo4j.
+    Uses DirectoryManager to resolve data paths following SSOT principles.
     """
     total_files = 0
     for ticker in tickers:
@@ -218,7 +220,8 @@ def import_all_json_files(source, tickers, logger):
 
 def run_job(config_path):
     """
-    Based on YAML configuration file (e.g. config.yml), read configuration and import JSON files from data/stage_00_original/<source>/<ticker>/ to Neo4j.
+    Based on YAML configuration file (e.g. config.yml), read configuration and import JSON files from SSOT data paths to Neo4j.
+    Uses DirectoryManager for path resolution following SSOT principles.
     Configuration file should contain:
       - tickers: list of ticker symbols
       - source: data source name (e.g. "yfinance")
