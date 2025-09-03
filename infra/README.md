@@ -27,13 +27,12 @@ Global infrastructure management focused on environment, deployment, monitoring,
 
 ```bash
 # Environment management
-p3 env-status
-p3 shutdown-all
+p3 debug          # Check environment status
+p3 reset          # Shutdown and reset environment
 
-# Git workflow
-p3 cleanup-branches
-pixi run install-git-hooks
-p3 commit-data-changes
+# Git workflow (simplified in P3 v2)
+p3 ship "title" ISSUE  # Create PR with validation
+# Note: Most git operations now automated in workflow commands
 
 # Deployment
 ansible-playbook infra/ansible/setup.yml

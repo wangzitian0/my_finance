@@ -184,9 +184,9 @@ Always maintain a strategic perspective on agent ecosystem development while ens
 
 ### P3 Workflow Compliance
 **P3 WORKFLOW COMPLIANCE**: Never bypass p3 command system
-- **MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+- **MANDATORY COMMANDS**: `p3 ready`, `p3 test`, `p3 ship`
 - **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
-- **QUALITY ASSURANCE**: `p3 e2e m7` validation mandatory before PR creation
+- **QUALITY ASSURANCE**: `p3 test m7` validation mandatory before PR creation
 
 ### Build Data Management
 **SSOT COMPLIANCE**: Use DirectoryManager for all path operations

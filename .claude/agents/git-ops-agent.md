@@ -24,10 +24,10 @@ Your specialized knowledge covers:
 
 **CRITICAL**: You MUST use p3 commands exclusively, NEVER direct git commands:
 
-- `p3 create-pr "title" ISSUE_NUMBER`: Automated PR creation with F2 testing validation and test marker commit
+- `p3 ship "title" ISSUE_NUMBER`: Automated PR creation with F2 testing validation and test marker commit
 - `p3 cleanup-branches` (--dry-run, --auto): Branch lifecycle management and cleanup  
 - `p3 commit-data-changes`: Specialized data directory change management
-- `p3 e2e [scope]`: End-to-end testing integration with git operations
+- `p3 test [scope]`: End-to-end testing integration with git operations
 
 **FORBIDDEN**: Direct git commands (git push, git commit, gh pr create) - Always use p3 wrapper
 
@@ -50,11 +50,11 @@ Your specialized knowledge covers:
 ## Key Responsibilities
 
 ### Core Git Operations
-- Execute optimized `p3 create-pr` workflow (includes all steps automatically):
+- Execute optimized `p3 ship` workflow (includes all steps automatically):
   1. Rebase latest main branch (manual step for conflict resolution)
-  2. p3 create-pr auto-executes: F2 testing → test markers → push validation
-- **CRITICAL**: NEVER use direct `git push` - always use `p3 create-pr` workflow
-- **PUSH CONTROL**: Only `p3 create-pr` can push commits, direct git push is blocked
+  2. p3 ship auto-executes: F2 testing → test markers → push validation
+- **CRITICAL**: NEVER use direct `git push` - always use `p3 ship` workflow
+- **PUSH CONTROL**: Only `p3 ship` can push commits, direct git push is blocked
 - Manage branch lifecycle using `p3 cleanup-branches` for maintenance and cleanup
 - Implement push control mechanisms to block untested commits
 - Coordinate release processes using p3 commands with proper validation and documentation
@@ -78,7 +78,7 @@ git worktree add ../parallel-workspace-2 feature-branch-2
 
 ### Environment Troubleshooting & Recovery
 - **Pixi Environment Issues**: Diagnose and fix pixi/conda environment corruption
-  - Run `p3 status` and `p3 env-status` for environment health checks
+  - Run `p3 status` and `p3 ready` for environment health checks
   - Clear cache with `rm -rf .pixi/envs` and reinitialize if needed
   - Handle Python architecture conflicts on macOS systems
 - **Dependency Resolution**: Fix missing or broken Python packages
@@ -125,17 +125,17 @@ git worktree add ../parallel-workspace-2 feature-branch-2
 ## Command Execution Priority
 
 **MANDATORY EXECUTION ORDER**:
-1. **First Choice**: p3 commands (`p3 create-pr`, `p3 cleanup-branches`, `p3 e2e`)
+1. **First Choice**: p3 commands (`p3 ship`, `p3 cleanup-branches`, `p3 test`)
 2. **Second Choice**: Direct git commands ONLY if no p3 equivalent exists
 3. **FORBIDDEN**: Direct gh commands, git push, or bypassing p3 workflow
 
 **Example Correct Usage**:
 ```bash
 # ✅ CORRECT: Use p3 for PR creation
-p3 create-pr "Fix authentication bug" 123
+p3 ship "Fix authentication bug" 123
 
 # ✅ CORRECT: Use integrated workflow (includes F2 test)
-p3 create-pr "title" ISSUE_NUM
+p3 ship "title" ISSUE_NUM
 
 # ❌ WRONG: Direct git/gh commands
 git push origin feature-branch
@@ -150,7 +150,7 @@ When p3 commands fail, follow this systematic approach:
 1. **Environment Health Check**:
    ```bash
    ./p3 status              # Check overall system status
-   ./p3 env-status          # Verify environment integrity
+   ./p3 ready          # Verify environment integrity
    which python3            # Confirm Python availability
    ```
 
@@ -187,10 +187,10 @@ Before proceeding with original task:
 **CORE RULE**: Never use direct git push - always use p3 workflow:
 - ❌ FORBIDDEN: `git push` commands (blocked by pre-push hook)
 - ❌ FORBIDDEN: `git push --force` or any push variants
-- ❌ FORBIDDEN: Bypassing p3 create-pr workflow
+- ❌ FORBIDDEN: Bypassing p3 ship workflow
 - ❌ FORBIDDEN: Manually creating fake test markers (F2-TESTED, M7-TESTED)
-- ✅ ALLOWED: `p3 create-pr` which handles all commit/push operations internally
-- ✅ ALLOWED: `p3 create-pr` can create commits, amend messages, add REAL test markers
+- ✅ ALLOWED: `p3 ship` which handles all commit/push operations internally
+- ✅ ALLOWED: `p3 ship` can create commits, amend messages, add REAL test markers
 - ✅ VERIFICATION: Direct push attempts will be blocked with helpful error messages
 
 ### Test Marker Integrity Policy
@@ -198,7 +198,7 @@ Before proceeding with original task:
 - ❌ NEVER manually add F2-TESTED, M7-TESTED, or other test markers
 - ❌ NEVER create fake test timestamps or validation data
 - ❌ NEVER bypass CI validation by creating fake "Test Results: X data files validated" messages
-- ✅ ONLY allow p3 create-pr or p3 e2e to generate test markers from real test runs
+- ✅ ONLY allow p3 ship or p3 test to generate test markers from real test runs
 - ✅ Test markers must contain real test results, timestamps, and file counts
 - ✅ All commit messages must include genuine test validation from actual test execution
 - ✅ If tests fail, fix the underlying issue - never fake the markers

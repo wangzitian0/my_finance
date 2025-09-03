@@ -24,7 +24,7 @@
 - [ ] **Confirm routing decision**:
   - Direct execution: Only for single-step read operations
   - Agent-coordinator: All complex, multi-step, or multi-domain tasks
-  - P3 commands: All PR creation (`p3 create-pr "title" ISSUE_NUM`)
+  - P3 commands: All PR creation (`p3 ship "title" ISSUE_NUM`)
 - [ ] **Validate execution keywords** for agent tasks:
   - Use "EXECUTE", "IMPLEMENT", "WRITE CODE" for action
   - End with "COMPLETE THE FULL IMPLEMENTATION"
@@ -51,7 +51,7 @@
   - Confirm architectural integrity maintained
 - [ ] **Automatic PR creation** (MANDATORY for significant changes):
   - Route through `agent-coordinator` with EXECUTE keywords
-  - Use `p3 create-pr "title" ISSUE_NUM` workflow
+  - Use `p3 ship "title" ISSUE_NUM` workflow
   - Include comprehensive change description
   - Add proper labels and milestone assignment
 
@@ -60,7 +60,7 @@
 **❌ TASK EXECUTION WITHOUT COMPLETING THIS CHECKLIST VIOLATES COMPANY POLICY**
 
 **🎯 QUICK REFERENCE - MOST COMMON VIOLATIONS:**
-- Creating PRs with `gh pr create` instead of `p3 create-pr`
+- Creating PRs with `gh pr create` instead of `p3 ship`
 - Using direct tools for complex multi-step tasks instead of agent-coordinator
 - Skipping README.md reading before architecture tasks
 - Creating .md planning files instead of using GitHub Issues
@@ -185,7 +185,7 @@ simple_single_step_only:
 | **Git Commands** | 🚫 NEVER Direct → ✅ agent-coordinator | `git status` → Task(agent-coordinator) |
 | **Code Writing** | 🚫 NEVER Direct → ✅ agent-coordinator | Writing functions → Task(backend-architect-agent) |
 | **Multi-file Edit** | 🚫 NEVER Direct → ✅ agent-coordinator | Refactoring → Task(dev-quality-agent) |
-| **PR Creation** | 🚫 NEVER Direct → ✅ agent-coordinator | `p3 create-pr` → Task(git-ops-agent) |
+| **PR Creation** | 🚫 NEVER Direct → ✅ agent-coordinator | `p3 ship` → Task(git-ops-agent) |
 | **File Reading** | ✅ Direct Tools OK | Read("path/file.py") |
 | **Directory Listing** | ✅ Direct Tools OK | LS("/path/to/dir") |
 | **Pattern Search** | ✅ Direct Tools OK | Grep("pattern", glob="*.py") |
@@ -392,7 +392,7 @@ git_ops_responsibilities:
 3. **SSOT I/O ENFORCEMENT** - Only use `common.core.directory_manager` for ALL file operations (see `common/README.md`)
 4. **CONFIGURATION CENTRALIZATION** - Use `common/config/` for all configurations
 5. **P3 WORKFLOW COMPLIANCE** - Never bypass p3 command system
-6. **QUALITY ASSURANCE** - Test before PR creation (`p3 e2e` mandatory)
+6. **QUALITY ASSURANCE** - Test before PR creation (`p3 test` mandatory)
 7. **AUTOMATIC PR CREATION** - Always create PR after completing significant changes via `agent-coordinator`
 8. **DOCUMENTATION CURRENCY** - Update parent READMEs when modifying functionality  
 9. **ENGLISH-ONLY STANDARD** - All technical content must use English
@@ -480,7 +480,7 @@ ALLOWED_documentation_only:
 
 ### Common Violations to Monitor
 **CRITICAL POLICY VIOLATIONS**:
-- **PR Creation Bypass**: Using `gh pr create` instead of mandatory `p3 create-pr`
+- **PR Creation Bypass**: Using `gh pr create` instead of mandatory `p3 ship`
 - **Agent-Coordinator Bypass**: Using direct tools for complex multi-step tasks
 - **Policy Reading Failure**: Skipping mandatory task initiation protocol checklist
 - **GitHub Issue Avoidance**: Creating .md planning files instead of using GitHub issues
@@ -577,11 +577,11 @@ bash scripts/validate_io_compliance.sh  # Run before PR creation
 ### Command System Compliance  
 **P3 WORKFLOW**: Always use `p3 <command> [scope]` - never direct python scripts
 **TESTING SCOPES**: f2 (dev), m7 (testing), n100 (validation), v3k (production)
-**MANDATORY COMMANDS**: `p3 env-status`, `p3 e2e`, `p3 create-pr`
+**MANDATORY COMMANDS**: `p3 ready`, `p3 test`, `p3 ship`
 **P3 CLI MAINTENANCE**: All P3 CLI modifications must route through infra-ops-agent
 
 ### Quality Assurance Requirements
-**PRE-PR TESTING**: `p3 e2e m7` validation mandatory before PR creation
+**PRE-PR TESTING**: `p3 test m7` validation mandatory before PR creation
 **README CONSISTENCY**: Update parent READMEs when modifying directory functionality
 **ISSUE LINKING**: All changes must link to GitHub issues for traceability
 
