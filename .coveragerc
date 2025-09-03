@@ -1,27 +1,2 @@
-[run]
-source = .
-omit = 
-    .pixi/*
-    */site-packages/*
-    */lib/python*/*
-    test_*
-    tests/*
-    */__pycache__/*
-    setup.py
-    conftest.py
-
-[report]
-exclude_lines =
-    pragma: no cover
-    def __repr__
-    if self.debug:
-    if settings.DEBUG
-    raise AssertionError
-    raise NotImplementedError
-    if 0:
-    if __name__ == .__main__.:
-    class .*\bProtocol\):
-    @(abc\.)?abstractmethod
-
-[html]
-directory = htmlcov
+# MOVED TO common/config/.coveragerc
+# This file will be deleted in the cleanup
