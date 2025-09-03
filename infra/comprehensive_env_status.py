@@ -239,7 +239,7 @@ def main():
         print("✅ All systems ready! You can start development.")
         print("\n🚀 Quick start commands:")
         print("   p3 build run f2        # Quick test build")
-        print("   p3 e2e                 # Full test")
+        print("   p3 test                # Full test")
         print("   p3 neo4j connect       # Connect to database")
     else:
         print("❌ Some components need attention.")

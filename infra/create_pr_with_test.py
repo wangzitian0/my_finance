@@ -284,7 +284,7 @@ def run_end_to_end_test(scope="f2"):
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "fast-build f2",
+            "build_cmd": "build f2",
         },
         "m7": {
             "name": "M7 COMPLETE VALIDATION",
@@ -656,7 +656,9 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
 
     # 4. Handle data directory changes (now part of main repository)
     print("\n🔄 Handling data directory changes...")
-    run_p3_command("commit-data-changes", "Staging data directory changes")
+    # Note: commit-data-changes command removed in P3 simplification
+    # Data changes should be handled manually or through build process
+    print("⚠️  Skipping data commit (command removed in P3 v2)")
 
     # 4.5. Ask about promoting build to release before creating PR
     ask_about_build_release()

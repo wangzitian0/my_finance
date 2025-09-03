@@ -122,8 +122,8 @@ def show_quick_commands():
     print("    p3 build run m7     - Build test dataset")
     print("    pixi run run-job      - Run data collection")
     print("\n  Code Quality:")
-    print("    p3 format       - Format code")
-    print("    p3 lint         - Lint code")
+    print("    p3 check        - Validate code (format + lint + test)")
+    print("    p3 test         - Comprehensive testing")
     print("    p3 test         - Run tests")
 
 

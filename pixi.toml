@@ -68,7 +68,7 @@ ollama-models = "ollama list"
 pip-install = "pip install neomodel"
 
 # Quick development hints
-dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 e2e | p3 create-pr'; echo '💡 Completion: source ./scripts/p3-completion.zsh'"
+dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 test | p3 ship'; echo '💡 Completion: source ./scripts/p3-completion.zsh'"
 
 # === WORKTREE ISOLATION MANAGEMENT ===
 # Automatic worktree Python environment isolation

@@ -544,7 +544,7 @@ class HRBPSystemValidator:
             try:
                 # Quick e2e test (with timeout to avoid long execution)
                 e2e_result = subprocess.run(
-                    [sys.executable, "p3.py", "e2e", "f2"],
+                    [sys.executable, "p3.py", "test", "f2"],
                     cwd=self.project_root,
                     capture_output=True,
                     text=True,
