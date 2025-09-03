@@ -8,6 +8,8 @@
 - [ ] **Read CLAUDE.md completely** (this file) - understand all company policies  
 - [ ] **Read README.md** - understand project architecture and setup
 - [ ] **Identify task complexity** - single-step vs multi-step vs multi-domain
+- [ ] **Think as en engineer** Think about the correct repair method and follow the reuse philosophy of large-scale projects. Avoid bypassing all existing logic and creating a new logic block.
+- [ ] **Respect to the basic process**  Avoid skipping or modifying the basic process when it fails.
 
 ### Phase 2: Tool & Agent Selection ✅  
 - [ ] **Determine tool requirements**:
@@ -591,3 +593,4 @@ bash scripts/validate_io_compliance.sh  # Run before PR creation
 - **Agent-Coordinator**: Workflow orchestration and delegation logic
 - **README.md**: Complete project architecture and technical details  
 - **Directory READMEs**: Component-specific implementation guidance
+
