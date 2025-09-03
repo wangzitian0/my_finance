@@ -7,8 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  # F2 Fast CI testing with DeepSeek 1.5b
-  DCF_FAST_MODE: true
+  # F2 CI testing scope
   CI_FAST_TESTING: true
   CI_SCOPE: "f2"
 
@@ -56,7 +55,6 @@ jobs:
         llm_service:
           provider: "mock_ci"
           model: "deepseek-r1:1.5b"
-          fast_mode: true
         dcf_generation:
           enable_sec_integration: false
           timeout: 30
@@ -69,13 +67,17 @@ jobs:
         echo "Expected: F2 scope (MSFT + NVDA) with DeepSeek 1.5b model"
         
         # Set environment variables for CI testing
-        export DCF_FAST_MODE=true
         export CI_FAST_TESTING=true
         
         # Test basic p3 functionality first
         echo "🔧 Testing basic P3 functionality:"
         pixi run python p3.py help
         pixi run python p3.py version
+        
+        # Create minimal test data for F2 validation
+        mkdir -p build_data/stage_01_daily_delta/yfinance
+        echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/MSFT.json
+        echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/NVDA.json
         
         # Use the same command that works locally with shorter timeout
         echo "🔧 Running: pixi run python p3.py test f2"

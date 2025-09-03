@@ -60,7 +60,7 @@ def main():
         ("pixi run python -m pytest tests/ -v", "Unit tests", False),
         # 5. Quick build validation
         (
-            f"pixi run python ETL/build_dataset.py {scope} --fast-mode",
+            f"pixi run python ETL/build_dataset.py {scope}",
             f"Build validation ({scope})",
             False,
         ),

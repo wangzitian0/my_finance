@@ -40,7 +40,7 @@ config_loader = SimpleConfigLoader()
 from ETL.tests.test_config import DatasetTier
 
 
-def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = False) -> bool:
+def build_dataset(tier_name: str, config_path: str = None) -> bool:
     """
     Build dataset for specified tier using configuration.
 
@@ -152,30 +152,18 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         analysis_start = time.time()
         tracker.start_stage("stage_04_analysis")
 
-        if fast_mode:
-            # Skip complex DCF analysis in fast mode
-            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex DCF analysis...")
-            companies_analyzed = (
-                len(config.get("expected_tickers", [])) if config.get("expected_tickers") else 2
+        try:
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis...")
+            companies_analyzed = run_dcf_analysis(tier, tracker)
+            print(
+                f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies"
             )
             tracker.complete_stage(
-                "stage_04_analysis", partition=date_partition, companies_analyzed=companies_analyzed
+                "stage_04_analysis",
+                partition=date_partition,
+                companies_analyzed=companies_analyzed,
             )
-        else:
-            try:
-                print(
-                    f"⏱️ [{time.strftime('%H:%M:%S')}] Running DCF analysis (fast_mode={fast_mode})..."
-                )
-                companies_analyzed = run_dcf_analysis(tier, tracker, fast_mode=fast_mode)
-                print(
-                    f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis completed, analyzed {companies_analyzed} companies"
-                )
-                tracker.complete_stage(
-                    "stage_04_analysis",
-                    partition=date_partition,
-                    companies_analyzed=companies_analyzed,
-                )
-            except Exception as e:
+        except Exception as e:
                 print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
                 tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
                 tracker.complete_stage(
@@ -190,35 +178,23 @@ def build_dataset(tier_name: str, config_path: str = None, fast_mode: bool = Fal
         reporting_start = time.time()
         tracker.start_stage("stage_05_reporting")
 
-        if fast_mode:
-            # Skip complex report generation in fast mode
+        try:
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Running report generation...")
+            reports_generated = run_report_generation(tier, tracker)
             print(
-                f"⏱️ [{time.strftime('%H:%M:%S')}] Fast mode: Skipping complex report generation..."
+                f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation completed, generated {reports_generated} reports"
             )
-            reports_generated = 1  # Simple placeholder report
             tracker.complete_stage(
-                "stage_05_reporting", partition=date_partition, reports_generated=reports_generated
+                "stage_05_reporting",
+                partition=date_partition,
+                reports_generated=reports_generated,
             )
-        else:
-            try:
-                print(
-                    f"⏱️ [{time.strftime('%H:%M:%S')}] Running report generation (fast_mode={fast_mode})..."
-                )
-                reports_generated = run_report_generation(tier, tracker, fast_mode=fast_mode)
-                print(
-                    f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation completed, generated {reports_generated} reports"
-                )
-                tracker.complete_stage(
-                    "stage_05_reporting",
-                    partition=date_partition,
-                    reports_generated=reports_generated,
-                )
-            except Exception as e:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation failed: {e}")
-                tracker.add_warning("stage_05_reporting", f"Report generation failed: {e}")
-                tracker.complete_stage(
-                    "stage_05_reporting", partition=date_partition, reports_generated=0
-                )
+        except Exception as e:
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] Report generation failed: {e}")
+            tracker.add_warning("stage_05_reporting", f"Report generation failed: {e}")
+            tracker.complete_stage(
+                "stage_05_reporting", partition=date_partition, reports_generated=0
+            )
         print(
             f"⏱️ [{time.strftime('%H:%M:%S')}] Reporting stage completed in {time.time() - reporting_start:.1f}s"
         )
@@ -385,7 +361,7 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
         return False
 
 
-def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool = False) -> int:
+def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
     """Run DCF analysis on available data with SEC document integration"""
     try:
         # Import SEC-integrated DCF analyzer
@@ -419,12 +395,8 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool =
             print(f"   ⚠️  No companies found in {tier.value} configuration")
             return 0
 
-        # Use SEC-integrated DCF generator with fast mode support
-        analyzer = LLMDCFGenerator(config_path=None, fast_mode=fast_mode)
-
-        if fast_mode:
-            print(f"   ⚡ Fast mode enabled for DCF analysis")
-            tracker.log_stage_output("stage_04_analysis", "Fast mode enabled for DCF analysis")
+        # Use SEC-integrated DCF generator
+        analyzer = LLMDCFGenerator(config_path=None)
         companies_analyzed = 0
 
         for ticker in companies.keys():
@@ -452,7 +424,7 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool =
         return 0
 
 
-def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: bool = False) -> int:
+def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
     """Generate final reports"""
     try:
         # Import DCF report generator
@@ -487,14 +459,8 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker, fast_mode: b
         else:
             print(f"   📊 Generating report for {len(tickers)} companies: {', '.join(tickers)}")
 
-        # Use fast_mode parameter passed from caller
-        analyzer = LLMDCFGenerator(config_path=None, fast_mode=fast_mode)
-
-        if fast_mode:
-            print(f"   ⚡ Fast mode report generation enabled")
-            tracker.log_stage_output(
-                "stage_05_reporting", "Fast mode enabled for report generation"
-            )
+        # Initialize DCF generator for report generation
+        analyzer = LLMDCFGenerator(config_path=None)
 
         # Generate DCF reports for each ticker
         reports_generated = 0
@@ -582,14 +548,11 @@ def main():
         help="Dataset tier to build (f2/m7/n100/v3k + legacy aliases)",
     )
     parser.add_argument("--config", help="Optional path to specific config file")
-    parser.add_argument(
-        "--fast-mode", action="store_true", help="Enable fast mode with DeepSeek 1.5b"
-    )
     parser.add_argument("--validate", action="store_true", help="Run validation after build")
 
     args = parser.parse_args()
 
-    success = build_dataset(args.tier, args.config, fast_mode=args.fast_mode)
+    success = build_dataset(args.tier, args.config)
 
     if success and args.validate:
         tier = DatasetTier(args.tier)
