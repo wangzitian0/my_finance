@@ -73,8 +73,8 @@ jobs:
         export CI_FAST_TESTING=true
         
         # Use the same command that works locally
-        echo "🔧 Running: pixi run python p3.py e2e f2"
-        timeout 8m pixi run python p3.py e2e f2 2>&1 | tee f2_test_output.log || {
+        echo "🔧 Running: pixi run python p3.py test f2"
+        timeout 8m pixi run python p3.py test f2 2>&1 | tee f2_test_output.log || {
           echo "❌ F2 fast build test failed or timed out"
           echo "📋 Last 20 lines of output:"
           tail -n 20 f2_test_output.log || echo "No log file found"
