@@ -314,8 +314,9 @@ def run_end_to_end_test(scope="f2"):
     try:
         # Check if we're in CI environment and skip actual build
         import os
-        is_ci = os.environ.get('CI_FAST_TESTING', '').lower() == 'true'
-        
+
+        is_ci = os.environ.get("CI_FAST_TESTING", "").lower() == "true"
+
         if is_ci:
             print(f"🔧 CI Environment detected - skipping actual {scope.upper()} build")
             print("🔍 Will validate using existing data files instead")

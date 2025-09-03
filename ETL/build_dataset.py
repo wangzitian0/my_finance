@@ -164,11 +164,11 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
                 companies_analyzed=companies_analyzed,
             )
         except Exception as e:
-                print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
-                tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
-                tracker.complete_stage(
-                    "stage_04_analysis", partition=date_partition, companies_analyzed=0
-                )
+            print(f"⏱️ [{time.strftime('%H:%M:%S')}] DCF analysis failed: {e}")
+            tracker.add_warning("stage_04_analysis", f"DCF analysis failed: {e}")
+            tracker.complete_stage(
+                "stage_04_analysis", partition=date_partition, companies_analyzed=0
+            )
         print(
             f"⏱️ [{time.strftime('%H:%M:%S')}] Analysis stage completed in {time.time() - analysis_start:.1f}s"
         )
