@@ -15,7 +15,7 @@ env:
 jobs:
   f2-fast-validation:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # Increased from 1 minute to handle F2 builds
+    timeout-minutes: 3  # F2 should complete in under 2 minutes
     
     steps:
     - name: "📥 Checkout Code"
@@ -72,9 +72,14 @@ jobs:
         export DCF_FAST_MODE=true
         export CI_FAST_TESTING=true
         
-        # Use the same command that works locally
+        # Test basic p3 functionality first
+        echo "🔧 Testing basic P3 functionality:"
+        pixi run python p3.py help
+        pixi run python p3.py version
+        
+        # Use the same command that works locally with shorter timeout
         echo "🔧 Running: pixi run python p3.py test f2"
-        timeout 8m pixi run python p3.py test f2 2>&1 | tee f2_test_output.log || {
+        timeout 90s pixi run python p3.py test f2 2>&1 | tee f2_test_output.log || {
           echo "❌ F2 fast build test failed or timed out"
           echo "📋 Last 20 lines of output:"
           tail -n 20 f2_test_output.log || echo "No log file found"
