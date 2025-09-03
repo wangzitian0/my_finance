@@ -5,8 +5,8 @@ Supports test, M7, nasdaq100, and VTI tiers with build tracking.
 """
 
 import logging
-import sys
 import os
+import sys
 
 # Setup common logger for detailed debugging
 sys.path.insert(0, str(os.path.dirname(__file__) + "/../"))
