@@ -98,8 +98,8 @@
           - Username: neo4j / Password: finance123
           
           🛠️  Quick Commands:
-          - Check status: `p3 podman status`
-          - View logs: `p3 neo4j logs`
-          - Connect: `p3 neo4j connect`
+          - Check status: `p3 debug`
+          - View logs: `p3 debug`
+          - Connect: `p3 debug`
           
           ✅ Ready for development!

@@ -584,7 +584,7 @@ p3 debug                        # Check using directory manager
 
 # Data operations (SSOT paths)
 p3 build m7                     # Uses get_data_path internally
-# Note: create-build and release-build removed in P3 v2
+# Note: build-dataset command renamed to build in P3 v2
 # Use p3 build directly for all build operations
 ```
 

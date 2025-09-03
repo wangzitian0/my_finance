@@ -124,9 +124,9 @@ ansible-playbook infra/ansible/stop.yml
 python infra/comprehensive_env_status.py
 
 # Service-specific checks
-p3 podman status
-p3 neo4j logs
+p3 debug
+p3 debug
 
 # Manual service restart
-p3 neo4j restart
+p3 reset
 ```

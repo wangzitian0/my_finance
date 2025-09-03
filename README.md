@@ -142,8 +142,8 @@ p3 ready                # Uses worktree-B's Python environment
 - Branch and hash tracking for full traceability
 
 ```bash
-p3 version-info         # Show current version
-p3 version-increment major  # Manual version bumps
+p3 version              # Show current version
+p3 version major        # Manual version bumps
 ```
 
 ## Troubleshooting
