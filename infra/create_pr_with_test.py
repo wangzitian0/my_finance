@@ -361,7 +361,7 @@ def run_end_to_end_test(scope="f2"):
             return False
 
     # Validate build results
-    build_status = run_p3_command("build-status", "Checking build status")
+    build_status = run_p3_command("debug", "Checking build status")
 
     # Check for expected F2 files (just need basic validation)
     file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
@@ -624,7 +624,7 @@ def create_pr_workflow(title, issue_number, description_file=None, skip_test=Fal
     # 2.9. MANDATORY: Format code before testing
     print("\n🔄 Running code formatting...")
     format_result = run_p3_command(
-        "format", "Formatting Python code with black and isort", check=False
+        "check", "Formatting Python code with black and isort", check=False
     )
 
     # Check if formatting made changes
