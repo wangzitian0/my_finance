@@ -1,13 +1,6 @@
-#!/usr/bin/env python3
-"""
-Unified p3 CLI for my_finance project
-Centralizes all development commands under one consistent interface
-
-This replaces the shell-based p3 script with a proper Python CLI system
-as specified in Issue #111.
-
-Enhanced with Agent Execution Monitoring System (Issue #180).
-Enhanced with Worktree Python Environment Isolation (Issue #XXX).
+# OLD BACKUP FILE - OBSOLETE
+# This file is kept in Git history but should be deleted from working directory
+# The current p3.py is the simplified version that replaced this backup
 """
 import os
 import subprocess

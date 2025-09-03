@@ -8,7 +8,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-VERSION_FILE = Path(__file__).parent / ".p3_version.json"
+VERSION_FILE = Path(__file__).parent / "common" / "config" / ".p3_version.json"
 
 
 def get_git_info():
