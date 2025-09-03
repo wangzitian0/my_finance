@@ -5,43 +5,46 @@ Only 8 essential workflow commands for developer productivity
 """
 
 import os
-import sys
 import subprocess
+import sys
 from pathlib import Path
 from typing import Dict, Optional
 
 # Import version management
 try:
     from p3_version_simple import get_version_string, increment_version
+
     VERSION_ENABLED = True
 except ImportError:
     VERSION_ENABLED = False
+
     def get_version_string():
         return "unknown"
 
+
 class P3CLI:
     """Simplified P3 CLI with only 8 workflow commands."""
-    
+
     def __init__(self):
         self.project_root = self._find_project_root()
         self.commands = self._load_commands()
-    
+
     def _find_project_root(self) -> Path:
         """Find project root (handle worktrees)."""
         current_path = Path(__file__).parent
-        
+
         # In worktree, stay in current directory
         if "worktree" in str(current_path):
             return current_path
-        
+
         # Find main project directory
         while current_path != current_path.parent:
             if (current_path / "pixi.toml").exists():
                 return current_path
             current_path = current_path.parent
-        
+
         return Path(__file__).parent
-    
+
     def _load_commands(self) -> Dict[str, str]:
         """Load the 8 workflow commands."""
         return {
@@ -51,23 +54,23 @@ class P3CLI:
             "check": "python scripts/workflow_check.py",  # Validate code
             "test": "python infra/create_pr_with_test.py --skip-pr-creation --scope",  # Test
             "ship": "python infra/create_pr_with_test.py",  # Create PR
-            "debug": "python infra/workflow_debug.py",  # Diagnose issues
+            "debug": "python scripts/workflow_debug.py",  # Diagnose issues
             "build": "python ETL/build_dataset.py",  # Build dataset
             "version": "version_command",  # Version info
         }
-    
+
     def run(self, command: str, args: list):
         """Execute a P3 command."""
         if command == "help" or command is None:
             self.print_help()
             return
-        
+
         if command not in self.commands:
             print(f"❌ Unknown command: {command}")
             print("Available commands: ready, reset, check, test, ship, debug, build, version")
             print("Use 'p3 help' for details")
             sys.exit(1)
-        
+
         # Handle special commands
         if command == "version":
             if VERSION_ENABLED:
@@ -79,13 +82,13 @@ class P3CLI:
             else:
                 print("Version information not available")
             return
-        
+
         if command == "ship":
             if len(args) < 2:
                 print("❌ Error: title and issue number required")
                 print('Usage: p3 ship "PR Title" ISSUE_NUMBER')
                 sys.exit(1)
-            cmd_string = f"pixi run {self.commands[command]} \"{args[0]}\" {args[1]}"
+            cmd_string = f'pixi run {self.commands[command]} "{args[0]}" {args[1]}'
         elif command == "build":
             scope = args[0] if args else "f2"
             cmd_string = f"pixi run {self.commands[command]} {scope}"
@@ -99,16 +102,17 @@ class P3CLI:
             cmd_string = f"pixi run {self.commands[command]}"
             if args:
                 cmd_string += " " + " ".join(args)
-        
+
         # Execute command
         print(f"🚀 Executing: {cmd_string}")
         os.chdir(self.project_root)
         result = subprocess.run(cmd_string, shell=True)
         sys.exit(result.returncode)
-    
+
     def print_help(self):
         """Print help message."""
-        print("""
+        print(
+            """
 🚀 P3 CLI - Workflow-Oriented Development Commands
 
 DAILY WORKFLOW (4 commands):
@@ -132,22 +136,28 @@ SCOPES:
   v3k   Russell 3000 (production)
 
 Version: {version}
-""".format(version=get_version_string() if VERSION_ENABLED else "unknown"))
+""".format(
+                version=get_version_string() if VERSION_ENABLED else "unknown"
+            )
+        )
+
 
 def main():
     """Main entry point."""
     # Ensure worktree Python isolation
     try:
         from scripts.worktree_isolation import WorktreeIsolationManager
+
         manager = WorktreeIsolationManager()
         manager.auto_switch_python()
     except ImportError:
         pass  # Fallback to current Python
-    
+
     cli = P3CLI()
     command = sys.argv[1] if len(sys.argv) > 1 else None
     args = sys.argv[2:] if len(sys.argv) > 2 else []
     cli.run(command, args)
+
 
 if __name__ == "__main__":
     main()
