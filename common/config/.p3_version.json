@@ -1,8 +1,8 @@
 {
   "major": 1,
   "minor": 0,
-  "patch": 11,
-  "git_hash": "f0bd5249",
-  "git_branch": "hotfix/p3-simple-v2",
-  "last_updated": "2025-09-03T22:38:57.176811"
+  "patch": 12,
+  "git_hash": "80efbd7d",
+  "git_branch": "feature/232-clean-dirty-files",
+  "last_updated": "2025-09-03T23:10:32.705890"
 }
