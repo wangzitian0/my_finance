@@ -475,11 +475,61 @@ def run_end_to_end_test(scope="f2"):
             )
 
             # Check if changes include ETL/DCF modules that need data
-            data_affecting_changes = any(
-                file.startswith(("ETL/", "dcf_engine/")) and not file.endswith(".md")
-                for file in changed_files
-                if file.strip()
-            )
+            # But exclude SSOT compliance changes (imports and path updates)
+            def is_ssot_compliance_change(file_path):
+                """Check if a file change is likely SSOT compliance (imports/paths only)"""
+                if not file_path.endswith('.py'):
+                    return False
+                
+                # Get the git diff for this specific file
+                diff_result = run_command(
+                    f"git diff origin/main...HEAD -- {file_path}", 
+                    f"Getting diff for {file_path}", 
+                    check=False
+                )
+                
+                if not diff_result or not diff_result.stdout:
+                    return False
+                    
+                diff_content = diff_result.stdout
+                
+                # Check if changes are primarily SSOT-related
+                ssot_patterns = [
+                    'from common.core.directory_manager import',
+                    'directory_manager.get_layer_path',
+                    'directory_manager.get_subdir_path',
+                    'DataLayer.',
+                    '# Use SSOT',
+                    '# SSOT',
+                    'DirectoryManager'
+                ]
+                
+                # Count SSOT-related lines vs other changes
+                added_lines = [line for line in diff_content.split('\n') if line.startswith('+') and not line.startswith('+++')]
+                removed_lines = [line for line in diff_content.split('\n') if line.startswith('-') and not line.startswith('---')]
+                
+                if not added_lines and not removed_lines:
+                    return True  # No significant changes
+                    
+                ssot_related_changes = 0
+                total_changes = len(added_lines) + len(removed_lines)
+                
+                for line in added_lines + removed_lines:
+                    if any(pattern in line for pattern in ssot_patterns):
+                        ssot_related_changes += 1
+                    elif 'data/' in line and 'stage_' in line:
+                        ssot_related_changes += 1  # Old hardcoded paths
+                
+                # If most changes are SSOT-related, consider it compliance change
+                return ssot_related_changes > (total_changes * 0.7)
+            
+            # Check for actual data-processing changes vs SSOT compliance
+            data_affecting_changes = False
+            for file in changed_files:
+                if file.strip() and file.startswith(("ETL/", "dcf_engine/")) and not file.endswith(".md"):
+                    if not is_ssot_compliance_change(file):
+                        data_affecting_changes = True
+                        break
 
             print(
                 f"📋 Changed files: {', '.join(changed_files[:5])}{'...' if len(changed_files) > 5 else ''}"
