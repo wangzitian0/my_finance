@@ -477,9 +477,9 @@ class HRBPIntegrationFramework:
                 self.logger.warning("p3 script not found - integration limited")
                 return False
 
-            # Test p3 status command
+            # Test p3 debug command
             result = subprocess.run(
-                [str(p3_script), "status"], capture_output=True, text=True, timeout=30
+                [str(p3_script), "debug"], capture_output=True, text=True, timeout=30
             )
             if result.returncode == 0:
                 self.integration_status["p3_integration"] = True

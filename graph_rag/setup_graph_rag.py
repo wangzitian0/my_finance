@@ -393,7 +393,7 @@ def main():
         print("\nNext steps:")
         print("1. Run the demo: python demo_graph_rag.py")
         print("2. Run tests: python test_graph_rag.py")
-        print("3. Set up Neo4j database using: p3 env setup")
+        print("3. Set up Neo4j database using: p3 ready")
 
     except KeyboardInterrupt:
         print("\n\nSetup interrupted by user.")

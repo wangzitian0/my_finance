@@ -31,16 +31,7 @@ Global infrastructure management focused on environment, deployment, monitoring,
 - **Global Tool Reuse**: ansible/docker shared through pixi tasks
 - **Repository Internal**: No external file dependencies
 
-**Basic Workflow:**
-```bash
-# 1. Enter worktree directory
-cd /path/to/worktree
-
-# 2. Direct usage - automatic environment isolation
-python p3.py version-info          # Auto-switches to worktree Python
-python p3.py build f2              # Uses isolated environment
-python p3.py e2e                   # Uses isolated environment
-```
+**Usage**: See main [README.md P3 Command System](../README.md#p3-command-system) for complete workflow reference.
 
 **Architecture:**
 ```
@@ -72,16 +63,10 @@ python scripts/worktree_isolation.py verify
 
 ## Usage
 
+**P3 Commands**: See [README.md](../README.md) for complete P3 usage guide and [CLAUDE.md](../CLAUDE.md) for workflow decision tree.
+
 ```bash
-# Environment management
-p3 debug          # Check environment status
-p3 reset          # Shutdown and reset environment
-
-# Git workflow (simplified in P3 v2)
-p3 ship "title" ISSUE  # Create PR with validation
-# Note: Most git operations now automated in workflow commands
-
-# Deployment
+# Deployment and infrastructure commands
 ansible-playbook infra/ansible/setup.yml
 kubectl apply -f infra/k8s/
 ```

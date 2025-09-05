@@ -19,16 +19,11 @@ This directory contains **integration and end-to-end tests** for the my_finance 
 
 ## Running Tests
 
-### Complete Test Suite (All Modules)
-```bash
-p3 test                    # All tests (integration + modules)
-p3 test-with-coverage      # With coverage report
-```
+**P3 Commands**: See [README.md](../README.md) for complete P3 test commands and scopes.
 
-### Integration Tests Only
+### Integration Tests
 ```bash
-pytest tests/ -v                # Root integration tests
-p3 test-all-user-cases     # User workflow tests
+pytest tests/ -v                # Root integration tests only
 ```
 
 ### Module-Specific Tests

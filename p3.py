@@ -12,7 +12,7 @@ from typing import Dict, Optional
 
 # Import version management
 try:
-    from p3_version_simple import get_version_string, increment_version
+    from scripts.p3.p3_version_simple import get_version_string, increment_version
 
     VERSION_ENABLED = True
 except ImportError:

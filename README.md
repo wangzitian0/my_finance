@@ -13,12 +13,9 @@ Automated investment analysis using official SEC filings to generate intrinsic v
 git clone https://github.com/wangzitian0/my_finance.git
 cd my_finance
 
-# Global p3 command setup (recommended)
-mkdir -p ~/bin && cat > ~/bin/p3 << 'EOF'
-#!/bin/bash
-cd /path/to/my_finance && python p3.py "$@"
-EOF
-chmod +x ~/bin/p3 && echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
+# Smart P3 setup (automatically follows worktrees)
+# Add your repo root to PATH - replace with your actual repo path
+export PATH="/path/to/your/my_finance:$PATH"
 
 # Workflow-oriented development
 p3 ready            # "I want to start working" - complete environment setup
@@ -27,30 +24,109 @@ p3 test f2          # "Run comprehensive tests" - e2e validation
 p3 ship "Title" 123 # "Publish my work" - create PR with testing
 ```
 
-## Workflow-Oriented P3 Commands
+## P3 Command System
 
-The P3 CLI is designed around **developer workflows**, not technical operations:
+P3 is designed around **human intent**, not technical operations. It answers "what do I want to do?" rather than "how do I run this command?".
 
-### 🚀 Development Workflow
+### Command Overview
+
+<details>
+<summary><b>Daily Workflow Commands</b> - 4 commands for everyday development</summary>
+
+| Intent | Command | What It Does |
+|--------|---------|--------------|
+| **"Start working"** | `p3 ready` | Environment setup, start services, verify everything works |
+| **"Check my code"** | `p3 check [scope]` | Format, lint, basic tests - quick validation |
+| **"Test everything"** | `p3 test [scope]` | Complete end-to-end validation including builds |
+| **"Create PR"** | `p3 ship "title" issue` | Test + PR creation with comprehensive validation |
+
+**Daily Flow Example:**
 ```bash
-# Daily workflow - only 4 commands needed
-p3 ready                    # Start working (env + services + format)
-p3 check [scope]           # Validate code (format + lint + test + build) 
-p3 test [scope]            # Comprehensive testing (e2e + validation)
-p3 ship "title" issue      # Publish work (test + PR + cleanup)
+p3 ready                    # Morning: ensure everything ready
+# ... make changes ...
+p3 check f2                 # Quick validation during development
+p3 test f2                  # Comprehensive testing when ready
+p3 ship "Add feature" 123   # Create PR for issue #123
+```
+</details>
 
-# Emergency troubleshooting  
-p3 debug                   # Diagnose issues (unified status check)
-p3 reset                   # Fix environment (clean restart everything)
+<details>
+<summary><b>Troubleshooting Commands</b> - 2 commands for when things go wrong</summary>
+
+| Intent | Command | What It Does |
+|--------|---------|--------------|
+| **"What's wrong?"** | `p3 debug` | Comprehensive diagnostics and issue identification |
+| **"Fix everything"** | `p3 reset` | Nuclear reset - clean restart of everything (destructive) |
+
+**Troubleshooting Flow:**
+```bash
+p3 debug                    # Diagnose what's wrong
+# Try fixes based on debug output...
+p3 reset                    # Last resort - clean restart
+p3 ready                    # Verify fix worked
+```
+</details>
+
+<details>
+<summary><b>Data & Version Commands</b> - 2 commands for datasets and versioning</summary>
+
+| Intent | Command | What It Does |
+|--------|---------|--------------|
+| **"Build dataset"** | `p3 build [scope]` | Generate financial datasets for analysis and testing |
+| **"Show version"** | `p3 version [level]` | Display version information or increment version |
+
+**Dataset Building:**
+```bash
+p3 build f2                 # Development data (2 companies)
+p3 build m7                 # Testing data (7 companies)
+p3 build n100               # Validation data (100 companies)
+p3 build v3k                # Production data (3000+ companies)
+```
+</details>
+
+### Scope Selection
+
+<details>
+<summary><b>Understanding Scopes</b> - f2, m7, n100, v3k</summary>
+
+Scopes control the amount of data processed, balancing speed vs comprehensiveness:
+
+| Scope | Companies | Duration | Use Case |
+|-------|-----------|----------|----------|
+| **f2** | 2 | 2-5 min | Development testing, quick validation |
+| **m7** | 7 | 10-20 min | Integration testing, pre-release validation |
+| **n100** | 100 | 1-3 hours | Production validation, performance testing |
+| **v3k** | 3000+ | 6-12 hours | Full production datasets |
+
+**Default Recommendations:**
+- **Development**: Always use `f2` for development work
+- **Testing**: Use `f2` for PR validation, `m7` for release prep  
+- **Production**: Use `n100` for staging, `v3k` for production deployment
+</details>
+
+### Advanced Usage
+
+<details>
+<summary><b>Worktree Support</b> - Isolated environments per feature branch</summary>
+
+Each worktree has completely isolated environments with automatic switching:
+
+```bash
+# Worktree A - feature X
+cd /path/to/worktree-A
+p3 ready                    # Uses worktree-A's Python environment
+
+# Worktree B - feature Y  
+cd /path/to/worktree-B
+p3 ready                    # Uses worktree-B's Python environment
 ```
 
-### 🎯 Design Philosophy
-- **User Intent**: Commands match what developers think ("I want to start working")
-- **Smart Automation**: Intelligent combinations reduce decision fatigue  
-- **Error Tolerance**: Graceful handling of common issues
-- **Zero Configuration**: Auto-detection and setup
-
-**Scopes**: `f2` (2 cos, dev), `m7` (7 cos, testing), `n100` (validation), `v3k` (production)
+**Benefits**: 
+- No package conflicts between branches
+- Automatic environment switching
+- Parallel development on multiple features
+- Isolated dependency management
+</details>
 
 ## Architecture
 
@@ -86,10 +162,10 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 ```
 
 **Workflow Automation**:
-- **Worktree Isolation**: Complete Python environment isolation per worktree
-- **Auto-switching**: P3 automatically uses correct Python environment
-- **Zero-config**: No manual environment setup required
-- **Intelligent Testing**: Smart test suite selection based on scope
+- Complete Python environment isolation per worktree
+- Automatic environment switching and zero-config setup  
+- Intelligent testing with smart scope selection
+- Unified development workflow through P3 commands
 
 ## Environment Management
 
@@ -106,65 +182,16 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 ## Development Workflows
 
-**Typical Daily Flow**:
-```bash
-cd /path/to/worktree
-p3 ready                # Ensure everything ready
-# ... make code changes ...
-p3 check f2             # Quick validation  
-p3 test f2              # Comprehensive testing
-p3 ship "Add feature" 123  # Create PR
-```
+**Standard Development Process**:
+1. **Environment Setup**: Automated infrastructure and dependency management
+2. **Code Validation**: Continuous format/lint/test feedback during development  
+3. **Integration Testing**: Comprehensive validation before publishing
+4. **Pull Request Creation**: Automated PR workflow with testing and deployment
 
-**Emergency Fix Flow**:
-```bash
-p3 debug                # Diagnose what's wrong
-p3 reset                # Clean restart everything
-p3 ready                # Verify fix worked
-```
-
-**Multiple Worktree Support**:
-```bash
-# Each worktree completely isolated
-cd /path/to/worktree-A
-p3 ready                # Uses worktree-A's Python environment
-
-cd /path/to/worktree-B  
-p3 ready                # Uses worktree-B's Python environment
-```
-
-## Version Management
-
-**P3 Version System**:
-- Automatic version tracking with git integration
-- Semantic versioning (major.minor.patch)
-- Automatic patch increment on git changes
-- Branch and hash tracking for full traceability
-
-```bash
-p3 version              # Show current version
-p3 version major        # Manual version bumps
-```
-
-## Troubleshooting
-
-**Common Issues**:
-```bash
-# Environment problems
-p3 debug                # Diagnose issues  
-p3 reset                # Clean restart
-
-# Package/dependency issues  
-p3 ready                # Auto-fix most problems
-
-# Python environment confusion
-# P3 automatically switches to correct environment
-```
-
-**Worktree-Specific Issues**:
-- P3 auto-detects worktree vs main repository
-- Automatic Python environment isolation 
-- No manual configuration required
+**Cross-Feature Development**:
+- Independent worktree environments prevent conflicts
+- Automated environment switching per directory
+- Parallel development with isolated dependency management
 
 ## Maintenance & Governance
 

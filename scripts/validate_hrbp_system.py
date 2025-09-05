@@ -538,7 +538,7 @@ class HRBPSystemValidator:
         }
 
         try:
-            # Test p3 e2e integration with HRBP
+            # Test p3 test integration with HRBP
             e2e_start_time = time.time()
 
             try:
@@ -553,35 +553,35 @@ class HRBPSystemValidator:
 
                 # Should start executing (may timeout but shouldn't immediately fail)
                 if e2e_result.returncode in [0, 124, -9]:  # success, timeout, or killed
-                    results["details"].append("p3 e2e command starts executing with HRBP")
+                    results["details"].append("p3 test command starts executing with HRBP")
                 else:
-                    results["errors"].append("p3 e2e command fails to start with HRBP")
+                    results["errors"].append("p3 test command fails to start with HRBP")
 
             except subprocess.TimeoutExpired:
-                results["details"].append("p3 e2e starts executing (timed out as expected)")
+                results["details"].append("p3 test starts executing (timed out as expected)")
             except Exception as e:
-                results["errors"].append(f"p3 e2e test failed: {str(e)}")
+                results["errors"].append(f"p3 test test failed: {str(e)}")
 
-            # Test HRBP command execution
+            # Test P3 command execution (simplified 8-command system)
             try:
-                status_result = subprocess.run(
-                    [sys.executable, "p3.py", "hrbp-status"],
+                version_result = subprocess.run(
+                    [sys.executable, "p3.py", "version"],
                     cwd=self.project_root,
                     capture_output=True,
                     text=True,
                     timeout=10,
                 )
 
-                # Command should be recognized (may fail due to missing environment)
-                if status_result.returncode != 127:  # Not "command not found"
-                    results["details"].append("p3 hrbp-status command recognized")
+                # Command should be recognized and execute successfully
+                if version_result.returncode == 0:
+                    results["details"].append("p3 version command working correctly")
                 else:
-                    results["errors"].append("p3 hrbp-status command not recognized")
+                    results["errors"].append("p3 version command failed")
 
             except subprocess.TimeoutExpired:
-                results["details"].append("p3 hrbp-status starts executing")
+                results["details"].append("p3 version starts executing")
             except Exception as e:
-                results["errors"].append(f"p3 hrbp-status test failed: {str(e)}")
+                results["errors"].append(f"p3 version test failed: {str(e)}")
 
         except Exception as e:
             results["status"] = "error"
@@ -602,7 +602,7 @@ class HRBPSystemValidator:
             # Test invalid HRBP command
             try:
                 invalid_result = subprocess.run(
-                    [sys.executable, "p3.py", "hrbp-invalid-command"],
+                    [sys.executable, "p3.py", "invalid-command"],
                     cwd=self.project_root,
                     capture_output=True,
                     text=True,

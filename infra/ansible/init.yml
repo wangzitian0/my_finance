@@ -54,7 +54,7 @@
           Next Steps:
           1. Activate the environment: `pixi shell`
           2. Run key tasks:
-             - `p3 status` (check data status)
+             - `p3 debug` (check data status)
              - `p3 debug` (check containers)
              - `p3 debug` (check Neo4j logs)
              - `p3 build run m7` (build a small test dataset)

@@ -75,7 +75,7 @@ def main():
     print("=" * 50)
     if success_count == total_steps:
         print("🎉 READY - Everything is set up for development!")
-        print("💡 You can now use: p3 build, p3 e2e, p3 create-pr")
+        print("💡 You can now use: p3 build, p3 test, p3 ship")
         sys.exit(0)
     elif success_count >= total_steps - 1:
         print("⚠️  READY - Mostly ready, minor issues detected")

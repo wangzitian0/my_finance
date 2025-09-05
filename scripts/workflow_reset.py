@@ -86,7 +86,7 @@ def main():
     if success_count >= total_steps - 1:  # Allow 1 failure
         print("🎉 RESET COMPLETE - Environment has been reset successfully!")
         print("💡 You can now use 'p3 ready' to verify everything is working")
-        print("💡 Then proceed with: p3 build, p3 e2e, p3 create-pr")
+        print("💡 Then proceed with: p3 build, p3 test, p3 ship")
         sys.exit(0)
     else:
         print("❌ RESET FAILED - Some issues could not be resolved automatically")

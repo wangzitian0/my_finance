@@ -60,6 +60,6 @@ coordination_log_YYYYMMDD.json
 ## Integration with P3 Workflow
 
 This local documentation system integrates with:
-- **p3 env-status**: Can include agent performance in status reports
-- **p3 e2e**: May generate local performance logs during testing
+- **p3 debug**: Can include agent performance in status reports
+- **p3 test**: May generate local performance logs during testing
 - **Common Configuration**: Uses SSOT principles from `common/config/`

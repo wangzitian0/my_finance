@@ -208,7 +208,7 @@ def run_p3_command(cmd, description, timeout=None, check=True):
     """Run a P3 command with proper worktree handling"""
     p3_base = get_p3_command()
     if isinstance(cmd, str):
-        # Parse command like "./p3 status" into ["status"]
+        # Parse command like "./p3 debug" into ["debug"]
         parts = cmd.split()
         if parts[0] in ["./p3", "p3", "python3"]:
             # Remove the p3 prefix since we're adding our own
@@ -1032,7 +1032,7 @@ def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
     try:
         pr_number_int = int(pr_number)
         print(f"📝 PR #{pr_number_int} will be tracked for HRBP automation when merged to main")
-        print("💡 Use 'p3 hrbp-record-pr {pr_number}' to manually record after merge")
+        print("💡 Use GitHub interface to manage PR after merge")
     except (ValueError, TypeError):
         print("⚠️  Could not parse PR number for HRBP tracking")
 

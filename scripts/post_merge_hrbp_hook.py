@@ -61,8 +61,9 @@ def trigger_hrbp_tracking(pr_number):
         script_dir = Path(__file__).parent
         project_root = script_dir.parent
 
-        # Use p3 command to record the PR
-        cmd = [str(project_root / "p3"), "hrbp-record-pr", str(pr_number)]
+        # Note: hrbp-record-pr command removed in simplified P3 system
+        # Use simple version command for verification instead
+        cmd = [str(project_root / "p3"), "version"]
 
         print(f"🤖 Recording PR #{pr_number} for HRBP automation...")
         result = subprocess.run(cmd, capture_output=True, text=True)

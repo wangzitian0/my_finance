@@ -33,50 +33,66 @@ class TestP3Commands:
 
     def test_p3_help(self):
         """Test p3 help/usage output."""
-        returncode, stdout, stderr = run_p3_command(["--help"])
-        # Help should return 0 or show usage information
-        assert returncode == 0 or "Usage:" in stdout or "p3" in stdout
+        returncode, stdout, stderr = run_p3_command(["help"])
+        # Help should return 0 and show usage information
+        assert returncode == 0 and ("P3 CLI" in stdout or "DAILY WORKFLOW" in stdout)
 
     def test_p3_no_args(self):
         """Test p3 without arguments shows help."""
         returncode, stdout, stderr = run_p3_command([])
-        # Should show help or usage information
-        assert "p3" in stdout or "Usage:" in stdout or returncode != 0
+        # Should show help information
+        assert returncode == 0 and ("P3 CLI" in stdout or "DAILY WORKFLOW" in stdout)
 
-    def test_e2e_scope_validation(self):
-        """Test e2e command accepts different scopes."""
-        # Test valid scopes (with timeout to avoid long execution)
+    def test_check_scope_validation(self):
+        """Test check command accepts different scopes."""
         valid_scopes = ["f2", "m7", "n100", "v3k"]
 
         for scope in valid_scopes:
-            returncode, stdout, stderr = run_p3_command(["e2e", scope], timeout=5)
+            returncode, stdout, stderr = run_p3_command(["check", scope], timeout=5)
             # Command should start executing (may timeout, but should recognize scope)
-            assert returncode == -1 or "end-to-end" in stdout.lower() or "running" in stdout.lower()
+            assert returncode == -1 or "executing" in stdout.lower() or "pixi run" in stdout.lower()
+
+    def test_test_scope_validation(self):
+        """Test test command accepts different scopes."""
+        valid_scopes = ["f2", "m7", "n100", "v3k"]
+
+        for scope in valid_scopes:
+            returncode, stdout, stderr = run_p3_command(["test", scope], timeout=5)
+            # Command should start executing (may timeout, but should recognize scope)
+            assert returncode == -1 or "executing" in stdout.lower() or "pixi run" in stdout.lower()
 
     def test_build_scope_validation(self):
         """Test build command accepts different scopes."""
         valid_scopes = ["f2", "m7", "n100", "v3k"]
 
         for scope in valid_scopes:
-            returncode, stdout, stderr = run_p3_command(["build", "run", scope], timeout=5)
+            returncode, stdout, stderr = run_p3_command(["build", scope], timeout=5)
             # Command should start executing (may timeout, but should recognize scope)
-            assert returncode == -1 or scope in stdout or "build" in stdout.lower()
+            assert returncode == -1 or "executing" in stdout.lower() or "pixi run" in stdout.lower()
 
-    def test_basic_commands_exist(self):
-        """Test that basic commands are recognized."""
-        basic_commands = [
-            ["format"],
-            ["lint"],
+    def test_simplified_commands_exist(self):
+        """Test that the 8 simplified commands are recognized."""
+        simple_commands = [
+            ["ready"],
+            ["reset"],
+            ["check"],
             ["test"],
-            ["status"],
-            ["env", "status"],
-            ["build-status"],
+            ["debug"],
+            ["build"],
+            ["version"],
         ]
 
-        for cmd in basic_commands:
+        for cmd in simple_commands:
             returncode, stdout, stderr = run_p3_command(cmd, timeout=10)
             # Commands should be recognized (even if they fail due to missing dependencies)
             assert returncode != 127, f"Command {cmd} not recognized"
+
+    def test_ship_command_validation(self):
+        """Test ship command parameter validation."""
+        # Ship command should require title and issue number
+        returncode, stdout, stderr = run_p3_command(["ship"], timeout=5)
+        # Should show error about missing parameters
+        assert returncode != 0 and ("title" in stderr.lower() or "issue" in stderr.lower() or "error" in stderr.lower())
 
     def test_invalid_command(self):
         """Test invalid command handling."""
@@ -85,77 +101,39 @@ class TestP3Commands:
         assert returncode != 0 or "invalid" in stderr.lower() or "unknown" in stderr.lower()
 
 
-class TestP3CommandParsing:
-    """Test p3 command parsing without execution."""
+class TestP3VersionManagement:
+    """Test P3 version management functionality."""
 
-    @pytest.fixture
-    def p3_script_content(self):
-        """Load p3 script content for parsing tests."""
-        p3_path = Path(__file__).parent.parent / "p3"
-        return p3_path.read_text()
+    def test_version_command(self):
+        """Test version command output."""
+        returncode, stdout, stderr = run_p3_command(["version"])
+        # Version should return successfully with version info
+        assert returncode == 0 and ("P3 Version:" in stdout or "Version:" in stdout or "." in stdout)
 
-    def test_all_commands_have_functions(self, p3_script_content):
-        """Test that all commands in the case statement have corresponding functions."""
-        import re
-
-        # Extract commands from the main case statement
-        case_match = re.search(r"case\s+\$1\s+in\s*\n(.*?)\nesac", p3_script_content, re.DOTALL)
-        assert case_match, "Could not find main case statement"
-
-        case_content = case_match.group(1)
-
-        # Find all command patterns
-        command_patterns = re.findall(r"^\s*([a-z-]+)(?:\|[a-z-]+)*\)", case_content, re.MULTILINE)
-
-        # Check that each command has a corresponding function
-        for command in command_patterns:
-            if command in ["*", "help"]:  # Skip default cases
-                continue
-
-            func_name = f"cmd_{command.replace('-', '_')}"
-            assert (
-                func_name in p3_script_content
-            ), f"Missing function {func_name} for command {command}"
-
-    def test_e2e_function_has_scope_support(self, p3_script_content):
-        """Test that e2e function supports scope parameters."""
-        assert "cmd_e2e()" in p3_script_content
-        assert 'scope="${1:-m7}"' in p3_script_content
-        assert 'case "$scope" in' in p3_script_content
-
-    def test_scope_validation_patterns(self, p3_script_content):
-        """Test that scope validation patterns are present."""
-        expected_scopes = ["f2", "m7", "n100", "v3k"]
-
-        for scope in expected_scopes:
-            assert scope in p3_script_content, f"Scope {scope} not found in script"
-
-    def test_command_structure_consistency(self, p3_script_content):
-        """Test that command structure follows consistent patterns."""
-        # All cmd_ functions should exist
-        functions = re.findall(r"^cmd_([a-z_]+)\(\)", p3_script_content, re.MULTILINE)
-        assert len(functions) > 5, "Should have multiple command functions"
-
-        # Functions should have basic structure
-        for func in functions[:5]:  # Test first 5 functions
-            func_content = re.search(
-                f"cmd_{func}\\(\\).*?^}}", p3_script_content, re.MULTILINE | re.DOTALL
-            )
-            assert func_content, f"Function cmd_{func} should have proper structure"
+    def test_version_parsing(self):
+        """Test version output contains expected format."""
+        returncode, stdout, stderr = run_p3_command(["version"])
+        if returncode == 0:
+            # Should contain version number format (x.y.z)
+            import re
+            version_pattern = r'\d+\.\d+\.\d+'
+            assert re.search(version_pattern, stdout), "Version output should contain semantic version number"
 
 
 if __name__ == "__main__":
     # Run basic smoke test
-    print("🧪 Running p3 command smoke tests...")
+    print("🧪 Running simplified P3 command tests...")
 
     # Test basic command recognition
-    returncode, stdout, stderr = run_p3_command(["--help"])
-    print(f"Help command: {'✅ PASS' if returncode == 0 else '❌ FAIL'}")
+    returncode, stdout, stderr = run_p3_command(["help"])
+    print(f"Help command: {'✅ PASS' if returncode == 0 and 'P3 CLI' in stdout else '❌ FAIL'}")
 
-    # Test e2e scope recognition
-    returncode, stdout, stderr = run_p3_command(["e2e", "f2"], timeout=3)
-    print(
-        f"E2E scope recognition: {'✅ PASS' if 'f2' in stdout or 'end-to-end' in stdout.lower() else '❌ FAIL'}"
-    )
+    # Test version command
+    returncode, stdout, stderr = run_p3_command(["version"], timeout=3)
+    print(f"Version command: {'✅ PASS' if returncode == 0 and '.' in stdout else '❌ FAIL'}")
 
-    print("✅ Basic p3 command tests completed")
+    # Test build scope recognition  
+    returncode, stdout, stderr = run_p3_command(["build", "f2"], timeout=3)
+    print(f"Build scope recognition: {'✅ PASS' if 'executing' in stdout.lower() else '❌ FAIL'}")
+
+    print("✅ Simplified P3 command tests completed")

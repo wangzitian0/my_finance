@@ -57,10 +57,10 @@ def check_pre_push_hook(hooks_dir):
         with open(pre_push, "r") as f:
             content = f.read()
 
-        if "DIRECT GIT PUSH BLOCKED" in content and "p3 create-pr" in content:
+        if "DIRECT GIT PUSH BLOCKED" in content and "p3 ship" in content:
             return True, "Hook properly configured"
         else:
-            return False, "Hook exists but not configured for create-pr enforcement"
+            return False, "Hook exists but not configured for p3 ship enforcement"
     except Exception as e:
         return False, f"Could not read hook file: {e}"
 
@@ -95,12 +95,12 @@ def main():
     if all_good:
         print("🎉 All git hooks properly installed!")
         print("🔒 Repository is protected from direct git push")
-        print("📖 Use 'p3 create-pr \"Title\" ISSUE_NUM' for all changes")
+        print("📖 Use 'p3 ship \"Title\" ISSUE_NUM' for all changes")
         return 0
     else:
         print("⚠️  Git hooks need attention!")
         print("🔧 Run 'p3 install-hooks' to fix hook installation")
-        print("💡 This will install pre-push hook to enforce create-pr workflow")
+        print("💡 This will install pre-push hook to enforce ship workflow")
         return 1
 
 

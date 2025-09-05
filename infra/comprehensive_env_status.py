@@ -39,7 +39,7 @@ def check_pixi() -> Dict:
         "name": "Pixi Package Manager",
         "status": "✅ Ready" if success else "❌ Not Available",
         "details": output if success else "Install: https://pixi.sh/",
-        "commands": ["pixi shell", "p3 env setup"] if not success else [],
+        "commands": ["pixi shell", "p3 ready"] if not success else [],
     }
     return status
 
@@ -53,7 +53,7 @@ def check_podman() -> Dict:
             "name": "Podman Container Engine",
             "status": "❌ Not Installed",
             "details": "Install with: brew install podman",
-            "commands": ["brew install podman", "p3 env setup"],
+            "commands": ["brew install podman", "p3 ready"],
         }
 
     # Check machine status
@@ -75,11 +75,11 @@ def check_podman() -> Dict:
     elif never_started:
         status_text = "❌ Machine Never Started (vfkit issue)"
         details = f"Version: {version}, Machine exists but failed to start"
-        commands = ["p3 env start"]
+        commands = ["p3 ready"]
     else:
         status_text = "❌ Machine Not Running"
         details = f"Version: {version}, Machine: Stopped"
-        commands = ["p3 env start"]
+        commands = ["p3 ready"]
 
     return {
         "name": "Podman Container Engine",
@@ -101,7 +101,7 @@ def check_neo4j() -> Dict:
             "name": "Neo4j Database",
             "status": "❌ Container Not Found",
             "details": "Neo4j container not deployed",
-            "commands": ["p3 env start"],
+            "commands": ["p3 ready"],
         }
 
     is_running = "Up" in container_info
@@ -116,11 +116,11 @@ def check_neo4j() -> Dict:
         else:
             status_text = "⚠️ Starting Up"
             details = f"Container running but not yet responding"
-            commands = ["p3 neo4j logs"]
+            commands = ["p3 debug"]
     else:
         status_text = "❌ Container Stopped"
         details = f"Status: {container_info}"
-        commands = ["p3 neo4j start"]
+        commands = ["p3 ready"]
 
     return {
         "name": "Neo4j Database",
@@ -141,7 +141,7 @@ def check_data_directory() -> Dict:
                 "name": "Data Directory",
                 "status": "❌ Missing",
                 "details": f"Data directory not found at {data_root}",
-                "commands": ["p3 env setup"],
+                "commands": ["p3 ready"],
             }
 
         # Check if legacy data symlink exists (should not)
@@ -162,7 +162,7 @@ def check_data_directory() -> Dict:
                 "name": "Data Directory",
                 "status": "❌ Missing",
                 "details": "build_data/ directory not found",
-                "commands": ["p3 env setup"],
+                "commands": ["p3 ready"],
             }
 
     return {
@@ -240,7 +240,7 @@ def main():
         print("\n🚀 Quick start commands:")
         print("   p3 build run f2        # Quick test build")
         print("   p3 test                # Full test")
-        print("   p3 neo4j connect       # Connect to database")
+        print("   p3 debug               # Check database status")
     else:
         print("❌ Some components need attention.")
         print("\n🔧 Recommended fix sequence:")
@@ -248,7 +248,7 @@ def main():
             print(f"   {i}. {cmd}")
 
         print("\n💡 Or run the complete setup:")
-        print("   p3 env setup")
+        print("   p3 ready               # Setup environment")
 
     return 0 if all_ready else 1
 
