@@ -3,6 +3,8 @@
 
 import json
 import logging
+
+# Use environment variable for secure database configuration
 import os
 import sys
 from datetime import datetime, timedelta
@@ -12,7 +14,11 @@ import yaml
 # Import config from neomodel and set database connection
 from neomodel import config
 
-config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
+db_host = os.getenv("NEO4J_HOST", "localhost")
+db_port = os.getenv("NEO4J_PORT", "7687")
+db_user = os.getenv("NEO4J_USER", "neo4j")
+db_password = os.getenv("NEO4J_PASSWORD", "")
+config.DATABASE_URL = f"bolt://{db_user}:{db_password}@{db_host}:{db_port}"
 
 # Use common module from project root directory, not in ETL directory
 from common.core.directory_manager import DataLayer, directory_manager
@@ -172,7 +178,7 @@ def import_all_json_files(source, tickers, logger):
             else:
                 ticker_dir = os.path.join(STAGE_01_EXTRACT_DIR, source, ticker)
         if not os.path.isdir(ticker_dir):
-            logger.warning(f"目录不存在：{ticker_dir}")
+            logger.warning(f"Directory does not exist: {ticker_dir}")
             continue
         files = [f for f in os.listdir(ticker_dir) if f.endswith(".json")]
         total_files += len(files)
