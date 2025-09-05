@@ -26,6 +26,7 @@ _common_dir = Path(__file__).parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
 
+from core.config_manager import config_manager
 from directory_manager import directory_manager
 from execution_monitor import ExecutionMonitor, ExecutionResult
 
@@ -105,7 +106,10 @@ class ClaudeHookManager:
         self.config_path = config_path or (
             directory_manager.get_config_path() / "monitoring" / "claude_hooks.json"
         )
-        self.config = self._load_config()
+        try:
+            self.config = config_manager.get_config("claude_hooks")
+        except Exception:
+            self.config = self._get_default_config()
 
         # Setup logging directory following SSOT principles
         self.logs_directory = directory_manager.get_logs_path() / "claude_hooks"
@@ -132,21 +136,7 @@ class ClaudeHookManager:
 
         self.logger.info("Claude Hook Manager initialized successfully")
 
-    def _load_config(self) -> Dict[str, Any]:
-        """Load hook configuration."""
-        if not self.config_path.exists():
-            self.logger.warning(f"Config file not found: {self.config_path}")
-            return self._default_config()
-
-        try:
-            with open(self.config_path) as f:
-                config = json.load(f)
-            return config
-        except Exception as e:
-            self.logger.error(f"Failed to load config: {e}")
-            return self._default_config()
-
-    def _default_config(self) -> Dict[str, Any]:
+    def _get_default_config(self) -> Dict[str, Any]:
         """Default configuration when config file is missing."""
         return {
             "version": "1.0.0",

@@ -1,0 +1,77 @@
+---
+# roles/python_environment_check.yml
+# Python environment validation and setup for P3
+
+- name: Check if pixi is installed
+  command: pixi --version
+  register: pixi_version_check
+  failed_when: false
+  changed_when: false
+
+- name: Display pixi version
+  debug:
+    msg: "Pixi version: {{ pixi_version_check.stdout }}"
+  when: pixi_version_check.rc == 0
+
+- name: Warn if pixi is not installed
+  debug:
+    msg: |
+      ⚠️ WARNING: Pixi is not installed or not in PATH
+      Install pixi from: https://pixi.sh/
+  when: pixi_version_check.rc != 0
+
+- name: Check Python environment
+  command: pixi run python --version
+  register: python_version_check
+  failed_when: false
+  changed_when: false
+
+- name: Display Python version
+  debug:
+    msg: "Python version: {{ python_version_check.stdout }}"
+  when: python_version_check.rc == 0
+
+- name: Install pixi environment if needed
+  command: pixi install
+  register: pixi_install
+  when: python_version_check.rc != 0
+
+- name: Re-check Python after installation
+  command: pixi run python --version
+  register: python_recheck
+  when: pixi_install is defined
+
+- name: Test critical Python packages
+  command: >
+    pixi run python -c "
+    import pandas, numpy, requests, neo4j, yaml;
+    print('All critical packages available')
+    "
+  register: packages_check
+  failed_when: false
+  changed_when: false
+
+- name: Display package check results
+  debug:
+    msg: "{{ packages_check.stdout if packages_check.rc == 0 else 'Some packages missing - will install' }}"
+
+- name: Install missing packages if needed
+  command: pixi install
+  when: packages_check.rc != 0
+  register: package_reinstall
+
+- name: Final Python environment validation
+  command: >
+    pixi run python -c "
+    import sys, pandas, numpy;
+    print(f'Python {sys.version_info.major}.{sys.version_info.minor} with pandas {pandas.__version__} ready')
+    "
+  register: final_python_check
+
+- name: Python environment setup complete
+  debug:
+    msg: |
+      ✅ Python Environment Ready
+      {{ final_python_check.stdout }}
+      • Pixi: {{ pixi_version_check.stdout if pixi_version_check.rc == 0 else 'Not available' }}
+      • Core packages: Verified

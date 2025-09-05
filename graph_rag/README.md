@@ -96,7 +96,7 @@ This system implements a graph database-based Retrieval-Augmented Generation (Gr
 pixi run install-extras
 
 # 2. Run system tests
-p3 test-graph-rag
+p3 test f2  # Graph RAG included in standard testing
 
 # 3. Run interactive demo
 pixi run demo-graph-rag

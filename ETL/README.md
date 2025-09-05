@@ -36,12 +36,11 @@ Raw Data Sources → Spider Collection → Parser Processing → ETL Pipeline �
 
 ## Usage
 
-```bash
-# Data collection
-python run_job.py common/config/job_yfinance_m7.yml
+**P3 Commands**: See [README.md](../README.md) for complete P3 usage guide.
 
-# Via pixi commands
-p3 build run m7
+```bash
+# Data collection via configuration files
+python run_job.py common/config/job_yfinance_m7.yml
 ```
 
 ### SEC Edgar Spider (`sec_edgar_spider.py`)
@@ -180,18 +179,14 @@ Both spiders integrate with:
 
 ## Usage Commands
 
-```bash
-# Build M7 dataset
-p3 build run m7
+**P3 Commands**: See [README.md](../README.md) for complete P3 build and debug commands.
 
-# Run specific job
+```bash
+# Run specific job directly
 python run_job.py <config_file.yml>
 
-# Check build status
-p3 debug  # Shows build status and environment
-
 # View latest build
-ls data/build/
+ls build_data/
 ```
 
 ---

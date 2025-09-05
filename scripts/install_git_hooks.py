@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Install Git Hooks - Mandatory create-pr Script Enforcement
-Installs pre-push hook to enforce p3 create-pr workflow usage
+Install Git Hooks - Mandatory ship Script Enforcement
+Installs pre-push hook to enforce p3 ship workflow usage
 """
 
 import os
@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 def install_pre_push_hook():
-    """Install pre-push hook to enforce create-pr workflow"""
+    """Install pre-push hook to enforce ship workflow"""
 
     # Find the main .git directory (handle worktrees)
     project_root = Path(__file__).parent.parent
@@ -46,8 +46,8 @@ def install_pre_push_hook():
     # Pre-push hook content
     hook_content = """#!/bin/bash
 #
-# Git Pre-Push Hook - Mandatory create-pr Script Usage
-# This hook prevents direct git push and enforces the use of p3 create-pr workflow
+# Git Pre-Push Hook - Mandatory ship Script Usage
+# This hook prevents direct git push and enforces the use of p3 ship workflow
 #
 
 # Colors for output
@@ -60,9 +60,9 @@ NC='\\033[0m' # No Color
 # Get current branch
 current_branch=$(git branch --show-current)
 
-# Check if this push is coming from p3 create-pr script
+# Check if this push is coming from p3 ship script
 if [ -n "$P3_CREATE_PR_PUSH" ]; then
-    echo -e "${GREEN}✅ Automated p3 create-pr push authorized${NC}"
+    echo -e "${GREEN}✅ Automated p3 ship push authorized${NC}"
     exit 0
 fi
 
@@ -87,7 +87,7 @@ echo -e "${YELLOW}❌ Direct git push commands are not permitted${NC}"
 echo
 echo -e "${BLUE}🔧 REQUIRED WORKFLOW:${NC}"
 echo -e "${GREEN}   1. git rebase main                     # Rebase latest main${NC}"
-echo -e "${GREEN}   2. p3 create-pr \\"Title\\" ISSUE_NUM      # Auto: F2 test + markers + push + PR${NC}"
+echo -e "${GREEN}   2. p3 ship \\"Title\\" ISSUE_NUM      # Auto: F2 test + markers + push + PR${NC}"
 echo
 echo -e "${BLUE}💡 WHY THIS RESTRICTION EXISTS:${NC}"
 echo -e "   • Ensures all code passes automated testing before merge"
@@ -99,7 +99,7 @@ echo -e "${YELLOW}⚡ QUICK SOLUTION:${NC}"
 echo -e "${GREEN}   # Cancel this push and use the proper workflow:${NC}"
 echo -e "${GREEN}   git reset --soft HEAD~1                # Undo last commit (keep changes)${NC}"
 echo -e "${GREEN}   git rebase main                        # Rebase latest main${NC}"
-echo -e "${GREEN}   p3 create-pr \\"Brief description\\" ISSUE_NUM # Auto: test + markers + push + PR${NC}"
+echo -e "${GREEN}   p3 ship \\"Brief description\\" ISSUE_NUM # Auto: test + markers + push + PR${NC}"
 echo
 
 # Double confirmation bypass (for emergency use only)
@@ -126,7 +126,7 @@ echo
 # Second confirmation
 read -p "❓ Do you REALLY want to bypass all safety checks? [type 'BYPASS' to proceed]: " second_confirm
 if [ "$second_confirm" != "BYPASS" ]; then
-    echo -e "${GREEN}✅ Push cancelled. Please use p3 create-pr workflow.${NC}"
+    echo -e "${GREEN}✅ Push cancelled. Please use p3 ship workflow.${NC}"
     exit 1
 fi
 
@@ -174,7 +174,7 @@ exit 0
 
 def main():
     """Main installation function"""
-    print("🔧 Installing Git Pre-Push Hook - Mandatory create-pr Enforcement")
+    print("🔧 Installing Git Pre-Push Hook - Mandatory ship Enforcement")
     print("=" * 70)
 
     success = install_pre_push_hook()
@@ -183,11 +183,11 @@ def main():
         print("\n🎉 Git hooks installed successfully!")
         print("\n📋 What this does:")
         print("   • Blocks all direct 'git push' commands")
-        print("   • Requires use of 'p3 create-pr' workflow")
+        print("   • Requires use of 'p3 ship' workflow")
         print("   • Allows emergency bypass with double confirmation")
         print("   • Logs all bypass attempts for audit")
         print("\n🔒 Repository is now protected from direct pushes")
-        print("📖 Use 'p3 create-pr \"Title\" ISSUE_NUM' for all changes")
+        print("📖 Use 'p3 ship \"Title\" ISSUE_NUM' for all changes")
     else:
         print("\n❌ Failed to install git hooks")
         return 1

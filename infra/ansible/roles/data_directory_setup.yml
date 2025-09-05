@@ -1,0 +1,95 @@
+---
+# roles/data_directory_setup.yml
+# Data directory structure setup for P3 build system
+
+- name: Check if build_data directory exists
+  stat:
+    path: "{{ repo_dir }}/build_data"
+  register: build_data_dir
+
+- name: Create build_data directory structure
+  file:
+    path: "{{ repo_dir }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - build_data
+    - build_data/stage_00_raw
+    - build_data/stage_01_daily_delta
+    - build_data/stage_02_embeddings
+    - build_data/stage_03_graph
+    - build_data/stage_04_query_results
+    - build_data/logs
+    - build_data/release
+  when: not build_data_dir.stat.exists
+
+- name: Create stage subdirectories
+  file:
+    path: "{{ repo_dir }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - build_data/stage_00_raw/yfinance
+    - build_data/stage_00_raw/sec_filings
+    - build_data/stage_01_daily_delta/yfinance
+    - build_data/stage_01_daily_delta/sec_filings
+
+- name: Check for legacy data symlink
+  stat:
+    path: "{{ repo_dir }}/data"
+  register: legacy_data_link
+
+- name: Remove legacy data symlink if present
+  file:
+    path: "{{ repo_dir }}/data"
+    state: absent
+  when: legacy_data_link.stat.exists and legacy_data_link.stat.islnk
+
+- name: Create .gitkeep files for empty directories
+  file:
+    path: "{{ repo_dir }}/{{ item }}/.gitkeep"
+    state: touch
+    mode: '0644'
+  loop:
+    - build_data/stage_00_raw/yfinance
+    - build_data/stage_00_raw/sec_filings
+    - build_data/stage_01_daily_delta/yfinance
+    - build_data/stage_01_daily_delta/sec_filings
+    - build_data/stage_02_embeddings
+    - build_data/stage_03_graph
+    - build_data/logs
+    - build_data/release
+
+- name: Set up log directory structure
+  file:
+    path: "{{ repo_dir }}/build_data/logs/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - archive
+    - debug
+
+- name: Create build manifest template
+  template:
+    src: build_manifest_template.md.j2
+    dest: "{{ repo_dir }}/build_data/BUILD_MANIFEST_TEMPLATE.md"
+    mode: '0644'
+  failed_when: false  # Template may not exist
+
+- name: Display data directory structure
+  command: find {{ repo_dir }}/build_data -type d | head -20
+  register: data_structure
+  changed_when: false
+
+- name: Data directory setup complete
+  debug:
+    msg: |
+      ✅ Data Directory Structure Ready
+      
+      Directory structure created:
+      {{ data_structure.stdout_lines | join('\n') }}
+      
+      • Legacy data/ symlink removed (if existed)
+      • All stage directories initialized
+      • Log directories configured
+      • .gitkeep files added for version control

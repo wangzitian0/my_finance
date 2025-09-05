@@ -118,7 +118,7 @@ def show_quick_commands():
     print("    p3 reset    - Reset everything")
     print("    p3 debug   - This status check")
     print("\n  Development:")
-    print("    p3 status       - Check data status")
+    print("    p3 debug        - Check data status")
     print("    p3 build run m7     - Build test dataset")
     print("    pixi run run-job      - Run data collection")
     print("\n  Code Quality:")

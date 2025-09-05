@@ -113,8 +113,8 @@ def main():
         print("=" * 60)
         print("✅ Post-merge hook installed for automatic PR tracking")
         print("📝 PRs merged to main will automatically trigger HRBP cycle checks")
-        print("💡 Use 'p3 hrbp-status' to check current cycle status")
-        print("🔧 Use 'p3 hrbp-manual-trigger' for emergency HRBP cycles")
+        print("💡 Use 'p3 debug' to check system status")
+        print("🔧 Use 'p3 version' to check P3 system version")
     else:
         print("\n❌ HRBP Git Hooks Installation Failed!")
 

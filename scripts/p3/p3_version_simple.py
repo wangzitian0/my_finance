@@ -8,22 +8,14 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-VERSION_FILE = Path(__file__).parent / "common" / "config" / ".p3_version.json"
+VERSION_FILE = Path(__file__).parent / ".p3_version.json"
 
 
 def get_git_info():
-    """Get current git hash and branch."""
-    try:
-        hash_cmd = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True)
-        branch_cmd = subprocess.run(
-            ["git", "branch", "--show-current"], capture_output=True, text=True
-        )
-        return (
-            hash_cmd.stdout.strip()[:8] if hash_cmd.returncode == 0 else "unknown",
-            branch_cmd.stdout.strip() if branch_cmd.returncode == 0 else "unknown",
-        )
-    except:
-        return "unknown", "unknown"
+    """Get current git hash and branch - disabled for worktree compatibility."""
+    # TEMPORARY FIX: Disable git commands in worktree environment to prevent hanging
+    # These git commands cause infinite hanging in worktree setup
+    return "worktree", "feature/unit-test-for-ssot"
 
 
 def load_version():
@@ -46,12 +38,8 @@ def get_version_string():
     data = load_version()
     git_hash, git_branch = get_git_info()
 
-    # Auto-increment patch if git changed
-    if git_hash != data.get("git_hash") and git_hash != "unknown":
-        data["patch"] += 1
-        data["git_hash"] = git_hash
-        data["git_branch"] = git_branch
-        save_version(data)
+    # Manual version update only - no auto-increment to prevent commit loops
+    # Use 'p3 version increment' to manually update version when needed
 
     version = f"{data['major']}.{data['minor']}.{data['patch']}"
     if git_branch != "main":

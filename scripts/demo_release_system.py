@@ -115,9 +115,9 @@ def show_release_commands():
         ),
         ("", ""),
         ("Via p3 (when integrated)", ""),
-        ("Create Release", "p3 create-release --name 'my_release'"),
-        ("List Releases", "p3 list-releases"),
-        ("Validate Release", "p3 validate-release 'release_id'"),
+        ("Build Dataset", "p3 build f2"),
+        ("Check System", "p3 debug"),
+        ("Show Version", "p3 version"),
     ]
 
     for description, command in commands:

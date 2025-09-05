@@ -10,16 +10,16 @@ import sys
 from pathlib import Path
 from typing import Dict, Optional
 
-# Import version management
-try:
-    from p3_version_simple import get_version_string, increment_version
+# Import version management - DISABLED to fix worktree hanging issue
+# try:
+#     from scripts.p3.p3_version_simple import get_version_string, increment_version
+#     VERSION_ENABLED = True
+# except ImportError:
+VERSION_ENABLED = False
 
-    VERSION_ENABLED = True
-except ImportError:
-    VERSION_ENABLED = False
 
-    def get_version_string():
-        return "unknown"
+def get_version_string():
+    return "1.0.33-worktree-fix"
 
 
 class P3CLI:

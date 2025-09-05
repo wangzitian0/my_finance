@@ -46,8 +46,8 @@ hrbp-agent/
 - Follows SSOT principles from `common/config/`
 
 ### With P3 Workflow
-- `p3 env-status` may include agent performance metrics
-- `p3 e2e` testing generates performance logs here
+- `p3 debug` may include agent performance metrics
+- `p3 test` generates performance logs here
 - Integration with quality reporting system
 
 ### With GitHub Issues

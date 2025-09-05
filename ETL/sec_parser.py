@@ -2,6 +2,8 @@ import re
 
 from bs4 import BeautifulSoup
 
+from common.core.directory_manager import DataLayer, directory_manager
+
 
 def preprocess_sec_content(content):
     """
@@ -63,7 +65,9 @@ def parse_sec_file(file_path):
 if __name__ == "__main__":
     from parser.rcts import sec_text_doc_splitter
 
-    file_path = "data/sec-edgar/0000320193/10k/0000320193/10-K/0000320193-24-000123.txt"
+    # Use SSOT DirectoryManager to get SEC Edgar data path
+    sec_edgar_path = directory_manager.get_subdir_path(DataLayer.RAW_DATA, "sec-edgar")
+    file_path = sec_edgar_path / "0000320193/10k/0000320193/10-K/0000320193-24-000123.txt"
     documents = parse_sec_file(file_path)
 
     # Suppose you have a long SEC filing text in the variable sec_text

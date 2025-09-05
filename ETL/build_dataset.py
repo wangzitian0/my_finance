@@ -10,13 +10,14 @@ import sys
 
 # Setup common logger for detailed debugging
 sys.path.insert(0, str(os.path.dirname(__file__) + "/../"))
+# Create debug logger with both console and file output using SSOT paths
+from common.core.directory_manager import directory_manager
 from common.utils.logging_setup import setup_logger
 
-# Create debug logger with both console and file output
 logger = setup_logger(
     name="build_dataset",
     level=logging.DEBUG,
-    log_dir="build_data/logs/debug",
+    log_dir=str(directory_manager.get_logs_path() / "debug"),
     build_id="f2_build_debug",
     use_file_handler=True,
     use_console_handler=True,
@@ -61,36 +62,26 @@ except Exception as e:
     else:
         logger.error(f"Numpy import error: {e}")
 
-logger.info("Creating SimpleConfigLoader...")
+logger.info("Initializing SSOT configuration management...")
 
+from common.core.config_manager import config_manager
+from common.core.directory_manager import DataLayer, directory_manager
 
-class SimpleConfigLoader:
-    def load_dataset_config(self, tier_name):
-        # Minimal config for F2 (MSFT + NVDA) with disabled data sources for dev mode
-        return {
-            "companies": {"MSFT": {"name": "Microsoft"}, "NVDA": {"name": "NVIDIA"}},
-            "tickers": ["MSFT", "NVDA"],
-            "timeout_seconds": 30,
-            "data_sources": {
-                "yfinance": {"enabled": False},  # Disabled in dev mode
-                "sec_edgar": {"enabled": False},  # Disabled in dev mode
-            },
-        }
-
-    def get_config_path(self, config_name):
-        return Path("common/config") / f"{config_name}.yml"
-
-    def _load_config_file(self, config_name):
-        return {}
-
-
-config_loader = SimpleConfigLoader()
-logger.info("SimpleConfigLoader instance created")
-
-logger.info("About to import DatasetTier from ETL.tests.test_config...")
+# Use SSOT configuration management - ONLY config_manager globally
 from ETL.tests.test_config import DatasetTier
 
 logger.info("DatasetTier imported successfully")
+
+
+def tier_to_config_name(tier: DatasetTier) -> str:
+    """Convert DatasetTier to SSOT config name"""
+    mapping = {
+        DatasetTier.F2: "fast_2",
+        DatasetTier.M7: "magnificent_7",
+        DatasetTier.N100: "nasdaq_100",
+        DatasetTier.V3K: "vti_3500",
+    }
+    return mapping.get(tier, "fast_2")
 
 
 def build_dataset(tier_name: str, config_path: str = None) -> bool:
@@ -124,7 +115,15 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info(f"DatasetTier created: {tier}")
 
         logger.info("About to load dataset config...")
-        config = config_loader.load_dataset_config(tier.value)
+        # Use SSOT config_manager only
+        try:
+            logger.info(f"Config manager available: {config_manager}")
+            config_name = tier_to_config_name(tier)
+            logger.info(f"Config name: {config_name}")
+            config = config_manager.get_config(config_name)
+        except Exception as e:
+            logger.error(f"Config manager access error: {e}")
+            return False
         logger.info(f"Config loaded: {config}")
 
         print(f"⏱️ [{time.strftime('%H:%M:%S')}] Config loaded in {time.time() - start_time:.1f}s")
@@ -132,8 +131,9 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 
         logger.info("About to print build info...")
         print(f"🔧 Building {tier.value} dataset...")
-        print(f"   Configuration: list_{tier.value}.yml")
-        print(f"   Expected tickers: {config.get('ticker_count', 'unknown')}")
+
+        print(f"   Configuration: list_{config_name}.yml")
+        print(f"   Expected tickers: {len(config.get('companies', {}))}")
         logger.info("Build info printed")
 
         # Initialize build tracker
@@ -334,20 +334,34 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
             return True
 
         stage_config_name = yfinance_config.get("stage_config", "stage_00_original_yfinance.yml")
-        yfinance_config_path = config_loader.get_config_path(stage_config_name)
+        # Use SSOT config manager for stage config
+        if "stage_00_original_yfinance" in stage_config_name:
+            yfinance_stage_config = config_manager.get_config("stage_00_original_yfinance")
+        else:
+            yfinance_stage_config = {}
 
-        # Extract tickers using UnifiedConfigLoader for compatibility
-        from common.unified_config_loader import UnifiedConfigLoader
+        # Extract tickers using SSOT configuration
+        config_name = tier_to_config_name(tier)
+        companies_config = config_manager.get_config(config_name).get("companies", {})
 
-        unified_loader = UnifiedConfigLoader()
-        tickers = unified_loader.get_company_tickers(tier)
+        # Handle both dict (ticker as key) and list formats
+        if isinstance(companies_config, dict):
+            tickers = list(companies_config.keys())
+        elif isinstance(companies_config, list):
+            tickers = [
+                company.get("ticker", company.get("symbol", "")) for company in companies_config
+            ]
+        else:
+            tickers = []
 
         print(f"   📈 Collecting yfinance data...")
         print(f"   Tickers: {len(tickers)}")
         print(f"   Config: {stage_config_name}")
 
         # Create temporary config file with tickers added
-        with open(yfinance_config_path, "r") as f:
+        # Use SSOT stage config path
+        stage_config_path = directory_manager.get_config_path() / stage_config_name
+        with open(stage_config_path, "r") as f:
             yf_config = yaml.safe_load(f)
 
         yf_config["tickers"] = tickers
@@ -379,12 +393,11 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
 
 def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTracker) -> bool:
-    """Build SEC Edgar data using orthogonal configuration system"""
+    """Build SEC Edgar data using SSOT configuration system"""
     try:
-        from common.orthogonal_config import orthogonal_config
         from ETL.sec_edgar_spider import run_job
 
-        # Check if SEC Edgar is enabled in data sources (orthogonal config)
+        # Check if SEC Edgar is enabled in data sources (SSOT config)
         data_sources = yaml_config.get("data_sources", {})
         sec_config = data_sources.get("sec_edgar", {})
 
@@ -392,24 +405,25 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             print(f"   ⚪ SEC Edgar disabled in {tier.value} configuration")
             return True
 
-        print(f"   📊 Collecting SEC Edgar data using orthogonal config...")
+        print(f"   📊 Collecting SEC Edgar data using SSOT config...")
 
-        # Build runtime configuration using orthogonal system
-        runtime_config = orthogonal_config.build_runtime_config(
-            stock_list=tier.value, data_sources=["sec_edgar"], scenario="development"
-        )
+        # Use SSOT config_manager for SEC configuration
+        config_name = tier_to_config_name(tier)
+        tier_config = config_manager.get_config(config_name)
 
-        # Extract SEC configuration from runtime config
-        sec_runtime_config = runtime_config["data_sources"]["sec_edgar"]
-        companies = runtime_config["stock_list"]["companies"]
+        # Get SEC stage configuration
+        sec_stage_config = config_manager.get_config("stage_00_original_sec_edgar")
 
-        print(f"   📄 Using orthogonal SEC config with {len(companies)} companies")
+        # Extract companies from tier config
+        companies = tier_config.get("companies", {})
+
+        print(f"   📄 Using SSOT SEC config with {len(companies)} companies")
 
         tracker.log_stage_output(
-            "stage_01_extract", f"Starting orthogonal SEC Edgar collection for {tier.value}"
+            "stage_01_extract", f"Starting SSOT SEC Edgar collection for {tier.value}"
         )
 
-        # Create temporary config for SEC spider (preserving orthogonal approach)
+        # Create temporary config for SEC spider using SSOT configuration
         import tempfile
 
         import yaml
@@ -424,15 +438,13 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             print(f"   ⚠️ No CIK numbers found for {tier.value} companies")
             return True
 
-        # Build SEC config from orthogonal data
+        # Build SEC config from SSOT configuration
         sec_spider_config = {
             "tickers": ciks,
             "count": 8,
             "file_types": ["10K", "10Q", "8K"],
-            "email": sec_runtime_config["config"].get(
-                "user_agent", "ZitianSG (wangzitian0@gmail.com)"
-            ),
-            "collection": sec_runtime_config["rate_limits"],
+            "email": sec_stage_config.get("user_agent", "ZitianSG (wangzitian0@gmail.com)"),
+            "collection": sec_stage_config.get("rate_limits", {}),
         }
 
         # Write temporary config file
@@ -440,9 +452,9 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             yaml.dump(sec_spider_config, temp_f, default_flow_style=False)
             temp_config_path = temp_f.name
 
-        print(f"   📋 Generated SEC config from orthogonal system: {len(ciks)} CIKs")
+        print(f"   📋 Generated SEC config from SSOT system: {len(ciks)} CIKs")
 
-        # Run SEC Edgar spider with orthogonal config
+        # Run SEC Edgar spider with SSOT config
         run_job(temp_config_path)
 
         # Clean up temp file
@@ -450,12 +462,12 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
         os.unlink(temp_config_path)
 
-        tracker.log_stage_output("stage_01_extract", "Orthogonal SEC Edgar collection completed")
+        tracker.log_stage_output("stage_01_extract", "SSOT SEC Edgar collection completed")
         return True
 
     except Exception as e:
-        print(f"   ❌ Orthogonal SEC Edgar collection failed: {e}")
-        tracker.log_stage_output("stage_01_extract", f"Orthogonal SEC Edgar error: {e}")
+        print(f"   ❌ SSOT SEC Edgar collection failed: {e}")
+        tracker.log_stage_output("stage_01_extract", f"SSOT SEC Edgar error: {e}")
         return False
 
 
@@ -471,7 +483,9 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         from ETL.semantic_retrieval import SemanticRetriever
 
         # Try to create a minimal semantic retriever to test dependencies
-        test_path = PathCheck("build_data/stage_03_load/embeddings")
+        # Use SSOT path for embeddings check
+        embeddings_path = directory_manager.get_subdir_path(DataLayer.PROCESSED_DATA, "embeddings")
+        test_path = PathCheck(str(embeddings_path))
         if not test_path.exists():
             raise RuntimeError("Embeddings directory not found - semantic retrieval unavailable")
 
@@ -497,14 +511,23 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         )
 
         # Get companies list based on tier configuration
-        yaml_config = config_loader.load_dataset_config(tier.value)
+        # Use SSOT configuration management
+        config_name = tier_to_config_name(tier)
+        yaml_config = config_manager.get_config(config_name)
 
         # Extract company tickers from configuration
         companies = {}
         if tier.value == "f2" and "reference_config" in yaml_config:
             # For F2, load companies from reference config and filter by selected_companies
             ref_config_name = yaml_config["reference_config"]
-            ref_config = config_loader._load_config_file(ref_config_name)
+            # Load reference config using SSOT system
+            if "list_magnificent_7.yml" in ref_config_name:
+                ref_config = config_manager.get_config("magnificent_7")
+            elif "list_nasdaq_100.yml" in ref_config_name:
+                ref_config = config_manager.get_config("nasdaq_100")
+            else:
+                logger.warning(f"Unknown reference config: {ref_config_name}")
+                ref_config = {}
 
             selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
             all_companies = ref_config.get("companies", {})
@@ -559,7 +582,9 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
         from ETL.semantic_retrieval import SemanticRetriever
 
         # Try to create a minimal semantic retriever to test dependencies
-        test_path = PathCheck("build_data/stage_03_load/embeddings")
+        # Use SSOT path for embeddings check
+        embeddings_path = directory_manager.get_subdir_path(DataLayer.PROCESSED_DATA, "embeddings")
+        test_path = PathCheck(str(embeddings_path))
         if not test_path.exists():
             raise RuntimeError("Embeddings directory not found - semantic retrieval unavailable")
 
@@ -585,14 +610,23 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
         )
 
         # Get companies list based on tier configuration
-        yaml_config = config_loader.load_dataset_config(tier.value)
+        # Use SSOT configuration management
+        config_name = tier_to_config_name(tier)
+        yaml_config = config_manager.get_config(config_name)
 
         # Extract company tickers from configuration
         tickers = []
         if tier.value == "f2" and "reference_config" in yaml_config:
             # For F2, load companies from reference config and filter by selected_companies
             ref_config_name = yaml_config["reference_config"]
-            ref_config = config_loader._load_config_file(ref_config_name)
+            # Load reference config using SSOT system
+            if "list_magnificent_7.yml" in ref_config_name:
+                ref_config = config_manager.get_config("magnificent_7")
+            elif "list_nasdaq_100.yml" in ref_config_name:
+                ref_config = config_manager.get_config("nasdaq_100")
+            else:
+                logger.warning(f"Unknown reference config: {ref_config_name}")
+                return False  # Exit if config not found
 
             selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
             all_companies = ref_config.get("companies", {})
@@ -645,17 +679,17 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
 def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
     """Validate the built dataset"""
     try:
-        yaml_config = config_loader.load_dataset_config(tier.value)
+        # Use SSOT configuration management
+        config_name = tier_to_config_name(tier)
+        yaml_config = config_manager.get_config(config_name)
         expected_counts = yaml_config.get("expected_files", {})
 
-        # Get data paths from directory manager
-        from common.directory_manager import DataLayer, get_data_path
-
+        # Use SSOT directory manager for paths
+        extract_path = directory_manager.get_layer_path(DataLayer.RAW_DATA)
         paths = {
-            "yfinance": get_data_path(DataLayer.RAW_DATA, "yfinance"),
-            "sec_edgar": get_data_path(DataLayer.RAW_DATA, "sec_edgar"),
+            "yfinance": directory_manager.get_subdir_path(DataLayer.RAW_DATA, "yfinance"),
+            "sec_edgar": directory_manager.get_subdir_path(DataLayer.RAW_DATA, "sec_edgar"),
         }
-        extract_path = paths["extract"]
 
         # Count actual files in latest partition
         actual_files = 0

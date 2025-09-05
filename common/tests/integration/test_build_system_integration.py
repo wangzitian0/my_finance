@@ -72,7 +72,7 @@ def main():
     
     command = sys.argv[1]
     
-    if command == "env-status":
+    if command == "debug":
         print("Environment Status: OK")
     elif command == "build":
         scope = sys.argv[2] if len(sys.argv) > 2 else "f2"
@@ -192,9 +192,9 @@ if __name__ == "__main__":
 
             sys.path.insert(0, str(build_project_structure))
 
-            # Test env-status command
+            # Test debug command
             result = subprocess.run(
-                ["python3", "./p3", "env-status"], capture_output=True, text=True, timeout=30
+                ["python3", "./p3", "debug"], capture_output=True, text=True, timeout=30
             )
             assert result.returncode == 0
             assert "Environment Status: OK" in result.stdout

@@ -228,7 +228,10 @@ class BuildTracker:
 
     def log_stage_output(self, stage: str, log_content: str) -> None:
         """Save stage execution logs"""
-        log_file = self.build_path / "stage_logs" / f"{stage}.log"
+        log_dir = self.build_path / "stage_logs"
+        log_dir.mkdir(parents=True, exist_ok=True)
+
+        log_file = log_dir / f"{stage}.log"
 
         with open(log_file, "a", encoding="utf-8") as f:
             f.write(f"[{datetime.now().isoformat()}]\n")
@@ -333,12 +336,16 @@ class BuildTracker:
 
     def _save_manifest(self) -> None:
         """Save the build manifest to file"""
+        self.build_path.mkdir(parents=True, exist_ok=True)
+
         manifest_path = self.build_path / "BUILD_MANIFEST.json"
         with open(manifest_path, "w", encoding="utf-8") as f:
             json.dump(self.manifest, f, indent=2)
 
     def _generate_build_report(self) -> None:
         """Generate human-readable build report"""
+        self.build_path.mkdir(parents=True, exist_ok=True)
+
         report_path = self.build_path / "BUILD_MANIFEST.md"
 
         with open(report_path, "w", encoding="utf-8") as f:

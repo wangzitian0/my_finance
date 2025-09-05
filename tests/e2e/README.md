@@ -12,30 +12,13 @@ End-to-end testing for:
 
 ## Test Levels
 
-### F2 Testing (Fast Development)
-- **Scope**: 2 companies (MSFT, NVDA)
-- **Purpose**: Fast development testing
-- **Duration**: ~1-2 minutes
-- **Usage**: `p3 test f2`
+**P3 Test Commands**: See [README.md](../../README.md) for complete P3 test commands and [CLAUDE.md](../../CLAUDE.md) for workflow guidance.
 
-### M7 Testing (Standard)
-- **Scope**: Magnificent 7 companies
-- **Purpose**: Standard PR validation
-- **Duration**: ~5-10 minutes  
-- **Usage**: `p3 test` or `p3 test m7`
-- **Required**: Before all PR creation
-
-### N100 Testing (Validation)
-- **Scope**: NASDAQ 100 companies
-- **Purpose**: Extended validation testing
-- **Duration**: ~30-60 minutes
-- **Usage**: `p3 test n100`
-
-### V3K Testing (Production)
-- **Scope**: VTI 3500+ companies  
-- **Purpose**: Production-scale validation
-- **Duration**: Several hours
-- **Usage**: `p3 test v3k`
+### Test Scopes
+- **F2**: 2 companies, ~1-2 minutes (development)
+- **M7**: 7 companies, ~5-10 minutes (PR validation, required)  
+- **N100**: 100 companies, ~30-60 minutes (validation)
+- **V3K**: 3500+ companies, several hours (production)
 
 ## Test Framework
 
@@ -59,19 +42,7 @@ End-to-end testing for:
 
 ## Test Commands
 
-```bash
-# Standard M7 end-to-end test (required for PRs)
-p3 test
-
-# Fast development testing
-p3 test f2
-
-# Extended validation testing  
-p3 test n100
-
-# Production-scale testing
-p3 test v3k
-```
+**P3 Test Commands**: See [README.md](../../README.md) for complete command usage.
 
 ## Test Artifacts
 
@@ -83,7 +54,7 @@ Tests generate artifacts in:
 ## CI Integration
 
 End-to-end tests are integrated with:
-- PR creation workflows (`p3 ship`)
+- PR creation workflows (see [README.md](../../README.md) for P3 commands)
 - GitHub Actions validation
 - Build system validation
 - Release promotion workflows

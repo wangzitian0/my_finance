@@ -3,7 +3,7 @@ import logging
 import os
 from datetime import datetime
 
-from .config import load_common_config
+from .core.config_manager import config_manager
 from .snowflake import Snowflake
 
 
@@ -41,8 +41,12 @@ def setup_logger(job_id, date_str=None):
     # Import here to avoid circular dependency
     from .core.directory_manager import directory_manager
 
-    config = load_common_config()
-    log_conf = config.get("logging", {})
+    # Use SSOT config manager - fallback to defaults if no logging config
+    try:
+        directory_config = config_manager.get_config("directory_structure")
+        log_conf = directory_config.get("logging", {})
+    except Exception:
+        log_conf = {}
     log_level = getattr(logging, log_conf.get("level", "INFO"))
     file_level = getattr(logging, log_conf.get("file_level", "INFO"))
     log_format = log_conf.get(

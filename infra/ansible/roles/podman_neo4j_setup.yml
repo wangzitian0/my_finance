@@ -1,0 +1,96 @@
+---
+# roles/podman_neo4j_setup.yml
+# Enhanced Neo4j container setup for P3 Ready integration
+
+- name: Check if Podman is available
+  command: podman --version
+  register: podman_version_check
+  failed_when: false
+  changed_when: false
+
+- name: Fail if Podman is not available
+  fail:
+    msg: "Podman is not installed or not in PATH. Install with: brew install podman"
+  when: podman_version_check.rc != 0
+
+- name: Check Podman machine status
+  command: podman machine list
+  register: podman_machine_status
+  failed_when: false
+  changed_when: false
+
+- name: Start Podman machine if not running
+  command: podman machine start
+  when: "'Running' not in podman_machine_status.stdout"
+  register: podman_machine_start
+  failed_when: false
+
+- name: Wait for Podman machine to be ready
+  command: podman info
+  register: podman_connectivity
+  retries: 6
+  delay: 5
+  until: podman_connectivity.rc == 0
+  when: podman_machine_start is defined
+
+- name: Check if Neo4j container exists
+  command: podman ps -a --filter name=neo4j-finance --format "{{ "{{" }}.Names{{ "}}" }}"
+  register: neo4j_container_check
+  changed_when: false
+
+- name: Remove existing Neo4j container if present (for clean setup)
+  command: podman rm -f neo4j-finance
+  when: "'neo4j-finance' in neo4j_container_check.stdout"
+  failed_when: false
+
+- name: Create Neo4j container with proper configuration
+  command: >
+    podman run -d 
+    --name neo4j-finance 
+    -p 7474:7474 
+    -p 7687:7687 
+    -e NEO4J_AUTH=neo4j/password 
+    -e NEO4J_PLUGINS=["apoc"]
+    -e NEO4J_dbms_memory_heap_initial__size=1G
+    -e NEO4J_dbms_memory_heap_max__size=2G
+    -e NEO4J_dbms_memory_pagecache_size=1G
+    --restart always 
+    neo4j:latest
+  register: neo4j_container_create
+
+- name: Wait for Neo4j container to start
+  wait_for:
+    port: 7474
+    host: localhost
+    delay: 10
+    timeout: 120
+  ignore_errors: true
+
+- name: Check Neo4j web interface accessibility
+  uri:
+    url: http://localhost:7474
+    method: GET
+    status_code: 200
+  register: neo4j_web_check
+  retries: 12
+  delay: 5
+  until: neo4j_web_check.status == 200
+  failed_when: false
+
+- name: Display Neo4j setup results
+  debug:
+    msg: |
+      Neo4j container setup complete:
+      - Container Name: neo4j-finance
+      - Web Interface: http://localhost:7474
+      - Database Port: 7687
+      - Default Auth: neo4j/password
+      - Status: {{ 'Ready' if neo4j_web_check.status == 200 else 'Starting (may take a few more minutes)' }}
+
+- name: Show container status
+  command: podman ps --filter name=neo4j-finance --format "table {{ "{{" }}.Names{{ "}}" }}\t{{ "{{" }}.Status{{ "}}" }}\t{{ "{{" }}.Ports{{ "}}" }}"
+  register: final_container_status
+
+- name: Display final container status
+  debug:
+    var: final_container_status.stdout_lines

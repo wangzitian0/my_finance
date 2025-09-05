@@ -48,7 +48,13 @@ class HRBPIntegrationFramework:
         if config_path is None:
             config_path = self.config_dir / "hrbp_automation.yml"
 
-        self.config = self._load_config(config_path)
+        # Use SSOT config_manager instead of loading directly
+        from .core.config_manager import config_manager
+
+        try:
+            self.config = config_manager.get_config("hrbp_automation")
+        except Exception:
+            self.config = self._get_default_config()
 
         # Setup logging
         self._setup_logging()
@@ -477,9 +483,9 @@ class HRBPIntegrationFramework:
                 self.logger.warning("p3 script not found - integration limited")
                 return False
 
-            # Test p3 status command
+            # Test p3 debug command
             result = subprocess.run(
-                [str(p3_script), "status"], capture_output=True, text=True, timeout=30
+                [str(p3_script), "debug"], capture_output=True, text=True, timeout=30
             )
             if result.returncode == 0:
                 self.integration_status["p3_integration"] = True
