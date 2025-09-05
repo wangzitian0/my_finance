@@ -401,10 +401,10 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
         # Use SSOT config_manager for SEC configuration
         config_name = tier_to_config_name(tier)
         tier_config = config_manager.get_config(config_name)
-        
+
         # Get SEC stage configuration
         sec_stage_config = config_manager.get_config("stage_00_original_sec_edgar")
-        
+
         # Extract companies from tier config
         companies = tier_config.get("companies", {})
 
@@ -416,9 +416,10 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
 
         # Create temporary config for SEC spider using SSOT configuration
         import tempfile
+
         import yaml
 
-        # Extract CIK numbers from companies  
+        # Extract CIK numbers from companies
         ciks = []
         for ticker, company_data in companies.items():
             if "cik" in company_data:
@@ -433,9 +434,7 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             "tickers": ciks,
             "count": 8,
             "file_types": ["10K", "10Q", "8K"],
-            "email": sec_stage_config.get(
-                "user_agent", "ZitianSG (wangzitian0@gmail.com)"
-            ),
+            "email": sec_stage_config.get("user_agent", "ZitianSG (wangzitian0@gmail.com)"),
             "collection": sec_stage_config.get("rate_limits", {}),
         }
 

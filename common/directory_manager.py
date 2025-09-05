@@ -82,6 +82,7 @@ class DirectoryManager:
         """Load directory configuration using SSOT config_manager"""
         try:
             from .core.config_manager import config_manager
+
             self.config = config_manager.get_config("directory_structure")
         except Exception:
             # Fallback to default config if core config_manager fails

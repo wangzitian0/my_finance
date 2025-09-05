@@ -76,6 +76,7 @@ class HRBPPRTracker:
 
         # Use SSOT config_manager instead of loading directly
         from .core.config_manager import config_manager
+
         try:
             self.config = config_manager.get_config("hrbp_automation")
         except Exception:
