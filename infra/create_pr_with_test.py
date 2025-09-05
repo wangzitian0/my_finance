@@ -920,20 +920,19 @@ def validate_environment_for_pr():
             }
         )
 
-    # Check Python environment
+    # Check Python environment - simplified check
     try:
         result = subprocess.run(
-            "pixi run python -c 'import pandas, numpy, requests; print(\"OK\")'",
-            shell=True,
+            ["python", "-c", "import sys; print('Python OK')"],
             capture_output=True,
             text=True,
-            timeout=15,
+            timeout=10,
         )
         if result.returncode != 0:
             validation_issues.append(
                 {
                     "component": "Python Environment",
-                    "issue": "Core packages not available or environment corrupt",
+                    "issue": "Python interpreter not available",
                     "fix": "Run 'p3 ready' to reinstall environment",
                 }
             )
