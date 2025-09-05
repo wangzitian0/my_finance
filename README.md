@@ -211,4 +211,4 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 **Component Docs**: [ETL](ETL/README.md), [DCF Engine](dcf_engine/README.md), [Graph RAG](graph_rag/README.md), [Common](common/README.md)  
 **Infrastructure**: [Infrastructure](infra/README.md), [Testing](tests/README.md)
-**Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities
+**Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities# Updated Fri Sep  5 20:45:49 +08 2025
