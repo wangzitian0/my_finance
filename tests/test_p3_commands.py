@@ -92,7 +92,9 @@ class TestP3Commands:
         # Ship command should require title and issue number
         returncode, stdout, stderr = run_p3_command(["ship"], timeout=5)
         # Should show error about missing parameters
-        assert returncode != 0 and ("title" in stderr.lower() or "issue" in stderr.lower() or "error" in stderr.lower())
+        assert returncode != 0 and (
+            "title" in stderr.lower() or "issue" in stderr.lower() or "error" in stderr.lower()
+        )
 
     def test_invalid_command(self):
         """Test invalid command handling."""
@@ -108,7 +110,9 @@ class TestP3VersionManagement:
         """Test version command output."""
         returncode, stdout, stderr = run_p3_command(["version"])
         # Version should return successfully with version info
-        assert returncode == 0 and ("P3 Version:" in stdout or "Version:" in stdout or "." in stdout)
+        assert returncode == 0 and (
+            "P3 Version:" in stdout or "Version:" in stdout or "." in stdout
+        )
 
     def test_version_parsing(self):
         """Test version output contains expected format."""
@@ -116,8 +120,11 @@ class TestP3VersionManagement:
         if returncode == 0:
             # Should contain version number format (x.y.z)
             import re
-            version_pattern = r'\d+\.\d+\.\d+'
-            assert re.search(version_pattern, stdout), "Version output should contain semantic version number"
+
+            version_pattern = r"\d+\.\d+\.\d+"
+            assert re.search(
+                version_pattern, stdout
+            ), "Version output should contain semantic version number"
 
 
 if __name__ == "__main__":
@@ -132,7 +139,7 @@ if __name__ == "__main__":
     returncode, stdout, stderr = run_p3_command(["version"], timeout=3)
     print(f"Version command: {'✅ PASS' if returncode == 0 and '.' in stdout else '❌ FAIL'}")
 
-    # Test build scope recognition  
+    # Test build scope recognition
     returncode, stdout, stderr = run_p3_command(["build", "f2"], timeout=3)
     print(f"Build scope recognition: {'✅ PASS' if 'executing' in stdout.lower() else '❌ FAIL'}")
 

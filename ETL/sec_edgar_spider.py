@@ -51,7 +51,7 @@ except ImportError as e:
     SECEDGAR_AVAILABLE = False
 from tqdm import tqdm
 
-from common.core.directory_manager import directory_manager, DataLayer
+from common.core.directory_manager import DataLayer, directory_manager
 from common.metadata_manager import MetadataManager
 
 # Set log output level to DEBUG

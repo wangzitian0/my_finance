@@ -1,7 +1,8 @@
 import re
 
 from bs4 import BeautifulSoup
-from common.core.directory_manager import directory_manager, DataLayer
+
+from common.core.directory_manager import DataLayer, directory_manager
 
 
 def preprocess_sec_content(content):

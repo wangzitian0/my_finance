@@ -15,7 +15,7 @@ from neomodel import config
 config.DATABASE_URL = "bolt://neo4j:wangzitian0@localhost:7687"
 
 # Use common module from project root directory, not in ETL directory
-from common.core.directory_manager import directory_manager, DataLayer
+from common.core.directory_manager import DataLayer, directory_manager
 from common.logger import StreamToLogger, setup_logger
 from common.progress import create_progress_bar
 from common.snowflake import Snowflake
