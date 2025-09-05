@@ -1238,7 +1238,7 @@ def create_pr_workflow(
     # Force push the amended commit
     print("🔄 Force-pushing amended commit with PR URL...")
     final_push_result = subprocess.run(
-        ["git", "push", "--force-with-lease"],
+        ["git", "push", "--force-with-lease", "origin", current_branch],
         env=push_env,  # Reuse the environment with P3_CREATE_PR_PUSH
         capture_output=True,
         text=True,
