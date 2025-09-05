@@ -966,16 +966,26 @@ def create_pr_workflow(
 ):
     """Complete PR creation workflow with pre-flight environment validation"""
 
+    print(
+        f"🔍 [DEBUG] create_pr_workflow called with: title='{title}', issue={issue_number}, scope={scope}"
+    )
+    print(
+        f"🔍 [DEBUG] description_file={description_file}, skip_env_validation={skip_env_validation}"
+    )
+
     print("\n" + "=" * 60)
     print("🚀 STARTING PR CREATION WORKFLOW")
     print("=" * 60)
 
     # MANDATORY: Pre-flight environment validation (unless skipped)
+    print("🔍 [DEBUG] Step 1: Environment validation")
     if not skip_env_validation:
+        print("🔍 [DEBUG] Running validate_environment_for_pr...")
         if not validate_environment_for_pr():
             print("\n❌ PR creation aborted due to environment issues")
             print("🔧 Please resolve environment issues and try again")
             sys.exit(1)
+        print("🔍 [DEBUG] Environment validation passed")
     else:
         print("⚠️  SKIPPING environment validation (emergency mode)")
         print("💡 This should only be used in emergency situations")
@@ -983,14 +993,18 @@ def create_pr_workflow(
     print()
 
     # Initialize push environment for later use
+    print("🔍 [DEBUG] Step 2: Initializing push environment")
     import os
 
     push_env = os.environ.copy()
     push_env["P3_CREATE_PR_PUSH"] = "true"
+    print("🔍 [DEBUG] Push environment initialized")
 
     # 1. Check current state and environment
+    print("🔍 [DEBUG] Step 3: Getting current branch")
     current_branch = get_current_branch()
     print(f"📍 Current branch: {current_branch}")
+    print(f"🔍 [DEBUG] Current branch retrieved: {current_branch}")
 
     # Announce worktree safety status
     if is_worktree_environment():
@@ -1000,25 +1014,34 @@ def create_pr_workflow(
     else:
         print("📁 Regular git repository detected - using standard operations")
 
+    print("🔍 [DEBUG] Step 4: Validating current branch")
     if current_branch == "main":
         print("❌ Cannot create PR from main branch")
         sys.exit(1)
 
+    print("🔍 [DEBUG] Step 5: Checking for uncommitted changes")
     uncommitted = get_uncommitted_changes()
     if uncommitted:
         print("❌ Uncommitted changes detected:")
         print(uncommitted)
         print("Please commit or stash changes first")
         sys.exit(1)
+    print("🔍 [DEBUG] No uncommitted changes found")
 
     # 2.5. CRITICAL: Sync with latest main and rebase (WORKTREE-SAFE)
+    print("🔍 [DEBUG] Step 6: Starting sync with main (THIS IS LIKELY TO HANG)")
+    print("🔍 [DEBUG] About to call sync_with_main_safely...")
     sync_with_main_safely(current_branch)
+    print("🔍 [DEBUG] sync_with_main_safely completed")
 
     # 2.9. MANDATORY: Format code before testing
+    print("🔍 [DEBUG] Step 7: Code formatting")
     print("\n🔄 Running code formatting...")
+    print("🔍 [DEBUG] About to call run_p3_command('check')...")
     format_result = run_p3_command(
         "check", "Formatting Python code with black and isort", check=False
     )
+    print("🔍 [DEBUG] run_p3_command('check') completed")
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
@@ -1034,8 +1057,10 @@ def create_pr_workflow(
         print("✅ Code already properly formatted")
 
     # 3. MANDATORY: Run end-to-end F2 test - no skip option available
+    print("🔍 [DEBUG] Step 8: Starting end-to-end test (ANOTHER LIKELY HANG POINT)")
     print(f"🧪 Running mandatory {scope.upper()} test - this cannot be skipped")
     test_result = run_end_to_end_test(scope)
+    print(f"🔍 [DEBUG] End-to-end test completed with result: {test_result}")
     if isinstance(test_result, int) and test_result > 0:
         # Test passed, create test validation info
         test_info = create_test_marker(test_result, scope)
@@ -1401,6 +1426,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>"""
 
 def main():
     """Main CLI interface"""
+    print("🔍 [DEBUG] Starting create_pr_with_test.py main() function")
+    print(f"🔍 [DEBUG] Arguments: {sys.argv}")
+    print(f"🔍 [DEBUG] Current time: {datetime.now().isoformat()}")
+
     parser = argparse.ArgumentParser(
         description="Create PR with mandatory F2 end-to-end testing (default)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1430,23 +1459,37 @@ Examples:
         help="Test scope: f2 (fast 2 companies, default), m7 (Magnificent 7), n100 (NASDAQ 100), v3k (VTI 3500+)",
     )
 
+    print("🔍 [DEBUG] About to parse arguments...")
     args = parser.parse_args()
+    print(
+        f"🔍 [DEBUG] Arguments parsed successfully: title={args.title}, issue={args.issue_number}, scope={args.scope}"
+    )
+    print(f"🔍 [DEBUG] Full args: {vars(args)}")
 
     if args.skip_pr_creation:
+        print("🔍 [DEBUG] Skip PR creation mode - running only end-to-end test")
         # Only run end-to-end test with specified scope
         success = run_end_to_end_test(args.scope)
+        print(f"🔍 [DEBUG] End-to-end test result: {success}")
         sys.exit(0 if success else 1)
 
     # Validate required arguments for PR creation
+    print("🔍 [DEBUG] Validating required arguments for PR creation...")
     if not args.title or not args.issue_number:
+        print(
+            f"🔍 [DEBUG] Missing required arguments: title={args.title}, issue_number={args.issue_number}"
+        )
         parser.error("title and issue_number are required when creating PR")
+    print("🔍 [DEBUG] Required arguments validation passed")
 
     # F2 test is mandatory - no skip option available
+    print("🔍 [DEBUG] About to start create_pr_workflow...")
 
     try:
         pr_url = create_pr_workflow(
             args.title, args.issue_number, args.description, args.scope, args.skip_env_validation
         )
+        print(f"🔍 [DEBUG] create_pr_workflow completed, pr_url: {pr_url}")
 
         if pr_url:
             print(f"\n🚀 PR successfully created: {pr_url}")
