@@ -1,8 +1,8 @@
 {
   "major": 1,
   "minor": 0,
-  "patch": 16,
-  "git_hash": "c5e25fa2",
+  "patch": 18,
+  "git_hash": "bfabb0c0",
   "git_branch": "feature/unit-test-for-ssot",
-  "last_updated": "2025-09-05T12:38:06.252631"
+  "last_updated": "2025-09-05T14:28:14.836962"
 }

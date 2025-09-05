@@ -1,0 +1,70 @@
+---
+# roles/system_requirements_check.yml
+# System requirements validation for P3 development environment
+
+- name: Check macOS version (if applicable)
+  command: sw_vers -productVersion
+  register: macos_version
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family == "Darwin"
+
+- name: Display macOS version
+  debug:
+    msg: "macOS Version: {{ macos_version.stdout }}"
+  when: ansible_os_family == "Darwin" and macos_version.rc == 0
+
+- name: Check available disk space
+  shell: df -h {{ repo_dir }} | tail -1 | awk '{print $4}'
+  register: available_space
+  changed_when: false
+
+- name: Display available disk space
+  debug:
+    msg: "Available disk space: {{ available_space.stdout }}"
+
+- name: Check memory availability
+  shell: vm_stat | head -4
+  register: memory_stats
+  failed_when: false
+  changed_when: false
+
+- name: Display memory statistics
+  debug:
+    var: memory_stats.stdout_lines
+  when: memory_stats.rc == 0
+
+- name: Check if virtualization is enabled (macOS)
+  command: sysctl -n kern.hv_support
+  register: virtualization_support
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family == "Darwin"
+
+- name: Warn if virtualization not supported
+  debug:
+    msg: "⚠️ WARNING: Hardware virtualization may not be supported. This could cause Podman issues."
+  when: ansible_os_family == "Darwin" and virtualization_support.rc != 0
+
+- name: Check for Docker Desktop conflicts
+  shell: pgrep -f "Docker Desktop" || echo "not_running"
+  register: docker_desktop_check
+  changed_when: false
+  failed_when: false
+
+- name: Warn about Docker Desktop conflicts
+  debug:
+    msg: |
+      ⚠️ WARNING: Docker Desktop is running.
+      This may cause port conflicts with Podman containers.
+      Consider stopping Docker Desktop: killall "Docker Desktop"
+  when: "'not_running' not in docker_desktop_check.stdout"
+
+- name: System requirements check complete
+  debug:
+    msg: |
+      ✅ System Requirements Check Complete
+      • Disk space: {{ available_space.stdout }}
+      • OS: {{ ansible_os_family }}
+      • Virtualization: {{ 'Supported' if virtualization_support.rc == 0 else 'Unknown' }}
+      • Docker conflicts: {{ 'None detected' if 'not_running' in docker_desktop_check.stdout else 'Docker Desktop running' }}

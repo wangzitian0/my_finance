@@ -1,0 +1,95 @@
+---
+# roles/final_validation.yml
+# Final comprehensive validation for P3 ready setup
+
+- name: Test Podman connectivity
+  command: podman info
+  register: podman_final_test
+  failed_when: false
+  changed_when: false
+
+- name: Test Neo4j container status
+  command: podman ps --filter name=neo4j-finance --format "{{ "{{" }}.Status{{ "}}" }}"
+  register: neo4j_container_final
+  changed_when: false
+
+- name: Test Neo4j web interface
+  uri:
+    url: http://localhost:7474
+    method: GET
+    status_code: 200
+    timeout: 10
+  register: neo4j_web_final
+  failed_when: false
+
+- name: Test Python environment final
+  command: >
+    pixi run python -c "
+    import pandas, numpy, requests, neo4j;
+    print('Python environment fully operational')
+    "
+  register: python_final_test
+  failed_when: false
+  changed_when: false
+
+- name: Check build_data directory access
+  stat:
+    path: "{{ repo_dir }}/build_data/stage_04_query_results"
+  register: build_data_access
+
+- name: Run comprehensive environment status
+  command: pixi run python infra/comprehensive_env_status.py
+  register: env_status_final
+  failed_when: false
+  changed_when: false
+  args:
+    chdir: "{{ repo_dir }}"
+
+- name: Calculate validation score
+  set_fact:
+    validation_score: >-
+      {{
+        (podman_final_test.rc == 0) | int +
+        ('Up' in neo4j_container_final.stdout) | int +
+        (neo4j_web_final.status == 200) | int +
+        (python_final_test.rc == 0) | int +
+        build_data_access.stat.exists | int
+      }}
+
+- name: Display final validation results
+  debug:
+    msg: |
+      🔍 Final Validation Results ({{ validation_score }}/5)
+      =============================================
+      
+      Infrastructure:
+      • Podman: {{ '✅ Ready' if podman_final_test.rc == 0 else '❌ Issues' }}
+      • Neo4j Container: {{ '✅ Running' if 'Up' in neo4j_container_final.stdout else '❌ Stopped' }}
+      • Neo4j Web: {{ '✅ Accessible' if neo4j_web_final.status == 200 else '❌ Not responding' }}
+      
+      Application:
+      • Python Environment: {{ '✅ Ready' if python_final_test.rc == 0 else '❌ Issues' }}
+      • Data Directories: {{ '✅ Ready' if build_data_access.stat.exists else '❌ Missing' }}
+      
+      {% if validation_score | int >= 4 %}
+      🎉 Environment Setup Successful!
+      Ready for development workflows.
+      {% else %}
+      ⚠️ Setup incomplete. Some components need attention.
+      {% endif %}
+
+- name: Show environment status output
+  debug:
+    var: env_status_final.stdout_lines
+  when: env_status_final.rc == 0
+
+- name: Validation complete
+  debug:
+    msg: |
+      P3 Ready Ansible orchestration complete.
+      Validation score: {{ validation_score }}/5
+      
+      Next steps:
+      • Run 'p3 debug' for detailed diagnostics
+      • Try 'p3 build f2' for quick test
+      • Use 'p3 test f2' for validation

@@ -831,12 +831,157 @@ Fixes #{issue_number}
     return body
 
 
-def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
-    """Complete PR creation workflow"""
+def validate_environment_for_pr():
+    """Pre-flight environment validation for PR creation"""
+    print("🔍 Pre-flight Environment Validation")
+    print("-" * 40)
+
+    validation_issues = []
+
+    # Check Podman machine status
+    try:
+        result = subprocess.run(
+            "podman info", shell=True, capture_output=True, text=True, timeout=10
+        )
+        if result.returncode != 0:
+            validation_issues.append(
+                {
+                    "component": "Podman Machine",
+                    "issue": "Not accessible or not running",
+                    "fix": "Run 'p3 ready' to start Podman machine",
+                }
+            )
+    except subprocess.TimeoutExpired:
+        validation_issues.append(
+            {
+                "component": "Podman Machine",
+                "issue": "Connection timeout",
+                "fix": "Run 'p3 ready' to restart Podman machine",
+            }
+        )
+    except Exception:
+        validation_issues.append(
+            {
+                "component": "Podman Machine",
+                "issue": "Command execution failed",
+                "fix": "Run 'p3 ready' to setup Podman machine",
+            }
+        )
+
+    # Check Neo4j container status
+    try:
+        result = subprocess.run(
+            "podman ps --filter name=neo4j-finance --format '{{.Status}}'",
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode != 0 or "Up" not in result.stdout:
+            validation_issues.append(
+                {
+                    "component": "Neo4j Database",
+                    "issue": "Container not running",
+                    "fix": "Run 'p3 ready' to start Neo4j container",
+                }
+            )
+    except Exception:
+        validation_issues.append(
+            {
+                "component": "Neo4j Database",
+                "issue": "Cannot check container status",
+                "fix": "Run 'p3 ready' to setup database",
+            }
+        )
+
+    # Check Neo4j web interface accessibility
+    try:
+        result = subprocess.run(
+            "curl -s --max-time 5 http://localhost:7474 >/dev/null",
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode != 0:
+            validation_issues.append(
+                {
+                    "component": "Neo4j Web Interface",
+                    "issue": "Not responding on http://localhost:7474",
+                    "fix": "Wait for startup or run 'p3 debug' to check logs",
+                }
+            )
+    except Exception:
+        validation_issues.append(
+            {
+                "component": "Neo4j Web Interface",
+                "issue": "Connection check failed",
+                "fix": "Run 'p3 debug' to diagnose connectivity",
+            }
+        )
+
+    # Check Python environment
+    try:
+        result = subprocess.run(
+            "pixi run python -c 'import pandas, numpy, requests; print(\"OK\")'",
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        if result.returncode != 0:
+            validation_issues.append(
+                {
+                    "component": "Python Environment",
+                    "issue": "Core packages not available or environment corrupt",
+                    "fix": "Run 'p3 ready' to reinstall environment",
+                }
+            )
+    except Exception:
+        validation_issues.append(
+            {
+                "component": "Python Environment",
+                "issue": "Cannot execute Python commands",
+                "fix": "Run 'p3 ready' to setup Python environment",
+            }
+        )
+
+    # Report validation results
+    if not validation_issues:
+        print("✅ All environment checks passed - ready for PR creation")
+        return True
+    else:
+        print("❌ Environment validation failed - PR creation blocked")
+        print("\n🚨 Issues found:")
+        for i, issue in enumerate(validation_issues, 1):
+            print(f"   {i}. {issue['component']}: {issue['issue']}")
+            print(f"      Fix: {issue['fix']}")
+
+        print("\n💡 Quick fix: Run 'p3 ready' to resolve environment issues")
+        print("💡 For detailed diagnostics: Run 'p3 debug'")
+        return False
+
+
+def create_pr_workflow(
+    title, issue_number, description_file=None, scope="f2", skip_env_validation=False
+):
+    """Complete PR creation workflow with pre-flight environment validation"""
 
     print("\n" + "=" * 60)
     print("🚀 STARTING PR CREATION WORKFLOW")
     print("=" * 60)
+
+    # MANDATORY: Pre-flight environment validation (unless skipped)
+    if not skip_env_validation:
+        if not validate_environment_for_pr():
+            print("\n❌ PR creation aborted due to environment issues")
+            print("🔧 Please resolve environment issues and try again")
+            sys.exit(1)
+    else:
+        print("⚠️  SKIPPING environment validation (emergency mode)")
+        print("💡 This should only be used in emergency situations")
+
+    print()
 
     # Initialize push environment for later use
     import os
@@ -1275,6 +1420,11 @@ Examples:
         "--skip-pr-creation", action="store_true", help="Only run end-to-end test, skip PR creation"
     )
     parser.add_argument(
+        "--skip-env-validation",
+        action="store_true",
+        help="Skip environment validation (emergency use only)",
+    )
+    parser.add_argument(
         "--scope",
         default="f2",
         choices=["f2", "m7", "n100", "v3k"],
@@ -1295,7 +1445,9 @@ Examples:
     # F2 test is mandatory - no skip option available
 
     try:
-        pr_url = create_pr_workflow(args.title, args.issue_number, args.description, args.scope)
+        pr_url = create_pr_workflow(
+            args.title, args.issue_number, args.description, args.scope, args.skip_env_validation
+        )
 
         if pr_url:
             print(f"\n🚀 PR successfully created: {pr_url}")
