@@ -79,7 +79,8 @@ class SimpleConfigLoader:
         }
         
         dataset_tier = tier_map.get(tier_name, DatasetTier.F2)
-        test_config = TestConfigManager.get_config(dataset_tier)
+        config_manager = TestConfigManager()
+        test_config = config_manager.get_config(dataset_tier)
         
         # Load actual config file
         config_path = Path("common/config") / test_config.config_file
@@ -161,7 +162,8 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         # Get the actual config file name from TestConfigManager
         from ETL.tests.test_config import TestConfigManager
         tier_map = {"f2": DatasetTier.F2, "m7": DatasetTier.M7, "n100": DatasetTier.N100, "v3k": DatasetTier.V3K}
-        actual_config = TestConfigManager.get_config(tier_map.get(tier.value, DatasetTier.F2))
+        config_manager = TestConfigManager()
+        actual_config = config_manager.get_config(tier_map.get(tier.value, DatasetTier.F2))
         
         print(f"   Configuration: {actual_config.config_file}")
         print(f"   Expected tickers: {len(config.get('tickers', []))}")
