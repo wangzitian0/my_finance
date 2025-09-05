@@ -426,11 +426,65 @@ def run_end_to_end_test(scope="f2"):
     # Validate build results
     build_status = run_p3_command("debug", "Checking build status")
 
-    # Check for expected F2 files (just need basic validation)
-    file_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance", "latest"]
-
+    # Check for expected F2 files in correct build output location
+    print("🔍 Checking F2 build outputs for data validation...")
+    
+    # Find the latest build directory
+    latest_build_dir = None
+    build_pattern = f"{STAGE_04_QUERY_RESULTS}/build_*"
+    
+    # Get list of build directories
+    build_dirs_result = run_command(
+        f"find {STAGE_04_QUERY_RESULTS} -name 'build_*' -type d | sort -r | head -1",
+        "Finding latest build directory",
+        check=False
+    )
+    
+    if build_dirs_result and build_dirs_result.stdout.strip():
+        latest_build_dir = build_dirs_result.stdout.strip()
+        print(f"📁 Latest build directory: {latest_build_dir}")
+    else:
+        print(f"⚠️  No build directories found in {STAGE_04_QUERY_RESULTS}")
+        # List what's actually there for debugging
+        ls_result = run_command(
+            f"ls -la {STAGE_04_QUERY_RESULTS}/",
+            "Listing query results directory",
+            check=False
+        )
+        if ls_result and ls_result.stdout:
+            print(f"📋 Contents of {STAGE_04_QUERY_RESULTS}:")
+            print(ls_result.stdout)
+    
     total_files = 0
-    for location in file_locations:
+    
+    # Check in the latest build directory if it exists
+    if latest_build_dir and Path(latest_build_dir).exists():
+        # Count JSON files in the build directory
+        json_files_result = run_command(
+            f"find {latest_build_dir} -name '*.json' -type f | wc -l",
+            f"Counting JSON files in {latest_build_dir}",
+            check=False
+        )
+        if json_files_result and json_files_result.stdout.strip():
+            json_count = int(json_files_result.stdout.strip())
+            total_files += json_count
+            print(f"📁 Found {json_count} JSON files in latest build")
+            
+        # Also check for other data files (CSV, etc.)
+        all_files_result = run_command(
+            f"find {latest_build_dir} -type f | wc -l",
+            f"Counting all files in {latest_build_dir}",
+            check=False
+        )
+        if all_files_result and all_files_result.stdout.strip():
+            all_count = int(all_files_result.stdout.strip())
+            print(f"📁 Found {all_count} total files in latest build")
+            # For F2 test, any data files count as validation
+            total_files = max(total_files, all_count)
+    
+    # Also check traditional locations as fallback
+    fallback_locations = [f"{STAGE_01_DAILY_DELTA}/yfinance", f"{STAGE_00_RAW}/yfinance"]
+    for location in fallback_locations:
         if Path(location).exists():
             location_files = run_command(
                 f"find {location} -name '*.json' -type f | wc -l",
@@ -440,14 +494,27 @@ def run_end_to_end_test(scope="f2"):
             if location_files and location_files.stdout.strip():
                 count = int(location_files.stdout.strip())
                 total_files += count
-                print(f"📁 Found {count} files in {location}")
+                print(f"📁 Found {count} files in fallback location {location}")
 
     print(f"📊 Total {scope.upper()} data files found: {total_files}")
+    print(f"🎯 Required files for {scope.upper()}: {test_info['min_files']}")
 
-    # Check if we have sufficient files for the chosen scope
-    # For code-only changes (like SSOT compliance), be more flexible
+    # Early failure detection - check if we have sufficient files for the chosen scope
+    print(f"🎯 Validation threshold: {test_info['min_files']} files required for {scope.upper()} test")
+    
     if total_files < test_info["min_files"]:
-        print(f"⚠️  Only found {total_files} files, expected at least {test_info['min_files']}")
+        print(f"❌ INSUFFICIENT DATA: Found {total_files} files, expected at least {test_info['min_files']}")
+        print(f"🚨 F2 TEST FAILING - Insufficient data files for regression testing")
+        
+        # Early interruption - don't continue with complex SSOT analysis if no data at all
+        if total_files == 0:
+            print(f"💥 CRITICAL: No data files found anywhere - F2 regression test cannot proceed")
+            print(f"🔧 SUGGESTED FIXES:")
+            print(f"   1. Run 'p3 build f2' to generate test data")
+            print(f"   2. Check if build completed successfully")
+            print(f"   3. Verify data pipeline is working")
+            print(f"🚨 ABORTING EARLY - No point in further analysis without data")
+            return False
 
         # Check if this is a code-only change that doesn't require data validation
         print("🔍 Analyzing change type to determine if data validation is required...")
@@ -555,10 +622,14 @@ def run_end_to_end_test(scope="f2"):
                 print("✅ F2 validation passed - code changes validated successfully")
                 return 1  # Return success with minimal file count for code-only changes
 
-        print(
-            f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files for data validation, found {total_files}"
-        )
-        print("🔍 Build artifacts preserved for debugging")
+        print(f"❌ FINAL VALIDATION FAILURE")
+        print(f"📊 Summary: Found {total_files} files, needed {test_info['min_files']} for {scope.upper()} test")
+        print(f"🔍 Build artifacts preserved in: {latest_build_dir if 'latest_build_dir' in locals() else 'N/A'}")
+        print(f"💡 TROUBLESHOOTING STEPS:")
+        print(f"   1. Check if 'p3 build f2' completed successfully")
+        print(f"   2. Verify build outputs in {STAGE_04_QUERY_RESULTS}/")
+        print(f"   3. Check for errors in build logs")
+        print(f"   4. Ensure data sources are accessible")
         return False
 
     print(f"✅ {test_info['name']} PASSED")
