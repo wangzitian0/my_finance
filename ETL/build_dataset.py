@@ -66,15 +66,40 @@ logger.info("Creating SimpleConfigLoader...")
 
 class SimpleConfigLoader:
     def load_dataset_config(self, tier_name):
-        # Minimal config for F2 (MSFT + NVDA) with disabled data sources for dev mode
+        # Use proper TestConfigManager instead of hardcoded values
+        from ETL.tests.test_config import DatasetTier, TestConfigManager
+
+        # Map tier_name to DatasetTier
+        tier_map = {
+            "f2": DatasetTier.F2,
+            "m7": DatasetTier.M7,
+            "n100": DatasetTier.N100,
+            "v3k": DatasetTier.V3K,
+            "test": DatasetTier.F2,  # Legacy alias
+        }
+        
+        dataset_tier = tier_map.get(tier_name, DatasetTier.F2)
+        test_config = TestConfigManager.get_config(dataset_tier)
+        
+        # Load actual config file
+        config_path = Path("common/config") / test_config.config_file
+        if config_path.exists():
+            with open(config_path, 'r') as f:
+                file_config = yaml.safe_load(f) or {}
+        else:
+            file_config = {}
+            
+        # Build proper config with data sources from file_config
+        data_sources = file_config.get("data_sources", {
+            "yfinance": {"enabled": True},  # Default enable YFinance
+            "sec_edgar": {"enabled": test_config.enable_sec_edgar}
+        })
+        
         return {
             "companies": {"MSFT": {"name": "Microsoft"}, "NVDA": {"name": "NVIDIA"}},
-            "tickers": ["MSFT", "NVDA"],
-            "timeout_seconds": 30,
-            "data_sources": {
-                "yfinance": {"enabled": False},  # Disabled in dev mode
-                "sec_edgar": {"enabled": False},  # Disabled in dev mode
-            },
+            "tickers": test_config.expected_tickers,
+            "timeout_seconds": test_config.timeout_seconds,
+            "data_sources": data_sources,
         }
 
     def get_config_path(self, config_name):
@@ -132,8 +157,14 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
 
         logger.info("About to print build info...")
         print(f"🔧 Building {tier.value} dataset...")
-        print(f"   Configuration: list_{tier.value}.yml")
-        print(f"   Expected tickers: {config.get('ticker_count', 'unknown')}")
+        
+        # Get the actual config file name from TestConfigManager
+        from ETL.tests.test_config import TestConfigManager
+        tier_map = {"f2": DatasetTier.F2, "m7": DatasetTier.M7, "n100": DatasetTier.N100, "v3k": DatasetTier.V3K}
+        actual_config = TestConfigManager.get_config(tier_map.get(tier.value, DatasetTier.F2))
+        
+        print(f"   Configuration: {actual_config.config_file}")
+        print(f"   Expected tickers: {len(config.get('tickers', []))}")
         logger.info("Build info printed")
 
         # Initialize build tracker
