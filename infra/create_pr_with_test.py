@@ -10,6 +10,8 @@ WORKTREE COMPATIBILITY:
 - Maintains compatibility with regular git repositories
 """
 
+print("🔍 [DEBUG] Script starting - imports beginning...")
+
 import argparse
 import json
 import subprocess
@@ -17,6 +19,8 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+
+print("🔍 [DEBUG] All imports completed successfully")
 
 # Global directory constants - centralized path management
 BUILD_DATA = "build_data"
