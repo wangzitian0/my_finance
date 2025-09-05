@@ -48,7 +48,12 @@ class HRBPIntegrationFramework:
         if config_path is None:
             config_path = self.config_dir / "hrbp_automation.yml"
 
-        self.config = self._load_config(config_path)
+        # Use SSOT config_manager instead of loading directly
+        from .core.config_manager import config_manager
+        try:
+            self.config = config_manager.get_config("hrbp_automation")
+        except Exception:
+            self.config = self._get_default_config()
 
         # Setup logging
         self._setup_logging()

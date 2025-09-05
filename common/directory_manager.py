@@ -79,12 +79,12 @@ class DirectoryManager:
         self._load_config()
 
     def _load_config(self):
-        """Load directory configuration from YAML file"""
-        config_path = self.root_path / "common" / "config" / "directory_structure.yml"
-        if config_path.exists() and HAS_YAML:
-            with open(config_path) as f:
-                self.config = yaml.safe_load(f)
-        else:
+        """Load directory configuration using SSOT config_manager"""
+        try:
+            from .core.config_manager import config_manager
+            self.config = config_manager.get_config("directory_structure")
+        except Exception:
+            # Fallback to default config if core config_manager fails
             self.config = self._default_config()
 
     def _default_config(self) -> Dict:
