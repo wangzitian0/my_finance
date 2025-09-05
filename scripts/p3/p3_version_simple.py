@@ -46,12 +46,8 @@ def get_version_string():
     data = load_version()
     git_hash, git_branch = get_git_info()
 
-    # Auto-increment patch if git changed
-    if git_hash != data.get("git_hash") and git_hash != "unknown":
-        data["patch"] += 1
-        data["git_hash"] = git_hash
-        data["git_branch"] = git_branch
-        save_version(data)
+    # Manual version update only - no auto-increment to prevent commit loops
+    # Use 'p3 version increment' to manually update version when needed
 
     version = f"{data['major']}.{data['minor']}.{data['patch']}"
     if git_branch != "main":
