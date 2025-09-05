@@ -448,45 +448,54 @@ def run_end_to_end_test(scope="f2"):
     # For code-only changes (like SSOT compliance), be more flexible
     if total_files < test_info["min_files"]:
         print(f"⚠️  Only found {total_files} files, expected at least {test_info['min_files']}")
-        
+
         # Check if this is a code-only change that doesn't require data validation
         print("🔍 Analyzing change type to determine if data validation is required...")
-        
+
         # Get list of changed files to determine change type
         changed_files_result = run_command(
             "git diff origin/main...HEAD --name-only", "Getting changed files", check=False
         )
-        
+
         if changed_files_result and changed_files_result.stdout.strip():
             changed_files = changed_files_result.stdout.strip().split("\n")
-            
+
             # Classify changes
             code_only_changes = all(
-                any([
-                    file.endswith(('.py', '.md', '.yml', '.yaml', '.json', '.sh', '.txt')),
-                    file.startswith(('common/', 'scripts/', 'infra/', 'tests/')),
-                    file in ['README.md', 'CLAUDE.md', '.gitignore', 'p3.py'],
-                    'config' in file.lower()
-                ]) for file in changed_files if file.strip()
+                any(
+                    [
+                        file.endswith((".py", ".md", ".yml", ".yaml", ".json", ".sh", ".txt")),
+                        file.startswith(("common/", "scripts/", "infra/", "tests/")),
+                        file in ["README.md", "CLAUDE.md", ".gitignore", "p3.py"],
+                        "config" in file.lower(),
+                    ]
+                )
+                for file in changed_files
+                if file.strip()
             )
-            
+
             # Check if changes include ETL/DCF modules that need data
             data_affecting_changes = any(
-                file.startswith(('ETL/', 'dcf_engine/')) and not file.endswith('.md') 
-                for file in changed_files if file.strip()
+                file.startswith(("ETL/", "dcf_engine/")) and not file.endswith(".md")
+                for file in changed_files
+                if file.strip()
             )
-            
-            print(f"📋 Changed files: {', '.join(changed_files[:5])}{'...' if len(changed_files) > 5 else ''}")
+
+            print(
+                f"📋 Changed files: {', '.join(changed_files[:5])}{'...' if len(changed_files) > 5 else ''}"
+            )
             print(f"🔍 Code-only changes: {code_only_changes}")
             print(f"🔍 Data-affecting changes: {data_affecting_changes}")
-            
+
             if code_only_changes and not data_affecting_changes:
                 print("✅ Detected code-only changes (SSOT compliance, config, docs, scripts)")
                 print("✅ Data validation not required for this type of change")
                 print("✅ F2 validation passed - code changes validated successfully")
                 return 1  # Return success with minimal file count for code-only changes
-            
-        print(f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files for data validation, found {total_files}")
+
+        print(
+            f"❌ FAIL: Expected at least {test_info['min_files']} {scope.upper()} files for data validation, found {total_files}"
+        )
         print("🔍 Build artifacts preserved for debugging")
         return False
 
@@ -1122,7 +1131,7 @@ Examples:
     parser.add_argument("title", nargs="?", help="PR title")
     parser.add_argument("issue_number", nargs="?", type=int, help="GitHub issue number")
     parser.add_argument("--description", help="Path to file containing PR description")
-# --skip-m7-test option removed - F2 test is mandatory for all PRs
+    # --skip-m7-test option removed - F2 test is mandatory for all PRs
     parser.add_argument(
         "--skip-pr-creation", action="store_true", help="Only run end-to-end test, skip PR creation"
     )
@@ -1145,11 +1154,9 @@ Examples:
         parser.error("title and issue_number are required when creating PR")
 
     # F2 test is mandatory - no skip option available
-    
+
     try:
-        pr_url = create_pr_workflow(
-            args.title, args.issue_number, args.description, args.scope
-        )
+        pr_url = create_pr_workflow(args.title, args.issue_number, args.description, args.scope)
 
         if pr_url:
             print(f"\n🚀 PR successfully created: {pr_url}")
