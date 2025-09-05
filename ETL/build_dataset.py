@@ -342,8 +342,17 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
         # Extract tickers using SSOT configuration
         config_name = tier_to_config_name(tier)
-        company_list = config_manager.get_company_list(config_name)
-        tickers = [company["ticker"] for company in company_list]
+        companies_config = config_manager.get_config(config_name).get("companies", {})
+
+        # Handle both dict (ticker as key) and list formats
+        if isinstance(companies_config, dict):
+            tickers = list(companies_config.keys())
+        elif isinstance(companies_config, list):
+            tickers = [
+                company.get("ticker", company.get("symbol", "")) for company in companies_config
+            ]
+        else:
+            tickers = []
 
         print(f"   📈 Collecting yfinance data...")
         print(f"   Tickers: {len(tickers)}")
