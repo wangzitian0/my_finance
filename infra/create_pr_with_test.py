@@ -31,8 +31,17 @@ RELEASE_DIR = f"{BUILD_DATA}/release"
 
 
 def run_command(cmd, description, timeout=None, check=True):
-    """Run a command with proper error handling"""
+    """Run a command with proper error handling and enhanced logging"""
     print(f"🔄 {description}...")
+    
+    # Enhanced logging for long-running commands
+    if timeout and timeout > 300:  # Commands longer than 5 minutes
+        print(f"⏱️  Extended timeout: {timeout}s ({timeout/60:.1f} minutes)")
+        print(f"📝 Command: {cmd if isinstance(cmd, str) else ' '.join(cmd)}")
+        import time
+        start_time = time.time()
+        print(f"🕐 Started at: {time.strftime('%H:%M:%S')}")
+    
     try:
         if isinstance(cmd, str):
             result = subprocess.run(
@@ -43,20 +52,41 @@ def run_command(cmd, description, timeout=None, check=True):
                 cmd, capture_output=True, text=True, timeout=timeout, check=check
             )
 
+        # Enhanced success logging for long commands
         if result.returncode == 0:
-            print(f"✅ {description} - SUCCESS")
+            if timeout and timeout > 300:
+                end_time = time.time()
+                duration = end_time - start_time
+                print(f"✅ {description} - SUCCESS (completed in {duration:.1f}s)")
+                print(f"🕐 Finished at: {time.strftime('%H:%M:%S')}")
+            else:
+                print(f"✅ {description} - SUCCESS")
+            
             if result.stdout.strip():
-                print(f"   Output: {result.stdout.strip()}")
+                # For very long outputs, truncate but show key info
+                output = result.stdout.strip()
+                if len(output) > 1000:
+                    print(f"   Output (truncated): {output[:500]}...{output[-500:]}")
+                else:
+                    print(f"   Output: {output}")
             return result
         else:
             print(f"❌ {description} - FAILED")
             if result.stderr.strip():
                 print(f"   Error: {result.stderr.strip()}")
+            if result.stdout.strip():
+                print(f"   Stdout: {result.stdout.strip()}")
             if check:
                 sys.exit(1)
             return result
     except subprocess.TimeoutExpired:
-        print(f"⏰ {description} - TIMEOUT ({timeout}s)")
+        if timeout and timeout > 300:
+            end_time = time.time()
+            duration = end_time - start_time
+            print(f"⏰ {description} - TIMEOUT after {timeout}s (ran for {duration:.1f}s)")
+            print(f"💡 Consider increasing timeout if this is expected to take longer")
+        else:
+            print(f"⏰ {description} - TIMEOUT ({timeout}s)")
         if check:
             sys.exit(1)
         return None
@@ -330,9 +360,27 @@ def run_end_to_end_test(scope="f2"):
 
             # Build dataset using appropriate scope and model
             print(f"🚀 Starting {scope.upper()} build - {test_info['description']}")
+            print(f"⏱️  Build timeout set to 20 minutes (1200s) to allow for data download and model processing")
+            print(f"📝 Build command: {test_info['build_cmd']}")
+            print(f"🔄 This process includes:")
+            print(f"   • Environment setup and validation")
+            print(f"   • Data download from financial APIs")
+            print(f"   • LLM model initialization (DeepSeek 1.5b)")
+            print(f"   • Data processing and validation")
+            print(f"⚠️  Please be patient - this is a comprehensive end-to-end test")
+            
+            import time
+            start_time = time.time()
+            print(f"🕐 Build started at: {time.strftime('%H:%M:%S')}")
+            
             run_p3_command(
-                test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=600
-            )  # 10 minutes for broader scope support
+                test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=1200
+            )  # 20 minutes for comprehensive testing
+            
+            end_time = time.time()
+            duration = end_time - start_time
+            print(f"✅ Build completed in {duration:.1f} seconds ({duration/60:.1f} minutes)")
+            print(f"🕐 Build finished at: {time.strftime('%H:%M:%S')}")
 
         # Verify the model was actually used
         print("🔍 Verifying model usage in connection logs...")
