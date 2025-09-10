@@ -836,10 +836,46 @@ Fixes #{issue_number}
 
 
 def validate_environment_for_pr():
-    """Pre-flight environment validation for PR creation"""
+    """Pre-flight environment validation for PR creation using fast check"""
     print("🔍 Pre-flight Environment Validation")
     print("-" * 40)
+    
+    # Use fast environment check script for quick validation
+    try:
+        result = subprocess.run(
+            ["python", "scripts/fast_env_check.py"],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        
+        if result.returncode == 0:
+            print("✅ All environment checks passed - ready for PR creation")
+            return True
+        else:
+            # Fast check failed - show the error output
+            print("❌ Environment validation failed:")
+            if result.stdout:
+                print(result.stdout)
+            if result.stderr:
+                print(result.stderr)
+            print("\n💡 Please resolve environment issues before creating PR")
+            print("🔧 Try running 'p3 ready' to fix environment issues")
+            return False
+            
+    except subprocess.TimeoutExpired:
+        print("⏰ Environment validation timed out")
+        print("💡 Run 'p3 debug' for detailed diagnostics")
+        return False
+    except FileNotFoundError:
+        print("⚠️  Fast environment check script not found, using basic validation")
+        pass  # Fall through to basic validation below
+    except Exception as e:
+        print(f"❌ Environment validation error: {e}")
+        print("💡 Run 'p3 debug' for detailed diagnostics")
+        return False
 
+    # Basic fallback validation if fast check fails
     validation_issues = []
 
     # Check Podman machine status
@@ -965,34 +1001,26 @@ def validate_environment_for_pr():
         return False
 
 
-def create_pr_workflow(
-    title, issue_number, description_file=None, scope="f2", skip_env_validation=False
-):
-    """Complete PR creation workflow with pre-flight environment validation"""
+def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
+    """Complete PR creation workflow with mandatory environment validation"""
 
     print(
         f"🔍 [DEBUG] create_pr_workflow called with: title='{title}', issue={issue_number}, scope={scope}"
     )
-    print(
-        f"🔍 [DEBUG] description_file={description_file}, skip_env_validation={skip_env_validation}"
-    )
+    print(f"🔍 [DEBUG] description_file={description_file}")
 
     print("\n" + "=" * 60)
     print("🚀 STARTING PR CREATION WORKFLOW")
     print("=" * 60)
 
-    # MANDATORY: Pre-flight environment validation (unless skipped)
+    # MANDATORY: Pre-flight environment validation
     print("🔍 [DEBUG] Step 1: Environment validation")
-    if not skip_env_validation:
-        print("🔍 [DEBUG] Running validate_environment_for_pr...")
-        if not validate_environment_for_pr():
-            print("\n❌ PR creation aborted due to environment issues")
-            print("🔧 Please resolve environment issues and try again")
-            sys.exit(1)
-        print("🔍 [DEBUG] Environment validation passed")
-    else:
-        print("⚠️  SKIPPING environment validation (emergency mode)")
-        print("💡 This should only be used in emergency situations")
+    print("🔍 [DEBUG] Running validate_environment_for_pr...")
+    if not validate_environment_for_pr():
+        print("\n❌ PR creation aborted due to environment issues")
+        print("🔧 Please resolve environment issues and try again")
+        sys.exit(1)
+    print("🔍 [DEBUG] Environment validation passed")
 
     print()
 
@@ -1447,15 +1475,7 @@ Examples:
     parser.add_argument("title", nargs="?", help="PR title")
     parser.add_argument("issue_number", nargs="?", type=int, help="GitHub issue number")
     parser.add_argument("--description", help="Path to file containing PR description")
-    # --skip-m7-test option removed - F2 test is mandatory for all PRs
-    parser.add_argument(
-        "--skip-pr-creation", action="store_true", help="Only run end-to-end test, skip PR creation"
-    )
-    parser.add_argument(
-        "--skip-env-validation",
-        action="store_true",
-        help="Skip environment validation (emergency use only)",
-    )
+    # All skip options removed - tests and environment validation are mandatory
     parser.add_argument(
         "--scope",
         default="f2",
@@ -1470,12 +1490,6 @@ Examples:
     )
     print(f"🔍 [DEBUG] Full args: {vars(args)}")
 
-    if args.skip_pr_creation:
-        print("🔍 [DEBUG] Skip PR creation mode - running only end-to-end test")
-        # Only run end-to-end test with specified scope
-        success = run_end_to_end_test(args.scope)
-        print(f"🔍 [DEBUG] End-to-end test result: {success}")
-        sys.exit(0 if success else 1)
 
     # Validate required arguments for PR creation
     print("🔍 [DEBUG] Validating required arguments for PR creation...")
@@ -1491,7 +1505,7 @@ Examples:
 
     try:
         pr_url = create_pr_workflow(
-            args.title, args.issue_number, args.description, args.scope, args.skip_env_validation
+            args.title, args.issue_number, args.description, args.scope
         )
         print(f"🔍 [DEBUG] create_pr_workflow completed, pr_url: {pr_url}")
 
