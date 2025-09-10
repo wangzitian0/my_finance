@@ -37,7 +37,15 @@
             $PODMAN_CMD machine start
           else
             echo "Starting existing machine..."
-            $PODMAN_CMD machine start
+            $PODMAN_CMD machine start || {
+              if $PODMAN_CMD machine list | grep -q "Running"; then
+                echo "Machine was already running"
+                exit 0
+              else
+                echo "Failed to start machine"
+                exit 1
+              fi
+            }
           fi
         else
           echo "Podman machine already running"
