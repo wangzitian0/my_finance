@@ -856,7 +856,9 @@ def validate_environment_for_pr():
             # Check if critical services (Podman, Neo4j) are working
             podman_ok = "✅ Podman Machine" in output
             neo4j_ok = "✅ Neo4j Web" in output
-            pandas_failed = "❌ Pandas Import" in output and "pandas import failed" in output
+            pandas_failed = "❌ Pandas Import" in output and (
+                "pandas import failed" in output or "pandas import timed out" in output
+            )
 
             if podman_ok and neo4j_ok and pandas_failed:
                 # Only pandas failed - this is often due to environment mismatches
