@@ -50,22 +50,25 @@ Our CI/CD system uses a staged approach with different test scopes to optimize f
 **Validation**: Runs `ci_m7_validation.py` to check 4 core M7 conditions
 
 ### 3. Claude Code Integration - `claude.yml`
-**Purpose**: AI-powered development assistance and issue management
+**Purpose**: Interactive AI-powered development assistance and issue management
 
 **Triggers**:
 - `@claude` mentions in issues, comments, PR reviews
 - Issue creation/assignment with `@claude` in title/body
 
 **Capabilities**:
-- 🤖 Intelligent code analysis and suggestions
+- 🤖 Interactive code analysis and suggestions
 - 🔍 CI results analysis on PRs
 - 📝 Issue and PR assistance
 - 🛠️ Custom model selection (Sonnet 4 default, Opus 4.1 optional)
+- 💬 Sticky comments for conversation continuity
+
+**Conflict Prevention**: Only triggers on explicit `@claude` mentions to avoid duplicating automatic reviews
 
 ### 4. Claude Code Review - `claude-code-review.yml`  
-**Purpose**: Automated PR code reviews using Claude
+**Purpose**: Automatic PR code reviews using Claude
 
-**Triggers**: PR opened/synchronized (all PRs)
+**Triggers**: PR opened (initial creation only, not updates)
 
 **Review Focus**:
 - ✅ Code quality and best practices
@@ -73,6 +76,11 @@ Our CI/CD system uses a staged approach with different test scopes to optimize f
 - ⚡ Performance considerations
 - 🔒 Security concerns
 - 🧪 Test coverage
+
+**Smart Features**:
+- 📌 Sticky comments that update on subsequent pushes
+- 🚫 Skip conditions: `[skip-review]`, `[manual-review]`, `@claude` in title/body
+- 🎯 Automatic exclusion when manual review is requested
 
 ### 5. Auto-Label Issues - `auto-label-issues.yml`
 **Purpose**: Intelligent automatic issue labeling based on content analysis
@@ -170,6 +178,10 @@ All workflows integrate with the P3 command system:
 1. **Token Configuration**: Verify `CLAUDE_CODE_OAUTH_TOKEN` secret
 2. **Permissions**: Check `actions: read` for CI results access
 3. **Trigger Patterns**: Ensure `@claude` mentions are properly formatted
+4. **Duplicate Comments**: Use conflict prevention strategies:
+   - Add `[skip-review]` to PR title to disable automatic review
+   - Add `[manual-review]` to request only interactive `@claude` sessions
+   - Include `@claude` in PR title/body to prefer interactive mode
 
 ### Workflow Logs
 Access detailed execution logs in:

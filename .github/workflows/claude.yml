@@ -1,5 +1,7 @@
 name: Claude Code
 
+# Interactive Claude workflow - triggers only on explicit @claude mentions
+# This avoids conflicts with the automatic claude-code-review.yml workflow
 on:
   issue_comment:
     types: [created]
@@ -12,6 +14,7 @@ on:
 
 jobs:
   claude:
+    # Only trigger on explicit @claude mentions to avoid conflicts with automatic code review workflow
     if: |
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
@@ -39,6 +42,9 @@ jobs:
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
+            
+          # Use sticky comments for interactive sessions to maintain conversation continuity
+          use_sticky_comment: true
           
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
           # model: "claude-opus-4-1-20250805"
