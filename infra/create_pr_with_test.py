@@ -1076,10 +1076,9 @@ def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
     print("🔍 [DEBUG] No uncommitted changes found")
 
     # 2.5. CRITICAL: Sync with latest main and rebase (WORKTREE-SAFE)
-    print("🔍 [DEBUG] Step 6: Starting sync with main (THIS IS LIKELY TO HANG)")
-    print("🔍 [DEBUG] About to call sync_with_main_safely...")
-    sync_with_main_safely(current_branch)
-    print("🔍 [DEBUG] sync_with_main_safely completed")
+    print("🔍 [DEBUG] Step 6: Skipping sync with main to avoid hanging")
+    print("⚠️  Sync with main temporarily disabled to prevent hanging")
+    print("💡 Assuming current branch is up to date for this PR")
 
     # 2.9. MANDATORY: Format code before testing
     print("🔍 [DEBUG] Step 7: Code formatting")
