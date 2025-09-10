@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from .core.config_manager import config_manager
-from .snowflake import Snowflake
+from .utils.snowflake import Snowflake
 
 
 class DefaultRequestLogIDFilter(logging.Filter):

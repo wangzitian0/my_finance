@@ -106,7 +106,7 @@ class HRBPPerformanceManager:
     def __init__(self, config_path: Optional[Path] = None):
         """Initialize HRBP Performance Manager."""
         # Use centralized DirectoryManager for SSOT compliance
-        from .core.directory_manager import directory_manager
+        from ..core.directory_manager import directory_manager
 
         self.logs_dir = directory_manager.get_logs_path()
         self.config_dir = directory_manager.get_config_path()
@@ -116,7 +116,7 @@ class HRBPPerformanceManager:
             config_path = self.config_dir / "hrbp_automation.yml"
 
         # Use SSOT config_manager instead of loading directly
-        from .core.config_manager import config_manager
+        from ..core.config_manager import config_manager
 
         try:
             self.config = config_manager.get_config("hrbp_automation")

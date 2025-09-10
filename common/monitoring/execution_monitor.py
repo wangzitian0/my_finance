@@ -69,7 +69,7 @@ class ExecutionMonitor:
         """Initialize execution monitor."""
         if log_directory is None:
             # Use centralized DirectoryManager for SSOT compliance
-            from .core.directory_manager import directory_manager
+            from ..core.directory_manager import directory_manager
 
             self.log_directory = directory_manager.get_logs_path()
         else:
