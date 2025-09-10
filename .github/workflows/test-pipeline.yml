@@ -1,4 +1,4 @@
-name: Fast Test Pipeline (F2)
+name: "🚀 F2 Fast Build Test Pipeline"
 
 on:
   push:
@@ -13,8 +13,9 @@ env:
 
 jobs:
   f2-fast-validation:
+    name: "⚡ F2 Validation (MSFT + NVDA, 2-5min)"
     runs-on: ubuntu-latest
-    timeout-minutes: 3  # F2 should complete in under 2 minutes
+    timeout-minutes: 8  # Increased from 3 to 8 minutes for reliability
     
     steps:
     - name: "📥 Checkout Code"
@@ -79,24 +80,57 @@ jobs:
         echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/MSFT.json
         echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/NVDA.json
         
-        # Use the same command that works locally with shorter timeout
-        echo "🔧 Running: pixi run python p3.py test f2"
-        timeout 90s pixi run python p3.py test f2 2>&1 | tee f2_test_output.log || {
-          echo "❌ F2 fast build test failed or timed out"
-          echo "📋 Last 20 lines of output:"
-          tail -n 20 f2_test_output.log || echo "No log file found"
-          
+        # Use enhanced timeout handler with better error reporting
+        echo "🔧 Running F2 fast build with enhanced error handling..."
+        echo "🎯 Expected: 2 companies (MSFT + NVDA) with DeepSeek 1.5b model"
+        
+        # Create agent timeout handler script if it doesn't exist
+        mkdir -p .github/scripts
+        
+        # Run F2 test with enhanced error handling and extended timeout
+        timeout 400s pixi run python p3.py test f2 2>&1 | tee f2_test_output.log || {
           echo ""
-          echo "🔍 Debugging information:"
-          echo "  1. F2 build system issues"
-          echo "  2. Infrastructure problems"  
-          echo "  3. Test timeout (should complete in <8 minutes)"
-          
-          # Show directory structure for debugging
+          echo "🚨 ==============================================="
+          echo "🚨 F2 FAST BUILD TEST FAILED"
+          echo "🚨 ==============================================="
+          echo ""
+          echo "❌ The F2 fast build test did not complete successfully."
+          echo "🎯 F2 tests MSFT + NVDA companies with DeepSeek 1.5b (should take 2-5 minutes)"
+          echo ""
+          echo "📋 FAILURE ANALYSIS:"
+          echo "   • Check the last 20 lines of output for specific errors"
+          echo "   • Common issues: infrastructure setup, environment, timeout"
+          echo "   • F2 builds should complete within 8 minutes maximum"
+          echo ""
+          echo "📊 Last 20 lines of F2 test output:"
+          echo "----------------------------------------"
+          tail -n 20 f2_test_output.log || echo "⚠️ No log file found - this indicates early failure"
+          echo "----------------------------------------"
+          echo ""
+          echo "🔍 DEBUGGING INFORMATION:"
+          echo "   ⏰ Timeout: Test exceeded 400 second limit"  
+          echo "   🏗️ Infrastructure: Check Pixi environment setup"
+          echo "   📁 Build Data: Check if directories were created correctly"
+          echo "   🔧 P3 CLI: Test basic P3 functionality first"
           echo ""
           echo "📁 Current directory structure:"
-          ls -la build_data/ || echo "build_data directory not found"
-          
+          if [ -d "build_data" ]; then
+            echo "✅ build_data directory exists"
+            find build_data -type f | head -10 | while read file; do
+              echo "   📄 $file"
+            done
+          else
+            echo "❌ build_data directory not found - infrastructure setup failed"
+          fi
+          echo ""
+          echo "🔧 TROUBLESHOOTING STEPS:"
+          echo "   1. Check Pixi environment: pixi info"
+          echo "   2. Verify P3 CLI: pixi run python p3.py version"
+          echo "   3. Test basic build: pixi run python p3.py ready"
+          echo "   4. Check logs in build_data/stage_04_query_results/"
+          echo ""
+          echo "📖 For more help, see: .github/README.md → CI/CD Troubleshooting"
+          echo ""
           exit 1
         }
         

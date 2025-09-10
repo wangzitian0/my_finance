@@ -52,7 +52,7 @@
   - Validate no regressions introduced
   - Confirm architectural integrity maintained
 - [ ] **Automatic PR creation** (MANDATORY for significant changes):
-  - Route through `agent-coordinator` with EXECUTE keywords
+  - Route directly to `git-ops-agent` with EXECUTE keywords
   - Use `p3 ship "title" ISSUE_NUM` workflow
   - Include comprehensive change description
   - Add proper labels and milestone assignment
@@ -63,6 +63,7 @@
 
 **🎯 QUICK REFERENCE - MOST COMMON VIOLATIONS:**
 - Creating PRs with `gh pr create` instead of `p3 ship`
+- Routing PR creation through agent-coordinator instead of directly to git-ops-agent
 - Using direct tools for complex multi-step tasks instead of agent-coordinator
 - Skipping README.md reading before architecture tasks
 - Creating .md planning files instead of using GitHub Issues
@@ -136,9 +137,10 @@ This file establishes the global company policies and standards for all Claude C
 ALWAYS_use_agent_coordinator:
   # Git Operations (NEVER use direct tools)
   - ALL git commands (status, diff, log, add, commit, push, rebase)
-  - PR creation and management  
   - Branch operations and merging
   - Release coordination and tagging
+  
+  # Exception: PR creation routes DIRECTLY to git-ops-agent (their specialty)
   
   # Development Workflows (NEVER do directly)
   - Code implementation (writing, editing code files)
@@ -180,6 +182,25 @@ simple_single_step_only:
 
 **KEY PRINCIPLE**: When in doubt, route through agent-coordinator. Direct tools are ONLY for read-only information gathering and simple status checks.
 
+#### PR Creation Routing Exception
+
+**CRITICAL PR CREATION POLICY**: PR creation tasks route DIRECTLY to git-ops-agent, NOT through agent-coordinator.
+
+**RATIONALE**: PR creation is git-ops-agent's core specialty and primary responsibility. Direct routing ensures:
+- Optimal expertise utilization for git workflows
+- Faster PR creation without orchestration overhead  
+- Clear accountability for PR quality and compliance
+- Specialized handling of `p3 ship` workflow integration
+
+**IMPLEMENTATION**:
+```python
+# ✅ CORRECT: Direct routing to git-ops-agent for PR creation
+Task(subagent_type="git-ops-agent", prompt="EXECUTE PR creation workflow: analyze current branch changes, create comprehensive PR description, submit PR with proper labels and reviewers. COMPLETE THE FULL IMPLEMENTATION.")
+
+# ❌ WRONG: Routing PR creation through agent-coordinator
+Task(subagent_type="agent-coordinator", prompt="Create PR for current changes")
+```
+
 #### Claude Code Operation Matrix
 
 | Operation Type | Tool Usage | Example |
@@ -187,7 +208,7 @@ simple_single_step_only:
 | **Git Commands** | 🚫 NEVER Direct → ✅ agent-coordinator | `git status` → Task(agent-coordinator) |
 | **Code Writing** | 🚫 NEVER Direct → ✅ agent-coordinator | Writing functions → Task(backend-architect-agent) |
 | **Multi-file Edit** | 🚫 NEVER Direct → ✅ agent-coordinator | Refactoring → Task(dev-quality-agent) |
-| **PR Creation** | 🚫 NEVER Direct → ✅ agent-coordinator | `p3 ship` → Task(git-ops-agent) |
+| **PR Creation** | 🚫 NEVER Direct → ✅ git-ops-agent | `p3 ship` → Task(git-ops-agent) |
 | **File Reading** | ✅ Direct Tools OK | Read("path/file.py") |
 | **Directory Listing** | ✅ Direct Tools OK | LS("/path/to/dir") |
 | **Pattern Search** | ✅ Direct Tools OK | Grep("pattern", glob="*.py") |
@@ -202,6 +223,9 @@ Bash("git commit -m 'message'")
 
 # ✅ CORRECT: Route through agent-coordinator with EXECUTION instructions
 Task(subagent_type="agent-coordinator", prompt="EXECUTE git commit workflow: analyze current changes with git status and git diff, add all modified files, create commit with descriptive message, and push to remote. WRITE CODE and COMPLETE THE FULL IMPLEMENTATION.")
+
+# ✅ CORRECT: For PR creation, route DIRECTLY to git-ops-agent  
+Task(subagent_type="git-ops-agent", prompt="EXECUTE PR creation workflow: analyze current branch changes, create comprehensive PR description, submit PR with proper labels and reviewers. COMPLETE THE FULL IMPLEMENTATION.")
 ```
 
 ```python
@@ -395,7 +419,7 @@ git_ops_responsibilities:
 4. **CONFIGURATION CENTRALIZATION** - Use `common/config/` for all configurations
 5. **P3 WORKFLOW COMPLIANCE** - Never bypass p3 command system
 6. **QUALITY ASSURANCE** - Test before PR creation (`p3 test` mandatory)
-7. **AUTOMATIC PR CREATION** - Always create PR after completing significant changes via `agent-coordinator`
+7. **AUTOMATIC PR CREATION** - Always create PR after completing significant changes via `git-ops-agent`
 8. **DOCUMENTATION CURRENCY** - Update parent READMEs when modifying functionality  
 9. **ENGLISH-ONLY STANDARD** - All technical content must use English
 10. **OPERATIONAL EXCELLENCE** - Monitor and handle system errors appropriately
@@ -483,6 +507,7 @@ ALLOWED_documentation_only:
 ### Common Violations to Monitor
 **CRITICAL POLICY VIOLATIONS**:
 - **PR Creation Bypass**: Using `gh pr create` instead of mandatory `p3 ship`
+- **PR Creation Routing Error**: Routing PR creation through agent-coordinator instead of directly to git-ops-agent
 - **Agent-Coordinator Bypass**: Using direct tools for complex multi-step tasks
 - **Policy Reading Failure**: Skipping mandatory task initiation protocol checklist
 - **GitHub Issue Avoidance**: Creating .md planning files instead of using GitHub issues
