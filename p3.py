@@ -10,12 +10,13 @@ import sys
 from pathlib import Path
 from typing import Dict, Optional
 
-# Import version management - DISABLED to fix worktree hanging issue
-# try:
-#     from scripts.p3.p3_version_simple import get_version_string, increment_version
-#     VERSION_ENABLED = True
-# except ImportError:
-VERSION_ENABLED = False
+# Import version management - Updated for infra/p3/ migration
+try:
+    from infra.p3.p3_version_simple import get_version_string, increment_version
+
+    VERSION_ENABLED = True
+except ImportError:
+    VERSION_ENABLED = False
 
 
 def get_version_string():
@@ -49,12 +50,12 @@ class P3CLI:
         """Load the 8 workflow commands."""
         return {
             # Core Workflow Commands (8 total)
-            "ready": "python scripts/workflow_ready.py",  # Start working
-            "reset": "python scripts/workflow_reset.py",  # Fix environment
-            "check": "python scripts/workflow_check.py",  # Validate code
+            "ready": "python infra/system/workflow_ready.py",  # Start working
+            "reset": "python infra/system/workflow_reset.py",  # Fix environment
+            "check": "python infra/development/workflow_check.py",  # Validate code
             "test": "python infra/run_test.py",  # Test
             "ship": "python infra/create_pr_with_test.py",  # Create PR
-            "debug": "python scripts/workflow_debug.py",  # Diagnose issues
+            "debug": "python infra/system/workflow_debug.py",  # Diagnose issues
             "build": "python ETL/build_dataset.py",  # Build dataset
             "version": "version_command",  # Version info
         }
@@ -146,7 +147,7 @@ def main():
     """Main entry point."""
     # Ensure worktree Python isolation
     try:
-        from scripts.worktree_isolation import WorktreeIsolationManager
+        from infra.system.worktree_isolation import WorktreeIsolationManager
 
         manager = WorktreeIsolationManager()
         manager.auto_switch_python()

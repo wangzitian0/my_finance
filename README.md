@@ -142,10 +142,9 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 
 **Supporting**: 
 - **`common/`** - Shared configurations and utilities
-- **`infra/`** - Infrastructure services and deployment  
+- **`infra/`** - Modular infrastructure system (system/, data/, git/, hrbp/, p3/, development/)
 - **`build_data/`** - Generated datasets and outputs
 - **`templates/`** - Analysis prompts and configurations
-- **`scripts/`** - Workflow automation and tooling
 
 ## Features
 
@@ -195,7 +194,7 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 ## Maintenance & Governance
 
-**P3 CLI Maintenance**: Managed by **infra-ops-agent** (see CLAUDE.md)
+**P3 CLI Maintenance**: Managed by **infra-ops-agent** via **`infra/p3/`** module (see CLAUDE.md)
 - Command interface stability and evolution
 - Workflow optimization and user experience  
 - Environment management and automation
@@ -211,4 +210,5 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 **Component Docs**: [ETL](ETL/README.md), [DCF Engine](dcf_engine/README.md), [Graph RAG](graph_rag/README.md), [Common](common/README.md)  
 **Infrastructure**: [Infrastructure](infra/README.md), [Testing](tests/README.md)
-**Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities# Updated Fri Sep  5 20:45:49 +08 2025
+**Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation  
+**Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities
