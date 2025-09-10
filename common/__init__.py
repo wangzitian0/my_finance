@@ -24,6 +24,10 @@ New Modular Structure:
 - tests/: Comprehensive test structure
 """
 
+# Build and quality modules
+from .build.build_tracker import BuildTracker
+from .build.metadata_manager import MetadataManager
+from .build.quality_reporter import QualityReporter, setup_quality_reporter
 from .core.config_manager import (
     ConfigManager,
     ConfigSchema,
@@ -54,11 +58,6 @@ from .core.storage_manager import (
     StorageManager,
     create_storage_manager_from_config,
 )
-
-# Build and quality modules
-from .build.build_tracker import BuildTracker
-from .build.metadata_manager import MetadataManager
-from .build.quality_reporter import QualityReporter, setup_quality_reporter
 
 # Schema modules
 from .schemas.graph_rag_schema import (

@@ -4,6 +4,7 @@ Agent Coordinator Task Delegation for Git Workflow
 This script delegates the complete git workflow to agent-coordinator as required by CLAUDE.md policies.
 """
 
+
 def delegate_git_workflow():
     """
     According to CLAUDE.md company policies:
@@ -12,7 +13,7 @@ def delegate_git_workflow():
     - PR creation MUST use p3 ship workflow
     - This violates policy if done with direct tools
     """
-    
+
     # Task requires agent-coordinator delegation per company policy
     task_description = """
     EXECUTE complete git workflow for feature-243-check-again branch:
@@ -37,7 +38,7 @@ def delegate_git_workflow():
     COMPLETE THE FULL IMPLEMENTATION including all git operations, testing, and PR creation. 
     Handle test failures by modifying tests as needed to allow PR creation.
     """
-    
+
     print("🚨 COMPANY POLICY COMPLIANCE:")
     print("This git workflow task MUST be delegated to agent-coordinator")
     print("Direct git operations violate CLAUDE.md policies")
@@ -51,6 +52,7 @@ def delegate_git_workflow():
     print("- CLAUDE.md Section: 'MANDATORY AGENT-COORDINATOR ROUTING'")
     print("- Git Operations: 'NEVER use direct tools'")
     print("- PR Creation: 'Use p3 ship workflow'")
+
 
 if __name__ == "__main__":
     delegate_git_workflow()
