@@ -843,7 +843,7 @@ def validate_environment_for_pr():
     # Use fast environment check script for quick validation
     try:
         result = subprocess.run(
-            ["python", "scripts/fast_env_check.py"], capture_output=True, text=True, timeout=10
+            ["python", "infra/system/fast_env_check.py"], capture_output=True, text=True, timeout=10
         )
 
         if result.returncode == 0:
