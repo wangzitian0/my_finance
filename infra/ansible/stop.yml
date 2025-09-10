@@ -1,39 +1,118 @@
 ---
-# stop.yml - Stop local development environment
+# stop.yml - Stop local development environment with comprehensive resource management
 - name: Stop Development Environment  
   hosts: localhost
   connection: local
   gather_facts: yes
+  vars:
+    containers_to_stop:
+      - neo4j-finance
+      - redis-dev
+      - postgres-dev
+      - mongodb-dev
+      - elasticsearch-dev
+    
   tasks:
-    - name: Stop Neo4j container
+    - name: Get current container status
+      shell: podman ps -a --format "{{ '{{.Names}} {{.Status}}' }}"
+      register: container_status
+      ignore_errors: true
+      changed_when: false
+
+    - name: Display current container status
+      debug:
+        msg: |
+          📊 Current container status:
+          {{ container_status.stdout }}
+
+    - name: Gracefully stop Neo4j database
       shell: |
-        if podman ps | grep -q "neo4j-finance"; then
+        if podman ps | grep -q "neo4j-finance.*Up"; then
+          echo "Attempting graceful Neo4j shutdown..."
+          podman exec neo4j-finance cypher-shell -u neo4j -p password 'CALL dbms.shutdown()' || true
+          sleep 3
           echo "Stopping Neo4j container..."
           podman stop neo4j-finance
+          echo "Neo4j container stopped"
         else
           echo "Neo4j container not running"
         fi
       register: neo4j_stop
       changed_when: "'Stopping' in neo4j_stop.stdout"
 
-    - name: Stop Podman machine (optional - keeps it running for faster startup)
+    - name: Stop additional development containers
       shell: |
-        echo "Keeping Podman machine running for faster future startups"
-        echo "To fully stop: podman machine stop"
-      register: podman_machine_info
+        stopped_containers=""
+        for container in {{ containers_to_stop | join(' ') }}; do
+          if podman ps | grep -q "${container}.*Up"; then
+            echo "Stopping ${container}..."
+            podman stop "${container}" || true
+            stopped_containers="${stopped_containers} ${container}"
+          fi
+        done
+        if [ -n "$stopped_containers" ]; then
+          echo "Stopped containers:$stopped_containers"
+        else
+          echo "No additional containers to stop"
+        fi
+      register: additional_containers_stop
+      changed_when: "'Stopped containers' in additional_containers_stop.stdout"
+
+    - name: Clean up orphaned containers
+      shell: |
+        orphaned=$(podman ps -a --filter "status=exited" --filter "status=dead" --format "{{.Names}}" | grep -E "(dev|test|temp)" || true)
+        if [ -n "$orphaned" ]; then
+          echo "Removing orphaned containers: $orphaned"
+          echo "$orphaned" | xargs podman rm -f || true
+        else
+          echo "No orphaned containers to clean"
+        fi
+      register: cleanup_orphaned
+      changed_when: "'Removing orphaned' in cleanup_orphaned.stdout"
+
+    - name: Check Podman machine status
+      shell: podman machine list --format "{{.Name}} {{.Running}}"
+      register: machine_status
+      ignore_errors: true
       changed_when: false
 
-    - name: Display stop status
+    - name: Display machine management options
       debug:
         msg: |
-          🛑 Development environment stopped!
+          ⚙️  Podman Machine Status: {{ machine_status.stdout }}
           
-          📊 Status:
-          - Neo4j container: Stopped
-          - Podman machine: Still running (for faster restart)
+          🔄 Machine kept running for faster restart
+          💡 To stop machine completely: p3 stop --full
+
+    - name: Validate service cleanup
+      shell: |
+        echo "🔍 Validation Results:"
+        echo "Neo4j port 7474: $(curl -s http://localhost:7474 >/dev/null 2>&1 && echo 'STILL ACTIVE' || echo 'RELEASED')"
+        echo "Neo4j port 7687: $(timeout 2 nc -z localhost 7687 >/dev/null 2>&1 && echo 'STILL ACTIVE' || echo 'RELEASED')"
+        echo "Running containers: $(podman ps --format '{{.Names}}' | wc -l)"
+      register: validation_results
+      changed_when: false
+
+    - name: Display comprehensive stop status
+      debug:
+        msg: |
+          🛑 Development environment stopped successfully!
           
-          🔄 To restart:
-          - `p3 ready`
+          📊 Resource Status:
+          {{ validation_results.stdout }}
           
-          🛠️  To fully shutdown:
-          - `podman machine stop` (if you want to free all resources)
+          ✅ Completed Actions:
+          - Neo4j container: {{ 'Stopped' if neo4j_stop.changed else 'Already stopped' }}
+          - Additional containers: {{ 'Stopped' if additional_containers_stop.changed else 'None running' }}
+          - Orphaned containers: {{ 'Cleaned' if cleanup_orphaned.changed else 'None found' }}
+          - Podman machine: Kept running for fast restart
+          
+          🔄 Quick Restart:
+          - `p3 ready` (recommended - fast startup)
+          
+          🛑 Complete Shutdown:
+          - `p3 stop --full` (stops Podman machine)
+          
+          🔧 Troubleshooting:
+          - `p3 debug` (if issues persist)
+          - `p3 reset` (nuclear restart option)

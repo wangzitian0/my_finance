@@ -22,6 +22,7 @@ p3 ready            # "I want to start working" - complete environment setup
 p3 check f2         # "Validate my code" - format, lint, test, build  
 p3 test f2          # "Run comprehensive tests" - e2e validation
 p3 ship "Title" 123 # "Publish my work" - create PR with testing
+p3 stop             # "Stop working" - release development resources
 ```
 
 ## P3 Command System
@@ -31,11 +32,12 @@ P3 is designed around **human intent**, not technical operations. It answers "wh
 ### Command Overview
 
 <details>
-<summary><b>Daily Workflow Commands</b> - 4 commands for everyday development</summary>
+<summary><b>Daily Workflow Commands</b> - 5 commands for everyday development</summary>
 
 | Intent | Command | What It Does |
 |--------|---------|--------------|
 | **"Start working"** | `p3 ready` | Environment setup, start services, verify everything works |
+| **"Stop working"** | `p3 stop [--full]` | Release resources, stop services (keeps machine for fast restart) |
 | **"Check my code"** | `p3 check [scope]` | Format, lint, basic tests - quick validation |
 | **"Test everything"** | `p3 test [scope]` | Complete end-to-end validation including builds |
 | **"Create PR"** | `p3 ship "title" issue` | Test + PR creation with comprehensive validation |
@@ -47,6 +49,7 @@ p3 ready                    # Morning: ensure everything ready
 p3 check f2                 # Quick validation during development
 p3 test f2                  # Comprehensive testing when ready
 p3 ship "Add feature" 123   # Create PR for issue #123
+p3 stop                     # End of day: release resources
 ```
 </details>
 

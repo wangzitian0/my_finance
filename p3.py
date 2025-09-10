@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 P3 CLI - Simplified Workflow-Oriented Command System
-Only 8 essential workflow commands for developer productivity
+Only 9 essential workflow commands for developer productivity
 """
 
 import os
@@ -24,7 +24,7 @@ def get_version_string():
 
 
 class P3CLI:
-    """Simplified P3 CLI with only 8 workflow commands."""
+    """Simplified P3 CLI with only 9 workflow commands."""
 
     def __init__(self):
         self.project_root = self._find_project_root()
@@ -47,12 +47,13 @@ class P3CLI:
         return Path(__file__).parent
 
     def _load_commands(self) -> Dict[str, str]:
-        """Load the 8 workflow commands."""
+        """Load the 9 workflow commands."""
         return {
-            # Core Workflow Commands (8 total)
-            "ready": "python scripts/workflow/ready.py",  # Start working
-            "reset": "python scripts/workflow/reset.py",  # Fix environment
-            "check": "python scripts/workflow/check.py",  # Validate code
+            # Core Workflow Commands (9 total)
+            "ready": "python infra/system/workflow_ready.py",  # Start working
+            "stop": "python infra/system/workflow_stop.py",   # Stop working (release resources)
+            "reset": "python infra/system/workflow_reset.py",  # Fix environment
+            "check": "python infra/development/workflow_check.py",  # Validate code
             "test": "python infra/run_test.py",  # Test
             "ship": "python infra/workflows/pr_creation.py",  # Create PR
             "debug": "python scripts/workflow/debug.py",  # Diagnose issues
@@ -68,7 +69,7 @@ class P3CLI:
 
         if command not in self.commands:
             print(f"❌ Unknown command: {command}")
-            print("Available commands: ready, reset, check, test, ship, debug, build, version")
+            print("Available commands: ready, stop, reset, check, test, ship, debug, build, version")
             print("Use 'p3 help' for details")
             sys.exit(1)
 
@@ -116,8 +117,9 @@ class P3CLI:
             """
 🚀 P3 CLI - Workflow-Oriented Development Commands
 
-DAILY WORKFLOW (4 commands):
+DAILY WORKFLOW (5 commands):
   p3 ready                  Start working (env + services)
+  p3 stop [--full] [--force] Stop working (release resources)
   p3 check [scope]          Validate code (format + lint + test)
   p3 test [scope]           Comprehensive testing (e2e validation)
   p3 ship "title" issue     Publish work (test + PR + cleanup)
@@ -129,6 +131,10 @@ TROUBLESHOOTING (2 commands):
 DATA & VERSION (2 commands):
   p3 build [scope]          Build dataset (f2/m7/n100/v3k)
   p3 version [level]        Show/increment version
+
+STOP OPTIONS:
+  --full                    Stop Podman machine (complete shutdown)
+  --force                   Force stop without graceful shutdown
 
 SCOPES:
   f2    Fast 2 companies (development)
