@@ -12,11 +12,11 @@ from pathlib import Path
 def main():
     """Run I/O compliance validation"""
     script_path = Path(__file__).parent / "validate_io_compliance.sh"
-    
+
     if not script_path.exists():
         print("❌ I/O compliance validation script not found")
         sys.exit(1)
-    
+
     try:
         result = subprocess.run(["bash", str(script_path)], check=False)
         sys.exit(result.returncode)

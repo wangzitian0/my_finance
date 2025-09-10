@@ -13,6 +13,7 @@ from typing import Dict, Optional
 # Import version management - Updated for infra/p3/ migration
 try:
     from infra.p3.p3_version_simple import get_version_string, increment_version
+
     VERSION_ENABLED = True
 except ImportError:
     VERSION_ENABLED = False

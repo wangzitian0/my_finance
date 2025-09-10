@@ -1,2 +1,2 @@
-# Infra Development Module  
+# Infra Development Module
 # Development tools and workflow automation
