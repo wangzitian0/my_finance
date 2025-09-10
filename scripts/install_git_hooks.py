@@ -85,9 +85,18 @@ echo -e "${RED}═════════════════════�
 echo -e "${YELLOW}❌ This repository requires the use of automated PR workflow${NC}"
 echo -e "${YELLOW}❌ Direct git push commands are not permitted${NC}"
 echo
-echo -e "${BLUE}🔧 REQUIRED WORKFLOW:${NC}"
-echo -e "${GREEN}   1. git rebase main                     # Rebase latest main${NC}"
-echo -e "${GREEN}   2. p3 ship \\"Title\\" ISSUE_NUM      # Auto: F2 test + markers + push + PR${NC}"
+echo -e "${BLUE}🔧 SMART P3 WORKFLOW:${NC}"
+echo -e "${GREEN}   Option 1 - If you just ran p3 test f2 (within 10 minutes):${NC}"
+echo -e "${GREEN}     p3 ship \\"Title\\" ISSUE_NUM         # Direct ship with existing test results${NC}"
+echo
+echo -e "${GREEN}   Option 2 - If no recent f2 test or first time:${NC}"
+echo -e "${GREEN}     1. p3 ready                          # Setup environment (if needed)${NC}"
+echo -e "${GREEN}     2. p3 check                          # Fix formatting (optional)${NC}" 
+echo -e "${GREEN}     3. p3 test f2                        # Fast test (2 companies, 2-5min)${NC}"
+echo -e "${GREEN}     4. p3 ship \\"Title\\" ISSUE_NUM       # Create PR with test markers${NC}"
+echo
+echo -e "${GREEN}   🚀 FASTEST WORKFLOW - p3 ship automatically runs f2 test if needed!${NC}"
+echo -e "${GREEN}     p3 ship \\"Title\\" ISSUE_NUM         # Auto: check for recent tests, run f2 if needed${NC}"
 echo
 echo -e "${BLUE}💡 WHY THIS RESTRICTION EXISTS:${NC}"
 echo -e "   • Ensures all code passes automated testing before merge"
@@ -96,10 +105,26 @@ echo -e "   • Prevents untested code from reaching the main branch"
 echo -e "   • Enforces proper issue tracking and PR documentation"
 echo
 echo -e "${YELLOW}⚡ QUICK SOLUTION:${NC}"
-echo -e "${GREEN}   # Cancel this push and use the proper workflow:${NC}"
+echo -e "${GREEN}   # Cancel this push and use the smart P3 workflow:${NC}"
 echo -e "${GREEN}   git reset --soft HEAD~1                # Undo last commit (keep changes)${NC}"
-echo -e "${GREEN}   git rebase main                        # Rebase latest main${NC}"
-echo -e "${GREEN}   p3 ship \\"Brief description\\" ISSUE_NUM # Auto: test + markers + push + PR${NC}"
+echo
+echo -e "${BLUE}   🎯 OPTION 1 - Super Fast (recommended):${NC}"
+echo -e "${GREEN}   p3 ship \\"Brief description\\" ISSUE_NUM # Auto-detects if f2 test needed${NC}"
+echo
+echo -e "${BLUE}   🎯 OPTION 2 - Manual control:${NC}"
+echo -e "${GREEN}   p3 test f2                             # Explicit F2 test first${NC}"
+echo -e "${GREEN}   p3 ship \\"Brief description\\" ISSUE_NUM # Then ship with test results${NC}"
+echo
+echo -e "${BLUE}📊 P3 SCOPES (p3 ship auto-runs f2, or specify manually):${NC}"
+echo -e "   • f2  (2 companies, 2-5min)   - Default for PRs, auto-runs if needed"
+echo -e "   • m7  (7 companies, 10-20min) - For release validation"  
+echo -e "   • n100 (100 companies, 1-3hr) - For production testing"
+echo
+echo -e "${BLUE}💡 SMART LOGIC:${NC}"
+echo -e "   p3 ship will automatically run 'p3 test f2' if:"
+echo -e "   • No recent F2 test results found (within 10 minutes)"
+echo -e "   • Code has changed since last test"
+echo -e "   • This is the first test run in current session"
 echo
 
 # Double confirmation bypass (for emergency use only)
