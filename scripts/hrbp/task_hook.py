@@ -5,7 +5,7 @@ Simple Task Hook for Sub-Agent Failure Capture
 GitHub Issue #181: Replace AgentNeo with simple dump-and-process approach
 
 Usage:
-    from scripts.task_hook import hook_task_start, hook_task_end, process_dumps
+    from scripts.hrbp.task_hook import hook_task_start, hook_task_end, process_dumps
 
     # Hook task execution
     exec_id = hook_task_start("git-ops-agent", "Check git status")
