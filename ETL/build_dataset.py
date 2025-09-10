@@ -44,7 +44,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 logger.info("Path setup completed")
 
 logger.info("About to import BuildTracker...")
-from common.build_tracker import BuildTracker
+from common.build.build_tracker import BuildTracker
 
 logger.info("BuildTracker imported successfully")
 
