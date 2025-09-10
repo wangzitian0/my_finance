@@ -49,16 +49,27 @@ def check_neo4j_web():
 def check_pandas_import():
     """Check pandas import - 2 second timeout"""
     try:
+        # First try pixi environment
         result = subprocess.run(
-            ["pixi", "run", "python", "-c", 'import pandas; print("OK")'],
+            ["pixi", "run", "python", "-c", "import pandas; print('OK')"],
             capture_output=True,
             text=True,
             timeout=2,
         )
-        if result.returncode == 0:
-            return True, "pandas import working"
+        if result.returncode == 0 and "OK" in result.stdout:
+            return True, "pandas import working (pixi)"
+
+        # If pixi fails, try direct python (for test commands)
+        result = subprocess.run(
+            ["python", "-c", "import pandas; print('OK')"],
+            capture_output=True,
+            text=True,
+            timeout=2,
+        )
+        if result.returncode == 0 and "OK" in result.stdout:
+            return True, "pandas import working (direct python)"
         else:
-            return False, f"pandas import failed"
+            return False, f"pandas import failed in both pixi and direct python"
     except subprocess.TimeoutExpired:
         return False, "pandas import timed out (2s)"
     except Exception as e:
