@@ -105,23 +105,36 @@ class WorktreeIsolationManager:
 
         # Ensure pixi environment exists
         if not self._ensure_pixi_env():
+            print("⚠️  Could not ensure pixi environment, continuing with current Python")
             return False
 
         expected_python = self._get_expected_python()
         if not expected_python.exists():
-            print(f"❌ Python environment not found: {expected_python}")
+            print(f"⚠️  Python environment not found: {expected_python}")
+            print("   Continuing with current Python...")
             return False
 
+        # Check if we need to avoid infinite recursion
+        if os.environ.get("P3_PYTHON_SWITCHED") == "1":
+            print("🔄 Python environment already switched, continuing...")
+            return True
+
         # Re-execute script using correct Python
-        print(f"🔄 Auto-switching to worktree Python environment...")
-        print(f"   Worktree: {self.worktree_name}")
-        print(f"   Python: {expected_python}")
+        print(f"🔄 P3 auto-switching to worktree Python environment...")
+        print(f"   Worktree: {self.worktree_name}")  
+        print(f"   From: {sys.executable}")
+        print(f"   To: {expected_python}")
 
         try:
+            # Set environment variable to prevent infinite recursion
+            new_env = os.environ.copy()
+            new_env["P3_PYTHON_SWITCHED"] = "1"
+            
             # Re-execute current script
-            os.execv(str(expected_python), [str(expected_python)] + sys.argv)
+            os.execve(str(expected_python), [str(expected_python)] + sys.argv, new_env)
         except Exception as e:
             print(f"❌ Failed to switch Python: {e}")
+            print("   Continuing with current Python...")
             return False
 
     def get_status(self) -> Dict:
