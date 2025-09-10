@@ -6,8 +6,8 @@ Checks critical services in 5 seconds or less, fails fast with clear messages
 
 import subprocess
 import sys
-import time
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 
@@ -30,8 +30,8 @@ def check_podman_machine():
 def check_neo4j_web():
     """Check Neo4j web interface - 3 second timeout"""
     try:
-        import urllib.request
         import socket
+        import urllib.request
 
         # Set socket timeout
         socket.setdefaulttimeout(3)

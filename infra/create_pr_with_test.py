@@ -839,16 +839,13 @@ def validate_environment_for_pr():
     """Pre-flight environment validation for PR creation using fast check"""
     print("🔍 Pre-flight Environment Validation")
     print("-" * 40)
-    
+
     # Use fast environment check script for quick validation
     try:
         result = subprocess.run(
-            ["python", "scripts/fast_env_check.py"],
-            capture_output=True,
-            text=True,
-            timeout=10
+            ["python", "scripts/fast_env_check.py"], capture_output=True, text=True, timeout=10
         )
-        
+
         if result.returncode == 0:
             print("✅ All environment checks passed - ready for PR creation")
             return True
@@ -862,7 +859,7 @@ def validate_environment_for_pr():
             print("\n💡 Please resolve environment issues before creating PR")
             print("🔧 Try running 'p3 ready' to fix environment issues")
             return False
-            
+
     except subprocess.TimeoutExpired:
         print("⏰ Environment validation timed out")
         print("💡 Run 'p3 debug' for detailed diagnostics")
@@ -1490,7 +1487,6 @@ Examples:
     )
     print(f"🔍 [DEBUG] Full args: {vars(args)}")
 
-
     # Validate required arguments for PR creation
     print("🔍 [DEBUG] Validating required arguments for PR creation...")
     if not args.title or not args.issue_number:
@@ -1504,9 +1500,7 @@ Examples:
     print("🔍 [DEBUG] About to start create_pr_workflow...")
 
     try:
-        pr_url = create_pr_workflow(
-            args.title, args.issue_number, args.description, args.scope
-        )
+        pr_url = create_pr_workflow(args.title, args.issue_number, args.description, args.scope)
         print(f"🔍 [DEBUG] create_pr_workflow completed, pr_url: {pr_url}")
 
         if pr_url:

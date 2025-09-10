@@ -11,9 +11,9 @@ from pathlib import Path
 
 # Import from create_pr_with_test.py to reuse test logic
 from create_pr_with_test import (
+    run_command,
     run_end_to_end_test,
     validate_environment_for_pr,
-    run_command,
 )
 
 
@@ -49,7 +49,7 @@ Examples:
     # Environment validation is mandatory
     print("🔍 Environment Validation (Mandatory)")
     print("-" * 40)
-    
+
     if not validate_environment_for_pr():
         print("\n❌ Test aborted due to environment issues")
         print("🔧 Please resolve environment issues and try again")
