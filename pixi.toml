@@ -57,20 +57,31 @@ pytest-direct = "python -m pytest"
 black-direct = "python -m black"
 mypy-direct = "python -m mypy"
 
-# === COMMON MODULE TESTING ===
-# Common module unit testing with coverage
+# === COMPREHENSIVE TESTING STRATEGY ===
+# P3-aligned testing that ensures p3 test is superset of CI tests
+
+# Primary CI-aligned tests (same as CI workflow)
+test-ci-unit = "python -m pytest common/tests/unit/ -v --tb=short --maxfail=20 --cov=common --cov-report=term-missing --cov-fail-under=70"
+test-ci-integration = "python -m pytest common/tests/integration/ -v --tb=short --cov=common --cov-report=term-missing"
+test-ci-complete = "python -m pytest common/tests/ --cov=common --cov-report=html:common/tests/coverage_html --cov-report=xml:common/tests/coverage.xml --cov-report=term-missing --cov-fail-under=80"
+
+# Legacy common module tasks (maintained for compatibility)
 test-common = "python -m pytest common/tests/ --cov=common --cov-report=html:common/tests/coverage_html --cov-report=term-missing --cov-fail-under=80"
 test-common-unit = "python -m pytest common/tests/unit/ --cov=common --cov-report=term-missing"
 test-common-integration = "python -m pytest common/tests/integration/ --cov=common --cov-report=term-missing"
 test-common-coverage = "python -m pytest common/tests/ --cov=common --cov-report=html:common/tests/coverage_html --cov-report=xml:common/tests/coverage.xml --cov-report=term-missing"
 test-common-check = "python common/tests/pytest_runner.py --check"
 
-# Test by markers
-test-core = "python -m pytest -m core --tb=short -v"
+# Test by markers (CI-aligned)
+test-core = "python -m pytest -m core --tb=short -v --maxfail=10"
 test-agents = "python -m pytest -m agents --tb=short -v" 
 test-build = "python -m pytest -m build --tb=short -v"
 test-monitoring = "python -m pytest -m monitoring --tb=short -v"
 test-schemas = "python -m pytest -m schemas --tb=short -v"
+
+# Fast development testing (for quick validation during development)
+test-fast = "python -m pytest common/tests/unit/ -x --tb=short --disable-warnings"
+test-quick = "python -m pytest common/tests/unit/ --tb=line -q --disable-warnings"
 
 # Development environment validation
 check-env = "python -c 'import sys; print(f\"Python: {sys.version}\"); print(\"✅ Pixi environment ready\")'"

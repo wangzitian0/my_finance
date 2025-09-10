@@ -56,9 +56,15 @@ def main():
             "Type checking",
             True,
         ),
-        # 4. Run tests
-        ("pixi run python -m pytest tests/ -v", "Unit tests", False),
-        # 5. Quick build validation
+        # 4. Run unit tests (comprehensive)
+        (
+            "pixi run python -m pytest common/tests/unit/ -v --tb=short",
+            "Common module unit tests",
+            False,
+        ),
+        # 5. Run marker-based tests
+        ("pixi run python -m pytest -m core --tb=short -v", "Core component tests", True),
+        # 6. Quick build validation
         (
             f"pixi run python ETL/build_dataset.py {scope}",
             f"Build validation ({scope})",

@@ -404,9 +404,19 @@ class BuildTracker:
 
             # File Locations
             f.write("## File Locations\n\n")
-            f.write(f"- **Build Directory**: `{self.build_path.relative_to(Path.cwd())}`\n")
-            f.write(f"- **Stage Logs**: `{self.build_path.relative_to(Path.cwd())}/stage_logs/`\n")
-            f.write(f"- **Artifacts**: `{self.build_path.relative_to(Path.cwd())}/artifacts/`\n\n")
+            try:
+                build_path_str = f"`{self.build_path.relative_to(Path.cwd())}`"
+                stage_logs_str = f"`{self.build_path.relative_to(Path.cwd())}/stage_logs/`"
+                artifacts_str = f"`{self.build_path.relative_to(Path.cwd())}/artifacts/`"
+            except ValueError:
+                # If build_path is not relative to cwd, use absolute path
+                build_path_str = f"`{self.build_path}`"
+                stage_logs_str = f"`{self.build_path}/stage_logs/`"
+                artifacts_str = f"`{self.build_path}/artifacts/`"
+            
+            f.write(f"- **Build Directory**: {build_path_str}\n")
+            f.write(f"- **Stage Logs**: {stage_logs_str}\n")
+            f.write(f"- **Artifacts**: {artifacts_str}\n\n")
 
             # Copy SEC DCF Integration Process documentation and add reference
             sec_doc_copied = self._copy_sec_dcf_documentation()

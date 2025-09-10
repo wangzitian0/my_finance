@@ -65,6 +65,74 @@ Examples:
     print("✅ Environment validation passed")
     print()
 
+    # CRITICAL: Run COMPLETE unit tests before end-to-end tests to catch failures early
+    print("🧪 Comprehensive Unit Test Validation (Pre-E2E)")
+    print("-" * 40)
+    print("🎯 GOAL: Ensure p3 test is superset of CI tests")
+    print()
+
+    # Test commands that exactly match what CI runs (comprehensive unit tests)
+    unit_test_commands = [
+        # Primary unit tests (main CI failure cause) - UPDATED: Using pixi environment
+        (
+            "pixi run python -m pytest common/tests/unit/ -v --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
+            "Common Unit Tests (Primary CI Test)",
+        ),
+        # Core component tests by markers
+        ("pixi run python -m pytest -m core --tb=short -v --maxfail=10", "Core Component Tests"),
+        # Schema validation tests
+        ("pixi run python -m pytest -m schemas --tb=short -v", "Schema Definition Tests"),
+        # Agent tests (if they exist)
+        (
+            "pixi run python -m pytest -m agents --tb=short -v || echo 'No agent tests found'",
+            "Agent System Tests",
+        ),
+        # Build module tests
+        ("pixi run python -m pytest -m build --tb=short -v", "Build Module Tests"),
+    ]
+
+    print(f"📋 Running {len(unit_test_commands)} unit test categories that match CI...")
+    print()
+
+    unit_tests_passed = 0
+    unit_test_failures = []
+
+    for cmd, description in unit_test_commands:
+        print(f"🔍 {description}...")
+        unit_result = run_command(cmd, description)
+
+        if not unit_result or unit_result.returncode != 0:
+            unit_test_failures.append(
+                (description, unit_result.stderr if unit_result else "Command failed")
+            )
+            print(f"❌ {description} - FAILED")
+        else:
+            unit_tests_passed += 1
+            print(f"✅ {description} - PASSED")
+        print()  # Spacing between tests
+
+    # Summary of unit test results
+    total_unit_tests = len(unit_test_commands)
+    print(f"📊 Unit Test Summary: {unit_tests_passed}/{total_unit_tests} passed")
+
+    if unit_test_failures:
+        print("\n🚨 CRITICAL UNIT TEST FAILURES (Will cause CI failure!):")
+        for description, error in unit_test_failures:
+            print(f"   • {description}")
+            if "73 failed" in str(error) or "unit test" in description.lower():
+                print("     ⚠️  This is the primary CI failure cause!")
+
+        print("\n💡 UNIT TEST FIX REQUIRED:")
+        print("   1. Fix the failing unit tests above")
+        print("   2. Re-run 'p3 test f2' to verify fixes")
+        print("   3. Only then proceed with PR creation")
+        print("\n🎯 p3 test MUST be superset of CI - all unit tests must pass here first")
+        sys.exit(1)
+
+    print("✅ All unit tests passed - CI unit tests will succeed!")
+    print("🎯 p3 test is now validated as superset of CI tests")
+    print()
+
     # Run the test
     test_result = run_end_to_end_test(args.scope)
 

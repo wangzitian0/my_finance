@@ -7,6 +7,7 @@ Tests database operations, performance analysis, and error tracking.
 import json
 import sqlite3
 import tempfile
+import time
 import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -144,6 +145,9 @@ class TestAgentTaskTracker:
             tracker = AgentTaskTracker(db_path)
 
             task_id = tracker.create_task(agent_type="test-agent", task_description="Test task")
+
+            # Add small delay to ensure measurable execution time
+            time.sleep(0.001)
 
             # Complete task successfully
             environment_state = {"key": "value"}
@@ -430,6 +434,9 @@ class TestAgentTaskTrackerIntegration:
             )
             task_ids.append(task_id)
 
+            # Add small delay to ensure measurable execution time
+            time.sleep(0.001)
+
             tracker.complete_task(
                 task_id=task_id,
                 execution_result=ExecutionResult.SUCCESS,
@@ -441,6 +448,9 @@ class TestAgentTaskTrackerIntegration:
                 agent_type="workflow-agent", task_description="Failed task"
             )
             task_ids.append(task_id)
+
+            # Add small delay to ensure measurable execution time
+            time.sleep(0.001)
 
             tracker.complete_task(
                 task_id=task_id,

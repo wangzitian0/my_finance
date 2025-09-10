@@ -38,7 +38,7 @@ class TestInputValidationSecurity:
 
             dm = DirectoryManager(root_path=project_root)
 
-            # Add input validation methods
+            # Add input validation method that doesn't exist in DirectoryManager
             def validate_path_input(self, input_path: str) -> str:
                 """Validate and sanitize path input"""
                 if not input_path or not isinstance(input_path, str):
@@ -57,29 +57,8 @@ class TestInputValidationSecurity:
 
                 return sanitized.strip()
 
-            def validate_subprocess_args(self, args: list) -> list:
-                """Validate subprocess arguments for security"""
-                if not isinstance(args, list):
-                    raise TypeError("Subprocess arguments must be a list")
-
-                validated_args = []
-                dangerous_commands = ["rm", "del", "format", "mkfs", "dd", "chmod 777"]
-
-                for arg in args:
-                    if not isinstance(arg, (str, Path)):
-                        raise TypeError(f"Invalid argument type: {type(arg)}")
-
-                    arg_str = str(arg)
-                    for dangerous_cmd in dangerous_commands:
-                        if dangerous_cmd in arg_str.lower():
-                            raise ValueError(f"Dangerous command detected: {dangerous_cmd}")
-
-                    validated_args.append(arg_str)
-
-                return validated_args
-
             dm.validate_path_input = validate_path_input.__get__(dm, DirectoryManager)
-            dm.validate_subprocess_args = validate_subprocess_args.__get__(dm, DirectoryManager)
+            # Use the real validate_subprocess_args method - don't override it
 
             yield dm
 

@@ -47,7 +47,7 @@ class P3CLI:
         return Path(__file__).parent
 
     def _load_commands(self) -> Dict[str, str]:
-        """Load the 9 workflow commands."""
+        """Load the enhanced workflow commands."""
         return {
             # Core Workflow Commands (9 total)
             "ready": "python infra/system/workflow_ready.py",  # Start working
@@ -122,15 +122,15 @@ class P3CLI:
 DAILY WORKFLOW (5 commands):
   p3 ready                  Start working (env + services)
   p3 stop [--full] [--force] Stop working (release resources)
-  p3 check [scope]          Validate code (format + lint + test)
-  p3 test [scope]           Comprehensive testing (e2e validation)
-  p3 ship "title" issue     Publish work (test + PR + cleanup)
+  p3 check [scope]          Validate code (format + lint + basic tests)
+  p3 test [scope]           Unit tests + integration + e2e (superset of CI)
+  p3 ship "title" issue     Publish work (comprehensive test + PR + cleanup)
 
 TROUBLESHOOTING (2 commands):
   p3 debug                  Diagnose issues (status check)
   p3 reset                  Fix environment (clean restart)
 
-DATA & VERSION (2 commands):
+DATA & VERSION (3 commands):
   p3 build [scope]          Build dataset (f2/m7/n100/v3k)
   p3 version [level]        Show/increment version
 

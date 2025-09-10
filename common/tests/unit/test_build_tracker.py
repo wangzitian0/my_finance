@@ -488,8 +488,9 @@ class TestBuildTrackerClassMethods:
 
             # Test retrieval
             with patch("common.build.build_tracker.Path.cwd", return_value=project_root):
-                with patch.object(
-                    Path, "__file__", project_root / "common" / "build" / "build_tracker.py"
+                with patch(
+                    "common.build.build_tracker.__file__",
+                    str(project_root / "common" / "build" / "build_tracker.py"),
                 ):
                     latest_tracker = BuildTracker.get_latest_build(base_path=str(data_dir))
 
@@ -504,8 +505,9 @@ class TestBuildTrackerClassMethods:
             data_dir = project_root / "data"
 
             with patch("common.build.build_tracker.Path.cwd", return_value=project_root):
-                with patch.object(
-                    Path, "__file__", project_root / "common" / "build" / "build_tracker.py"
+                with patch(
+                    "common.build.build_tracker.__file__",
+                    str(project_root / "common" / "build" / "build_tracker.py"),
                 ):
                     latest_tracker = BuildTracker.get_latest_build(base_path=str(data_dir))
 

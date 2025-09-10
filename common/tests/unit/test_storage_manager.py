@@ -26,28 +26,21 @@ class TestStorageBackendInterface:
 
     def test_interface_methods_exist(self):
         """Test that interface defines required methods."""
-        interface = StorageBackendInterface()
-
-        # Check that abstract methods exist
-        assert hasattr(interface, "read_text")
-        assert hasattr(interface, "write_text")
-        assert hasattr(interface, "read_json")
-        assert hasattr(interface, "write_json")
-        assert hasattr(interface, "exists")
-        assert hasattr(interface, "list_directory")
-        assert hasattr(interface, "ensure_directory")
-        assert hasattr(interface, "delete_file")
+        # Check that abstract methods exist on the class
+        assert hasattr(StorageBackendInterface, "read_file")
+        assert hasattr(StorageBackendInterface, "write_file")
+        assert hasattr(StorageBackendInterface, "exists")
+        assert hasattr(StorageBackendInterface, "list_directory")
+        assert hasattr(StorageBackendInterface, "create_directory")
+        assert hasattr(StorageBackendInterface, "delete_path")
+        assert hasattr(StorageBackendInterface, "move_path")
+        assert hasattr(StorageBackendInterface, "get_metadata")
 
     def test_interface_not_implemented(self):
-        """Test that interface methods raise NotImplementedError."""
-        interface = StorageBackendInterface()
-
-        with pytest.raises(NotImplementedError):
-            interface.read_text(Path("test"))
-        with pytest.raises(NotImplementedError):
-            interface.write_text(Path("test"), "content")
-        with pytest.raises(NotImplementedError):
-            interface.read_json(Path("test"))
+        """Test that we cannot instantiate abstract interface directly."""
+        # Abstract classes should not be instantiable
+        with pytest.raises(TypeError):
+            StorageBackendInterface()
 
 
 @pytest.mark.core
@@ -57,12 +50,14 @@ class TestLocalFilesystemBackend:
     def test_initialization(self, temp_dir: Path):
         """Test backend initialization."""
         backend = LocalFilesystemBackend(root_path=temp_dir)
-        assert backend.root_path == temp_dir
+        # Use resolve() to handle symlinks like /var -> /private/var on macOS
+        assert backend.root_path.resolve() == temp_dir.resolve()
 
     def test_initialization_with_string_path(self, temp_dir: Path):
         """Test backend initialization with string path."""
         backend = LocalFilesystemBackend(root_path=str(temp_dir))
-        assert backend.root_path == temp_dir
+        # Use resolve() to handle symlinks like /var -> /private/var on macOS
+        assert backend.root_path.resolve() == temp_dir.resolve()
 
     def test_resolve_path(self, temp_dir: Path):
         """Test path resolution."""
@@ -71,12 +66,14 @@ class TestLocalFilesystemBackend:
         # Test absolute path resolution
         resolved = backend._resolve_path(Path("subfolder/file.txt"))
         expected = temp_dir / "subfolder" / "file.txt"
-        assert resolved == expected
+        # Use resolve() to handle symlinks like /var -> /private/var on macOS
+        assert resolved.resolve() == expected.resolve()
 
         # Test relative path resolution
         resolved = backend._resolve_path(Path("./relative/file.txt"))
         expected = temp_dir / "relative" / "file.txt"
-        assert resolved == expected
+        # Use resolve() to handle symlinks like /var -> /private/var on macOS
+        assert resolved.resolve() == expected.resolve()
 
     def test_read_text_success(self, temp_dir: Path):
         """Test successful text file reading."""
