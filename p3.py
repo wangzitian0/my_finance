@@ -52,7 +52,7 @@ class P3CLI:
             "ready": "python scripts/workflow_ready.py",  # Start working
             "reset": "python scripts/workflow_reset.py",  # Fix environment
             "check": "python scripts/workflow_check.py",  # Validate code
-            "test": "python infra/create_pr_with_test.py --skip-pr-creation --scope",  # Test
+            "test": "python infra/run_test.py",  # Test
             "ship": "python infra/create_pr_with_test.py",  # Create PR
             "debug": "python scripts/workflow_debug.py",  # Diagnose issues
             "build": "python ETL/build_dataset.py",  # Build dataset

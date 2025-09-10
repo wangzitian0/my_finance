@@ -85,7 +85,7 @@
       - Web Interface: http://localhost:7474
       - Database Port: 7687
       - Default Auth: neo4j/password
-      - Status: {{ 'Ready' if neo4j_web_check.status == 200 else 'Starting (may take a few more minutes)' }}
+      - Status: {{ 'Ready' if neo4j_web_check is defined and neo4j_web_check.status|default(0) == 200 else 'Starting (may take a few more minutes)' }}
 
 - name: Show container status
   command: podman ps --filter name=neo4j-finance --format "table {{ "{{" }}.Names{{ "}}" }}\t{{ "{{" }}.Status{{ "}}" }}\t{{ "{{" }}.Ports{{ "}}" }}"

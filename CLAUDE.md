@@ -8,9 +8,11 @@
 - [ ] **Read CLAUDE.md completely** (this file) - understand all company policies  
 - [ ] **Read README.md** - understand project architecture and setup
 - [ ] **Identify task complexity** - single-step vs multi-step vs multi-domain
-- [ ] **Think as en engineer** - Think about the correct repair method and follow the reuse philosophy of large-scale projects. Avoid bypassing all existing logic and creating a new logic block.
-- [ ] **Respect to the basic process** - Avoid skipping or modifying the basic process when it fails.
+- [ ] **Think as en engineer** Think about the correct repair method and follow the reuse philosophy of large-scale projects. Avoid bypassing all existing logic and creating a new logic block.
+- [ ] **Respect to the basic process**  Avoid skipping or modifying the basic process when it fails.
+- [ ] **NEVER BYPASS P3 SHIP FAILURES** When p3 ship fails, ALWAYS fix the root cause. Never create workarounds, mock tests, or manual processes to bypass validation. If pandas import fails, fix the dependency chain. If tests timeout, fix the environment. If validation fails, fix the code. This ensures system integrity and prevents technical debt.
 - [ ] **Two-layer modularity** - Before you start, think clearly about what directory to put your code in. The logic you care about should be in the directories/subdirectories/<here>. Follow the two-tier principle of modules/submodules/<file>.
+
 
 ### Phase 2: Tool & Agent Selection ✅  
 - [ ] **Determine tool requirements**:
