@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from .execution_monitor import ErrorCategory, ExecutionLog, ExecutionResult
+from ..monitoring.execution_monitor import ErrorCategory, ExecutionLog, ExecutionResult
 
 
 @dataclass
