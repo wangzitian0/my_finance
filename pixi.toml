@@ -57,6 +57,21 @@ pytest-direct = "python -m pytest"
 black-direct = "python -m black"
 mypy-direct = "python -m mypy"
 
+# === COMMON MODULE TESTING ===
+# Common module unit testing with coverage
+test-common = "python -m pytest common/tests/ --cov=common --cov-report=html:common/tests/coverage_html --cov-report=term-missing --cov-fail-under=80"
+test-common-unit = "python -m pytest common/tests/unit/ --cov=common --cov-report=term-missing"
+test-common-integration = "python -m pytest common/tests/integration/ --cov=common --cov-report=term-missing"
+test-common-coverage = "python -m pytest common/tests/ --cov=common --cov-report=html:common/tests/coverage_html --cov-report=xml:common/tests/coverage.xml --cov-report=term-missing"
+test-common-check = "python common/tests/pytest_runner.py --check"
+
+# Test by markers
+test-core = "python -m pytest -m core --tb=short -v"
+test-agents = "python -m pytest -m agents --tb=short -v" 
+test-build = "python -m pytest -m build --tb=short -v"
+test-monitoring = "python -m pytest -m monitoring --tb=short -v"
+test-schemas = "python -m pytest -m schemas --tb=short -v"
+
 # Development environment validation
 check-env = "python -c 'import sys; print(f\"Python: {sys.version}\"); print(\"✅ Pixi environment ready\")'"
 

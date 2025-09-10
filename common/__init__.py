@@ -13,10 +13,14 @@ Issue #184: Core library restructuring with focused components
 - Legacy path mapping for backward compatibility
 - DRY architecture eliminating hardcoded paths
 
-New Structure:
+New Modular Structure:
 - core/: Core system components (DirectoryManager, ConfigManager, StorageManager)
+- agents/: Agent operations and HRBP management
+- build/: Build tracking, quality reporting, and metadata management
+- monitoring/: Execution monitoring and dashboard components
+- schemas/: Data schema definitions
 - utils/: Organized utility modules (I/O, logging, data processing, etc.)
-- systems/: Specialized system modules (BuildTracker, QualityReporter, etc.)
+- legacy/: Deprecated components for backward compatibility
 - tests/: Comprehensive test structure
 """
 
@@ -51,9 +55,13 @@ from .core.storage_manager import (
     create_storage_manager_from_config,
 )
 
-# System modules
-from .systems.build_tracker import BuildTracker
-from .systems.graph_rag_schema import (
+# Build and quality modules
+from .build.build_tracker import BuildTracker
+from .build.metadata_manager import MetadataManager
+from .build.quality_reporter import QualityReporter, setup_quality_reporter
+
+# Schema modules
+from .schemas.graph_rag_schema import (
     DEFAULT_EMBEDDING_CONFIG,
     MAGNIFICENT_7_CIKS,
     MAGNIFICENT_7_TICKERS,
@@ -71,8 +79,6 @@ from .systems.graph_rag_schema import (
     StockNode,
     VectorEmbeddingConfig,
 )
-from .systems.metadata_manager import MetadataManager
-from .systems.quality_reporter import QualityReporter, setup_quality_reporter
 from .utils.data_processing import (
     convert_timestamps_to_iso,
     deep_merge_dicts,

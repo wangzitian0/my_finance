@@ -2,6 +2,25 @@
 
 **Issue #122**: Complete refactoring of the common lib with DRY/SSOT principles, five-layer data architecture, and storage backend abstraction.
 
+**⚠️ CRITICAL ARCHITECTURAL ISSUES IDENTIFIED**:
+- 🚨 **23 files in root directory** - violates modular structure requirements
+- 🚨 **4 duplicate file pairs** - build_tracker.py, metadata_manager.py, graph_rag_schema.py, quality_reporter.py
+- 🚨 **Issue-243 incomplete** - hardcoded paths still exist, wrong import patterns remain
+- 🚨 **No loguru integration** - still using standard logging instead of loguru as required
+
+## 📋 Required 3-Module Architecture
+
+This library MUST be restructured into 3 core modules:
+
+### 🎯 Target Architecture
+```
+common/
+├── path_manager/     # 目录名称管理和文件io，pathlib集成
+├── config_manager/   # 配置管理，依赖path_manager
+├── log_manager/      # 日志系统，使用loguru，位置由path_manager管理
+└── [other modules organized by function]
+```
+
 Manages interactions between different modules, defines schemas and shared tools. Responsible for inter-module coordination and data standardization with unified directory management and configuration systems.
 
 ## 🏗️ Architecture Overview
@@ -32,22 +51,27 @@ The common lib implements a unified five-layer data architecture:
 
 ## 🎯 Core Components
 
-### 1. DirectoryManager (`directory_manager.py`)
+The common library implements three unified management systems following the proposed modular architecture:
+
+### 1. PathManager (`core/directory_manager.py`)
 **SSOT for all directory path management with backend abstraction.**
 
 ```python
-from common import DirectoryManager, DataLayer, get_data_path
+from common.core.directory_manager import directory_manager, DataLayer
 
-# Get paths using unified interface
-raw_data_path = get_data_path(DataLayer.RAW_DATA, "sec-edgar")
-reports_path = get_data_path(DataLayer.QUERY_RESULTS, "dcf_reports")
+# Unified path management - pathlib integration
+raw_data_path = directory_manager.get_layer_path(DataLayer.RAW_DATA, "sec-edgar")
+reports_path = directory_manager.get_layer_path(DataLayer.QUERY_RESULTS, "dcf_reports")
+log_path = directory_manager.get_logs_path()
 
-# Legacy path mapping (automatic)
-legacy_path = directory_manager.map_legacy_path("stage_00_original")  # → DataLayer.RAW_DATA
+# Backend abstraction for cloud storage
+storage_manager = directory_manager.get_storage_manager()
 ```
 
 **Features:**
 - ✅ **Five-layer architecture** - Complete Issue #122 implementation
+- ✅ **pathlib Integration** - All paths use pathlib.Path objects  
+- ✅ **Backend Abstraction** - Local filesystem, AWS S3, GCP GCS, Azure Blob
 
 ## 🛠️ SSOT I/O ENFORCEMENT RULES
 
@@ -240,29 +264,51 @@ data_dir = directory_manager.get_layer_path(DataLayer.RAW_DATA)
 - ✅ **SSOT principles** - Single configuration point for all paths
 - ✅ **Storage optimization** - Per-layer performance configurations
 
-### 2. ConfigManager (`config_manager.py`)
+### 2. ConfigManager (`core/config_manager.py`)
 **Unified configuration management with automatic discovery and validation.**
 
 ```python
-from common import ConfigManager, get_config, get_company_list
+from common.core.config_manager import config_manager
 
-# Get configurations
-companies = get_company_list("magnificent_7")
-llm_config = get_llm_config("deepseek_fast")
-directory_config = get_config("directory_structure")
+# Centralized configuration access - depends on PathManager
+companies = config_manager.get_company_list("magnificent_7")
+llm_config = config_manager.get_llm_config("deepseek_fast")
+directory_config = config_manager.get_config("directory_structure")
 
-# Data source configurations
-sec_config = get_data_source_config("sec_edgar")
+# Data source configurations from common/config/
+sec_config = config_manager.get_data_source_config("sec_edgar")
 ```
 
 **Features:**
 - ✅ **Automatic discovery** - Loads all configuration files automatically
+- ✅ **PathManager dependency** - Uses directory_manager for all config paths
 - ✅ **Schema validation** - Ensures configuration integrity
 - ✅ **Hot reloading** - Development-friendly configuration updates
 - ✅ **Environment overrides** - Support for dev/test/prod configurations
-- ✅ **Unified interface** - Single API for all configuration types
 
-### 3. StorageManager (`storage_backends.py`)
+### 3. LogManager (`logger.py` + `utils/logging_setup.py`)
+**Unified logging system with PathManager integration.** ⚠️ **Needs Consolidation**
+
+```python
+from common.logger import setup_logger
+
+# Current implementation - uses standard logging  
+logger = setup_logger("job_id")  # Logs to PathManager.get_logs_path()
+
+# PROPOSED: loguru integration for better performance and features
+# from common.core.log_manager import log_manager
+# logger = log_manager.get_logger("job_id")  # Uses loguru + PathManager
+```
+
+**Current Features:**
+- ✅ **PathManager dependency** - Uses directory_manager for log paths
+- ✅ **Structured logging** - Request ID tracking and formatting
+- ❌ **Standard logging** - Not using loguru as proposed
+- ⚠️ **Scattered implementation** - logger.py + utils/logging_setup.py
+
+**Improvement Needed**: Consolidate into single LogManager with loguru integration.
+
+### 4. StorageManager (`core/storage_manager.py`)
 **Backend abstraction for local and cloud storage with unified API.**
 
 ```python

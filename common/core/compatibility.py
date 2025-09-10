@@ -12,9 +12,9 @@ Issue #184: Core library restructuring - Backward compatibility layer
 import warnings
 from typing import Any, Dict, List, Optional
 
-from ..systems.build_tracker import BuildTracker
-from ..systems.metadata_manager import MetadataManager
-from ..systems.quality_reporter import QualityReporter, setup_quality_reporter
+from ..build.build_tracker import BuildTracker
+from ..build.metadata_manager import MetadataManager
+from ..build.quality_reporter import QualityReporter, setup_quality_reporter
 from ..utils.id_generation import Snowflake, generate_snowflake_id, generate_snowflake_str
 
 # Import from new locations for redirection
@@ -52,7 +52,7 @@ class LegacyBuildTracker(BuildTracker):
     """Legacy BuildTracker with deprecation warning."""
 
     def __init__(self, *args, **kwargs):
-        deprecation_warning("LegacyBuildTracker", "BuildTracker from common.systems.build_tracker")
+        deprecation_warning("LegacyBuildTracker", "BuildTracker from common.build.build_tracker")
         super().__init__(*args, **kwargs)
 
 
@@ -61,7 +61,7 @@ class LegacyQualityReporter(QualityReporter):
 
     def __init__(self, *args, **kwargs):
         deprecation_warning(
-            "LegacyQualityReporter", "QualityReporter from common.systems.quality_reporter"
+            "LegacyQualityReporter", "QualityReporter from common.build.quality_reporter"
         )
         super().__init__(*args, **kwargs)
 

@@ -65,7 +65,7 @@ class HRBPPRTracker:
     def __init__(self, config_path: Optional[Path] = None):
         """Initialize HRBP PR tracker."""
         # Use centralized DirectoryManager for SSOT compliance
-        from .directory_manager import directory_manager
+        from .core.directory_manager import directory_manager
 
         self.logs_dir = directory_manager.get_logs_path()
         self.config_dir = directory_manager.get_config_path()

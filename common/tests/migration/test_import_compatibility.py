@@ -42,9 +42,9 @@ def test_utils_imports():
 def test_systems_imports():
     """Test that system modules can be imported from new locations."""
     try:
-        from common.systems.build_tracker import BuildTracker
-        from common.systems.metadata_manager import MetadataManager
-        from common.systems.quality_reporter import QualityReporter
+        from common.build.build_tracker import BuildTracker
+        from common.build.metadata_manager import MetadataManager
+        from common.build.quality_reporter import QualityReporter
 
         assert True
     except ImportError as e:
