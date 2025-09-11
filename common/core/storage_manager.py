@@ -91,8 +91,8 @@ class LocalFilesystemBackend(StorageBackendInterface):
         self.root_path = Path(root_path).resolve()
         # Normalize path to handle macOS /private prefix
         root_str = str(self.root_path)
-        if root_str.startswith('/private/var/folders/'):
-            self.root_path = Path(root_str.replace('/private/var/folders/', '/var/folders/'))
+        if root_str.startswith("/private/var/folders/"):
+            self.root_path = Path(root_str.replace("/private/var/folders/", "/var/folders/"))
         self.root_path.mkdir(parents=True, exist_ok=True)
 
     def _resolve_path(self, path: Union[str, Path]) -> Path:
@@ -566,7 +566,7 @@ def create_storage_manager_from_config(directory_config: Dict[str, Any]) -> Stor
 
     Returns:
         Configured StorageManager instance
-        
+
     Raises:
         KeyError: If backend is missing from config
         ValueError: If backend type is unsupported
@@ -574,7 +574,7 @@ def create_storage_manager_from_config(directory_config: Dict[str, Any]) -> Stor
     # Check if backend is specified in config
     if "backend" not in directory_config:
         raise KeyError("backend")
-    
+
     backend_name = directory_config["backend"]
 
     # Map backend name to enum
@@ -587,7 +587,7 @@ def create_storage_manager_from_config(directory_config: Dict[str, Any]) -> Stor
 
     if backend_name not in backend_mapping:
         raise ValueError(f"Unsupported backend: {backend_name}")
-        
+
     backend_type = backend_mapping[backend_name]
     backend_config = directory_config.get("root_path", "build_data")
     if isinstance(backend_config, str):
