@@ -220,9 +220,18 @@ class TestNeo4jOperations(unittest.TestCase):
 
     def test_crud_operations_mock(self):
         """Test complete CRUD operations with mocked Neo4j"""
+        
+        # Mock create_test_node to return the provided test_id
+        def mock_create_test_node(test_id, data):
+            return test_id
+        
+        # Mock read_test_node to return data with the provided test_id
+        def mock_read_test_node(test_id):
+            return {"id": test_id, "test_type": "crud_validation"}
+        
         with patch.object(self.test_ops, "setup_test_schema", return_value=True):
-            with patch.object(self.test_ops, "create_test_node", return_value="test_id"):
-                with patch.object(self.test_ops, "read_test_node", return_value={"id": "test_id"}):
+            with patch.object(self.test_ops, "create_test_node", side_effect=mock_create_test_node):
+                with patch.object(self.test_ops, "read_test_node", side_effect=mock_read_test_node):
                     with patch.object(self.test_ops, "update_test_node", return_value=True):
                         with patch.object(self.test_ops, "delete_test_node", return_value=True):
 
