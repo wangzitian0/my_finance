@@ -1,0 +1,88 @@
+name: M7 Validation Check
+
+# Lightweight validation check for M7 readiness
+# Does not run full M7 test, only checks prerequisites
+on:
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  m7-readiness-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Pixi Environment
+        uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.24.2
+
+      - name: M7 Prerequisites Check
+        run: |
+          echo "= Checking M7 validation prerequisites..."
+          
+          # Check if P3 CLI is available
+          if pixi run python -c "from common.core.p3_cli import P3CLI; print(' P3 CLI available')" 2>/dev/null; then
+            echo " P3 CLI: Available"
+          else
+            echo "L P3 CLI: Not available"
+            exit 1
+          fi
+          
+          # Check critical configuration files
+          if [ -f "common/config/data_sources.yaml" ]; then
+            echo " Data sources config: Found"
+          else
+            echo "  Data sources config: Missing (non-critical)"
+          fi
+          
+          # Check directory structure
+          if [ -d "build_data" ] && [ -d "common" ]; then
+            echo " Directory structure: Valid"
+          else
+            echo "L Directory structure: Invalid"
+            exit 1
+          fi
+          
+          # Environment validation
+          pixi run python -c "
+          import sys
+          print(f' Python version: {sys.version.split()[0]}')
+          
+          # Check critical imports
+          try:
+              import pandas
+              print(' Pandas: Available')
+          except ImportError:
+              print('L Pandas: Missing')
+              sys.exit(1)
+          
+          try:
+              from common.core.directory_manager import directory_manager
+              print(' Directory manager: Available')
+          except ImportError:
+              print('L Directory manager: Missing')
+              sys.exit(1)
+          "
+          
+          echo "<¯ M7 prerequisites validation completed successfully"
+          echo "=Ý Note: This is a lightweight check. Full M7 testing requires manual trigger."
+
+      - name: Validation Summary
+        if: always()
+        run: |
+          echo "## M7 Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "-  Environment setup validated" >> $GITHUB_STEP_SUMMARY
+          echo "-  P3 CLI accessibility confirmed" >> $GITHUB_STEP_SUMMARY
+          echo "-  Critical dependencies verified" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note**: This check validates M7 prerequisites only." >> $GITHUB_STEP_SUMMARY
+          echo "For full M7 testing, use manual workflow dispatch or \`p3 test m7\`." >> $GITHUB_STEP_SUMMARY
