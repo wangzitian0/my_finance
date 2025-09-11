@@ -103,10 +103,10 @@ class TestNeo4jConnectivity(unittest.TestCase):
     def test_connection_success(self, mock_graph_db):
         """Test successful Neo4j connection"""
         # Mock successful connection
-        mock_driver = Mock()
-        mock_session = Mock()
-        mock_result = Mock()
-        mock_record = Mock()
+        mock_driver = MagicMock()
+        mock_session = MagicMock()
+        mock_result = MagicMock()
+        mock_record = MagicMock()
         mock_record.__getitem__.return_value = 1
         mock_result.single.return_value = mock_record
         mock_session.run.return_value = mock_result
@@ -148,8 +148,8 @@ class TestNeo4jConnectivity(unittest.TestCase):
     def test_connectivity_test_success(self, mock_graph_db):
         """Test successful connectivity test"""
         # Mock successful connection and query
-        mock_driver = Mock()
-        mock_session = Mock()
+        mock_driver = MagicMock()
+        mock_session = MagicMock()
         mock_driver.session.return_value.__enter__.return_value = mock_session
         mock_graph_db.driver.return_value = mock_driver
 
@@ -189,7 +189,7 @@ class TestNeo4jOperations(unittest.TestCase):
     @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
     def test_setup_test_schema(self):
         """Test test schema setup"""
-        mock_session = Mock()
+        mock_session = MagicMock()
 
         with patch.object(self.manager, "get_session", return_value=mock_session):
             with patch.object(mock_session, "__enter__", return_value=mock_session):
@@ -203,9 +203,9 @@ class TestNeo4jOperations(unittest.TestCase):
     @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
     def test_create_test_node(self):
         """Test test node creation"""
-        mock_session = Mock()
-        mock_result = Mock()
-        mock_record = Mock()
+        mock_session = MagicMock()
+        mock_result = MagicMock()
+        mock_record = MagicMock()
         mock_record.__getitem__.return_value = "test_node_123"
         mock_result.single.return_value = mock_record
         mock_session.run.return_value = mock_result
@@ -264,7 +264,7 @@ class TestNeo4jHealthCheck(unittest.TestCase):
 
     def test_performance_baseline_check(self):
         """Test performance baseline validation"""
-        mock_session = Mock()
+        mock_session = MagicMock()
 
         with patch.object(self.manager, "get_session", return_value=mock_session):
             with patch.object(mock_session, "__enter__", return_value=mock_session):
@@ -305,16 +305,19 @@ class TestNeo4jHealthCheck(unittest.TestCase):
 
     def test_health_check_endpoint_format(self):
         """Test health check endpoint response format"""
+        from common.database.health_checks import HealthStatus
+        
         with patch.object(self.health_checker, "comprehensive_health_check") as mock_check:
-            mock_status = Mock()
-            mock_status.status = "healthy"
-            mock_status.response_time_ms = 45
-            mock_status.environment = "ci"
-            mock_status.version = "5.15.0"
-            mock_status.test_operations = {"connection": "success"}
-            mock_status.warnings = None
-            mock_status.error = None
-            mock_status.last_test_timestamp = "2025-01-11T10:30:00Z"
+            mock_status = HealthStatus(
+                status="healthy",
+                response_time_ms=45,
+                environment="ci",
+                last_test_timestamp="2025-01-11T10:30:00Z",
+                version="5.15.0",
+                test_operations={"connection": "success"},
+                warnings=None,
+                error=None
+            )
 
             mock_check.return_value = mock_status
 
