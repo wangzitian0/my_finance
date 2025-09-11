@@ -327,7 +327,7 @@ class TestFilterCompaniesByCriteria:
 
     def test_filter_multiple_criteria(self, sample_companies: List[Dict[str, Any]]):
         """Test filtering with multiple criteria (AND logic)."""
-        criteria = {"sector": "Technology", "country": "US", "market_cap_min": 1500000000000}
+        criteria = {"sector": "Technology", "country": "US", "market_cap_min": 2100000000000}
 
         result = filter_companies_by_criteria(sample_companies, criteria)
 

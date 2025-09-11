@@ -89,6 +89,10 @@ class LocalFilesystemBackend(StorageBackendInterface):
             root_path: Root directory for all operations
         """
         self.root_path = Path(root_path).resolve()
+        # Normalize path to handle macOS /private prefix
+        root_str = str(self.root_path)
+        if root_str.startswith('/private/var/folders/'):
+            self.root_path = Path(root_str.replace('/private/var/folders/', '/var/folders/'))
         self.root_path.mkdir(parents=True, exist_ok=True)
 
     def _resolve_path(self, path: Union[str, Path]) -> Path:
@@ -526,6 +530,15 @@ class StorageManager:
         """Delete file or directory"""
         return self.backend.delete_path(path)
 
+    def delete_file(self, path: Union[str, Path]) -> bool:
+        """Delete file (alias for delete_path with file-specific behavior)"""
+        # Try to delegate to backend if it has delete_file method
+        if hasattr(self.backend, "delete_file"):
+            return self.backend.delete_file(path)
+        else:
+            # Fallback to delete_path
+            return self.backend.delete_path(path)
+
     def move_path(self, src: Union[str, Path], dst: Union[str, Path]) -> bool:
         """Move file or directory"""
         return self.backend.move_path(src, dst)
@@ -553,9 +566,16 @@ def create_storage_manager_from_config(directory_config: Dict[str, Any]) -> Stor
 
     Returns:
         Configured StorageManager instance
+        
+    Raises:
+        KeyError: If backend is missing from config
+        ValueError: If backend type is unsupported
     """
-    storage_config = directory_config.get("storage", {})
-    backend_name = storage_config.get("backend", "local_filesystem")
+    # Check if backend is specified in config
+    if "backend" not in directory_config:
+        raise KeyError("backend")
+    
+    backend_name = directory_config["backend"]
 
     # Map backend name to enum
     backend_mapping = {
@@ -565,8 +585,12 @@ def create_storage_manager_from_config(directory_config: Dict[str, Any]) -> Stor
         "azure_blob": StorageBackend.CLOUD_AZURE,
     }
 
-    backend_type = backend_mapping.get(backend_name, StorageBackend.LOCAL_FS)
-    backend_configs = directory_config.get("backends", {})
-    backend_config = backend_configs.get(backend_name, {"root_path": "build_data"})
+    if backend_name not in backend_mapping:
+        raise ValueError(f"Unsupported backend: {backend_name}")
+        
+    backend_type = backend_mapping[backend_name]
+    backend_config = directory_config.get("root_path", "build_data")
+    if isinstance(backend_config, str):
+        backend_config = {"root_path": backend_config}
 
     return StorageManager(backend_type, backend_config)
