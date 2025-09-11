@@ -55,13 +55,16 @@ Our entire CI/CD system is architected around **F2 (Fast-2) testing** as the pri
 - 🚫 Smart skip conditions: `[skip-review]`, `[manual-review]`
 
 #### D. Post-Merge Review & Issue Generation
-**Workflow**: `post-merge-analysis.yml` (To be implemented)
+**Workflow**: `post-merge-analysis.yml` (✅ Implemented)
 **Purpose**: Production-ready code analysis and task generation
 - 📋 **Automated issue creation** for identified technical debt
-- 🔍 Performance optimization opportunities
-- 📝 Documentation update requirements
-- 🧪 Test coverage gap analysis
-- 🚀 Feature enhancement suggestions
+- 🔍 Performance optimization opportunities with F2 baseline tracking
+- 📝 Documentation update requirements analysis
+- 🧪 Test coverage gap identification
+- 🚀 Feature enhancement suggestions based on recent changes
+- ⚡ **F2 Performance Monitoring**: Continuous baseline tracking with alerts
+- 🔧 **Technical Debt Detection**: TODO comments, deprecated patterns
+- 📊 **Trend Analysis**: Performance data collection and alerting
 
 ### 2. Interactive @claude Auto-Reply System
 
@@ -90,14 +93,14 @@ Our entire CI/CD system is architected around **F2 (Fast-2) testing** as the pri
 | **claude.yml** | ✅ Active | @claude mentions | Interactive AI assistance | F2 context aware |
 | **check-m7-validation.yml** | ✅ Active | PR validation | M7 requirements check | F2 baseline required |
 | **auto-label-issues.yml** | ✅ Active | Issue lifecycle | Intelligent labeling | N/A |
+| **post-merge-analysis.yml** | ✅ Active | Push to main | Auto issue generation & F2 monitoring | F2 performance tracking |
 
 ### Planned Workflows
 
 | Workflow | Status | Implementation Priority | Purpose |
 |----------|--------|------------------------|---------|
-| **post-merge-analysis.yml** | 🚧 To implement | High | Issue generation from analysis |
-| **f2-performance-monitor.yml** | 📋 Planned | Medium | F2 execution time tracking |
-| **dependency-update.yml** | 📋 Planned | Low | Automated dependency management |
+| **dependency-update.yml** | 📋 Planned | Medium | Automated dependency management |
+| **security-audit.yml** | 📋 Planned | Low | Periodic security scanning |
 
 ## 🎯 Individual Workflow Design Goals
 
@@ -155,12 +158,23 @@ Our entire CI/CD system is architected around **F2 (Fast-2) testing** as the pri
 - **Learning Capability**: Keyword-based with pattern recognition
 - **Integration**: Seamless with project management workflows
 
-### 6. Post-Merge Analysis (Planned)
+### 6. Post-Merge Analysis (post-merge-analysis.yml)
 **Design Goal**: Proactive technical debt and improvement identification
 - **Issue Generation**: Automatic GitHub issue creation for identified items
 - **Analysis Depth**: Code quality, performance, documentation, testing gaps
 - **Prioritization**: Intelligent priority assignment based on impact analysis
-- **Integration**: F2 performance baseline tracking for optimization opportunities
+- **F2 Performance Baseline**: Continuous F2 execution time tracking with alerts
+- **Technical Debt Detection**: Automated identification of TODO comments, deprecated patterns
+- **Trend Analysis**: Performance data collection and alerting (>5min threshold)
+- **Multi-Job Architecture**: Parallel analysis and performance monitoring
+- **Alert System**: Automatic high-priority issues for performance degradation
+
+**Key Features**:
+- 🔍 **Deep Code Analysis**: Recent commit analysis for quality patterns and opportunities
+- 📊 **Performance Monitoring**: F2 baseline tracking with CSV data storage
+- 🚨 **Intelligent Alerting**: Automatic issue creation when F2 exceeds 5-minute threshold
+- 📋 **Issue Automation**: Smart labeling, priority assignment, and effort estimation
+- 🔄 **Continuous Improvement**: Learning from patterns to enhance detection algorithms
 
 ## 🚨 Claude Code Review Fix Summary
 
