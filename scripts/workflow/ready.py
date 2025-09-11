@@ -100,6 +100,10 @@ def check_and_start_podman_machine():
         print("🚀 Starting Podman machine...")
         success, result = run_command("podman machine start", "Starting Podman machine", timeout=90)
         if not success:
+            # Check if it's already running (common case)
+            if result and "already running" in result.stderr:
+                print("✅ Podman machine was already running")
+                return True
             print("❌ Failed to start Podman machine")
             if result and "vfkit" in result.stderr:
                 print("💡 This appears to be a vfkit/virtualization issue")
@@ -141,10 +145,10 @@ def setup_neo4j_container():
 
     if not container_exists:
         print("🔧 Neo4j container not found, running Ansible setup...")
-        # Use ansible playbook to create container
+        # Use simplified ansible setup playbook
         success, _ = run_command(
-            "ansible-playbook infra/ansible/p3_ready_setup.yml",
-            "Running P3 Ready Ansible orchestration",
+            "ansible-playbook infra/ansible/setup.yml",
+            "Running Ansible environment setup",
             timeout=300,
         )
         if not success:
@@ -200,10 +204,10 @@ def run_ansible_orchestration():
         print("💡 Install Ansible for complete environment management: pip install ansible")
         return True  # Continue without ansible
 
-    # Run the P3 ready setup playbook
+    # Run the simplified setup playbook
     success, _ = run_command(
-        "ansible-playbook infra/ansible/p3_ready_setup.yml",
-        "Running complete P3 Ready environment setup",
+        "ansible-playbook infra/ansible/setup.yml",
+        "Running complete environment setup",
         timeout=300,  # 5 minutes for complete setup
     )
 

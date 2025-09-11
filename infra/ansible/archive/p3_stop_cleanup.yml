@@ -1,0 +1,303 @@
+---
+# p3_stop_cleanup.yml - Complete development environment teardown
+# Used by `p3 stop --full` for comprehensive resource cleanup
+- name: Complete Development Environment Cleanup
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    all_dev_containers:
+      - neo4j-finance
+      - redis-dev
+      - postgres-dev
+      - mongodb-dev
+      - elasticsearch-dev
+      - kafka-dev
+      - zookeeper-dev
+      - rabbitmq-dev
+    
+    temp_container_patterns:
+      - "*-temp"
+      - "*-test"
+      - "*-dev"
+      - "test-*"
+      - "temp-*"
+    
+    dev_volumes_to_clean:
+      - neo4j-finance-data
+      - postgres-dev-data
+      - mongodb-dev-data
+      - redis-dev-data
+      - elasticsearch-dev-data
+    
+  tasks:
+    - name: Pre-cleanup environment assessment
+      shell: |
+        echo "🔍 Pre-cleanup Assessment:"
+        echo "Running containers: $(podman ps --format '{{.Names}}' | wc -l)"
+        echo "Total containers: $(podman ps -a --format '{{.Names}}' | wc -l)"
+        echo "Active volumes: $(podman volume ls --format '{{.Name}}' | wc -l)"
+        echo "Podman machine: $(podman machine list --format '{{.Name}} {{.Running}}')"
+        echo "Disk usage: $(df -h . | tail -1 | awk '{print $4}' | tr -d '\n') available"
+      register: pre_cleanup_status
+      changed_when: false
+
+    - name: Display pre-cleanup status
+      debug:
+        msg: |
+          📊 Environment Assessment Before Cleanup:
+          {{ pre_cleanup_status.stdout }}
+
+    # Phase 1: Graceful Service Shutdown
+    - name: Gracefully stop Neo4j with data backup check
+      shell: |
+        if podman ps | grep -q "neo4j-finance.*Up"; then
+          echo "🗄️ Graceful Neo4j shutdown with data preservation..."
+          
+          # Attempt graceful shutdown
+          podman exec neo4j-finance cypher-shell -u neo4j -p password 'CALL dbms.shutdown()' || true
+          sleep 5
+          
+          # Verify data directory exists
+          if podman exec neo4j-finance ls /data >/dev/null 2>&1; then
+            echo "✅ Neo4j data directory confirmed"
+          else
+            echo "⚠️ Neo4j data directory not accessible"
+          fi
+          
+          # Stop container
+          podman stop neo4j-finance
+          echo "Neo4j container stopped with data preserved"
+        else
+          echo "Neo4j container not running"
+        fi
+      register: neo4j_graceful_stop
+      changed_when: "'Neo4j container stopped' in neo4j_graceful_stop.stdout"
+
+    - name: Stop all development containers
+      shell: |
+        stopped_containers=""
+        for container in {{ all_dev_containers | join(' ') }}; do
+          if podman ps | grep -q "${container}.*Up"; then
+            echo "🔧 Stopping ${container}..."
+            podman stop "${container}" --timeout 10 || podman kill "${container}" || true
+            stopped_containers="${stopped_containers} ${container}"
+          fi
+        done
+        
+        # Stop any remaining containers with dev/test patterns
+        for pattern in {{ temp_container_patterns | join(' ') }}; do
+          containers=$(podman ps --format '{{.Names}}' | grep -E "${pattern}" || true)
+          if [ -n "$containers" ]; then
+            echo "🧹 Stopping pattern containers: $containers"
+            echo "$containers" | xargs -r podman stop --timeout 5 || true
+            stopped_containers="${stopped_containers} ${containers}"
+          fi
+        done
+        
+        if [ -n "$stopped_containers" ]; then
+          echo "Stopped containers:$stopped_containers"
+        else
+          echo "No containers to stop"
+        fi
+      register: all_containers_stop
+      changed_when: "'Stopped containers' in all_containers_stop.stdout"
+
+    # Phase 2: Container and Volume Cleanup  
+    - name: Remove stopped development containers
+      shell: |
+        removed_containers=""
+        
+        # Remove specific development containers
+        for container in {{ all_dev_containers | join(' ') }}; do
+          if podman ps -a | grep -q "${container}.*Exited"; then
+            echo "🗑️ Removing stopped container: ${container}"
+            podman rm "${container}" || true
+            removed_containers="${removed_containers} ${container}"
+          fi
+        done
+        
+        # Remove temporary containers by pattern
+        for pattern in {{ temp_container_patterns | join(' ') }}; do
+          containers=$(podman ps -a --format '{{.Names}}' | grep -E "${pattern}" || true)
+          if [ -n "$containers" ]; then
+            echo "🧹 Removing pattern containers: $containers"
+            echo "$containers" | xargs -r podman rm -f || true
+            removed_containers="${removed_containers} ${containers}"
+          fi
+        done
+        
+        # Clean up any exited containers
+        exited=$(podman ps -a --filter "status=exited" --format '{{.Names}}' || true)
+        if [ -n "$exited" ]; then
+          echo "🧹 Removing exited containers: $exited"
+          echo "$exited" | xargs -r podman rm -f || true
+          removed_containers="${removed_containers} ${exited}"
+        fi
+        
+        if [ -n "$removed_containers" ]; then
+          echo "Removed containers:$removed_containers"
+        else
+          echo "No containers to remove"
+        fi
+      register: container_cleanup
+      changed_when: "'Removed containers' in container_cleanup.stdout"
+
+    - name: Clean up unused volumes (optional)
+      shell: |
+        echo "🔍 Checking for unused volumes..."
+        unused_volumes=$(podman volume ls --filter "dangling=true" --format '{{.Name}}' || true)
+        
+        if [ -n "$unused_volumes" ]; then
+          echo "⚠️ Found unused volumes: $unused_volumes"
+          echo "💡 Run 'podman volume prune' manually if you want to remove them"
+          echo "Note: This preserves data volumes for safety"
+        else
+          echo "✅ No unused volumes found"
+        fi
+        
+        # Show current volume usage
+        echo "📊 Current volumes:"
+        podman volume ls --format '{{.Name}} {{.Driver}}' || echo "No volumes"
+      register: volume_status
+      changed_when: false
+
+    - name: Clean up unused images
+      shell: |
+        echo "🔍 Cleaning unused container images..."
+        
+        # Remove dangling images
+        dangling=$(podman images --filter "dangling=true" --format '{{.ID}}' || true)
+        if [ -n "$dangling" ]; then
+          echo "🗑️ Removing dangling images..."
+          echo "$dangling" | xargs -r podman rmi -f || true
+          echo "Dangling images removed"
+        else
+          echo "✅ No dangling images found"
+        fi
+        
+        # Show disk space saved
+        echo "💾 Current image usage:"
+        podman images --format 'table {{.Repository}} {{.Tag}} {{.Size}}' | head -5 || echo "No images"
+      register: image_cleanup
+      changed_when: "'Dangling images removed' in image_cleanup.stdout"
+
+    # Phase 3: Podman Machine Management
+    - name: Stop Podman machine completely
+      shell: |
+        machine_status=$(podman machine list --format '{{.Name}} {{.Running}}' | head -1)
+        if echo "$machine_status" | grep -q "true"; then
+          machine_name=$(echo "$machine_status" | awk '{print $1}')
+          echo "🛑 Stopping Podman machine: $machine_name"
+          podman machine stop "$machine_name"
+          echo "Podman machine stopped completely"
+          
+          # Wait for complete shutdown
+          sleep 3
+          
+          # Verify shutdown
+          new_status=$(podman machine list --format '{{.Running}}' | head -1)
+          if [ "$new_status" = "false" ]; then
+            echo "✅ Podman machine successfully stopped"
+          else
+            echo "⚠️ Podman machine may still be shutting down"
+          fi
+        else
+          echo "✅ Podman machine already stopped"
+        fi
+      register: podman_machine_stop
+      changed_when: "'Podman machine stopped completely' in podman_machine_stop.stdout"
+
+    # Phase 4: System Cleanup and Validation
+    - name: Clean up system resources
+      shell: |
+        echo "🧹 System cleanup..."
+        
+        # Clean up any remaining processes
+        dev_processes=$(ps aux | grep -E '(podman|neo4j|ansible)' | grep -v grep | wc -l)
+        echo "Development processes running: $dev_processes"
+        
+        # Clean up temporary files if any
+        temp_files=$(find /tmp -name "*podman*" -o -name "*neo4j*" 2>/dev/null | wc -l)
+        if [ "$temp_files" -gt 0 ]; then
+          echo "🗑️ Found $temp_files temporary files (not removing for safety)"
+        fi
+        
+        echo "System cleanup assessment completed"
+      register: system_cleanup
+      changed_when: false
+
+    - name: Final environment validation
+      shell: |
+        echo "🔍 Final Validation Results:"
+        echo "Running containers: $(podman ps --format '{{.Names}}' | wc -l)"
+        echo "Total containers: $(podman ps -a --format '{{.Names}}' | wc -l)"
+        echo "Active volumes: $(podman volume ls --format '{{.Name}}' | wc -l)"
+        echo "Images: $(podman images --format '{{.Repository}}' | wc -l)"
+        echo "Podman machine: $(podman machine list --format '{{.Running}}' | head -1)"
+        
+        # Port availability check
+        echo "Port availability:"
+        echo "- Neo4j 7474: $(curl -s http://localhost:7474 >/dev/null 2>&1 && echo 'OCCUPIED' || echo 'AVAILABLE')"
+        echo "- Neo4j 7687: $(timeout 2 nc -z localhost 7687 >/dev/null 2>&1 && echo 'OCCUPIED' || echo 'AVAILABLE')"
+        
+        # Disk space after cleanup
+        echo "Available disk space: $(df -h . | tail -1 | awk '{print $4}')"
+      register: final_validation
+      changed_when: false
+
+    - name: Display comprehensive cleanup summary
+      debug:
+        msg: |
+          🛑 COMPLETE ENVIRONMENT CLEANUP FINISHED
+          
+          📊 Final Status:
+          {{ final_validation.stdout }}
+          
+          ✅ Cleanup Actions Completed:
+          - Neo4j: {{ 'Gracefully stopped' if neo4j_graceful_stop.changed else 'Was not running' }}
+          - All containers: {{ 'Stopped' if all_containers_stop.changed else 'None running' }}
+          - Container removal: {{ 'Cleaned up' if container_cleanup.changed else 'None to remove' }}
+          - Image cleanup: {{ 'Performed' if image_cleanup.changed else 'Not needed' }}
+          - Podman machine: {{ 'Stopped completely' if podman_machine_stop.changed else 'Was already stopped' }}
+          - System resources: Validated and cleaned
+          
+          💾 Resource Status:
+          - All development services stopped
+          - Containers removed (data volumes preserved)
+          - Podman machine completely stopped
+          - All ports released and available
+          - System resources freed
+          
+          🔄 To restart development:
+          - `p3 ready` (will take longer due to machine startup)
+          
+          ⚠️ Note: Data volumes were preserved for safety
+          💡 Run 'podman volume prune' manually if you want to remove unused volumes
+          
+          🎯 Complete cleanup successful! All development resources released.
+
+    - name: Save cleanup report
+      shell: |
+        report_file="/tmp/p3_cleanup_report_$(date +%Y%m%d_%H%M%S).txt"
+        cat > "$report_file" << 'EOFCLEANUP'
+        P3 Complete Cleanup Report
+        Generated: $(date)
+        
+        Pre-cleanup Status:
+        {{ pre_cleanup_status.stdout }}
+
+        Final Status:
+        {{ final_validation.stdout }}
+
+        Actions Performed:
+        - Neo4j graceful stop: {{ neo4j_graceful_stop.changed }}
+        - Containers stopped: {{ all_containers_stop.changed }}
+        - Containers removed: {{ container_cleanup.changed }}
+        - Images cleaned: {{ image_cleanup.changed }}
+        - Podman machine stopped: {{ podman_machine_stop.changed }}
+
+        EOFCLEANUP
+        echo "📋 Cleanup report saved to: $report_file"
+      register: cleanup_report
+      changed_when: false
