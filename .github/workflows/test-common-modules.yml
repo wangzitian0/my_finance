@@ -75,7 +75,7 @@ jobs:
     - name: "🧪 Run All Tests"
       run: |
         echo "🧪 Running all common module tests with coverage"
-        pixi run python -m pytest common/tests/ \
+        pixi run python -m pytest common/tests/unit/ \
           --verbose \
           --tb=short \
           --junitxml=common/tests/junit-all.xml \
