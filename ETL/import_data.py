@@ -23,9 +23,9 @@ config.DATABASE_URL = f"bolt://{db_user}:{db_password}@{db_host}:{db_port}"
 # Use common module from project root directory, not in ETL directory
 from common.core.directory_manager import DataLayer, directory_manager
 from common.logger import StreamToLogger, setup_logger
-from common.progress import create_progress_bar
-from common.snowflake import Snowflake
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.monitoring.progress import create_progress_bar
+from common.utils.snowflake import Snowflake
+from common.utils.general_utils import is_file_recent, sanitize_data, suppress_third_party_logs
 
 # Optionally suppress third-party log messages (e.g. requests/urllib3)
 suppress_third_party_logs()

@@ -217,7 +217,7 @@ def run_job(config_path):
 
         progress_bar = create_progress_bar(total, description="Tickers Progress")
         # Create a Snowflake instance for generating unique request log IDs.
-        from common.snowflake import Snowflake
+        from common.utils.snowflake import Snowflake
 
         sf = Snowflake(machine_id=1)
         for ticker in tickers:
