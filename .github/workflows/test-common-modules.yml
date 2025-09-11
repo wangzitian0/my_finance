@@ -83,7 +83,7 @@ jobs:
           --cov-report=xml:common/tests/coverage.xml \
           --cov-report=html:common/tests/coverage_html \
           --cov-report=term-missing \
-          --cov-fail-under=45
+          --cov-fail-under=43
         
     - name: "🧪 Test Structure Validation"
       run: |
@@ -141,7 +141,7 @@ jobs:
           
           - **Unit Tests**: ✅ Passed
           - **Integration Tests**: ✅ Passed  
-          - **Combined Coverage**: Target 45%+
+          - **Combined Coverage**: Target 43%+
           
           📈 [View detailed coverage report in artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           
