@@ -18,11 +18,9 @@ from typing import Any, Dict, List, Optional
 import requests
 import yaml
 
-# Import directory manager for centralized path management
-from common.core.directory_manager import directory_manager
-
 # Import SSOT directory manager
-from common.core.directory_manager import get_llm_config_path
+# Import directory manager for centralized path management
+from common.core.directory_manager import directory_manager, get_llm_config_path
 
 logger = logging.getLogger(__name__)
 
