@@ -129,22 +129,6 @@ jobs:
         name: common-module-coverage
         fail_ci_if_error: false
         
-    - name: "💬 Coverage Comment"
-      uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
-      with:
-        header: common-module-coverage
-        message: |
-          ## 📊 Common Module Test Coverage
-          
-          Coverage report for common module tests:
-          
-          - **Unit Tests**: ✅ Passed
-          - **Integration Tests**: ✅ Passed  
-          - **Combined Coverage**: Target 43%+
-          
-          📈 [View detailed coverage report in artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          
     - name: "🧹 Cleanup Test Artifacts"  
       if: always()
       run: |
