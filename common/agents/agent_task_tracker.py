@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from .execution_monitor import ErrorCategory, ExecutionLog, ExecutionResult
+from ..monitoring.execution_monitor import ErrorCategory, ExecutionLog, ExecutionResult
 
 
 @dataclass
@@ -145,14 +145,15 @@ class AgentTaskTracker:
                 """
                 INSERT INTO agent_tasks (
                     task_id, agent_type, task_description, start_time,
-                    command, working_directory, parent_task_id
-                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    execution_result, command, working_directory, parent_task_id
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
                 (
                     task_id,
                     agent_type,
                     task_description,
                     start_time,
+                    "pending",  # Default to pending status
                     command,
                     str(Path.cwd()),
                     parent_task_id,

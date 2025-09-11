@@ -6,11 +6,16 @@ Demonstrates the enhanced parallel execution capabilities and performance improv
 achieved through the system architecture optimization.
 """
 import logging
+import os
+import sys
 import time
 from datetime import datetime
 from typing import List
 
-from agent_coordination_optimizer import (
+# Add the project root to the Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from common.agents.agent_coordination_optimizer import (
     AgentTask,
     TaskPriority,
     get_coordination_optimizer,

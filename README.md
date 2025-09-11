@@ -17,11 +17,11 @@ cd my_finance
 # Add your repo root to PATH - replace with your actual repo path
 export PATH="/path/to/your/my_finance:$PATH"
 
-# Workflow-oriented development
+# Workflow-oriented development with CI-aligned testing
 p3 ready            # "I want to start working" - complete environment setup
-p3 check f2         # "Validate my code" - format, lint, test, build  
-p3 test f2          # "Run comprehensive tests" - e2e validation
-p3 ship "Title" 123 # "Publish my work" - create PR with testing
+p3 check f2         # "Validate my code" - format, lint, basic tests
+p3 test f2          # "Run comprehensive tests" - unit tests first, then integration + e2e (superset of CI)
+p3 ship "Title" 123 # "Publish my work" - comprehensive testing + PR creation
 p3 stop             # "Stop working" - release development resources
 ```
 
@@ -39,7 +39,7 @@ P3 is designed around **human intent**, not technical operations. It answers "wh
 | **"Start working"** | `p3 ready` | Environment setup, start services, verify everything works |
 | **"Stop working"** | `p3 stop [--full]` | Release resources, stop services (keeps machine for fast restart) |
 | **"Check my code"** | `p3 check [scope]` | Format, lint, basic tests - quick validation |
-| **"Test everything"** | `p3 test [scope]` | Complete end-to-end validation including builds |
+| **"Test everything"** | `p3 test [scope]` | Unit tests + integration + e2e validation (superset of CI) |
 | **"Create PR"** | `p3 ship "title" issue` | Test + PR creation with comprehensive validation |
 
 **Daily Flow Example:**
@@ -47,7 +47,8 @@ P3 is designed around **human intent**, not technical operations. It answers "wh
 p3 ready                    # Morning: ensure everything ready
 # ... make changes ...
 p3 check f2                 # Quick validation during development
-p3 test f2                  # Comprehensive testing when ready
+p3 ci                       # Validate CI alignment (prevents CI failures)
+p3 test f2                  # Comprehensive testing (unit + integration + e2e) when ready
 p3 ship "Add feature" 123   # Create PR for issue #123
 p3 stop                     # End of day: release resources
 ```
@@ -71,12 +72,13 @@ p3 ready                    # Verify fix worked
 </details>
 
 <details>
-<summary><b>Data & Version Commands</b> - 2 commands for datasets and versioning</summary>
+<summary><b>Data & Version Commands</b> - 3 commands for datasets and versioning</summary>
 
 | Intent | Command | What It Does |
 |--------|---------|--------------|
 | **"Build dataset"** | `p3 build [scope]` | Generate financial datasets for analysis and testing |
 | **"Show version"** | `p3 version [level]` | Display version information or increment version |
+| **"Check CI alignment"** | `p3 ci` | Run same tests as CI to prevent CI failures |
 
 **Dataset Building:**
 ```bash

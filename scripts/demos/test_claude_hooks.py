@@ -21,7 +21,7 @@ from pathlib import Path
 # Add common directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "common"))
 
-from monitoring.claude_hook_manager import get_hook_manager
+from common.monitoring.claude_hook_manager import get_hook_manager
 
 
 def test_hook_manager():

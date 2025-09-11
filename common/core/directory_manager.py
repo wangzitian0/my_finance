@@ -230,6 +230,9 @@ class DirectoryManager:
         self, layer: DataLayer, subdir: str, partition: Optional[str] = None
     ) -> Path:
         """Get path for a subdirectory within a layer"""
+        # Sanitize subdir for security
+        subdir = self._sanitize_path_component(subdir)
+
         layer_path = self.get_layer_path(layer, partition)
         return layer_path / subdir
 
@@ -293,13 +296,18 @@ class DirectoryManager:
         Returns:
             Path to source directory
         """
+        # Sanitize source path for security
+        source = self._sanitize_path_component(source)
+
         layer_path = self.get_layer_path(layer)
         source_path = layer_path / source
 
         if date_partition:
+            date_partition = self._sanitize_path_component(date_partition)
             source_path = source_path / date_partition
 
         if ticker:
+            ticker = self._sanitize_path_component(ticker)
             source_path = source_path / ticker
 
         return source_path
@@ -554,20 +562,45 @@ class DirectoryManager:
             raise TypeError("Subprocess arguments must be a list")
 
         validated_args = []
-        dangerous_commands = ["rm", "del", "format", "mkfs", "dd", "chmod 777", "sudo rm"]
+        dangerous_commands = ["rm", "del", "format", "mkfs", "dd", "sudo"]
+        dangerous_patterns = ["chmod.*777", "rm.*-rf", "format.*c:"]
+
+        # Join all arguments to check for dangerous patterns
+        full_command = " ".join(str(arg) for arg in args).lower()
+
+        # Check for dangerous commands in first argument (command name)
+        if args and str(args[0]).lower() in dangerous_commands:
+            raise ValueError(f"Dangerous command detected: {args[0]}")
+
+        # Check for dangerous patterns in the full command
+        import re
+
+        for pattern in dangerous_patterns:
+            if re.search(pattern, full_command):
+                raise ValueError(f"Dangerous pattern detected: {pattern}")
 
         for arg in args:
             if not isinstance(arg, (str, Path)):
                 raise TypeError(f"Invalid argument type: {type(arg)}")
 
-            arg_str = str(arg)
-            for dangerous_cmd in dangerous_commands:
-                if dangerous_cmd in arg_str.lower():
-                    raise ValueError(f"Dangerous command detected: {dangerous_cmd}")
-
-            validated_args.append(arg_str)
+            validated_args.append(str(arg))
 
         return validated_args
+
+    def validate_subprocess_args(self, args: List[str]) -> List[str]:
+        """Public interface for subprocess argument validation
+
+        Args:
+            args: Command arguments to validate
+
+        Returns:
+            Validated arguments
+
+        Raises:
+            TypeError: If arguments are not properly typed
+            ValueError: If dangerous commands are detected
+        """
+        return self._validate_subprocess_args(args)
 
     def _calculate_directory_size(self, path: Path, timeout: int = 30) -> int:
         """Calculate directory size with timeout handling

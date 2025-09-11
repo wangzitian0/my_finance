@@ -20,11 +20,11 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from common.build.metadata_manager import MetadataManager
 from common.core.directory_manager import DataLayer, directory_manager
 from common.logger import setup_logger
-from common.metadata_manager import MetadataManager
-from common.progress import create_progress_bar
-from common.utils import is_file_recent, sanitize_data, suppress_third_party_logs
+from common.monitoring.progress import create_progress_bar
+from common.utils.general_utils import is_file_recent, sanitize_data, suppress_third_party_logs
 
 # Optionally suppress third-party log messages (requests/urllib3)
 suppress_third_party_logs()
@@ -217,7 +217,7 @@ def run_job(config_path):
 
         progress_bar = create_progress_bar(total, description="Tickers Progress")
         # Create a Snowflake instance for generating unique request log IDs.
-        from common.snowflake import Snowflake
+        from common.utils.snowflake import Snowflake
 
         sf = Snowflake(machine_id=1)
         for ticker in tickers:

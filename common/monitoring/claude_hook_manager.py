@@ -26,9 +26,9 @@ _common_dir = Path(__file__).parent.parent
 if str(_common_dir) not in sys.path:
     sys.path.insert(0, str(_common_dir))
 
-from core.config_manager import config_manager
-from directory_manager import directory_manager
-from execution_monitor import ExecutionMonitor, ExecutionResult
+from common.core.config_manager import config_manager
+from common.core.directory_manager import directory_manager
+from common.monitoring.execution_monitor import ExecutionMonitor, ExecutionResult
 
 
 @dataclass

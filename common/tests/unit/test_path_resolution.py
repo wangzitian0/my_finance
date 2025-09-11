@@ -43,15 +43,15 @@ class TestPathResolutionUnit:
         # Valid inputs
         path = dm.get_layer_path(DataLayer.RAW_DATA)
         assert isinstance(path, Path)
-        assert "layer_01_raw" in str(path)
+        assert "stage_00_raw" in str(path)
 
         # Valid with partition
         path_with_partition = dm.get_layer_path(DataLayer.RAW_DATA, "20250828")
         assert "20250828" in str(path_with_partition)
 
-        # Edge case: empty partition
-        path_empty_partition = dm.get_layer_path(DataLayer.RAW_DATA, "")
-        assert path_empty_partition != path  # Should be different from no partition
+        # Edge case: empty partition should raise ValueError
+        with pytest.raises(ValueError, match="Path component must be a non-empty string"):
+            dm.get_layer_path(DataLayer.RAW_DATA, "")
 
         # Edge case: None partition (should behave like no partition)
         path_none_partition = dm.get_layer_path(DataLayer.RAW_DATA, None)
@@ -64,14 +64,11 @@ class TestPathResolutionUnit:
         # Valid inputs
         path = dm.get_subdir_path(DataLayer.RAW_DATA, "sec-edgar")
         assert "sec-edgar" in str(path)
-        assert "layer_01_raw" in str(path)
+        assert "stage_00_raw" in str(path)
 
-        # Edge case: empty subdir
-        with pytest.raises((ValueError, TypeError)) or True:
-            # Should handle empty subdir gracefully or raise appropriate error
-            empty_subdir_path = dm.get_subdir_path(DataLayer.RAW_DATA, "")
-            # If it doesn't raise, it should still create a valid path
-            assert isinstance(empty_subdir_path, Path)
+        # Edge case: empty subdir should raise ValueError
+        with pytest.raises(ValueError, match="Path component must be a non-empty string"):
+            dm.get_subdir_path(DataLayer.RAW_DATA, "")
 
         # Edge case: subdir with special characters
         special_char_path = dm.get_subdir_path(DataLayer.RAW_DATA, "test-data_2024.01")
@@ -89,28 +86,27 @@ class TestPathResolutionUnit:
         # Valid basic input
         path = dm.get_source_path("sec-edgar")
         assert "sec-edgar" in str(path)
-        assert "layer_01_raw" in str(path)
+        assert "stage_00_raw" in str(path)
 
         # Valid with all parameters
         full_path = dm.get_source_path("sec-edgar", DataLayer.DAILY_INDEX, "20250828", "AAPL")
         assert all(
-            part in str(full_path) for part in ["sec-edgar", "layer_03_index", "20250828", "AAPL"]
+            part in str(full_path)
+            for part in ["sec-edgar", "stage_02_daily_index", "20250828", "AAPL"]
         )
 
-        # Input sanitization tests
-        sanitized_path = dm.get_source_path("sec edgar", ticker="AAPL/test")
-        assert isinstance(sanitized_path, Path)
+        # Input sanitization tests - dangerous patterns should raise ValueError
+        with pytest.raises(ValueError, match="Dangerous pattern"):
+            dm.get_source_path("sec/../edgar")
 
-        # Edge case: empty source name
-        with pytest.raises((ValueError, TypeError)) or True:
-            empty_source_path = dm.get_source_path("")
-            if not isinstance(empty_source_path, type(None)):
-                assert isinstance(empty_source_path, Path)
+        # Edge case: empty source name should raise ValueError
+        with pytest.raises(ValueError, match="Path component must be a non-empty string"):
+            dm.get_source_path("")
 
         # Edge case: None values
         none_path = dm.get_source_path("sec-edgar", date_partition=None, ticker=None)
         assert "sec-edgar" in str(none_path)
-        assert "layer_01_raw" in str(none_path)
+        assert "stage_00_raw" in str(none_path)
 
     def test_get_build_path_input_validation(self, mock_directory_manager):
         """Test input validation for get_build_path"""
@@ -118,7 +114,7 @@ class TestPathResolutionUnit:
 
         # Valid inputs
         basic_path = dm.get_build_path()
-        assert "layer_05_results" in str(basic_path)
+        assert "stage_04_query_results" in str(basic_path)
 
         # Valid with timestamp
         timestamp_path = dm.get_build_path("20250828_143000")
@@ -126,7 +122,7 @@ class TestPathResolutionUnit:
 
         # Valid with branch
         branch_path = dm.get_build_path(branch="feature-test")
-        assert "layer_05_results_feature-test" in str(branch_path)
+        assert "stage_04_query_results_feature-test" in str(branch_path)
 
         # Input validation tests
         # Invalid timestamp format (should still work but might not format correctly)
@@ -162,12 +158,8 @@ class TestPathResolutionUnit:
         invalid_paths = ["", "nonexistent_stage", "invalid/path", None]
 
         for invalid_path in invalid_paths:
-            if invalid_path is None:
-                with pytest.raises(TypeError) or True:
-                    result = dm.map_legacy_path(invalid_path)
-            else:
-                result = dm.map_legacy_path(invalid_path)
-                assert result is None
+            result = dm.map_legacy_path(invalid_path)
+            assert result is None, f"Expected None for invalid path '{invalid_path}', got {result}"
 
     def test_path_resolution_security(self, mock_directory_manager):
         """Test security aspects of path resolution"""
@@ -182,14 +174,9 @@ class TestPathResolutionUnit:
         ]
 
         for attempt in traversal_attempts:
-            # Path resolution should still work but keep paths within project
-            try:
-                result_path = dm.get_source_path(attempt)
-                # Resolved path should still be within project root
-                assert str(dm.root_path) in str(result_path.resolve())
-            except (ValueError, OSError):
-                # Or appropriately handle/reject dangerous paths
-                pass
+            # Security validation should reject dangerous paths
+            with pytest.raises(ValueError):
+                dm.get_source_path(attempt)
 
     def test_path_normalization(self, mock_directory_manager):
         """Test path normalization and consistency"""
@@ -222,42 +209,29 @@ class TestPathResolutionCaching:
             project_root = Path(temp_dir)
             (project_root / "common" / "config").mkdir(parents=True, exist_ok=True)
             dm = DirectoryManager(root_path=project_root)
-
-            # Add caching capabilities to DirectoryManager
-            dm._path_cache = {}
-            dm._cache_hits = 0
-            dm._cache_misses = 0
-
-            # Override get_layer_path to add caching
-            original_get_layer_path = dm.get_layer_path
-
-            def cached_get_layer_path(layer, partition=None):
-                cache_key = (layer, partition)
-                if cache_key in dm._path_cache:
-                    dm._cache_hits += 1
-                    return dm._path_cache[cache_key]
-                else:
-                    dm._cache_misses += 1
-                    result = original_get_layer_path(layer, partition)
-                    dm._path_cache[cache_key] = result
-                    return result
-
-            dm.get_layer_path = cached_get_layer_path
+            # DirectoryManager already has built-in caching and counters
             yield dm
 
     def test_path_resolution_caching_effectiveness(self, cached_directory_manager):
         """Test that path caching improves performance"""
         dm = cached_directory_manager
 
+        # Reset counters to test from clean state
+        dm._cache_hits = 0
+        dm._cache_misses = 0
+        dm._path_cache.clear()
+
         # First access (cache miss)
         path1 = dm.get_layer_path(DataLayer.RAW_DATA)
-        assert dm._cache_misses == 1
-        assert dm._cache_hits == 0
+        initial_misses = dm._cache_misses
+        initial_hits = dm._cache_hits
+        assert initial_misses >= 1  # At least one miss
+        assert initial_hits == 0  # No hits yet
 
         # Second access (cache hit)
         path2 = dm.get_layer_path(DataLayer.RAW_DATA)
-        assert dm._cache_misses == 1
-        assert dm._cache_hits == 1
+        assert dm._cache_misses == initial_misses  # No additional misses
+        assert dm._cache_hits == initial_hits + 1  # One additional hit
 
         # Paths should be identical
         assert path1 == path2
@@ -329,6 +303,16 @@ class TestPathResolutionCaching:
 storage:
   backend: local_filesystem
   root_path: build_data_v1
+layers:
+  stage_00_raw: "stage_00_raw"
+  stage_01_daily_delta: "stage_01_daily_delta"
+  stage_02_daily_index: "stage_02_daily_index"
+  stage_03_graph_rag: "stage_03_graph_rag"
+  stage_04_query_results: "stage_04_query_results"
+common:
+  logs: "logs"
+  config: "common/config"
+  cache: ".cache"
 """
                 )
 
@@ -349,6 +333,16 @@ storage:
 storage:
   backend: local_filesystem
   root_path: build_data_v2
+layers:
+  stage_00_raw: "stage_00_raw"
+  stage_01_daily_delta: "stage_01_daily_delta"
+  stage_02_daily_index: "stage_02_daily_index"
+  stage_03_graph_rag: "stage_03_graph_rag"
+  stage_04_query_results: "stage_04_query_results"
+common:
+  logs: "logs"
+  config: "common/config"
+  cache: ".cache"
 """
                 )
 

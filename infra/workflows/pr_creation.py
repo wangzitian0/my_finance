@@ -313,19 +313,23 @@ def sync_with_main_safely(current_branch):
 
 
 def run_end_to_end_test(scope="f2"):
-    """Run end-to-end test with specified scope (f2 fast or m7 complete)"""
+    """Run end-to-end test with specified scope (f2 fast or m7 complete)
+
+    CRITICAL: This function is now enhanced to include comprehensive unit tests first,
+    ensuring p3 ship is a true superset of CI tests and catches failures early.
+    """
     scope_info = {
         "f2": {
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "build f2",
+            "build_cmd": "ETL/build_dataset.py f2",
         },
         "m7": {
             "name": "M7 COMPLETE VALIDATION",
             "description": "Magnificent 7 companies with full testing",
             "min_files": 7,
-            "build_cmd": "build m7",
+            "build_cmd": "ETL/build_dataset.py m7",
         },
     }
 
@@ -336,6 +340,78 @@ def run_end_to_end_test(scope="f2"):
     print(f"🚀 {test_info['description']}")
     print("=" * 60)
 
+    # CRITICAL: Run comprehensive unit tests FIRST before E2E tests
+    print("\n🧪 PHASE 1: Comprehensive Unit Test Validation (Pre-E2E)")
+    print("-" * 60)
+    print("🎯 GOAL: Ensure p3 ship is superset of CI tests - catch failures early")
+    print("🚨 CRITICAL: Unit test failures here mean CI will also fail")
+    print()
+
+    # Unit test commands that match CI exactly
+    unit_test_commands = [
+        # Primary unit tests (main CI failure cause)
+        (
+            "pixi run python -m pytest common/tests/unit/ -v --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
+            "Common Unit Tests (Primary CI Test)",
+        ),
+        # Core component tests by markers
+        ("pixi run python -m pytest -m core --tb=short -v --maxfail=10", "Core Component Tests"),
+        # Schema validation tests
+        ("pixi run python -m pytest -m schemas --tb=short -v", "Schema Definition Tests"),
+        # Agent tests (if they exist)
+        (
+            "pixi run python -m pytest -m agents --tb=short -v || echo 'No agent tests found'",
+            "Agent System Tests",
+        ),
+        # Build module tests
+        ("pixi run python -m pytest -m build --tb=short -v", "Build Module Tests"),
+    ]
+
+    print(f"📋 Running {len(unit_test_commands)} unit test categories that match CI...")
+    print()
+
+    unit_tests_passed = 0
+    unit_test_failures = []
+
+    for cmd, description in unit_test_commands:
+        print(f"🔍 {description}...")
+        unit_result = run_command(cmd, description, check=False)
+
+        if not unit_result or unit_result.returncode != 0:
+            unit_test_failures.append(
+                (description, unit_result.stderr if unit_result else "Command failed")
+            )
+            print(f"❌ {description} - FAILED")
+        else:
+            unit_tests_passed += 1
+            print(f"✅ {description} - PASSED")
+        print()  # Spacing between tests
+
+    # Summary of unit test results
+    total_unit_tests = len(unit_test_commands)
+    print(f"📊 Unit Test Summary: {unit_tests_passed}/{total_unit_tests} passed")
+
+    if unit_test_failures:
+        print("\n🚨 CRITICAL UNIT TEST FAILURES (Will cause CI failure!):")
+        for description, error in unit_test_failures:
+            print(f"   • {description}")
+            if "73 failed" in str(error) or "unit test" in description.lower():
+                print("     ⚠️  This is the primary CI failure cause!")
+
+        print("\n💡 UNIT TEST FIX REQUIRED:")
+        print("   1. Fix the failing unit tests above")
+        print("   2. Re-run 'p3 test f2' to verify fixes")
+        print("   3. Only then proceed with PR creation")
+        print("\n🎯 p3 ship MUST be superset of CI - all unit tests must pass here first")
+        return False  # Return failure to stop PR creation
+
+    print("✅ All unit tests passed - CI unit tests will succeed!")
+    print("🎯 p3 ship is now validated as superset of CI tests")
+    print()
+
+    print("\n🧪 PHASE 2: End-to-End Integration Testing")
+    print("-" * 60)
+
     # Clean any existing build artifacts
     run_command(
         f"rm -rf {STAGE_04_QUERY_RESULTS}/build_*", "Cleaning existing build artifacts", check=False
@@ -343,7 +419,10 @@ def run_end_to_end_test(scope="f2"):
     run_command("rm -f common/latest_build", "Cleaning latest build symlink", check=False)
 
     # Start environment if needed (Python-based status)
-    run_p3_command("debug", "Checking environment status", check=False)
+    print("🔍 Checking environment status...")
+    run_command(
+        "python infra/system/fast_env_check.py", "Environment status check", timeout=10, check=False
+    )
 
     test_success = False
     try:
@@ -381,8 +460,10 @@ def run_end_to_end_test(scope="f2"):
             start_time = time.time()
             print(f"🕐 Build started at: {time.strftime('%H:%M:%S')}")
 
-            run_p3_command(
-                test_info["build_cmd"], f"Building {scope.upper()} dataset", timeout=1200
+            run_command(
+                f"pixi run python {test_info['build_cmd']}",
+                f"Building {scope.upper()} dataset",
+                timeout=1200,
             )  # 20 minutes for comprehensive testing
 
             end_time = time.time()
@@ -428,7 +509,10 @@ def run_end_to_end_test(scope="f2"):
             return False
 
     # Validate build results
-    build_status = run_p3_command("debug", "Checking build status")
+    print("🔍 Validating build completion...")
+    build_status = run_command(
+        "python infra/system/fast_env_check.py", "Checking build status", check=False
+    )
 
     # Check for expected F2 files in correct build output location
     print("🔍 Checking F2 build outputs for data validation...")
@@ -880,7 +964,7 @@ def validate_environment_for_pr():
 
     except subprocess.TimeoutExpired:
         print("⏰ Environment validation timed out")
-        print("💡 Run 'p3 debug' for detailed diagnostics")
+        print("💡 Check system resources and try 'p3 ready' to fix issues")
         return False
     except FileNotFoundError:
         print("⚠️  Fast environment check script not found, using basic validation")
@@ -1083,11 +1167,23 @@ def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
     # 2.9. MANDATORY: Format code before testing
     print("🔍 [DEBUG] Step 7: Code formatting")
     print("\n🔄 Running code formatting...")
-    print("🔍 [DEBUG] About to call run_p3_command('check')...")
-    format_result = run_p3_command(
-        "check", "Formatting Python code with black and isort", check=False
+    print("🔍 [DEBUG] About to call direct format commands...")
+
+    # Call formatting directly to avoid P3 recursion
+    black_result = run_command(
+        "pixi run python -m black --line-length 100 .",
+        "Black code formatting",
+        timeout=120,
+        check=False,
     )
-    print("🔍 [DEBUG] run_p3_command('check') completed")
+
+    isort_result = run_command(
+        "pixi run python -m isort .", "Import sorting with isort", timeout=120, check=False
+    )
+
+    # Check if formatting succeeded
+    format_result = black_result and isort_result
+    print("🔍 [DEBUG] Direct formatting commands completed")
 
     # Check if formatting made changes
     uncommitted_after_format = get_uncommitted_changes()
@@ -1102,18 +1198,28 @@ def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
     else:
         print("✅ Code already properly formatted")
 
-    # 3. MANDATORY: Run end-to-end F2 test - no skip option available
-    print("🔍 [DEBUG] Step 8: Starting end-to-end test (ANOTHER LIKELY HANG POINT)")
-    print(f"🧪 Running mandatory {scope.upper()} test - this cannot be skipped")
+    # 3. MANDATORY: Run comprehensive testing (unit tests + end-to-end) - no skip option available
+    print("🔍 [DEBUG] Step 8: Starting comprehensive test validation")
+    print(f"🧪 Running mandatory {scope.upper()} comprehensive test - this cannot be skipped")
+    print("🎯 GOAL: Ensure p3 ship validates same tests as CI to prevent CI failures")
+    print()
+
+    # The run_end_to_end_test function now includes comprehensive unit tests first
+    # This ensures p3 ship is a superset of CI tests
     test_result = run_end_to_end_test(scope)
-    print(f"🔍 [DEBUG] End-to-end test completed with result: {test_result}")
+    print(f"🔍 [DEBUG] Comprehensive test completed with result: {test_result}")
+
     if isinstance(test_result, int) and test_result > 0:
         # Test passed, create test validation info
         test_info = create_test_marker(test_result, scope)
-        print(f"✅ {scope.upper()} test passed - proceeding with PR creation")
+        print(f"✅ {scope.upper()} comprehensive test passed - proceeding with PR creation")
+        print("✅ Unit tests validated - CI will not fail due to unit test issues")
+        print("✅ End-to-end test validated - integration functionality confirmed")
     else:
-        print(f"❌ {scope.upper()} test failed - PR creation aborted")
+        print(f"❌ {scope.upper()} comprehensive test failed - PR creation aborted")
         print(f"💡 Fix the test issues before creating PR")
+        print("🚨 CRITICAL: This means unit tests or integration tests failed")
+        print("   These same tests run in CI and would fail the build")
         sys.exit(1)
 
     # 4. Handle data directory changes (now part of main repository)

@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from common.core.directory_manager import DataLayer, DirectoryManager
+from ..core.directory_manager import DataLayer, DirectoryManager
 
 logger = logging.getLogger(__name__)
 
@@ -404,9 +404,19 @@ class BuildTracker:
 
             # File Locations
             f.write("## File Locations\n\n")
-            f.write(f"- **Build Directory**: `{self.build_path.relative_to(Path.cwd())}`\n")
-            f.write(f"- **Stage Logs**: `{self.build_path.relative_to(Path.cwd())}/stage_logs/`\n")
-            f.write(f"- **Artifacts**: `{self.build_path.relative_to(Path.cwd())}/artifacts/`\n\n")
+            try:
+                build_path_str = f"`{self.build_path.relative_to(Path.cwd())}`"
+                stage_logs_str = f"`{self.build_path.relative_to(Path.cwd())}/stage_logs/`"
+                artifacts_str = f"`{self.build_path.relative_to(Path.cwd())}/artifacts/`"
+            except ValueError:
+                # If build_path is not relative to cwd, use absolute path
+                build_path_str = f"`{self.build_path}`"
+                stage_logs_str = f"`{self.build_path}/stage_logs/`"
+                artifacts_str = f"`{self.build_path}/artifacts/`"
+            
+            f.write(f"- **Build Directory**: {build_path_str}\n")
+            f.write(f"- **Stage Logs**: {stage_logs_str}\n")
+            f.write(f"- **Artifacts**: {artifacts_str}\n\n")
 
             # Copy SEC DCF Integration Process documentation and add reference
             sec_doc_copied = self._copy_sec_dcf_documentation()
@@ -432,16 +442,25 @@ class BuildTracker:
     def _update_latest_symlink(self) -> None:
         """Update the 'latest' symlink to point to current build"""
         # Update latest in common/ directory (worktree-specific)
-        project_root = Path(__file__).parent.parent
+        # Navigate up from common/build/build_tracker.py to get project root
+        project_root = Path(__file__).parent.parent.parent
         common_latest = project_root / "common" / "latest_build"
 
-        if common_latest.exists():
-            common_latest.unlink()
+        # Ensure the parent directory exists
+        common_latest.parent.mkdir(parents=True, exist_ok=True)
+        
+        if common_latest.exists() or common_latest.is_symlink():
+            common_latest.unlink(missing_ok=True)
 
         # Create relative symlink to the build
-        relative_path = self.build_path.relative_to(project_root)
-        common_latest.symlink_to(f"../{relative_path}")
-        logger.debug(f"Updated latest build symlink: {common_latest} -> {relative_path}")
+        try:
+            relative_path = self.build_path.relative_to(project_root)
+            common_latest.symlink_to(f"../{relative_path}")
+            logger.debug(f"Updated latest build symlink: {common_latest} -> {relative_path}")
+        except ValueError:
+            # If build_path is not relative to project_root (e.g., in tests), use absolute path
+            common_latest.symlink_to(self.build_path)
+            logger.debug(f"Updated latest build symlink: {common_latest} -> {self.build_path}")
 
         # Note: We no longer create latest symlink in build directory per issue #58
         # Only use common/latest_build for worktree isolation

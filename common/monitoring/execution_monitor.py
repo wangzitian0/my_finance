@@ -16,6 +16,12 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+# Import directory_manager at module level for easier mocking in tests
+try:
+    from ..core.directory_manager import directory_manager
+except ImportError:
+    directory_manager = None
+
 
 class ErrorCategory(Enum):
     """Error categorization for systematic analysis."""
@@ -69,9 +75,11 @@ class ExecutionMonitor:
         """Initialize execution monitor."""
         if log_directory is None:
             # Use centralized DirectoryManager for SSOT compliance
-            from .directory_manager import directory_manager
-
-            self.log_directory = directory_manager.get_logs_path()
+            if directory_manager is not None:
+                self.log_directory = directory_manager.get_logs_path()
+            else:
+                # Fallback for testing or when directory_manager is not available
+                self.log_directory = Path("build_data/logs")
         else:
             self.log_directory = Path(log_directory)
 
@@ -139,8 +147,11 @@ class ExecutionMonitor:
 
         # High priority errors
         high_patterns = [
+            "importerror",
             "import error",
+            "modulenotfounderror",
             "module not found",
+            "filenotfounderror",
             "file not found",
             "network error",
             "timeout",

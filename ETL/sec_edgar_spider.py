@@ -51,8 +51,8 @@ except ImportError as e:
     SECEDGAR_AVAILABLE = False
 from tqdm import tqdm
 
+from common.build.metadata_manager import MetadataManager
 from common.core.directory_manager import DataLayer, directory_manager
-from common.metadata_manager import MetadataManager
 
 # Set log output level to DEBUG
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")

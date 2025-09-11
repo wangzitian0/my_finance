@@ -38,6 +38,11 @@ class ConfigType(Enum):
     SEC_EDGAR = "sec_edgar"
     STAGE_CONFIGS = "stage_configs"
 
+    # Make sure we have the exact values the tests expect
+    @property
+    def value(self):
+        return self._value_
+
 
 @dataclass
 class ConfigSchema:
@@ -68,8 +73,11 @@ class ConfigManager:
         Args:
             config_root: Root configuration directory. Defaults to common/config/
         """
-        self.config_root = config_root or directory_manager.get_config_path()
-        self._cache = {}
+        self.config_path = config_root or directory_manager.get_config_path()
+        self.config_root = self.config_path  # Alias for backward compatibility
+        self._config_cache = {}  # Match test expectations
+        self._cache = self._config_cache  # Alias for internal use
+        self._file_timestamps = {}  # For hot reload detection
         self._schemas = self._define_schemas()
         self._load_all_configs()
 
@@ -126,28 +134,45 @@ class ConfigManager:
     def _load_config_file(self, file_path: Path) -> Dict[str, Any]:
         """Load configuration file with format detection"""
         if not file_path.exists():
-            return {}
+            raise FileNotFoundError(f"Configuration file not found: {file_path}")
 
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 if file_path.suffix.lower() in [".yml", ".yaml"]:
-                    return yaml.safe_load(f) or {}
+                    try:
+                        result = yaml.safe_load(f) or {}
+                    except yaml.YAMLError as e:
+                        raise ValueError(f"Failed to parse YAML file {file_path}: {e}")
                 elif file_path.suffix.lower() == ".json":
-                    return json.load(f) or {}
+                    try:
+                        result = json.load(f) or {}
+                    except json.JSONDecodeError as e:
+                        raise ValueError(f"Failed to parse JSON file {file_path}: {e}")
                 else:
                     raise ValueError(f"Unsupported config format: {file_path.suffix}")
+
+                # Update file timestamp for hot reload detection
+                self._file_timestamps[str(file_path)] = file_path.stat().st_mtime
+                return result
+
+        except (FileNotFoundError, ValueError):
+            raise  # Re-raise expected exceptions
         except Exception as e:
-            print(f"Warning: Failed to load config {file_path}: {e}")
-            return {}
+            raise ValueError(f"Failed to load config {file_path}: {e}")
 
     def _load_all_configs(self):
         """Load all configuration files into cache"""
         self._cache.clear()
 
-        # Load schema-defined configs
+        # Load schema-defined configs (gracefully handle missing files)
         for schema_name, schema in self._schemas.items():
             config_path = self.config_root / schema.path
-            self._cache[schema_name] = self._load_config_file(config_path)
+            try:
+                self._cache[schema_name] = self._load_config_file(config_path)
+            except FileNotFoundError:
+                if schema.required:
+                    print(f"Warning: Required config {schema_name} not found at {config_path}")
+                self._cache[schema_name] = {}
 
         # Load LLM configs
         llm_config_dir = self.config_root / "llm" / "configs"
@@ -155,14 +180,17 @@ class ConfigManager:
             self._cache["llm_configs"] = {}
             for config_file in llm_config_dir.glob("*.yml"):
                 config_name = config_file.stem
-                self._cache["llm_configs"][config_name] = self._load_config_file(config_file)
+                try:
+                    self._cache["llm_configs"][config_name] = self._load_config_file(config_file)
+                except (FileNotFoundError, ValueError):
+                    self._cache["llm_configs"][config_name] = {}
 
     def get_config(self, config_name: str, reload: bool = False) -> Dict[str, Any]:
         """
         Get configuration by name.
 
         Args:
-            config_name: Configuration name (e.g., 'magnificent_7', 'directory_structure')
+            config_name: Configuration name (e.g., 'magnificent_7', 'directory_structure', 'database')
             reload: Force reload from file
 
         Returns:
@@ -171,9 +199,25 @@ class ConfigManager:
         if reload or config_name not in self._cache:
             if config_name in self._schemas:
                 config_path = self.config_root / self._schemas[config_name].path
-                self._cache[config_name] = self._load_config_file(config_path)
+                try:
+                    self._cache[config_name] = self._load_config_file(config_path)
+                except FileNotFoundError:
+                    self._cache[config_name] = {}
             else:
-                return {}
+                # For configs not in schema (like test configs), try direct filename
+                config_path = self.config_path / f"{config_name}.yml"
+                if not config_path.exists():
+                    config_path = self.config_path / f"{config_name}.yaml"
+                if not config_path.exists():
+                    config_path = self.config_path / f"{config_name}.json"
+
+                if config_path.exists():
+                    try:
+                        self._cache[config_name] = self._load_config_file(config_path)
+                    except (FileNotFoundError, ValueError):
+                        self._cache[config_name] = {}
+                else:
+                    self._cache[config_name] = {}
 
         return self._cache.get(config_name, {})
 
@@ -182,13 +226,41 @@ class ConfigManager:
         Get company list configuration.
 
         Args:
-            list_name: List name ('magnificent_7', 'nasdaq_100', 'fast_2', 'vti_3500')
+            list_name: List name ('magnificent_7', 'nasdaq_100', 'fast_2', 'vti_3500', 'test')
 
         Returns:
             List of company dictionaries with ticker, name, cik
         """
-        config = self.get_config(list_name)
-        return config.get("companies", [])
+        # Use cache key for company lists
+        cache_key = f"company_list_{list_name}"
+
+        # Check if already cached
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
+        # Check if it's in predefined schemas
+        if list_name in self._schemas:
+            config = self.get_config(list_name)
+            companies = config.get("companies", [])
+            self._cache[cache_key] = companies
+            return companies
+
+        # For test files and dynamic files, try different locations
+        possible_paths = [
+            self.config_path / f"list_{list_name}.yml",
+            self.config_path / "stock_lists" / f"{list_name}.yml",
+            self.config_path / "stock_lists" / f"list_{list_name}.yml",
+        ]
+
+        for list_file_path in possible_paths:
+            if list_file_path.exists():
+                config = self._load_config_file(list_file_path)
+                companies = config.get("companies", [])
+                self._cache[cache_key] = companies
+                return companies
+
+        # If not found, raise FileNotFoundError as tests expect
+        raise FileNotFoundError(f"Company list '{list_name}' not found")
 
     def get_llm_config(self, model_name: str = "default") -> Dict[str, Any]:
         """
@@ -208,14 +280,28 @@ class ConfigManager:
         Get data source configuration.
 
         Args:
-            source: Data source name ('sec_edgar', 'yfinance')
+            source: Data source name ('sec_edgar', 'yfinance', 'test_source')
             stage: Stage identifier
 
         Returns:
             Data source configuration dictionary
         """
+        # First try the schema-based approach
         config_key = f"{stage}_original_{source}"
-        return self.get_config(config_key)
+        if config_key in self._schemas:
+            return self.get_config(config_key)
+
+        # For test configs and other sources, try data_sources directory
+        ds_path = self.config_path / "data_sources" / f"{source}.yml"
+        if not ds_path.exists():
+            ds_path = self.config_path / "data_sources" / f"{source}.yaml"
+        if not ds_path.exists():
+            ds_path = self.config_path / "data_sources" / f"{source}.json"
+
+        if ds_path.exists():
+            return self._load_config_file(ds_path)
+
+        return {}
 
     def get_directory_config(self) -> Dict[str, Any]:
         """Get directory structure configuration"""
@@ -250,6 +336,44 @@ class ConfigManager:
     def reload_all(self):
         """Reload all configurations from disk"""
         self._load_all_configs()
+
+    def reload_configs(self):
+        """Reload all configurations (alias for reload_all for test compatibility)"""
+        self._cache.clear()
+        self._config_cache.clear()
+        self._file_timestamps.clear()
+        self._load_all_configs()
+
+    def load_config(self, config_filename: str) -> Dict[str, Any]:
+        """
+        Load configuration file by filename (test-compatible API).
+
+        Args:
+            config_filename: Configuration filename (e.g., 'database.yml')
+
+        Returns:
+            Configuration dictionary
+        """
+        # Handle direct file access for tests
+        config_path = self.config_path / config_filename
+
+        # Check cache first
+        if config_filename in self._config_cache:
+            # Check if file has been modified
+            if config_path.exists():
+                current_mtime = config_path.stat().st_mtime
+                cached_mtime = self._file_timestamps.get(str(config_path), 0)
+                if current_mtime <= cached_mtime:
+                    return self._config_cache[config_filename]
+
+        # Load from file
+        config_data = self._load_config_file(config_path)
+        self._config_cache[config_filename] = config_data
+        return config_data
+
+    def load_dataset_config(self, dataset_name: str) -> Dict[str, Any]:
+        """Load dataset configuration for testing compatibility"""
+        return self.load_config(f"stock_lists/{dataset_name}.yml")
 
     def get_config_path(self, config_name: str) -> Optional[Path]:
         """
@@ -351,4 +475,4 @@ def get_data_source_config(source: str, stage: str = "stage_00") -> Dict[str, An
 
 def reload_configs():
     """Reload all configurations"""
-    config_manager.reload_all()
+    config_manager.reload_configs()

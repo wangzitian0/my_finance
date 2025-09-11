@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import yaml
 
-from common.config_manager import (
+from common.core.config_manager import (
     ConfigManager,
     ConfigSchema,
     ConfigType,

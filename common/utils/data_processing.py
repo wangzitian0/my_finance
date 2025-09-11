@@ -11,6 +11,7 @@ Issue #184: Utility consolidation - Data processing utilities
 
 import json
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, Dict, List, Optional, Union
 
 # Import pandas if available for enhanced data processing
@@ -31,9 +32,15 @@ def normalize_ticker_symbol(ticker: str) -> str:
 
     Returns:
         Normalized ticker symbol (uppercase, stripped)
+
+    Raises:
+        ValueError: If ticker is empty or whitespace-only
+        TypeError: If ticker is None
     """
-    if not ticker:
-        return ""
+    if ticker is None:
+        raise TypeError("Ticker symbol cannot be None")
+    if not ticker or not ticker.strip():
+        raise ValueError("Ticker symbol cannot be empty")
     return ticker.strip().upper()
 
 
@@ -47,13 +54,27 @@ def validate_company_data(company_data: Dict[str, Any]) -> bool:
     Returns:
         True if valid, False otherwise
     """
+    if not isinstance(company_data, dict):
+        return False
+
     required_fields = ["ticker", "name"]
-    return all(field in company_data and company_data[field] for field in required_fields)
+
+    # Check that all required fields are present
+    for field in required_fields:
+        if field not in company_data:
+            return False
+        value = company_data[field]
+        # Check that field has a value and is a string
+        if not value or not isinstance(value, str):
+            return False
+
+    return True
 
 
 def merge_company_lists(*company_lists: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Merge multiple company lists, removing duplicates by ticker.
+    Later lists take precedence for overlapping tickers.
 
     Args:
         *company_lists: Variable number of company list arguments
@@ -61,17 +82,16 @@ def merge_company_lists(*company_lists: List[Dict[str, Any]]) -> List[Dict[str, 
     Returns:
         Merged company list with unique tickers
     """
-    seen_tickers = set()
-    merged_list = []
+    ticker_to_company = {}
 
     for company_list in company_lists:
         for company in company_list:
             ticker = normalize_ticker_symbol(company.get("ticker", ""))
-            if ticker and ticker not in seen_tickers:
-                seen_tickers.add(ticker)
-                merged_list.append(company)
+            if ticker:
+                # Later entries overwrite earlier ones
+                ticker_to_company[ticker] = company
 
-    return merged_list
+    return list(ticker_to_company.values())
 
 
 def filter_companies_by_criteria(
@@ -93,11 +113,19 @@ def filter_companies_by_criteria(
         match = True
 
         for key, value in criteria.items():
-            if key not in company:
+            # Handle special criteria keys
+            if key == "market_cap_min":
+                if "market_cap" not in company or company["market_cap"] < value:
+                    match = False
+                    break
+            elif key == "market_cap_max":
+                if "market_cap" not in company or company["market_cap"] > value:
+                    match = False
+                    break
+            elif key not in company:
                 match = False
                 break
-
-            if isinstance(value, str):
+            elif isinstance(value, str):
                 if value.lower() not in company[key].lower():
                     match = False
                     break
@@ -198,6 +226,9 @@ def safe_json_serialize(data: Any) -> str:
         """Custom JSON serializer for non-serializable objects."""
         if isinstance(obj, datetime):
             return obj.isoformat()
+        elif isinstance(obj, Decimal):
+            # Convert Decimal to float for JSON serialization
+            return float(obj)
         elif PANDAS_AVAILABLE and isinstance(obj, pd.Timestamp):
             return obj.isoformat()
         elif hasattr(obj, "__dict__"):
