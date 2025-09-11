@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from common.build.build_tracker import BuildTracker
-from tests.test_config import DatasetTier, TestConfigManager
+from ETL.tests.test_config import DatasetTier, TestConfigManager
 
 
 class TestDataStructure:
