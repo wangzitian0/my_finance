@@ -36,14 +36,13 @@ class P3CLI:
     def _load_commands(self) -> Dict[str, str]:
         """Load the essential workflow commands."""
         return {
-            # Core Workflow Commands (9 total)
+            # Core Workflow Commands (8 total)
             "ready": "python infra/system/workflow_ready.py",  # Start working
             "stop": "python infra/system/workflow_stop.py",  # Stop working (release resources)
             "reset": "python infra/system/workflow_reset.py",  # Fix environment
             "check": "python infra/development/workflow_check.py",  # Validate code
             "test": "python scripts/utilities/run_test.py",  # Test
             "ship": "python infra/workflows/pr_creation.py",  # Create PR
-            "debug": "python scripts/workflow/debug.py",  # Diagnose issues
             "build": "python ETL/build_dataset.py",  # Build dataset
             "version": "version_command",  # Version info
         }
@@ -61,7 +60,7 @@ class P3CLI:
         if command not in self.commands:
             print(f"❌ Unknown command: {command}")
             print(
-                "Available commands: ready, stop, reset, check, test, ship, debug, build, version"
+                "Available commands: ready, stop, reset, check, test, ship, build, version"
             )
             print("Use 'p3 help' for details")
             sys.exit(1)
@@ -115,6 +114,35 @@ class P3CLI:
         print(f"⏱️  Total P3 time: {total_duration:.2f}s")
         print(f"🏁 Finished at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"🔄 Exit code: {result.returncode}")
+        
+        # Provide helpful diagnostics for failures
+        if result.returncode != 0:
+            print()
+            print("🔍 COMMAND FAILED - Quick Diagnostics:")
+            print(f"   Command: {command}")
+            print(f"   Exit code: {result.returncode}")
+            print()
+            print("💡 Common solutions:")
+            if command == "ready":
+                print("   • Check if Podman machine is running: podman machine list")
+                print("   • Try: p3 reset (clean restart)")
+                print("   • Check system resources: Activity Monitor")
+            elif command == "test":
+                print("   • Check if environment is ready: p3 ready") 
+                print("   • Try smaller scope: p3 test f2")
+                print("   • Check dependencies: pixi install")
+            elif command == "ship":
+                print("   • Ensure tests pass first: p3 test f2")
+                print("   • Check git status and commit changes")
+                print("   • Verify issue number is correct")
+            elif command == "check":
+                print("   • Check code formatting issues")
+                print("   • Try fixing with: p3 ready")
+                print("   • Check pixi environment: pixi install")
+            else:
+                print("   • Try: p3 ready (setup environment)")
+                print("   • Check logs above for specific errors")
+                print("   • Use 'p3 reset' for major issues")
 
         sys.exit(result.returncode)
 
@@ -131,8 +159,7 @@ DAILY WORKFLOW (5 commands):
   p3 test [scope]           Unit tests + integration + e2e (superset of CI)
   p3 ship "title" issue     Publish work (comprehensive test + PR + cleanup)
 
-TROUBLESHOOTING (2 commands):
-  p3 debug                  Diagnose issues (status check)
+TROUBLESHOOTING (1 command):
   p3 reset                  Fix environment (clean restart)
 
 DATA & VERSION (2 commands):

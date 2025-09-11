@@ -1,6 +1,6 @@
 # zsh completion for p3 (simplified 8-command system)
 
-_p3_commands=(ready reset check test ship debug build version)
+_p3_commands=(ready stop reset check test ship build version)
 _p3_scopes=(f2 m7 n100 v3k)
 
 _p3() {
@@ -11,10 +11,10 @@ _p3() {
   if (( CURRENT == 2 )); then
     compadd -x 'Command       Description'
     compadd -x 'ready         Start working (env + services)'
+    compadd -x 'stop          Stop working (release resources)'
     compadd -x 'check [scope] Validate code (format + lint + test)'
     compadd -x 'test [scope]  Comprehensive testing (e2e validation)'
     compadd -x 'ship          Publish work (test + PR + cleanup)'
-    compadd -x 'debug         Diagnose issues (status check)'
     compadd -x 'reset         Fix environment (clean restart)'
     compadd -x 'build [scope] Build dataset (f2/m7/n100/v3k)'
     compadd -x 'version       Show/increment version'
@@ -32,6 +32,14 @@ _p3() {
         compadd -x 'n100   NASDAQ 100 (validation testing)'
         compadd -x 'v3k    VTI 3500+ (production)'
         compadd -a scopes
+      fi
+      ;;
+    stop)
+      if (( CURRENT == 3 )); then
+        compadd -x 'Option Description'
+        compadd -x '--full Stop Podman machine (complete shutdown)'
+        compadd -x '--force Force stop without graceful shutdown'
+        compadd "--full" "--force"
       fi
       ;;
     version)
