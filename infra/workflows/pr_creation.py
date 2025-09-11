@@ -323,13 +323,13 @@ def run_end_to_end_test(scope="f2"):
             "name": "F2 FAST-BUILD VALIDATION",
             "description": "Fast 2 companies (MSFT + NVDA) with DeepSeek 1.5b",
             "min_files": 2,
-            "build_cmd": "build f2",
+            "build_cmd": "ETL/build_dataset.py f2",
         },
         "m7": {
             "name": "M7 COMPLETE VALIDATION",
             "description": "Magnificent 7 companies with full testing",
             "min_files": 7,
-            "build_cmd": "build m7",
+            "build_cmd": "ETL/build_dataset.py m7",
         },
     }
 
