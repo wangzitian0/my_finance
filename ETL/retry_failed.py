@@ -21,7 +21,7 @@ import yaml
 # Add the parent directory to Python path to import common modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from common.metadata_manager import MetadataManager
+from common.build.metadata_manager import MetadataManager
 
 
 def get_base_data_dir():
