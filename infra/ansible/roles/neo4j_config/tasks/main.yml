@@ -1,0 +1,70 @@
+---
+# Neo4j Configuration Management Tasks
+# Issue #266: Ansible-friendly configuration structure
+
+- name: Detect environment if not specified
+  set_fact:
+    neo4j_environment: >-
+      {%- if 'ci' in group_names -%}ci
+      {%- elif 'production' in group_names -%}production
+      {%- else -%}development
+      {%- endif -%}
+  when: neo4j_environment is not defined
+
+- name: Load environment-specific variables
+  include_vars: "{{ neo4j_environment }}.yml"
+
+- name: Merge Neo4j configuration for environment variables
+  set_fact:
+    neo4j_final_config: "{{ neo4j_defaults | combine(neo4j_environment_config, recursive=True) }}"
+  
+- name: Validate required vault variables for production
+  assert:
+    that:
+      - vault_neo4j_prod_password is defined
+      - vault_neo4j_prod_password | length > 0
+    fail_msg: "Production Neo4j password must be defined in vault"
+  when: neo4j_environment == 'production'
+
+- name: Set Neo4j environment variables (simplified configuration)
+  lineinfile:
+    path: /etc/environment
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+    create: yes
+  become: yes
+  loop:
+    - { key: 'NEO4J_HOST', value: "{{ neo4j_final_config.host | default('localhost') }}" }
+    - { key: 'NEO4J_PORT', value: "{{ neo4j_final_config.port | default('7687') }}" }
+    - { key: 'NEO4J_DATABASE', value: "{{ neo4j_final_config.database | default('neo4j') }}" }
+    - { key: 'NEO4J_USER', value: "{{ neo4j_final_config.user | default('neo4j') }}" }
+    - { key: 'NEO4J_PASSWORD', value: "{{ neo4j_final_config.password | default('') }}" }
+  when: neo4j_final_config is defined
+
+- name: Test Neo4j connectivity with simplified manager
+  command: >
+    python3 -c "
+    from common.database import Neo4jManager;
+    manager = Neo4jManager(environment='{{ neo4j_environment }}');
+    config = manager.get_config();
+    result = manager.test_connectivity();
+    print(f'Neo4j connectivity test for {{ neo4j_environment }}');
+    print(f'Host: {config[\"host\"]}');
+    print(f'Port: {config[\"port\"]}');
+    print(f'Connected: {result.connected}');
+    print(f'Response time: {result.response_time_ms}ms' if result.response_time_ms else 'Response time: N/A')
+    "
+  register: config_test_result
+  changed_when: false
+  failed_when: config_test_result.rc != 0
+
+- name: Display configuration test result
+  debug:
+    var: config_test_result.stdout_lines
+
+- name: Create Neo4j health check script
+  template:
+    src: neo4j_health_check.py.j2
+    dest: "{{ ansible_project_root | default('/opt/finance') }}/scripts/neo4j_health_check.py"
+    mode: '0755'
+  become: yes

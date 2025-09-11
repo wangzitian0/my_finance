@@ -1,0 +1,23 @@
+---
+# Neo4j Production Environment Configuration
+# Issue #266: Ansible-friendly configuration structure
+
+neo4j_environment_config:
+  host: "{{ vault_neo4j_prod_host | default('neo4j-prod.internal') }}"
+  port: "{{ vault_neo4j_prod_port | default(7687) }}"
+  database: "{{ vault_neo4j_prod_database | default('finance_prod') }}"
+  
+  auth:
+    user: "{{ vault_neo4j_prod_user | default('neo4j') }}"
+    password: "{{ vault_neo4j_prod_password }}"
+  
+  # Production-specific overrides
+  connection:
+    timeout: 60
+    pool_max_size: 100
+    
+  test_settings:
+    performance_baseline_ms: 50
+    
+  monitoring:
+    enable_crud_tests: false  # Production safety - read-only tests only

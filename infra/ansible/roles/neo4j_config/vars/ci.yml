@@ -1,0 +1,18 @@
+---
+# Neo4j CI Environment Configuration
+# Issue #266: Ansible-friendly configuration structure
+
+neo4j_environment_config:
+  host: "localhost"
+  auth:
+    user: "neo4j"
+    password: "{{ vault_neo4j_ci_password | default('ci_test_password') }}"
+  
+  # CI-specific overrides
+  connection:
+    timeout: 15
+    pool_max_size: 10
+    
+  test_settings:
+    cleanup_on_exit: true
+    performance_baseline_ms: 200

@@ -1,0 +1,11 @@
+---
+# Neo4j Development Environment Configuration
+# Issue #266: Ansible-friendly configuration structure
+
+neo4j_environment_config:
+  host: "localhost"
+  auth:
+    user: "neo4j"
+    password: "{{ vault_neo4j_dev_password | default('finance123') }}"
+  
+# Development-specific overrides (inherits all other settings from defaults)
