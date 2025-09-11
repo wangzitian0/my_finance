@@ -45,17 +45,38 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           # Direct prompt for automated review (no @claude mention needed)
           direct_prompt: |
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues  
-            - Performance considerations
-            - Security concerns
-            - Test coverage
-            - CI/CD workflow compliance (note: only F2 testing is used in CI)
+            Please review this pull request for this SEC Filing-Enhanced Quantitative Trading Platform and provide feedback on:
             
-            Be constructive and helpful in your feedback. This project uses F2 (2-company) testing in CI workflows only.
+            **CLAUDE.md Policy Compliance:**
+            - P3 workflow compliance (proper use of p3 commands)
+            - SSOT I/O enforcement (use of common.core.directory_manager)
+            - Configuration centralization (common/config/ usage)
+            - English-only standard adherence
+            - GitHub issue traceability
+            
+            **Technical Standards:**
+            - Code quality and best practices
+            - Two-layer modularity principle adherence
+            - TypeScript usage for new features
+            - Proper error handling and validation
+            - Existing code pattern consistency
+            
+            **System Architecture:**
+            - Integration with existing RAG and DCF systems
+            - Database interaction patterns (PostgreSQL, Neo4j, Redis, Vector DB)
+            - API design consistency
+            - Performance considerations for financial data processing
+            
+            **Quality Assurance:**
+            - Test coverage (note: F2 testing used in CI)
+            - Security concerns for financial platform
+            - Documentation updates
+            - Potential bugs or issues
+            
+            Be constructive and helpful in your feedback. Focus on maintaining system integrity and preventing technical debt.
           # Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
           use_sticky_comment: true
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
