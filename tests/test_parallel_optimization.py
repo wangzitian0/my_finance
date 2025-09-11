@@ -13,7 +13,7 @@ from datetime import datetime
 from typing import List
 
 # Add the project root to the Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from common.agents.agent_coordination_optimizer import (
     AgentTask,
