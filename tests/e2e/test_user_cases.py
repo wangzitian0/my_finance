@@ -31,7 +31,7 @@ class TestStrategyAnalystWorkflow:
         assert result.returncode == 0, f"Strategy validation failed: {result.stderr}"
 
         # 3. Verify output reports - use centralized directory management
-        from common.directory_manager import DataLayer, get_data_path
+        from common.core.directory_manager import DataLayer, get_data_path
 
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists(), "Reports directory not found"
@@ -77,7 +77,7 @@ class TestRiskManagerWorkflow:
         assert result.returncode == 0, f"Risk analysis failed: {result.stderr}"
 
         # 2. Verify DCF report contains risk indicators
-        from common.directory_manager import DataLayer, get_data_path
+        from common.core.directory_manager import DataLayer, get_data_path
 
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))
@@ -106,7 +106,7 @@ class TestInvestmentManagerWorkflow:
         assert result.returncode == 0, f"Report generation failed: {result.stderr}"
 
         # 2. Verify report files
-        from common.directory_manager import DataLayer, get_data_path
+        from common.core.directory_manager import DataLayer, get_data_path
 
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         assert reports_dir.exists()
@@ -126,7 +126,7 @@ class TestInvestmentManagerWorkflow:
         assert result.returncode == 0, f"Benchmark comparison failed: {result.stderr}"
 
         # Verify DCF report was generated (contains benchmark comparison info)
-        from common.directory_manager import DataLayer, get_data_path
+        from common.core.directory_manager import DataLayer, get_data_path
 
         reports_dir = get_data_path(DataLayer.QUERY_RESULTS)
         dcf_reports = list(reports_dir.glob("**/M7_DCF_Report_*.md"))

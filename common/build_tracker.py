@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from common.directory_manager import DataLayer, DirectoryManager
+from common.core.directory_manager import DataLayer, DirectoryManager
 
 logger = logging.getLogger(__name__)
 
