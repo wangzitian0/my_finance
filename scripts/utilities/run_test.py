@@ -12,8 +12,8 @@ from pathlib import Path
 
 # Import from pr_creation.py to reuse test logic
 
-# Add workflows directory to Python path for import
-workflows_path = os.path.join(os.path.dirname(__file__), "workflows")
+# Add infra/workflows directory to Python path for import
+workflows_path = os.path.join(os.path.dirname(__file__), "..", "..", "infra", "workflows")
 sys.path.insert(0, workflows_path)
 
 from pr_creation import (
@@ -35,10 +35,10 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python infra/run_test.py f2     # Fast 2 companies test (default)
-  python infra/run_test.py m7     # Magnificent 7 companies test
-  python infra/run_test.py n100   # NASDAQ 100 test
-  python infra/run_test.py v3k    # VTI 3500+ companies test
+  python scripts/utilities/run_test.py f2     # Fast 2 companies test (default)
+  python scripts/utilities/run_test.py m7     # Magnificent 7 companies test
+  python scripts/utilities/run_test.py n100   # NASDAQ 100 test
+  python scripts/utilities/run_test.py v3k    # VTI 3500+ companies test
         """,
     )
 
