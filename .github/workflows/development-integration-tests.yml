@@ -22,7 +22,7 @@ jobs:
       - name: Setup Pixi Environment
         uses: prefix-dev/setup-pixi@v0.8.1
         with:
-          pixi-version: v0.24.2
+          pixi-version: v0.50.2
 
       - name: Development Integration Test Prerequisites
         run: |
