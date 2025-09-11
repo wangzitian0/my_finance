@@ -19,7 +19,7 @@ from unittest.mock import MagicMock, patch
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from scripts.release_manager import ReleaseManager
+from scripts.release.release_manager import ReleaseManager
 
 
 class TestReleaseManager(unittest.TestCase):

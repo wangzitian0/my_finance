@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 from typing import List
 
-from agent_coordination_optimizer import (
+from common.agents.agent_coordination_optimizer import (
     AgentTask,
     TaskPriority,
     get_coordination_optimizer,

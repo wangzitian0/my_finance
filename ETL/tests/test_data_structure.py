@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from common.build_tracker import BuildTracker
+from common.build.build_tracker import BuildTracker
 from tests.test_config import DatasetTier, TestConfigManager
 
 

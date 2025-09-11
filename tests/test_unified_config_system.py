@@ -7,7 +7,7 @@ Tests schema consistency, data integrity, and backward compatibility.
 import unittest
 from pathlib import Path
 
-from common.unified_config_loader import CompanyInfo, UnifiedConfigLoader
+from common.legacy.unified_config_loader import CompanyInfo, UnifiedConfigLoader
 from ETL.tests.test_config import DatasetTier
 from tests.config_schema_validator import ConfigSchemaValidator
 
