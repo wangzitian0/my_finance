@@ -70,7 +70,7 @@ jobs:
             - Performance considerations for financial data processing
             
             **Quality Assurance:**
-            - Test coverage (note: F2 testing used in CI)
+            - Test coverage (note: fast testing used in CI)
             - Security concerns for financial platform
             - Documentation updates
             - Potential bugs or issues

@@ -1,13 +1,13 @@
-name: Environment Check
+name: Development Integration Tests
 
-# Validates environment setup and readiness
+# End-to-end integration testing for development environment
 on:
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:
 
 jobs:
-  m7-readiness-check:
+  development-integration-tests:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,9 +24,9 @@ jobs:
         with:
           pixi-version: v0.24.2
 
-      - name: M7 Prerequisites Check
+      - name: Development Integration Test Prerequisites
         run: |
-          echo "= Checking M7 validation prerequisites..."
+          echo "= Checking prerequisites for development integration testing..."
           
           # Check if P3 CLI is available
           if pixi run python -c "from common.core.p3_cli import P3CLI; print(' P3 CLI available')" 2>/dev/null; then
@@ -72,16 +72,16 @@ jobs:
               sys.exit(1)
           "
           
-          echo "<� M7 prerequisites validation completed successfully"
-          echo "=� Note: This is a lightweight check. Full M7 testing requires manual trigger."
+          echo "<� Development integration test prerequisites validated successfully"
+          echo "=� Note: This validates prerequisites only. Full development integration testing available via manual trigger."
 
       - name: Validation Summary
         if: always()
         run: |
-          echo "## M7 Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Development Integration Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "-  Environment setup validated" >> $GITHUB_STEP_SUMMARY
           echo "-  P3 CLI accessibility confirmed" >> $GITHUB_STEP_SUMMARY
           echo "-  Critical dependencies verified" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Note**: This check validates M7 prerequisites only." >> $GITHUB_STEP_SUMMARY
-          echo "For full M7 testing, use manual workflow dispatch or \`p3 test m7\`." >> $GITHUB_STEP_SUMMARY
+          echo "**Note**: This validates prerequisites for development integration testing only." >> $GITHUB_STEP_SUMMARY
+          echo "For full development integration testing, use manual workflow dispatch." >> $GITHUB_STEP_SUMMARY

@@ -1,127 +1,128 @@
 # GitHub CI/CD Workflows
 
-CI/CD automation configuration for the SEC Filing-Enhanced Quantitative Trading Platform.
+Automated testing and deployment configuration for the SEC Filing-Enhanced Quantitative Trading Platform.
 
-## 🎯 F2-Only Testing Architecture
+## 🎯 Testing Architecture Overview
 
-**Core Principle: The entire testing system only needs to run F2**
+**Design Philosophy**: Fast, reliable validation using representative data samples
 
-- **F2 Definition**: Fast-2 testing using 2 companies data (MSFT + NVDA)
-- **Execution Time**: 2-5 minute complete test cycle
-- **Data Scope**: Real SEC filings with statistical significance
-- **CI Standard**: All automated testing uses F2 scope exclusively
+The entire testing system runs efficiently with minimal overhead:
+- **Execution Time**: 2-5 minutes for complete validation
+- **Test Scope**: Equivalent to local development testing (same as `p3 test f2`)
+- **Data Quality**: Real SEC filings ensure realistic validation
+- **CI Optimization**: All workflows designed for rapid feedback
 
-## 🧪 Complete Testing System
+## 🧪 Testing System Components
 
-### 1. Unit Tests (Must Pass)
-**Execution**: Integrated within F2 test pipeline  
-**Requirement**: 100% pass rate - any failure blocks PR merge  
-**Coverage**:
-- Python syntax and import validation
-- Type checking and code standards
-- Core functionality module unit tests
+### 1. Unit Tests ✅ (Required - Must Pass)
+**Gate**: 100% pass rate - any failure blocks PR merge
+**Validation**:
+- Python syntax and import verification
+- Type checking and code standards compliance
+- Core functionality module testing
 - Dependency validation
 
-### 2. Integration Tests (Generate Reports)
-**Execution**: F2 end-to-end test pipeline  
-**Requirement**: Generate complete test reports (LLM bot quality review will be introduced later)  
-**Coverage**:
+### 2. Local Development Integration Tests 📊 (Report Generation)
+**Purpose**: End-to-end workflow validation with comprehensive reporting
+**Process**:
 - SEC data retrieval → DCF model calculation → output generation
 - Database interaction testing (PostgreSQL, Neo4j, Redis, Vector DB)
-- P3 CLI functionality verification
-- Real data quality validation
+- CLI functionality verification
+- Data quality validation
 
-### 3. Test Coverage
-**Execution**: Overall coverage statistics and reporting  
-**Requirement**: Track comprehensive coverage across all tests  
-**Includes**: Unit test coverage + Integration test path coverage + F2 data validation coverage
+**Output**: Comprehensive test reports generated for future quality review (LLM bot integration planned)
+
+### 3. Test Coverage Gates 📈 (Implemented)
+**Status**: Active (merged in previous PRs)
+**Function**: Aggregate coverage statistics and quality thresholds across all test types
 
 ## 🤖 AI-Powered Code Review
 
-### Claude Review Triggers
-1. **Automatic Review**: Every push to PR triggers general code review
-2. **Interactive Q&A**: Use `@claude` mentions to trigger questions and specific tasks
+### Automatic Code Review
+- **Trigger**: Every push to pull request
+- **Scope**: Code quality, security, compliance, and best practices
+- **Coverage**: General review focusing on system integrity
 
-### Review Content
-- CLAUDE.md policy compliance checks
-- Code quality and best practices
-- Security vulnerabilities and performance issues
-- F2 testing compliance validation
-- Technical debt identification
+### Interactive AI Assistant
+- **Trigger**: `@claude` mentions in issues/PRs  
+- **Function**: Answer questions and provide development assistance
+- **Usage**: Direct interaction for specific guidance
+
+### Review Coverage
+- Code quality and architectural consistency
+- Security vulnerabilities and performance considerations
+- Policy compliance validation
+- Technical debt identification and suggestions
 
 ## 🔄 Post-Merge Automation
 
 ### Automatic Issue Generation
-**Trigger**: After code merges to main branch  
-**Functionality**:
-- Analyze merged code changes
-- Identify technical debt and improvement opportunities
-- Automatically create GitHub issues with proper linking
-- Intelligent labeling and priority assignment
-
-### F2 Performance Monitoring
-- Continuously track F2 execution time
-- Auto-create performance alert issues when >5 minutes
-- CSV data storage for trend analysis
-
-## 📋 Active Workflow Inventory
-
-| Workflow | Status | Trigger | Primary Function |
-|----------|--------|---------|------------------|
-| **test-pipeline.yml** | ✅ Active | Push/PR | F2 execution: unit tests + integration tests + coverage |
-| **claude-code-review.yml** | ✅ Active | PR create/update | Automatic code review and compliance checks |
-| **claude.yml** | ✅ Active | @claude mentions | Interactive AI assistant and Q&A |
-| **post-merge-analysis.yml** | ✅ Active | Push to main | Auto issue generation and F2 performance monitoring |
-| **check-m7-validation.yml** | ✅ Active | PR validation | M7 environment readiness check (lightweight) |
-| **auto-label-issues.yml** | ✅ Active | Issue management | Intelligent label assignment |
-
-## 🎯 F2 Testing Details
-
-### Test Data
-- **Companies**: Microsoft (MSFT) and NVIDIA (NVDA)
-- **Data Type**: Real SEC 10-K/10-Q filings
-- **Update Frequency**: Synchronized with actual filing releases
-
-### Performance Targets
-- **Target Execution Time**: <3 minutes
-- **Alert Threshold**: >5 minutes
-- **Success Rate Target**: >95%
-- **Timeout Setting**: 3-minute hard timeout to prevent CI blocking
-
-### Validation Scope
-```yaml
-F2 Testing Includes:
-  Unit Tests: Python modules, type checking, syntax validation
-  Integration Tests: Complete data pipeline validation
-  Data Quality: MSFT+NVDA data processing verification
-  System Integration: P3 CLI functionality and database interactions
-  Output Validation: DCF model calculation result verification
-```
-
-## 🔧 Usage Guide
-
-### Developer Workflow
-1. **Write Code** → Local validation
-2. **Create PR** → F2 auto-testing + Claude auto-review
-3. **Address Feedback** → Fix issues and review suggestions
-4. **Merge Code** → Post-merge auto-analysis generates follow-up issues
-
-### Manual Operations
-- **@claude [question]**: Get AI assistance and Q&A
-- **[skip-review]**: Add to PR title to skip auto-review
-- **[manual-review]**: Add to PR title for manual review mode
+**Trigger**: After successful merge to main branch
+**Process**:
+- Analyze merged changes for improvement opportunities
+- Generate GitHub issues with proper linking and context
+- Apply intelligent labeling and priority assignment
+- Track technical debt and optimization opportunities
 
 ### Performance Monitoring
-- F2 execution time trend auto-tracking
-- Performance degradation auto-alerts and issue creation
-- Test coverage reporting and trend analysis
+- Track test execution times and performance baselines
+- Generate alerts on performance degradation
+- Maintain development velocity through fast feedback
 
----
+## 📋 Active Workflow Summary
+
+| Workflow | Trigger | Purpose | Status |
+|----------|---------|---------|--------|
+| **Tests** | Push/PR | Unit + Integration validation | ✅ Active |
+| **Code Review** | PR creation/update | Automated AI code review | ✅ Active |
+| **AI Assistant** | @claude mentions | Interactive development support | ✅ Active |
+| **Post-Merge Analysis** | Merge to main | Automatic issue generation | ✅ Active |
+| **Development Integration Tests** | PR validation | End-to-end integration test prerequisites | ✅ Active |
+
+## 🔧 Developer Usage Guide
+
+### Standard Development Workflow
+1. **Code Development** → Local implementation and testing
+2. **Create Pull Request** → Automatic testing and AI review triggered  
+3. **Address Feedback** → Resolve issues and respond to review comments
+4. **Merge to Main** → Post-merge analysis generates follow-up improvement tasks
+
+### Manual Operations
+- **@claude [question]**: Get AI assistance on specific topics
+- **[skip-review]**: Skip automatic code review (add to PR title)
+- **[manual-review]**: Request manual review process
+
+### Test Requirements
+- **Unit Tests**: Must pass completely for PR approval
+- **Integration Tests**: Generate reports for quality validation
+- **Coverage Gates**: Automatically enforced quality thresholds
+
+## 🎯 Performance Standards
+
+- **Complete Test Suite**: Under 5 minutes execution time
+- **CI Reliability**: Over 95% success rate
+- **Test Coverage**: Comprehensive across unit and integration layers  
+- **Review Turnaround**: Under 2 hours from PR to review completion
+
+## 🛠️ Technical Implementation Notes
+
+### Local Development Equivalence
+The CI testing pipeline runs the equivalent of local development testing (`p3 test f2`), ensuring consistency between local and remote validation while optimizing for CI speed and reliability.
+
+### Integration Test Evolution
+Local Development Integration Tests (formerly M7 validation) focus on end-to-end workflow verification with comprehensive report generation. Future enhancements will include LLM bot quality review integration.
+
+### Quality Assurance Framework
+All testing components work together to maintain code quality, system reliability, and development velocity while preventing technical debt accumulation.
 
 ## 📚 Related Documentation
 
 - **Project Architecture**: `../README.md`
-- **P3 CLI Usage**: `../common/README.md`
+- **CLI Commands**: `../common/README.md` 
 - **Company Policies**: `../CLAUDE.md`
 
-**Support**: Create an issue or use `@claude` for help
+## 🆘 Support
+
+- **General Issues**: Create a GitHub issue
+- **Development Questions**: Use `@claude` in issues/PRs
+- **Urgent Matters**: Contact the development team directly

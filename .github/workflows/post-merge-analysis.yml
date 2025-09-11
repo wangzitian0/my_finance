@@ -48,7 +48,7 @@ jobs:
             - Documentation gaps
             - Test coverage improvements
             - Security considerations
-            - F2 workflow optimization potential
+            - Fast testing workflow optimization potential
 
             **Required Actions:**
             1. **Analyze Recent Changes**: Review the last 5-10 commits for:
@@ -66,7 +66,7 @@ jobs:
                - SSOT I/O compliance issues
 
             3. **Performance Opportunities**: Identify:
-               - F2 execution time optimization potential
+               - Fast testing execution time optimization potential
                - Database query improvements
                - Memory usage optimizations
                - API response time improvements
@@ -92,7 +92,7 @@ jobs:
             - RAG system performance
             - Database optimization (PostgreSQL, Neo4j, Redis, Vector DB)
             - P3 CLI workflow improvements
-            - F2 testing scope expansion opportunities
+            - Testing scope expansion opportunities
 
             **Output Format:**
             Create actual GitHub issues using available tools. Summarize what was analyzed and what issues were created.
@@ -136,8 +136,8 @@ jobs:
           Co-Authored-By: Claude <noreply@anthropic.com>" || echo "No changes to commit"
           git push || echo "No changes to push"
 
-  # Parallel job for F2 performance tracking
-  f2-performance-baseline:
+  # Parallel job for fast testing performance tracking  
+  fast-test-performance-baseline:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -152,45 +152,45 @@ jobs:
         with:
           pixi-version: v0.24.2
 
-      - name: Run F2 Performance Baseline
-        id: f2_baseline
+      - name: Run Fast Test Performance Baseline
+        id: fast_test_baseline
         run: |
-          echo "Running F2 performance baseline measurement..."
+          echo "Running fast test performance baseline measurement..."
           start_time=$(date +%s)
           
-          # Run F2 test and capture timing
+          # Run fast test and capture timing
           timeout 300 pixi run python -c "
           import sys
           sys.path.append('.')
           from common.core.p3_cli import P3CLI
           cli = P3CLI()
           result = cli.test('f2')
-          print(f'F2 Test Result: {result}')
-          " || echo "F2 test completed or timed out"
+          print(f'Fast Test Result: {result}')
+          " || echo "Fast test completed or timed out"
           
           end_time=$(date +%s)
           duration=$((end_time - start_time))
-          echo "f2_duration=$duration" >> $GITHUB_OUTPUT
-          echo "F2 baseline test completed in ${duration} seconds"
+          echo "fast_test_duration=$duration" >> $GITHUB_OUTPUT
+          echo "Fast test baseline completed in ${duration} seconds"
 
       - name: Track Performance Trends
         run: |
           # Create or update performance tracking file
           mkdir -p .github/performance-data
-          echo "$(date -Iseconds),${{ steps.f2_baseline.outputs.f2_duration }}" >> .github/performance-data/f2-timing.csv
+          echo "$(date -Iseconds),${{ steps.fast_test_baseline.outputs.fast_test_duration }}" >> .github/performance-data/fast-test-timing.csv
           
           # Keep only last 100 entries
-          tail -n 100 .github/performance-data/f2-timing.csv > .github/performance-data/f2-timing.csv.tmp
-          mv .github/performance-data/f2-timing.csv.tmp .github/performance-data/f2-timing.csv
+          tail -n 100 .github/performance-data/fast-test-timing.csv > .github/performance-data/fast-test-timing.csv.tmp
+          mv .github/performance-data/fast-test-timing.csv.tmp .github/performance-data/fast-test-timing.csv
 
       - name: Commit Performance Data
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .github/performance-data/ || true
-          git commit -m "📈 Update F2 performance baseline data
+          git commit -m "📈 Update fast test performance baseline data
 
-          Duration: ${{ steps.f2_baseline.outputs.f2_duration }}s
+          Duration: ${{ steps.fast_test_baseline.outputs.fast_test_duration }}s
           
           🤖 Generated with [Claude Code](https://claude.ai/code)
 
@@ -198,19 +198,19 @@ jobs:
           git push || echo "No performance changes to push"
 
       - name: Generate Performance Alert
-        if: steps.f2_baseline.outputs.f2_duration > 300  # Alert if > 5 minutes
+        if: steps.fast_test_baseline.outputs.fast_test_duration > 300  # Alert if > 5 minutes
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           direct_prompt: |
-            **F2 PERFORMANCE ALERT**
+            **FAST TEST PERFORMANCE ALERT**
             
-            The F2 baseline test took ${{ steps.f2_baseline.outputs.f2_duration }} seconds, which exceeds the 5-minute threshold.
+            The fast test baseline took ${{ steps.fast_test_baseline.outputs.fast_test_duration }} seconds, which exceeds the 5-minute threshold.
             
-            Please create a high-priority GitHub issue to investigate F2 performance degradation:
+            Please create a high-priority GitHub issue to investigate fast test performance degradation:
             
-            - Title: "🚨 F2 Performance Alert: Execution time exceeded 5 minutes"
-            - Labels: performance, high-priority, f2-testing
+            - Title: "🚨 Fast Test Performance Alert: Execution time exceeded 5 minutes"
+            - Labels: performance, high-priority, testing
             - Assignees: Development team
             - Description: Include timing data and investigation steps
             - Link to this workflow run for context

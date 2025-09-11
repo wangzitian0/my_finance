@@ -29,14 +29,14 @@ jobs:
         
     - name: Prepare test data
       run: |
-        echo "🚀 Setting up F2 fast build infrastructure for CI"
-        # Create required directories for F2 testing
+        echo "🚀 Setting up fast testing infrastructure for CI"
+        # Create required directories for testing
         mkdir -p build_data/{stage_00_raw,stage_01_daily_delta,stage_04_query_results}
         mkdir -p common/config logs
         
-        # Create F2 configuration files
+        # Create fast testing configuration files
         cat > common/config/list_fast_2.yml << EOF
-        # F2 Fast Testing - 2 companies for CI validation
+        # Fast Testing - 2 companies for CI validation
         dataset_name: fast_2
         cli_alias: f2
         description: "Fast 2 companies for development and CI testing"
@@ -64,7 +64,7 @@ jobs:
       id: tests
       run: |
         echo "Running unit and integration tests..."
-        echo "Testing with 2 companies (MSFT + NVDA)"
+        echo "Testing with representative sample data"
         
         # Set environment variables for CI testing
         export CI_FAST_TESTING=true
@@ -74,15 +74,15 @@ jobs:
         pixi run python p3.py help
         pixi run python p3.py version
         
-        # Create minimal test data for F2 validation
+        # Create minimal test data for validation
         mkdir -p build_data/stage_01_daily_delta/yfinance
         echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/MSFT.json
         echo '{"test": "data"}' > build_data/stage_01_daily_delta/yfinance/NVDA.json
         
         # Use enhanced timeout handler with better error reporting
-        echo "🔧 Running F2 fast build with enhanced error handling..."
-        echo "🎯 Expected: 2 companies (MSFT + NVDA) with DeepSeek 1.5b model"
-        echo "🚀 CI POLICY: Only F2 testing - all M7 testing removed from CI workflows"
+        echo "🔧 Running fast test build with enhanced error handling..."
+        echo "🎯 Expected: Representative sample data with optimized model"
+        echo "🚀 CI POLICY: Running unit tests + local development integration tests"
         
         # Create agent timeout handler script if it doesn't exist
         mkdir -p .github/scripts
@@ -114,14 +114,14 @@ jobs:
       run: |
         echo "Generating test report..."
         
-        # Check for F2 data files in the correct location (yfinance data directory)
+        # Check for test data files in the correct location (yfinance data directory)
         if [ -d "build_data/stage_01_daily_delta/yfinance" ]; then
-          f2_files=$(find build_data/stage_01_daily_delta/yfinance -type f | wc -l)
-          echo "📁 Found $f2_files F2 data files in yfinance directory"
+          test_files=$(find build_data/stage_01_daily_delta/yfinance -type f | wc -l)
+          echo "📁 Found $test_files test data files in yfinance directory"
         else
           echo "📁 yfinance directory not found, checking general build_data"
-          f2_files=$(find build_data -name "*.json" -o -name "*.csv" -o -name "*.txt" | grep -v ".git" | wc -l)
-          echo "📁 Found $f2_files general data files"
+          test_files=$(find build_data -name "*.json" -o -name "*.csv" -o -name "*.txt" | grep -v ".git" | wc -l)
+          echo "📁 Found $test_files general data files"
         fi
         
         # Check build status using the same logic as the main test
@@ -132,30 +132,30 @@ jobs:
         
         # More lenient validation for CI - just check that build completed
         if [[ "$build_status" == *"completed"* ]] || [[ "$build_status" == *"SUCCESS"* ]]; then
-          echo "✅ F2 validation passed: Build completed successfully"
-        elif [ "$f2_files" -ge 1 ]; then
-          echo "✅ F2 validation passed: Found $f2_files data files (acceptable for CI)"
+          echo "✅ Test validation passed: Build completed successfully"
+        elif [ "$test_files" -ge 1 ]; then
+          echo "✅ Test validation passed: Found $test_files data files (acceptable for CI)"
         else
-          echo "❌ FAIL: No evidence of successful F2 build completion"
+          echo "❌ FAIL: No evidence of successful test build completion"
           echo "Build status: $build_status"  
-          echo "Files found: $f2_files"
-          echo "This indicates F2 build did not complete successfully"
+          echo "Files found: $test_files"
+          echo "This indicates test build did not complete successfully"
           exit 1
         fi
         
     - name: "🧹 Test Environment Cleanup"
       if: always()
       run: |
-        echo "🧹 Cleaning up F2 test artifacts"
+        echo "🧹 Cleaning up test artifacts"
         # Cleanup only CI-generated artifacts, preserve source code
         rm -rf build_data/stage_04_query_results/build_*
-        echo "✅ F2 test cleanup completed"
+        echo "✅ Test cleanup completed"
         
     - name: "📋 Store Test Artifacts"
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: f2-test-failure-artifacts
+        name: test-failure-artifacts
         path: |
           logs/
           build_data/stage_04_query_results/
