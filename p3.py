@@ -59,9 +59,7 @@ class P3CLI:
 
         if command not in self.commands:
             print(f"❌ Unknown command: {command}")
-            print(
-                "Available commands: ready, stop, reset, check, test, ship, build, version"
-            )
+            print("Available commands: ready, stop, reset, check, test, ship, build, version")
             print("Use 'p3 help' for details")
             sys.exit(1)
 
@@ -114,7 +112,7 @@ class P3CLI:
         print(f"⏱️  Total P3 time: {total_duration:.2f}s")
         print(f"🏁 Finished at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"🔄 Exit code: {result.returncode}")
-        
+
         # Provide helpful diagnostics for failures
         if result.returncode != 0:
             print()
@@ -128,7 +126,7 @@ class P3CLI:
                 print("   • Try: p3 reset (clean restart)")
                 print("   • Check system resources: Activity Monitor")
             elif command == "test":
-                print("   • Check if environment is ready: p3 ready") 
+                print("   • Check if environment is ready: p3 ready")
                 print("   • Try smaller scope: p3 test f2")
                 print("   • Check dependencies: pixi install")
             elif command == "ship":
