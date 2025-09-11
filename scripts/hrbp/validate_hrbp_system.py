@@ -13,7 +13,7 @@ This script performs end-to-end validation of all HRBP components:
 6. System Resilience Testing
 
 Usage:
-    python scripts/validate_hrbp_system.py [--quick] [--verbose] [--report-file OUTPUT]
+    python scripts/hrbp/validate_hrbp_system.py [--quick] [--verbose] [--report-file OUTPUT]
 """
 
 import argparse
@@ -220,8 +220,8 @@ class HRBPSystemValidator:
             ("common/agent_coordination_optimizer.py", "Coordination Optimizer"),
             ("infra/hrbp_automation.py", "Automation CLI"),
             ("infra/hrbp_comprehensive_cli.py", "Comprehensive CLI"),
-            ("scripts/install_hrbp_hooks.py", "Git Hooks Installer"),
-            ("scripts/post_merge_hrbp_hook.py", "Post-merge Hook"),
+            ("scripts/hrbp/install_hrbp_hooks.py", "Git Hooks Installer"),
+            ("scripts/hrbp/post_merge_hrbp_hook.py", "Post-merge Hook"),
         ]
 
         missing_components = []
@@ -849,10 +849,10 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python scripts/validate_hrbp_system.py                    # Full validation
-  python scripts/validate_hrbp_system.py --quick           # Quick validation
-  python scripts/validate_hrbp_system.py --verbose         # Detailed output
-  python scripts/validate_hrbp_system.py --report-file report.json
+  python scripts/hrbp/validate_hrbp_system.py                    # Full validation
+  python scripts/hrbp/validate_hrbp_system.py --quick           # Quick validation
+  python scripts/hrbp/validate_hrbp_system.py --verbose         # Detailed output
+  python scripts/hrbp/validate_hrbp_system.py --report-file report.json
         """,
     )
 

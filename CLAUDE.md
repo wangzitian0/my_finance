@@ -580,7 +580,7 @@ from common.io_utils import load_json                 # REMOVED
 
 #### Validation Command
 ```bash
-bash scripts/validate_io_compliance.sh  # Run before PR creation
+bash scripts/config/validate_io_compliance.sh  # Run before PR creation
 ```
 
 ## 🌐 ENGLISH-ONLY STANDARD

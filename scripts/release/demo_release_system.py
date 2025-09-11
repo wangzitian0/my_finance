@@ -95,8 +95,10 @@ def demo_release_system():
     print("✅ Comprehensive error handling")
 
     print(f"\nDemo release created: {release_id}")
-    print("Run 'python scripts/release_manager.py list' to see all releases")
-    print("Run 'python scripts/release_manager.py validate --release-id RELEASE_ID' to validate")
+    print("Run 'python scripts/release/release_manager.py list' to see all releases")
+    print(
+        "Run 'python scripts/release/release_manager.py validate --release-id RELEASE_ID' to validate"
+    )
 
     return True
 
@@ -107,11 +109,11 @@ def show_release_commands():
     print("=" * 50)
 
     commands = [
-        ("Create Release", "python scripts/release_manager.py create --name 'my_release'"),
-        ("List Releases", "python scripts/release_manager.py list"),
+        ("Create Release", "python scripts/release/release_manager.py create --name 'my_release'"),
+        ("List Releases", "python scripts/release/release_manager.py list"),
         (
             "Validate Release",
-            "python scripts/release_manager.py validate --release-id 'release_id'",
+            "python scripts/release/release_manager.py validate --release-id 'release_id'",
         ),
         ("", ""),
         ("Via p3 (when integrated)", ""),

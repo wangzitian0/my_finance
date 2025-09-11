@@ -5,12 +5,18 @@ Supports F2 (fast), M7, N100, and V3K scopes
 """
 
 import argparse
+import os
 import sys
 import time
 from pathlib import Path
 
-# Import from create_pr_with_test.py to reuse test logic
-from create_pr_with_test import (
+# Import from pr_creation.py to reuse test logic
+
+# Add workflows directory to Python path for import
+workflows_path = os.path.join(os.path.dirname(__file__), "workflows")
+sys.path.insert(0, workflows_path)
+
+from pr_creation import (
     run_command,
     run_end_to_end_test,
     validate_environment_for_pr,

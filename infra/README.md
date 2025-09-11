@@ -6,6 +6,54 @@
 
 Following the **two-tier principle** from CLAUDE.md, this infrastructure system is organized into specialized modules with clear separation of concerns:
 
+### Git Operations (`git-ops/`)
+**Centralized Git workflow management and automation**:
+- `install_git_hooks.py` - Consolidated Git hooks installation (P3 workflow enforcement + branch validation)
+- `cleanup_merged_branches.py` - Automated Git branch cleanup and repository hygiene
+- **Git workflow integration**: Pre-push hooks, commit message validation, branch management
+- **Worktree compatibility**: Support for git worktree environments and safety protocols
+
+### CI/CD Workflows (`workflows/`)
+**Automated workflow orchestration and PR management**:
+- `pr_creation.py` - Pull Request creation with mandatory testing (F2 fast-build validation)
+- **Testing integration**: End-to-end testing automation with scope-based validation
+- **Quality gates**: Code formatting, environment validation, build verification
+- **Worktree-safe operations**: Git operations optimized for worktree environments
+
+### Environment Management (`environment/`)
+**Development environment setup and monitoring**:
+- `env_status.py` - Comprehensive environment status checking and diagnostics
+- `shutdown_all.py` - Service shutdown and cleanup procedures
+- **Service orchestration**: Podman, Neo4j, Python environment coordination
+- **Health monitoring**: Fast environment validation, dependency checking
+
+### Deployment Configuration
+**Production deployment and infrastructure as code**:
+- `ansible/` - Automated deployment configuration and playbooks
+- `k8s/` - Kubernetes deployment manifests and configuration
+- `deployment.md` - Deployment procedures and troubleshooting guide
+- **Infrastructure automation**: Service provisioning, configuration management
+
+### Legacy Tools (Root Level)
+**Transitional tools and legacy script support**:
+- `commit_data_changes.py` - Data submodule commit (deprecated in P3 v2)
+- `cleanup_obsolete_files.py` - Repository cleanup and file management
+- `git-workflow-optimization.md` - Git workflow documentation and best practices
+
+### Worktree Python Environment Isolation
+**P3 CLI Worktree Isolation System** - Complete Python environment isolation per worktree
+
+**Core Features:**
+- **Zero Configuration**: Entering worktree automatically activates isolated environment
+- **Complete Isolation**: Each worktree has completely independent Python environment  
+- **Pixi-Based**: All environment management through pixi
+- **Simple Workflow**: `python p3.py <command>` automatically works
+- **Global Tool Reuse**: ansible/docker shared through pixi tasks
+- **Repository Internal**: No external file dependencies
+
+**Usage**: See main [README.md P3 Command System](../README.md#p3-command-system) for complete workflow reference.
+
+**Architecture:**
 ```
 infra/
 ├── system/                    # System environment and monitoring

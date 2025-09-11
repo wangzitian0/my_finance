@@ -32,8 +32,8 @@ def install_post_merge_hook():
         hook_file = hooks_dir / "post-merge"
 
         # Find project root to reference the Python script
-        project_root = Path(__file__).parent.parent
-        hrbp_hook_script = project_root / "scripts" / "post_merge_hrbp_hook.py"
+        project_root = Path(__file__).parent.parent.parent
+        hrbp_hook_script = project_root / "scripts" / "hrbp" / "post_merge_hrbp_hook.py"
 
         # Create the hook shell script
         hook_content = f"""#!/bin/bash

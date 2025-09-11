@@ -50,12 +50,12 @@ class P3CLI:
         """Load the 8 workflow commands."""
         return {
             # Core Workflow Commands (8 total)
-            "ready": "python infra/system/workflow_ready.py",  # Start working
-            "reset": "python infra/system/workflow_reset.py",  # Fix environment
-            "check": "python infra/development/workflow_check.py",  # Validate code
+            "ready": "python scripts/workflow/ready.py",  # Start working
+            "reset": "python scripts/workflow/reset.py",  # Fix environment
+            "check": "python scripts/workflow/check.py",  # Validate code
             "test": "python infra/run_test.py",  # Test
-            "ship": "python infra/create_pr_with_test.py",  # Create PR
-            "debug": "python infra/system/workflow_debug.py",  # Diagnose issues
+            "ship": "python infra/workflows/pr_creation.py",  # Create PR
+            "debug": "python scripts/workflow/debug.py",  # Diagnose issues
             "build": "python ETL/build_dataset.py",  # Build dataset
             "version": "version_command",  # Version info
         }

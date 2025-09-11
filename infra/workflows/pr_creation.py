@@ -1472,7 +1472,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"""
 
 def main():
     """Main CLI interface"""
-    print("🔍 [DEBUG] Starting create_pr_with_test.py main() function")
+    print("🔍 [DEBUG] Starting pr_creation.py main() function")
     print(f"🔍 [DEBUG] Arguments: {sys.argv}")
     print(f"🔍 [DEBUG] Current time: {datetime.now().isoformat()}")
 
@@ -1481,8 +1481,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python infra/create_pr_with_m7_test.py "Fix config bug" 42
-  python infra/create_pr_with_m7_test.py "Add new feature" 43 --description pr_body.md
+  python infra/workflows/pr_creation.py "Fix config bug" 42
+  python infra/workflows/pr_creation.py "Add new feature" 43 --description pr_body.md
         """,
     )
 
