@@ -43,6 +43,12 @@
   - English-only standard maintained
   - Configuration centralization (`common/config/`)  
   - Documentation currency planned
+- [ ] **SSOT governance validation**:
+  - Agent role boundaries respected (infrastructure vs business separation)
+  - SSOT principles compliance for business logic development
+  - DRY principle adherence and proper code organization
+  - Configuration access through config_manager only
+  - Path operations through directory_manager only
 
 ### Phase 5: Completion & PR Creation ✅
 - [ ] **Task completion verification**:
@@ -70,6 +76,8 @@
 - Using direct tools for complex multi-step tasks instead of agent-coordinator
 - Skipping README.md reading before architecture tasks
 - Creating .md planning files instead of using GitHub Issues
+- **SSOT violations**: Hard-coding paths/configs, business logic in common/, role boundary crossing
+- **DRY violations**: Duplicate business logic, improper code organization, architectural misplacement
 
 ---
 
@@ -291,28 +299,58 @@ Task(subagent_type="data-engineer-agent", prompt="Setup ETL pipeline")
 **NOTE**: Detailed agent selection and routing logic is managed by agent-coordinator. This is a reference directory only.
 
 ### Available Specialist Agents
+
+#### Infrastructure Development Agents (infra-ops domain)
 ```yaml
-core_operations:
+infrastructure_operations:
+  - infra-ops-agent: Infrastructure management, P3 CLI maintenance, SSOT configuration authority
   - git-ops-agent: Git workflows, PR management, release coordination
   - dev-quality-agent: Code quality, testing, validation processes
-  - data-engineer-agent: ETL pipelines, SEC data processing
-  - infra-ops-agent: Infrastructure management, P3 CLI maintenance, environment setup
   - monitoring-agent: System monitoring, performance tracking
-  
-specialized_domains:
-  - quant-research-agent: DCF calculations, financial analysis  
-  - compliance-risk-agent: Regulatory compliance, audit processes
-  - backend-architect-agent: System architecture, RAG design
-  - web-frontend-agent: UI/UX, dashboard development
-  - web-backend-agent: API design, microservices
-  - api-designer-agent: API specification, integration design
   - security-engineer-agent: Security protocols, vulnerability assessment
   - performance-engineer-agent: Performance optimization, scaling
   - database-admin-agent: Database management, optimization
-  
-strategic_management:
-  - hrbp-agent: Agent performance management, capability assessment
+```
+
+#### Business Development Agents (backend-architect domain)  
+```yaml
+business_logic_development:
+  - backend-architect-agent: Business system architecture, RAG design, SSOT business logic authority
+  - data-engineer-agent: ETL pipelines, SEC data processing, business data transformation
+  - quant-research-agent: DCF calculations, financial analysis, investment modeling
+  - compliance-risk-agent: Regulatory compliance, audit processes, financial risk management
+  - web-frontend-agent: UI/UX, dashboard development, user experience
+  - web-backend-agent: API design, microservices, business logic services  
+  - api-designer-agent: API specification, integration design, business interface contracts
+```
+
+#### Strategic Management Agents
+```yaml
+organizational_management:
+  - hrbp-agent: Agent performance management, SSOT governance oversight, capability assessment
   - revops-agent: ROI analysis, cost optimization, efficiency metrics
+```
+
+#### Agent Role Boundary Enforcement
+```yaml
+CRITICAL_SEPARATION_RULES:
+  infrastructure_agents_NEVER:
+    - Implement DCF calculations or financial business logic
+    - Create trading algorithms or investment analysis
+    - Design business-specific APIs or data models
+    - Handle SEC filing business logic processing
+    
+  business_agents_NEVER:
+    - Modify common/ directory infrastructure
+    - Change P3 CLI system or commands  
+    - Alter directory_manager or configuration systems
+    - Implement infrastructure monitoring or deployment logic
+    
+  PROPER_INTERACTION:
+    - Business agents consume infrastructure services through well-defined interfaces
+    - Infrastructure agents provide platform services without business logic
+    - Cross-boundary coordination routes through agent-coordinator
+    - SSOT governance enforced by designated authorities (infra-ops + backend-architect)
 ```
 
 ## 📋 AGENT DOCUMENTATION STANDARDS
@@ -427,6 +465,9 @@ git_ops_responsibilities:
 9. **ENGLISH-ONLY STANDARD** - All technical content must use English
 10. **OPERATIONAL EXCELLENCE** - Monitor and handle system errors appropriately
 11. **PROJECT MANAGEMENT** - Break down oversized issues (>5 days) before execution
+12. **SSOT DEVELOPMENT STANDARDS** - Follow SSOT principles in all business logic development (see SSOT Governance)
+13. **PYTHON DRY PRINCIPLE** - Enforce Don't Repeat Yourself principles with proper code organization
+14. **AGENT ROLE SEPARATION** - Maintain clear boundaries between infrastructure and business development agents
 
 ## 📋 PROJECT MANAGEMENT STANDARDS
 
@@ -516,6 +557,9 @@ ALLOWED_documentation_only:
 - **GitHub Issue Avoidance**: Creating .md planning files instead of using GitHub issues
 - **P3 Workflow Non-Compliance**: Bypassing required testing and validation steps
 - **P3 CLI Unauthorized Modification**: Modifying P3 CLI without infra-ops-agent approval
+- **SSOT Governance Violations**: Business logic in infrastructure modules, hard-coded configurations, DRY principle violations
+- **Agent Role Boundary Violations**: Infrastructure agents implementing business logic or vice versa
+- **Architectural Placement Errors**: Logic placed in incorrect modules violating two-tier modularity principles
 
 ### Violation Response Protocol
 ```yaml
@@ -539,9 +583,11 @@ violation_severity:
 
 ### Performance Metrics and Tracking
 **HRBP MONITORING RESPONSIBILITIES**:
-- Weekly policy compliance rate analysis
-- Violation pattern identification and root cause analysis
-- Agent-specific compliance tracking and improvement planning
+- Weekly policy compliance rate analysis including SSOT governance adherence
+- Violation pattern identification and root cause analysis for all governance areas
+- Agent-specific compliance tracking including infrastructure/business separation monitoring
+- SSOT governance effectiveness monitoring and DRY principle enforcement tracking
+- Agent role boundary compliance validation and violation remediation
 - Quarterly compliance reporting and policy optimization recommendations
 
 ## 🛡️ OPERATIONAL RESILIENCE POLICY
@@ -556,7 +602,195 @@ violation_severity:
 **POLICY**: All delegations must include fallback routing when primary agents unavailable
 **EVOLUTION**: Agent ecosystem will expand based on usage patterns and business needs
 
-## 🛠️ UNIFIED I/O CONSTRAINTS
+## 🛠️ SSOT GOVERNANCE AND DEVELOPMENT STANDARDS
+
+**CRITICAL**: SSOT (Single Source of Truth) governance ensures configuration integrity, code quality, and architectural consistency across all development activities.
+
+### 🔥 SSOT Configuration Governance
+
+**POLICY**: All configurations, file operations, and architectural decisions must adhere to SSOT principles with designated agent oversight.
+
+#### Agent Responsibility Assignments
+
+**INFRA-OPS-AGENT - SSOT Infrastructure Authority**:
+- **SSOT Configuration Management**: Maintain integrity of `common/config/` centralized configurations
+- **SSOT File System Architecture**: Ensure `common.core.directory_manager` compliance across codebase  
+- **SSOT Module Validation**: Verify SSOT principles in infrastructure components and shared utilities
+- **Configuration Consistency**: Validate configuration files follow centralized management patterns
+- **Path Management**: Enforce DirectoryManager usage for all infrastructure operations
+
+**BACKEND-ARCHITECT-AGENT - SSOT Business Logic Authority**:
+- **SSOT Business Development**: Ensure business logic follows SSOT principles and proper architectural placement
+- **Code Organization Standards**: Enforce proper separation between business logic and infrastructure code
+- **DRY Principle Enforcement**: Validate Don't Repeat Yourself principles in business logic development
+- **Architectural Consistency**: Ensure business logic is placed in correct modules/submodules following two-tier modularity
+- **Logic Placement Validation**: Prevent business logic from being incorrectly placed in infrastructure modules
+
+#### Clear Agent Role Separation
+
+**INFRASTRUCTURE DEVELOPMENT** (infra-ops-agent domain):
+```yaml
+infrastructure_scope:
+  - common/ directory architecture and maintenance
+  - P3 CLI system development and optimization
+  - Environment setup and container management  
+  - System monitoring and operational intelligence
+  - Configuration management and SSOT infrastructure
+  - Build systems and deployment pipelines
+  - Storage backend abstraction and data layer management
+```
+
+**BUSINESS DEVELOPMENT** (backend-architect-agent domain):
+```yaml
+business_logic_scope:
+  - DCF calculation engines and financial modeling
+  - RAG system architecture and semantic search
+  - Trading logic and investment analysis algorithms
+  - SEC filing processing and data extraction
+  - Financial data transformation and analysis
+  - Business rule implementation and validation
+  - Domain-specific API design and integration
+```
+
+**ROLE BOUNDARY ENFORCEMENT**:
+- **NO OVERLAP**: Infrastructure agents NEVER implement business logic
+- **NO OVERLAP**: Business agents NEVER modify infrastructure systems
+- **CLEAR INTERFACES**: Business logic consumes infrastructure services through well-defined APIs
+- **PROPER ESCALATION**: Cross-boundary issues route through agent-coordinator for proper delegation
+
+### 🎯 SSOT Development Standards
+
+#### SSOT Business Logic Requirements
+
+**MANDATORY SSOT COMPLIANCE FOR ALL BUSINESS DEVELOPMENT**:
+
+```yaml
+SSOT_BUSINESS_LOGIC_STANDARDS:
+  # Configuration Access (REQUIRED)
+  - Use config_manager for ALL business configuration loading
+  - NEVER hard-code business parameters or thresholds
+  - Load company lists, financial parameters through centralized config system
+  
+  # Path Operations (REQUIRED)
+  - Use directory_manager for ALL file path resolution
+  - NEVER construct paths manually in business logic
+  - Use DataLayer enums for all data access patterns
+  
+  # Code Organization (REQUIRED) 
+  - Follow two-tier modularity: modules/submodules/<business_logic>
+  - Place logic in correct architectural layer (ETL/, dcf_engine/, graph_rag/)
+  - Separate concerns between data processing, analysis, and presentation
+  
+  # DRY Principle Enforcement (REQUIRED)
+  - Extract common business logic into reusable modules
+  - Avoid code duplication across financial calculations
+  - Create shared utilities for repeated business patterns
+  - Implement proper inheritance and composition patterns
+```
+
+#### Python DRY Principle Enforcement
+
+**ANTI-PATTERNS TO PREVENT**:
+```python
+# ❌ WRONG: Duplicated DCF calculation logic across files
+# In dcf_engine/calculations.py
+def calculate_dcf_apple():
+    # Apple-specific DCF logic...
+    pass
+
+# In dcf_engine/analysis.py  
+def analyze_apple_valuation():
+    # Duplicate DCF calculation logic...
+    pass
+
+# ✅ CORRECT: Single source of truth with reusable components
+# In dcf_engine/core/valuation.py
+class DCFCalculator:
+    def calculate_dcf(self, company_data, assumptions):
+        # Reusable DCF logic for all companies
+        pass
+
+# In dcf_engine/companies/apple.py
+class AppleAnalysis:
+    def __init__(self):
+        self.calculator = DCFCalculator()
+    
+    def analyze_valuation(self):
+        return self.calculator.calculate_dcf(self.company_data, self.assumptions)
+```
+
+#### Code Quality Standards
+
+**ARCHITECTURAL PLACEMENT VALIDATION**:
+```yaml
+CORRECT_LOGIC_PLACEMENT:
+  # ETL Layer - Data Processing Logic
+  ETL/:
+    - SEC filing download and parsing
+    - Data extraction and transformation  
+    - Data quality validation and cleansing
+    - External API integration logic
+    
+  # DCF Engine Layer - Financial Analysis Logic  
+  dcf_engine/:
+    - Financial calculation algorithms
+    - Valuation models and assumptions
+    - Company-specific analysis logic
+    - Financial reporting and output generation
+    
+  # Graph RAG Layer - Knowledge Processing Logic
+  graph_rag/:
+    - Semantic search and retrieval
+    - Knowledge graph construction
+    - Document processing and indexing
+    - Question answering and response generation
+    
+  # Common Layer - Shared Infrastructure (infra-ops domain)
+  common/:
+    - Configuration management utilities
+    - Directory and path management
+    - Storage backend abstraction
+    - Logging and monitoring infrastructure
+```
+
+### 🚨 SSOT Compliance Monitoring
+
+#### Automated Compliance Validation
+
+**MANDATORY PRE-PR COMPLIANCE CHECKS**:
+```bash
+# SSOT Configuration Compliance
+bash scripts/config/validate_ssot_compliance.sh
+
+# Business Logic Placement Validation  
+bash scripts/quality/validate_logic_placement.sh
+
+# DRY Principle Compliance Check
+bash scripts/quality/validate_dry_principles.sh
+
+# Infrastructure/Business Separation Check
+bash scripts/quality/validate_agent_boundaries.sh
+```
+
+#### Violation Response Protocol
+
+**SSOT GOVERNANCE VIOLATIONS**:
+```yaml
+CRITICAL_VIOLATIONS:
+  # Immediate PR blocking violations
+  - Business logic placed in common/ infrastructure modules
+  - Infrastructure modifications by business development agents  
+  - Hard-coded configurations in business logic
+  - Duplicate business logic across multiple modules
+  - Direct path construction bypassing directory_manager in business code
+  
+ESCALATION_PROCESS:
+  level_1: Automated validation failure blocks PR
+  level_2: HRBP agent violation tracking and remediation
+  level_3: Mandatory agent retraining and architecture review
+```
+
+### 🔧 UNIFIED I/O CONSTRAINTS
 
 **CRITICAL**: All file I/O operations must use the SSOT DirectoryManager system exclusively. No exceptions.
 
@@ -564,15 +798,15 @@ violation_severity:
 
 **📖 DETAILED RULES**: See `common/README.md` for complete I/O standards, violation levels, migration guide, and compliance validation procedures.
 
-### Quick Reference
+#### Quick Reference
 
-#### ✅ REQUIRED Pattern
+**✅ REQUIRED Pattern**
 ```python
 from common.core.directory_manager import directory_manager, DataLayer
 data_path = directory_manager.get_layer_path(DataLayer.RAW_DATA, partition="20250901")
 ```
 
-#### ❌ PROHIBITED Patterns
+**❌ PROHIBITED Patterns**
 ```python
 data_path = Path("build_data/stage_00_raw/20250901")  # FORBIDDEN
 from common.io_utils import load_json                 # REMOVED
