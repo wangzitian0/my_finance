@@ -93,9 +93,9 @@ jobs:
           sleep 2
         done'
         
-        # Test Cypher Shell connectivity
-        timeout 30s bash -c 'until echo "RETURN 1;" | cypher-shell -u neo4j -p ci_test_password --non-interactive >/dev/null 2>&1; do
-          echo "Waiting for Neo4j Cypher Shell..."
+        # Test Neo4j database connectivity via HTTP API
+        timeout 30s bash -c 'until curl -f -u neo4j:ci_test_password http://localhost:7474/db/neo4j/tx/commit -d "{\"statements\":[{\"statement\":\"RETURN 1 AS test\"}]}" -H "Content-Type: application/json" >/dev/null 2>&1; do
+          echo "Waiting for Neo4j database API..."
           sleep 2
         done'
         
@@ -108,11 +108,15 @@ jobs:
         # Test HTTP interface
         curl -f http://localhost:7474/ | jq . || wget -q -O- http://localhost:7474/
         
-        # Test Cypher connectivity
-        echo "RETURN 'Hello from CI' AS message;" | cypher-shell -u neo4j -p ci_test_password --non-interactive
+        # Test Cypher connectivity via HTTP API
+        curl -f -u neo4j:ci_test_password http://localhost:7474/db/neo4j/tx/commit \
+          -d '{"statements":[{"statement":"RETURN '\''Hello from CI'\'' AS message"}]}' \
+          -H "Content-Type: application/json"
         
-        # Test basic Cypher functionality
-        echo "RETURN 'Neo4j is working' AS status;" | cypher-shell -u neo4j -p ci_test_password --non-interactive
+        # Test basic Cypher functionality via HTTP API
+        curl -f -u neo4j:ci_test_password http://localhost:7474/db/neo4j/tx/commit \
+          -d '{"statements":[{"statement":"RETURN '\''Neo4j is working'\'' AS status"}]}' \
+          -H "Content-Type: application/json"
         
         echo "✅ Neo4j service health check passed"
         
@@ -130,8 +134,8 @@ jobs:
           echo "⚠️ Integration tests had issues - checking Neo4j connectivity..."
           
           # Debug Neo4j connectivity
-          echo "Testing direct Neo4j connection:"
-          timeout 10s bash -c 'echo "RETURN 1 AS test;" | cypher-shell -u neo4j -p ci_test_password --non-interactive' || echo "❌ Cypher shell connection failed"
+          echo "Testing direct Neo4j connection via HTTP API:"
+          timeout 10s bash -c 'curl -f -u neo4j:ci_test_password http://localhost:7474/db/neo4j/tx/commit -d "{\"statements\":[{\"statement\":\"RETURN 1 AS test\"}]}" -H "Content-Type: application/json"' || echo "❌ Neo4j HTTP API connection failed"
           
           # Check if it's a skip vs failure
           if pixi run python -m pytest tests/database/test_neo4j_connectivity.py::TestNeo4jIntegration -v -m integration --tb=short 2>&1 | grep -q "SKIPPED"; then
@@ -245,7 +249,7 @@ jobs:
     - name: "⏳ Wait for Neo4j to be Ready"
       run: |
         timeout 60s bash -c 'until wget -q --spider http://localhost:7474/ >/dev/null 2>&1; do sleep 2; done'
-        timeout 30s bash -c 'until echo "RETURN 1;" | cypher-shell -u neo4j -p ci_test_password --non-interactive >/dev/null 2>&1; do sleep 2; done'
+        timeout 30s bash -c 'until curl -f -u neo4j:ci_test_password http://localhost:7474/db/neo4j/tx/commit -d "{\"statements\":[{\"statement\":\"RETURN 1 AS test\"}]}" -H "Content-Type: application/json" >/dev/null 2>&1; do sleep 2; done'
         
     - name: "⚡ Run Performance Baseline Tests"
       run: |
