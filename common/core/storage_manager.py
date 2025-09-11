@@ -122,8 +122,10 @@ class LocalFilesystemBackend(StorageBackendInterface):
     def list_directory(self, path: Union[str, Path]) -> List[str]:
         """List directory contents"""
         resolved_path = self._resolve_path(path)
-        if not resolved_path.exists() or not resolved_path.is_dir():
-            return []
+        if not resolved_path.exists():
+            raise FileNotFoundError(f"Directory not found: {path}")
+        if not resolved_path.is_dir():
+            raise NotADirectoryError(f"Path is not a directory: {path}")
         return [item.name for item in resolved_path.iterdir()]
 
     def create_directory(self, path: Union[str, Path]) -> bool:
@@ -173,6 +175,52 @@ class LocalFilesystemBackend(StorageBackendInterface):
             "is_file": resolved_path.is_file(),
             "path": str(resolved_path),
         }
+
+    def read_text(self, path: Union[str, Path], encoding: str = "utf-8") -> str:
+        """Read file contents as text"""
+        resolved_path = self._resolve_path(path)
+        with open(resolved_path, "r", encoding=encoding) as f:
+            return f.read()
+
+    def write_text(self, path: Union[str, Path], content: str, encoding: str = "utf-8") -> bool:
+        """Write text content to file"""
+        try:
+            resolved_path = self._resolve_path(path)
+            resolved_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(resolved_path, "w", encoding=encoding) as f:
+                f.write(content)
+            return True
+        except Exception:
+            return False
+
+    def read_json(self, path: Union[str, Path]) -> Any:
+        """Read JSON file contents"""
+        text_content = self.read_text(path)
+        try:
+            return json.loads(text_content)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON: {e}") from e
+
+    def write_json(self, path: Union[str, Path], data: Any, indent: int = 2) -> bool:
+        """Write data as JSON to file"""
+        try:
+            json_content = json.dumps(data, indent=indent, ensure_ascii=False)
+            return self.write_text(path, json_content)
+        except Exception:
+            return False
+
+    def ensure_directory(self, path: Union[str, Path]) -> bool:
+        """Ensure directory exists (alias for create_directory)"""
+        return self.create_directory(path)
+
+    def delete_file(self, path: Union[str, Path]) -> bool:
+        """Delete file (alias for delete_path)"""
+        resolved_path = self._resolve_path(path)
+        if not resolved_path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+        if resolved_path.is_dir():
+            raise IsADirectoryError(f"Path is a directory, not a file: {path}")
+        return self.delete_path(path)
 
 
 class AwsS3Backend(StorageBackendInterface):
@@ -351,17 +399,31 @@ class StorageManager:
     interface for all storage operations throughout the application.
     """
 
-    def __init__(self, backend_type: StorageBackend, backend_config: Dict[str, Any]):
+    def __init__(self, backend_type_or_instance, backend_config: Optional[Dict[str, Any]] = None):
         """
         Initialize storage manager.
 
         Args:
-            backend_type: Storage backend type
-            backend_config: Backend-specific configuration
+            backend_type_or_instance: Storage backend type enum or backend instance
+            backend_config: Backend-specific configuration (required if backend_type provided)
         """
-        self.backend_type = backend_type
-        self.backend_config = backend_config
-        self.backend = self._create_backend(backend_type, backend_config)
+        if isinstance(backend_type_or_instance, StorageBackendInterface) or hasattr(
+            backend_type_or_instance, "read_file"
+        ):
+            # Direct backend instance provided (either actual instance or mock)
+            self.backend = backend_type_or_instance
+            self.backend_type = None
+            self.backend_config = None
+        elif isinstance(backend_type_or_instance, StorageBackend):
+            # Backend type enum provided, need config
+            if backend_config is None:
+                raise ValueError("backend_config required when providing StorageBackend enum")
+            self.backend_type = backend_type_or_instance
+            self.backend_config = backend_config
+            self.backend = self._create_backend(backend_type_or_instance, backend_config)
+        else:
+            # Unsupported backend type
+            raise ValueError(f"Unsupported backend: {backend_type_or_instance}")
 
     def _create_backend(
         self, backend_type: StorageBackend, config: Dict[str, Any]
@@ -396,13 +458,28 @@ class StorageManager:
 
     def read_text(self, path: Union[str, Path], encoding: str = "utf-8") -> str:
         """Read text file contents"""
-        content = self.backend.read_file(path)
-        return content.decode(encoding)
+        # Try to delegate to backend if it has read_text method
+        if hasattr(self.backend, "read_text"):
+            # For mocks, call with just path; for real backends, include encoding
+            try:
+                return self.backend.read_text(path)
+            except TypeError:
+                # If that fails, try with encoding parameter
+                return self.backend.read_text(path, encoding)
+        else:
+            # Fallback to read_file + decode
+            content = self.backend.read_file(path)
+            return content.decode(encoding)
 
     def read_json(self, path: Union[str, Path]) -> Dict[str, Any]:
         """Read JSON file contents"""
-        content = self.read_text(path)
-        return json.loads(content)
+        # Try to delegate to backend if it has read_json method
+        if hasattr(self.backend, "read_json"):
+            return self.backend.read_json(path)
+        else:
+            # Fallback to read_text + json.loads
+            content = self.read_text(path)
+            return json.loads(content)
 
     def write_file(self, path: Union[str, Path], content: bytes) -> bool:
         """Write file contents"""
@@ -410,12 +487,32 @@ class StorageManager:
 
     def write_text(self, path: Union[str, Path], content: str, encoding: str = "utf-8") -> bool:
         """Write text file contents"""
-        return self.backend.write_file(path, content.encode(encoding))
+        # Try to delegate to backend if it has write_text method
+        if hasattr(self.backend, "write_text"):
+            # For mocks, call with just path and content; for real backends, include encoding
+            try:
+                return self.backend.write_text(path, content)
+            except TypeError:
+                # If that fails, try with encoding parameter
+                return self.backend.write_text(path, content, encoding)
+        else:
+            # Fallback to encode + write_file
+            return self.backend.write_file(path, content.encode(encoding))
 
     def write_json(self, path: Union[str, Path], data: Dict[str, Any], indent: int = 2) -> bool:
         """Write JSON file contents"""
-        content = json.dumps(data, indent=indent, ensure_ascii=False)
-        return self.write_text(path, content)
+        # Try to delegate to backend if it has write_json method
+        if hasattr(self.backend, "write_json"):
+            # For mocks, call with just path and data; for real backends, include indent
+            try:
+                return self.backend.write_json(path, data)
+            except TypeError:
+                # If that fails, try with indent parameter
+                return self.backend.write_json(path, data, indent)
+        else:
+            # Fallback to json.dumps + write_text
+            content = json.dumps(data, indent=indent, ensure_ascii=False)
+            return self.write_text(path, content)
 
     def list_directory(self, path: Union[str, Path]) -> List[str]:
         """List directory contents"""

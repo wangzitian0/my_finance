@@ -121,7 +121,7 @@ class WorktreeIsolationManager:
 
         # Re-execute script using correct Python
         print(f"🔄 P3 auto-switching to worktree Python environment...")
-        print(f"   Worktree: {self.worktree_name}")  
+        print(f"   Worktree: {self.worktree_name}")
         print(f"   From: {sys.executable}")
         print(f"   To: {expected_python}")
 
@@ -129,7 +129,7 @@ class WorktreeIsolationManager:
             # Set environment variable to prevent infinite recursion
             new_env = os.environ.copy()
             new_env["P3_PYTHON_SWITCHED"] = "1"
-            
+
             # Re-execute current script
             os.execve(str(expected_python), [str(expected_python)] + sys.argv, new_env)
         except Exception as e:

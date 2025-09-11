@@ -66,7 +66,9 @@ class P3CLI:
         pixi_python = self.project_root / ".pixi/envs/default/bin/python"
         if not pixi_python.exists():
             print("🔧 Pixi environment not found, installing...")
-            result = subprocess.run(["pixi", "install"], cwd=self.project_root, capture_output=True, text=True)
+            result = subprocess.run(
+                ["pixi", "install"], cwd=self.project_root, capture_output=True, text=True
+            )
             if result.returncode != 0:
                 print(f"❌ Failed to install pixi environment: {result.stderr}")
                 return False
@@ -76,32 +78,34 @@ class P3CLI:
         """Execute command with proper pixi environment isolation"""
         # Ensure we're in the right directory
         os.chdir(self.project_root)
-        
+
         # Ensure pixi environment exists
         if not self._ensure_pixi_env():
             print("❌ Cannot proceed without proper pixi environment")
             return 1
-            
+
         # For worktree environments, enhance environment variables
         env = os.environ.copy()
         if "worktree" in str(self.project_root):
             pixi_python = self.project_root / ".pixi/envs/default/bin/python"
-            pixi_site_packages = self.project_root / ".pixi/envs/default/lib/python3.12/site-packages"
-            
+            pixi_site_packages = (
+                self.project_root / ".pixi/envs/default/lib/python3.12/site-packages"
+            )
+
             if pixi_python.exists():
                 env["PYTHON"] = str(pixi_python)
                 env["PYTHONEXECUTABLE"] = str(pixi_python)
-                
+
             if pixi_site_packages.exists():
                 # Ensure Python path includes pixi site-packages
                 pythonpath = env.get("PYTHONPATH", "")
                 pixi_path = str(pixi_site_packages)
                 if pixi_path not in pythonpath:
                     env["PYTHONPATH"] = f"{pixi_path}:{pythonpath}" if pythonpath else pixi_path
-                    
+
         print(f"🚀 Executing: {cmd_string}")
         print(f"   Working directory: {self.project_root}")
-        
+
         # Execute with enhanced environment
         result = subprocess.run(cmd_string, shell=True, env=env, cwd=self.project_root)
         return result.returncode
@@ -199,16 +203,17 @@ def main():
     """Main entry point."""
     # Ensure worktree Python isolation with multiple fallback strategies
     isolation_attempted = False
-    
+
     # Strategy 1: Try infra.system import
     try:
         from infra.system.worktree_isolation import WorktreeIsolationManager
+
         manager = WorktreeIsolationManager()
         if manager.auto_switch_python():
             isolation_attempted = True
     except (ImportError, ModuleNotFoundError):
         pass
-    
+
     # Strategy 2: Try scripts import if infra import failed
     if not isolation_attempted:
         try:
@@ -216,14 +221,15 @@ def main():
             current_dir = Path(__file__).parent
             if str(current_dir) not in sys.path:
                 sys.path.insert(0, str(current_dir))
-            
+
             from scripts.worktree_isolation import WorktreeIsolationManager
+
             manager = WorktreeIsolationManager()
             if manager.auto_switch_python():
                 isolation_attempted = True
         except (ImportError, ModuleNotFoundError):
             pass
-    
+
     # Strategy 3: Direct path-based detection and switching
     if not isolation_attempted:
         try:

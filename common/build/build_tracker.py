@@ -442,16 +442,25 @@ class BuildTracker:
     def _update_latest_symlink(self) -> None:
         """Update the 'latest' symlink to point to current build"""
         # Update latest in common/ directory (worktree-specific)
-        project_root = Path(__file__).parent.parent
+        # Navigate up from common/build/build_tracker.py to get project root
+        project_root = Path(__file__).parent.parent.parent
         common_latest = project_root / "common" / "latest_build"
 
-        if common_latest.exists():
-            common_latest.unlink()
+        # Ensure the parent directory exists
+        common_latest.parent.mkdir(parents=True, exist_ok=True)
+        
+        if common_latest.exists() or common_latest.is_symlink():
+            common_latest.unlink(missing_ok=True)
 
         # Create relative symlink to the build
-        relative_path = self.build_path.relative_to(project_root)
-        common_latest.symlink_to(f"../{relative_path}")
-        logger.debug(f"Updated latest build symlink: {common_latest} -> {relative_path}")
+        try:
+            relative_path = self.build_path.relative_to(project_root)
+            common_latest.symlink_to(f"../{relative_path}")
+            logger.debug(f"Updated latest build symlink: {common_latest} -> {relative_path}")
+        except ValueError:
+            # If build_path is not relative to project_root (e.g., in tests), use absolute path
+            common_latest.symlink_to(self.build_path)
+            logger.debug(f"Updated latest build symlink: {common_latest} -> {self.build_path}")
 
         # Note: We no longer create latest symlink in build directory per issue #58
         # Only use common/latest_build for worktree isolation

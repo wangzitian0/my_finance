@@ -31,9 +31,15 @@ def normalize_ticker_symbol(ticker: str) -> str:
 
     Returns:
         Normalized ticker symbol (uppercase, stripped)
+
+    Raises:
+        ValueError: If ticker is empty or whitespace-only
+        TypeError: If ticker is None
     """
-    if not ticker:
-        return ""
+    if ticker is None:
+        raise TypeError("Ticker symbol cannot be None")
+    if not ticker or not ticker.strip():
+        raise ValueError("Ticker symbol cannot be empty")
     return ticker.strip().upper()
 
 
@@ -47,8 +53,21 @@ def validate_company_data(company_data: Dict[str, Any]) -> bool:
     Returns:
         True if valid, False otherwise
     """
+    if not isinstance(company_data, dict):
+        return False
+
     required_fields = ["ticker", "name"]
-    return all(field in company_data and company_data[field] for field in required_fields)
+
+    # Check that all required fields are present
+    for field in required_fields:
+        if field not in company_data:
+            return False
+        value = company_data[field]
+        # Check that field has a value and is a string
+        if not value or not isinstance(value, str):
+            return False
+
+    return True
 
 
 def merge_company_lists(*company_lists: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
