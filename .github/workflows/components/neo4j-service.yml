@@ -1,0 +1,40 @@
+# Reusable Neo4j Service Component for GitHub Actions
+# Issue #266: Comprehensive Neo4j Testing Infrastructure
+
+# This is a reusable workflow component that can be included in other workflows
+# Usage: Use this as a service in your job's services section
+
+neo4j-ci:
+  image: neo4j:5.15-community
+  
+  env:
+    # Authentication for CI
+    NEO4J_AUTH: neo4j/ci_test_password
+    
+    # Enable APOC plugin
+    NEO4J_PLUGINS: '["apoc"]'
+    NEO4J_dbms_security_procedures_unrestricted: "apoc.*"
+    
+    # Memory settings optimized for GitHub Actions (2-core, 7GB RAM)
+    NEO4J_dbms_memory_heap_initial__size: "256m"
+    NEO4J_dbms_memory_heap_max__size: "512m"
+    NEO4J_dbms_memory_pagecache_size: "128m"
+    
+    # Network configuration
+    NEO4J_dbms_connector_bolt_listen__address: "0.0.0.0:7687"
+    NEO4J_dbms_connector_http_listen__address: "0.0.0.0:7474"
+    
+    # Disable metrics and monitoring for CI
+    NEO4J_dbms_jvm_additional: "-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions"
+    
+  ports:
+    - 7474:7474  # HTTP interface
+    - 7687:7687  # Bolt protocol
+    
+  # Health check to ensure Neo4j is ready before tests
+  options: >-
+    --health-cmd "cypher-shell -u neo4j -p ci_test_password 'RETURN 1'"
+    --health-interval 10s
+    --health-timeout 5s
+    --health-retries 10
+    --health-start-period 30s

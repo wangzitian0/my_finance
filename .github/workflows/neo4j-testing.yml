@@ -1,0 +1,285 @@
+name: "🗄️ Neo4j Database Testing"
+
+# Issue #266: Comprehensive Neo4j Testing Infrastructure
+# Dedicated workflow for Neo4j connectivity and operations testing
+
+on:
+  push:
+    branches: [ main, 'feature/**', 'hotfix/**' ]
+    paths:
+      - 'common/database/**'
+      - 'tests/database/**'
+      - 'common/config/database_*.yml'
+      - '.github/workflows/neo4j-testing.yml'
+      - 'infra/docker/neo4j-ci.docker-compose.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'common/database/**'
+      - 'tests/database/**'
+      - 'common/config/database_*.yml'
+
+env:
+  CI: true
+  NEO4J_CI_TESTING: true
+
+jobs:
+  neo4j-unit-tests:
+    name: "🧪 Neo4j Unit Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+      
+    - name: "📦 Setup Pixi Environment"
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.50.2
+        
+    - name: "🧪 Run Neo4j Unit Tests (No Database Required)"
+      run: |
+        echo "🧪 Running Neo4j unit tests without database dependency"
+        
+        # Run unit tests that don't require actual Neo4j instance
+        pixi run python -m pytest tests/database/test_neo4j_connectivity.py::TestNeo4jConnectivity -v
+        pixi run python -m pytest tests/database/test_neo4j_connectivity.py::TestNeo4jOperations -v  
+        pixi run python -m pytest tests/database/test_neo4j_connectivity.py::TestNeo4jHealthCheck -v
+        
+        echo "✅ Unit tests completed successfully"
+
+  neo4j-integration-tests:
+    name: "🔌 Neo4j Integration Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    services:
+      neo4j-ci:
+        image: neo4j:5.15-community
+        env:
+          NEO4J_AUTH: neo4j/ci_test_password
+          NEO4J_PLUGINS: '["apoc"]'
+          NEO4J_dbms_security_procedures_unrestricted: "apoc.*"
+          NEO4J_dbms_memory_heap_initial__size: "256m"
+          NEO4J_dbms_memory_heap_max__size: "512m"
+          NEO4J_dbms_memory_pagecache_size: "128m"
+          NEO4J_dbms_connector_bolt_listen__address: "0.0.0.0:7687"
+          NEO4J_dbms_connector_http_listen__address: "0.0.0.0:7474"
+        ports:
+          - 7474:7474
+          - 7687:7687
+        options: >-
+          --health-cmd "cypher-shell -u neo4j -p ci_test_password 'RETURN 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+          --health-start-period 30s
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+      
+    - name: "📦 Setup Pixi Environment"
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.50.2
+        
+    - name: "⏳ Wait for Neo4j to be Ready"
+      run: |
+        echo "⏳ Waiting for Neo4j to be fully ready..."
+        
+        # Wait for Neo4j to respond to HTTP requests
+        timeout 60s bash -c 'until curl -f http://localhost:7474/db/data/ >/dev/null 2>&1; do
+          echo "Waiting for Neo4j HTTP interface..."
+          sleep 2
+        done'
+        
+        # Test Cypher Shell connectivity
+        timeout 30s bash -c 'until echo "RETURN 1;" | cypher-shell -u neo4j -p ci_test_password --non-interactive >/dev/null 2>&1; do
+          echo "Waiting for Neo4j Cypher Shell..."
+          sleep 2
+        done'
+        
+        echo "✅ Neo4j is ready for testing"
+        
+    - name: "🔍 Test Neo4j Service Health"
+      run: |
+        echo "🔍 Testing Neo4j service health"
+        
+        # Test HTTP interface
+        curl -f http://localhost:7474/db/data/ | jq .
+        
+        # Test Cypher connectivity
+        echo "RETURN 'Hello from CI' AS message;" | cypher-shell -u neo4j -p ci_test_password --non-interactive
+        
+        # Test APOC plugin availability
+        echo "RETURN apoc.version() AS apoc_version;" | cypher-shell -u neo4j -p ci_test_password --non-interactive || echo "APOC not available (expected in some configurations)"
+        
+        echo "✅ Neo4j service health check passed"
+        
+    - name: "🧪 Run Neo4j Integration Tests"
+      run: |
+        echo "🧪 Running Neo4j integration tests with real database"
+        
+        # Set environment variables for CI testing
+        export CI=true
+        export NEO4J_CI_TESTING=true
+        
+        # Run integration tests that require actual Neo4j instance
+        pixi run python -m pytest tests/database/test_neo4j_connectivity.py::TestNeo4jIntegration -v -m integration
+        
+        echo "✅ Integration tests completed successfully"
+        
+    - name: "📊 Test Neo4j Health Check Endpoints"
+      run: |
+        echo "📊 Testing Neo4j health check functionality"
+        
+        # Create a simple test script to verify health checks
+        cat > test_health_check.py << 'EOF'
+        from common.database import Neo4jManager, HealthChecker
+        import json
+        import sys
+        
+        try:
+            # Test Neo4j manager
+            manager = Neo4jManager(environment='ci')
+            connectivity = manager.test_connectivity()
+            print(f"Connectivity test: {connectivity}")
+            
+            if not connectivity['connected']:
+                print("❌ Connectivity test failed")
+                sys.exit(1)
+                
+            # Test health checker
+            health_checker = HealthChecker(manager)
+            health_status = health_checker.health_check_endpoint()
+            print(f"Health check: {json.dumps(health_status, indent=2)}")
+            
+            if health_status['status'] not in ['healthy', 'degraded']:
+                print("❌ Health check failed")
+                sys.exit(1)
+                
+            print("✅ All health checks passed")
+            
+        except Exception as e:
+            print(f"❌ Health check error: {e}")
+            sys.exit(1)
+        finally:
+            if 'manager' in locals():
+                manager.close()
+        EOF
+        
+        pixi run python test_health_check.py
+        
+    - name: "🧹 Cleanup Test Data"
+      if: always()
+      run: |
+        echo "🧹 Cleaning up test data from Neo4j"
+        
+        # Clean up any test nodes created during testing
+        cat > cleanup_test_data.py << 'EOF'
+        from common.database import Neo4jManager, TestOperations
+        
+        try:
+            manager = Neo4jManager(environment='ci')
+            if manager.connect():
+                test_ops = TestOperations(manager)
+                deleted_count = test_ops.cleanup_test_nodes(environment='ci', older_than_hours=0)
+                print(f"Cleaned up {deleted_count} test nodes")
+            manager.close()
+        except Exception as e:
+            print(f"Cleanup warning: {e}")
+        EOF
+        
+        pixi run python cleanup_test_data.py || echo "Cleanup completed with warnings"
+
+  neo4j-performance-tests:
+    name: "⚡ Neo4j Performance Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [neo4j-unit-tests, neo4j-integration-tests]
+    
+    services:
+      neo4j-ci:
+        image: neo4j:5.15-community
+        env:
+          NEO4J_AUTH: neo4j/ci_test_password
+          NEO4J_PLUGINS: '["apoc"]'
+          NEO4J_dbms_memory_heap_initial__size: "256m"
+          NEO4J_dbms_memory_heap_max__size: "512m"
+          NEO4J_dbms_connector_bolt_listen__address: "0.0.0.0:7687"
+          NEO4J_dbms_connector_http_listen__address: "0.0.0.0:7474"
+        ports:
+          - 7474:7474
+          - 7687:7687
+        options: >-
+          --health-cmd "cypher-shell -u neo4j -p ci_test_password 'RETURN 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+          --health-start-period 30s
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+      
+    - name: "📦 Setup Pixi Environment"
+      uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.50.2
+        
+    - name: "⏳ Wait for Neo4j to be Ready"
+      run: |
+        timeout 60s bash -c 'until curl -f http://localhost:7474/db/data/ >/dev/null 2>&1; do sleep 2; done'
+        timeout 30s bash -c 'until echo "RETURN 1;" | cypher-shell -u neo4j -p ci_test_password --non-interactive >/dev/null 2>&1; do sleep 2; done'
+        
+    - name: "⚡ Run Performance Baseline Tests"
+      run: |
+        echo "⚡ Running Neo4j performance baseline tests"
+        
+        cat > performance_test.py << 'EOF'
+        from common.database import Neo4jManager, HealthChecker, TestOperations
+        import time
+        import statistics
+        
+        manager = Neo4jManager(environment='ci')
+        health_checker = HealthChecker(manager)
+        test_ops = TestOperations(manager)
+        
+        try:
+            # Test basic query performance (multiple runs for average)
+            response_times = []
+            for i in range(10):
+                start_time = time.time()
+                with manager.get_session() as session:
+                    session.run("RETURN 1")
+                response_time = (time.time() - start_time) * 1000
+                response_times.append(response_time)
+                
+            avg_response = statistics.mean(response_times)
+            max_response = max(response_times)
+            
+            print(f"Average response time: {avg_response:.2f}ms")
+            print(f"Maximum response time: {max_response:.2f}ms")
+            
+            # Test CRUD performance
+            crud_start = time.time()
+            crud_results = test_ops.test_crud_operations()
+            crud_total = (time.time() - crud_start) * 1000
+            
+            print(f"CRUD operations total time: {crud_total:.2f}ms")
+            print(f"CRUD performance breakdown: {crud_results['performance_ms']}")
+            
+            # Performance assertions for CI
+            assert avg_response < 200, f"Average response time too high: {avg_response}ms"
+            assert max_response < 500, f"Maximum response time too high: {max_response}ms"
+            assert crud_total < 5000, f"CRUD operations too slow: {crud_total}ms"
+            
+            print("✅ All performance tests passed")
+            
+        finally:
+            manager.close()
+        EOF
+        
+        pixi run python performance_test.py

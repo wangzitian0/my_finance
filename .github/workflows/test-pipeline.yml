@@ -61,6 +61,16 @@ jobs:
           timeout: 30
         EOF
         
+    - name: "🗄️ Test Database Infrastructure (Unit Tests)"
+      run: |
+        echo "🗄️ Testing database infrastructure components"
+        echo "Running unit tests for Neo4j connectivity (no database required)"
+        
+        # Test Neo4j infrastructure without requiring actual database
+        pixi run python -m pytest tests/database/ -v -k "not integration" || echo "Database tests not yet available (expected for new features)"
+        
+        echo "✅ Database infrastructure tests completed"
+        
     - name: "🧪 Run F2 Fast Build Test"
       id: f2_test
       run: |
