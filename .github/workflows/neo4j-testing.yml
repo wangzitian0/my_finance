@@ -59,8 +59,6 @@ jobs:
         image: neo4j:5.15-community
         env:
           NEO4J_AUTH: neo4j/ci_test_password
-          NEO4J_PLUGINS: '["apoc"]'
-          NEO4J_dbms_security_procedures_unrestricted: "apoc.*"
           NEO4J_dbms_memory_heap_initial__size: "256m"
           NEO4J_dbms_memory_heap_max__size: "512m"
           NEO4J_dbms_memory_pagecache_size: "128m"
@@ -70,11 +68,11 @@ jobs:
           - 7474:7474
           - 7687:7687
         options: >-
-          --health-cmd "cypher-shell -u neo4j -p ci_test_password 'RETURN 1'"
+          --health-cmd "curl -f http://localhost:7474/db/data/ || exit 1"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 10
-          --health-start-period 30s
+          --health-retries 15
+          --health-start-period 45s
     
     steps:
     - name: "📥 Checkout Code"
@@ -113,8 +111,8 @@ jobs:
         # Test Cypher connectivity
         echo "RETURN 'Hello from CI' AS message;" | cypher-shell -u neo4j -p ci_test_password --non-interactive
         
-        # Test APOC plugin availability
-        echo "RETURN apoc.version() AS apoc_version;" | cypher-shell -u neo4j -p ci_test_password --non-interactive || echo "APOC not available (expected in some configurations)"
+        # Test basic Cypher functionality
+        echo "RETURN 'Neo4j is working' AS status;" | cypher-shell -u neo4j -p ci_test_password --non-interactive
         
         echo "✅ Neo4j service health check passed"
         
@@ -221,7 +219,6 @@ jobs:
         image: neo4j:5.15-community
         env:
           NEO4J_AUTH: neo4j/ci_test_password
-          NEO4J_PLUGINS: '["apoc"]'
           NEO4J_dbms_memory_heap_initial__size: "256m"
           NEO4J_dbms_memory_heap_max__size: "512m"
           NEO4J_dbms_connector_bolt_listen__address: "0.0.0.0:7687"
@@ -230,11 +227,11 @@ jobs:
           - 7474:7474
           - 7687:7687
         options: >-
-          --health-cmd "cypher-shell -u neo4j -p ci_test_password 'RETURN 1'"
+          --health-cmd "curl -f http://localhost:7474/db/data/ || exit 1"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 10
-          --health-start-period 30s
+          --health-retries 15
+          --health-start-period 45s
     
     steps:
     - name: "📥 Checkout Code"
