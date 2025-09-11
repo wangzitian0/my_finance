@@ -1,52 +1,13 @@
 #!/bin/bash
-# P3 Smart Launcher - Finds p3.py and uses correct Python environment
+# P3 Smart Launcher - Finds p3.py in current directory tree
 
-# Function to find p3.py in directory tree
-find_p3_dir() {
-    local dir="$PWD"
-    while [[ "$dir" != "/" ]]; do
-        if [[ -f "$dir/p3.py" ]]; then
-            echo "$dir"
-            return 0
-        fi
-        dir=$(dirname "$dir")
-    done
-    return 1
-}
-
-# Function to get the best Python executable for a directory
-get_python_executable() {
-    local p3_dir="$1"
-    
-    # If we're in a worktree, prefer pixi Python
-    if [[ "$p3_dir" == *"worktree"* ]]; then
-        local pixi_python="$p3_dir/.pixi/envs/default/bin/python"
-        if [[ -x "$pixi_python" ]]; then
-            echo "$pixi_python"
-            return 0
-        fi
-        
-        # Fallback: ensure pixi environment exists
-        if command -v pixi >/dev/null 2>&1; then
-            echo "🔧 Installing pixi environment in worktree..." >&2
-            cd "$p3_dir" && pixi install >/dev/null 2>&1
-            if [[ -x "$pixi_python" ]]; then
-                echo "$pixi_python"
-                return 0
-            fi
-        fi
+dir="$PWD"
+while [[ "$dir" != "/" ]]; do
+    if [[ -f "$dir/p3.py" ]]; then
+        cd "$dir" && exec python p3.py "$@"
     fi
-    
-    # Fallback to system Python
-    echo "python"
-}
+    dir=$(dirname "$dir")
+done
 
-# Main execution
-p3_dir=$(find_p3_dir)
-if [[ $? -ne 0 ]]; then
-    echo "❌ p3.py not found in current directory tree" >&2
-    exit 1
-fi
-
-python_exec=$(get_python_executable "$p3_dir")
-cd "$p3_dir" && exec "$python_exec" p3.py "$@"
+echo "❌ p3.py not found in current directory tree" >&2
+exit 1
