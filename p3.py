@@ -51,7 +51,7 @@ class P3CLI:
         return {
             # Core Workflow Commands (9 total)
             "ready": "python infra/system/workflow_ready.py",  # Start working
-            "stop": "python infra/system/workflow_stop.py",   # Stop working (release resources)
+            "stop": "python infra/system/workflow_stop.py",  # Stop working (release resources)
             "reset": "python infra/system/workflow_reset.py",  # Fix environment
             "check": "python infra/development/workflow_check.py",  # Validate code
             "test": "python infra/run_test.py",  # Test
@@ -69,7 +69,9 @@ class P3CLI:
 
         if command not in self.commands:
             print(f"❌ Unknown command: {command}")
-            print("Available commands: ready, stop, reset, check, test, ship, debug, build, version")
+            print(
+                "Available commands: ready, stop, reset, check, test, ship, debug, build, version"
+            )
             print("Use 'p3 help' for details")
             sys.exit(1)
 
