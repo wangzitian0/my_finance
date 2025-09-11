@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 from typing import Dict, Optional
 
+
 def get_version_string():
     return "2.0.1-simplified"
 
@@ -25,8 +26,7 @@ class P3CLI:
         """Get current git branch."""
         try:
             result = subprocess.run(
-                ['git', 'branch', '--show-current'],
-                capture_output=True, text=True, timeout=5
+                ["git", "branch", "--show-current"], capture_output=True, text=True, timeout=5
             )
             return result.stdout.strip() if result.returncode == 0 else "unknown"
         except:
@@ -87,14 +87,15 @@ class P3CLI:
         # Execute command with environment context
         print(f"🚀 Executing: {cmd_string}")
         print(f"   Working directory: {self.project_root}")
-        
+
         os.chdir(self.project_root)
         result = subprocess.run(cmd_string, shell=True)
         sys.exit(result.returncode)
 
     def print_help(self):
         """Print help message."""
-        print(f"""
+        print(
+            f"""
 🚀 P3 CLI - Workflow-Oriented Development Commands
 
 DAILY WORKFLOW (5 commands):
@@ -123,7 +124,8 @@ SCOPES:
   v3k   Russell 3000 (production)
 
 Version: {get_version_string()}
-""")
+"""
+        )
 
 
 def main():
