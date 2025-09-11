@@ -18,7 +18,7 @@ import yaml
 from common.core.directory_manager import directory_manager
 
 # Import SSOT directory manager
-from common.directory_manager import get_llm_config_path
+from common.core.directory_manager import get_llm_config_path
 
 try:
     from common.ml_fallback import get_ml_service

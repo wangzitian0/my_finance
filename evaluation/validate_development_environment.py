@@ -14,7 +14,7 @@ def validate_m7_data():
     """Validate M7 data availability"""
     print("🔍 Validating M7 data...")
 
-    from common.directory_manager import DataLayer, get_data_path
+    from common.core.directory_manager import DataLayer, get_data_path
 
     # Use centralized path management for Issue #122 architecture
     # Check both raw data and daily delta for M7 data files

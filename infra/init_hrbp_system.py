@@ -228,7 +228,7 @@ def validate_system_dependencies(verbose: bool = False) -> Dict:
 def setup_directory_structure(reset: bool = False, verbose: bool = False) -> Dict:
     """Setup HRBP directory structure and configuration files."""
     try:
-        from common.directory_manager import directory_manager
+        from common.core.directory_manager import directory_manager
 
         # Get paths
         logs_dir = directory_manager.get_logs_path()

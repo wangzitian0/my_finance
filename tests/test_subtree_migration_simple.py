@@ -23,7 +23,7 @@ class TestDirectoryManagerBasic(unittest.TestCase):
 
     def test_directory_manager_initialization(self):
         """Test DirectoryManager initializes correctly"""
-        from common.directory_manager import DirectoryManager, StorageBackend
+        from common.core.directory_manager import DirectoryManager, StorageBackend
 
         dm = DirectoryManager()
         self.assertEqual(dm.backend, StorageBackend.LOCAL_FS)
@@ -31,7 +31,7 @@ class TestDirectoryManagerBasic(unittest.TestCase):
 
     def test_data_root_path(self):
         """Test get_data_root returns correct path"""
-        from common.directory_manager import DirectoryManager
+        from common.core.directory_manager import DirectoryManager
 
         dm = DirectoryManager()
         data_root = dm.get_data_root()
@@ -40,7 +40,7 @@ class TestDirectoryManagerBasic(unittest.TestCase):
 
     def test_layer_paths(self):
         """Test layer path generation"""
-        from common.directory_manager import DataLayer, DirectoryManager
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
         dm = DirectoryManager()
 
@@ -55,7 +55,7 @@ class TestDirectoryManagerBasic(unittest.TestCase):
 
     def test_config_path(self):
         """Test configuration path"""
-        from common.directory_manager import DirectoryManager
+        from common.core.directory_manager import DirectoryManager
 
         dm = DirectoryManager()
         config_path = dm.get_config_path()
@@ -63,7 +63,7 @@ class TestDirectoryManagerBasic(unittest.TestCase):
 
     def test_legacy_mapping(self):
         """Test legacy path mapping"""
-        from common.directory_manager import DataLayer, DirectoryManager
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
         dm = DirectoryManager()
 
@@ -84,7 +84,7 @@ class TestDataLayerArchitecture(unittest.TestCase):
 
     def test_data_layer_enum_completeness(self):
         """Test DataLayer enum has all required layers"""
-        from common.directory_manager import DataLayer
+        from common.core.directory_manager import DataLayer
 
         layers = [layer.value for layer in DataLayer]
 
@@ -101,7 +101,7 @@ class TestDataLayerArchitecture(unittest.TestCase):
 
     def test_legacy_mapping_completeness(self):
         """Test legacy mapping covers all old stage names"""
-        from common.directory_manager import DataLayer, DirectoryManager
+        from common.core.directory_manager import DataLayer, DirectoryManager
 
         dm = DirectoryManager()
 
@@ -124,7 +124,7 @@ class TestConfigurationSchema(unittest.TestCase):
 
     def test_f2_config_exists(self):
         """Test F2 configuration file exists"""
-        from common.directory_manager import DirectoryManager
+        from common.core.directory_manager import DirectoryManager
 
         dm = DirectoryManager()
         config_path = dm.get_config_path()
@@ -133,7 +133,7 @@ class TestConfigurationSchema(unittest.TestCase):
 
     def test_m7_config_exists(self):
         """Test M7 configuration file exists"""
-        from common.directory_manager import DirectoryManager
+        from common.core.directory_manager import DirectoryManager
 
         dm = DirectoryManager()
         config_path = dm.get_config_path()
@@ -142,7 +142,7 @@ class TestConfigurationSchema(unittest.TestCase):
 
     def test_directory_structure_config_exists(self):
         """Test directory structure config exists"""
-        from common.directory_manager import DirectoryManager
+        from common.core.directory_manager import DirectoryManager
 
         dm = DirectoryManager()
         config_path = dm.get_config_path()

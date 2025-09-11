@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from common.directory_manager import (
+from common.core.directory_manager import (
     DataLayer,
     DirectoryManager,
     StorageBackend,
@@ -232,7 +232,7 @@ class TestConvenienceFunctions:
 
     def test_get_data_path(self):
         """Test get_data_path convenience function"""
-        with patch("common.directory_manager.directory_manager") as mock_dm:
+        with patch("common.core.directory_manager.directory_manager") as mock_dm:
             mock_dm.get_layer_path.return_value = Path("/mock/path")
             mock_dm.get_subdir_path.return_value = Path("/mock/path/subdir")
 
@@ -247,7 +247,7 @@ class TestConvenienceFunctions:
 
     def test_get_config_path_function(self):
         """Test get_config_path convenience function"""
-        with patch("common.directory_manager.directory_manager") as mock_dm:
+        with patch("common.core.directory_manager.directory_manager") as mock_dm:
             mock_dm.get_config_path.return_value = Path("/mock/config")
 
             result = get_config_path()
@@ -255,7 +255,7 @@ class TestConvenienceFunctions:
 
     def test_get_build_path_function(self):
         """Test get_build_path convenience function"""
-        with patch("common.directory_manager.directory_manager") as mock_dm:
+        with patch("common.core.directory_manager.directory_manager") as mock_dm:
             mock_dm.get_build_path.return_value = Path("/mock/build")
 
             result = get_build_path("20250821_120000", "feature-test")
@@ -263,7 +263,7 @@ class TestConvenienceFunctions:
 
     def test_get_source_path_function(self):
         """Test get_source_path convenience function"""
-        with patch("common.directory_manager.directory_manager") as mock_dm:
+        with patch("common.core.directory_manager.directory_manager") as mock_dm:
             mock_dm.get_source_path.return_value = Path("/mock/source")
 
             result = get_source_path("sec-edgar", DataLayer.RAW_DATA, "20250821", "AAPL")

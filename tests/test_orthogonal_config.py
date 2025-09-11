@@ -3,7 +3,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import json
 
@@ -11,7 +11,7 @@ from common.orthogonal_config import orthogonal_config
 
 
 def main():
-    # 显示可用配置
+    # Display available configurations
     print("=== Available Configurations ===")
     available = orthogonal_config.list_available_configs()
     for dim, configs in available.items():
@@ -19,7 +19,7 @@ def main():
 
     print("\n=== Dynamic Configuration Building ===")
 
-    # 动态构建配置: F2股票 + YFinance数据源 + 开发场景
+    # Dynamic configuration: F2 stocks + YFinance data source + development scenario
     config = orthogonal_config.build_runtime_config(
         stock_list="f2", data_sources=["yfinance"], scenario="development"
     )
@@ -29,7 +29,7 @@ def main():
 
     print("\n=== Alternative Combination ===")
 
-    # 动态构建配置: M7股票 + YFinance+SEC数据源 + 生产场景
+    # Dynamic configuration: M7 stocks + YFinance+SEC data sources + production scenario
     config2 = orthogonal_config.build_runtime_config(
         stock_list="m7", data_sources=["yfinance", "sec_edgar"], scenario="production"
     )

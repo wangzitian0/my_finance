@@ -14,7 +14,7 @@ import yaml
 
 # Add common to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from common.directory_manager import DirectoryManager
+from common.core.directory_manager import DirectoryManager
 
 
 @dataclass

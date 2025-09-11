@@ -22,7 +22,7 @@ from pathlib import Path
 # Add project root to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from common.directory_manager import DataLayer, DirectoryManager
+from common.core.directory_manager import DataLayer, DirectoryManager
 
 
 class TestDirectoryStructureProtection(unittest.TestCase):
@@ -131,7 +131,7 @@ class TestDirectoryStructureProtection(unittest.TestCase):
 
     def test_ssot_directory_manager_import(self):
         """Test that directory_manager can be imported and used"""
-        from common.directory_manager import DataLayer, get_config_path, get_data_path
+        from common.core.directory_manager import DataLayer, get_config_path, get_data_path
 
         # Test basic functionality
         config_path = get_config_path()
