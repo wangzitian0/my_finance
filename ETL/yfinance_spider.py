@@ -20,9 +20,9 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
+from common.build.metadata_manager import MetadataManager
 from common.core.directory_manager import DataLayer, directory_manager
 from common.logger import setup_logger
-from common.build.metadata_manager import MetadataManager
 from common.monitoring.progress import create_progress_bar
 from common.utils.general_utils import is_file_recent, sanitize_data, suppress_third_party_logs
 
