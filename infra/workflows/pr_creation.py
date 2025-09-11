@@ -420,7 +420,9 @@ def run_end_to_end_test(scope="f2"):
 
     # Start environment if needed (Python-based status)
     print("🔍 Checking environment status...")
-    run_command("python infra/system/fast_env_check.py", "Environment status check", timeout=10, check=False)
+    run_command(
+        "python infra/system/fast_env_check.py", "Environment status check", timeout=10, check=False
+    )
 
     test_success = False
     try:
@@ -459,7 +461,9 @@ def run_end_to_end_test(scope="f2"):
             print(f"🕐 Build started at: {time.strftime('%H:%M:%S')}")
 
             run_command(
-                f"pixi run python {test_info['build_cmd']}", f"Building {scope.upper()} dataset", timeout=1200
+                f"pixi run python {test_info['build_cmd']}",
+                f"Building {scope.upper()} dataset",
+                timeout=1200,
             )  # 20 minutes for comprehensive testing
 
             end_time = time.time()
@@ -506,7 +510,9 @@ def run_end_to_end_test(scope="f2"):
 
     # Validate build results
     print("🔍 Validating build completion...")
-    build_status = run_command("python infra/system/fast_env_check.py", "Checking build status", check=False)
+    build_status = run_command(
+        "python infra/system/fast_env_check.py", "Checking build status", check=False
+    )
 
     # Check for expected F2 files in correct build output location
     print("🔍 Checking F2 build outputs for data validation...")
@@ -1162,22 +1168,19 @@ def create_pr_workflow(title, issue_number, description_file=None, scope="f2"):
     print("🔍 [DEBUG] Step 7: Code formatting")
     print("\n🔄 Running code formatting...")
     print("🔍 [DEBUG] About to call direct format commands...")
-    
+
     # Call formatting directly to avoid P3 recursion
     black_result = run_command(
-        "pixi run python -m black --line-length 100 .", 
-        "Black code formatting", 
-        timeout=120, 
-        check=False
+        "pixi run python -m black --line-length 100 .",
+        "Black code formatting",
+        timeout=120,
+        check=False,
     )
-    
+
     isort_result = run_command(
-        "pixi run python -m isort .", 
-        "Import sorting with isort", 
-        timeout=120, 
-        check=False
+        "pixi run python -m isort .", "Import sorting with isort", timeout=120, check=False
     )
-    
+
     # Check if formatting succeeded
     format_result = black_result and isort_result
     print("🔍 [DEBUG] Direct formatting commands completed")
