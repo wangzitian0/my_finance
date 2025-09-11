@@ -26,62 +26,62 @@ jobs:
 
       - name: Development Integration Test Prerequisites
         run: |
-          echo "= Checking prerequisites for development integration testing..."
+          echo "Checking prerequisites for development integration testing..."
           
           # Check if P3 CLI is available
-          if pixi run python -c "from common.core.p3_cli import P3CLI; print('✅ P3 CLI available')" 2>/dev/null; then
-            echo "✅ P3 CLI: Available"
+          if pixi run python -c "from common.core.p3_cli import P3CLI; print('P3 CLI available')" 2>/dev/null; then
+            echo "[OK] P3 CLI: Available"
           else
-            echo "❌ P3 CLI: Not available"
+            echo "[FAIL] P3 CLI: Not available"
             exit 1
           fi
           
           # Check critical configuration files
           if [ -f "common/config/data_sources.yaml" ]; then
-            echo "✅ Data sources config: Found"
+            echo "[OK] Data sources config: Found"
           else
-            echo "⚠️ Data sources config: Missing (non-critical)"
+            echo "[WARN] Data sources config: Missing (non-critical)"
           fi
           
           # Check directory structure
           if [ -d "build_data" ] && [ -d "common" ]; then
-            echo "✅ Directory structure: Valid"
+            echo "[OK] Directory structure: Valid"
           else
-            echo "❌ Directory structure: Invalid"
+            echo "[FAIL] Directory structure: Invalid"
             exit 1
           fi
           
           # Environment validation
           pixi run python -c "
           import sys
-          print(f'✅ Python version: {sys.version.split()[0]}')
+          print(f'[OK] Python version: {sys.version.split()[0]}')
           
           # Check critical imports
           try:
               import pandas
-              print('✅ Pandas: Available')
+              print('[OK] Pandas: Available')
           except ImportError:
-              print('❌ Pandas: Missing')
+              print('[FAIL] Pandas: Missing')
               sys.exit(1)
           
           try:
               from common.core.directory_manager import directory_manager
-              print('✅ Directory manager: Available')
+              print('[OK] Directory manager: Available')
           except ImportError:
-              print('❌ Directory manager: Missing')
+              print('[FAIL] Directory manager: Missing')
               sys.exit(1)
           "
           
-          echo "✅ Development integration test prerequisites validated successfully"
-          echo "📝 Note: This validates prerequisites only. Full development integration testing available via manual trigger."
+          echo "[OK] Development integration test prerequisites validated successfully"
+          echo "[NOTE] This validates prerequisites only. Full development integration testing available via manual trigger."
 
       - name: Validation Summary
         if: always()
         run: |
           echo "## Development Integration Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Environment setup validated" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ P3 CLI accessibility confirmed" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Critical dependencies verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment setup validated" >> $GITHUB_STEP_SUMMARY
+          echo "- P3 CLI accessibility confirmed" >> $GITHUB_STEP_SUMMARY
+          echo "- Critical dependencies verified" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Note**: This validates prerequisites for development integration testing only." >> $GITHUB_STEP_SUMMARY
           echo "For full development integration testing, use manual workflow dispatch." >> $GITHUB_STEP_SUMMARY
