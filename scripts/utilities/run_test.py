@@ -25,6 +25,11 @@ from pr_creation import (
 
 def main():
     """Main test runner interface"""
+    start_time = time.time()
+    print("🧪 TEST - Comprehensive Testing Suite")
+    print(f"⏰ Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 50)
+
     parser = argparse.ArgumentParser(
         description="Run end-to-end tests with specified scope",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -47,9 +52,8 @@ Examples:
 
     args = parser.parse_args()
 
-    print("🧪 DEDICATED TEST RUNNER")
-    print("=" * 50)
     print(f"📊 Test scope: {args.scope.upper()}")
+    print(f"📁 Working directory: {Path.cwd()}")
     print()
 
     # Environment validation is mandatory
@@ -134,7 +138,18 @@ Examples:
     print()
 
     # Run the test
+    test_start = time.time()
+    print(f"⚡ End-to-end test started at {time.strftime('%H:%M:%S')}")
     test_result = run_end_to_end_test(args.scope)
+    test_duration = time.time() - test_start
+    total_duration = time.time() - start_time
+
+    print("=" * 50)
+    print("📊 TESTING SUMMARY:")
+    print(f"⏱️ End-to-end test time: {test_duration:.2f}s")
+    print(f"⏱️ Total test session time: {total_duration:.2f}s")
+    print(f"🏁 Finished at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 50)
 
     if isinstance(test_result, int) and test_result > 0:
         print(f"\n✅ {args.scope.upper()} test PASSED")

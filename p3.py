@@ -7,6 +7,7 @@ Only 9 essential workflow commands for developer productivity
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -49,6 +50,10 @@ class P3CLI:
 
     def run(self, command: str, args: list):
         """Execute a P3 command."""
+        start_time = time.time()
+        print(f"🚀 P3 CLI v{get_version_string()} - Command: {command}")
+        print(f"⏰ Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+
         if command == "help" or command is None:
             self.print_help()
             return
@@ -79,17 +84,38 @@ class P3CLI:
         elif command in ["build", "test", "check"]:
             scope = args[0] if args else "f2"
             cmd_string = f"pixi run {self.commands[command]} {scope}"
+            print(f"📋 Using scope: {scope}")
         else:
             cmd_string = f"pixi run {self.commands[command]}"
             if args:
                 cmd_string += " " + " ".join(args)
 
-        # Execute command with environment context
+        # Execute command with detailed logging
+        print(f"🔧 Command: {self.commands[command]}")
         print(f"🚀 Executing: {cmd_string}")
-        print(f"   Working directory: {self.project_root}")
+        print(f"📁 Working directory: {self.project_root}")
+        print(f"🌿 Git branch: {self._get_current_branch()}")
+        print("=" * 50)
 
         os.chdir(self.project_root)
+
+        # Log execution start
+        exec_start = time.time()
+        print(f"⚡ Command execution started at {time.strftime('%H:%M:%S')}")
+
         result = subprocess.run(cmd_string, shell=True)
+
+        # Log execution completion
+        exec_end = time.time()
+        exec_duration = exec_end - exec_start
+        total_duration = exec_end - start_time
+
+        print("=" * 50)
+        print(f"⏱️  Command execution time: {exec_duration:.2f}s")
+        print(f"⏱️  Total P3 time: {total_duration:.2f}s")
+        print(f"🏁 Finished at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"🔄 Exit code: {result.returncode}")
+
         sys.exit(result.returncode)
 
     def print_help(self):

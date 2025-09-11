@@ -20,11 +20,15 @@ from pathlib import Path
 
 def run_check(cmd, description, timeout=10, show_all_output=False):
     """Run diagnostic check with enhanced error reporting."""
-    print(f"🔍 {description}...")
+    import time
+
+    start_time = time.time()
+    print(f"🔍 {description}... (timeout: {timeout}s)")
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
+        elapsed = time.time() - start_time
         if result.returncode == 0:
-            print(f"✅ {description} - OK")
+            print(f"✅ {description} - OK ({elapsed:.2f}s)")
             if result.stdout.strip():
                 lines = result.stdout.strip().split("\n")
                 max_lines = len(lines) if show_all_output else min(5, len(lines))
@@ -34,7 +38,7 @@ def run_check(cmd, description, timeout=10, show_all_output=False):
                 if len(lines) > max_lines:
                     print("   ...")
         else:
-            print(f"❌ {description} - ISSUE DETECTED")
+            print(f"❌ {description} - ISSUE DETECTED ({elapsed:.2f}s)")
             if result.stderr.strip():
                 print(f"   Error: {result.stderr.strip()}")
             if result.stdout.strip():
@@ -43,10 +47,12 @@ def run_check(cmd, description, timeout=10, show_all_output=False):
                 )
         return result.returncode == 0, result
     except subprocess.TimeoutExpired:
-        print(f"⏰ {description} - TIMEOUT ({timeout}s)")
+        elapsed = time.time() - start_time
+        print(f"⏰ {description} - TIMEOUT ({timeout}s, elapsed: {elapsed:.2f}s)")
         return False, None
     except Exception as e:
-        print(f"❌ {description} - ERROR: {e}")
+        elapsed = time.time() - start_time
+        print(f"❌ {description} - ERROR ({elapsed:.2f}s): {e}")
         return False, None
 
 
