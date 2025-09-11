@@ -366,14 +366,14 @@ class TestNeo4jIntegration(unittest.TestCase):
 
     def test_real_connection(self):
         """Test real Neo4j connection"""
-        if not hasattr(self, 'manager'):
+        if not hasattr(self, "manager"):
             self.skipTest("Neo4j manager not available")
         result = self.manager.connect()
         self.assertTrue(result, "Failed to connect to real Neo4j instance")
 
     def test_real_crud_operations(self):
         """Test real CRUD operations on Neo4j"""
-        if not hasattr(self, 'manager'):
+        if not hasattr(self, "manager"):
             self.skipTest("Neo4j manager not available")
         test_ops = TestOperations(self.manager)
         result = test_ops.test_crud_operations()
@@ -386,7 +386,7 @@ class TestNeo4jIntegration(unittest.TestCase):
 
     def test_real_health_check(self):
         """Test real health check"""
-        if not hasattr(self, 'manager'):
+        if not hasattr(self, "manager"):
             self.skipTest("Neo4j manager not available")
         health_checker = HealthChecker(self.manager)
         result = health_checker.comprehensive_health_check()
