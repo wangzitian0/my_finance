@@ -13,6 +13,7 @@ from .neo4j_manager import Neo4jManager, get_neo4j_config
 from .test_operations import TestOperations
 from .health_checks import HealthChecker
 from .health_endpoint import Neo4jHealthServer, create_health_server
+from .config_loader import DatabaseConfigLoader, config_loader, get_database_config
 
 __all__ = [
     "Neo4jManager",
@@ -20,5 +21,8 @@ __all__ = [
     "TestOperations",
     "HealthChecker",
     "Neo4jHealthServer",
-    "create_health_server"
+    "create_health_server",
+    "DatabaseConfigLoader",
+    "config_loader",
+    "get_database_config"
 ]

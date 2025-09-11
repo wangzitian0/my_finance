@@ -29,9 +29,8 @@ tests/database/
 └── test_neo4j_connectivity.py # Comprehensive test suite
 
 common/config/
-├── database_development.yml   # Development environment config
-├── database_ci.yml           # CI environment config
-└── database_production.yml   # Production environment config
+├── database_base.yml         # Base configuration (all environments)
+└── database_overrides.yml    # Environment-specific overrides
 ```
 
 ## 🚀 Quick Start

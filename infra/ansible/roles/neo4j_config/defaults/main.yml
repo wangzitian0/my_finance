@@ -1,0 +1,37 @@
+---
+# Neo4j Configuration Role - Default Variables
+# Issue #266: Ansible-friendly configuration structure
+
+# Default Neo4j configuration that applies to all environments
+neo4j_defaults:
+  port: 7687
+  database: "neo4j"
+  
+  connection:
+    timeout: 30
+    max_retry_attempts: 3
+    pool_max_size: 50
+    
+  test_settings:
+    table_name: "TestNode"
+    cleanup_on_exit: false
+    performance_baseline_ms: 100
+    
+  monitoring:
+    health_check_interval: 60
+    enable_metrics: true
+    enable_crud_tests: true
+
+# Configuration file paths
+neo4j_config_dir: "{{ ansible_project_root | default('/opt/finance') }}/common/config"
+neo4j_base_config_file: "{{ neo4j_config_dir }}/database_base.yml"
+neo4j_override_config_file: "{{ neo4j_config_dir }}/database_overrides.yml"
+
+# Environment detection
+neo4j_environment: "{{ ansible_environment | default('development') }}"
+
+# Ansible inventory group mappings
+neo4j_environment_mapping:
+  development: "{{ groups['development'] | default([]) }}"
+  ci: "{{ groups['ci'] | default([]) }}"
+  production: "{{ groups['production'] | default([]) }}"

@@ -1,0 +1,76 @@
+---
+# Neo4j Configuration Management Tasks
+# Issue #266: Ansible-friendly configuration structure
+
+- name: Detect environment if not specified
+  set_fact:
+    neo4j_environment: >-
+      {%- if 'ci' in group_names -%}ci
+      {%- elif 'production' in group_names -%}production
+      {%- else -%}development
+      {%- endif -%}
+  when: neo4j_environment is not defined
+
+- name: Load environment-specific variables
+  include_vars: "{{ neo4j_environment }}.yml"
+  
+- name: Validate required vault variables for production
+  assert:
+    that:
+      - vault_neo4j_prod_password is defined
+      - vault_neo4j_prod_password | length > 0
+    fail_msg: "Production Neo4j password must be defined in vault"
+  when: neo4j_environment == 'production'
+
+- name: Create Neo4j configuration directory
+  file:
+    path: "{{ neo4j_config_dir }}"
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Merge Neo4j configuration
+  set_fact:
+    neo4j_final_config: "{{ neo4j_defaults | combine(neo4j_environment_config, recursive=True) }}"
+
+- name: Generate base configuration file
+  template:
+    src: database_base.yml.j2
+    dest: "{{ neo4j_base_config_file }}"
+    mode: '0644'
+    backup: yes
+  become: yes
+  notify: validate neo4j config
+
+- name: Generate environment overrides configuration file
+  template:
+    src: database_overrides.yml.j2
+    dest: "{{ neo4j_override_config_file }}"
+    mode: '0644'
+    backup: yes
+  become: yes
+  notify: validate neo4j config
+
+- name: Test Neo4j configuration loading
+  command: >
+    python3 -c "
+    from common.database.config_loader import config_loader;
+    config = config_loader.load_config('{{ neo4j_environment }}');
+    print(f'Config loaded successfully for {{ neo4j_environment }}');
+    print(f'Host: {config[\"neo4j\"][\"host\"]}');
+    print(f'Port: {config[\"neo4j\"][\"port\"]}')
+    "
+  register: config_test_result
+  changed_when: false
+  failed_when: config_test_result.rc != 0
+
+- name: Display configuration test result
+  debug:
+    var: config_test_result.stdout_lines
+
+- name: Create Neo4j health check script
+  template:
+    src: neo4j_health_check.py.j2
+    dest: "{{ ansible_project_root | default('/opt/finance') }}/scripts/neo4j_health_check.py"
+    mode: '0755'
+  become: yes

@@ -21,7 +21,7 @@ except ImportError:
     NEO4J_AVAILABLE = False
     Driver = None
 
-from ..core.config_manager import config_manager
+from .config_loader import config_loader
 
 
 class Neo4jManager:
@@ -63,16 +63,15 @@ class Neo4jManager:
             
     def _load_config(self) -> Dict[str, Any]:
         """
-        Load environment-specific Neo4j configuration.
+        Load environment-specific Neo4j configuration using improved config loader.
         
         Returns:
             Configuration dictionary with connection parameters
         """
         try:
-            # Try to load environment-specific config
-            config_name = f"database_{self.environment}"
-            database_config = config_manager.get_config(config_name)
-            return database_config.get('neo4j', {})
+            # Use improved config loader with inheritance support
+            full_config = config_loader.load_config(self.environment)
+            return full_config.get('neo4j', {})
         except Exception:
             # Fallback to default configuration
             return self._get_default_config()
