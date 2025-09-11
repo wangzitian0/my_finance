@@ -1,28 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Neo4j Database Testing Infrastructure
+Simplified Neo4j Database Infrastructure - Issue #266
 
-This module provides comprehensive Neo4j testing capabilities across
-development, CI, and production environments.
+Streamlined Neo4j connectivity and testing with environment detection.
+Replaces over-engineered 6-module system with essential functionality only.
 
-Issue #266: Comprehensive Neo4j Testing Infrastructure
+Core features:
+- Neo4j connection management with environment detection
+- Basic connectivity testing for CI integration
+- Simple CRUD validation
+- SSOT compliance
 """
 
-from .config_loader import DatabaseConfigLoader, config_loader, get_database_config
-from .health_checks import HealthChecker
-from .health_endpoint import Neo4jHealthServer, create_health_server
-from .neo4j_manager import Neo4jManager, get_neo4j_config
-from .test_operations import TestOperations
+from .neo4j import (
+    Neo4jConnectivityResult,
+    Neo4jManager,
+    get_neo4j_manager,
+    test_neo4j_connectivity,
+    validate_neo4j_environment,
+)
 
+# Backward compatibility aliases
+HealthChecker = Neo4jManager  # For existing test compatibility
+TestOperations = Neo4jManager  # For existing test compatibility
+
+# Primary exports for simplified usage
 __all__ = [
+    # Core simplified functionality
     "Neo4jManager",
-    "get_neo4j_config",
-    "TestOperations",
+    "Neo4jConnectivityResult",
+    "get_neo4j_manager",
+    "test_neo4j_connectivity",
+    "validate_neo4j_environment",
+    # Backward compatibility
     "HealthChecker",
-    "Neo4jHealthServer",
-    "create_health_server",
-    "DatabaseConfigLoader",
-    "config_loader",
-    "get_database_config",
+    "TestOperations",
 ]

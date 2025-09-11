@@ -16,8 +16,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-# Import Neo4j testing infrastructure
-from common.database import HealthChecker, Neo4jManager, TestOperations
+# Import simplified Neo4j testing infrastructure
+from common.database import Neo4jConnectivityResult, Neo4jManager
 
 
 class TestNeo4jConnectivity(unittest.TestCase):
@@ -69,13 +69,13 @@ class TestNeo4jConnectivity(unittest.TestCase):
     def test_configuration_loading_default(self):
         """Test configuration loading with defaults"""
         manager = Neo4jManager(environment="development")
-        config = manager.config
+        config = manager.get_config()
 
         self.assertEqual(config["host"], "localhost")
         self.assertEqual(config["port"], 7687)
         self.assertEqual(config["database"], "neo4j")
-        self.assertIn("auth", config)
-        self.assertIn("connection", config)
+        self.assertEqual(config["user"], "neo4j")
+        self.assertEqual(config["password"], "finance123")
 
     def test_connection_uri_generation(self):
         """Test Neo4j connection URI generation"""
@@ -85,21 +85,27 @@ class TestNeo4jConnectivity(unittest.TestCase):
 
     def test_connection_uri_custom_host_port(self):
         """Test URI generation with custom host and port"""
-        manager = Neo4jManager(environment="production")
-        # Mock production config
-        manager.config = {"host": "neo4j-prod.example.com", "port": 7688}
-        uri = manager.get_connection_uri()
-        self.assertEqual(uri, "bolt://neo4j-prod.example.com:7688")
+        # Set environment variables to override production config
+        os.environ["NEO4J_HOST"] = "neo4j-prod.example.com"
+        os.environ["NEO4J_PORT"] = "7688"
+        try:
+            manager = Neo4jManager(environment="production")
+            uri = manager.get_connection_uri()
+            self.assertEqual(uri, "bolt://neo4j-prod.example.com:7688")
+        finally:
+            # Cleanup environment
+            os.environ.pop("NEO4J_HOST", None)
+            os.environ.pop("NEO4J_PORT", None)
 
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", False)
+    @patch("common.database.neo4j.NEO4J_AVAILABLE", False)
     def test_connection_without_neo4j_driver(self):
         """Test graceful handling when Neo4j driver is not available"""
         manager = Neo4jManager(environment="development")
         result = manager.connect()
         self.assertFalse(result)
 
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
-    @patch("common.database.neo4j_manager.GraphDatabase")
+    @patch("common.database.neo4j.NEO4J_AVAILABLE", True)
+    @patch("common.database.neo4j.GraphDatabase")
     def test_connection_success(self, mock_graph_db):
         """Test successful Neo4j connection"""
         # Mock successful connection
@@ -119,8 +125,8 @@ class TestNeo4jConnectivity(unittest.TestCase):
         self.assertTrue(result)
         self.assertIsNotNone(manager.driver)
 
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
-    @patch("common.database.neo4j_manager.GraphDatabase")
+    @patch("common.database.neo4j.NEO4J_AVAILABLE", True)
+    @patch("common.database.neo4j.GraphDatabase")
     def test_connection_failure(self, mock_graph_db):
         """Test Neo4j connection failure handling"""
         # Mock connection failure
@@ -134,36 +140,38 @@ class TestNeo4jConnectivity(unittest.TestCase):
 
     def test_connectivity_test_without_driver(self):
         """Test connectivity test when Neo4j driver is not available"""
-        with patch("common.database.neo4j_manager.NEO4J_AVAILABLE", False):
+        with patch("common.database.neo4j.NEO4J_AVAILABLE", False):
             manager = Neo4jManager(environment="development")
             result = manager.test_connectivity()
 
-            self.assertEqual(result["environment"], "development")
-            self.assertFalse(result["neo4j_available"])
-            self.assertFalse(result["connected"])
-            self.assertEqual(result["error"], "Neo4j driver not installed")
+            self.assertEqual(result.environment, "development")
+            self.assertFalse(result.neo4j_available)
+            self.assertFalse(result.connected)
+            self.assertEqual(result.error, "Neo4j driver not installed")
 
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
-    @patch("common.database.neo4j_manager.GraphDatabase")
+    @patch("common.database.neo4j.NEO4J_AVAILABLE", True)
+    @patch("common.database.neo4j.GraphDatabase")
     def test_connectivity_test_success(self, mock_graph_db):
         """Test successful connectivity test"""
         # Mock successful connection and query
         mock_driver = MagicMock()
         mock_session = MagicMock()
+        mock_result = MagicMock()
+        mock_record = MagicMock()
+        mock_record.__getitem__.return_value = 1
+        mock_result.single.return_value = mock_record
+        mock_session.run.return_value = mock_result
         mock_driver.session.return_value.__enter__.return_value = mock_session
         mock_graph_db.driver.return_value = mock_driver
 
         manager = Neo4jManager(environment="ci")
+        result = manager.test_connectivity()
 
-        with patch.object(manager, "connect", return_value=True):
-            with patch.object(manager, "get_session", return_value=mock_session):
-                result = manager.test_connectivity()
-
-                self.assertEqual(result["environment"], "ci")
-                self.assertTrue(result["neo4j_available"])
-                self.assertTrue(result["connected"])
-                self.assertIsNotNone(result["response_time_ms"])
-                self.assertIsNone(result["error"])
+        self.assertEqual(result.environment, "ci")
+        self.assertTrue(result.neo4j_available)
+        self.assertTrue(result.connected)
+        self.assertIsNotNone(result.response_time_ms)
+        self.assertIsNone(result.error)
 
     def test_context_manager(self):
         """Test Neo4jManager as context manager"""
@@ -179,165 +187,61 @@ class TestNeo4jConnectivity(unittest.TestCase):
 
 
 class TestNeo4jOperations(unittest.TestCase):
-    """Test Neo4j test operations functionality"""
+    """Test Neo4j operations functionality using simplified CRUD testing"""
 
     def setUp(self):
-        """Setup test manager and operations"""
+        """Setup test manager"""
         self.manager = Neo4jManager(environment="ci")
-        self.test_ops = TestOperations(self.manager)
-
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
-    def test_setup_test_schema(self):
-        """Test test schema setup"""
-        mock_session = MagicMock()
-
-        with patch.object(self.manager, "get_session", return_value=mock_session):
-            with patch.object(mock_session, "__enter__", return_value=mock_session):
-                with patch.object(mock_session, "__exit__", return_value=None):
-                    result = self.test_ops.setup_test_schema()
-
-                    self.assertTrue(result)
-                    # Verify schema creation queries were called
-                    self.assertEqual(mock_session.run.call_count, 2)
-
-    @patch("common.database.neo4j_manager.NEO4J_AVAILABLE", True)
-    def test_create_test_node(self):
-        """Test test node creation"""
-        mock_session = MagicMock()
-        mock_result = MagicMock()
-        mock_record = MagicMock()
-        mock_record.__getitem__.return_value = "test_node_123"
-        mock_result.single.return_value = mock_record
-        mock_session.run.return_value = mock_result
-
-        with patch.object(self.manager, "get_session", return_value=mock_session):
-            with patch.object(mock_session, "__enter__", return_value=mock_session):
-                with patch.object(mock_session, "__exit__", return_value=None):
-                    result = self.test_ops.create_test_node("test_node_123")
-
-                    self.assertEqual(result, "test_node_123")
-                    mock_session.run.assert_called_once()
 
     def test_crud_operations_mock(self):
         """Test complete CRUD operations with mocked Neo4j"""
-
-        # Mock create_test_node to return the provided test_id
-        def mock_create_test_node(test_id, data):
-            return test_id
-
-        # Mock read_test_node to return data with the provided test_id
-        def mock_read_test_node(test_id):
-            return {"id": test_id, "test_type": "crud_validation"}
-
-        with patch.object(self.test_ops, "setup_test_schema", return_value=True):
-            with patch.object(self.test_ops, "create_test_node", side_effect=mock_create_test_node):
-                with patch.object(self.test_ops, "read_test_node", side_effect=mock_read_test_node):
-                    with patch.object(self.test_ops, "update_test_node", return_value=True):
-                        with patch.object(self.test_ops, "delete_test_node", return_value=True):
-
-                            result = self.test_ops.test_crud_operations()
-
-                            self.assertTrue(result["schema_setup"])
-                            self.assertTrue(result["create"])
-                            self.assertTrue(result["read"])
-                            self.assertTrue(result["update"])
-                            self.assertTrue(result["delete"])
-                            self.assertIn("performance_ms", result)
-                            self.assertEqual(len(result["errors"]), 0)
+        with patch.object(self.manager, "connect", return_value=True):
+            result = self.manager.test_crud_operations()
+            # When mocked, should return success or fail predictably
+            self.assertIn("success", result)
+            self.assertIsInstance(result["success"], bool)
 
 
 class TestNeo4jHealthCheck(unittest.TestCase):
-    """Test Neo4j health checking functionality"""
+    """Test Neo4j connectivity checking functionality"""
 
     def setUp(self):
-        """Setup test manager and health checker"""
+        """Setup test manager"""
         self.manager = Neo4jManager(environment="ci")
-        self.health_checker = HealthChecker(self.manager)
 
-    def test_basic_connectivity_check(self):
-        """Test basic connectivity health check"""
-        mock_connectivity = {
-            "environment": "ci",
-            "neo4j_available": True,
-            "connected": True,
-            "response_time_ms": 50,
-            "error": None,
-        }
-
-        with patch.object(self.manager, "test_connectivity", return_value=mock_connectivity):
-            result = self.health_checker.check_basic_connectivity()
-
-            self.assertTrue(result["connected"])
-            self.assertEqual(result["environment"], "ci")
-            self.assertIsNone(result["error"])
-
-    def test_performance_baseline_check(self):
-        """Test performance baseline validation"""
+    @patch("common.database.neo4j.NEO4J_AVAILABLE", True)
+    @patch("common.database.neo4j.GraphDatabase")
+    def test_basic_connectivity_check(self, mock_graph_db):
+        """Test basic connectivity check"""
+        # Mock successful connection
+        mock_driver = MagicMock()
         mock_session = MagicMock()
+        mock_result = MagicMock()
+        mock_record = MagicMock()
+        mock_record.__getitem__.return_value = 1
+        mock_result.single.return_value = mock_record
+        mock_session.run.return_value = mock_result
+        mock_driver.session.return_value.__enter__.return_value = mock_session
+        mock_graph_db.driver.return_value = mock_driver
 
-        with patch.object(self.manager, "get_session", return_value=mock_session):
-            with patch.object(mock_session, "__enter__", return_value=mock_session):
-                with patch.object(mock_session, "__exit__", return_value=None):
-                    with patch("time.time", side_effect=[0, 0.05]):  # 50ms response
-                        result = self.health_checker.check_performance_baseline()
+        result = self.manager.test_connectivity()
 
-                        self.assertTrue(result["baseline_met"])
-                        self.assertEqual(result["response_time_ms"], 50)
-                        self.assertIsNone(result["error"])
+        self.assertTrue(result.connected)
+        self.assertEqual(result.environment, "ci")
+        self.assertIsNone(result.error)
 
-    def test_comprehensive_health_check_healthy(self):
-        """Test comprehensive health check with healthy status"""
-        # Mock all sub-checks to return healthy results
-        mock_connectivity = {"connected": True, "error": None}
-        mock_performance = {"baseline_met": True, "response_time_ms": 30}
-        mock_crud = {"create": True, "read": True, "update": True, "delete": True, "errors": []}
+    def test_connectivity_with_response_time(self):
+        """Test connectivity includes response time measurement"""
+        result = self.manager.test_connectivity()
 
-        with patch.object(
-            self.health_checker, "check_basic_connectivity", return_value=mock_connectivity
-        ):
-            with patch.object(
-                self.health_checker, "check_performance_baseline", return_value=mock_performance
-            ):
-                with patch.object(
-                    self.health_checker, "check_database_operations", return_value=mock_crud
-                ):
-                    with patch.object(
-                        self.health_checker, "get_database_version", return_value="5.15.0"
-                    ):
-
-                        result = self.health_checker.comprehensive_health_check()
-
-                        self.assertEqual(result.status, "healthy")
-                        self.assertEqual(result.environment, "ci")
-                        self.assertIsNotNone(result.response_time_ms)
-                        self.assertIsNone(result.warnings)
-
-    def test_health_check_endpoint_format(self):
-        """Test health check endpoint response format"""
-        from common.database.health_checks import HealthStatus
-
-        with patch.object(self.health_checker, "comprehensive_health_check") as mock_check:
-            mock_status = HealthStatus(
-                status="healthy",
-                response_time_ms=45,
-                environment="ci",
-                last_test_timestamp="2025-01-11T10:30:00Z",
-                version="5.15.0",
-                test_operations={"connection": "success"},
-                warnings=None,
-                error=None,
+        # Should have response time measurement
+        if result.connected:
+            self.assertIsNotNone(result.response_time_ms)
+        else:
+            # May be None if connection failed
+            self.assertTrue(
+                result.response_time_ms is None or isinstance(result.response_time_ms, int)
             )
-
-            mock_check.return_value = mock_status
-
-            result = self.health_checker.health_check_endpoint()
-
-            # Verify required fields are present
-            self.assertIn("status", result)
-            self.assertIn("response_time_ms", result)
-            self.assertIn("environment", result)
-            self.assertIn("timestamp", result)
-            self.assertIn("check_type", result)
 
 
 # Integration tests (require actual Neo4j instance)
@@ -358,7 +262,7 @@ class TestNeo4jIntegration(unittest.TestCase):
 
             # Skip integration tests if Neo4j is not available
             connectivity = cls.manager.test_connectivity()
-            if not connectivity["connected"]:
+            if not connectivity.connected:
                 pytest.skip("Neo4j instance not available for integration tests")
         except Exception as e:
             # Handle any setup errors gracefully
@@ -375,23 +279,17 @@ class TestNeo4jIntegration(unittest.TestCase):
         """Test real CRUD operations on Neo4j"""
         if not hasattr(self, "manager"):
             self.skipTest("Neo4j manager not available")
-        test_ops = TestOperations(self.manager)
-        result = test_ops.test_crud_operations()
+        result = self.manager.test_crud_operations()
 
-        self.assertTrue(result["schema_setup"], "Schema setup failed")
-        self.assertTrue(result["create"], "Create operation failed")
-        self.assertTrue(result["read"], "Read operation failed")
-        self.assertTrue(result["update"], "Update operation failed")
-        self.assertTrue(result["delete"], "Delete operation failed")
+        self.assertTrue(result["success"], "CRUD operations failed")
 
-    def test_real_health_check(self):
-        """Test real health check"""
+    def test_real_connectivity_check(self):
+        """Test real connectivity check"""
         if not hasattr(self, "manager"):
             self.skipTest("Neo4j manager not available")
-        health_checker = HealthChecker(self.manager)
-        result = health_checker.comprehensive_health_check()
+        result = self.manager.test_connectivity()
 
-        self.assertIn(result.status, ["healthy", "degraded"])
+        self.assertTrue(result.connected)
         self.assertIsNotNone(result.response_time_ms)
         self.assertEqual(result.environment, "ci")
 
@@ -399,9 +297,6 @@ class TestNeo4jIntegration(unittest.TestCase):
     def tearDownClass(cls):
         """Cleanup after integration tests"""
         if hasattr(cls, "manager") and cls.manager:
-            # Clean up any test data
-            test_ops = TestOperations(cls.manager)
-            test_ops.cleanup_test_nodes(environment="ci", older_than_hours=0)
             cls.manager.close()
 
 

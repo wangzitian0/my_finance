@@ -13,6 +13,10 @@
 
 - name: Load environment-specific variables
   include_vars: "{{ neo4j_environment }}.yml"
+
+- name: Merge Neo4j configuration for environment variables
+  set_fact:
+    neo4j_final_config: "{{ neo4j_defaults | combine(neo4j_environment_config, recursive=True) }}"
   
 - name: Validate required vault variables for production
   assert:
@@ -22,43 +26,33 @@
     fail_msg: "Production Neo4j password must be defined in vault"
   when: neo4j_environment == 'production'
 
-- name: Create Neo4j configuration directory
-  file:
-    path: "{{ neo4j_config_dir }}"
-    state: directory
-    mode: '0755'
+- name: Set Neo4j environment variables (simplified configuration)
+  lineinfile:
+    path: /etc/environment
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+    create: yes
   become: yes
+  loop:
+    - { key: 'NEO4J_HOST', value: "{{ neo4j_final_config.host | default('localhost') }}" }
+    - { key: 'NEO4J_PORT', value: "{{ neo4j_final_config.port | default('7687') }}" }
+    - { key: 'NEO4J_DATABASE', value: "{{ neo4j_final_config.database | default('neo4j') }}" }
+    - { key: 'NEO4J_USER', value: "{{ neo4j_final_config.user | default('neo4j') }}" }
+    - { key: 'NEO4J_PASSWORD', value: "{{ neo4j_final_config.password | default('') }}" }
+  when: neo4j_final_config is defined
 
-- name: Merge Neo4j configuration
-  set_fact:
-    neo4j_final_config: "{{ neo4j_defaults | combine(neo4j_environment_config, recursive=True) }}"
-
-- name: Generate base configuration file
-  template:
-    src: database_base.yml.j2
-    dest: "{{ neo4j_base_config_file }}"
-    mode: '0644'
-    backup: yes
-  become: yes
-  notify: validate neo4j config
-
-- name: Generate environment overrides configuration file
-  template:
-    src: database_overrides.yml.j2
-    dest: "{{ neo4j_override_config_file }}"
-    mode: '0644'
-    backup: yes
-  become: yes
-  notify: validate neo4j config
-
-- name: Test Neo4j configuration loading
+- name: Test Neo4j connectivity with simplified manager
   command: >
     python3 -c "
-    from common.database.config_loader import config_loader;
-    config = config_loader.load_config('{{ neo4j_environment }}');
-    print(f'Config loaded successfully for {{ neo4j_environment }}');
-    print(f'Host: {config[\"neo4j\"][\"host\"]}');
-    print(f'Port: {config[\"neo4j\"][\"port\"]}')
+    from common.database import Neo4jManager;
+    manager = Neo4jManager(environment='{{ neo4j_environment }}');
+    config = manager.get_config();
+    result = manager.test_connectivity();
+    print(f'Neo4j connectivity test for {{ neo4j_environment }}');
+    print(f'Host: {config[\"host\"]}');
+    print(f'Port: {config[\"port\"]}');
+    print(f'Connected: {result.connected}');
+    print(f'Response time: {result.response_time_ms}ms' if result.response_time_ms else 'Response time: N/A')
     "
   register: config_test_result
   changed_when: false
