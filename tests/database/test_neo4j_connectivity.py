@@ -306,7 +306,7 @@ class TestNeo4jHealthCheck(unittest.TestCase):
     def test_health_check_endpoint_format(self):
         """Test health check endpoint response format"""
         from common.database.health_checks import HealthStatus
-        
+
         with patch.object(self.health_checker, "comprehensive_health_check") as mock_check:
             mock_status = HealthStatus(
                 status="healthy",
@@ -316,7 +316,7 @@ class TestNeo4jHealthCheck(unittest.TestCase):
                 version="5.15.0",
                 test_operations={"connection": "success"},
                 warnings=None,
-                error=None
+                error=None,
             )
 
             mock_check.return_value = mock_status
