@@ -1,7 +1,6 @@
-name: M7 Validation Check
+name: Environment Check
 
-# Lightweight validation check for M7 readiness
-# Does not run full M7 test, only checks prerequisites
+# Validates environment setup and readiness
 on:
   pull_request:
     types: [opened, synchronize]
@@ -41,7 +40,7 @@ jobs:
           if [ -f "common/config/data_sources.yaml" ]; then
             echo " Data sources config: Found"
           else
-            echo "  Data sources config: Missing (non-critical)"
+            echo "ï¿½ Data sources config: Missing (non-critical)"
           fi
           
           # Check directory structure
@@ -73,8 +72,8 @@ jobs:
               sys.exit(1)
           "
           
-          echo "<¯ M7 prerequisites validation completed successfully"
-          echo "=Ý Note: This is a lightweight check. Full M7 testing requires manual trigger."
+          echo "<ï¿½ M7 prerequisites validation completed successfully"
+          echo "=ï¿½ Note: This is a lightweight check. Full M7 testing requires manual trigger."
 
       - name: Validation Summary
         if: always()

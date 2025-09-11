@@ -1,6 +1,6 @@
-name: Post-Merge Analysis & Issue Generation
+name: Post-Merge Analysis
 
-# Triggers after successful merges to main branch
+# Automated analysis after code merges to main
 on:
   push:
     branches: [main]

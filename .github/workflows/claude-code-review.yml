@@ -1,10 +1,9 @@
-name: Claude Code Review
+name: Code Review
 
-# Automatic code review workflow - runs on PR creation
-# For interactive Claude sessions, use @claude mentions which trigger claude.yml instead
+# Automatic code review workflow - runs on PR creation and updates
 on:
   pull_request:
-    types: [opened]  # Only run on initial PR creation to avoid duplicate comments
+    types: [opened, synchronize]  # Run on PR creation and updates
     # Optional: Only run on specific file changes
     # paths:
     #   - "src/**/*.ts"

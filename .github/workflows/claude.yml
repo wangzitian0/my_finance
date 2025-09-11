@@ -1,7 +1,6 @@
-name: Claude Code
+name: AI Assistant
 
-# Interactive Claude workflow - triggers only on explicit @claude mentions
-# This avoids conflicts with the automatic claude-code-review.yml workflow
+# Interactive AI assistant - triggered by @claude mentions
 on:
   issue_comment:
     types: [created]
