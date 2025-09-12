@@ -1,0 +1,175 @@
+name: P3 Ship Validation
+
+# Check if PRs were created using p3 ship workflow
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check-p3-ship:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history to check commits
+      
+      - name: Check for P3 Ship Markers
+        id: check-p3
+        run: |
+          echo "Checking PR for P3 ship workflow compliance..."
+          
+          # Get the commits in this PR
+          PR_COMMITS=$(git rev-list --reverse origin/${{ github.base_ref }}..${{ github.head_ref }})
+          
+          # Check if any commit has P3 test markers
+          P3_MARKERS_FOUND=false
+          DIRECT_PUSH_DETECTED=false
+          
+          # Look for P3 test markers in commit messages
+          for commit in $PR_COMMITS; do
+            commit_msg=$(git log --format=%B -n 1 $commit)
+            
+            # Check for P3 test markers (F2, M7, N100, V3k test results)
+            if echo "$commit_msg" | grep -E "(F2|M7|N100|V3K).*test.*results|p3.*ship|P3.*SHIP" > /dev/null; then
+              P3_MARKERS_FOUND=true
+              echo "✅ P3 workflow markers found in commit: $commit"
+              break
+            fi
+          done
+          
+          # Check PR title and description for p3 ship indicators
+          if echo "${{ github.event.pull_request.title }}" | grep -E "p3.*ship|P3.*SHIP" > /dev/null; then
+            P3_MARKERS_FOUND=true
+            echo "✅ P3 ship indicators found in PR title"
+          fi
+          
+          # Check if there are direct push logs in the repo (from our new hook)
+          if [ -f ".git/hooks/direct_push.log" ]; then
+            RECENT_DIRECT_PUSH=$(tail -5 .git/hooks/direct_push.log | grep -E "$(date +%Y-%m-%d)" || true)
+            if [ ! -z "$RECENT_DIRECT_PUSH" ]; then
+              DIRECT_PUSH_DETECTED=true
+              echo "⚠️ Recent direct push detected (bypassed p3 ship)"
+            fi
+          fi
+          
+          # Set outputs
+          echo "p3_markers_found=$P3_MARKERS_FOUND" >> $GITHUB_OUTPUT
+          echo "direct_push_detected=$DIRECT_PUSH_DETECTED" >> $GITHUB_OUTPUT
+      
+      - name: Post P3 Ship Warning
+        if: steps.check-p3.outputs.p3_markers_found == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const warningComment = `## ⚠️ P3 Ship Workflow Warning
+
+            **This PR appears to have been created without using the recommended \`p3 ship\` workflow.**
+
+            ### Why P3 Ship is Recommended:
+            - ✅ **Automated Testing**: Ensures F2 testing is completed before PR creation
+            - 🔍 **Test Markers**: Commits include test result validation markers  
+            - 📝 **Proper Documentation**: Standardized PR descriptions and issue linking
+            - 🚀 **Quality Assurance**: Reduces chance of test failures in CI
+
+            ### What This Means:
+            ${steps.check-p3.outputs.direct_push_detected === 'true' ? '🚨 **Direct Push Detected**: This PR was created using direct git commands instead of p3 ship' : '⚠️  **Missing P3 Markers**: No P3 test result markers found in commits'}
+
+            ### Recommended Action:
+            While this PR is still valid, consider using \`p3 ship "Title" ISSUE_NUM\` for future PRs to get:
+            - Automatic F2 testing validation
+            - Better commit message formatting  
+            - Standardized PR workflow compliance
+
+            ### Quick Fix for Next Time:
+            \`\`\`bash
+            # Instead of git push, use:
+            p3 ship "Your PR title" ISSUE_NUMBER
+            \`\`\`
+
+            ---
+            *This is an automated reminder to help maintain code quality. The PR will still be reviewed and merged if approved.*`;
+
+            // Check if we already posted a warning comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existingWarning = comments.find(comment => 
+              comment.body.includes('P3 Ship Workflow Warning') && 
+              comment.user.type === 'Bot'
+            );
+
+            if (!existingWarning) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: warningComment
+              });
+              
+              console.log('Posted P3 ship workflow warning comment');
+            } else {
+              console.log('P3 ship warning comment already exists, skipping');
+            }
+      
+      - name: Set PR Check Status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const p3Found = '${{ steps.check-p3.outputs.p3_markers_found }}' === 'true';
+            const directPush = '${{ steps.check-p3.outputs.direct_push_detected }}' === 'true';
+            
+            let conclusion, title, summary;
+            
+            if (p3Found) {
+              conclusion = 'success';
+              title = '✅ P3 Ship Workflow Detected';
+              summary = 'This PR was created using the recommended p3 ship workflow with proper test markers.';
+            } else if (directPush) {
+              conclusion = 'neutral';  // Don't fail, but flag it
+              title = '⚠️ Direct Push Detected';
+              summary = 'This PR was created using direct git push instead of p3 ship workflow. Consider using p3 ship for future PRs.';
+            } else {
+              conclusion = 'neutral';  // Don't fail, but flag it
+              title = '⚠️ P3 Ship Workflow Not Used';
+              summary = 'This PR appears to have been created without p3 ship workflow markers. Consider using p3 ship for standardized workflow.';
+            }
+            
+            await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'P3 Ship Validation',
+              head_sha: context.payload.pull_request.head.sha,
+              status: 'completed',
+              conclusion: conclusion,
+              output: {
+                title: title,
+                summary: summary,
+                text: `
+            ## P3 Ship Validation Results
+            
+            **P3 Markers Found:** ${p3Found ? '✅ Yes' : '❌ No'}
+            **Direct Push Detected:** ${directPush ? '⚠️ Yes' : '✅ No'}
+            
+            ### Recommended Workflow
+            For future PRs, use the standardized p3 ship workflow:
+            \`\`\`bash
+            p3 ship "Your PR title" ISSUE_NUMBER
+            \`\`\`
+            
+            This ensures:
+            - Automatic F2 testing
+            - Proper test result markers in commits  
+            - Standardized PR creation process
+            - Better code quality assurance
+                `
+              }
+            });
