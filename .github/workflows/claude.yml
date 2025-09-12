@@ -1,7 +1,6 @@
-name: Claude Code
+name: AI Assistant
 
-# Interactive Claude workflow - triggers only on explicit @claude mentions
-# This avoids conflicts with the automatic claude-code-review.yml workflow
+# Interactive AI assistant - triggered by @claude mentions
 on:
   issue_comment:
     types: [created]
@@ -70,7 +69,7 @@ jobs:
             3. **P3 WORKFLOW COMPLIANCE**: 
                - Always use p3 commands (p3 ready, p3 test, p3 ship)
                - Never bypass p3 system for git operations
-               - F2 testing mandatory before PR creation
+               - Local development testing mandatory before PR creation
             4. **ARCHITECTURE STANDARDS**:
                - Read README.md before starting any task
                - Use common.core.directory_manager for all file I/O
