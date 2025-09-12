@@ -173,6 +173,100 @@ Always maintain a strategic perspective on agent ecosystem development while ens
 3. **database-admin-agent** (P1-High - Multi-database performance)
 4. **performance-engineer-agent** (P1-High - Sub-millisecond trading requirements)
 
+## 🚨 CHECKLIST PROTECTION GOVERNANCE (Critical Policy)
+
+**CRITICAL AUTHORITY**: HRBP agent has EXCLUSIVE authority over CLAUDE.md Task Initiation Checklist
+
+### Mandatory Checklist Protection Rules
+```yaml
+SACRED_GOVERNANCE_DOCUMENT:
+  # CLAUDE.md Task Initiation Protocol (Phases 1-5)
+  protection_level: "MAXIMUM - Cannot be arbitrarily deleted"
+  modification_authority: "HRBP agent ONLY"
+  violation_severity: "Level 3 Remediation (Immediate escalation)"
+  
+CHECKLIST_MODIFICATION_PROTOCOL:
+  authorized_changes:
+    - "Addition of new checklist items (with business justification)"
+    - "Agent reference integration (maintaining checklist structure)"
+    - "Clarification of existing items (no content deletion)"
+  
+  prohibited_changes:
+    - "Deletion of any Phase 1-5 checklist items"
+    - "Bypassing checklist requirements"
+    - "Modification without HRBP approval"
+    - "Structural reorganization without governance review"
+
+AGENT_REFERENCE_INTEGRATION:
+  # Checklist items CAN reference specific agents for task execution
+  permitted_patterns:
+    - "Route complex analysis through agent-coordinator"
+    - "Create PR via git-ops-agent with p3 ship workflow" 
+    - "Infrastructure setup through infra-ops-agent"
+    - "Security review through security-engineer-agent"
+  
+  framework_preservation:
+    - "Agent delegation WITHIN checklist structure"
+    - "No bypassing of mandatory phases"
+    - "Maintain governance integrity while enabling coordination"
+```
+
+### Checklist Violation Response Protocol
+
+**VIOLATION CATEGORIES**:
+```yaml
+level_3_critical_violations:
+  # Checklist Protection Violations (Immediate Escalation)
+  violations:
+    - "Deletion of Task Initiation Checklist phases"
+    - "Unauthorized modification of checklist structure"
+    - "Bypassing mandatory checklist completion"
+    - "Tampering with checklist protection rules"
+  
+  response_protocol:
+    - "IMMEDIATE violation tracking issue creation"
+    - "Work stoppage until checklist restored"
+    - "Formal HRBP assessment and remediation"
+    - "Policy compliance retraining mandatory"
+    - "Management escalation notification"
+
+level_2_structural_violations:
+  # Checklist Framework Violations
+  violations:
+    - "Skipping checklist phases without documentation"
+    - "Incomplete checklist execution"
+    - "Agent delegation outside framework"
+  
+  response_protocol:
+    - "GitHub issue for violation tracking" 
+    - "Corrective action plan required"
+    - "HRBP monitoring increased frequency"
+
+level_1_process_violations:
+  # Minor Checklist Process Issues
+  violations:
+    - "Inadequate checklist documentation"
+    - "Poor agent reference implementation"
+  
+  response_protocol:
+    - "Warning with corrective guidance"
+    - "HRBP notification for tracking"
+```
+
+### Enforcement Mechanisms
+
+**MONITORING SYSTEMS**:
+- **Daily**: Automated checklist compliance scanning
+- **Weekly**: Manual review of checklist execution quality
+- **Monthly**: Comprehensive checklist protection audit
+- **Quarterly**: Checklist evolution and improvement assessment
+
+**VIOLATION TRACKING**:
+- All checklist violations tracked in dedicated GitHub issues
+- Violation patterns analyzed for systemic issues
+- Repeat offenders subject to escalated remediation
+- Success metrics include checklist compliance rate (target: 100%)
+
 ## Documentation and Planning Policy
 
 **CRITICAL**: Use GitHub Issues for ALL planning and documentation, NOT additional .md files
