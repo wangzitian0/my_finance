@@ -688,6 +688,177 @@ class DirectoryManager:
             },
         }
 
+    # Tool path mapping methods (Issue #256)
+    def get_tool_build_path(self, tool_name: str, timestamp: Optional[str] = None) -> Path:
+        """
+        Get build_data/timestamp/tool_x path for unified tool system
+
+        Args:
+            tool_name: Name of the tool (e.g., 'sec_filing_processor')
+            timestamp: Optional specific timestamp (YYYYMMDD_HHMMSS format)
+                      If None, uses current timestamp
+
+        Returns:
+            Path to tool workspace directory in build_data
+
+        Example:
+            get_tool_build_path("sec_filing_processor", "20250912_143000")
+            # Returns: build_data/20250912_143000/sec_filing_processor
+        """
+        # Sanitize tool name for security
+        tool_name = self._sanitize_path_component(tool_name)
+
+        # Generate timestamp if not provided
+        if timestamp is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        else:
+            timestamp = self._sanitize_path_component(timestamp)
+
+        # Get base results layer and add timestamp/tool structure
+        results_layer = self.get_layer_path(DataLayer.QUERY_RESULTS)
+        return results_layer / f"build_{timestamp}" / tool_name
+
+    def register_tool(self, tool_name: str, tool_config: Dict) -> bool:
+        """
+        Register tool configuration with the directory manager
+
+        Args:
+            tool_name: Name of the tool to register
+            tool_config: Tool configuration dictionary
+
+        Returns:
+            True if registration successful, False otherwise
+
+        Note:
+            This method validates tool configuration and ensures
+            the tool's common/tools directory structure exists.
+        """
+        try:
+            # Sanitize tool name
+            tool_name = self._sanitize_path_component(tool_name)
+
+            # Validate tool config has required fields
+            required_fields = ["name", "version", "description"]
+            for field in required_fields:
+                if field not in tool_config:
+                    self.logger.error(
+                        f"Tool config missing required field '{field}' for {tool_name}"
+                    )
+                    return False
+
+            # Check that common/tools/tool_name directory exists
+            tools_path = self.root_path / "common" / "tools" / tool_name
+            if not tools_path.exists():
+                self.logger.error(f"Tool directory does not exist: {tools_path}")
+                return False
+
+            # Validate tool has required files
+            required_files = ["__init__.py"]
+            for file_name in required_files:
+                file_path = tools_path / file_name
+                if not file_path.exists():
+                    self.logger.error(f"Required tool file missing: {file_path}")
+                    return False
+
+            self.logger.info(f"Tool '{tool_name}' successfully registered")
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Error registering tool '{tool_name}': {e}")
+            return False
+
+    def list_available_tools(self) -> List[str]:
+        """
+        List available tools from common/tools/ directory
+
+        Returns:
+            List of available tool names
+
+        Note:
+            Only tools with proper structure (containing __init__.py) are included.
+        """
+        available_tools = []
+
+        try:
+            tools_base = self.root_path / "common" / "tools"
+
+            if not tools_base.exists():
+                self.logger.warning(f"Tools directory does not exist: {tools_base}")
+                return available_tools
+
+            # Scan for tool directories
+            for item in tools_base.iterdir():
+                if item.is_dir() and not item.name.startswith("."):
+                    # Check if it has __init__.py (valid Python module)
+                    init_file = item / "__init__.py"
+                    if init_file.exists():
+                        available_tools.append(item.name)
+
+            available_tools.sort()  # Return in consistent order
+
+        except Exception as e:
+            self.logger.error(f"Error listing available tools: {e}")
+
+        return available_tools
+
+    def validate_tool_structure(self, tool_name: str) -> bool:
+        """
+        Validate tool structure in common/tools/
+
+        Args:
+            tool_name: Name of the tool to validate
+
+        Returns:
+            True if tool structure is valid, False otherwise
+
+        Validates:
+        - Tool directory exists in common/tools/
+        - Required __init__.py file exists
+        - Optional config.yaml and tool_definition.py exist
+        """
+        try:
+            # Sanitize tool name
+            tool_name = self._sanitize_path_component(tool_name)
+
+            # Check tool directory exists
+            tools_path = self.root_path / "common" / "tools" / tool_name
+            if not tools_path.exists():
+                self.logger.error(f"Tool directory does not exist: {tools_path}")
+                return False
+
+            # Check required __init__.py
+            init_file = tools_path / "__init__.py"
+            if not init_file.exists():
+                self.logger.error(f"Required __init__.py missing for tool: {tool_name}")
+                return False
+
+            # Check optional config.yaml
+            config_file = tools_path / "config.yaml"
+            if config_file.exists():
+                try:
+                    if yaml is not None:
+                        with open(config_file, "r", encoding="utf-8") as f:
+                            config_data = yaml.safe_load(f)
+                            if not isinstance(config_data, dict):
+                                self.logger.warning(
+                                    f"Invalid config.yaml format for tool: {tool_name}"
+                                )
+                except Exception as e:
+                    self.logger.warning(f"Error reading config.yaml for tool {tool_name}: {e}")
+
+            # Check optional tool_definition.py
+            definition_file = tools_path / "tool_definition.py"
+            if definition_file.exists():
+                # File exists, basic validation passed
+                pass
+
+            self.logger.info(f"Tool structure validation passed for: {tool_name}")
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Error validating tool structure for '{tool_name}': {e}")
+            return False
+
 
 # Global instance for project-wide use
 directory_manager = DirectoryManager()
@@ -759,3 +930,24 @@ def get_agents_shared_path() -> Path:
 def ensure_data_structure():
     """Ensure all data directories exist"""
     directory_manager.ensure_directories()
+
+
+# Tool path mapping convenience functions (Issue #256)
+def get_tool_build_path(tool_name: str, timestamp: Optional[str] = None) -> Path:
+    """Get build_data/timestamp/tool_x path using SSOT directory manager"""
+    return directory_manager.get_tool_build_path(tool_name, timestamp)
+
+
+def register_tool(tool_name: str, tool_config: Dict) -> bool:
+    """Register tool configuration using SSOT directory manager"""
+    return directory_manager.register_tool(tool_name, tool_config)
+
+
+def list_available_tools() -> List[str]:
+    """List available tools using SSOT directory manager"""
+    return directory_manager.list_available_tools()
+
+
+def validate_tool_structure(tool_name: str) -> bool:
+    """Validate tool structure using SSOT directory manager"""
+    return directory_manager.validate_tool_structure(tool_name)

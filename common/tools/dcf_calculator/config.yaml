@@ -1,0 +1,76 @@
+# DCF Calculator Tool Configuration
+# Maps DCF engine functionality to the unified tool system
+
+name: "dcf_calculator"
+version: "1.0.0"
+description: "Performs discounted cash flow valuation analysis using processed financial data and SEC filings"
+
+# Build data structure requirements for build_data/timestamp/dcf_calculator/
+required_directories:
+  - "financial_models"    # DCF model calculations
+  - "valuations"         # Company valuation results  
+  - "assumptions"        # Valuation assumptions and inputs
+  - "reports"            # Generated DCF reports
+  - "comparisons"        # Peer comparison analysis
+
+optional_directories:
+  - "cache"             # Calculation cache
+  - "logs"              # Tool-specific logs
+  - "temp"              # Temporary calculation files
+  - "scenarios"         # Scenario analysis results
+
+# Input/output layer specifications
+input_layers:
+  - "stage_01_daily_delta"   # Incremental financial data updates
+  - "stage_02_daily_index"   # Embeddings and processed data
+  - "stage_03_graph_rag"     # Knowledge graph for context
+
+output_layers:
+  - "stage_04_query_results"  # DCF reports and valuations
+
+# Tool dependencies
+dependencies:
+  - "sec_filing_processor"   # Requires processed SEC filings
+
+# System prerequisites  
+prerequisites:
+  - "python_packages"       # numpy, pandas, scipy, matplotlib
+  - "financial_data"        # Processed financial statements
+  - "market_data"           # Current market prices and risk-free rates
+
+# Configuration overrides
+config_overrides:
+  # Valuation parameters
+  discount_rate: 0.10           # Default WACC of 10%
+  terminal_growth_rate: 0.025   # Long-term growth rate of 2.5%
+  projection_years: 5           # 5-year DCF projection
+  
+  # Risk adjustments
+  country_risk_premium: 0.0     # Additional country risk
+  size_premium: 0.02            # Small company premium
+  
+  # Calculation settings
+  tax_rate: 0.21               # Corporate tax rate
+  beta_lookback_years: 2       # Beta calculation period
+  enable_monte_carlo: true     # Enable scenario analysis
+  monte_carlo_iterations: 1000
+
+# Validation rules
+validation_rules:
+  min_revenue_history_years: 3
+  max_debt_to_equity_ratio: 5.0
+  min_free_cash_flow_margin: -0.5  # Allow some negative FCF
+  required_financial_metrics:
+    - "revenue"
+    - "operating_income" 
+    - "free_cash_flow"
+    - "total_debt"
+    - "cash_and_equivalents"
+  
+# Quality checks
+quality_checks:
+  - "validate_financial_inputs"
+  - "check_calculation_consistency" 
+  - "verify_market_data_currency"
+  - "validate_dcf_output_reasonableness"
+  - "compare_to_market_multiples"
