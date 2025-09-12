@@ -2,6 +2,8 @@ name: Development Integration Tests
 
 # End-to-end integration testing for development environment
 on:
+  push:
+    branches: [ main, 'feature/**', 'hotfix/**' ]
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:

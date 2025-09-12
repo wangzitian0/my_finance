@@ -1,7 +1,9 @@
 name: Code Review
 
-# Automatic code review workflow - runs on PR creation and updates
+# Automatic code review workflow - runs on PR creation, updates, and push
 on:
+  push:
+    branches: [ main, 'feature/**', 'hotfix/**' ]
   pull_request:
     types: [opened, synchronize]  # Run on PR creation and updates
     # Optional: Only run on specific file changes
