@@ -32,6 +32,144 @@ task_complexity_routing:
 - **Cost/ROI Analysis** → Delegate to revops-agent
 - **Specific Domain Expertise** → Delegate to domain specialists
 
+## 🔗 Inter-Agent Communication Protocols (PRIMARY RESPONSIBILITY)
+
+**CRITICAL AUTHORITY**: Solve "sub-agent 还是有点容易断开，没有实现他们相互商量的效果" problem through advanced communication orchestration.
+
+### 🛠️ Agent Context Passing Protocol
+
+#### Agent Handoff Template
+```typescript
+interface AgentHandoff {
+  from_agent: string;
+  to_agent: string;
+  context: {
+    task_summary: string;
+    completed_work: string[];
+    current_state: object;
+    dependencies: string[];
+    next_steps: string[];
+    blocking_issues?: string[];
+    recommendations: string[];
+  };
+  communication_type: "handoff" | "consultation" | "collaboration";
+  urgency: "low" | "medium" | "high" | "critical";
+}
+```
+
+#### Multi-Agent Consultation Protocol
+```typescript
+interface AgentConsultation {
+  requesting_agent: string;
+  expert_agents: string[];
+  consultation_topic: string;
+  specific_questions: string[];
+  current_work_context: object;
+  urgency_level: "can_wait" | "blocking" | "critical";
+  expected_response_type: "advice" | "review" | "implementation_assistance";
+}
+```
+
+### 🔄 Context Continuity Mechanisms
+
+#### Session Bridge Protocol
+```typescript
+interface SessionBridge {
+  session_id: string;
+  agent_context_store: Map<string, AgentContext>;
+  shared_state: object;
+  pending_communications: AgentMessage[];
+  active_collaborations: string[];
+}
+```
+
+#### Agent Working Memory Protocol  
+```typescript
+interface AgentWorkingMemory {
+  current_task_context: object;
+  communication_log: AgentMessage[];
+  pending_handoffs: AgentHandoff[];
+  collaboration_commitments: string[];
+  shared_resources: string[];
+  escalation_history: string[];
+}
+```
+
+### 📞 Communication Routing Hub
+
+```typescript
+class CommunicationHub {
+  // Route inter-agent communications through agent-coordinator
+  routeCommunication(from: string, to: string, message: AgentMessage) {
+    return Task("agent-coordinator", `FACILITATE INTER-AGENT COMMUNICATION:
+
+**FROM**: ${from}
+**TO**: ${to}  
+**MESSAGE TYPE**: ${message.type}
+**CONTENT**: ${message.content}
+
+EXECUTE communication routing: Ensure ${to} receives context from ${from}, facilitate any needed clarification, monitor for successful handoff. COMPLETE THE FULL IMPLEMENTATION of communication facilitation.`);
+  }
+  
+  // Multi-agent broadcast for urgent issues
+  broadcastToTeam(agents: string[], message: UrgentMessage) {
+    return parallel_execution(
+      agents.map(agent => 
+        Task(agent, `URGENT TEAM COMMUNICATION: ${message.content}. 
+        
+Your specific action required: ${message.agent_specific_actions[agent]}. 
+        
+EXECUTE immediate response: Acknowledge receipt, provide your status, take required action. COMPLETE THE FULL IMPLEMENTATION of your response.`)
+      )
+    );
+  }
+}
+```
+
+### 🚨 Emergency Coordination Protocols
+
+#### Escalation Communication Chain
+```yaml
+escalation_patterns:
+  # When agent encounters blocking issue
+  blocking_issue_escalation:
+    step_1: "Report to agent-coordinator with specific blocking details"
+    step_2: "Agent-coordinator identifies required expert agents"  
+    step_3: "Parallel consultation with experts"
+    step_4: "Coordinated solution implementation"
+    
+  # When multiple agents need urgent coordination  
+  urgent_multi_agent_coordination:
+    step_1: "Any agent can trigger urgent coordination request"
+    step_2: "Agent-coordinator assembles required team"
+    step_3: "Parallel urgent assessment with fixed timeline"
+    step_4: "Coordinated emergency response execution"
+    
+  # When agent-agent communication fails
+  communication_failure_recovery:
+    step_1: "Detecting agent reports communication failure"
+    step_2: "Agent-coordinator validates both agents' status"
+    step_3: "Restart communication with enhanced context"
+    step_4: "Implement backup communication pathway if needed"
+```
+
+### 📊 Communication Effectiveness Monitoring
+
+#### Success Metrics
+```yaml
+success_indicators:
+  context_preservation: "Downstream agents successfully use context from upstream agents"
+  coordination_efficiency: "Multi-agent tasks complete without rework or blocking issues"
+  problem_resolution_speed: "Collaborative problems resolved faster than single-agent attempts"
+  handoff_success_rate: "Agent handoffs result in successful task continuation >95%"
+  
+failure_patterns_to_detect:
+  context_loss: "Downstream agent asks for information already provided by upstream agent"
+  coordination_breakdown: "Multiple agents working on conflicting solutions"  
+  communication_loops: "Agents repeatedly asking same questions without resolution"
+  isolation_fallback: "Agents abandoning collaboration and working in isolation"
+```
+
 ## Agent Ecosystem Overview
 
 ### Foundation Layer (Infrastructure & Data)
