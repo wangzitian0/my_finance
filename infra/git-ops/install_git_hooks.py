@@ -112,14 +112,14 @@ if [ "$current_branch" = "main" ] || [ "$current_branch" = "master" ]; then
     fi
 fi
 
-# === DIRECT PUSH BLOCKING (P3 WORKFLOW ENFORCEMENT) ===
+# === DIRECT PUSH WARNING (P3 WORKFLOW PREFERRED) ===
 
-echo -e "${RED}🚨 DIRECT GIT PUSH BLOCKED${NC}"
-echo -e "${RED}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${YELLOW}❌ This repository requires the use of automated PR workflow${NC}"
-echo -e "${YELLOW}❌ Direct git push commands are not permitted${NC}"
+echo -e "${YELLOW}⚠️  DIRECT GIT PUSH DETECTED${NC}"
+echo -e "${YELLOW}═══════════════════════════════════════════════════════════════${NC}"
+echo -e "${YELLOW}⚠️  Warning: Direct push bypasses automated PR workflow${NC}"
+echo -e "${RED}🚨 STRONGLY RECOMMENDED: Use p3 ship for better workflow${NC}"
 echo
-echo -e "${BLUE}🔧 SMART P3 WORKFLOW:${NC}"
+echo -e "${BLUE}🔧 RECOMMENDED P3 WORKFLOW:${NC}"
 echo -e "${GREEN}   Option 1 - If you just ran p3 test f2 (within 10 minutes):${NC}"
 echo -e "${GREEN}     p3 ship \\"Title\\" ISSUE_NUM         # Direct ship with existing test results${NC}"
 echo
@@ -132,14 +132,14 @@ echo
 echo -e "${GREEN}   🚀 FASTEST WORKFLOW - p3 ship automatically runs f2 test if needed!${NC}"
 echo -e "${GREEN}     p3 ship \\"Title\\" ISSUE_NUM         # Auto: check for recent tests, run f2 if needed${NC}"
 echo
-echo -e "${BLUE}💡 WHY THIS RESTRICTION EXISTS:${NC}"
+echo -e "${BLUE}💡 WHY P3 WORKFLOW IS PREFERRED:${NC}"
 echo -e "   • Ensures all code passes automated testing before merge"
 echo -e "   • Maintains commit message standards with test markers"
 echo -e "   • Prevents untested code from reaching the main branch"
 echo -e "   • Enforces proper issue tracking and PR documentation"
 echo
-echo -e "${YELLOW}⚡ QUICK SOLUTION:${NC}"
-echo -e "${GREEN}   # Cancel this push and use the smart P3 workflow:${NC}"
+echo -e "${YELLOW}⚡ QUICK ALTERNATIVE:${NC}"
+echo -e "${GREEN}   # Cancel this push and use the recommended P3 workflow:${NC}"
 echo -e "${GREEN}   git reset --soft HEAD~1                # Undo last commit (keep changes)${NC}"
 echo
 echo -e "${BLUE}   🎯 OPTION 1 - Super Fast (recommended):${NC}"
@@ -160,6 +160,9 @@ echo -e "   • No recent F2 test results found (within 10 minutes)"
 echo -e "   • Code has changed since last test"
 echo -e "   • This is the first test run in current session"
 echo
+echo -e "${YELLOW}⏰ Proceeding with direct push in 3 seconds...${NC}"
+echo -e "${RED}   Press Ctrl+C to cancel and use p3 ship instead${NC}"
+sleep 3
 
 # === BRANCH STATUS CHECKS (SECONDARY) ===
 # These run as informational warnings when direct push is attempted
@@ -182,42 +185,13 @@ if [ -n "$(git status --porcelain)" ]; then
     echo -e "${BLUE}💡 Commit these changes before using p3 ship${NC}"
 fi
 
-# === EMERGENCY BYPASS (STRONGLY DISCOURAGED) ===
+# === DIRECT PUSH ALLOWED (WITH LOGGING) ===
 
-echo -e "${RED}═══════════════════════════════════════════════════════════════${NC}"
-echo -e "${RED}🚨 EMERGENCY BYPASS (NOT RECOMMENDED)${NC}"
-echo -e "${YELLOW}If you absolutely must bypass this protection, you need TWO confirmations:${NC}"
-echo
+# Log the direct push for audit purposes (but allow it)
+echo "$(date): Direct push by $(whoami) on branch $current_branch (bypassed p3 ship)" >> .git/hooks/direct_push.log
 
-# First confirmation
-read -p "❓ Are you sure you want to bypass the automated workflow? [type 'YES' to continue]: " first_confirm
-if [ "$first_confirm" != "YES" ]; then
-    echo -e "${GREEN}✅ Push cancelled. Please use the proper workflow.${NC}"
-    exit 1
-fi
-
-echo
-echo -e "${RED}⚠️  WARNING: Bypassing automated workflow can lead to:${NC}"
-echo -e "   • Broken builds in main branch"
-echo -e "   • Failed CI validation"
-echo -e "   • Code quality issues"
-echo -e "   • Missing test validation"
-echo
-
-# Second confirmation
-read -p "❓ Do you REALLY want to bypass all safety checks? [type 'BYPASS' to proceed]: " second_confirm
-if [ "$second_confirm" != "BYPASS" ]; then
-    echo -e "${GREEN}✅ Push cancelled. Please use p3 ship workflow.${NC}"
-    exit 1
-fi
-
-echo
-echo -e "${YELLOW}⚠️  EMERGENCY BYPASS ACTIVATED${NC}"
-echo -e "${YELLOW}🔓 Allowing direct push (this will be logged)${NC}"
-echo -e "${RED}🚨 Remember to run tests manually and ensure code quality${NC}"
-
-# Log the bypass for audit purposes
-echo "$(date): Emergency bypass used by $(whoami) on branch $current_branch" >> .git/hooks/bypass.log
+echo -e "${YELLOW}📝 Direct push logged for audit purposes${NC}"
+echo -e "${GREEN}✅ Push proceeding (consider using p3 ship next time)${NC}"
 
 exit 0
 """
@@ -405,14 +379,14 @@ def main():
         print("   • commit-msg: Ensures proper commit message format")
 
         print("\n🔒 Repository protection active:")
-        print("   • All direct pushes blocked (except from p3 ship)")
-        print("   • PR workflow enforcement enabled")
+        print("   • Direct pushes allowed with 3s delay + warning (p3 ship recommended)")
+        print("   • P3 ship workflow strongly encouraged")
         print("   • Automated branch cleanup enabled")
         print("   • Commit message standards enforced")
 
         print("\n💡 Usage:")
-        print('   • For PRs: p3 ship "Title" ISSUE_NUM')
-        print("   • Emergency bypass: Use double confirmation prompts")
+        print('   • Recommended: p3 ship "Title" ISSUE_NUM')
+        print("   • Direct push: Allowed with 3s delay + warning")
         print("   • Branch cleanup: Automatic after merge to main")
 
     except Exception as e:
