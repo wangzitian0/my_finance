@@ -10,7 +10,7 @@ from pathlib import Path
 temp_files = [
     "modularization_script.py",
     "modularization_validation.py",
-    "cleanup_temp_files.py"  # Self-destruct this file too
+    "cleanup_temp_files.py",  # Self-destruct this file too
 ]
 
 for temp_file in temp_files:
