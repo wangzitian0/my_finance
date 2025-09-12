@@ -1,6 +1,8 @@
 # CLAUDE.md - Streamlined Company Policies (HRBP Issue #174 Implementation)
 
-## 🚨 MANDATORY TASK INITIATION PROTOCOL
+## 🚨 MANDATORY TASK INITIATION PROTOCOL 
+
+**🔒 PROTECTED GOVERNANCE DOCUMENT**: This checklist is under HRBP exclusive protection - cannot be arbitrarily deleted
 
 **CRITICAL**: Complete these 5 phases before any task execution:
 
@@ -15,6 +17,7 @@
 - [ ] Simple read/analysis → Direct tools (Read, Grep, Glob)
 - [ ] Git operations → `p3` commands (NEVER direct git for PR creation)
 - [ ] Complex workflows → Route through `agent-coordinator`
+- [ ] Infrastructure setup → Route through `infra-ops-agent` for P3 CLI and environment issues
 
 ### Phase 3: Workflow Validation ✅
 - [ ] Direct execution: Only single-step read operations
@@ -29,7 +32,8 @@
 ### Phase 5: Completion & PR ✅
 - [ ] Task completion verified
 - [ ] Self-validation executed  
-- [ ] **MANDATORY PR creation**: Route to `git-ops-agent` with `p3 ship` workflow
+- [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
+- [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
 
 ---
 
@@ -64,6 +68,8 @@ strategic: hrbp, revops
 ### Policy Management
 - **CLAUDE.md Owner**: hrbp-agent (exclusive authority for policy updates)
 - **Agent Standards**: hrbp-agent (quarterly reviews, consistency enforcement)
+- **🔒 Checklist Guardian**: hrbp-agent (EXCLUSIVE protection of Task Initiation Protocol)
+- **Governance Protection**: Level 3 violations for unauthorized checklist modifications
 
 ---
 
@@ -102,6 +108,8 @@ strategic: hrbp, revops
 - **Agent Performance**: Capability assessment, organizational development
 - **Policy Compliance**: Violation tracking, remediation protocols
 - **Documentation Standards**: Agent file consistency, quarterly reviews
+- **🔒 Checklist Protection**: EXCLUSIVE authority over Task Initiation Protocol (Phase 1-5)
+- **Governance Enforcement**: Immediate escalation for checklist tampering or unauthorized modifications
 
 ### Infra-Ops Agent Responsibilities
 - **P3 CLI Technical**: Command development, system integration, performance
@@ -121,6 +129,17 @@ strategic: hrbp, revops
 - Using direct tools for complex tasks instead of agent-coordinator
 - Creating .md planning files instead of GitHub Issues
 - Bypassing P3 workflow system
+
+**🚨 CRITICAL Checklist Protection Violations (Level 3 - Immediate Escalation)**:
+- **Checklist Deletion**: Removing any Phase 1-5 items from Task Initiation Protocol
+- **Checklist Tampering**: Unauthorized modification of checklist structure or content
+- **Checklist Bypass**: Skipping mandatory checklist completion before task execution
+- **Protection Rule Modification**: Altering checklist protection governance without HRBP approval
+
+**Agent Reference in Checklist (PERMITTED)**:
+- Checklist items MAY reference specific agents (e.g., "Route through agent-coordinator", "Create PR via git-ops-agent")
+- Agent delegation must occur WITHIN checklist framework, not bypass it
+- Framework integrity maintained while enabling proper coordination
 
 ---
 
