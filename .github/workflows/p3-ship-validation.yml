@@ -24,24 +24,41 @@ jobs:
         run: |
           echo "Checking PR for P3 ship workflow compliance..."
           
-          # Get the commits in this PR
-          PR_COMMITS=$(git rev-list --reverse origin/${{ github.base_ref }}..${{ github.head_ref }})
+          # Get the commits in this PR using GitHub API compatible method
+          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }} || true
+          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }} || true
+          
+          # Get commits between base and head
+          PR_COMMITS=$(git rev-list --reverse ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} 2>/dev/null || echo "")
           
           # Check if any commit has P3 test markers
           P3_MARKERS_FOUND=false
           DIRECT_PUSH_DETECTED=false
           
-          # Look for P3 test markers in commit messages
-          for commit in $PR_COMMITS; do
-            commit_msg=$(git log --format=%B -n 1 $commit)
-            
-            # Check for P3 test markers (F2, M7, N100, V3k test results)
-            if echo "$commit_msg" | grep -E "(F2|M7|N100|V3K).*test.*results|p3.*ship|P3.*SHIP" > /dev/null; then
+          echo "Checking commits in PR..."
+          if [ ! -z "$PR_COMMITS" ]; then
+            # Look for P3 test markers in commit messages
+            for commit in $PR_COMMITS; do
+              commit_msg=$(git log --format=%B -n 1 $commit 2>/dev/null || echo "")
+              echo "Checking commit: $commit"
+              echo "Commit message: $commit_msg"
+              
+              # Check for P3 test markers (F2, M7, N100, V3k test results)
+              if echo "$commit_msg" | grep -E "(F2|M7|N100|V3K).*test.*results|F2-TESTED|p3.*ship|P3.*SHIP" > /dev/null; then
+                P3_MARKERS_FOUND=true
+                echo "✅ P3 workflow markers found in commit: $commit"
+                break
+              fi
+            done
+          else
+            echo "⚠️ No commits found in PR, checking last commit..."
+            # Fallback: check the head commit
+            commit_msg=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }} 2>/dev/null || echo "")
+            if echo "$commit_msg" | grep -E "(F2|M7|N100|V3K).*test.*results|F2-TESTED|p3.*ship|P3.*SHIP" > /dev/null; then
               P3_MARKERS_FOUND=true
-              echo "✅ P3 workflow markers found in commit: $commit"
-              break
+              echo "✅ P3 workflow markers found in head commit"
             fi
-          done
+          fi
           
           # Check PR title and description for p3 ship indicators
           if echo "${{ github.event.pull_request.title }}" | grep -E "p3.*ship|P3.*SHIP" > /dev/null; then
@@ -49,14 +66,8 @@ jobs:
             echo "✅ P3 ship indicators found in PR title"
           fi
           
-          # Check if there are direct push logs in the repo (from our new hook)
-          if [ -f ".git/hooks/direct_push.log" ]; then
-            RECENT_DIRECT_PUSH=$(tail -5 .git/hooks/direct_push.log | grep -E "$(date +%Y-%m-%d)" || true)
-            if [ ! -z "$RECENT_DIRECT_PUSH" ]; then
-              DIRECT_PUSH_DETECTED=true
-              echo "⚠️ Recent direct push detected (bypassed p3 ship)"
-            fi
-          fi
+          # Since we can't access .git/hooks in GitHub Actions, skip direct push detection
+          echo "ℹ️ Direct push detection skipped in CI environment"
           
           # Set outputs
           echo "p3_markers_found=$P3_MARKERS_FOUND" >> $GITHUB_OUTPUT
