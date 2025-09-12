@@ -1,0 +1,56 @@
+# SEC Filing Processor Tool Configuration
+# Maps ETL functionality to the unified tool system
+
+name: "sec_filing_processor"
+version: "1.0.0"
+description: "Processes SEC Edgar filings and creates structured data for financial analysis"
+
+# Build data structure requirements for build_data/timestamp/sec_filing_processor/
+required_directories:
+  - "raw_filings"      # Downloaded SEC filings (10-K, 10-Q)
+  - "parsed_filings"   # Structured text extraction
+  - "extracted_data"   # Financial metrics and tables
+  - "embeddings"       # Document embeddings
+  - "metadata"         # Filing metadata and tracking
+
+optional_directories:
+  - "cache"           # Processing cache
+  - "logs"            # Tool-specific logs
+  - "temp"            # Temporary processing files
+
+# Input/output layer specifications
+input_layers:
+  - "stage_00_raw"    # Raw SEC filings data
+
+output_layers:
+  - "stage_01_daily_delta"  # Incremental filing updates
+  - "stage_02_daily_index"  # Document embeddings and entities
+
+# Tool dependencies
+dependencies: []  # No tool dependencies - processes raw data
+
+# System prerequisites
+prerequisites:
+  - "internet_connection"  # For SEC Edgar API
+  - "python_packages"      # beautifulsoup4, requests, pandas
+  - "storage_space"        # Minimum 10GB for filings
+
+# Configuration overrides
+config_overrides:
+  batch_size: 50
+  max_concurrent_downloads: 5
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  sec_edgar_user_agent: "my_finance_analyzer contact@example.com"
+
+# Validation rules
+validation_rules:
+  min_filings_per_company: 1
+  max_filing_age_days: 365
+  required_form_types: ["10-K", "10-Q"]
+  
+# Quality checks
+quality_checks:
+  - "validate_filing_completeness"
+  - "check_parsing_accuracy"
+  - "verify_extracted_metrics"
+  - "validate_embeddings_quality"

@@ -51,6 +51,10 @@ from .core.directory_manager import (
     get_config_path,
     get_data_path,
     get_source_path,
+    get_tool_build_path,
+    list_available_tools,
+    register_tool,
+    validate_tool_structure,
 )
 from .core.storage_manager import (
     LocalFilesystemBackend,
@@ -119,6 +123,11 @@ __all__ = [
     "get_build_path",
     "get_source_path",
     "ensure_data_structure",
+    # Tool path mapping (Issue #256)
+    "get_tool_build_path",
+    "register_tool",
+    "list_available_tools",
+    "validate_tool_structure",
     # Configuration management
     "ConfigManager",
     "ConfigType",

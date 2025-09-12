@@ -1,0 +1,95 @@
+# Graph RAG Indexer Tool Configuration
+# Maps Graph RAG functionality to the unified tool system
+
+name: "graph_rag_indexer"
+version: "1.0.0"
+description: "Creates and maintains knowledge graph and vector store for semantic search across financial data"
+
+# Build data structure requirements for build_data/timestamp/graph_rag_indexer/
+required_directories:
+  - "knowledge_graph"    # Neo4j graph database files
+  - "vector_store"       # FAISS vector indices
+  - "embeddings"         # Generated embeddings cache
+  - "entities"           # Extracted entities and relationships
+  - "indices"            # Search indices and metadata
+
+optional_directories:
+  - "cache"             # Processing cache
+  - "logs"              # Tool-specific logs 
+  - "temp"              # Temporary processing files
+  - "snapshots"         # Graph snapshots for backup
+  - "query_cache"       # Cached query results
+
+# Input/output layer specifications
+input_layers:
+  - "stage_01_daily_delta"   # Incremental data updates
+  - "stage_02_daily_index"   # Processed embeddings and entities
+
+output_layers:
+  - "stage_03_graph_rag"     # Unified knowledge graph and vector store
+
+# Tool dependencies
+dependencies:
+  - "sec_filing_processor"   # Requires processed documents for indexing
+
+# System prerequisites
+prerequisites:
+  - "python_packages"        # neo4j, faiss-cpu, sentence-transformers, networkx
+  - "neo4j_database"         # Neo4j graph database
+  - "vector_storage"         # Sufficient storage for vector indices
+  - "memory_requirements"    # Minimum 8GB RAM for large graph processing
+
+# Configuration overrides
+config_overrides:
+  # Graph database settings
+  neo4j_uri: "bolt://localhost:7687"
+  neo4j_user: "neo4j"
+  neo4j_database: "finance_kg"
+  
+  # Vector store settings
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  embedding_dimension: 384
+  faiss_index_type: "IndexFlatIP"  # Inner product for cosine similarity
+  
+  # Processing parameters
+  batch_size: 1000
+  max_concurrent_processing: 4
+  entity_extraction_threshold: 0.8
+  relationship_confidence_threshold: 0.7
+  
+  # Graph structure
+  max_graph_nodes: 100000
+  max_relationships_per_node: 50
+  enable_graph_compression: true
+  
+  # Query performance
+  enable_query_cache: true
+  query_cache_ttl_hours: 24
+  max_cached_queries: 10000
+
+# Validation rules
+validation_rules:
+  min_entities_per_document: 3
+  max_entities_per_document: 100
+  min_relationships_per_entity: 1
+  required_entity_types:
+    - "Company"
+    - "Person"
+    - "FinancialMetric"
+    - "Date"
+    - "Location"
+  required_relationship_types:
+    - "MENTIONS"
+    - "RELATED_TO"
+    - "HAS_METRIC"
+    - "FILED_BY"
+    - "DATED"
+
+# Quality checks
+quality_checks:
+  - "validate_graph_connectivity"
+  - "check_embedding_quality"
+  - "verify_entity_extraction_accuracy"
+  - "validate_relationship_consistency"
+  - "test_semantic_search_performance"
+  - "check_index_completeness"
