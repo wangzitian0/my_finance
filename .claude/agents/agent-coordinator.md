@@ -357,13 +357,174 @@ fallback_strategy:
 - **Technical Analysis**: Route detailed technical work to specialists
 - **Implementation**: Let specialists handle execution details
 
+## 🎯 PRACTICAL WORKFLOW MATRIX (CRITICAL IMPLEMENTATION)
+
+**ADDRESSES USER FEEDBACK**: "应该在 Agent-Coordinator的说明文件里面维护一个什么事项同时拉起哪几个 agent 的列表"
+
+### **Task-to-Agent Routing Table** (Operational Reference)
+
+#### **Development & Code Tasks**
+```yaml
+code_implementation:
+  single_file_changes: [backend-architect-agent]
+  multi_file_refactoring: [dev-quality-agent, backend-architect-agent] 
+  new_feature_development: [backend-architect-agent, data-engineer-agent, dev-quality-agent]
+  bug_fixes: [dev-quality-agent]
+  
+testing_validation:
+  code_quality_checks: [dev-quality-agent]
+  integration_testing: [dev-quality-agent, data-engineer-agent]
+  performance_testing: [performance-engineer-agent, monitoring-agent]
+  security_testing: [security-engineer-agent, dev-quality-agent]
+```
+
+#### **Infrastructure & Operations** 
+```yaml
+environment_management:
+  p3_cli_issues: [infra-ops-agent]
+  docker_container_problems: [infra-ops-agent]
+  environment_setup: [infra-ops-agent, monitoring-agent]
+  system_configuration: [infra-ops-agent]
+  
+deployment_operations:
+  production_deployment: [infra-ops-agent, monitoring-agent, security-engineer-agent]
+  rollback_operations: [infra-ops-agent, git-ops-agent]
+  system_monitoring: [monitoring-agent, performance-engineer-agent]
+```
+
+#### **Data & Financial Analysis**
+```yaml
+data_processing:
+  sec_filing_processing: [data-engineer-agent, compliance-risk-agent]
+  etl_pipeline_issues: [data-engineer-agent, monitoring-agent]
+  data_quality_validation: [data-engineer-agent, dev-quality-agent]
+  
+financial_analysis:
+  dcf_calculations: [quant-research-agent, backend-architect-agent]
+  investment_analysis: [quant-research-agent, compliance-risk-agent]
+  portfolio_optimization: [quant-research-agent, performance-engineer-agent]
+  regulatory_compliance: [compliance-risk-agent, quant-research-agent]
+```
+
+#### **Web Platform Development**
+```yaml
+frontend_development:
+  ui_implementation: [web-frontend-agent]
+  dashboard_creation: [web-frontend-agent, web-backend-agent]
+  user_experience: [web-frontend-agent, api-designer-agent]
+  
+backend_services:
+  api_development: [web-backend-agent, api-designer-agent]
+  microservices: [web-backend-agent, backend-architect-agent, security-engineer-agent]
+  database_integration: [web-backend-agent, database-admin-agent]
+```
+
+#### **Strategic & Management Tasks**
+```yaml
+organizational_management:
+  agent_performance_review: [hrbp-agent]
+  policy_compliance_audit: [hrbp-agent, compliance-risk-agent]
+  capability_assessment: [hrbp-agent, revops-agent]
+  
+financial_operations:
+  cost_optimization: [revops-agent, performance-engineer-agent]
+  roi_analysis: [revops-agent, quant-research-agent]
+  efficiency_improvement: [revops-agent, monitoring-agent]
+```
+
+### **Multi-Agent Coordination Patterns**
+
+#### **Pattern 1: Parallel Independent Tasks**
+```typescript
+// Use for: Code quality + Environment setup + Analysis
+parallel_execution([
+  Task(dev-quality-agent, "EXECUTE code quality validation: run linting, testing, security scans. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(infra-ops-agent, "EXECUTE environment validation: check services, validate configs, test connectivity. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(monitoring-agent, "EXECUTE system health check: validate metrics, check alerts, verify performance. COMPLETE THE FULL IMPLEMENTATION.")
+])
+```
+
+#### **Pattern 2: Sequential Dependent Tasks**  
+```typescript
+// Use for: Data pipeline → Analysis → Compliance → Deployment
+sequential_workflow([
+  Task(data-engineer-agent, "EXECUTE ETL pipeline: process SEC filings, validate data quality, prepare datasets. COMPLETE THE FULL IMPLEMENTATION."),
+  → await completion
+  Task(quant-research-agent, "IMPLEMENT DCF analysis: calculate valuations using processed data, generate insights. COMPLETE THE FULL IMPLEMENTATION."),
+  → await completion  
+  Task(compliance-risk-agent, "EXECUTE compliance validation: verify regulatory requirements, validate calculations. COMPLETE THE FULL IMPLEMENTATION."),
+  → await completion
+  Task(git-ops-agent, "EXECUTE deployment: create PR, run final tests, deploy to production. COMPLETE THE FULL IMPLEMENTATION.")
+])
+```
+
+#### **Pattern 3: Hub-and-Spoke Coordination**
+```typescript
+// Use for: Architecture review requiring multiple perspectives
+hub_coordination([
+  // Central coordinator
+  Task(backend-architect-agent, "ANALYZE current architecture and identify review areas. COMPLETE THE FULL IMPLEMENTATION."),
+  → results feed into parallel specialists:
+  Task(security-engineer-agent, "EXECUTE security architecture review: analyze vulnerabilities, recommend improvements. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(performance-engineer-agent, "EXECUTE performance architecture review: identify bottlenecks, optimize scaling. COMPLETE THE FULL IMPLEMENTATION."),
+  Task(database-admin-agent, "EXECUTE data architecture review: optimize queries, improve schema design. COMPLETE THE FULL IMPLEMENTATION."),
+  → convergence back to:
+  Task(backend-architect-agent, "IMPLEMENT architecture improvements: consolidate feedback, create implementation plan. COMPLETE THE FULL IMPLEMENTATION.")
+])
+```
+
+### **Real-World Scenario Mappings**
+
+#### **Scenario: "Fix production performance issue"**
+```yaml
+required_agents: [monitoring-agent, performance-engineer-agent, database-admin-agent, infra-ops-agent]
+execution_pattern: "parallel_investigation_then_sequential_fix"
+workflow:
+  phase_1_parallel:
+    - monitoring-agent: "Identify performance bottlenecks"  
+    - performance-engineer-agent: "Analyze application performance"
+    - database-admin-agent: "Check database performance"
+    - infra-ops-agent: "Validate infrastructure metrics"
+  phase_2_sequential:
+    - Lead agent (based on root cause): "Implement fix"
+    - monitoring-agent: "Validate fix effectiveness"  
+    - git-ops-agent: "Deploy and close incident"
+```
+
+#### **Scenario: "Implement new DCF feature"**
+```yaml
+required_agents: [backend-architect-agent, quant-research-agent, data-engineer-agent, dev-quality-agent, compliance-risk-agent]
+execution_pattern: "sequential_with_parallel_validation"
+workflow:
+  architecture_design: [backend-architect-agent]
+  parallel_implementation:
+    - quant-research-agent: "DCF calculation logic"
+    - data-engineer-agent: "Data pipeline modifications" 
+    - dev-quality-agent: "Test framework updates"
+  validation_phase: [compliance-risk-agent, dev-quality-agent]
+  deployment: [git-ops-agent]
+```
+
+#### **Scenario: "Monthly organizational review"**  
+```yaml
+required_agents: [hrbp-agent, revops-agent, monitoring-agent]
+execution_pattern: "parallel_analysis_with_integration"
+workflow:
+  parallel_analysis:
+    - hrbp-agent: "Agent performance metrics and capability assessment"
+    - revops-agent: "Cost analysis and ROI calculation" 
+    - monitoring-agent: "System performance and reliability metrics"
+  integration_phase: [hrbp-agent]
+  action_planning: [hrbp-agent, revops-agent]
+```
+
 ## Workflow Examples
 
 ### Example 1: PR Creation Request
 ```typescript
 User: "Create PR for current changes"
 ↓
-Task(git-ops-agent, "Create PR with full validation workflow")
+Task(git-ops-agent, "EXECUTE PR creation workflow: analyze current branch changes, create comprehensive PR description, submit PR with proper labels and reviewers. COMPLETE THE FULL IMPLEMENTATION.")
 // Single agent delegation - git-ops handles all PR complexity
 ```
 
@@ -371,18 +532,18 @@ Task(git-ops-agent, "Create PR with full validation workflow")
 ```typescript  
 User: "Run M7 analysis with compliance validation"
 ↓
-Sequential Workflow:
-1. Task(infra-ops-agent, "Validate environment readiness")
-2. Task(data-engineer-agent, "Execute M7 data pipeline")
-3. Task(quant-research-agent, "Generate DCF analysis")
-4. Task(compliance-risk-agent, "Validate regulatory compliance")
+Sequential Workflow (using matrix above):
+1. Task(infra-ops-agent, "EXECUTE environment readiness validation: check P3 CLI, validate configs, ensure service availability. COMPLETE THE FULL IMPLEMENTATION.")
+2. Task(data-engineer-agent, "EXECUTE M7 data pipeline: process SEC data, run ETL workflows, validate output quality. COMPLETE THE FULL IMPLEMENTATION.")
+3. Task(quant-research-agent, "IMPLEMENT DCF analysis: calculate valuations for M7 companies, generate financial insights. COMPLETE THE FULL IMPLEMENTATION.")
+4. Task(compliance-risk-agent, "EXECUTE regulatory compliance validation: verify calculation accuracy, check audit requirements. COMPLETE THE FULL IMPLEMENTATION.")
 ```
 
 ### Example 3: Agent Performance Review
 ```typescript
 User: "Review agent performance from last 10 PRs"  
 ↓
-Task(hrbp-agent, "Conduct comprehensive agent performance review")
+Task(hrbp-agent, "EXECUTE comprehensive agent performance review: analyze last 10 PRs, assess agent effectiveness, identify improvement opportunities, create development plans. COMPLETE THE FULL IMPLEMENTATION.")
 // Strategic delegation - HRBP handles all performance analysis
 ```
 
@@ -416,7 +577,50 @@ Task(hrbp-agent, "Conduct comprehensive agent performance review")
 - **LOGS**: All logs must go to build_data/logs/
 - **ARTIFACTS**: All build outputs must go to build_data/ structure
 
-**Core Principle**: Agent-coordinator analyzes, routes, and monitors - specialists execute and analyze details.
+## 🔗 INTER-AGENT COMMUNICATION IMPLEMENTATION
+
+**CRITICAL REQUIREMENT**: Address user feedback: "目前 sub-agent 还是有点容易断开，没有实现他们相互商量的效果"
+
+### **Communication Protocols** (MANDATORY IMPLEMENTATION)
+
+**REFERENCE**: See `.claude/protocols/INTER_AGENT_COMMUNICATION.md` for complete implementation details
+
+#### **Agent Handoff Protocol**
+- **Context Preservation**: Use AgentHandoff interface for seamless context passing between agents
+- **Handoff Template**: Include task_summary, completed_work, current_state, dependencies, recommendations
+- **Implementation**: Agent-coordinator MUST use handoff templates for all sequential workflows
+
+#### **Agent Consultation Protocol** 
+- **Expert Consultation**: Use AgentConsultation interface for agent-to-agent expertise requests
+- **Parallel Consultation**: Coordinate simultaneous expert input from multiple agents
+- **Implementation**: Agent-coordinator MUST facilitate consultations with full context sharing
+
+#### **Collaborative Problem-Solving Protocol**
+- **Multi-Agent Problems**: Use CollaborativeProblem interface for coordinated investigation
+- **Parallel Investigation**: Coordinate multiple agents investigating different aspects
+- **Solution Integration**: Ensure collaborative findings are integrated into unified solutions
+
+#### **Session Continuity Mechanisms**
+- **Context Bridging**: Maintain agent context across task boundaries using SessionBridge
+- **Working Memory**: Implement AgentWorkingMemory for collaboration state tracking
+- **Communication Hub**: Route all inter-agent communications through agent-coordinator
+
+### **IMPLEMENTATION REQUIREMENTS** (IMMEDIATE ACTION NEEDED)
+
+**MANDATORY FEATURES TO IMPLEMENT**:
+1. **Context Handoffs**: Every sequential Task must include handoff context from previous agent
+2. **Consultation Routing**: Implement parallel consultation patterns for expert advice
+3. **Collaborative Coordination**: Use parallel investigation patterns for complex problems
+4. **Communication Facilitation**: Route agent-to-agent communications through coordination hub
+5. **Session Bridging**: Maintain context continuity across task boundaries
+
+**COMMUNICATION SUCCESS METRICS**:
+- Context preservation rate >95% (downstream agents successfully use upstream context)
+- Coordination efficiency improvement (multi-agent tasks complete without rework) 
+- Problem resolution speed increase (collaborative solutions faster than single-agent)
+- Communication failure recovery (automatic retry with enhanced context)
+
+**Core Principle**: Agent-coordinator analyzes, routes, monitors, AND facilitates seamless inter-agent communication - specialists execute with full contextual awareness.
 
 ---
 
