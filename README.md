@@ -135,24 +135,38 @@ p3 ready                    # Uses worktree-B's Python environment
 
 ## Architecture
 
+**Business-Oriented Data Flow (Issue #256)**:
 ```
-SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
+Data Sources → ETL → Neo4j → engine → Strategies/Reports → evaluation → Backtesting Returns
 ```
 
-**Core Components**:
-- **`ETL/`** - SEC/YFinance data processing, document parsing, embedding generation
-- **`analysis/`** - Financial analysis engine including DCF calculations, evaluation, and backtesting
-  - `components/` - DCF calculation components  
-  - `evaluation/` - Backtesting and performance analysis
-- **`graph_rag/`** - Semantic search across SEC filings (planned consolidation into ETL/)
+**Core Business Modules**:
+- **`ETL/`** - Complete data pipeline: Raw data → Clean Neo4j graph
+  - `sec_filing_processor/` - SEC Edgar document processing  
+  - `embedding_generator/` - Vector embedding creation
+  - `processors/` - Data transformation and validation
+  - `schedulers/` - Automated pipeline orchestration
+  - `neo4j_loader/` - Knowledge graph population
 
-**Supporting**: 
-- **`common/`** - Shared configurations, utilities, and templates
+- **`engine/`** - Graph-RAG reasoning engine: Neo4j → Investment strategies
+  - `graph_rag/` - Hybrid semantic + graph retrieval
+  - `llm/` - Language model integration and prompts
+  - `strategy/` - DCF calculations and investment logic
+  - `reports/` - Professional investment report generation
+
+- **`evaluation/`** - Independent strategy validation: Strategies → Performance returns
+  - `backtesting/` - Historical strategy simulation
+  - `metrics/` - Performance and risk analysis
+  - `benchmarks/` - Market comparison and attribution
+
+**Supporting Infrastructure**: 
+- **`common/`** - Cross-module shared resources
   - `config/` - Centralized configuration management (SSOT)
-  - `templates/` - Analysis prompts and configurations (moved from root)
-  - `tools/` - Shared utility tools
-- **`infra/`** - Modular infrastructure system (system/, data/, git/, hrbp/, p3/, development/)
-- **`build_data/`** - Generated datasets and outputs
+  - `templates/` - Analysis prompts and configurations
+  - `tools/` - Shared utility functions
+- **`infra/`** - Team infrastructure and development tools
+- **`tests/`** - Testing framework across all modules
+- **`build_data/`** - Local artifacts and generated outputs
 
 ## Features
 
@@ -216,7 +230,9 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 ## Documentation
 
-**Component Docs**: [ETL](ETL/README.md), [Analysis Engine](analysis/README.md), [Graph RAG](graph_rag/README.md), [Common](common/README.md)  
-**Infrastructure**: [Infrastructure](infra/README.md), [Testing](tests/README.md)
+**Business Modules**: [ETL Pipeline](ETL/README.md), [Graph-RAG Engine](engine/README.md), [Strategy Evaluation](evaluation/README.md)
+**Infrastructure**: [Common Utilities](common/README.md), [Infrastructure](infra/README.md), [Testing](tests/README.md)
 **Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation  
 **Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities
+
+**Architecture Notes**: Issue #256 implements business-oriented module separation with clear data flow boundaries and independent validation systems.
