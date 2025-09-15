@@ -1,6 +1,54 @@
 # Infra - Infrastructure and System Management
 
+**L1 Module**: Infrastructure and system management
+**Business Purpose**: Development tools, deployment automation, and system operations
+
 **Comprehensive infrastructure management system organized by functional domains with two-layer modularity architecture.**
+
+## L2 Component Architecture
+
+### **`system/`** - Environment Monitoring and Validation
+**Purpose**: Core environment status, validation, and monitoring
+- **Environment Status**: Comprehensive system health checks and diagnostics
+- **Validation Tools**: Fast fail-fast environment validation for development
+- **Configuration Reporting**: System configuration summaries and analysis
+- **Workflow Implementation**: P3 ready/reset/debug command implementations
+- **Worktree Isolation**: Python environment isolation per git worktree
+
+### **`git/`** - Git Operations and Release Management
+**Purpose**: Git workflow automation and release coordination
+- **Release Management**: Comprehensive release creation and validation
+- **Git Automation**: Branch management and workflow utilities
+- **Repository Tools**: Git operations optimization and automation
+- **Version Control**: Branch lifecycle management and cleanup
+
+### **`p3/`** - P3 CLI System Maintenance
+**Purpose**: P3 CLI system maintenance and optimization (infra-ops-agent authority)
+- **Command Implementation**: Core P3 command functionality
+- **Workflow Optimization**: P3 command performance and user experience
+- **System Integration**: P3 integration with other system components
+- **Version Management**: P3 CLI versioning and update mechanisms
+
+### **`hrbp/`** - HRBP Automation and Policy Enforcement
+**Purpose**: HRBP automation, hooks, and system validation
+- **Automation Tools**: Legacy HRBP CLI interface and comprehensive functionality
+- **System Validation**: HRBP compliance checking and policy enforcement
+- **Git Hooks**: Git hook installation and post-merge automation
+- **Policy Integration**: HRBP system integration and workflow validation
+
+### **`development/`** - Code Quality and Development Tools
+**Purpose**: Development utilities, cleanup, and maintenance tools
+- **Directory Hygiene**: Directory cleanup validation and maintenance
+- **Code Quality**: Code quality automation and validation tools
+- **Workflow Validation**: P3 check command implementation and I/O compliance
+- **Maintenance Utilities**: System maintenance and cleanup automation
+
+### **`deployment/`** - Infrastructure Deployment and Orchestration
+**Purpose**: Infrastructure deployment and orchestration
+- **Ansible Deployment**: Ansible configuration management and playbooks
+- **Kubernetes**: Kubernetes deployment manifests and configuration
+- **Deployment Tools**: Infrastructure deployment automation utilities
+- **Service Management**: Container orchestration and service provisioning
 
 ## 🏗️ Modular Architecture
 

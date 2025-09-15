@@ -1,6 +1,46 @@
 # ETL - Data Processing Pipeline
 
-Complete ETL pipeline for web scraping and data processing. From raw data collection to structured data output.
+Complete ETL pipeline for web scraping and data processing. From raw data collection to Neo4j knowledge graph.
+
+**L1 Module**: Primary data processing system
+**Business Purpose**: Transform raw financial data sources into structured, searchable knowledge graph
+
+## L2 Component Architecture
+
+### **`sec_filing_processor/`** - SEC Document Processing
+**Purpose**: SEC Edgar document processing and parsing
+- Document text extraction from SEC filings (10-K, 10-Q, 8-K)
+- Financial statement parsing and data normalization
+- Regulatory text processing and section identification
+- CIK-to-ticker mapping and company metadata management
+
+### **`embedding_generator/`** - Vector Embedding Creation
+**Purpose**: Vector embedding creation for semantic search
+- Text chunk embedding generation using transformer models
+- Financial document vectorization for RAG retrieval
+- Semantic similarity indexing and vector store management
+- Multi-dimensional embedding optimization for financial content
+
+### **`crawlers/`** - Data Acquisition and Transformation
+**Purpose**: Data acquisition and web scraping automation
+- Yahoo Finance data spider with anti-blocking measures
+- SEC Edgar filing crawler with rate limiting
+- Stock ticker list fetcher from multiple sources
+- Market data collection and real-time price feeds
+
+### **`schedulers/`** - Pipeline Orchestration
+**Purpose**: Automated pipeline orchestration and job management
+- ETL job scheduling and dependency management
+- Data pipeline monitoring and error handling
+- Incremental data processing and delta updates
+- Resource allocation and load balancing
+
+### **`loaders/`** - Knowledge Graph Population
+**Purpose**: Neo4j knowledge graph population and updates
+- Graph database schema management and validation
+- Entity relationship mapping and graph construction
+- Data quality validation and consistency checks
+- Incremental graph updates and versioning
 
 ## Component Structure
 
