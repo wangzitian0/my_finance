@@ -64,24 +64,24 @@ except Exception as e:
 
 logger.info("Initializing SSOT configuration management...")
 
-from common.core.config_manager import config_manager
+from common.etl_loader import build_etl_config
 from common.core.directory_manager import DataLayer, directory_manager
 
-# Use SSOT configuration management - ONLY config_manager globally
+# Use new ETL loader configuration system
 from ETL.tests.test_config import DatasetTier
 
 logger.info("DatasetTier imported successfully")
 
 
 def tier_to_config_name(tier: DatasetTier) -> str:
-    """Convert DatasetTier to SSOT config name"""
+    """Convert DatasetTier to new ETL loader config name"""
     mapping = {
-        DatasetTier.F2: "fast_2",
-        DatasetTier.M7: "magnificent_7",
-        DatasetTier.N100: "nasdaq_100",
-        DatasetTier.V3K: "vti_3500",
+        DatasetTier.F2: "f2",
+        DatasetTier.M7: "m7",
+        DatasetTier.N100: "n100",
+        DatasetTier.V3K: "v3k",
     }
-    return mapping.get(tier, "fast_2")
+    return mapping.get(tier, "f2")
 
 
 def build_dataset(tier_name: str, config_path: str = None) -> bool:
@@ -115,14 +115,36 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info(f"DatasetTier created: {tier}")
 
         logger.info("About to load dataset config...")
-        # Use SSOT config_manager only
+        # Use new ETL loader system
         try:
-            logger.info(f"Config manager available: {config_manager}")
-            config_name = tier_to_config_name(tier)
-            logger.info(f"Config name: {config_name}")
-            config = config_manager.get_config(config_name)
+            stock_list_name = tier_to_config_name(tier)
+            logger.info(f"Stock list name: {stock_list_name}")
+
+            # Build runtime configuration with yfinance and development scenario
+            runtime_config = build_etl_config(
+                stock_list=stock_list_name,
+                data_sources=['yfinance', 'sec_edgar'],
+                scenario='development'
+            )
+            logger.info(f"Runtime config created: {runtime_config.combination}")
+
+            # Convert to legacy format for compatibility - use API config directly
+            config = {
+                'companies': runtime_config.stock_list.companies,
+                'data_sources': {
+                    'yfinance': {
+                        'enabled': 'yfinance' in runtime_config.enabled_sources,
+                        'api_config': runtime_config.data_sources.get('yfinance', {}).api_config if 'yfinance' in runtime_config.enabled_sources else {}
+                    },
+                    'sec_edgar': {
+                        'enabled': 'sec_edgar' in runtime_config.enabled_sources,
+                        'api_config': runtime_config.data_sources.get('sec_edgar', {}).api_config if 'sec_edgar' in runtime_config.enabled_sources else {}
+                    }
+                }
+            }
+            config_description = runtime_config.combination
         except Exception as e:
-            logger.error(f"Config manager access error: {e}")
+            logger.error(f"ETL config loading error: {e}")
             return False
         logger.info(f"Config loaded: {config}")
 
@@ -132,7 +154,7 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
         logger.info("About to print build info...")
         print(f"🔧 Building {tier.value} dataset...")
 
-        print(f"   Configuration: list_{config_name}.yml")
+        print(f"   Configuration: {config_description}")
         print(f"   Expected tickers: {len(config.get('companies', {}))}")
         logger.info("Build info printed")
 
@@ -326,23 +348,18 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
         from ETL.yfinance_spider import run_job
 
-        # Get YFinance stage config from data sources
+        # Get YFinance config from data sources (using API config directly)
         data_sources = yaml_config.get("data_sources", {})
         yfinance_config = data_sources.get("yfinance", {})
         if not yfinance_config.get("enabled", False):
             print(f"   📈 YFinance collection disabled for {tier.value}")
             return True
 
-        stage_config_name = yfinance_config.get("stage_config", "stage_00_original_yfinance.yml")
-        # Use SSOT config manager for stage config
-        if "stage_00_original_yfinance" in stage_config_name:
-            yfinance_stage_config = config_manager.get_config("stage_00_original_yfinance")
-        else:
-            yfinance_stage_config = {}
+        # Use API config directly from the centralized configuration
+        yf_api_config = yfinance_config.get("api_config", {})
 
-        # Extract tickers using SSOT configuration
-        config_name = tier_to_config_name(tier)
-        companies_config = config_manager.get_config(config_name).get("companies", {})
+        # Extract tickers from companies configuration passed from runtime config
+        companies_config = yaml_config.get("companies", {})
 
         # Handle both dict (ticker as key) and list formats
         if isinstance(companies_config, dict):
@@ -356,15 +373,17 @@ def build_yfinance_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTrac
 
         print(f"   📈 Collecting yfinance data...")
         print(f"   Tickers: {len(tickers)}")
-        print(f"   Config: {stage_config_name}")
+        print(f"   Config: Using centralized API config")
 
-        # Create temporary config file with tickers added
-        # Use SSOT stage config path
-        stage_config_path = directory_manager.get_config_path() / stage_config_name
-        with open(stage_config_path, "r") as f:
-            yf_config = yaml.safe_load(f)
-
+        # Create config from centralized API configuration
+        yf_config = yf_api_config.copy()
         yf_config["tickers"] = tickers
+
+        # Ensure essential config fields are present with defaults
+        if "user_agent" not in yf_config:
+            yf_config["user_agent"] = "my_finance/1.0"
+        if "timeout_seconds" not in yf_config:
+            yf_config["timeout_seconds"] = 30
 
         # Write temporary config with tickers
         with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as temp_f:
@@ -405,17 +424,13 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             print(f"   ⚪ SEC Edgar disabled in {tier.value} configuration")
             return True
 
-        print(f"   📊 Collecting SEC Edgar data using SSOT config...")
+        print(f"   📊 Collecting SEC Edgar data using new ETL config...")
 
-        # Use SSOT config_manager for SEC configuration
-        config_name = tier_to_config_name(tier)
-        tier_config = config_manager.get_config(config_name)
+        # Extract companies from yaml_config (passed from runtime config)
+        companies = yaml_config.get("companies", {})
 
-        # Get SEC stage configuration
-        sec_stage_config = config_manager.get_config("stage_00_original_sec_edgar")
-
-        # Extract companies from tier config
-        companies = tier_config.get("companies", {})
+        # Use API config directly from the centralized configuration
+        sec_api_config = sec_config.get("api_config", {})
 
         print(f"   📄 Using SSOT SEC config with {len(companies)} companies")
 
@@ -438,13 +453,18 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             print(f"   ⚠️ No CIK numbers found for {tier.value} companies")
             return True
 
-        # Build SEC config from SSOT configuration
+        # Build SEC config from centralized API configuration
         sec_spider_config = {
             "tickers": ciks,
             "count": 8,
             "file_types": ["10K", "10Q", "8K"],
-            "email": sec_stage_config.get("user_agent", "ZitianSG (wangzitian0@gmail.com)"),
-            "collection": sec_stage_config.get("rate_limits", {}),
+            "email": sec_api_config.get("user_agent", "ZitianSG (wangzitian0@gmail.com)"),
+            "collection": sec_api_config.get("collection", {}),
+
+            # Include other API config parameters
+            "base_url": sec_api_config.get("base_url", "https://data.sec.gov"),
+            "timeout_seconds": sec_api_config.get("timeout_seconds", 60),
+            "rate_limits": sec_api_config.get("rate_limits", {}),
         }
 
         # Write temporary config file
@@ -510,32 +530,16 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
             "stage_04_analysis", f"Starting SEC-enhanced DCF analysis for {tier.value}"
         )
 
-        # Get companies list based on tier configuration
-        # Use SSOT configuration management
-        config_name = tier_to_config_name(tier)
-        yaml_config = config_manager.get_config(config_name)
+        # Get companies list from new ETL configuration system
+        # Build runtime config to get companies
+        stock_list_name = tier_to_config_name(tier)
+        runtime_config = build_etl_config(
+            stock_list=stock_list_name,
+            data_sources=['yfinance', 'sec_edgar'],
+            scenario='development'
+        )
 
-        # Extract company tickers from configuration
-        companies = {}
-        if tier.value == "f2" and "reference_config" in yaml_config:
-            # For F2, load companies from reference config and filter by selected_companies
-            ref_config_name = yaml_config["reference_config"]
-            # Load reference config using SSOT system
-            if "list_magnificent_7.yml" in ref_config_name:
-                ref_config = config_manager.get_config("magnificent_7")
-            elif "list_nasdaq_100.yml" in ref_config_name:
-                ref_config = config_manager.get_config("nasdaq_100")
-            else:
-                logger.warning(f"Unknown reference config: {ref_config_name}")
-                ref_config = {}
-
-            selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
-            all_companies = ref_config.get("companies", {})
-            for ticker in selected:
-                if ticker in all_companies:
-                    companies[ticker] = all_companies[ticker]
-        elif "companies" in yaml_config:
-            companies = yaml_config["companies"]
+        companies = runtime_config.stock_list.companies
 
         if not companies:
             print(f"   ⚠️  No companies found in {tier.value} configuration")
@@ -609,30 +613,17 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
             "stage_05_reporting", f"Starting report generation for {tier.value}"
         )
 
-        # Get companies list based on tier configuration
-        # Use SSOT configuration management
-        config_name = tier_to_config_name(tier)
-        yaml_config = config_manager.get_config(config_name)
+        # Get companies list from new ETL configuration system
+        # Build runtime config to get companies
+        stock_list_name = tier_to_config_name(tier)
+        runtime_config = build_etl_config(
+            stock_list=stock_list_name,
+            data_sources=['yfinance', 'sec_edgar'],
+            scenario='development'
+        )
 
         # Extract company tickers from configuration
-        tickers = []
-        if tier.value == "f2" and "reference_config" in yaml_config:
-            # For F2, load companies from reference config and filter by selected_companies
-            ref_config_name = yaml_config["reference_config"]
-            # Load reference config using SSOT system
-            if "list_magnificent_7.yml" in ref_config_name:
-                ref_config = config_manager.get_config("magnificent_7")
-            elif "list_nasdaq_100.yml" in ref_config_name:
-                ref_config = config_manager.get_config("nasdaq_100")
-            else:
-                logger.warning(f"Unknown reference config: {ref_config_name}")
-                return False  # Exit if config not found
-
-            selected = yaml_config.get("selected_companies", ["MSFT", "NVDA"])
-            all_companies = ref_config.get("companies", {})
-            tickers = [ticker for ticker in selected if ticker in all_companies]
-        elif "companies" in yaml_config:
-            tickers = list(yaml_config["companies"].keys())
+        tickers = list(runtime_config.stock_list.companies.keys())
 
         # Default to M7 if no specific tickers found
         if not tickers:
@@ -679,10 +670,18 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
 def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
     """Validate the built dataset"""
     try:
-        # Use SSOT configuration management
-        config_name = tier_to_config_name(tier)
-        yaml_config = config_manager.get_config(config_name)
-        expected_counts = yaml_config.get("expected_files", {})
+        # Use new ETL configuration management
+        stock_list_name = tier_to_config_name(tier)
+        runtime_config = build_etl_config(
+            stock_list=stock_list_name,
+            data_sources=['yfinance', 'sec_edgar'],
+            scenario='development'
+        )
+
+        # Estimate expected files based on stock count
+        expected_counts = {
+            "yfinance_files": len(runtime_config.stock_list.companies) * 3  # rough estimate
+        }
 
         # Use SSOT directory manager for paths
         extract_path = directory_manager.get_layer_path(DataLayer.RAW_DATA)
