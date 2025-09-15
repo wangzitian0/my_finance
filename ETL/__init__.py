@@ -16,7 +16,7 @@ data collection through final knowledge graph creation.
 Enhanced Structure (Issue #256):
 - sec_filing_processor/: SEC Edgar document processing
 - embedding_generator/: Vector embedding creation
-- processors/: Core data transformation components  
+- processors/: Core data transformation components
 - schedulers/: Automated pipeline orchestration
 - neo4j_loader/: Knowledge graph population
 
@@ -56,8 +56,8 @@ except ImportError:
 
 __all__ = [
     "sec_filing_processor",
-    "embedding_generator", 
+    "embedding_generator",
     "processors",
     "schedulers",
-    "neo4j_loader"
+    "neo4j_loader",
 ]

@@ -18,7 +18,7 @@ Key Metrics:
 
 Analytics Features:
 - Rolling window analysis
-- Regime-specific performance  
+- Regime-specific performance
 - Sector/factor attribution
 - Time-series decomposition
 - Statistical significance testing
@@ -32,18 +32,18 @@ Output Integration:
 __version__ = "1.0.0"
 
 try:
-    from .performance_calculator import PerformanceCalculator
-    from .risk_metrics import RiskMetrics
-    from .return_analytics import ReturnAnalytics
     from .drawdown_analysis import DrawdownAnalysis
+    from .performance_calculator import PerformanceCalculator
+    from .return_analytics import ReturnAnalytics
+    from .risk_metrics import RiskMetrics
     from .statistical_tests import StatisticalTests
 
     __all__ = [
         "PerformanceCalculator",
         "RiskMetrics",
         "ReturnAnalytics",
-        "DrawdownAnalysis", 
-        "StatisticalTests"
+        "DrawdownAnalysis",
+        "StatisticalTests",
     ]
 except ImportError:
     __all__ = []

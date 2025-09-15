@@ -11,7 +11,7 @@ through processing pipelines to Neo4j knowledge graph for analysis.
 
 Key Components:
 - Daily data collection schedules
-- Incremental processing workflows  
+- Incremental processing workflows
 - Error handling and retry logic
 - Data quality monitoring
 - Pipeline dependency management
@@ -35,18 +35,18 @@ available in the Neo4j knowledge graph for analysis.
 __version__ = "1.0.0"
 
 try:
-    from .scheduler_manager import SchedulerManager
-    from .pipeline_orchestrator import PipelineOrchestrator
-    from .task_queue import TaskQueue
     from .monitoring import PipelineMonitor
+    from .pipeline_orchestrator import PipelineOrchestrator
     from .retry_handler import RetryHandler
+    from .scheduler_manager import SchedulerManager
+    from .task_queue import TaskQueue
 
     __all__ = [
         "SchedulerManager",
-        "PipelineOrchestrator", 
+        "PipelineOrchestrator",
         "TaskQueue",
         "PipelineMonitor",
-        "RetryHandler"
+        "RetryHandler",
     ]
 except ImportError:
     __all__ = []

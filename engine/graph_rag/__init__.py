@@ -8,12 +8,12 @@ Advanced semantic search and knowledge retrieval system that combines:
 - Entity relationship reasoning
 - Context-aware retrieval
 
-This module enables the engine to perform intelligent retrieval from the 
-knowledge graph, combining structured graph relationships with semantic 
+This module enables the engine to perform intelligent retrieval from the
+knowledge graph, combining structured graph relationships with semantic
 vector search for comprehensive investment analysis.
 
 Business Purpose:
-Transform SEC filings and financial data stored in Neo4j into contextually 
+Transform SEC filings and financial data stored in Neo4j into contextually
 relevant information for investment decision making.
 
 Key Components:
@@ -29,16 +29,11 @@ is part of the reasoning engine, not the evaluation/backtesting system.
 __version__ = "1.0.0"
 
 try:
-    from .retriever import GraphRAGRetriever
-    from .vector_search import VectorSearchEngine
     from .graph_query import GraphQueryEngine
     from .hybrid_search import HybridSearchEngine
+    from .retriever import GraphRAGRetriever
+    from .vector_search import VectorSearchEngine
 
-    __all__ = [
-        "GraphRAGRetriever",
-        "VectorSearchEngine", 
-        "GraphQueryEngine",
-        "HybridSearchEngine"
-    ]
+    __all__ = ["GraphRAGRetriever", "VectorSearchEngine", "GraphQueryEngine", "HybridSearchEngine"]
 except ImportError:
     __all__ = []

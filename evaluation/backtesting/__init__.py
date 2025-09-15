@@ -31,15 +31,10 @@ __version__ = "1.0.0"
 
 try:
     from .engine import BacktestEngine
+    from .market_impact import MarketImpactModel
     from .simulator import PortfolioSimulator
     from .transaction_costs import TransactionCostModel
-    from .market_impact import MarketImpactModel
 
-    __all__ = [
-        "BacktestEngine",
-        "PortfolioSimulator",
-        "TransactionCostModel", 
-        "MarketImpactModel"
-    ]
+    __all__ = ["BacktestEngine", "PortfolioSimulator", "TransactionCostModel", "MarketImpactModel"]
 except ImportError:
     __all__ = []

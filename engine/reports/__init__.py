@@ -7,7 +7,7 @@ Creates structured reports, dashboards, and visualizations from strategy
 calculations and Graph-RAG insights.
 
 Business Purpose:
-Package investment strategies, valuations, and recommendations into 
+Package investment strategies, valuations, and recommendations into
 professional reports for investment decision making.
 
 Key Components:
@@ -37,18 +37,18 @@ business flow from data to actionable investment reports.
 __version__ = "1.0.0"
 
 try:
-    from .report_generator import ReportGenerator
     from .chart_builder import ChartBuilder
-    from .template_manager import TemplateManager
-    from .export_manager import ExportManager
     from .dashboard_builder import DashboardBuilder
+    from .export_manager import ExportManager
+    from .report_generator import ReportGenerator
+    from .template_manager import TemplateManager
 
     __all__ = [
         "ReportGenerator",
-        "ChartBuilder", 
+        "ChartBuilder",
         "TemplateManager",
         "ExportManager",
-        "DashboardBuilder"
+        "DashboardBuilder",
     ]
 except ImportError:
     __all__ = []

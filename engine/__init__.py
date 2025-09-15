@@ -2,14 +2,14 @@
 """
 Graph-RAG Investment Analysis Engine
 
-Core reasoning engine that transforms Neo4j knowledge graph data into investment 
+Core reasoning engine that transforms Neo4j knowledge graph data into investment
 strategies and reports using Graph-RAG and LLM integration.
 
 Business Logic Flow:
 Neo4j Knowledge Graph + LLM + Templates → Investment Strategies & Reports
 
-This module represents the heart of the investment analysis system, taking 
-processed data from ETL pipelines and Neo4j graphs and generating actionable 
+This module represents the heart of the investment analysis system, taking
+processed data from ETL pipelines and Neo4j graphs and generating actionable
 investment insights.
 
 Components:
@@ -25,12 +25,7 @@ clear business separation between data processing (ETL) and reasoning (engine).
 __version__ = "1.0.0"
 
 # Core engine components
-__all__ = [
-    "graph_rag",
-    "llm", 
-    "strategy",
-    "reports"
-]
+__all__ = ["graph_rag", "llm", "strategy", "reports"]
 
 # Import engine components when available
 try:

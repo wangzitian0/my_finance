@@ -32,18 +32,18 @@ Integration Points:
 __version__ = "1.0.0"
 
 try:
-    from .text_processor import TextProcessor
+    from .data_validator import DataValidator
     from .entity_extractor import EntityExtractor
     from .financial_normalizer import FinancialNormalizer
-    from .data_validator import DataValidator
     from .format_converter import FormatConverter
+    from .text_processor import TextProcessor
 
     __all__ = [
         "TextProcessor",
         "EntityExtractor",
         "FinancialNormalizer",
         "DataValidator",
-        "FormatConverter"
+        "FormatConverter",
     ]
 except ImportError:
     __all__ = []

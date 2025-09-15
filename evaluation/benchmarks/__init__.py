@@ -18,7 +18,7 @@ Benchmark Categories:
 
 Comparison Metrics:
 - Relative performance (alpha generation)
-- Risk-adjusted outperformance 
+- Risk-adjusted outperformance
 - Tracking error and correlation analysis
 - Up/down market performance
 - Factor exposure analysis
@@ -31,9 +31,9 @@ by engine/ provide meaningful advantages over simpler alternatives.
 __version__ = "1.0.0"
 
 try:
+    from .attribution_analysis import AttributionAnalysis
     from .benchmark_manager import BenchmarkManager
     from .comparison_engine import ComparisonEngine
-    from .attribution_analysis import AttributionAnalysis
     from .factor_analysis import FactorAnalysis
     from .relative_performance import RelativePerformance
 
@@ -42,7 +42,7 @@ try:
         "ComparisonEngine",
         "AttributionAnalysis",
         "FactorAnalysis",
-        "RelativePerformance"
+        "RelativePerformance",
     ]
 except ImportError:
     __all__ = []
