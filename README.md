@@ -141,15 +141,18 @@ SEC Edgar + YFinance → ETL → Graph RAG → DCF Engine → Evaluation
 
 **Core Components**:
 - **`ETL/`** - SEC/YFinance data processing, document parsing, embedding generation
-- **`dcf_engine/`** - SEC-enhanced DCF calculations with semantic retrieval  
-- **`graph_rag/`** - Semantic search across SEC filings
-- **`evaluation/`** - Backtesting and performance analysis
+- **`analysis/`** - Financial analysis engine including DCF calculations, evaluation, and backtesting
+  - `components/` - DCF calculation components  
+  - `evaluation/` - Backtesting and performance analysis
+- **`graph_rag/`** - Semantic search across SEC filings (planned consolidation into ETL/)
 
 **Supporting**: 
-- **`common/`** - Shared configurations and utilities
+- **`common/`** - Shared configurations, utilities, and templates
+  - `config/` - Centralized configuration management (SSOT)
+  - `templates/` - Analysis prompts and configurations (moved from root)
+  - `tools/` - Shared utility tools
 - **`infra/`** - Modular infrastructure system (system/, data/, git/, hrbp/, p3/, development/)
 - **`build_data/`** - Generated datasets and outputs
-- **`templates/`** - Analysis prompts and configurations
 
 ## Features
 
@@ -213,7 +216,7 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 ## Documentation
 
-**Component Docs**: [ETL](ETL/README.md), [DCF Engine](dcf_engine/README.md), [Graph RAG](graph_rag/README.md), [Common](common/README.md)  
+**Component Docs**: [ETL](ETL/README.md), [Analysis Engine](analysis/README.md), [Graph RAG](graph_rag/README.md), [Common](common/README.md)  
 **Infrastructure**: [Infrastructure](infra/README.md), [Testing](tests/README.md)
 **Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation  
 **Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities

@@ -181,6 +181,10 @@ class DirectoryManager:
                 "layer_05_results": "stage_04_query_results",
                 "data/config": "common/config",
                 "data": "build_data",
+                # Issue #256 Directory Consolidation mappings
+                "dcf_engine": "analysis",
+                "evaluation": "analysis/evaluation",
+                "templates": "common/templates",
             },
         }
 
