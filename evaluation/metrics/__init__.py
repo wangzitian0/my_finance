@@ -1,49 +1,44 @@
 #!/usr/bin/env python3
 """
-Performance Metrics and Analytics
+Professional Performance Metrics
 
-Comprehensive performance measurement system for evaluating investment
-strategy results from backtesting simulations.
+Risk and return performance measurement framework for comprehensive
+investment strategy evaluation and reporting.
 
 Business Purpose:
-Quantify strategy performance using industry-standard financial metrics
-to enable objective strategy comparison and selection.
+Calculate and report institutional-grade performance metrics including
+risk-adjusted returns, drawdown analysis, and volatility measurements.
 
-Key Metrics:
-- Return Metrics: Total return, annualized return, CAGR
-- Risk Metrics: Volatility, maximum drawdown, VaR, CVaR
-- Risk-Adjusted: Sharpe ratio, Sortino ratio, Calmar ratio
-- Benchmark Comparison: Alpha, beta, tracking error, information ratio
-- Advanced: Tail ratio, Omega ratio, gain-pain ratio
+Key Components:
+- Risk-adjusted return calculations (Sharpe, Sortino, Calmar ratios)
+- Drawdown analysis and risk assessment
+- Volatility and correlation analysis
+- Value at Risk (VaR) and Expected Shortfall calculations
+- Performance persistence and consistency metrics
+- Multi-period performance aggregation
 
-Analytics Features:
-- Rolling window analysis
-- Regime-specific performance
-- Sector/factor attribution
-- Time-series decomposition
-- Statistical significance testing
+Metrics Pipeline:
+Strategy Returns + Market Data → Risk Calculations → Performance Report
 
-Output Integration:
-- Feeds into evaluation/reporting/ for comprehensive reports
-- Provides data for dashboard visualizations
-- Supports strategy ranking and selection processes
+This module provides comprehensive performance measurement capabilities
+meeting institutional investment standards and regulatory requirements.
 """
 
 __version__ = "1.0.0"
 
 try:
-    from .drawdown_analysis import DrawdownAnalysis
-    from .performance_calculator import PerformanceCalculator
-    from .return_analytics import ReturnAnalytics
-    from .risk_metrics import RiskMetrics
-    from .statistical_tests import StatisticalTests
+    from .performance_metrics import PerformanceMetrics
+    from .risk_calculator import RiskCalculator
+    from .drawdown_analyzer import DrawdownAnalyzer
+    from .var_calculator import VaRCalculator
+    from .correlation_analyzer import CorrelationAnalyzer
 
     __all__ = [
-        "PerformanceCalculator",
-        "RiskMetrics",
-        "ReturnAnalytics",
-        "DrawdownAnalysis",
-        "StatisticalTests",
+        "PerformanceMetrics",
+        "RiskCalculator",
+        "DrawdownAnalyzer",
+        "VaRCalculator",
+        "CorrelationAnalyzer",
     ]
 except ImportError:
     __all__ = []

@@ -13,10 +13,10 @@ processed data from ETL pipelines and Neo4j graphs and generating actionable
 investment insights.
 
 Components:
-- graph_rag/: Graph-enhanced Retrieval Augmented Generation
-- llm/: Language model integration and prompt management
-- strategy/: Investment strategy generation (DCF calculations, valuation models)
-- reports/: Investment report generation and formatting
+- retrieval/: Graph-enhanced Retrieval Augmented Generation (professional terminology)
+- reasoning/: Language model integration and prompt management (professional terminology)
+- valuation/: Investment strategy generation (DCF calculations, valuation models) (professional terminology)
+- reporting/: Investment report generation and formatting (professional terminology)
 
 Issue #256: Consolidates graph-RAG functionality from analysis/ and creates
 clear business separation between data processing (ETL) and reasoning (engine).
@@ -25,25 +25,25 @@ clear business separation between data processing (ETL) and reasoning (engine).
 __version__ = "1.0.0"
 
 # Core engine components
-__all__ = ["graph_rag", "llm", "strategy", "reports"]
+__all__ = ["retrieval", "reasoning", "valuation", "reporting"]
 
 # Import engine components when available
 try:
-    from . import graph_rag
+    from . import retrieval
 except ImportError:
-    graph_rag = None
+    retrieval = None
 
 try:
-    from . import llm
+    from . import reasoning
 except ImportError:
-    llm = None
+    reasoning = None
 
 try:
-    from . import strategy
+    from . import valuation
 except ImportError:
-    strategy = None
+    valuation = None
 
 try:
-    from . import reports
+    from . import reporting
 except ImportError:
-    reports = None
+    reporting = None

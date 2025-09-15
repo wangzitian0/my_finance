@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
-Neo4j Knowledge Graph Loader
+ETL Data Loaders - Knowledge Graph Population
 
-Specialized data loading system for populating Neo4j graph database with
-processed financial data, creating the knowledge graph foundation for
-Graph-RAG analysis.
+Professional data loading components for populating Neo4j knowledge graphs
+with validated, structured financial data and relationships.
 
 Business Purpose:
-Transform processed SEC filings, financial metrics, and market data into
-a structured knowledge graph that enables sophisticated investment analysis.
+Transform processed financial data into a comprehensive knowledge graph
+that enables sophisticated relationship analysis and Graph-RAG retrieval.
 
 Key Components:
 - Graph schema management (nodes, relationships, properties)
@@ -28,7 +27,7 @@ Graph Structure:
 Data Flow:
 Processed Data → Graph Transformation → Neo4j Bulk Load → Knowledge Graph
 
-This module creates the foundational knowledge graph that engine/graph_rag/
+This module creates the foundational knowledge graph that engine/retrieval/
 uses for intelligent retrieval and analysis.
 """
 

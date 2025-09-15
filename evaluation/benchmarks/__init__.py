@@ -1,48 +1,42 @@
 #!/usr/bin/env python3
 """
-Benchmark Comparison and Analysis
+Professional Benchmark Analysis
 
-Comprehensive benchmark comparison system for evaluating investment strategy
-performance against market indices and peer strategies.
+Market comparison and attribution analysis for evaluating investment strategy
+performance relative to market benchmarks and peer comparisons.
 
 Business Purpose:
-Provide context for strategy performance by comparing against relevant
-benchmarks to determine if strategies add value over passive alternatives.
+Comprehensive benchmark analysis to assess strategy performance in context,
+identify sources of alpha, and evaluate risk-adjusted returns.
 
-Benchmark Categories:
-- Market Indices: S&P 500, NASDAQ, Russell 2000, sector ETFs
-- Factor Benchmarks: Value, growth, momentum, quality factors
-- Peer Strategies: Similar investment approaches and styles
-- Risk-Free Rate: Treasury bonds for Sharpe ratio calculations
-- Custom Benchmarks: User-defined comparison portfolios
+Key Components:
+- Market benchmark data management (S&P 500, NASDAQ, etc.)
+- Peer group analysis and comparison
+- Performance attribution analysis
+- Risk-adjusted performance metrics
+- Sector and style analysis
+- Alpha and beta decomposition
 
-Comparison Metrics:
-- Relative performance (alpha generation)
-- Risk-adjusted outperformance
-- Tracking error and correlation analysis
-- Up/down market performance
-- Factor exposure analysis
-- Attribution analysis (security selection vs. sector allocation)
+Benchmark Pipeline:
+Strategy Returns + Market Data → Attribution Analysis → Performance Assessment
 
-This module enables investors to understand whether strategies generated
-by engine/ provide meaningful advantages over simpler alternatives.
+This module provides institutional-grade benchmark analysis with comprehensive
+market context and performance attribution capabilities.
 """
 
 __version__ = "1.0.0"
 
 try:
-    from .attribution_analysis import AttributionAnalysis
     from .benchmark_manager import BenchmarkManager
-    from .comparison_engine import ComparisonEngine
-    from .factor_analysis import FactorAnalysis
-    from .relative_performance import RelativePerformance
+    from .attribution_analyzer import AttributionAnalyzer
+    from .peer_comparator import PeerComparator
+    from .alpha_calculator import AlphaCalculator
 
     __all__ = [
         "BenchmarkManager",
-        "ComparisonEngine",
-        "AttributionAnalysis",
-        "FactorAnalysis",
-        "RelativePerformance",
+        "AttributionAnalyzer",
+        "PeerComparator", 
+        "AlphaCalculator",
     ]
 except ImportError:
     __all__ = []

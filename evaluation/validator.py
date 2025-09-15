@@ -23,7 +23,12 @@ import yfinance as yf
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from graph_rag import GraphRAGSystem
+# Updated import to use professional structure
+try:
+    from engine.retrieval import GraphRAGSystem
+except ImportError:
+    # Fallback for development/testing
+    GraphRAGSystem = None
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore", category=FutureWarning)

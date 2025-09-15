@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Data Processing Pipeline Components
+ETL Data Crawlers - Financial Data Acquisition
 
-Core data transformation and processing components that handle raw financial
-data and convert it into structured formats suitable for Neo4j loading.
+Professional data acquisition components for collecting financial information
+from multiple sources including SEC Edgar, YFinance, and manual data sources.
 
 Business Purpose:
-Transform raw SEC filings and financial data into clean, structured formats
-optimized for graph database storage and Graph-RAG analysis.
+Systematic data collection with validation, normalization, and quality assurance
+to ensure consistent input for downstream processing pipelines.
 
 Key Components:
 - Document text extraction and parsing
@@ -25,7 +25,7 @@ creation, ensuring high-quality data flows to Neo4j for analysis.
 
 Integration Points:
 - Receives input from sec_filing_processor/ and embedding_generator/
-- Outputs structured data to neo4j_loader/ for graph creation
+- Outputs structured data to loaders/ for graph creation
 - Coordinates with schedulers/ for automated processing
 """
 

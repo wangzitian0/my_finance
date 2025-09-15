@@ -144,15 +144,15 @@ Data Sources → ETL → Neo4j → engine → Strategies/Reports → evaluation 
 - **`ETL/`** - Complete data pipeline: Raw data → Clean Neo4j graph
   - `sec_filing_processor/` - SEC Edgar document processing  
   - `embedding_generator/` - Vector embedding creation
-  - `processors/` - Data transformation and validation
+  - `crawlers/` - Data acquisition and transformation
   - `schedulers/` - Automated pipeline orchestration
-  - `neo4j_loader/` - Knowledge graph population
+  - `loaders/` - Knowledge graph population
 
 - **`engine/`** - Graph-RAG reasoning engine: Neo4j → Investment strategies
-  - `graph_rag/` - Hybrid semantic + graph retrieval
-  - `llm/` - Language model integration and prompts
-  - `strategy/` - DCF calculations and investment logic
-  - `reports/` - Professional investment report generation
+  - `retrieval/` - Hybrid semantic + graph retrieval
+  - `reasoning/` - Language model integration and prompts
+  - `valuation/` - DCF calculations and investment logic
+  - `reporting/` - Professional investment report generation
 
 - **`evaluation/`** - Independent strategy validation: Strategies → Performance returns
   - `backtesting/` - Historical strategy simulation

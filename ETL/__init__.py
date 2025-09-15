@@ -16,9 +16,9 @@ data collection through final knowledge graph creation.
 Enhanced Structure (Issue #256):
 - sec_filing_processor/: SEC Edgar document processing
 - embedding_generator/: Vector embedding creation
-- processors/: Core data transformation components
+- crawlers/: Data acquisition and transformation (professional terminology)
 - schedulers/: Automated pipeline orchestration
-- neo4j_loader/: Knowledge graph population
+- loaders/: Knowledge graph population (professional terminology)
 
 Integration:
 - Inputs: SEC Edgar, YFinance, manual data sources
@@ -40,9 +40,9 @@ except ImportError:
     embedding_generator = None
 
 try:
-    from . import processors
+    from . import crawlers
 except ImportError:
-    processors = None
+    crawlers = None
 
 try:
     from . import schedulers
@@ -50,14 +50,14 @@ except ImportError:
     schedulers = None
 
 try:
-    from . import neo4j_loader
+    from . import loaders
 except ImportError:
-    neo4j_loader = None
+    loaders = None
 
 __all__ = [
     "sec_filing_processor",
     "embedding_generator",
-    "processors",
+    "crawlers",
     "schedulers",
-    "neo4j_loader",
+    "loaders",
 ]
