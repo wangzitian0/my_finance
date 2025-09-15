@@ -3,12 +3,12 @@
 import os
 from pathlib import Path
 
-root = Path('.')
+root = Path(".")
 print("CURRENT STATE ANALYSIS:")
 print("=" * 50)
 
 # List all L1 directories
-dirs = [d.name for d in root.iterdir() if d.is_dir() and not d.name.startswith('.')]
+dirs = [d.name for d in root.iterdir() if d.is_dir() and not d.name.startswith(".")]
 dirs.sort()
 
 print(f"Current L1 directories ({len(dirs)}):")
@@ -24,7 +24,16 @@ for d in dirs:
 print(f"\nTOTAL DIRECTORIES: {len(dirs)}")
 
 # Check specific directories we want to consolidate
-check_dirs = ['graph_rag', 'evaluation', 'dts', 'templates', 'agents', 'scripts', 'releases', 'dcf_engine']
+check_dirs = [
+    "graph_rag",
+    "evaluation",
+    "dts",
+    "templates",
+    "agents",
+    "scripts",
+    "releases",
+    "dcf_engine",
+]
 print(f"\nCONSOLIDATION TARGETS:")
 for check_dir in check_dirs:
     exists = (root / check_dir).exists()

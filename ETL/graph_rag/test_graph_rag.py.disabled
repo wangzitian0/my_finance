@@ -18,11 +18,12 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-# Setup logging using centralized directory management
-from common.core.directory_manager import directory_manager
 from graph_rag import GraphRAGSystem
 from graph_rag.data_ingestion import GraphRAGDataIngestion
 from graph_rag.semantic_embedding import SemanticEmbedding
+
+# Setup logging using centralized directory management
+from common.core.directory_manager import directory_manager
 
 # Ensure logs directory exists
 log_dir = directory_manager.get_logs_path()

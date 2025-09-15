@@ -20,7 +20,7 @@ except ImportError:
     embedding_generator = None
 
 try:
-    from . import sec_filing_processor  
+    from . import sec_filing_processor
 except ImportError:
     sec_filing_processor = None
 
