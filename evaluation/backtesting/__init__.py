@@ -34,7 +34,7 @@ try:
 
     __all__ = [
         "BacktestEngine",
-        "HistoricalDataManager", 
+        "HistoricalDataManager",
         "PerformanceCalculator",
         "TransactionSimulator",
     ]

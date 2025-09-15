@@ -27,15 +27,15 @@ market context and performance attribution capabilities.
 __version__ = "1.0.0"
 
 try:
-    from .benchmark_manager import BenchmarkManager
-    from .attribution_analyzer import AttributionAnalyzer
-    from .peer_comparator import PeerComparator
     from .alpha_calculator import AlphaCalculator
+    from .attribution_analyzer import AttributionAnalyzer
+    from .benchmark_manager import BenchmarkManager
+    from .peer_comparator import PeerComparator
 
     __all__ = [
         "BenchmarkManager",
         "AttributionAnalyzer",
-        "PeerComparator", 
+        "PeerComparator",
         "AlphaCalculator",
     ]
 except ImportError:

@@ -27,11 +27,11 @@ meeting institutional investment standards and regulatory requirements.
 __version__ = "1.0.0"
 
 try:
+    from .correlation_analyzer import CorrelationAnalyzer
+    from .drawdown_analyzer import DrawdownAnalyzer
     from .performance_metrics import PerformanceMetrics
     from .risk_calculator import RiskCalculator
-    from .drawdown_analyzer import DrawdownAnalyzer
     from .var_calculator import VaRCalculator
-    from .correlation_analyzer import CorrelationAnalyzer
 
     __all__ = [
         "PerformanceMetrics",

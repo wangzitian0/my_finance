@@ -32,11 +32,11 @@ Integration Points:
 __version__ = "1.0.0"
 
 try:
-    from .graph_retriever import GraphRetriever
-    from .vector_search import VectorSearch
     from .context_assembler import ContextAssembler
+    from .graph_retriever import GraphRetriever
     from .query_processor import QueryProcessor
     from .rag_system import GraphRAGSystem
+    from .vector_search import VectorSearch
 
     __all__ = [
         "GraphRAGSystem",

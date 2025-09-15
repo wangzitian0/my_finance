@@ -25,18 +25,18 @@ regulatory backing and transparent methodologies.
 
 Integration Points:
 - Inputs: Analyzed financial data from reasoning/
-- Processing: Professional valuation methodologies  
+- Processing: Professional valuation methodologies
 - Outputs: Investment recommendations for reporting/
 """
 
 __version__ = "1.0.0"
 
 try:
-    from .dcf_calculator import DCFCalculator
-    from .valuation_engine import ValuationEngine
-    from .risk_adjuster import RiskAdjuster
     from .comps_analyzer import CompsAnalyzer
+    from .dcf_calculator import DCFCalculator
     from .recommendation_engine import RecommendationEngine
+    from .risk_adjuster import RiskAdjuster
+    from .valuation_engine import ValuationEngine
 
     __all__ = [
         "ValuationEngine",

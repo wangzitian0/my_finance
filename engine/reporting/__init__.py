@@ -32,11 +32,11 @@ Integration Points:
 __version__ = "1.0.0"
 
 try:
-    from .report_generator import ReportGenerator
-    from .template_manager import TemplateManager
+    from .audit_logger import AuditLogger
     from .citation_manager import CitationManager
     from .format_converter import FormatConverter
-    from .audit_logger import AuditLogger
+    from .report_generator import ReportGenerator
+    from .template_manager import TemplateManager
 
     __all__ = [
         "ReportGenerator",

@@ -3,7 +3,7 @@
 Professional Investment Strategy Evaluation
 
 Comprehensive validation and testing framework for investment strategies,
-including DCF analysis validation, backtesting, benchmark comparison, and 
+including DCF analysis validation, backtesting, benchmark comparison, and
 risk assessment with professional reporting.
 
 Business Purpose:
@@ -12,7 +12,7 @@ module to ensure reliability, performance, and risk-adjusted returns
 meet professional investment standards.
 
 Enhanced Structure (Issue #256):
-- backtesting/: Historical strategy simulation and performance analysis  
+- backtesting/: Historical strategy simulation and performance analysis
 - benchmarks/: Market comparison and attribution analysis
 - metrics/: Risk and return performance measurement
 - validator.py: Comprehensive strategy validation framework
@@ -26,10 +26,8 @@ Integration:
 __version__ = "1.0.0"
 
 try:
+    from . import backtesting, benchmarks, metrics
     from .validator import StrategyValidator
-    from . import backtesting
-    from . import benchmarks  
-    from . import metrics
 
     __all__ = ["StrategyValidator", "backtesting", "benchmarks", "metrics"]
 except ImportError:
