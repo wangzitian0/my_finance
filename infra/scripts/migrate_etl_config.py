@@ -38,65 +38,63 @@ class ETLConfigMigrator:
     def __init__(self):
         self.project_root = Path(__file__).parent.parent
         self.old_config_dirs = {
-            'stock_lists': self.project_root / 'common/config/stock_lists',
-            'data_sources': self.project_root / 'common/config/data_sources',
-            'scenarios': self.project_root / 'common/config/scenarios'
+            "stock_lists": self.project_root / "common/config/stock_lists",
+            "data_sources": self.project_root / "common/config/data_sources",
+            "scenarios": self.project_root / "common/config/scenarios",
         }
-        self.new_config_dir = self.project_root / 'common/config/etl'
-        self.backup_dir = self.project_root / 'common/config/etl_migration_backup'
+        self.new_config_dir = self.project_root / "common/config/etl"
+        self.backup_dir = self.project_root / "common/config/etl_migration_backup"
 
         # 文件映射关系
         self.file_mappings = {
             # Stock Lists
-            'common/config/stock_lists/f2.yml': 'common/config/etl/stock_f2.yml',
-            'common/config/stock_lists/m7.yml': 'common/config/etl/stock_m7.yml',
-            'common/config/stock_lists/n100.yml': 'common/config/etl/stock_n100.yml',
-            'common/config/stock_lists/v3k.yml': 'common/config/etl/stock_v3k.yml',
-
+            "common/config/stock_lists/f2.yml": "common/config/etl/stock_f2.yml",
+            "common/config/stock_lists/m7.yml": "common/config/etl/stock_m7.yml",
+            "common/config/stock_lists/n100.yml": "common/config/etl/stock_n100.yml",
+            "common/config/stock_lists/v3k.yml": "common/config/etl/stock_v3k.yml",
             # Data Sources
-            'common/config/data_sources/yfinance.yml': 'common/config/etl/source_yfinance.yml',
-            'common/config/data_sources/sec_edgar.yml': 'common/config/etl/source_sec_edgar.yml',
-
+            "common/config/data_sources/yfinance.yml": "common/config/etl/source_yfinance.yml",
+            "common/config/data_sources/sec_edgar.yml": "common/config/etl/source_sec_edgar.yml",
             # Scenarios
-            'common/config/scenarios/development.yml': 'common/config/etl/scenario_dev.yml',
-            'common/config/scenarios/production.yml': 'common/config/etl/scenario_prod.yml'
+            "common/config/scenarios/development.yml": "common/config/etl/scenario_dev.yml",
+            "common/config/scenarios/production.yml": "common/config/etl/scenario_prod.yml",
         }
 
         # 需要更新的代码文件模式
         self.code_update_patterns = [
             {
-                'pattern': r'from common\.orthogonal_config import orthogonal_config',
-                'replacement': 'from common.etl_loader import etl_loader'
+                "pattern": r"from common\.orthogonal_config import orthogonal_config",
+                "replacement": "from common.etl_loader import etl_loader",
             },
             {
-                'pattern': r'orthogonal_config\.load_stock_list\(',
-                'replacement': 'etl_loader.load_stock_list('
+                "pattern": r"orthogonal_config\.load_stock_list\(",
+                "replacement": "etl_loader.load_stock_list(",
             },
             {
-                'pattern': r'orthogonal_config\.load_data_source\(',
-                'replacement': 'etl_loader.load_data_source('
+                "pattern": r"orthogonal_config\.load_data_source\(",
+                "replacement": "etl_loader.load_data_source(",
             },
             {
-                'pattern': r'orthogonal_config\.load_scenario\(',
-                'replacement': 'etl_loader.load_scenario('
+                "pattern": r"orthogonal_config\.load_scenario\(",
+                "replacement": "etl_loader.load_scenario(",
             },
             {
-                'pattern': r'orthogonal_config\.build_runtime_config\(',
-                'replacement': 'etl_loader.build_runtime_config('
+                "pattern": r"orthogonal_config\.build_runtime_config\(",
+                "replacement": "etl_loader.build_runtime_config(",
             },
             # 直接读取配置文件的模式
             {
-                'pattern': r'common/config/stock_lists/(\w+)\.yml',
-                'replacement': r'common/config/etl/stock_\1.yml'
+                "pattern": r"common/config/stock_lists/(\w+)\.yml",
+                "replacement": r"common/config/etl/stock_\1.yml",
             },
             {
-                'pattern': r'common/config/data_sources/(\w+)\.yml',
-                'replacement': r'common/config/etl/source_\1.yml'
+                "pattern": r"common/config/data_sources/(\w+)\.yml",
+                "replacement": r"common/config/etl/source_\1.yml",
             },
             {
-                'pattern': r'common/config/scenarios/(\w+)\.yml',
-                'replacement': r'common/config/etl/scenario_\1.yml'
-            }
+                "pattern": r"common/config/scenarios/(\w+)\.yml",
+                "replacement": r"common/config/etl/scenario_\1.yml",
+            },
         ]
 
     def create_backup(self):
@@ -117,7 +115,7 @@ class ETLConfigMigrator:
 
         # 备份ETL配置目录（如果存在）
         if self.new_config_dir.exists():
-            backup_etl = self.backup_dir / 'etl'
+            backup_etl = self.backup_dir / "etl"
             shutil.copytree(self.new_config_dir, backup_etl)
             print(f"   ✅ 已备份 etl -> {backup_etl}")
 
@@ -146,24 +144,29 @@ class ETLConfigMigrator:
         files_to_update = []
 
         # 搜索Python文件
-        for py_file in self.project_root.rglob('*.py'):
+        for py_file in self.project_root.rglob("*.py"):
             # 跳过测试文件和备份目录
-            if ('.git' in str(py_file) or
-                'test' in str(py_file) or
-                'backup' in str(py_file) or
-                '__pycache__' in str(py_file)):
+            if (
+                ".git" in str(py_file)
+                or "test" in str(py_file)
+                or "backup" in str(py_file)
+                or "__pycache__" in str(py_file)
+            ):
                 continue
 
             try:
-                with open(py_file, 'r', encoding='utf-8') as f:
+                with open(py_file, "r", encoding="utf-8") as f:
                     content = f.read()
                     # 检查是否包含需要更新的模式
-                    if any(pattern in content for pattern in [
-                        'orthogonal_config',
-                        'stock_lists/',
-                        'data_sources/',
-                        'scenarios/'
-                    ]):
+                    if any(
+                        pattern in content
+                        for pattern in [
+                            "orthogonal_config",
+                            "stock_lists/",
+                            "data_sources/",
+                            "scenarios/",
+                        ]
+                    ):
                         files_to_update.append(py_file)
             except Exception:
                 continue
@@ -179,7 +182,7 @@ class ETLConfigMigrator:
 
         for file_path in files_to_update:
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     original_content = f.read()
 
                 updated_content = original_content
@@ -187,9 +190,10 @@ class ETLConfigMigrator:
 
                 # 应用所有更新模式
                 import re
+
                 for pattern_info in self.code_update_patterns:
-                    pattern = pattern_info['pattern']
-                    replacement = pattern_info['replacement']
+                    pattern = pattern_info["pattern"]
+                    replacement = pattern_info["replacement"]
 
                     new_content = re.sub(pattern, replacement, updated_content)
                     if new_content != updated_content:
@@ -198,7 +202,7 @@ class ETLConfigMigrator:
 
                 # 如果文件有变化，写入更新
                 if file_changed:
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(updated_content)
 
                     updated_files.append(file_path)
@@ -227,7 +231,7 @@ class ETLConfigMigrator:
             new_path = self.project_root / new_path_str
             if new_path.exists():
                 try:
-                    with open(new_path, 'r', encoding='utf-8') as f:
+                    with open(new_path, "r", encoding="utf-8") as f:
                         yaml.safe_load(f)
                 except Exception as e:
                     errors.append(f"配置文件格式错误 {new_path}: {e}")
@@ -235,6 +239,7 @@ class ETLConfigMigrator:
         # 3. 检查etl_loader是否可以导入
         try:
             from common.etl_loader import etl_loader
+
             print("   ✅ etl_loader模块导入成功")
         except Exception as e:
             errors.append(f"etl_loader模块导入失败: {e}")
@@ -307,11 +312,11 @@ class ETLConfigMigrator:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='ETL配置迁移脚本')
-    parser.add_argument('--migrate', action='store_true', help='执行配置迁移')
-    parser.add_argument('--validate', action='store_true', help='验证迁移结果')
-    parser.add_argument('--rollback', action='store_true', help='回滚迁移')
-    parser.add_argument('--dry-run', action='store_true', help='预览迁移操作')
+    parser = argparse.ArgumentParser(description="ETL配置迁移脚本")
+    parser.add_argument("--migrate", action="store_true", help="执行配置迁移")
+    parser.add_argument("--validate", action="store_true", help="验证迁移结果")
+    parser.add_argument("--rollback", action="store_true", help="回滚迁移")
+    parser.add_argument("--dry-run", action="store_true", help="预览迁移操作")
 
     args = parser.parse_args()
 
@@ -348,9 +353,10 @@ def main():
     except Exception as e:
         print(f"❌ 迁移失败: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

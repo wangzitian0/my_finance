@@ -16,6 +16,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
+
 import yaml
 
 # Add common to path
@@ -26,6 +27,7 @@ from core.directory_manager import directory_manager
 @dataclass
 class StockListConfig:
     """Stock List配置"""
+
     name: str
     description: str
     tickers: List[str]
@@ -41,6 +43,7 @@ class StockListConfig:
 @dataclass
 class DataSourceConfig:
     """Data Source配置"""
+
     name: str
     description: str
     enabled: bool
@@ -53,10 +56,11 @@ class DataSourceConfig:
 @dataclass
 class ScenarioConfig:
     """Scenario配置"""
+
     name: str
     description: str
     data_sources: List[str]  # 可用的数据源列表
-    processing_mode: str     # 'full', 'incremental', 'test'
+    processing_mode: str  # 'full', 'incremental', 'test'
     output_formats: List[str]
     quality_thresholds: Dict[str, float]
     resource_limits: Dict[str, Any]
@@ -66,6 +70,7 @@ class ScenarioConfig:
 @dataclass
 class RuntimeETLConfig:
     """运行时组合的ETL配置"""
+
     stock_list: StockListConfig
     data_sources: Dict[str, DataSourceConfig]  # name -> config
     scenario: ScenarioConfig
@@ -99,53 +104,55 @@ class ETLConfigLoader:
 
         # 映射旧的配置名到新的文件名
         self._stock_list_mapping = {
-            'f2': 'stock_f2.yml',
-            'm7': 'stock_m7.yml',
-            'n100': 'stock_n100.yml',
-            'v3k': 'stock_v3k.yml'
+            "f2": "stock_f2.yml",
+            "m7": "stock_m7.yml",
+            "n100": "stock_n100.yml",
+            "v3k": "stock_v3k.yml",
         }
 
         self._data_source_mapping = {
-            'yfinance': 'source_yfinance.yml',
-            'sec_edgar': 'source_sec_edgar.yml'
+            "yfinance": "source_yfinance.yml",
+            "sec_edgar": "source_sec_edgar.yml",
         }
 
         self._scenario_mapping = {
-            'development': 'scenario_dev.yml',
-            'production': 'scenario_prod.yml'
+            "development": "scenario_dev.yml",
+            "production": "scenario_prod.yml",
         }
 
     def list_available_configs(self) -> Dict[str, List[str]]:
         """列出所有可用的配置"""
         return {
-            'stock_lists': list(self._stock_list_mapping.keys()),
-            'data_sources': list(self._data_source_mapping.keys()),
-            'scenarios': list(self._scenario_mapping.keys())
+            "stock_lists": list(self._stock_list_mapping.keys()),
+            "data_sources": list(self._data_source_mapping.keys()),
+            "scenarios": list(self._scenario_mapping.keys()),
         }
 
     def load_stock_list(self, name: str) -> StockListConfig:
         """加载股票列表配置"""
-        cache_key = f'stock_{name}'
+        cache_key = f"stock_{name}"
         if cache_key in self._cache:
             return self._cache[cache_key]
 
         if name not in self._stock_list_mapping:
-            raise ValueError(f"未知的股票列表: {name}. 可用的: {list(self._stock_list_mapping.keys())}")
+            raise ValueError(
+                f"未知的股票列表: {name}. 可用的: {list(self._stock_list_mapping.keys())}"
+            )
 
         file_path = self.etl_config_dir / self._stock_list_mapping[name]
         config_data = self._load_yaml(file_path)
 
         # 解析公司信息，生成tickers列表
-        companies = config_data.get('companies', {})
+        companies = config_data.get("companies", {})
         tickers = list(companies.keys())
 
         config = StockListConfig(
             name=name,
-            description=config_data.get('description', ''),
+            description=config_data.get("description", ""),
             tickers=tickers,
             companies=companies,
-            tier=config_data.get('tier', name),
-            max_size_mb=config_data.get('max_size_mb', 100)
+            tier=config_data.get("tier", name),
+            max_size_mb=config_data.get("max_size_mb", 100),
         )
 
         self._cache[cache_key] = config
@@ -153,24 +160,26 @@ class ETLConfigLoader:
 
     def load_data_source(self, name: str) -> DataSourceConfig:
         """加载数据源配置"""
-        cache_key = f'source_{name}'
+        cache_key = f"source_{name}"
         if cache_key in self._cache:
             return self._cache[cache_key]
 
         if name not in self._data_source_mapping:
-            raise ValueError(f"未知的数据源: {name}. 可用的: {list(self._data_source_mapping.keys())}")
+            raise ValueError(
+                f"未知的数据源: {name}. 可用的: {list(self._data_source_mapping.keys())}"
+            )
 
         file_path = self.etl_config_dir / self._data_source_mapping[name]
         config_data = self._load_yaml(file_path)
 
         config = DataSourceConfig(
             name=name,
-            description=config_data.get('description', ''),
-            enabled=config_data.get('enabled', True),
-            api_config=config_data.get('api_config', {}),
-            rate_limits=config_data.get('rate_limits', {}),
-            data_types=config_data.get('data_types', []),
-            output_format=config_data.get('output_format', {})
+            description=config_data.get("description", ""),
+            enabled=config_data.get("enabled", True),
+            api_config=config_data.get("api_config", {}),
+            rate_limits=config_data.get("rate_limits", {}),
+            data_types=config_data.get("data_types", []),
+            output_format=config_data.get("output_format", {}),
         )
 
         self._cache[cache_key] = config
@@ -178,7 +187,7 @@ class ETLConfigLoader:
 
     def load_scenario(self, name: str) -> ScenarioConfig:
         """加载场景配置"""
-        cache_key = f'scenario_{name}'
+        cache_key = f"scenario_{name}"
         if cache_key in self._cache:
             return self._cache[cache_key]
 
@@ -190,23 +199,20 @@ class ETLConfigLoader:
 
         config = ScenarioConfig(
             name=name,
-            description=config_data.get('description', ''),
-            data_sources=config_data.get('data_sources', []),
-            processing_mode=config_data.get('processing_mode', 'full'),
-            output_formats=config_data.get('output_formats', ['json']),
-            quality_thresholds=config_data.get('quality_thresholds', {}),
-            resource_limits=config_data.get('resource_limits', {}),
-            optimizations=config_data.get('optimizations', {})
+            description=config_data.get("description", ""),
+            data_sources=config_data.get("data_sources", []),
+            processing_mode=config_data.get("processing_mode", "full"),
+            output_formats=config_data.get("output_formats", ["json"]),
+            quality_thresholds=config_data.get("quality_thresholds", {}),
+            resource_limits=config_data.get("resource_limits", {}),
+            optimizations=config_data.get("optimizations", {}),
         )
 
         self._cache[cache_key] = config
         return config
 
     def build_runtime_config(
-        self,
-        stock_list: str,
-        data_sources: List[str],
-        scenario: str
+        self, stock_list: str, data_sources: List[str], scenario: str
     ) -> RuntimeETLConfig:
         """
         组合正交配置生成运行时配置
@@ -229,7 +235,9 @@ class ETLConfigLoader:
         requested_sources = set(data_sources)
         if not requested_sources.issubset(available_sources):
             missing = requested_sources - available_sources
-            raise ValueError(f"数据源 {missing} 在场景 '{scenario}' 中不可用. 可用的: {available_sources}")
+            raise ValueError(
+                f"数据源 {missing} 在场景 '{scenario}' 中不可用. 可用的: {available_sources}"
+            )
 
         # 生成组合标识
         combination = f"{stock_list}_{'+'.join(data_sources)}_{scenario}"
@@ -239,25 +247,23 @@ class ETLConfigLoader:
             data_sources=sources,
             scenario=scene,
             combination=combination,
-            generated_at="runtime"
+            generated_at="runtime",
         )
 
     def get_legacy_config_mapping(self) -> Dict[str, str]:
         """获取新旧配置文件的映射关系，用于迁移"""
         return {
             # Stock Lists
-            'common/config/stock_lists/f2.yml': 'common/config/etl/stock_f2.yml',
-            'common/config/stock_lists/m7.yml': 'common/config/etl/stock_m7.yml',
-            'common/config/stock_lists/n100.yml': 'common/config/etl/stock_n100.yml',
-            'common/config/stock_lists/v3k.yml': 'common/config/etl/stock_v3k.yml',
-
+            "common/config/stock_lists/f2.yml": "common/config/etl/stock_f2.yml",
+            "common/config/stock_lists/m7.yml": "common/config/etl/stock_m7.yml",
+            "common/config/stock_lists/n100.yml": "common/config/etl/stock_n100.yml",
+            "common/config/stock_lists/v3k.yml": "common/config/etl/stock_v3k.yml",
             # Data Sources
-            'common/config/data_sources/yfinance.yml': 'common/config/etl/source_yfinance.yml',
-            'common/config/data_sources/sec_edgar.yml': 'common/config/etl/source_sec_edgar.yml',
-
+            "common/config/data_sources/yfinance.yml": "common/config/etl/source_yfinance.yml",
+            "common/config/data_sources/sec_edgar.yml": "common/config/etl/source_sec_edgar.yml",
             # Scenarios
-            'common/config/scenarios/development.yml': 'common/config/etl/scenario_dev.yml',
-            'common/config/scenarios/production.yml': 'common/config/etl/scenario_prod.yml'
+            "common/config/scenarios/development.yml": "common/config/etl/scenario_dev.yml",
+            "common/config/scenarios/production.yml": "common/config/etl/scenario_prod.yml",
         }
 
     def _load_yaml(self, file_path: Path) -> Dict[str, Any]:
@@ -266,7 +272,7 @@ class ETLConfigLoader:
             raise FileNotFoundError(f"配置文件不存在: {file_path}")
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 return yaml.safe_load(f) or {}
         except yaml.YAMLError as e:
             raise ValueError(f"YAML解析错误 {file_path}: {e}")

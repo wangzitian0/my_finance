@@ -64,8 +64,8 @@ except Exception as e:
 
 logger.info("Initializing SSOT configuration management...")
 
-from common.etl_loader import build_etl_config
 from common.core.directory_manager import DataLayer, directory_manager
+from common.etl_loader import build_etl_config
 
 # Use new ETL loader configuration system
 from ETL.tests.test_config import DatasetTier
@@ -123,24 +123,32 @@ def build_dataset(tier_name: str, config_path: str = None) -> bool:
             # Build runtime configuration with yfinance and development scenario
             runtime_config = build_etl_config(
                 stock_list=stock_list_name,
-                data_sources=['yfinance', 'sec_edgar'],
-                scenario='development'
+                data_sources=["yfinance", "sec_edgar"],
+                scenario="development",
             )
             logger.info(f"Runtime config created: {runtime_config.combination}")
 
             # Convert to legacy format for compatibility - use API config directly
             config = {
-                'companies': runtime_config.stock_list.companies,
-                'data_sources': {
-                    'yfinance': {
-                        'enabled': 'yfinance' in runtime_config.enabled_sources,
-                        'api_config': runtime_config.data_sources.get('yfinance', {}).api_config if 'yfinance' in runtime_config.enabled_sources else {}
+                "companies": runtime_config.stock_list.companies,
+                "data_sources": {
+                    "yfinance": {
+                        "enabled": "yfinance" in runtime_config.enabled_sources,
+                        "api_config": (
+                            runtime_config.data_sources.get("yfinance", {}).api_config
+                            if "yfinance" in runtime_config.enabled_sources
+                            else {}
+                        ),
                     },
-                    'sec_edgar': {
-                        'enabled': 'sec_edgar' in runtime_config.enabled_sources,
-                        'api_config': runtime_config.data_sources.get('sec_edgar', {}).api_config if 'sec_edgar' in runtime_config.enabled_sources else {}
-                    }
-                }
+                    "sec_edgar": {
+                        "enabled": "sec_edgar" in runtime_config.enabled_sources,
+                        "api_config": (
+                            runtime_config.data_sources.get("sec_edgar", {}).api_config
+                            if "sec_edgar" in runtime_config.enabled_sources
+                            else {}
+                        ),
+                    },
+                },
             }
             config_description = runtime_config.combination
         except Exception as e:
@@ -460,7 +468,6 @@ def build_sec_edgar_data(tier: DatasetTier, yaml_config: dict, tracker: BuildTra
             "file_types": ["10K", "10Q", "8K"],
             "email": sec_api_config.get("user_agent", "ZitianSG (wangzitian0@gmail.com)"),
             "collection": sec_api_config.get("collection", {}),
-
             # Include other API config parameters
             "base_url": sec_api_config.get("base_url", "https://data.sec.gov"),
             "timeout_seconds": sec_api_config.get("timeout_seconds", 60),
@@ -535,8 +542,8 @@ def run_dcf_analysis(tier: DatasetTier, tracker: BuildTracker) -> int:
         stock_list_name = tier_to_config_name(tier)
         runtime_config = build_etl_config(
             stock_list=stock_list_name,
-            data_sources=['yfinance', 'sec_edgar'],
-            scenario='development'
+            data_sources=["yfinance", "sec_edgar"],
+            scenario="development",
         )
 
         companies = runtime_config.stock_list.companies
@@ -618,8 +625,8 @@ def run_report_generation(tier: DatasetTier, tracker: BuildTracker) -> int:
         stock_list_name = tier_to_config_name(tier)
         runtime_config = build_etl_config(
             stock_list=stock_list_name,
-            data_sources=['yfinance', 'sec_edgar'],
-            scenario='development'
+            data_sources=["yfinance", "sec_edgar"],
+            scenario="development",
         )
 
         # Extract company tickers from configuration
@@ -674,8 +681,8 @@ def validate_build(tier: DatasetTier, tracker: BuildTracker) -> bool:
         stock_list_name = tier_to_config_name(tier)
         runtime_config = build_etl_config(
             stock_list=stock_list_name,
-            data_sources=['yfinance', 'sec_edgar'],
-            scenario='development'
+            data_sources=["yfinance", "sec_edgar"],
+            scenario="development",
         )
 
         # Estimate expected files based on stock count

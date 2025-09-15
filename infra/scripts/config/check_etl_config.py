@@ -23,12 +23,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 try:
     from common.etl_loader import (
+        build_etl_config,
         etl_loader,
-        load_stock_list,
+        list_available_configs,
         load_data_source,
         load_scenario,
-        build_etl_config,
-        list_available_configs
+        load_stock_list,
     )
 except ImportError as e:
     print(f"❌ 无法导入ETL配置加载器: {e}")
@@ -54,9 +54,9 @@ def check_stock_list(name: str, details: bool = False):
 
             print("   公司详情:")
             for ticker, info in stock_config.companies.items():
-                sector = info.get('sector', 'N/A')
-                industry = info.get('industry', 'N/A')
-                name = info.get('name', 'N/A')
+                sector = info.get("sector", "N/A")
+                industry = info.get("industry", "N/A")
+                name = info.get("name", "N/A")
                 print(f"      {ticker}: {name} ({sector} - {industry})")
         else:
             print(f"   前5个股票: {', '.join(stock_config.tickers[:5])}")
@@ -179,7 +179,7 @@ def check_all_configs():
 
         # 测试每个股票列表
         print("   股票列表:")
-        for name in configs['stock_lists']:
+        for name in configs["stock_lists"]:
             try:
                 config = load_stock_list(name)
                 print(f"      ✅ {name}: {config.count}个股票")
@@ -188,7 +188,7 @@ def check_all_configs():
 
         # 测试每个数据源
         print("   数据源:")
-        for name in configs['data_sources']:
+        for name in configs["data_sources"]:
             try:
                 config = load_data_source(name)
                 status = "启用" if config.enabled else "禁用"
@@ -198,7 +198,7 @@ def check_all_configs():
 
         # 测试每个场景
         print("   场景:")
-        for name in configs['scenarios']:
+        for name in configs["scenarios"]:
             try:
                 config = load_scenario(name)
                 print(f"      ✅ {name}: {config.processing_mode}模式")
@@ -208,9 +208,9 @@ def check_all_configs():
         # 测试常见配置组合
         print("   常见配置组合:")
         test_combinations = [
-            ('f2', ['yfinance'], 'development'),
-            ('m7', ['yfinance', 'sec_edgar'], 'development'),
-            ('v3k', ['yfinance', 'sec_edgar'], 'production'),
+            ("f2", ["yfinance"], "development"),
+            ("m7", ["yfinance", "sec_edgar"], "development"),
+            ("v3k", ["yfinance", "sec_edgar"], "production"),
         ]
 
         for stock_list, data_sources, scenario in test_combinations:
@@ -247,16 +247,20 @@ def main():
 
     # 检查所有配置
     python scripts/config/check_etl_config.py --all
-        """
+        """,
     )
 
-    parser.add_argument('--stock-list', help='检查指定的股票列表配置 (f2, m7, n100, v3k)')
-    parser.add_argument('--data-source', help='检查指定的数据源配置 (yfinance, sec_edgar)')
-    parser.add_argument('--scenario', help='检查指定的场景配置 (development, production)')
-    parser.add_argument('--runtime', nargs=3, metavar=('STOCK_LIST', 'DATA_SOURCE', 'SCENARIO'),
-                      help='检查运行时配置组合 (例: f2 yfinance development)')
-    parser.add_argument('--all', action='store_true', help='检查所有可用配置')
-    parser.add_argument('--details', action='store_true', help='显示详细信息')
+    parser.add_argument("--stock-list", help="检查指定的股票列表配置 (f2, m7, n100, v3k)")
+    parser.add_argument("--data-source", help="检查指定的数据源配置 (yfinance, sec_edgar)")
+    parser.add_argument("--scenario", help="检查指定的场景配置 (development, production)")
+    parser.add_argument(
+        "--runtime",
+        nargs=3,
+        metavar=("STOCK_LIST", "DATA_SOURCE", "SCENARIO"),
+        help="检查运行时配置组合 (例: f2 yfinance development)",
+    )
+    parser.add_argument("--all", action="store_true", help="检查所有可用配置")
+    parser.add_argument("--details", action="store_true", help="显示详细信息")
 
     args = parser.parse_args()
 
@@ -292,5 +296,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

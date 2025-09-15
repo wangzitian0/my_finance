@@ -12,6 +12,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
+
 def example_old_way():
     """旧的分散配置读取方式 - 不推荐"""
     print("❌ 旧方式 (分散配置读取):")
@@ -38,12 +39,12 @@ def example_new_way():
     try:
         # 导入集中化的ETL配置加载器
         from common.etl_loader import (
-            etl_loader,
             build_etl_config,
-            load_stock_list,
+            etl_loader,
+            list_available_configs,
             load_data_source,
             load_scenario,
-            list_available_configs
+            load_stock_list,
         )
 
         print("   🎯 1. 列出所有可用配置:")
@@ -54,17 +55,17 @@ def example_new_way():
 
         print("   📊 2. 加载单个配置:")
         # 加载股票列表配置
-        f2_stocks = load_stock_list('f2')
+        f2_stocks = load_stock_list("f2")
         print(f"      F2股票列表: {f2_stocks.count}个股票 ({f2_stocks.description})")
         print(f"      股票代码: {', '.join(f2_stocks.tickers)}")
 
         # 加载数据源配置
-        yf_source = load_data_source('yfinance')
+        yf_source = load_data_source("yfinance")
         print(f"      YFinance: {yf_source.description}")
         print(f"      支持的数据类型: {', '.join(yf_source.data_types)}")
 
         # 加载场景配置
-        dev_scenario = load_scenario('development')
+        dev_scenario = load_scenario("development")
         print(f"      开发场景: {dev_scenario.processing_mode}模式")
         print(f"      可用数据源: {', '.join(dev_scenario.data_sources)}")
         print()
@@ -72,9 +73,7 @@ def example_new_way():
         print("   🔧 3. 组合运行时配置:")
         # 最强大的功能: 动态组合正交配置
         runtime_config = build_etl_config(
-            stock_list='f2',
-            data_sources=['yfinance', 'sec_edgar'],
-            scenario='development'
+            stock_list="f2", data_sources=["yfinance", "sec_edgar"], scenario="development"
         )
 
         print(f"      组合标识: {runtime_config.combination}")
@@ -114,9 +113,9 @@ def example_usage_in_etl_pipeline():
 
         # 步骤1: 根据运行环境和需求构建配置
         if "--production" in sys.argv:
-            config = build_etl_config('v3k', ['yfinance', 'sec_edgar'], 'production')
+            config = build_etl_config("v3k", ["yfinance", "sec_edgar"], "production")
         else:
-            config = build_etl_config('f2', ['yfinance'], 'development')
+            config = build_etl_config("f2", ["yfinance"], "development")
 
         print(f"   📋 配置: {config.combination}")
 
@@ -128,7 +127,7 @@ def example_usage_in_etl_pipeline():
             # 对每个启用的数据源进行采集
             for source_name in config.enabled_sources:
                 source_config = config.data_sources[source_name]
-                rate_limit = source_config.rate_limits.get('requests_per_second', 1)
+                rate_limit = source_config.rate_limits.get("requests_per_second", 1)
                 print(f"         {source_name}: 限速 {rate_limit} req/s")
 
         # 步骤3: 应用场景特定的设置
@@ -160,5 +159,5 @@ def main():
     print("   • 查看 Issue #278 了解设计原理")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
