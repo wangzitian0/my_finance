@@ -28,6 +28,7 @@
 - [ ] Issue linked and scoped (≤5 days)
 - [ ] GitHub issue exists for context preservation
 - [ ] English-only standard maintained
+- [ ] **File placement validation**: Check that new files are in correct L1/L2 directories, avoid root directory placement unless essential
 
 ### Phase 5: Completion & PR ✅
 - [ ] Task completion verified
@@ -82,6 +83,7 @@ strategic: hrbp, revops
 5. **AUTOMATIC PR CREATION**: Always create PR via `git-ops-agent` after significant changes
 6. **ENGLISH-ONLY STANDARD**: All technical content in English
 7. **GITHUB ISSUES ONLY**: Never create .md planning files - use GitHub Issues
+8. **MODULAR FILE PLACEMENT**: All files must be in appropriate L1/L2 directories - avoid root directory unless essential (project config, entry points, documentation)
 
 ---
 
@@ -129,6 +131,7 @@ strategic: hrbp, revops
 - Using direct tools for complex tasks instead of agent-coordinator
 - Creating .md planning files instead of GitHub Issues
 - Bypassing P3 workflow system
+- Placing files in root directory instead of appropriate L1/L2 modules
 
 **🚨 CRITICAL Checklist Protection Violations (Level 3 - Immediate Escalation)**:
 - **Checklist Deletion**: Removing any Phase 1-5 items from Task Initiation Protocol
