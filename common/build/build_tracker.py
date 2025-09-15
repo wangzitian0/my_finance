@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 # Try to import quality reporter, handle gracefully if not available
 try:
-    from common.quality_reporter import QUALITY_REPORTING_AVAILABLE, setup_quality_reporter
+    from .quality_reporter import QUALITY_REPORTING_AVAILABLE, setup_quality_reporter
 except ImportError:
     QUALITY_REPORTING_AVAILABLE = False
 
