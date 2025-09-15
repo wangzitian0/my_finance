@@ -1,25 +1,67 @@
 # Common - Unified System Architecture
 
+**L1 Module**: Cross-module shared resources and system infrastructure
+**Business Purpose**: Provide unified directory management, configuration, and shared utilities for all system components
+
 **Issue #122**: Complete refactoring of the common lib with DRY/SSOT principles, five-layer data architecture, and storage backend abstraction.
 
-**⚠️ CRITICAL ARCHITECTURAL ISSUES IDENTIFIED**:
-- 🚨 **23 files in root directory** - violates modular structure requirements
-- 🚨 **4 duplicate file pairs** - build_tracker.py, metadata_manager.py, graph_rag_schema.py, quality_reporter.py
-- 🚨 **Issue-243 incomplete** - hardcoded paths still exist, wrong import patterns remain
-- 🚨 **No loguru integration** - still using standard logging instead of loguru as required
+## L2 Component Architecture
 
-## 📋 Required 3-Module Architecture
+### **`core/`** - System Core Infrastructure
+**Purpose**: Directory manager, config manager, storage backends
+- **DirectoryManager**: SSOT for all file path management with backend abstraction
+- **ConfigManager**: Unified configuration management with automatic discovery
+- **StorageManager**: Backend abstraction for local and cloud storage
+- **LogManager**: Unified logging system with structured output
 
-This library MUST be restructured into 3 core modules:
+### **`config/`** - Centralized Configuration Management
+**Purpose**: Centralized configuration management (SSOT)
+- **Stock Lists**: Orthogonal company collections (f2, m7, n100, v3k)
+- **Data Sources**: Independent API configurations (yfinance, sec_edgar)
+- **LLM Configurations**: Model settings and prompt templates
+- **System Settings**: Directory structure and performance parameters
 
-### 🎯 Target Architecture
-```
-common/
-├── path_manager/     # 目录名称管理和文件io，pathlib集成
-├── config_manager/   # 配置管理，依赖path_manager
-├── log_manager/      # 日志系统，使用loguru，位置由path_manager管理
-└── [other modules organized by function]
-```
+### **`templates/`** - Analysis Prompts and Configurations
+**Purpose**: Analysis prompts and LLM configurations
+- **Financial Analysis**: DCF, valuation, and investment prompts
+- **Report Generation**: Executive summary and dashboard templates
+- **Graph-RAG**: Retrieval and reasoning prompt templates
+- **Compliance**: Regulatory reporting and SEC filing templates
+
+### **`tools/`** - Shared Utility Functions
+**Purpose**: Shared utility functions and helpers
+- **Data Processing**: JSON, CSV, and file format utilities
+- **Financial Calculations**: Common financial mathematics
+- **Text Processing**: Document parsing and cleaning utilities
+- **API Clients**: Reusable HTTP and database clients
+
+### **`database/`** - Database Connection and Query Utilities
+**Purpose**: Database connection and query utilities
+- **Neo4j Integration**: Graph database connection management
+- **Query Builders**: Cypher query construction and optimization
+- **Connection Pooling**: Database connection lifecycle management
+- **Migration Tools**: Schema updates and data migration utilities
+
+### **`schemas/`** - Data Models and Validation
+**Purpose**: Data models and validation schemas
+- **Financial Data**: Stock, filing, and metrics data models
+- **Graph Schema**: Neo4j node and relationship definitions
+- **API Schemas**: Request/response validation models
+- **Configuration Schema**: YAML/JSON configuration validation
+
+### **`types/`** - Type Definitions and Interfaces
+**Purpose**: Type definitions and interfaces
+- **Financial Types**: Price, volume, and metric type definitions
+- **System Types**: Configuration and error type definitions
+- **API Types**: Request/response interface definitions
+- **Generic Utilities**: Common type guards and validators
+
+### **`utils/`** - General-Purpose Utilities
+**Purpose**: General-purpose utility functions
+- **String Processing**: Text manipulation and formatting
+- **Date/Time Utilities**: Financial calendar and time zone handling
+- **Validation**: Data quality and integrity checks
+- **Error Handling**: Exception management and logging utilities
 
 Manages interactions between different modules, defines schemas and shared tools. Responsible for inter-module coordination and data standardization with unified directory management and configuration systems.
 

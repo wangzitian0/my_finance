@@ -1,5 +1,6 @@
 # Graph-RAG Investment Analysis Engine
 
+**L1 Module**: Core reasoning and analysis system
 **Business Purpose**: Transform Neo4j knowledge graph data into actionable investment strategies and professional reports using Graph-RAG enhanced reasoning.
 
 ## Data Flow
@@ -9,6 +10,40 @@ Neo4j Knowledge Graph + LLM + Templates → Investment Strategies & Reports
 ```
 
 The engine represents the core reasoning layer of the investment analysis system, taking processed data from the ETL pipeline and generating concrete investment insights.
+
+## L2 Component Architecture
+
+### **`retrieval/`** - Hybrid Semantic + Graph Retrieval
+**Purpose**: Intelligent information retrieval from Neo4j knowledge graph
+- Semantic search using vector embeddings from financial documents
+- Graph traversal for relationship discovery and context enrichment
+- Hybrid retrieval combining similarity search with graph reasoning
+- Context-aware information extraction for investment analysis
+- Entity relationship exploration and relevance scoring
+
+### **`reasoning/`** - LLM Integration and Prompt Management
+**Purpose**: Language model integration for analysis generation
+- Structured prompt template management for financial analysis
+- Multi-model LLM routing (GPT-4, DeepSeek, local models)
+- Context window optimization for large document processing
+- Financial reasoning chain orchestration and validation
+- Output parsing and structured data extraction
+
+### **`valuation/`** - DCF Calculations and Investment Logic
+**Purpose**: Quantitative investment strategy generation
+- Multi-stage DCF (Discounted Cash Flow) modeling with terminal values
+- WACC calculation with risk-adjusted discount rates
+- Scenario analysis (bull/base/bear case valuations)
+- Sensitivity analysis and Monte Carlo simulations
+- Risk assessment and portfolio optimization considerations
+
+### **`reporting/`** - Professional Investment Report Generation
+**Purpose**: Professional investment report generation
+- Executive summary creation with key insights and recommendations
+- Financial visualization and chart generation
+- Multi-format export capabilities (PDF, HTML, JSON)
+- SEC filing citation and evidence backing
+- Compliance-ready reporting with regulatory disclosures
 
 ## Module Structure
 

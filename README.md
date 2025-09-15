@@ -140,31 +140,62 @@ p3 ready                    # Uses worktree-B's Python environment
 Data Sources → ETL → Neo4j → engine → Strategies/Reports → evaluation → Backtesting Returns
 ```
 
-**Core Business Modules**:
-- **`ETL/`** - Complete data pipeline: Raw data → Clean Neo4j graph
-  - `sec_filing_processor/` - SEC Edgar document processing  
-  - `embedding_generator/` - Vector embedding creation
-  - `crawlers/` - Data acquisition and transformation
-  - `schedulers/` - Automated pipeline orchestration
-  - `loaders/` - Knowledge graph population
+### L1 Business Modules (Primary System Components)
 
-- **`engine/`** - Graph-RAG reasoning engine: Neo4j → Investment strategies
-  - `retrieval/` - Hybrid semantic + graph retrieval
-  - `reasoning/` - Language model integration and prompts
-  - `valuation/` - DCF calculations and investment logic
-  - `reporting/` - Professional investment report generation
+The system is organized into 5 primary L1 modules, each containing specialized L2 components:
 
-- **`evaluation/`** - Independent strategy validation: Strategies → Performance returns
-  - `backtesting/` - Historical strategy simulation
-  - `metrics/` - Performance and risk analysis
-  - `benchmarks/` - Market comparison and attribution
+#### **`ETL/`** - Data Processing Pipeline
+Complete data pipeline from raw sources to Neo4j knowledge graph.
 
-**Supporting Infrastructure**: 
-- **`common/`** - Cross-module shared resources
-  - `config/` - Centralized configuration management (SSOT)
-  - `templates/` - Analysis prompts and configurations
-  - `tools/` - Shared utility functions
-- **`infra/`** - Team infrastructure and development tools
+**L2 Components**:
+- `sec_filing_processor/` - SEC Edgar document processing and parsing
+- `embedding_generator/` - Vector embedding creation for semantic search
+- `crawlers/` - Data acquisition and web scraping automation
+- `schedulers/` - Pipeline orchestration and job management
+- `loaders/` - Neo4j knowledge graph population and updates
+
+#### **`engine/`** - Graph-RAG Investment Analysis
+Graph-enhanced reasoning engine for investment strategy generation.
+
+**L2 Components**:
+- `retrieval/` - Hybrid semantic + graph retrieval from Neo4j
+- `reasoning/` - LLM integration and prompt template management
+- `valuation/` - DCF calculations and quantitative investment logic
+- `reporting/` - Professional investment report generation
+
+#### **`evaluation/`** - Strategy Validation System
+Independent validation of investment strategies through backtesting.
+
+**L2 Components**:
+- `backtesting/` - Historical strategy simulation and testing
+- `metrics/` - Performance measurement and risk analysis
+- `benchmarks/` - Market comparison and peer analysis
+
+#### **`common/`** - Unified System Architecture
+Cross-module shared resources and system infrastructure.
+
+**L2 Components**:
+- `core/` - Directory manager, config manager, storage backends
+- `config/` - Centralized configuration management (SSOT)
+- `templates/` - Analysis prompts and LLM configurations
+- `tools/` - Shared utility functions and helpers
+- `database/` - Database connection and query utilities
+- `schemas/` - Data models and validation schemas
+- `types/` - Type definitions and interfaces
+- `utils/` - General-purpose utility functions
+
+#### **`infra/`** - Infrastructure and System Management
+Development tools, deployment, and system operations.
+
+**L2 Components**:
+- `system/` - Environment monitoring and validation
+- `git/` - Git operations and release management
+- `p3/` - P3 CLI system maintenance and optimization
+- `hrbp/` - HRBP automation and policy enforcement
+- `development/` - Code quality and development tools
+- `deployment/` - Ansible, Kubernetes, and deployment automation
+
+### Supporting Directories
 - **`tests/`** - Testing framework across all modules
 - **`build_data/`** - Local artifacts and generated outputs
 
