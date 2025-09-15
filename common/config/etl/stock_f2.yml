@@ -1,0 +1,23 @@
+# F2: Fast 2 companies for development testing
+description: "2-company subset for rapid development testing"
+tier: "f2"
+tracked_in_git: false
+max_size_mb: 20
+
+companies:
+  MSFT:
+    name: "Microsoft Corporation"
+    sector: "Technology"
+    industry: "Software"
+    cik: "0000789019"
+    market_cap_category: "mega"
+    
+  NVDA:
+    name: "NVIDIA Corporation"
+    sector: "Technology"
+    industry: "Semiconductors"
+    cik: "0001045810"
+    market_cap_category: "large"
+
+selection_criteria: "2 fastest-processing companies for development iteration"
+last_updated: "2025-08-26T19:45:00.000000"
