@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-统一的ETL配置检查脚本
-支持检查所有类型的ETL配置：股票列表、数据源、场景
+Unified ETL configuration check script
+Support checking all types of ETL configurations: stock lists, data sources, scenarios
 
-用法:
+Usage:
     python scripts/config/check_etl_config.py --stock-list f2
     python scripts/config/check_etl_config.py --stock-list v3k --details
     python scripts/config/check_etl_config.py --data-source yfinance
@@ -11,7 +11,7 @@
     python scripts/config/check_etl_config.py --all
     python scripts/config/check_etl_config.py --runtime f2 yfinance development
 
-原则: 一套代码，多套配置 (Issue #278)
+Principle: One script, multiple configurations (Issue #278)
 """
 
 import argparse
@@ -31,58 +31,58 @@ try:
         load_stock_list,
     )
 except ImportError as e:
-    print(f"❌ 无法导入ETL配置加载器: {e}")
-    print("💡 请确保已完成ETL配置迁移: python scripts/migrate_etl_config.py --migrate")
+    print(f"❌ Unable to import ETL configuration loader: {e}")
+    print("💡 Please ensure ETL configuration migration is complete: python scripts/migrate_etl_config.py --migrate")
     sys.exit(1)
 
 
 def check_stock_list(name: str, details: bool = False):
-    """检查股票列表配置"""
-    print(f"📊 检查股票列表: {name}")
+    """Check stock list configuration"""
+    print(f"📊 Checking stock list: {name}")
 
     try:
         stock_config = load_stock_list(name)
 
-        print(f"   名称: {stock_config.name}")
-        print(f"   描述: {stock_config.description}")
-        print(f"   层级: {stock_config.tier}")
-        print(f"   股票数量: {stock_config.count}")
-        print(f"   最大大小: {stock_config.max_size_mb}MB")
+        print(f"   Name: {stock_config.name}")
+        print(f"   Description: {stock_config.description}")
+        print(f"   Tier: {stock_config.tier}")
+        print(f"   Stock count: {stock_config.count}")
+        print(f"   Max size: {stock_config.max_size_mb}MB")
 
         if details:
-            print(f"   股票代码: {', '.join(stock_config.tickers)}")
+            print(f"   Stock tickers: {', '.join(stock_config.tickers)}")
 
-            print("   公司详情:")
+            print("   Company details:")
             for ticker, info in stock_config.companies.items():
                 sector = info.get("sector", "N/A")
                 industry = info.get("industry", "N/A")
                 name = info.get("name", "N/A")
                 print(f"      {ticker}: {name} ({sector} - {industry})")
         else:
-            print(f"   前5个股票: {', '.join(stock_config.tickers[:5])}")
+            print(f"   First 5 stocks: {', '.join(stock_config.tickers[:5])}")
             if len(stock_config.tickers) > 10:
-                print(f"   后5个股票: {', '.join(stock_config.tickers[-5:])}")
+                print(f"   Last 5 stocks: {', '.join(stock_config.tickers[-5:])}")
 
-        print("   ✅ 股票列表配置正常")
+        print("   ✅ Stock list configuration OK")
 
     except Exception as e:
-        print(f"   ❌ 股票列表检查失败: {e}")
+        print(f"   ❌ Stock list check failed: {e}")
 
 
 def check_data_source(name: str, details: bool = False):
-    """检查数据源配置"""
-    print(f"🔌 检查数据源: {name}")
+    """Check data source configuration"""
+    print(f"🔌 Checking data source: {name}")
 
     try:
         source_config = load_data_source(name)
 
-        print(f"   名称: {source_config.name}")
-        print(f"   描述: {source_config.description}")
-        print(f"   状态: {'启用' if source_config.enabled else '禁用'}")
-        print(f"   数据类型: {', '.join(source_config.data_types)}")
+        print(f"   Name: {source_config.name}")
+        print(f"   Description: {source_config.description}")
+        print(f"   Status: {'Enabled' if source_config.enabled else 'Disabled'}")
+        print(f"   Data types: {', '.join(source_config.data_types)}")
 
         if details:
-            print("   API配置:")
+            print("   API configuration:")
             for key, value in source_config.api_config.items():
                 if isinstance(value, dict):
                     print(f"      {key}:")
@@ -91,122 +91,122 @@ def check_data_source(name: str, details: bool = False):
                 else:
                     print(f"      {key}: {value}")
 
-            print("   速率限制:")
+            print("   Rate limits:")
             for key, value in source_config.rate_limits.items():
                 print(f"      {key}: {value}")
 
-            print("   输出格式:")
+            print("   Output format:")
             for key, value in source_config.output_format.items():
                 print(f"      {key}: {value}")
 
-        print("   ✅ 数据源配置正常")
+        print("   ✅ Data source configuration OK")
 
     except Exception as e:
-        print(f"   ❌ 数据源检查失败: {e}")
+        print(f"   ❌ Data source check failed: {e}")
 
 
 def check_scenario(name: str, details: bool = False):
-    """检查场景配置"""
-    print(f"🎯 检查场景: {name}")
+    """Check scenario configuration"""
+    print(f"🎯 Checking scenario: {name}")
 
     try:
         scenario_config = load_scenario(name)
 
-        print(f"   名称: {scenario_config.name}")
-        print(f"   描述: {scenario_config.description}")
-        print(f"   处理模式: {scenario_config.processing_mode}")
-        print(f"   可用数据源: {', '.join(scenario_config.data_sources)}")
-        print(f"   输出格式: {', '.join(scenario_config.output_formats)}")
+        print(f"   Name: {scenario_config.name}")
+        print(f"   Description: {scenario_config.description}")
+        print(f"   Processing mode: {scenario_config.processing_mode}")
+        print(f"   Available data sources: {', '.join(scenario_config.data_sources)}")
+        print(f"   Output formats: {', '.join(scenario_config.output_formats)}")
 
         if details:
-            print("   质量阈值:")
+            print("   Quality thresholds:")
             for key, value in scenario_config.quality_thresholds.items():
                 print(f"      {key}: {value}")
 
-            print("   资源限制:")
+            print("   Resource limits:")
             for key, value in scenario_config.resource_limits.items():
                 print(f"      {key}: {value}")
 
-            print("   优化设置:")
+            print("   Optimization settings:")
             for key, value in scenario_config.optimizations.items():
                 print(f"      {key}: {value}")
 
-        print("   ✅ 场景配置正常")
+        print("   ✅ Scenario configuration OK")
 
     except Exception as e:
-        print(f"   ❌ 场景检查失败: {e}")
+        print(f"   ❌ Scenario check failed: {e}")
 
 
 def check_runtime_config(stock_list: str, data_sources: list, scenario: str):
-    """检查运行时配置组合"""
-    print(f"🔧 检查运行时配置组合")
-    print(f"   股票列表: {stock_list}")
-    print(f"   数据源: {', '.join(data_sources)}")
-    print(f"   场景: {scenario}")
+    """Check runtime configuration combination"""
+    print(f"🔧 Checking runtime configuration combination")
+    print(f"   Stock list: {stock_list}")
+    print(f"   Data sources: {', '.join(data_sources)}")
+    print(f"   Scenario: {scenario}")
 
     try:
         runtime_config = build_etl_config(stock_list, data_sources, scenario)
 
-        print(f"   ✅ 配置组合: {runtime_config.combination}")
-        print(f"   股票数量: {runtime_config.ticker_count}")
-        print(f"   启用的数据源: {', '.join(runtime_config.enabled_sources)}")
-        print(f"   处理模式: {runtime_config.scenario.processing_mode}")
+        print(f"   ✅ Configuration combination: {runtime_config.combination}")
+        print(f"   Stock count: {runtime_config.ticker_count}")
+        print(f"   Enabled data sources: {', '.join(runtime_config.enabled_sources)}")
+        print(f"   Processing mode: {runtime_config.scenario.processing_mode}")
 
-        # 验证配置一致性
+        # Validate configuration consistency
         if set(data_sources) != set(runtime_config.enabled_sources):
-            print(f"   ⚠️ 警告: 请求的数据源与启用的数据源不一致")
-            print(f"       请求的: {set(data_sources)}")
-            print(f"       启用的: {set(runtime_config.enabled_sources)}")
+            print(f"   ⚠️ Warning: Requested data sources don't match enabled data sources")
+            print(f"       Requested: {set(data_sources)}")
+            print(f"       Enabled: {set(runtime_config.enabled_sources)}")
 
-        print("   ✅ 运行时配置组合正常")
+        print("   ✅ Runtime configuration combination OK")
 
     except Exception as e:
-        print(f"   ❌ 运行时配置检查失败: {e}")
+        print(f"   ❌ Runtime configuration check failed: {e}")
 
 
 def check_all_configs():
-    """检查所有可用的配置"""
-    print("🔍 检查所有可用配置")
+    """Check all available configurations"""
+    print("🔍 Checking all available configurations")
 
     try:
         configs = list_available_configs()
 
-        print(f"📋 可用配置概览:")
+        print(f"📋 Available configurations overview:")
         for config_type, names in configs.items():
-            print(f"   {config_type}: {', '.join(names)} (共{len(names)}个)")
+            print(f"   {config_type}: {', '.join(names)} (total: {len(names)})")
 
-        print("\n🧪 配置有效性测试:")
+        print("\n🧪 Configuration validity test:")
 
-        # 测试每个股票列表
-        print("   股票列表:")
+        # Test each stock list
+        print("   Stock lists:")
         for name in configs["stock_lists"]:
             try:
                 config = load_stock_list(name)
-                print(f"      ✅ {name}: {config.count}个股票")
+                print(f"      ✅ {name}: {config.count} stocks")
             except Exception as e:
                 print(f"      ❌ {name}: {e}")
 
-        # 测试每个数据源
-        print("   数据源:")
+        # Test each data source
+        print("   Data sources:")
         for name in configs["data_sources"]:
             try:
                 config = load_data_source(name)
-                status = "启用" if config.enabled else "禁用"
+                status = "Enabled" if config.enabled else "Disabled"
                 print(f"      ✅ {name}: {status}")
             except Exception as e:
                 print(f"      ❌ {name}: {e}")
 
-        # 测试每个场景
-        print("   场景:")
+        # Test each scenario
+        print("   Scenarios:")
         for name in configs["scenarios"]:
             try:
                 config = load_scenario(name)
-                print(f"      ✅ {name}: {config.processing_mode}模式")
+                print(f"      ✅ {name}: {config.processing_mode} mode")
             except Exception as e:
                 print(f"      ❌ {name}: {e}")
 
-        # 测试常见配置组合
-        print("   常见配置组合:")
+        # Test common configuration combinations
+        print("   Common configuration combinations:")
         test_combinations = [
             ("f2", ["yfinance"], "development"),
             ("m7", ["yfinance", "sec_edgar"], "development"),
@@ -220,47 +220,47 @@ def check_all_configs():
             except Exception as e:
                 print(f"      ❌ {stock_list}_{'+'.join(data_sources)}_{scenario}: {e}")
 
-        print("\n✅ 所有配置检查完成")
+        print("\n✅ All configuration checks completed")
 
     except Exception as e:
-        print(f"❌ 配置检查失败: {e}")
+        print(f"❌ Configuration check failed: {e}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="统一的ETL配置检查工具",
+        description="Unified ETL configuration check tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-示例用法:
-    # 检查特定股票列表
+Example usage:
+    # Check specific stock list
     python scripts/config/check_etl_config.py --stock-list f2
     python scripts/config/check_etl_config.py --stock-list v3k --details
 
-    # 检查数据源
+    # Check data source
     python scripts/config/check_etl_config.py --data-source yfinance --details
 
-    # 检查场景
+    # Check scenario
     python scripts/config/check_etl_config.py --scenario development
 
-    # 检查运行时配置组合
+    # Check runtime configuration combination
     python scripts/config/check_etl_config.py --runtime f2 yfinance development
 
-    # 检查所有配置
+    # Check all configurations
     python scripts/config/check_etl_config.py --all
         """,
     )
 
-    parser.add_argument("--stock-list", help="检查指定的股票列表配置 (f2, m7, n100, v3k)")
-    parser.add_argument("--data-source", help="检查指定的数据源配置 (yfinance, sec_edgar)")
-    parser.add_argument("--scenario", help="检查指定的场景配置 (development, production)")
+    parser.add_argument("--stock-list", help="Check specified stock list configuration (f2, m7, n100, v3k)")
+    parser.add_argument("--data-source", help="Check specified data source configuration (yfinance, sec_edgar)")
+    parser.add_argument("--scenario", help="Check specified scenario configuration (development, production)")
     parser.add_argument(
         "--runtime",
         nargs=3,
         metavar=("STOCK_LIST", "DATA_SOURCE", "SCENARIO"),
-        help="检查运行时配置组合 (例: f2 yfinance development)",
+        help="Check runtime configuration combination (e.g.: f2 yfinance development)",
     )
-    parser.add_argument("--all", action="store_true", help="检查所有可用配置")
-    parser.add_argument("--details", action="store_true", help="显示详细信息")
+    parser.add_argument("--all", action="store_true", help="Check all available configurations")
+    parser.add_argument("--details", action="store_true", help="Show detailed information")
 
     args = parser.parse_args()
 
@@ -268,7 +268,7 @@ def main():
         parser.print_help()
         return
 
-    print("🎯 ETL配置检查工具")
+    print("🎯 ETL Configuration Check Tool")
     print("=" * 50)
 
     try:
@@ -289,10 +289,10 @@ def main():
             check_all_configs()
 
     except KeyboardInterrupt:
-        print("\n⏹️ 检查被用户中断")
+        print("\n⏹️ Check interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ 检查过程中出现错误: {e}")
+        print(f"\n❌ Error occurred during check: {e}")
         sys.exit(1)
 
 

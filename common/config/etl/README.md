@@ -1,36 +1,37 @@
 # ETL Configuration System
 
-**集中化ETL配置管理系统** - Issue #278 实现
+**Centralized ETL Configuration Management System** - Issue #278 Implementation
 
-## 🎯 设计原理
+## 🎯 Design Principles
 
-### 正交配置三维度
-ETL系统采用三个独立的正交维度进行配置，运行时动态组合：
+### Three Orthogonal Configuration Dimensions
+The ETL system uses three independent orthogonal dimensions for configuration, combined dynamically at runtime:
 
-1. **Stock Lists** (股票列表) - 处理哪些公司
-2. **Data Sources** (数据源) - 从哪里获取数据
-3. **Scenarios** (场景) - 如何处理数据
+1. **Stock Lists** - Which companies to process
+2. **Data Sources** - Where to get data from
+3. **Scenarios** - How to process the data
 
-### 扁平化命名规范
+### Flattened Naming Convention
 ```
 common/config/etl/
-├── stock_f2.yml      # 2 companies (开发测试)
-├── stock_m7.yml      # 7 companies (标准测试)
-├── stock_n100.yml    # 100 companies (验证测试)
-├── stock_v3k.yml     # 3,485 companies (生产环境)
+├── stock_f2.yml      # 2 companies (development testing)
+├── stock_m7.yml      # 7 companies (standard testing)
+├── stock_n100.yml    # 100 companies (validation testing)
+├── stock_v3k.yml     # 3,485 companies (production environment)
 ├── source_yfinance.yml    # Yahoo Finance API
 ├── source_sec_edgar.yml   # SEC Edgar API
-├── scenario_dev.yml       # 开发环境设置
-└── scenario_prod.yml      # 生产环境设置
+├── scenario_dev.yml       # Development environment settings
+└── scenario_prod.yml      # Production environment settings
 ```
 
-## 📋 配置文件格式
+## 📋 Configuration File Formats
 
-### Stock Lists (股票列表)
+### Stock Lists
 ```yaml
-# stock_f2.yml
-description: "2-company subset for rapid development testing"
+# Example: stock_f2.yml
+description: "Fast-2 development test dataset"
 tier: "f2"
+tracked_in_git: true
 max_size_mb: 20
 
 companies:
@@ -40,18 +41,22 @@ companies:
     industry: "Software"
     cik: "0000789019"
     market_cap_category: "mega"
+
   NVDA:
     name: "NVIDIA Corporation"
     sector: "Technology"
     industry: "Semiconductors"
     cik: "0001045810"
     market_cap_category: "large"
+
+selection_criteria: "2 largest technology companies for fast development testing"
+last_updated: "2025-01-15T10:00:00.000000"
 ```
 
-### Data Sources (数据源)
+### Data Sources
 ```yaml
-# source_yfinance.yml
-description: "Yahoo Finance API for historical prices and financial data"
+# Example: source_yfinance.yml
+description: "Yahoo Finance API data source"
 enabled: true
 
 data_types:
@@ -62,16 +67,22 @@ data_types:
 api_config:
   base_url: "https://query1.finance.yahoo.com"
   timeout_seconds: 30
+  retry_attempts: 3
 
 rate_limits:
   requests_per_second: 2
-  max_retries: 3
+  daily_limit: 2000
+
+output_format:
+  file_extension: ".json"
+  date_format: "YYYY-MM-DD"
+  timestamp_format: "ISO"
 ```
 
-### Scenarios (场景)
+### Scenarios
 ```yaml
-# scenario_dev.yml
-description: "Fast development and testing environment"
+# Example: scenario_dev.yml
+description: "Development environment configuration"
 
 data_sources:
   - "yfinance"
@@ -79,162 +90,210 @@ data_sources:
 
 processing_mode: "test"  # test, incremental, full
 
+output_formats:
+  - "json"
+  - "parquet"
+
 quality_thresholds:
   min_success_rate: 0.8
   max_error_rate: 0.2
+  data_completeness: 0.7
 
 resource_limits:
   max_concurrent_requests: 5
   memory_limit_mb: 1024
+  timeout_minutes: 30
+
+optimizations:
+  cache_enabled: true
+  parallel_processing: false
+  batch_size: 10
 ```
 
-## 🚀 使用方法
+## 🚀 Usage Examples
 
-### 基础用法
+### Basic Configuration Loading
 ```python
-from common.etl_loader import (
-    build_etl_config,
-    load_stock_list,
-    load_data_source,
-    load_scenario
-)
+from common.etl_loader import load_stock_list, load_data_source, load_scenario
 
-# 1. 加载单个配置
-stocks = load_stock_list('f2')        # 加载F2股票列表
-source = load_data_source('yfinance') # 加载Yahoo Finance配置
-scenario = load_scenario('development') # 加载开发场景
+# Load individual configurations
+f2_stocks = load_stock_list('f2')
+yfinance_config = load_data_source('yfinance')
+dev_scenario = load_scenario('development')
 
-# 2. 组合运行时配置 (推荐)
+print(f"F2 has {f2_stocks.count} stocks")
+print(f"YFinance supports: {yfinance_config.data_types}")
+print(f"Development mode: {dev_scenario.processing_mode}")
+```
+
+### Runtime Configuration Building
+```python
+from common.etl_loader import build_etl_config
+
+# Combine orthogonal dimensions
 config = build_etl_config(
     stock_list='f2',
     data_sources=['yfinance', 'sec_edgar'],
     scenario='development'
 )
 
-# 3. 使用配置
-tickers = config.stock_list.tickers
-api_config = config.data_sources['yfinance'].api_config
-processing_mode = config.scenario.processing_mode
+print(f"Configuration: {config.combination}")
+print(f"Processing {config.ticker_count} stocks")
+print(f"Using sources: {config.enabled_sources}")
 ```
 
-### ETL管道中的使用
+### ETL Pipeline Integration
 ```python
-# 根据环境自动选择配置
-if args.production:
-    config = build_etl_config('v3k', ['yfinance', 'sec_edgar'], 'production')
-else:
-    config = build_etl_config('f2', ['yfinance'], 'development')
+from common.etl_loader import build_etl_config
 
-# 数据采集
-for ticker in config.stock_list.tickers:
-    for source_name in config.enabled_sources:
-        source = config.data_sources[source_name]
-        # 使用 source.api_config, source.rate_limits 等进行采集
-
-# 应用场景设置
-if config.scenario.processing_mode == 'test':
-    # 使用测试模式的特殊逻辑
-    pass
-```
-
-## 🔧 配置验证
-
-### 内置验证功能
-```python
-from common.etl_loader import etl_loader
-
-# 验证所有配置文件
-errors = etl_loader.validate_config_files()
-if errors:
-    for error in errors:
-        print(f"配置错误: {error}")
-```
-
-### 运行时验证
-- 自动检查数据源在场景中是否可用
-- YAML格式验证
-- 文件存在性检查
-- 配置完整性验证
-
-## 📊 配置组合示例
-
-### 开发环境
-```python
-# 快速开发: 2个股票 + YFinance + 开发模式
-dev_config = build_etl_config('f2', ['yfinance'], 'development')
-```
-
-### 测试环境
-```python
-# 标准测试: 7个股票 + 双数据源 + 开发模式
-test_config = build_etl_config('m7', ['yfinance', 'sec_edgar'], 'development')
-```
-
-### 生产环境
-```python
-# 生产部署: 3485个股票 + 双数据源 + 生产模式
+# Production configuration
 prod_config = build_etl_config('v3k', ['yfinance', 'sec_edgar'], 'production')
+
+# Process each stock
+for ticker in prod_config.stock_list.tickers:
+    print(f"Processing {ticker}")
+
+    # Use data source configurations
+    for source_name in prod_config.enabled_sources:
+        source_config = prod_config.data_sources[source_name]
+        api_config = source_config.api_config
+        rate_limit = source_config.rate_limits.get('requests_per_second', 1)
+
+        # Apply rate limiting and processing
+        # ... ETL pipeline logic here
 ```
 
-## 🎯 优势
+## 🔄 Migration from Legacy Configuration
 
-### 集中化管理
-- **单一入口**: 所有ETL配置通过 `etl_loader` 访问
-- **统一API**: 一致的接口，降低学习成本
-- **自动缓存**: 避免重复文件读取
+### Old Configuration Structure (Deprecated)
+```
+common/config/
+├── stock_lists/
+│   ├── f2.yml
+│   ├── m7.yml
+│   └── ...
+├── data_sources/
+│   ├── yfinance.yml
+│   └── sec_edgar.yml
+└── scenarios/
+    ├── development.yml
+    └── production.yml
+```
 
-### 正交配置
-- **独立维度**: 股票列表、数据源、场景互不干扰
-- **灵活组合**: 运行时动态组合，支持各种场景
-- **易于扩展**: 新增配置维度无需修改现有代码
-
-### 维护性
-- **扁平命名**: 直观的文件命名，易于理解
-- **配置验证**: 自动验证配置正确性
-- **错误处理**: 友好的错误信息和异常处理
-
-## 🔄 迁移指南
-
-### 从旧配置系统迁移
+### Migration Script
 ```bash
-# 1. 执行自动迁移
-python scripts/migrate_etl_config.py --migrate
+# Run migration to new flat structure
+python infra/scripts/migrate_etl_config.py --migrate
 
-# 2. 验证迁移结果
-python scripts/migrate_etl_config.py --validate
+# Validate migration
+python infra/scripts/migrate_etl_config.py --validate
 
-# 3. 如有问题可回滚
-python scripts/migrate_etl_config.py --rollback
+# Rollback if needed
+python infra/scripts/migrate_etl_config.py --rollback
 ```
 
-### 代码更新模式
+### Code Migration Patterns
 ```python
-# 旧方式 ❌
+# OLD WAY (deprecated)
 from common.orthogonal_config import orthogonal_config
 config = orthogonal_config.load_stock_list('f2')
 
-# 新方式 ✅
+# NEW WAY (current)
 from common.etl_loader import load_stock_list
 config = load_stock_list('f2')
 ```
 
-## 🔗 相关文件
+## 🧪 Testing and Validation
 
-- `common/etl_loader.py` - 核心配置加载器
-- `scripts/migrate_etl_config.py` - 配置迁移脚本
-- `scripts/examples/etl_config_example.py` - 使用示例
-- Issue #278 - 设计文档和需求
+### Configuration Checker
+```bash
+# Check all configurations
+python infra/scripts/config/check_etl_config.py --all
 
-## 🚨 注意事项
+# Check specific configuration
+python infra/scripts/config/check_etl_config.py --stock-list f2 --details
+python infra/scripts/config/check_etl_config.py --data-source yfinance
+python infra/scripts/config/check_etl_config.py --scenario development
 
-1. **向后兼容**: 迁移期间旧配置依然可用
-2. **缓存管理**: 配置修改后需要重启进程或清除缓存
-3. **文件权限**: 确保配置文件具有正确的读取权限
-4. **路径依赖**: 相对路径基于项目根目录
+# Test runtime configuration
+python infra/scripts/config/check_etl_config.py --runtime f2 yfinance development
+```
 
-## 📈 性能特性
+### Unit Tests
+```bash
+# Run ETL configuration tests
+python -m pytest tests/test_etl_config.py -v
 
-- **缓存机制**: 首次加载后缓存配置，避免重复IO
-- **懒加载**: 只在需要时加载特定配置
-- **验证缓存**: 文件修改时间戳检查，自动重新加载
-- **内存优化**: 合理的数据结构，最小化内存占用
+# Test with coverage
+python -m pytest tests/test_etl_config.py --cov=common.etl_loader
+```
+
+## 📊 Configuration Matrix
+
+### Supported Combinations
+| Stock List | Data Sources | Scenarios | Use Case |
+|------------|-------------|-----------|----------|
+| f2 | yfinance | development | Fast development testing |
+| m7 | yfinance, sec_edgar | development | Standard feature testing |
+| n100 | yfinance, sec_edgar | development | Integration validation |
+| v3k | yfinance, sec_edgar | production | Full production pipeline |
+
+### Performance Characteristics
+| Configuration | Stocks | Expected Runtime | Memory Usage | Disk Space |
+|--------------|--------|------------------|--------------|------------|
+| f2_yfinance_development | 2 | 30-60 seconds | 100 MB | 20 MB |
+| m7_yfinance+sec_edgar_development | 7 | 2-5 minutes | 200 MB | 50 MB |
+| n100_yfinance+sec_edgar_development | 100 | 15-30 minutes | 500 MB | 200 MB |
+| v3k_yfinance+sec_edgar_production | 3,485 | 2-6 hours | 2 GB | 10 GB |
+
+## 🔧 Configuration Management
+
+### Adding New Stock Lists
+1. Create new file: `common/config/etl/stock_[name].yml`
+2. Follow the established YAML format
+3. Add mapping in `etl_loader.py`: `_stock_list_mapping`
+4. Update tests and documentation
+
+### Adding New Data Sources
+1. Create new file: `common/config/etl/source_[name].yml`
+2. Define API configuration and rate limits
+3. Add mapping in `etl_loader.py`: `_data_source_mapping`
+4. Implement data source integration
+
+### Adding New Scenarios
+1. Create new file: `common/config/etl/scenario_[name].yml`
+2. Define processing parameters and resource limits
+3. Add mapping in `etl_loader.py`: `_scenario_mapping`
+4. Update scenario validation logic
+
+## 🎯 Design Benefits
+
+### Before (Scattered Configuration)
+- ❌ Configuration files spread across multiple directories
+- ❌ Duplicate configuration management code
+- ❌ Inconsistent naming conventions
+- ❌ Manual file path handling
+- ❌ No caching or validation
+
+### After (Centralized Configuration)
+- ✅ Single directory with flat structure
+- ✅ DRY principle applied - one script, multiple configs
+- ✅ Consistent naming: `stock_*.yml`, `source_*.yml`, `scenario_*.yml`
+- ✅ Automated configuration loading with caching
+- ✅ Built-in validation and error handling
+- ✅ Orthogonal design enables flexible combinations
+
+## 📚 References
+
+- **Issue #278**: ETL Configuration Centralization
+- **Migration Script**: `infra/scripts/migrate_etl_config.py`
+- **Configuration Checker**: `infra/scripts/config/check_etl_config.py`
+- **Usage Examples**: `infra/scripts/examples/etl_config_example.py`
+- **Core Implementation**: `common/etl_loader.py`
+- **Test Suite**: `tests/test_etl_config.py`
+
+---
+
+**Last Updated**: 2025-01-15
+**Configuration Version**: 1.0
+**Maintained By**: ETL Configuration System
