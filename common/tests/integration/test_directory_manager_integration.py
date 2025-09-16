@@ -50,11 +50,11 @@ class TestDirectoryManagerIntegration:
         (project_root / "cache").mkdir(parents=True, exist_ok=True)
         (project_root / "temp").mkdir(parents=True, exist_ok=True)
 
-        # Create a realistic directory_structure.yml config
+        # Create a realistic directory_structure.yml config matching current structure
         config_content = {
             "storage": {"backend": "local_filesystem", "root_path": "build_data"},
             "layers": {
-                "layer_01_raw": {
+                "stage_00_raw": {
                     "description": "Raw Data Layer - Immutable source data",
                     "subdirs": ["sec-edgar", "yfinance", "manual", "reference"],
                     "performance": {
@@ -63,7 +63,7 @@ class TestDirectoryManagerIntegration:
                         "indexing": "minimal",
                     },
                 },
-                "layer_02_delta": {
+                "stage_01_daily_delta": {
                     "description": "Daily Delta Layer - Incremental changes",
                     "subdirs": ["additions", "modifications", "deletions", "metadata"],
                     "performance": {
@@ -72,7 +72,7 @@ class TestDirectoryManagerIntegration:
                         "indexing": "temporal",
                     },
                 },
-                "layer_03_index": {
+                "stage_02_daily_index": {
                     "description": "Daily Index Layer - Vectors, entities, relationships",
                     "subdirs": ["vectors", "entities", "relationships", "embeddings", "indices"],
                     "performance": {
@@ -82,7 +82,7 @@ class TestDirectoryManagerIntegration:
                         "indexing": "full",
                     },
                 },
-                "layer_04_rag": {
+                "stage_03_graph_rag": {
                     "description": "Graph RAG Layer - Unified knowledge base",
                     "subdirs": ["graph_db", "vector_store", "cache", "snapshots"],
                     "performance": {
@@ -92,7 +92,7 @@ class TestDirectoryManagerIntegration:
                         "indexing": "graph",
                     },
                 },
-                "layer_05_results": {
+                "stage_04_query_results": {
                     "description": "Query Results Layer - Analysis and reports",
                     "subdirs": [
                         "dcf_reports",
@@ -109,13 +109,20 @@ class TestDirectoryManagerIntegration:
                     },
                 },
             },
-            "common": {"config": "common/config", "logs": "logs", "temp": "temp", "cache": "cache"},
+            "common": {"config": "common/config", "logs": "build_data/logs", "temp": "temp", "cache": "cache"},
+            "data_layer_mapping": {
+                "RAW_DATA": "stage_00_raw",
+                "DAILY_DELTA": "stage_01_daily_delta",
+                "DAILY_INDEX": "stage_02_daily_index",
+                "GRAPH_RAG": "stage_03_graph_rag",
+                "QUERY_RESULTS": "stage_04_query_results",
+            },
             "legacy_mapping": {
-                "stage_00_original": "layer_01_raw",
-                "stage_01_extract": "layer_02_delta",
-                "stage_02_transform": "layer_03_index",
-                "stage_03_load": "layer_04_rag",
-                "stage_99_build": "layer_05_results",
+                "layer_01_raw": "stage_00_raw",
+                "layer_02_delta": "stage_01_daily_delta",
+                "layer_03_index": "stage_02_daily_index",
+                "layer_04_rag": "stage_03_graph_rag",
+                "layer_05_results": "stage_04_query_results",
                 "data/config": "common/config",
                 "data": "build_data",
             },
@@ -136,7 +143,7 @@ class TestDirectoryManagerIntegration:
 
         # Test layer path resolution
         raw_path = dm.get_layer_path(DataLayer.RAW_DATA)
-        expected_raw = real_project_structure / "build_data" / "layer_01_raw"
+        expected_raw = real_project_structure / "build_data" / "stage_00_raw"
         assert raw_path == expected_raw
 
         # Test subdir path resolution
@@ -157,11 +164,11 @@ class TestDirectoryManagerIntegration:
 
         # Test all DataLayer enum values
         layer_mappings = {
-            DataLayer.RAW_DATA: "layer_01_raw",
-            DataLayer.DAILY_DELTA: "layer_02_delta",
-            DataLayer.DAILY_INDEX: "layer_03_index",
-            DataLayer.GRAPH_RAG: "layer_04_rag",
-            DataLayer.QUERY_RESULTS: "layer_05_results",
+            DataLayer.RAW_DATA: "stage_00_raw",
+            DataLayer.DAILY_DELTA: "stage_01_daily_delta",
+            DataLayer.DAILY_INDEX: "stage_02_daily_index",
+            DataLayer.GRAPH_RAG: "stage_03_graph_rag",
+            DataLayer.QUERY_RESULTS: "stage_04_query_results",
         }
 
         for layer, expected_dir in layer_mappings.items():
@@ -180,7 +187,7 @@ class TestDirectoryManagerIntegration:
         # Test that paths are still resolved correctly
         path = dm_local.get_layer_path(DataLayer.RAW_DATA)
         assert "build_data" in str(path)
-        assert "layer_01_raw" in str(path)
+        assert "stage_00_raw" in str(path)
 
         # Test switching to cloud backend (should not break path resolution)
         dm_cloud = DirectoryManager(
@@ -229,12 +236,12 @@ class TestDirectoryManagerIntegration:
         assert dm.config["storage"]["root_path"] == "build_data"
 
         # Test layer configurations
-        raw_layer_config = dm.config["layers"]["layer_01_raw"]
+        raw_layer_config = dm.config["layers"]["stage_00_raw"]
         assert "sec-edgar" in raw_layer_config["subdirs"]
         assert "yfinance" in raw_layer_config["subdirs"]
 
         # Test performance configurations
-        rag_layer_config = dm.config["layers"]["layer_04_rag"]
+        rag_layer_config = dm.config["layers"]["stage_03_graph_rag"]
         assert rag_layer_config["performance"]["target_response_time"] == "100ms"
         assert rag_layer_config["performance"]["caching"] is True
 
@@ -288,12 +295,12 @@ class TestDirectoryManagerIntegration:
 
         # Test main branch build path
         main_build_path = dm.get_build_path()
-        assert "layer_05_results" in str(main_build_path)
+        assert "stage_04_query_results" in str(main_build_path)
         assert "build_data" in str(main_build_path)
 
         # Test feature branch build path
         feature_build_path = dm.get_build_path(branch="feature-fix-common-lib-125")
-        assert "layer_05_results_feature-fix-common-lib-125" in str(feature_build_path)
+        assert "stage_04_query_results_feature-fix-common-lib-125" in str(feature_build_path)
 
         # Test timestamped build path
         timestamp = "20250828_143000"
@@ -302,7 +309,7 @@ class TestDirectoryManagerIntegration:
 
         # Test combination
         combo_path = dm.get_build_path(build_timestamp=timestamp, branch="feature-test")
-        assert "layer_05_results_feature-test" in str(combo_path)
+        assert "stage_04_query_results_feature-test" in str(combo_path)
         assert f"build_{timestamp}" in str(combo_path)
 
 
@@ -381,7 +388,7 @@ class TestDirectoryManagerErrorHandling:
             # Should still be able to resolve paths
             path = dm.get_layer_path(DataLayer.RAW_DATA)
             assert path is not None
-            assert "layer_01_raw" in str(path)
+            assert "stage_00_raw" in str(path)
 
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)
@@ -425,9 +432,9 @@ class TestDirectoryManagerErrorHandling:
             assert path is not None
             assert "sec-edgar" in str(path)
 
-            # Test with empty string inputs
-            path = dm.get_subdir_path(DataLayer.RAW_DATA, "", "")
-            assert path is not None
+            # Test with empty string inputs - should raise ValueError
+            with pytest.raises(ValueError, match="Path component must be a non-empty string"):
+                dm.get_subdir_path(DataLayer.RAW_DATA, "", "")
 
             # Test legacy mapping with invalid input
             result = dm.map_legacy_path("nonexistent_legacy_path")

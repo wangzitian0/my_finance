@@ -77,17 +77,18 @@ class TestConfigManager:
     """Manages test configurations for different dataset tiers"""
 
     CONFIG_MAP = {
-        # Primary four-tier system
-        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="list_fast_2.yml"),
-        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="list_magnificent_7.yml"),
-        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="list_nasdaq_100.yml"),
-        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="list_vti_3500.yml"),
+        # Primary four-tier system - updated with actual file names
+        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="etl/stock_f2.yml"),
+        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="etl/stock_m7.yml"),
+        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="etl/stock_n100.yml"),
+        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="etl/stock_v3k.yml"),
     }
 
     def __init__(self, base_path: str = None):
         if base_path is None:
             # Use directory_manager to get correct config path
             self.config_dir = directory_manager.get_config_path()
+            self.base_path = Path("/Users/SP14016/zitian/my_finance")
         else:
             self.base_path = Path(base_path)
             self.config_dir = self.base_path / "data" / "config"
@@ -111,11 +112,11 @@ class TestConfigManager:
         """Get expected file counts for validation"""
         config = self.get_config(tier)
 
-        if tier == DatasetTier.TEST:
+        if tier == DatasetTier.F2:
             return {
-                "yfinance_files": 1,  # Single AAPL file
+                "yfinance_files": 2,  # MSFT + NVDA files
                 "sec_edgar_files": 0,
-                "total_tickers": 1,
+                "total_tickers": 2,
             }
         elif tier == DatasetTier.M7:
             return {
@@ -125,13 +126,13 @@ class TestConfigManager:
                 ),  # 7 tickers * 12 filings avg
                 "total_tickers": 7,
             }
-        elif tier == DatasetTier.NASDAQ100:
+        elif tier == DatasetTier.N100:
             return {
                 "yfinance_files": 300,  # 100+ tickers * 3 timeframes
-                "sec_edgar_files": 0,  # Not enabled for NASDAQ100
+                "sec_edgar_files": 0,  # Not enabled for N100
                 "total_tickers": 100,
             }
-        elif tier == DatasetTier.VTI:
+        elif tier == DatasetTier.V3K:
             return {
                 "yfinance_files": 15000,  # ~5000 tickers * 3 timeframes
                 "sec_edgar_files": 0,  # Too expensive
@@ -150,7 +151,8 @@ class TestConfigManager:
 
     def get_data_paths(self, tier: DatasetTier) -> Dict[str, Path]:
         """Get data paths for specified tier"""
-        base_data_path = self.base_path / "data"
+        # Use the main finance path for data access
+        base_data_path = Path("/Users/SP14016/zitian/my_finance/data")
 
         return {
             "extract": base_data_path / "stage_01_extract",
@@ -175,15 +177,16 @@ def get_test_config(tier_name: str) -> TestConfig:
 def validate_test_environment() -> Dict[str, Any]:
     """Validate test environment for all tiers"""
     manager = TestConfigManager()
+    base_data_path = Path("/Users/SP14016/zitian/my_finance/data")
 
     return {
         "config_files": manager.validate_config_files(),
-        "base_path_exists": manager.base_path.exists(),
+        "base_path_exists": base_data_path.exists(),
         "config_dir_exists": manager.config_dir.exists(),
         "data_structure": {
-            "stage_01_extract": (manager.base_path / "data" / "stage_01_extract").exists(),
-            "stage_02_transform": (manager.base_path / "data" / "stage_02_transform").exists(),
-            "stage_03_load": (manager.base_path / "data" / "stage_03_load").exists(),
-            "build": (manager.base_path / "data" / "build").exists(),
+            "stage_01_extract": (base_data_path / "stage_01_extract").exists(),
+            "stage_02_transform": (base_data_path / "stage_02_transform").exists(),
+            "stage_03_load": (base_data_path / "stage_03_load").exists(),
+            "build": (base_data_path / "build").exists(),
         },
     }
