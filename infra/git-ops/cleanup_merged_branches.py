@@ -285,9 +285,12 @@ class BranchCleanup:
 
         return inactive_branches
 
-    def cleanup_branches(self) -> None:
+    def cleanup_branches(self, days_back: int = 14) -> None:
         """
         Simple cleanup: delete merged branches and inactive branches.
+
+        Args:
+            days_back: Number of days to look back for inactive branches
         """
         print("🧹 Starting branch cleanup...")
 
@@ -297,13 +300,13 @@ class BranchCleanup:
         merged_prs = self.get_merged_prs(30)
         merged_branches = {pr["headRefName"] for pr in merged_prs if pr.get("headRefName")}
 
-        # 2. Get inactive branches (14 days, no PR)
-        inactive_branches = self.get_inactive_branches(14)
+        # 2. Get inactive branches (configurable days, no PR)
+        inactive_branches = self.get_inactive_branches(days_back)
 
         branches_to_delete = merged_branches | inactive_branches
 
         print(f"📊 Found {len(merged_branches)} merged branches")
-        print(f"📊 Found {len(inactive_branches)} inactive branches (14+ days, no PR)")
+        print(f"📊 Found {len(inactive_branches)} inactive branches ({days_back}+ days, no PR)")
         print(f"📊 Total to delete: {len(branches_to_delete)}")
 
         if not branches_to_delete:
@@ -336,9 +339,18 @@ class BranchCleanup:
 
 def main():
     """Main function - simple branch cleanup."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Cleanup merged and inactive git branches")
+    parser.add_argument("--auto", action="store_true", help="Run automatically without prompts")
+    parser.add_argument(
+        "--days", type=int, default=14, help="Days to look back for inactive branches"
+    )
+    args = parser.parse_args()
+
     try:
         cleanup = BranchCleanup()
-        cleanup.cleanup_branches()
+        cleanup.cleanup_branches(args.days)
     except KeyboardInterrupt:
         print("\n\n👋 Cleanup cancelled.")
     except Exception as e:

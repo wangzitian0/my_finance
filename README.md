@@ -59,12 +59,11 @@ p3 stop                     # End of day: release resources
 
 | Intent | Command | What It Does |
 |--------|---------|--------------|
-| **"What's wrong?"** | `p3 debug` | Comprehensive diagnostics and issue identification |
-| **"Fix everything"** | `p3 reset` | Nuclear reset - clean restart of everything (destructive) |
+| **"What's wrong?"** | `p3 reset` | Nuclear reset - clean restart of everything (destructive) |
 
 **Troubleshooting Flow:**
 ```bash
-p3 debug                    # Diagnose what's wrong
+p3 reset                    # Reset environment and diagnose issues
 # Try fixes based on debug output...
 p3 reset                    # Last resort - clean restart
 p3 ready                    # Verify fix worked

@@ -148,7 +148,7 @@ As designated P3 CLI technical authority, you have exclusive responsibility for:
 | **"Check my code"** | `p3 check [scope]` | After changes, before commit, during development (use `f2` for speed) |
 | **"Test everything"** | `p3 test [scope]` | Before PR (F2 mandatory), after architectural changes, final validation |
 | **"Create PR"** | `p3 ship "title" issue` | Work complete, tested, ready for review (F2 tests must pass) |
-| **"What's wrong?"** | `p3 debug` | Tests failing, environment issues, services not responding |
+| **"What's wrong?"** | `p3 reset` | Tests failing, environment issues, services not responding |
 | **"Fix everything"** | `p3 reset` | Multiple failures, corruption, last resort (⚠️ destructive) |
 | **"Build datasets"** | `p3 build [scope]` | Data pipeline testing, analysis prep, production data generation |
 | **"Show version"** | `p3 version` | Debugging version issues, documentation, system verification |
@@ -177,7 +177,7 @@ REQUIRED_WORKFLOWS:
     requirements: "F2 tests MUST pass"
     
   emergency_recovery:
-    sequence: ["p3 debug", "attempt fixes", "p3 reset if needed", "p3 ready"]
+    sequence: ["p3 reset", "attempt fixes", "p3 ready"]
     frequency: "When systems fail"
 
 PROHIBITED_PATTERNS:

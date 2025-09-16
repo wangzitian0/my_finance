@@ -12,7 +12,7 @@
 - **Environment Status**: Comprehensive system health checks and diagnostics
 - **Validation Tools**: Fast fail-fast environment validation for development
 - **Configuration Reporting**: System configuration summaries and analysis
-- **Workflow Implementation**: P3 ready/reset/debug command implementations
+- **Workflow Implementation**: P3 ready/reset command implementations
 - **Worktree Isolation**: Python environment isolation per git worktree
 
 ### **`git/`** - Git Operations and Release Management
@@ -124,7 +124,7 @@ infra/
 - `config_summary.py` - System configuration reporting
 - `workflow_ready.py` - P3 ready command implementation (start working)
 - `workflow_reset.py` - P3 reset command implementation (fix environment)
-- `workflow_debug.py` - P3 debug command implementation (diagnose issues)
+- `workflow_reset.py` - P3 reset command implementation (diagnose and fix issues)
 - `worktree_isolation.py` - Worktree Python environment isolation
 
 **Usage**:
@@ -134,7 +134,7 @@ python infra/system/fast_env_check.py       # Quick validation (5s timeout)
 python infra/system/config_summary.py       # Configuration overview
 python infra/system/workflow_ready.py       # P3 ready workflow
 python infra/system/workflow_reset.py       # P3 reset workflow
-python infra/system/workflow_debug.py       # P3 debug workflow
+python infra/system/workflow_reset.py       # P3 reset workflow
 ```
 
 ### Data Management (`data/`)
@@ -237,7 +237,7 @@ scripts/ → infra/ migration:
   # System environment workflows
   scripts/workflow_ready.py → infra/system/workflow_ready.py
   scripts/workflow_reset.py → infra/system/workflow_reset.py
-  scripts/workflow_debug.py → infra/system/workflow_debug.py
+  scripts/workflow_reset.py → infra/system/workflow_reset.py
   scripts/worktree_isolation.py → infra/system/worktree_isolation.py
   
   # Development tools and validation
@@ -281,7 +281,7 @@ Following CLAUDE.md's **two-layer modularity principle**:
 **Workflow Integration**:
 ```bash
 p3 ready            # Uses infra/system/ for environment validation
-p3 debug            # Uses infra/system/env_status.py for diagnostics
+p3 reset            # Uses infra/system/env_status.py for diagnostics
 p3 ship "title" 123 # Uses infra/git/ for release management
 ```
 
