@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command", 
+            "command": "echo \"[HOOK] PreToolUse: $(date '+%Y-%m-%d %H:%M:%S') - Tool: ${tool_name}\" >> build_data/logs/claude_hooks/tool_execution.log"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[HOOK] PostToolUse: $(date '+%Y-%m-%d %H:%M:%S') - Tool: ${tool_name} - Success: ${success}\" >> build_data/logs/claude_hooks/tool_execution.log"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[HOOK] SessionEnd: $(date '+%Y-%m-%d %H:%M:%S')\" >> build_data/logs/claude_hooks/tool_execution.log"
+          }
+        ]
+      }
+    ]
+  }
+}

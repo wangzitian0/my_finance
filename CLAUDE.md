@@ -82,7 +82,7 @@ strategic: hrbp, revops
 3. **SSOT I/O ENFORCEMENT**: Use `common.core.directory_manager` for ALL file operations
 4. **CONFIGURATION CENTRALIZATION**: All configs at `common/config/`
 5. **AUTOMATIC PR CREATION**: Always create PR via `git-ops-agent` after significant changes
-6. **ENGLISH-ONLY STANDARD**: All technical content in English
+6. **ENGLISH-ONLY STANDARD**: All codebase and comments in English, deliverables may contain Chinese
 7. **GITHUB ISSUES ONLY**: Never create .md planning files - use GitHub Issues
 8. **MODULAR FILE PLACEMENT**: All files must be in appropriate L1/L2 directories - avoid root directory unless essential (project config, entry points, documentation)
 
@@ -113,6 +113,7 @@ strategic: hrbp, revops
 - **Documentation Standards**: Agent file consistency, quarterly reviews
 - **🔒 Checklist Protection**: EXCLUSIVE authority over Task Initiation Protocol (Phase 1-5)
 - **Governance Enforcement**: Immediate escalation for checklist tampering or unauthorized modifications
+- **🔍 Claude Code Hooks Audit**: EXCLUSIVE audit authority over `~/.claude/settings.json` for agent execution monitoring and success rate analysis
 
 ### Infra-Ops Agent Responsibilities
 - **P3 CLI Technical**: Command development, system integration, performance

@@ -11,6 +11,21 @@ Features:
 - Performance analytics and reporting
 - Automated optimization recommendations
 - Integration with 20-PR cycle automation
+
+Claude Code Hooks Configuration Management:
+- EXCLUSIVE audit authority over ~/.claude/settings.json
+- Global hooks configuration for all worktree agent execution monitoring
+- Session-based logging for agent success rate analysis
+- Main project directory centralized logging (/Users/SP14016/zitian/my_finance/logs/)
+
+Key Configuration Structure:
+{
+  "hooks": {
+    "PreToolUse": [{"matcher": "*", "hooks": [{"type": "command", "command": "echo '[timestamp] SESSION:${CLAUDE_SESSION_ID} PRE-TOOL: Started' >> /path/to/main/logs/claude_agent_execution.log"}]}],
+    "PostToolUse": [{"matcher": "*", "hooks": [{"type": "command", "command": "echo '[timestamp] SESSION:${CLAUDE_SESSION_ID} POST-TOOL: Success=${CLAUDE_TOOL_SUCCESS}' >> /path/to/main/logs/claude_agent_execution.log"}]}],
+    "SessionEnd": [{"matcher": "*", "hooks": [{"type": "command", "command": "echo '[timestamp] SESSION:${CLAUDE_SESSION_ID} SESSION-END: Completed' >> /path/to/main/logs/claude_agent_execution.log"}]}]
+  }
+}
 """
 import json
 import logging
@@ -108,8 +123,10 @@ class HRBPPerformanceManager:
         # Use centralized DirectoryManager for SSOT compliance
         from ..core.directory_manager import directory_manager
 
-        self.logs_dir = directory_manager.get_logs_path()
-        self.config_dir = directory_manager.get_config_path()
+        # HRBP ALWAYS reads from main project for consistency across worktrees
+        self.main_project_path = Path("/Users/SP14016/zitian/my_finance")
+        self.logs_dir = self.main_project_path / "logs"
+        self.config_dir = self.main_project_path / "common" / "config"
 
         # Load configuration
         if config_path is None:
@@ -189,8 +206,9 @@ class HRBPPerformanceManager:
         self.logger = logging.getLogger(__name__)
 
     def _load_agent_registry(self) -> Dict[str, Dict]:
-        """Load agent registry from .claude/agents/ directory."""
-        agents_dir = Path(self.config_dir).parent.parent / ".claude" / "agents"
+        """Load agent registry from main project .claude/agents/ directory."""
+        # ALWAYS load from main project to ensure consistency across worktrees
+        agents_dir = self.main_project_path / ".claude" / "agents"
         agent_registry = {}
 
         if not agents_dir.exists():
@@ -218,6 +236,64 @@ class HRBPPerformanceManager:
 
         self.logger.info(f"Loaded {len(agent_registry)} agents from registry")
         return agent_registry
+
+    def load_claude_hooks_logs(self, days: int = 30) -> Dict[str, Any]:
+        """
+        Load and analyze Claude Code hooks execution logs from main project.
+
+        Args:
+            days: Number of days of logs to analyze
+
+        Returns:
+            Parsed hooks log data with session-based analysis
+        """
+        hooks_log_file = self.logs_dir / "claude_agent_execution.log"
+
+        if not hooks_log_file.exists():
+            self.logger.warning(f"Claude hooks log file not found: {hooks_log_file}")
+            return {}
+
+        try:
+            with open(hooks_log_file, "r") as f:
+                log_lines = f.readlines()
+
+            # Parse hook log entries
+            sessions = {}
+            current_session = None
+
+            for line in log_lines:
+                if "SESSION:" in line and "PRE-TOOL:" in line:
+                    # Extract session ID
+                    session_start = line.find("SESSION:") + 8
+                    session_end = line.find(" ", session_start)
+                    session_id = line[session_start:session_end]
+
+                    if session_id not in sessions:
+                        sessions[session_id] = {"pre_tools": 0, "post_tools": 0, "completed": False}
+                    sessions[session_id]["pre_tools"] += 1
+                    current_session = session_id
+
+                elif "SESSION:" in line and "POST-TOOL:" in line:
+                    if current_session and current_session in sessions:
+                        sessions[current_session]["post_tools"] += 1
+                        # Extract success status
+                        if "Success=true" in line or "Success=1" in line:
+                            sessions[current_session].setdefault("successes", 0)
+                            sessions[current_session]["successes"] += 1
+                        else:
+                            sessions[current_session].setdefault("failures", 0)
+                            sessions[current_session]["failures"] += 1
+
+                elif "SESSION:" in line and "SESSION-END:" in line:
+                    if current_session and current_session in sessions:
+                        sessions[current_session]["completed"] = True
+
+            self.logger.info(f"Analyzed {len(sessions)} sessions from Claude hooks logs")
+            return {"sessions": sessions, "total_sessions": len(sessions)}
+
+        except Exception as e:
+            self.logger.error(f"Failed to load Claude hooks logs: {e}")
+            return {}
 
     def collect_agent_performance_data(self, days: int = 30) -> Dict[str, AgentPerformanceMetrics]:
         """
