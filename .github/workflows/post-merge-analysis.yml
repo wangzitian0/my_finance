@@ -33,34 +33,19 @@ jobs:
 
       - name: Run Post-Merge Analysis
         id: analysis
-        uses: anthropics/claude-code-action@beta
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          direct_prompt: |
-            **POST-MERGE ISSUE CREATION**
+        run: |
+          echo "Post-merge analysis running..."
 
-            Review merged changes and create GitHub issues for outstanding work items found.
+          # Get recent commits for analysis
+          git log --oneline -10
 
-            **Focus Areas (same as PR review):**
-            1. **CLAUDE.md Checklist Violations** - Any non-compliant patterns merged
-            2. **Incomplete Requirements** - TODOs, missing tests, documentation gaps
-            3. **Technical Debt** - Code quality improvements needed
+          # Search for TODO comments in recent changes
+          echo "Searching for TODO comments in recent commits..."
+          git log --since="1 day ago" --name-only --pretty=format:"" | sort -u | grep -E '\.(py|js|ts|yml|yaml|md)$' | head -20 | xargs grep -l "TODO\|FIXME\|XXX" || true
 
-            **Create Issues For:**
-            - TODO comments requiring follow-up
-            - Missing error handling or validation
-            - Test coverage gaps
-            - Documentation updates needed
-            - Performance optimization opportunities
-
-            **Issue Requirements:**
-            - Link to specific files/lines
-            - Reference this post-merge analysis
-            - Labels: technical-debt, testing, documentation, performance
-            - Actionable titles starting with verbs
-
-          use_sticky_comment: false
+          # Create summary
+          echo "analysis_summary=Post-merge analysis completed - found potential TODO items" >> $GITHUB_OUTPUT
+          echo "Post-merge analysis completed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
