@@ -55,7 +55,6 @@
 - **Architecture Documentation**: System architecture notes and references
 - **Migration Reports**: Infrastructure migration reports and analysis
 - **Legacy Documentation**: Historical system documentation
-- **Release Documentation**: Version release notes and configurations
 - **Service Management**: Container orchestration and service provisioning
 
 ## 🏗️ Modular Architecture
