@@ -17,6 +17,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from common.core.directory_manager import directory_manager
+from common.etl_loader import etl_loader, load_stock_list
 
 
 class DatasetTier(Enum):

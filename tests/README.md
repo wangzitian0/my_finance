@@ -8,6 +8,7 @@ This directory contains **integration and end-to-end tests** for the my_finance 
 
 ### Root Tests (Integration/E2E Only)
 - `e2e/test_user_cases.py` - Complete user workflow validation
+- `test_etl_config.py` - Centralized ETL configuration system tests (Issue #278)
 - Coverage and integration configuration
 
 ### Module-Specific Tests (Moved)
