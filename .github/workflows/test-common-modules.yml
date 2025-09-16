@@ -1,16 +1,24 @@
-name: Common Module Tests
+name: All Unit Tests (Common + Infrastructure)
 
 on:
   push:
     branches: [ main, 'feature/**', 'hotfix/**' ]
     paths:
       - 'common/**'
+      - 'tests/**'
+      - 'infra/p3/**'
+      - 'p3'
+      - 'p3.py'
       - 'requirements-test.txt'
       - '.github/workflows/test-common-modules.yml'
   pull_request:
     branches: [ main ]
     paths:
       - 'common/**'
+      - 'tests/**'
+      - 'infra/p3/**'
+      - 'p3'
+      - 'p3.py'
       - 'requirements-test.txt'
       - '.github/workflows/test-common-modules.yml'
 
@@ -20,7 +28,7 @@ env:
   LOG_LEVEL: DEBUG
 
 jobs:
-  test-common-modules:
+  test-all-modules:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     
@@ -74,8 +82,8 @@ jobs:
         
     - name: "🧪 Run All Tests"
       run: |
-        echo "🧪 Running all common module tests with coverage"
-        pixi run python -m pytest common/tests/unit/ \
+        echo "🧪 Running all tests (common/tests/ and tests/) with coverage"
+        pixi run python -m pytest \
           --verbose \
           --tb=short \
           --junitxml=common/tests/junit-all.xml \
