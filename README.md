@@ -195,8 +195,36 @@ Development tools, deployment, and system operations.
 - `deployment/` - Ansible, Kubernetes, and deployment automation
 
 ### Supporting Directories
-- **`tests/`** - Testing framework across all modules
+- **`tests/`** - Integration and end-to-end testing framework
 - **`build_data/`** - Local artifacts and generated outputs
+
+## Testing Architecture
+
+**Modular Testing Strategy**: Following L1/L2 architecture principles
+
+### Test Distribution
+- **Unit Tests**: Located within each L1/L2 module alongside source code
+- **Integration Tests**: Located in root `tests/` directory for cross-module testing
+- **End-to-End Tests**: Located in root `tests/e2e/` for complete workflow validation
+
+### Testing Locations
+```yaml
+unit_tests:
+  ETL/tests/: "Data processing, SEC parsing, pipeline validation"
+  engine/tests/: "Graph-RAG, DCF calculations, reasoning logic"
+  evaluation/tests/: "Backtesting, metrics, benchmark analysis"
+  common/tests/: "Shared utilities, configurations, core components"
+  infra/tests/: "Infrastructure tools, deployment, system validation"
+
+integration_tests:
+  tests/: "Cross-module integration, system workflows"
+  tests/e2e/: "Complete user workflow validation"
+```
+
+### P3 Testing Commands
+- **`p3 check f2`**: Fast validation during development
+- **`p3 test f2`**: Comprehensive testing (unit + integration + e2e)
+- **`p3 ci`**: CI-aligned testing to prevent pipeline failures
 
 ## Features
 
@@ -262,7 +290,10 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 
 **Business Modules**: [ETL Pipeline](ETL/README.md), [Graph-RAG Engine](engine/README.md), [Strategy Evaluation](evaluation/README.md)
 **Infrastructure**: [Common Utilities](common/README.md), [Infrastructure](infra/README.md), [Testing](tests/README.md)
-**Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation  
+**Configuration**: [Config Management](infra/config/README.md) - Centralized configuration files
+**Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation
 **Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities
 
 **Architecture Notes**: Issue #256 implements business-oriented module separation with clear data flow boundaries and independent validation systems.
+
+**Issue #282 Implementation**: Root directory cleanup with modular testing architecture - unit tests co-located with L1/L2 modules, integration tests in root tests/ directory.
