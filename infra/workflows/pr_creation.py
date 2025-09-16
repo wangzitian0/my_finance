@@ -349,10 +349,10 @@ def run_end_to_end_test(scope="f2"):
 
     # Unit test commands that match CI exactly
     unit_test_commands = [
-        # Primary unit tests (main CI failure cause)
+        # Primary ALL tests (including P3 workflow) - CI superset alignment
         (
-            "pixi run python -m pytest common/tests/unit/ -v --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
-            "Common Unit Tests (Primary CI Test)",
+            "pixi run python -m pytest --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
+            "All Unit Tests (CI Superset: common/tests/ + tests/)",
         ),
         # Core component tests by markers
         ("pixi run python -m pytest -m core --tb=short -v --maxfail=10", "Core Component Tests"),

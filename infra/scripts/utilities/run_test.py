@@ -13,6 +13,7 @@ from pathlib import Path
 # Import from pr_creation.py to reuse test logic
 
 # Add infra/workflows directory to Python path for import
+# Current file: infra/scripts/utilities/run_test.py -> need infra/workflows/
 workflows_path = os.path.join(os.path.dirname(__file__), "..", "..", "workflows")
 sys.path.insert(0, workflows_path)
 
@@ -46,8 +47,25 @@ Examples:
         "scope",
         nargs="?",
         default="f2",
-        choices=["f2", "m7", "n100", "v3k"],
-        help="Test scope: f2 (fast 2 companies, default), m7 (Magnificent 7), n100 (NASDAQ 100), v3k (VTI 3500+)",
+        help="""Test scope - supports both dataset scopes and module testing:
+
+Dataset Scopes (E2E Testing):
+  f2     - Fast 2 companies (default E2E test)
+  m7     - Magnificent 7 companies
+  n100   - NASDAQ 100
+  v3k    - VTI 3500+ companies
+
+Module Testing (Unit Tests Only):
+  common        - Test common/ L1 module
+  common/core   - Test common/core/ L2 module
+  common/config - Test common/config/ L2 module
+  infra         - Test infra/ L1 module
+  infra/p3      - Test infra/p3/ L2 module
+  tests         - Test tests/ directory
+  ETL           - Test ETL/ L1 module
+  engine        - Test engine/ L1 module
+  evaluation    - Test evaluation/ L1 module
+        """,
     )
 
     args = parser.parse_args()
@@ -55,6 +73,45 @@ Examples:
     print(f"📊 Test scope: {args.scope.upper()}")
     print(f"📁 Working directory: {Path.cwd()}")
     print()
+
+    # Check if this is module testing (not E2E dataset scope)
+    dataset_scopes = ["f2", "m7", "n100", "v3k"]
+    is_module_testing = args.scope not in dataset_scopes
+
+    if is_module_testing:
+        print("🧪 MODULE TESTING MODE")
+        print(f"🎯 Target: {args.scope}")
+        print("=" * 50)
+
+        # Validate module path exists
+        module_path = Path(args.scope)
+        if not module_path.exists():
+            print(f"❌ Module path '{args.scope}' not found")
+            print("💡 Available L1 modules: common, infra, ETL, engine, evaluation, tests")
+            sys.exit(1)
+
+        # Run targeted module tests
+        test_cmd = f"pixi run python -m pytest {args.scope}/ -v --tb=short"
+        print(f"🔬 Running tests for module: {args.scope}")
+        print(f"📝 Command: {test_cmd}")
+        print()
+
+        result = run_command(test_cmd, f"Module tests for {args.scope}", timeout=300)
+
+        if result.returncode == 0:
+            print(f"\n✅ Module tests passed for {args.scope}")
+            end_time = time.time()
+            duration = end_time - start_time
+            print(f"⏱️  Total time: {duration:.1f} seconds")
+            sys.exit(0)
+        else:
+            print(f"\n❌ Module tests failed for {args.scope}")
+            sys.exit(1)
+
+    # E2E TESTING MODE for dataset scopes
+    print("🚀 END-TO-END TESTING MODE")
+    print(f"🎯 Dataset: {args.scope}")
+    print("=" * 50)
 
     # Environment validation is mandatory
     print("🔍 Environment Validation (Mandatory)")
@@ -77,10 +134,10 @@ Examples:
 
     # Test commands that exactly match what CI runs (comprehensive unit tests)
     unit_test_commands = [
-        # Primary unit tests (main CI failure cause) - UPDATED: Using pixi environment
+        # Primary ALL tests (including P3 workflow) - CI superset alignment
         (
-            "pixi run python -m pytest common/tests/unit/ -v --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
-            "Common Unit Tests (Primary CI Test)",
+            "pixi run python -m pytest --tb=short --maxfail=20 --cov=common --cov-report=term-missing",
+            "All Unit Tests (CI Superset: common/tests/ + tests/)",
         ),
         # Core component tests by markers
         ("pixi run python -m pytest -m core --tb=short -v --maxfail=10", "Core Component Tests"),
