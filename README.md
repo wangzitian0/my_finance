@@ -195,7 +195,7 @@ Development tools, deployment, and system operations.
 - `deployment/` - Ansible, Kubernetes, and deployment automation
 
 ### Supporting Directories
-- **`tests/`** - Integration and end-to-end testing framework
+- **`tests/`** - Testing framework across all modules (includes pytest.ini configuration)
 - **`build_data/`** - Local artifacts and generated outputs
 
 ## Testing Architecture
