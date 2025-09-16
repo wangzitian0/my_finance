@@ -23,8 +23,8 @@ jobs:
       contents: read
       issues: write
       pull-requests: read
-      actions: read
-    
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,82 +36,35 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           direct_prompt: |
             **POST-MERGE ANALYSIS & ISSUE GENERATION**
-            
-            You are conducting a post-merge analysis for this SEC Filing-Enhanced Quantitative Trading Platform. Analyze the recent changes and generate GitHub issues for identified improvement opportunities.
 
-            **Analysis Scope:**
-            - Recent commits and merged changes
-            - Technical debt identification
+            Analyze recent merge to main branch and create GitHub issues for improvement opportunities found.
+
+            **Analysis Focus:**
+            1. **Recent Changes Review** - Last 5-10 commits for technical debt, missing tests, documentation gaps
+            2. **CLAUDE.md Compliance Check** - P3 workflow, SSOT patterns, modular file placement
+            3. **Issue Creation** - Generate actionable GitHub issues with proper labels and priorities
+
+            **Create Issues For:**
+            - TODO comments found in code
+            - Missing error handling patterns
+            - Documentation update needs
+            - Test coverage gaps
             - Performance optimization opportunities
-            - Documentation gaps
-            - Test coverage improvements
-            - Security considerations
-            - Fast testing workflow optimization potential
+            - Configuration inconsistencies
+            - SSOT I/O compliance violations
 
-            **Required Actions:**
-            1. **Analyze Recent Changes**: Review the last 5-10 commits for:
-               - Code quality patterns
-               - Potential refactoring opportunities
-               - Missing error handling
-               - Documentation updates needed
-               - Test coverage gaps
+            **Issue Format:**
+            - Descriptive action-oriented titles
+            - Link to specific files/lines when relevant
+            - Add labels: technical-debt, performance, documentation, testing
+            - Reference this post-merge analysis
 
-            2. **Identify Technical Debt**: Look for:
-               - TODO comments in code
-               - Deprecated patterns
-               - Complex functions that need breakdown
-               - Configuration inconsistencies
-               - SSOT I/O compliance issues
+            Generate 3-5 focused, actionable issues from the analysis.
 
-            3. **Performance Opportunities**: Identify:
-               - Fast testing execution time optimization potential
-               - Database query improvements
-               - Memory usage optimizations
-               - API response time improvements
-
-            4. **Generate GitHub Issues**: For each identified item, create issues with:
-               - Clear, actionable titles
-               - Detailed descriptions with context
-               - Appropriate labels (technical-debt, performance, documentation, testing)
-               - Priority levels (high/medium/low)
-               - Estimated effort (small/medium/large)
-               - Link to relevant code/files
-
-            **Issue Creation Guidelines:**
-            - Use clear, descriptive titles starting with action verbs
-            - Include code snippets or file references where relevant
-            - Add appropriate labels for categorization
-            - Assign to appropriate milestones
-            - Cross-reference related issues
-
-            **Focus Areas for This Platform:**
-            - SEC filing data processing efficiency
-            - DCF model calculation accuracy
-            - RAG system performance
-            - Database optimization (PostgreSQL, Neo4j, Redis, Vector DB)
-            - P3 CLI workflow improvements
-            - Testing scope expansion opportunities
-
-            **Output Format:**
-            Create actual GitHub issues using available tools. Summarize what was analyzed and what issues were created.
-
-          # Allow Claude to create issues and analyze the codebase
-          allowed_tools: |
-            Read,Grep,Glob,Bash(find:*),Bash(git:*),
-            mcp__github_create_issue,mcp__github_update_issue,
-            mcp__github_list_issues,mcp__github_comment_on_issue
-
-          use_sticky_comment: false  # No PR comments needed for post-merge
-          
-          # Custom environment for analysis
-          claude_env: |
-            ANALYSIS_TYPE=post_merge
-            FOCUS_AREAS=technical_debt,performance,documentation,testing
-            PLATFORM_TYPE=quantitative_trading
-            TESTING_SCOPE=f2
-
+          use_sticky_comment: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -135,89 +88,3 @@ jobs:
 
           Co-Authored-By: Claude <noreply@anthropic.com>" || echo "No changes to commit"
           git push || echo "No changes to push"
-
-  # Parallel job for fast testing performance tracking  
-  fast-test-performance-baseline:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Pixi Environment
-        uses: prefix-dev/setup-pixi@v0.8.1
-        with:
-          pixi-version: v0.24.2
-
-      - name: Run Fast Test Performance Baseline
-        id: fast_test_baseline
-        run: |
-          echo "Running fast test performance baseline measurement..."
-          start_time=$(date +%s)
-          
-          # Run fast test and capture timing
-          timeout 300 pixi run python -c "
-          import sys
-          sys.path.append('.')
-          from common.core.p3_cli import P3CLI
-          cli = P3CLI()
-          result = cli.test('f2')
-          print(f'Fast Test Result: {result}')
-          " || echo "Fast test completed or timed out"
-          
-          end_time=$(date +%s)
-          duration=$((end_time - start_time))
-          echo "fast_test_duration=$duration" >> $GITHUB_OUTPUT
-          echo "Fast test baseline completed in ${duration} seconds"
-
-      - name: Track Performance Trends
-        run: |
-          # Create or update performance tracking file
-          mkdir -p .github/performance-data
-          echo "$(date -Iseconds),${{ steps.fast_test_baseline.outputs.fast_test_duration }}" >> .github/performance-data/fast-test-timing.csv
-          
-          # Keep only last 100 entries
-          tail -n 100 .github/performance-data/fast-test-timing.csv > .github/performance-data/fast-test-timing.csv.tmp
-          mv .github/performance-data/fast-test-timing.csv.tmp .github/performance-data/fast-test-timing.csv
-
-      - name: Commit Performance Data
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .github/performance-data/ || true
-          git commit -m "📈 Update fast test performance baseline data
-
-          Duration: ${{ steps.fast_test_baseline.outputs.fast_test_duration }}s
-          
-          🤖 Generated with [Claude Code](https://claude.ai/code)
-
-          Co-Authored-By: Claude <noreply@anthropic.com>" || echo "No performance changes to commit"
-          git push || echo "No performance changes to push"
-
-      - name: Generate Performance Alert
-        if: steps.fast_test_baseline.outputs.fast_test_duration > 300  # Alert if > 5 minutes
-        uses: anthropics/claude-code-action@beta
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          direct_prompt: |
-            **FAST TEST PERFORMANCE ALERT**
-            
-            The fast test baseline took ${{ steps.fast_test_baseline.outputs.fast_test_duration }} seconds, which exceeds the 5-minute threshold.
-            
-            Please create a high-priority GitHub issue to investigate fast test performance degradation:
-            
-            - Title: "🚨 Fast Test Performance Alert: Execution time exceeded 5 minutes"
-            - Labels: performance, high-priority, testing
-            - Assignees: Development team
-            - Description: Include timing data and investigation steps
-            - Link to this workflow run for context
-            
-            Use available GitHub tools to create this issue immediately.
-          
-          allowed_tools: mcp__github_create_issue
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

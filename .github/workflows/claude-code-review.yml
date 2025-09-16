@@ -47,35 +47,24 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Direct prompt for automated review (no @claude mention needed)
           direct_prompt: |
-            Please review this pull request for this SEC Filing-Enhanced Quantitative Trading Platform and provide feedback on:
-            
-            **CLAUDE.md Policy Compliance:**
-            - P3 workflow compliance (proper use of p3 commands)
-            - SSOT I/O enforcement (use of common.core.directory_manager)
-            - Configuration centralization (common/config/ usage)
-            - English-only standard adherence
-            - GitHub issue traceability
-            
-            **Technical Standards:**
-            - Code quality and best practices
-            - Two-layer modularity principle adherence
-            - TypeScript usage for new features
-            - Proper error handling and validation
-            - Existing code pattern consistency
-            
-            **System Architecture:**
-            - Integration with existing RAG and DCF systems
-            - Database interaction patterns (PostgreSQL, Neo4j, Redis, Vector DB)
-            - API design consistency
-            - Performance considerations for financial data processing
-            
-            **Quality Assurance:**
-            - Test coverage (note: fast testing used in CI)
-            - Security concerns for financial platform
-            - Documentation updates
-            - Potential bugs or issues
-            
-            Be constructive and helpful in your feedback. Focus on maintaining system integrity and preventing technical debt.
+            Review this PR against CLAUDE.md standards. **Focus primarily on violations and deficiencies.**
+
+            **1. CLAUDE.md Compliance Check (Critical - Report Only Violations):**
+            - P3 workflow, SSOT enforcement, modular file placement
+            - Two-layer modularity (L1/L2 structure)
+            - Configuration centralization, English-only standard
+
+            **2. Requirement Completion Assessment:**
+            - Does this PR complete the stated requirements?
+            - What improvements or optimizations are possible?
+            - Any missing error handling, tests, or documentation?
+
+            **Response Format:**
+            - If compliant: Brief "✅ CLAUDE.md compliant"
+            - If violations found: List specific violations with file references
+            - Requirement status: Complete/Partial with improvement suggestions
+
+            Keep response concise and actionable.
           # Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
           use_sticky_comment: true
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
