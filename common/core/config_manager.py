@@ -129,6 +129,11 @@ class ConfigManager:
                 path="stage_00_target_pre_pr.yml",
                 description="Pre-PR target configuration",
             ),
+            "claude_hooks": ConfigSchema(
+                name="claude_hooks",
+                path="monitoring/claude_hooks.json",
+                description="Claude Code hook system configuration",
+            ),
         }
 
     def _load_config_file(self, file_path: Path) -> Dict[str, Any]:
