@@ -95,16 +95,16 @@ ollama-models = "ollama list"
 pip-install = "pip install neomodel"
 
 # Quick development hints
-dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 test | p3 ship'; echo '💡 Completion: source ./scripts/p3-completion.zsh'"
+dev-help = "echo '🚀 Use p3 commands directly: p3 build f2 | p3 test | p3 ship'; echo '💡 Completion: source ./infra/scripts/p3/p3-completion.zsh'"
 
 # === WORKTREE ISOLATION MANAGEMENT ===
 # Automatic worktree Python environment isolation
-worktree-init = "python scripts/worktree_isolation.py init"
-worktree-status = "python scripts/worktree_isolation.py status"
-worktree-verify = "python scripts/worktree_isolation.py verify"
+worktree-init = "python infra/scripts/worktree_isolation.py init"
+worktree-status = "python infra/scripts/worktree_isolation.py status"
+worktree-verify = "python infra/scripts/worktree_isolation.py verify"
 
 # Global infrastructure management (ansible/docker reuse)
-global-setup = "python scripts/worktree_isolation.py setup-global"
+global-setup = "python infra/scripts/worktree_isolation.py setup-global"
 
 # === GLOBAL INFRASTRUCTURE REUSE ===
 # Ansible commands - 全局复用但使用worktree Python环境
