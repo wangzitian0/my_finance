@@ -28,11 +28,11 @@
 - [ ] Issue linked and scoped (≤5 days)
 - [ ] GitHub issue exists for context preservation
 - [ ] English-only standard maintained
-- [ ] **File placement validation**:
-  - [ ] L1 modules (infra/, common/, web/, api/) - core business domains
-  - [ ] L2 submodules within L1 directories - specific functionality groups
-  - [ ] Avoid root directory unless project-level config/docs
-  - [ ] No bypassing modular architecture with flat file structure
+- [ ] **Modular architecture compliance**:
+  - [ ] L1 modules: infra/, common/, web/, api/ (business domains)
+  - [ ] L2 submodules: functional grouping within L1
+  - [ ] No cross-module direct dependencies (use common/core interfaces)
+  - [ ] No root directory files (except project config/docs)
 - [ ] **CLAUDE.md Policy Compliance**: P3 workflow, SSOT enforcement, configuration centralization
 - [ ] **Technical Standards**: Code quality, two-layer modularity, TypeScript usage, error handling
 - [ ] **System Architecture**: RAG/DCF integration, database patterns, API consistency, performance
@@ -60,11 +60,7 @@
 
 ### ⚙️ Technical Standards
 - [ ] Code quality and best practices
-- [ ] **Two-layer modularity compliance**:
-  - [ ] L1 directory structure: infra/, common/, web/, api/
-  - [ ] L2 submodules: functional grouping within L1
-  - [ ] No circular dependencies between modules
-  - [ ] Clear separation of concerns
+- [ ] **Modular architecture**: L1/L2 structure, no cross-module deps, use common/core
 - [ ] TypeScript usage for new features
 - [ ] Proper error handling and validation
 - [ ] Existing code pattern consistency
