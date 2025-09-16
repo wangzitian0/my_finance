@@ -33,19 +33,38 @@ jobs:
 
       - name: Run Post-Merge Analysis
         id: analysis
-        run: |
-          echo "Post-merge analysis running..."
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
+            **POST-MERGE ANALYSIS & ISSUE GENERATION**
 
-          # Get recent commits for analysis
-          git log --oneline -10
+            Analyze recent merge to main branch and create GitHub issues for improvement opportunities found.
 
-          # Search for TODO comments in recent changes
-          echo "Searching for TODO comments in recent commits..."
-          git log --since="1 day ago" --name-only --pretty=format:"" | sort -u | grep -E '\.(py|js|ts|yml|yaml|md)$' | head -20 | xargs grep -l "TODO\|FIXME\|XXX" || true
+            **Analysis Focus:**
+            1. **Recent Changes Review** - Last 5-10 commits for technical debt, missing tests, documentation gaps
+            2. **CLAUDE.md Compliance Check** - P3 workflow, SSOT patterns, modular file placement
+            3. **Issue Creation** - Generate actionable GitHub issues with proper labels and priorities
 
-          # Create summary
-          echo "analysis_summary=Post-merge analysis completed - found potential TODO items" >> $GITHUB_OUTPUT
-          echo "Post-merge analysis completed"
+            **Create Issues For:**
+            - TODO comments found in code
+            - Missing error handling patterns
+            - Documentation update needs
+            - Test coverage gaps
+            - Performance optimization opportunities
+            - Configuration inconsistencies
+            - SSOT I/O compliance violations
+
+            **Issue Format:**
+            - Descriptive action-oriented titles
+            - Link to specific files/lines when relevant
+            - Add labels: technical-debt, performance, documentation, testing
+            - Reference this post-merge analysis
+
+            Generate 3-5 focused, actionable issues from the analysis.
+
+          use_sticky_comment: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

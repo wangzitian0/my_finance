@@ -47,19 +47,24 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Direct prompt for automated review (no @claude mention needed)
           direct_prompt: |
-            **Check PR against CLAUDE.md checklist:**
+            Review this PR against CLAUDE.md standards. **Focus primarily on violations and deficiencies.**
 
-            **1. Checklist Violations (report only if found):**
-            - P3 workflow, SSOT, modular architecture (L1/L2), config centralization
+            **1. CLAUDE.md Compliance Check (Critical - Report Only Violations):**
+            - P3 workflow, SSOT enforcement, modular file placement
+            - Two-layer modularity (L1/L2 structure)
+            - Configuration centralization, English-only standard
 
-            **2. Requirement Status:**
-            - Complete/Partial? Missing tests/docs/error handling?
+            **2. Requirement Completion Assessment:**
+            - Does this PR complete the stated requirements?
+            - What improvements or optimizations are possible?
+            - Any missing error handling, tests, or documentation?
 
-            **Format:**
-            - ✅ Compliant OR ❌ Violations: [list with files]
-            - Requirements: Complete/Partial + suggestions
+            **Response Format:**
+            - If compliant: Brief "✅ CLAUDE.md compliant"
+            - If violations found: List specific violations with file references
+            - Requirement status: Complete/Partial with improvement suggestions
 
-            Keep brief.
+            Keep response concise and actionable.
           # Use sticky comments to make Claude reuse the same comment on subsequent pushes to the same PR
           use_sticky_comment: true
           # Optional: Specify model (defaults to Claude Sonnet 4, uncomment for Claude Opus 4.1)
