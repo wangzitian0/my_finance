@@ -28,7 +28,15 @@
 - [ ] Issue linked and scoped (≤5 days)
 - [ ] GitHub issue exists for context preservation
 - [ ] English-only standard maintained
-- [ ] **File placement validation**: Check that new files are in correct L1/L2 directories, avoid root directory placement unless essential
+- [ ] **Modular architecture compliance**:
+  - [ ] L1 modules: infra/, common/, web/, api/ (business domains)
+  - [ ] L2 submodules: functional grouping within L1
+  - [ ] No cross-module direct dependencies (use common/core interfaces)
+  - [ ] No root directory files (except project config/docs)
+- [ ] **CLAUDE.md Policy Compliance**: P3 workflow, SSOT enforcement, configuration centralization
+- [ ] **Technical Standards**: Code quality, two-layer modularity, TypeScript usage, error handling
+- [ ] **System Architecture**: RAG/DCF integration, database patterns, API consistency, performance
+- [ ] **Security & Testing**: Financial platform security, test coverage, documentation updates
 
 ### Phase 5: Completion & PR ✅
 - [ ] Task completion verified
@@ -36,6 +44,42 @@
 - [ ] **README REVIEW**: Review and update README.md files in directories with modified files + hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy)
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
 - [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
+
+---
+
+## 📋 PR REVIEW CHECKLIST
+
+**Critical PR Review Standards (Applied in Phase 4):**
+
+### 🔒 CLAUDE.md Policy Compliance
+- [ ] P3 workflow compliance (proper use of p3 commands)
+- [ ] SSOT I/O enforcement (use of common.core.directory_manager)
+- [ ] Configuration centralization (common/config/ usage)
+- [ ] English-only standard adherence
+- [ ] GitHub issue traceability
+
+### ⚙️ Technical Standards
+- [ ] Code quality and best practices
+- [ ] **Modular architecture**: L1/L2 structure, no cross-module deps, use common/core
+- [ ] TypeScript usage for new features
+- [ ] Proper error handling and validation
+- [ ] Existing code pattern consistency
+- [ ] **Module interface compliance**:
+  - [ ] Use common.core.directory_manager for file operations
+  - [ ] Follow established import/export patterns
+  - [ ] Respect module boundaries and abstraction layers
+
+### 🏗️ System Architecture
+- [ ] Integration with existing RAG and DCF systems
+- [ ] Database interaction patterns (PostgreSQL, Neo4j, Redis, Vector DB)
+- [ ] API design consistency
+- [ ] Performance considerations for financial data processing
+
+### 🛡️ Quality Assurance
+- [ ] Test coverage (fast testing scope: f2)
+- [ ] Security concerns for financial platform
+- [ ] Documentation updates
+- [ ] Potential bug identification
 
 ---
 
@@ -84,7 +128,11 @@ strategic: hrbp, revops
 5. **AUTOMATIC PR CREATION**: Always create PR via `git-ops-agent` after significant changes
 6. **ENGLISH-ONLY STANDARD**: All codebase and comments in English, deliverables may contain Chinese
 7. **GITHUB ISSUES ONLY**: Never create .md planning files - use GitHub Issues
-8. **MODULAR FILE PLACEMENT**: All files must be in appropriate L1/L2 directories - avoid root directory unless essential (project config, entry points, documentation)
+8. **MODULAR FILE PLACEMENT**:
+   - L1 modules: infra/, common/, web/, api/ (core business domains)
+   - L2 submodules: functional grouping within L1 directories
+   - Root directory only for: project config, entry points, top-level documentation
+   - No bypassing module hierarchy with flat structure or cross-module dependencies
 
 ---
 
@@ -133,7 +181,11 @@ strategic: hrbp, revops
 - Using direct tools for complex tasks instead of agent-coordinator
 - Creating .md planning files instead of GitHub Issues
 - Bypassing P3 workflow system
-- Placing files in root directory instead of appropriate L1/L2 modules
+- **Module Architecture Violations**:
+  - Placing files in root directory instead of appropriate L1/L2 modules
+  - Creating cross-module dependencies that break abstraction layers
+  - Bypassing common.core.directory_manager for file operations
+  - Inconsistent import/export patterns across modules
 
 **🚨 CRITICAL Checklist Protection Violations (Level 3 - Immediate Escalation)**:
 - **Checklist Deletion**: Removing any Phase 1-5 items from Task Initiation Protocol

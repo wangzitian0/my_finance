@@ -326,7 +326,10 @@ claude_hooks*.txt
 # Log directories - should not be tracked
 logs/
 **/logs/
-build_data/logs/
+# Claude Code hooks logs - keep structure but ignore log contents
+build_data/logs/**/*.log
+!build_data/logs/**/README.md
+!build_data/logs/**/.gitignore
 
 # Prevent log files in config directories (SSOT compliance)
 common/config/**/execution_logs*.json
