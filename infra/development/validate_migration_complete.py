@@ -160,7 +160,7 @@ def check_remaining_scripts():
             print(f"⚠️  {len(critical_remaining)} non-documentation files remain")
             return False
         else:
-            print("✅ Only documentation/config files remain")
+            print("✅ Only infra/docs files remain")
             return True
     else:
         print("✅ No non-documentation files remain in scripts/")

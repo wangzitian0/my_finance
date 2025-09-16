@@ -48,6 +48,14 @@
 - **Ansible Deployment**: Ansible configuration management and playbooks
 - **Kubernetes**: Kubernetes deployment manifests and configuration
 - **Deployment Tools**: Infrastructure deployment automation utilities
+
+### **`docs/`** - Centralized Documentation Management
+**Purpose**: Consolidated technical documentation and reports
+- **P3 Testing Strategy**: CI-aligned testing strategy documentation
+- **Architecture Documentation**: System architecture notes and references
+- **Migration Reports**: Infrastructure migration reports and analysis
+- **Legacy Documentation**: Historical system documentation
+- **Release Documentation**: Version release notes and configurations
 - **Service Management**: Container orchestration and service provisioning
 
 ## 🏗️ Modular Architecture
