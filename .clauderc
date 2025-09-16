@@ -1,0 +1,48 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python infra/scripts/hooks/tool-use-hook.py --tool-name \"${tool_name}\" --parameters '${tool_parameters}' --phase start --verbose"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python infra/scripts/hooks/tool-use-hook.py --tool-name \"${tool_name}\" --parameters '${tool_parameters}' --response '${tool_response}' --execution-time ${execution_time_ms} --success ${success} --phase complete --verbose"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*", 
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python infra/scripts/hooks/response-hook.py --response '${agent_response}' --thinking '${agent_thinking}' --generation-time ${generation_time_ms} --verbose"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command", 
+            "command": "echo 'User prompt: ${user_prompt}' | python -c \"import sys; sys.path.append('common'); from monitoring.claude_hook_manager import log_user_prompt; log_user_prompt(sys.stdin.read().strip(), {'source': 'user_input'})\""
+          }
+        ]
+      }
+    ]
+  }
+}
