@@ -15,12 +15,14 @@ from typing import Dict, Optional
 # SSOT I/O Enforcement: Import directory_manager for centralized path management
 try:
     from common.core.directory_manager import DirectoryManager
+
     SSOT_AVAILABLE = True
 except ImportError as e:
     # Fallback for development environments where common module may not be available
     DirectoryManager = None
     SSOT_AVAILABLE = False
     import logging
+
     logging.warning(f"DirectoryManager not available, using fallback: {e}")
 
 
@@ -50,14 +52,14 @@ class P3CLI:
     def _log_ssot_status(self, message: str):
         """Log SSOT integration status for debugging."""
         # Only log in debug mode to avoid cluttering normal output
-        if os.environ.get('P3_DEBUG'):
+        if os.environ.get("P3_DEBUG"):
             print(f"🔧 SSOT: {message}")
 
     def _get_current_branch(self) -> str:
         """Get current git branch using SSOT subprocess execution."""
         try:
             # SSOT I/O Enforcement: Use directory_manager's secure subprocess execution
-            if hasattr(self, 'directory_manager') and self.directory_manager:
+            if hasattr(self, "directory_manager") and self.directory_manager:
                 result = self.directory_manager._secure_subprocess_run(
                     ["git", "branch", "--show-current"], timeout=5
                 )
@@ -65,6 +67,7 @@ class P3CLI:
             else:
                 # Fallback for environments without directory_manager
                 import subprocess
+
                 result = subprocess.run(
                     ["git", "branch", "--show-current"], capture_output=True, text=True, timeout=5
                 )
@@ -88,13 +91,13 @@ class P3CLI:
         return {
             # Core Workflow Commands (8 total)
             "ready": "python infra/system/workflow_ready.py",  # Start working - environment setup
-            "stop": "python infra/system/workflow_stop.py",   # Stop working - resource cleanup
-            "reset": "python infra/system/workflow_reset.py", # Fix environment - nuclear reset
+            "stop": "python infra/system/workflow_stop.py",  # Stop working - resource cleanup
+            "reset": "python infra/system/workflow_reset.py",  # Fix environment - nuclear reset
             "check": "python infra/development/workflow_check.py",  # Validate code - format, lint, tests
-            "test": "python scripts/utilities/run_test.py",   # Test - comprehensive testing
-            "ship": "python infra/workflows/pr_creation.py", # Create PR - publish workflow
-            "build": "python ETL/build_dataset.py",          # Build dataset - data generation
-            "version": "version_command",                     # Version info - system details
+            "test": "python scripts/utilities/run_test.py",  # Test - comprehensive testing
+            "ship": "python infra/workflows/pr_creation.py",  # Create PR - publish workflow
+            "build": "python ETL/build_dataset.py",  # Build dataset - data generation
+            "version": "version_command",  # Version info - system details
         }
 
     def run(self, command: str, args: list):
@@ -134,8 +137,10 @@ class P3CLI:
             print(f"   Script: {Path(__file__).resolve()}")
             print(f"   Working directory: {self.project_root}")
             print(f"   Git branch: {self._get_current_branch()}")
-            print(f"   SSOT I/O Integration: {'✅ Enabled' if SSOT_AVAILABLE else '⚠️  Fallback Mode'}")
-            if hasattr(self, 'directory_manager') and self.directory_manager:
+            print(
+                f"   SSOT I/O Integration: {'✅ Enabled' if SSOT_AVAILABLE else '⚠️  Fallback Mode'}"
+            )
+            if hasattr(self, "directory_manager") and self.directory_manager:
                 print(f"   DirectoryManager: {type(self.directory_manager).__name__}")
             return
 
@@ -170,17 +175,23 @@ class P3CLI:
 
         # SSOT I/O Enforcement: Use directory_manager's secure subprocess execution where possible
         try:
-            if hasattr(self, 'directory_manager') and self.directory_manager and not cmd_string.startswith('pixi run'):
+            if (
+                hasattr(self, "directory_manager")
+                and self.directory_manager
+                and not cmd_string.startswith("pixi run")
+            ):
                 # For simple commands, use secure execution
                 cmd_args = cmd_string.split()
                 result = self.directory_manager._secure_subprocess_run(cmd_args, timeout=3600)
             else:
                 # For complex pixi commands, use shell execution (required for pixi run)
                 import subprocess
+
                 result = subprocess.run(cmd_string, shell=True)
         except Exception as e:
             print(f"⚠️  SSOT subprocess execution failed, falling back to shell: {e}")
             import subprocess
+
             result = subprocess.run(cmd_string, shell=True)
 
         # Log execution completion

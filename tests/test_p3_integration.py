@@ -40,12 +40,12 @@ class TestP3Integration(unittest.TestCase):
 
     def test_delegation_pattern(self):
         """Test that root p3.py properly delegates to infra/p3/p3.py."""
-        with open(self.root_p3, 'r') as f:
+        with open(self.root_p3, "r") as f:
             content = f.read()
 
         # Should contain delegation code
-        self.assertIn('infra.p3.p3', content, "Root p3.py should import from infra.p3.p3")
-        self.assertIn('main()', content, "Root p3.py should call main()")
+        self.assertIn("infra.p3.p3", content, "Root p3.py should import from infra.p3.p3")
+        self.assertIn("main()", content, "Root p3.py should call main()")
 
     def test_version_command_delegation(self):
         """Test that version command works through delegation."""
@@ -55,7 +55,7 @@ class TestP3Integration(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 timeout=10,
-                cwd=str(self.project_root)
+                cwd=str(self.project_root),
             )
 
             # Should not error (though may warn about imports)
@@ -74,7 +74,7 @@ class TestP3Integration(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 timeout=10,
-                cwd=str(self.project_root)
+                cwd=str(self.project_root),
             )
 
             # Should show help content
@@ -94,7 +94,7 @@ class TestP3Integration(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 timeout=10,
-                cwd=str(self.project_root)
+                cwd=str(self.project_root),
             )
 
             # Should exit with error code
@@ -124,13 +124,13 @@ class TestP3Integration(unittest.TestCase):
 
     def test_ssot_integration_available(self):
         """Test that SSOT DirectoryManager integration is available."""
-        with open(self.infra_p3, 'r') as f:
+        with open(self.infra_p3, "r") as f:
             content = f.read()
 
         # Should contain SSOT imports and usage
-        self.assertIn('DirectoryManager', content)
-        self.assertIn('SSOT_AVAILABLE', content)
-        self.assertIn('directory_manager', content)
+        self.assertIn("DirectoryManager", content)
+        self.assertIn("SSOT_AVAILABLE", content)
+        self.assertIn("directory_manager", content)
 
     def test_backward_compatibility_preserved(self):
         """Test that backward compatibility is preserved."""
@@ -149,7 +149,7 @@ class TestP3Integration(unittest.TestCase):
                 capture_output=True,
                 text=True,
                 timeout=10,
-                cwd=str(self.project_root)
+                cwd=str(self.project_root),
             )
 
             # Should show help or handle gracefully
@@ -163,18 +163,20 @@ class TestP3Integration(unittest.TestCase):
         # Should not create .md files
         implementation_md = self.project_root / "IMPLEMENTATION_SUMMARY_282.md"
         if implementation_md.exists():
-            with open(implementation_md, 'r') as f:
+            with open(implementation_md, "r") as f:
                 content = f.read().strip()
-            self.assertEqual(content, "", "IMPLEMENTATION_SUMMARY_282.md should be empty or removed")
+            self.assertEqual(
+                content, "", "IMPLEMENTATION_SUMMARY_282.md should be empty or removed"
+            )
 
         # Should use modular L1/L2 structure
         self.assertTrue(self.infra_p3.exists(), "P3 CLI should be in infra/p3/ (L1/L2 structure)")
 
         # Should use SSOT patterns
-        with open(self.infra_p3, 'r') as f:
+        with open(self.infra_p3, "r") as f:
             content = f.read()
-        self.assertIn('directory_manager', content, "Should use DirectoryManager for SSOT")
+        self.assertIn("directory_manager", content, "Should use DirectoryManager for SSOT")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main(verbosity=2)
