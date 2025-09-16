@@ -129,6 +129,7 @@ strategic: hrbp, revops
    - L2 submodules: functional grouping within L1 directories
    - Root directory only for: project config, entry points, top-level documentation
    - No bypassing module hierarchy with flat structure or cross-module dependencies
+9. **TESTING ARCHITECTURE**: Unit tests in modules, integration tests in tests/
 
 ---
 

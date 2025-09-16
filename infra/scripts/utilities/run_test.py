@@ -13,7 +13,7 @@ from pathlib import Path
 # Import from pr_creation.py to reuse test logic
 
 # Add infra/workflows directory to Python path for import
-workflows_path = os.path.join(os.path.dirname(__file__), "..", "..", "infra", "workflows")
+workflows_path = os.path.join(os.path.dirname(__file__), "..", "..", "workflows")
 sys.path.insert(0, workflows_path)
 
 from pr_creation import (

@@ -41,7 +41,7 @@ class P3CLI:
             "stop": "python infra/system/workflow_stop.py",  # Stop working (release resources)
             "reset": "python infra/system/workflow_reset.py",  # Fix environment
             "check": "python infra/development/workflow_check.py",  # Validate code
-            "test": "python scripts/utilities/run_test.py",  # Test
+            "test": "python infra/scripts/utilities/run_test.py",  # Test
             "ship": "python infra/workflows/pr_creation.py",  # Create PR
             "build": "python ETL/build_dataset.py",  # Build dataset
             "version": "version_command",  # Version info
