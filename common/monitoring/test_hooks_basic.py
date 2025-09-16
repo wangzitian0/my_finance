@@ -18,16 +18,18 @@ def test_load_claude_hooks_logs():
     """Test HRBP can load and parse hooks logs."""
     try:
         from ..agents.hrbp_performance_manager import get_hrbp_performance_manager
-        
+
         manager = get_hrbp_performance_manager()
         logs_data = manager.load_claude_hooks_logs(days=1)
-        
+
         assert isinstance(logs_data, dict), "Should return dictionary"
-        assert "sessions" in logs_data or "total_sessions" in logs_data, "Should contain session data"
-        
+        assert (
+            "sessions" in logs_data or "total_sessions" in logs_data
+        ), "Should contain session data"
+
         print(f"✅ Hooks logs loaded successfully: {logs_data.get('total_sessions', 0)} sessions")
         return True
-        
+
     except Exception as e:
         print(f"❌ Failed to load hooks logs: {e}")
         return False
@@ -35,15 +37,15 @@ def test_load_claude_hooks_logs():
 
 if __name__ == "__main__":
     print("🔧 Testing Claude Code hooks configuration...")
-    
+
     print("\n1. Checking hooks log file...")
     try:
         test_hooks_log_file_exists()
         print("✅ Hooks log file exists and has content")
     except AssertionError as e:
         print(f"❌ {e}")
-    
+
     print("\n2. Testing HRBP hooks integration...")
     test_load_claude_hooks_logs()
-    
+
     print("\n🎯 Hooks basic test completed!")
