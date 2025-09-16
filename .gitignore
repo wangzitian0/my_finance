@@ -78,4 +78,5 @@ docker-compose.override.yml
 .pre-commit-config.yaml
 
 # Files marked for removal (Issue #282)
+# Add CHANGELOG.md to ensure it doesn't get recreated
 CHANGELOG.md

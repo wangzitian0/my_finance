@@ -122,14 +122,13 @@ strategic: hrbp, revops
 3. **SSOT I/O ENFORCEMENT**: Use `common.core.directory_manager` for ALL file operations
 4. **CONFIGURATION CENTRALIZATION**: All configs at `common/config/`
 5. **AUTOMATIC PR CREATION**: Always create PR via `git-ops-agent` after significant changes
-6. **ENGLISH-ONLY STANDARD**: All codebase and comments in English, deliverables may contain Chinese
+6. **ENGLISH-ONLY STANDARD**: All technical content in English
 7. **GITHUB ISSUES ONLY**: Never create .md planning files - use GitHub Issues
-8. **MODULAR FILE PLACEMENT**:
-   - L1 modules: infra/, common/, web/, api/ (core business domains)
-   - L2 submodules: functional grouping within L1 directories
-   - Root directory only for: project config, entry points, top-level documentation
-   - No bypassing module hierarchy with flat structure or cross-module dependencies
-9. **TESTING ARCHITECTURE**: Unit tests in modules, integration tests in tests/
+8. **MODULAR FILE PLACEMENT**: All files must be in appropriate L1/L2 directories - avoid root directory unless essential (project config, entry points, documentation)
+9. **TESTING ARCHITECTURE**:
+   - Unit tests: Located within each module (e.g., `infra/tests/`, `common/tests/`)
+   - Integration tests: Located in root `tests/` directory only
+   - No mixing of unit and integration tests
 
 ---
 

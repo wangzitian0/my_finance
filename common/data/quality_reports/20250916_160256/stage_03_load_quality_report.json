@@ -1,0 +1,10 @@
+{
+  "success_rate": 0,
+  "status": "no_data_found",
+  "error": "Load partition not found",
+  "stage": "stage_03_load",
+  "partition": "20250103",
+  "timestamp": "2025-09-16T16:02:56.288554",
+  "build_id": "20250916_160256",
+  "tier_name": "integration_config"
+}
