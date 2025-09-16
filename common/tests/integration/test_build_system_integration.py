@@ -157,7 +157,9 @@ if __name__ == "__main__":
 
         # Test DCF reports placement
         dcf_reports_path = dm.get_subdir_path(DataLayer.QUERY_RESULTS, "dcf_reports")
-        expected_dcf = build_project_structure / "build_data" / "stage_04_query_results" / "dcf_reports"
+        expected_dcf = (
+            build_project_structure / "build_data" / "stage_04_query_results" / "dcf_reports"
+        )
         assert dcf_reports_path == expected_dcf
 
         # Create sample artifacts
@@ -180,7 +182,9 @@ if __name__ == "__main__":
         assert sample_analytics.exists()
         assert "build_data" in str(sample_analytics)
 
-    @pytest.mark.skip(reason="P3 command integration requires complex environment setup in worktree")
+    @pytest.mark.skip(
+        reason="P3 command integration requires complex environment setup in worktree"
+    )
     def test_p3_command_integration(self, build_project_structure):
         """Test p3 command integration with new directory structure"""
         # Change to project directory

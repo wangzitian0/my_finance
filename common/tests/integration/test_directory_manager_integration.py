@@ -109,7 +109,12 @@ class TestDirectoryManagerIntegration:
                     },
                 },
             },
-            "common": {"config": "common/config", "logs": "build_data/logs", "temp": "temp", "cache": "cache"},
+            "common": {
+                "config": "common/config",
+                "logs": "build_data/logs",
+                "temp": "temp",
+                "cache": "cache",
+            },
             "data_layer_mapping": {
                 "RAW_DATA": "stage_00_raw",
                 "DAILY_DELTA": "stage_01_daily_delta",
