@@ -1,6 +1,6 @@
-name: Post-Merge Analysis
+name: Post-Merge CI Analysis
 
-# Automated analysis after code merges to main
+# Automated CI validation and analysis after code merges to main
 on:
   push:
     branches: [main]
@@ -16,11 +16,17 @@ on:
           - light
           - deep
 
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  TESTING: true
+  LOG_LEVEL: DEBUG
+
 jobs:
-  post-merge-analysis:
+  post-merge-ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
-      contents: read
+      contents: write  # For commit comments
       issues: write
       pull-requests: read
       id-token: write
@@ -29,140 +35,250 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 50  # Get recent history for analysis
+          fetch-depth: 10  # Get recent history for analysis
 
-      - name: Run Post-Merge Code Review
-        id: analysis
-        uses: anthropics/claude-code-action@beta
+      - name: Setup Pixi Environment
+        uses: prefix-dev/setup-pixi@v0.8.1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Analysis prompt for post-merge review
-          direct_prompt: |
-            **Post-Merge Code Analysis**
+          pixi-version: v0.50.2
 
-            Please analyze the merged changes and identify:
-
-            **1. Outstanding Work Items:**
-            - Unfinished implementations (marked or unmarked)
-            - TODO/FIXME comments that need follow-up
-            - Incomplete error handling or edge cases
-            - Missing tests for new functionality
-            - Missing or incomplete documentation
-
-            **2. Quality Issues:**
-            - Potential bugs or logic issues
-            - Performance concerns
-            - Security vulnerabilities
-            - Code that doesn't follow project patterns
-
-            **3. Technical Debt:**
-            - Temporary workarounds that need proper fixes
-            - Duplicated code that should be refactored
-            - Dependencies that need updating
-
-            **Format Response:**
-            For each category, list specific items with file locations. If significant issues are found, recommend creating follow-up issues.
-
-            **Priority:**
-            - 🔴 Critical: Security/bugs requiring immediate attention
-            - 🟡 Important: Quality/debt requiring timely resolution
-            - 🟢 Minor: Improvements for future consideration
-
-            Keep analysis focused and actionable.
-          # Create a comment on the repository (not PR since it's already merged)
-          create_comment: false
-          # Output results to be used by subsequent steps
-          output_results: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract PR Number and Process Results
-        id: process
+      - name: Install Additional Dependencies
         run: |
-          # Get the latest merged PR number from commit messages
-          LATEST_PR=$(git log --oneline -5 | grep -o '#[0-9]\+' | head -1 | sed 's/#//')
-          echo "Latest merged PR: #$LATEST_PR"
-          echo "pr_number=$LATEST_PR" >> $GITHUB_OUTPUT
+          echo "📦 Installing additional test utilities in pixi environment"
+          pixi run pip install pytest-mock pytest-asyncio factory-boy freezegun responses pytest-benchmark pytest-xdist parameterized testfixtures
 
-          # Check if Claude Code found significant issues that need follow-up
-          # This will be determined by the presence of 🔴 or 🟡 priority items in the analysis
-          if echo "${{ steps.analysis.outputs.result }}" | grep -q "🔴\|🟡"; then
-            echo "has_significant_issues=true" >> $GITHUB_OUTPUT
-            echo "Found significant issues requiring follow-up"
+      - name: Setup Test Environment
+        run: |
+          echo "🚀 Setting up test environment"
+
+          # Create required directories for testing
+          mkdir -p build_data/{stage_00_raw,stage_01_daily_delta,stage_04_query_results}
+          mkdir -p common/config logs temp cache
+
+          # Create minimal test configuration
+          cat > common/config/test_config.yml << 'EOF'
+          storage:
+            backend: "local_filesystem"
+            root_path: "build_data"
+
+          layers:
+            stage_00_raw: "Raw Data Layer"
+            stage_01_daily_delta: "Daily Delta Layer"
+            stage_04_query_results: "Query Results Layer"
+
+          logging:
+            level: "DEBUG"
+            directory: "logs"
+
+          common:
+            config: "common/config"
+            logs: "logs"
+            temp: "temp"
+            cache: "cache"
+          EOF
+
+          echo "✅ Test environment setup completed"
+
+      - name: Run Full CI Test Suite
+        id: ci_tests
+        run: |
+          echo "🧪 Running comprehensive CI test suite"
+
+          # Track test results
+          TESTS_PASSED=true
+          TEST_SUMMARY=""
+
+          # Unit tests with coverage
+          echo "🔬 Running unit tests..."
+          if pixi run python -m pytest common/tests/unit/ \
+            --verbose \
+            --tb=short \
+            --junitxml=common/tests/junit-all.xml \
+            --cov=common \
+            --cov-report=xml:common/tests/coverage.xml \
+            --cov-report=html:common/tests/coverage_html \
+            --cov-report=term-missing \
+            --cov-fail-under=43; then
+            echo "✅ Unit tests passed"
+            TEST_SUMMARY="$TEST_SUMMARY\n- ✅ Unit Tests: Passed"
           else
-            echo "has_significant_issues=false" >> $GITHUB_OUTPUT
-            echo "No significant issues found"
+            echo "❌ Unit tests failed"
+            TEST_SUMMARY="$TEST_SUMMARY\n- ❌ Unit Tests: Failed"
+            TESTS_PASSED=false
           fi
 
-      - name: Create Issue for Code Review Findings
-        if: steps.process.outputs.has_significant_issues == 'true'
+          # Test by markers
+          echo "🏷️ Running marker-based tests..."
+          MARKER_RESULTS=""
+
+          for marker in core agents build monitoring schemas; do
+            echo "Testing marker: $marker"
+            if pixi run python -m pytest -m "$marker" --tb=short -v -q; then
+              MARKER_RESULTS="$MARKER_RESULTS\n  - ✅ $marker tests: Passed"
+            else
+              MARKER_RESULTS="$MARKER_RESULTS\n  - ⚠️ $marker tests: Issues found or no tests"
+            fi
+          done
+
+          TEST_SUMMARY="$TEST_SUMMARY\n- 🏷️ Marker Tests:$MARKER_RESULTS"
+
+          # Code quality checks
+          echo "🎨 Running code quality checks..."
+          if pixi run python -m black --check common/ --diff; then
+            TEST_SUMMARY="$TEST_SUMMARY\n- ✅ Code Formatting: Clean"
+          else
+            echo "⚠️ Code formatting issues detected"
+            TEST_SUMMARY="$TEST_SUMMARY\n- ⚠️ Code Formatting: Issues detected"
+          fi
+
+          # Store results for next steps
+          echo "tests_passed=$TESTS_PASSED" >> $GITHUB_OUTPUT
+
+          # Format test summary for comment
+          {
+            echo "test_summary<<EOF"
+            echo -e "$TEST_SUMMARY"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          echo "🎯 CI test suite completed"
+
+      - name: Extract Merged PR Information
+        id: pr_info
         run: |
-          # Create issue for code review findings
-          ISSUE_BODY=$(cat << 'EOF'
-          ## 🔍 Post-Merge Code Review Analysis
+          # Get the latest merged PR number from commit messages
+          LATEST_PR=$(git log --oneline -5 | grep -o '#[0-9]\+' | head -1 | sed 's/#//' || echo "unknown")
+          echo "pr_number=$LATEST_PR" >> $GITHUB_OUTPUT
 
-          This issue was automatically created after merging PR #${{ steps.process.outputs.pr_number }} to track findings from automated code review.
+          # Get commit info
+          COMMIT_AUTHOR="${{ github.event.head_commit.author.name }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
 
-          ### Claude Code Analysis Results:
+          echo "commit_author=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
 
-          ${{ steps.analysis.outputs.result }}
+          # Extract first line of commit message
+          COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -1)
+          echo "commit_title=$COMMIT_TITLE" >> $GITHUB_OUTPUT
 
-          ### Action Required:
-          - [ ] Review 🔴 Critical items immediately
-          - [ ] Address 🟡 Important items in upcoming sprints
-          - [ ] Consider 🟢 Minor improvements for future releases
-          - [ ] Create specific issues for complex items requiring detailed work
+      - name: Create CI Status Comment
+        if: always()
+        run: |
+          # Determine overall status
+          if [ "${{ steps.ci_tests.outputs.tests_passed }}" == "true" ]; then
+            STATUS_EMOJI="🎉"
+            STATUS_TEXT="**Post-merge CI passed!**"
+            CI_STATUS="✅ Success"
+          else
+            STATUS_EMOJI="⚠️"
+            STATUS_TEXT="**Post-merge CI completed with issues**"
+            CI_STATUS="❌ Issues Found"
+          fi
 
-          ### Original PR:
-          Related to: #${{ steps.process.outputs.pr_number }}
+          # Create comprehensive comment
+          COMMENT_BODY=$(cat << EOF
+          $STATUS_EMOJI $STATUS_TEXT
+
+          📊 **CI Results Summary:**
+          ${{ steps.ci_tests.outputs.test_summary }}
+
+          📋 **Merge Details:**
+          - 🔀 PR: #${{ steps.pr_info.outputs.pr_number }}
+          - 👤 Author: ${{ steps.pr_info.outputs.commit_author }}
+          - 📝 Title: ${{ steps.pr_info.outputs.commit_title }}
+          - 🕐 Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          - 🆔 Commit: \`${{ github.sha }}\`
 
           ---
-          🤖 Generated with [Claude Code](https://claude.ai/code)
+
+          @claude Please analyze this merge for any outstanding work items:
+
+          **🔍 Analysis Request:**
+          - Review TODO/FIXME comments that need follow-up
+          - Identify incomplete implementations or missing error handling
+          - Check for missing tests or documentation
+          - Look for any technical debt or performance concerns
+          - Assess code quality and adherence to project patterns
+
+          **📋 Action Items:**
+          If you find significant issues, please create GitHub issues with:
+          - 🔴 **Critical**: Security/bugs requiring immediate attention
+          - 🟡 **Important**: Quality/debt requiring timely resolution
+          - 🟢 **Minor**: Improvements for future consideration
+
+          Focus on actionable items that will improve code quality and project maintainability.
           EOF
           )
 
-          # Determine appropriate labels based on findings
-          LABELS="post-merge-analysis"
-          if echo "${{ steps.analysis.outputs.result }}" | grep -q "🔴"; then
-            LABELS="$LABELS,priority-high,bug"
-          elif echo "${{ steps.analysis.outputs.result }}" | grep -q "🟡"; then
-            LABELS="$LABELS,technical-debt,enhancement"
-          fi
+          # Create the commit comment using GitHub API
+          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments \
+            --method POST \
+            --field body="$COMMENT_BODY"
 
-          # Create the issue using GitHub CLI
-          gh issue create \
-            --title "🔍 Post-merge code review findings: PR #${{ steps.process.outputs.pr_number }}" \
-            --body "$ISSUE_BODY" \
-            --label "$LABELS" \
-            --assignee "${{ github.event.head_commit.author.username }}"
-
-          echo "Created issue for code review findings from PR #${{ steps.process.outputs.pr_number }}"
+          echo "✅ Created commit comment with CI results and Claude analysis request"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update Analysis Tracking
+      - name: Update Analysis Tracking Log
         if: always()
         run: |
-          echo "Post-merge analysis completed at $(date)" >> .github/analysis-log.txt
-          echo "Analysis status: ${{ steps.analysis.outcome }}" >> .github/analysis-log.txt
-          echo "PR analyzed: #${{ steps.process.outputs.pr_number }}" >> .github/analysis-log.txt
-          echo "Has significant issues: ${{ steps.process.outputs.has_significant_issues }}" >> .github/analysis-log.txt
-          if [ "${{ steps.process.outputs.has_significant_issues }}" == "true" ]; then
-            echo "Created follow-up issue for PR #${{ steps.process.outputs.pr_number }}" >> .github/analysis-log.txt
-          fi
-          echo "Claude Code review completed" >> .github/analysis-log.txt
-          echo "---" >> .github/analysis-log.txt
+          # Create/update analysis log
+          mkdir -p .github/analysis-logs
+          LOG_FILE=".github/analysis-logs/post-merge-$(date +%Y-%m).log"
 
-      - name: Commit Analysis Log
+          # Add entry to monthly log
+          cat >> "$LOG_FILE" << EOF
+          [$(date -u '+%Y-%m-%d %H:%M:%S UTC')] Post-merge analysis initiated
+          Commit: ${{ github.sha }}
+          PR: #${{ steps.pr_info.outputs.pr_number }}
+          Author: ${{ steps.pr_info.outputs.commit_author }}
+          CI Status: ${{ steps.ci_tests.outputs.tests_passed == 'true' && 'Passed' || 'Issues Found' }}
+          Claude Analysis: Requested via commit comment
+          ---
+          EOF
+
+          echo "📊 Updated analysis tracking log: $LOG_FILE"
+
+      - name: Commit Analysis Log Updates
         if: always()
         run: |
+          # Configure git
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .github/analysis-log.txt || true
-          git commit -m "📊 Update post-merge analysis log
+
+          # Add and commit log updates if any changes exist
+          git add .github/analysis-logs/ || true
+
+          if git diff --cached --quiet; then
+            echo "📝 No log changes to commit"
+          else
+            git commit -m "📊 Update post-merge analysis log
+
+          Analysis completed for commit ${{ github.sha }}
+          PR: #${{ steps.pr_info.outputs.pr_number }}
 
           🤖 Generated with [Claude Code](https://claude.ai/code)
 
           Co-Authored-By: Claude <noreply@anthropic.com>" || echo "No changes to commit"
-          git push || echo "No changes to push"
+
+            git push || echo "No changes to push"
+            echo "✅ Analysis log committed and pushed"
+          fi
+
+      - name: Upload Test Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: post-merge-test-results-${{ github.sha }}
+          path: |
+            common/tests/junit-all.xml
+            common/tests/coverage.xml
+            common/tests/coverage_html
+            .github/analysis-logs/
+          retention-days: 30
+
+      - name: Cleanup Test Environment
+        if: always()
+        run: |
+          echo "🧹 Cleaning up test environment"
+          rm -rf build_data/test_* temp/* cache/* || true
+          echo "✅ Cleanup completed"
