@@ -63,6 +63,16 @@
 - **Validation**: Data quality and integrity checks
 - **Error Handling**: Exception management and logging utilities
 
+### 🎯 Target Architecture
+```
+common/
+├── path_manager/     # Directory management and file I/O, pathlib integration
+├── config_manager/   # Configuration management, depends on path_manager
+├── log_manager/      # Logging system using loguru, location managed by path_manager
+├── etl_loader.py     # Centralized ETL configuration system (Issue #278)
+└── [other modules organized by function]
+```
+
 Manages interactions between different modules, defines schemas and shared tools. Responsible for inter-module coordination and data standardization with unified directory management and configuration systems.
 
 ## 🏗️ Architecture Overview

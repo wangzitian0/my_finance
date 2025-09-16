@@ -32,7 +32,8 @@
 
 ### Phase 5: Completion & PR ✅
 - [ ] Task completion verified
-- [ ] Self-validation executed  
+- [ ] Self-validation executed
+- [ ] **README REVIEW**: Review and update README files in all directories containing modified files - ensure English-only compliance and accurate documentation
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
 - [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
 

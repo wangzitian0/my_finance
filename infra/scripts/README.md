@@ -22,6 +22,7 @@ Central directory for development scripts, workflow automation, and utility tool
 - **Release demonstrations** - System functionality validation and testing
 
 ### Configuration Management (`config/`)
+- **ETL configuration validation** - Unified ETL configuration checking tool (`check_etl_config.py`)
 - **Path migration tools** - Hardcoded path elimination and centralization
 - **I/O compliance validation** - SSOT DirectoryManager enforcement
 - **Configuration migration** - Legacy configuration system updates
@@ -100,6 +101,27 @@ p3 debug
 
 # Reset environment
 p3 reset
+```
+
+### ETL Configuration Management (Issue #278)
+```bash
+# Check all ETL configurations
+python infra/scripts/config/check_etl_config.py --all
+
+# Check specific configurations
+python infra/scripts/config/check_etl_config.py --stock-list f2 --details
+python infra/scripts/config/check_etl_config.py --data-source yfinance
+python infra/scripts/config/check_etl_config.py --scenario development
+
+# Test runtime configuration combinations
+python infra/scripts/config/check_etl_config.py --runtime f2 yfinance development
+
+# Run ETL configuration examples
+python infra/scripts/examples/etl_config_example.py
+
+# Configuration migration (if needed)
+python infra/scripts/migrate_etl_config.py --migrate
+python infra/scripts/migrate_etl_config.py --validate
 ```
 
 ### System Management and Validation
