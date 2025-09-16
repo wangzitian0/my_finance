@@ -32,7 +32,9 @@ try:
     )
 except ImportError as e:
     print(f"❌ Unable to import ETL configuration loader: {e}")
-    print("💡 Please ensure ETL configuration migration is complete: python scripts/migrate_etl_config.py --migrate")
+    print(
+        "💡 Please ensure ETL configuration migration is complete: python scripts/migrate_etl_config.py --migrate"
+    )
     sys.exit(1)
 
 
@@ -250,9 +252,15 @@ Example usage:
         """,
     )
 
-    parser.add_argument("--stock-list", help="Check specified stock list configuration (f2, m7, n100, v3k)")
-    parser.add_argument("--data-source", help="Check specified data source configuration (yfinance, sec_edgar)")
-    parser.add_argument("--scenario", help="Check specified scenario configuration (development, production)")
+    parser.add_argument(
+        "--stock-list", help="Check specified stock list configuration (f2, m7, n100, v3k)"
+    )
+    parser.add_argument(
+        "--data-source", help="Check specified data source configuration (yfinance, sec_edgar)"
+    )
+    parser.add_argument(
+        "--scenario", help="Check specified scenario configuration (development, production)"
+    )
     parser.add_argument(
         "--runtime",
         nargs=3,

@@ -192,7 +192,9 @@ class ETLConfigLoader:
             return self._cache[cache_key]
 
         if name not in self._scenario_mapping:
-            raise ValueError(f"Unknown scenario: {name}. Available: {list(self._scenario_mapping.keys())}")
+            raise ValueError(
+                f"Unknown scenario: {name}. Available: {list(self._scenario_mapping.keys())}"
+            )
 
         file_path = self.etl_config_dir / self._scenario_mapping[name]
         config_data = self._load_yaml(file_path)
