@@ -24,10 +24,12 @@
 
 ### **`p3/`** - P3 CLI System Maintenance
 **Purpose**: P3 CLI system maintenance and optimization (infra-ops-agent authority)
-- **Command Implementation**: Core P3 command functionality
+- **Command Implementation**: Core P3 command functionality with SSOT I/O integration
 - **Workflow Optimization**: P3 command performance and user experience
-- **System Integration**: P3 integration with other system components
+- **System Integration**: DirectoryManager integration for centralized path management
 - **Version Management**: P3 CLI versioning and update mechanisms
+- **Delegation Pattern**: Root p3.py → infra/p3/p3.py (L1/L2 architecture compliance)
+- **SSOT Enforcement**: All file operations use common.core.directory_manager
 
 ### **`hrbp/`** - HRBP Automation and Policy Enforcement
 **Purpose**: HRBP automation, hooks, and system validation
