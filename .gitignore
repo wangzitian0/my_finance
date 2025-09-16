@@ -57,6 +57,10 @@ build_data/logs/
 build_data/cache/
 build_data/tmp/
 
+# Test-generated directories (should not be tracked)
+common/data/
+common/latest_build
+
 # Neo4j database files
 neo4j/data/
 neo4j/logs/
