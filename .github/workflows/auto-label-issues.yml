@@ -37,9 +37,9 @@ jobs:
           
           const labelsToAdd = [];
           
-          // Priority Labels
+          // Priority Labels (Mutually Exclusive)
           const criticalKeywords = [
-            'critical', 'urgent', 'emergency', 'broken', 'production down', 
+            'critical', 'urgent', 'emergency', 'broken', 'production down',
             'security', 'data loss', 'corruption', 'crash', 'failure',
             'p0', 'priority: p0', 'immediate'
           ];
@@ -49,158 +49,220 @@ jobs:
             'p1', 'priority: p1', 'high'
           ];
           const lowKeywords = [
-            'nice to have', 'low priority', 'minor', 'cosmetic', 'p3', 
+            'nice to have', 'low priority', 'minor', 'cosmetic', 'p3',
             'priority: p3', ' low ', 'low-priority'
           ];
-          
+
           if (criticalKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('priority: P0-critical');
+            labelsToAdd.push('priority:P0');
           } else if (highKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('priority: P1-high');
+            labelsToAdd.push('priority:P1');
           } else if (lowKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('priority: P3-low');
+            labelsToAdd.push('priority:P3');
           } else {
-            labelsToAdd.push('priority: P2-medium');
+            labelsToAdd.push('priority:P2');
           }
           
-          // Type Labels
+          // Type Labels (Mutually Exclusive)
           const bugKeywords = [
             'bug', 'error', 'issue', 'problem', 'fix', 'broken', 'incorrect',
             'fail', 'exception', 'crash', 'not working'
           ];
           const featureKeywords = [
-            'feature', 'enhancement', 'implement', 'add', 'create', 'new',
-            'improve', 'extend', 'support'
+            'feature', 'implement', 'add', 'create', 'new', 'support'
+          ];
+          const enhancementKeywords = [
+            'enhancement', 'improve', 'extend', 'enhance', 'update', 'upgrade', 'optimize', 'better'
           ];
           const docKeywords = [
             'documentation', 'doc', 'readme', 'guide', 'tutorial', 'example',
             'comment', 'explain', 'clarify'
           ];
           const refactorKeywords = [
-            'refactor', 'cleanup', 'reorganize', 'restructure', 'optimize',
-            'simplify', 'architecture'
-          ];
-          const cicdKeywords = [
-            ' ci ', 'ci/cd', 'github action', 'github workflow', 'ci pipeline', 'automation',
-            'deploy', 'build pipeline', 'test automation'
+            'refactor', 'cleanup', 'reorganize', 'restructure', 'simplify', 'architecture'
           ];
           const adrKeywords = [
             'adr', 'architecture decision', 'decision record', 'design decision'
           ];
           
-          // Check for explicit type prefixes first
+          // Check for explicit type prefixes first (Mutually Exclusive)
           if (title.includes('[bug]')) {
-            labelsToAdd.push('type: bug');
+            labelsToAdd.push('type:bug');
           } else if (title.includes('[feature]')) {
-            labelsToAdd.push('type: feature');
+            labelsToAdd.push('type:feature');
+          } else if (title.includes('[enhancement]')) {
+            labelsToAdd.push('type:enhancement');
           } else if (title.includes('[documentation]') || title.includes('[doc')) {
-            labelsToAdd.push('type: docs');
+            labelsToAdd.push('type:docs');
           } else if (title.includes('[refactor]')) {
-            labelsToAdd.push('type: refactor');
+            labelsToAdd.push('type:refactor');
           } else if (title.includes('[adr]')) {
-            labelsToAdd.push('type: adr');
+            labelsToAdd.push('type:adr');
           } else if (bugKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: bug');
+            labelsToAdd.push('type:bug');
           } else if (featureKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: feature');
+            labelsToAdd.push('type:feature');
+          } else if (enhancementKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('type:enhancement');
           } else if (docKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: docs');
+            labelsToAdd.push('type:docs');
           } else if (refactorKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: refactor');
+            labelsToAdd.push('type:refactor');
           } else if (adrKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: adr');
+            labelsToAdd.push('type:adr');
           }
           
-          // Check for CI/CD regardless (can be combined with other types)
-          if (cicdKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('type: ci/cd');
-          }
-          
-          // Component Labels  
-          const infraKeywords = [
-            'infrastructure', 'infra', 'docker', 'container', 'podman', 'deployment',
-            'environment', 'setup', 'ansible', 'pixi', 'database', 'neo4j'
-          ];
-          const dataStorageKeywords = [
-            'data storage', 'storage', 'directory', 'file system', 'data layer',
-            'stage_', 'layer_', 'build_data', 'sec-edgar', 'yfinance'
-          ];
+          // L1 Business Module Labels (Mutually Exclusive - Issue #279)
           const etlKeywords = [
             'etl', 'etl pipeline', 'spider', 'parser', 'extraction', 'transform',
-            'semantic embedding', 'data processing'
+            'semantic embedding', 'data processing', 'sec_filing_processor',
+            'embedding_generator', 'crawlers', 'schedulers', 'loaders'
           ];
-          const dcfKeywords = [
-            'dcf', 'valuation', 'dcf_engine', 'financial', 'calculation'
+          const engineKeywords = [
+            'engine', 'graph rag', 'graph_rag', 'semantic retrieval', 'vector search',
+            'retrieval-augmented generation', 'rag system', 'dcf', 'valuation',
+            'dcf_engine', 'financial', 'calculation', 'retrieval', 'reasoning', 'reporting'
           ];
-          const graphRagKeywords = [
-            'graph rag', 'graph_rag', 'semantic retrieval', 'vector search',
-            'retrieval-augmented generation', 'rag system'
+          const evaluationKeywords = [
+            'evaluation', 'backtesting', 'metrics', 'benchmarks', 'strategy validation',
+            'performance testing'
           ];
-          
-          if (infraKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('component: infrastructure');
-          }
-          if (dataStorageKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('component: data-storage');
-          }
+          const commonKeywords = [
+            'common', 'core', 'config', 'templates', 'tools', 'database', 'schemas',
+            'types', 'utils', 'data storage', 'storage', 'directory', 'file system',
+            'data layer'
+          ];
+          const infraKeywords = [
+            'infrastructure', 'infra', 'docker', 'container', 'podman', 'deployment',
+            'environment', 'setup', 'ansible', 'pixi', 'p3', 'hrbp', 'development',
+            'ci', 'cd', 'github action', 'github workflow', 'automation', 'build pipeline'
+          ];
+
+          // Only assign one module label (mutually exclusive)
           if (etlKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('component: etl');
-          }
-          if (dcfKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('component: dcf-engine');
-          }
-          if (graphRagKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('component: graph-rag');
-          }
-          
-          // Phase Labels
-          const mvpKeywords = [
-            'mvp', 'minimum viable product', 'prototype', 'basic', 'initial'
-          ];
-          const productionKeywords = [
-            'production', 'prod', 'live', 'release', 'deployment'
-          ];
-          
-          if (mvpKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('phase: MVP');
-          }
-          if (productionKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('phase: production');
+            labelsToAdd.push('module:ETL');
+          } else if (engineKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('module:engine');
+          } else if (evaluationKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('module:evaluation');
+          } else if (commonKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('module:common');
+          } else if (infraKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('module:infra');
           }
           
-          // Status Labels  
+          // Status Labels (Mutually Exclusive)
           const blockedKeywords = [
             'blocked', 'waiting for', 'dependency', 'depends on', 'prerequisite'
           ];
           const triageKeywords = [
             'need', 'question', 'unclear', 'investigate', 'research', 'help wanted'
           ];
-          
+          const readyKeywords = [
+            'ready', 'approved', 'go ahead'
+          ];
+          const inProgressKeywords = [
+            'working on', 'in progress', 'started'
+          ];
+          const reviewKeywords = [
+            'review', 'feedback', 'check'
+          ];
+
           if (blockedKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('status: blocked');
-          }
-          if (triageKeywords.some(keyword => content.includes(keyword))) {
-            labelsToAdd.push('status: needs-triage');
+            labelsToAdd.push('status:blocked');
+          } else if (readyKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status:ready');
+          } else if (inProgressKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status:in-progress');
+          } else if (reviewKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status:review');
+          } else if (triageKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('status:needs-triage');
+          } else {
+            labelsToAdd.push('status:needs-triage'); // Default status
           }
           
-          // Effort estimation (only add if there are clear indicators)
+          // Scope Labels (Mutually Exclusive - Optional)
+          const f2Keywords = [
+            'f2', 'development', 'dev test', '2 companies'
+          ];
+          const m7Keywords = [
+            'm7', 'integration', '7 companies'
+          ];
+          const n100Keywords = [
+            'n100', 'validation', '100 companies'
+          ];
+          const v3kKeywords = [
+            'v3k', 'production', '3000'
+          ];
+
+          if (f2Keywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('scope:f2');
+          } else if (m7Keywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('scope:m7');
+          } else if (n100Keywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('scope:n100');
+          } else if (v3kKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('scope:v3k');
+          }
+
+          // Agent Labels (Can be combined)
+          const coordinatorKeywords = [
+            'coordinator', 'orchestration', 'multi-agent'
+          ];
+          const dataEngineerKeywords = [
+            'data engineer', 'etl agent'
+          ];
+          const quantResearchKeywords = [
+            'quant research', 'quantitative', 'research'
+          ];
+          const infraOpsKeywords = [
+            'infra ops', 'infrastructure ops', 'p3'
+          ];
+          const devQualityKeywords = [
+            'dev quality', 'quality', 'testing'
+          ];
+
+          if (coordinatorKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('agent:coordinator');
+          }
+          if (dataEngineerKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('agent:data-engineer');
+          }
+          if (quantResearchKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('agent:quant-research');
+          }
+          if (infraOpsKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('agent:infra-ops');
+          }
+          if (devQualityKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('agent:dev-quality');
+          }
+          
+          // Effort estimation (Mutually Exclusive)
+          const smallEffortKeywords = [
+            'quick', 'simple', 'minor', 'small'
+          ];
           const largeEffortKeywords = [
             'major refactor', 'migration', 'restructure', 'major',
             'complete overhaul', 'system overhaul', 'large effort'
           ];
           const mediumEffortKeywords = [
-            ' implement ', 'enhance', 'extend', 'integration', ' feature '
+            ' implement ', 'enhance', 'extend', 'integration', 'medium'
           ];
-          
-          // Only add effort labels if there are explicit indicators or very long content
-          if (largeEffortKeywords.some(keyword => content.includes(keyword)) || 
+
+          // Assign effort labels based on keywords and content length
+          if (largeEffortKeywords.some(keyword => content.includes(keyword)) ||
               content.length > 1500) {
-            labelsToAdd.push('effort: large');
-          } else if (mediumEffortKeywords.some(keyword => content.includes(keyword)) || 
+            labelsToAdd.push('effort:large');
+          } else if (smallEffortKeywords.some(keyword => content.includes(keyword))) {
+            labelsToAdd.push('effort:small');
+          } else if (mediumEffortKeywords.some(keyword => content.includes(keyword)) ||
                      content.length > 800) {
-            labelsToAdd.push('effort: medium');
+            labelsToAdd.push('effort:medium');
+          } else {
+            labelsToAdd.push('effort:medium'); // Default effort
           }
-          // Don't auto-assign small effort - let it be manual
           
           // Remove duplicates
           const uniqueLabels = [...new Set(labelsToAdd)];
