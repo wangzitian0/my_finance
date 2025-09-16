@@ -8,7 +8,7 @@
 
 ### Phase 1: Foundation ✅
 - [ ] Read CLAUDE.md (this file) - company policies
-- [ ] Read README.md - project architecture  
+- [ ] Read README.md files - project architecture (layered directory approach: current directory and subdirectories, scope applies to current directory and all child directories)
 - [ ] Identify task complexity: simple/multi-step/multi-domain
 - [ ] Think like an engineer: reuse existing patterns, avoid bypassing core processes
 - [ ] **NEVER BYPASS P3 SHIP FAILURES**: Always fix root causes, never create workarounds
@@ -33,7 +33,7 @@
 ### Phase 5: Completion & PR ✅
 - [ ] Task completion verified
 - [ ] Self-validation executed
-- [ ] **README REVIEW**: Review and update README files in all directories containing modified files - ensure English-only compliance and accurate documentation
+- [ ] **README REVIEW**: Review and update README.md files in directories with modified files + hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy)
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
 - [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
 

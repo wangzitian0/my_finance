@@ -78,7 +78,7 @@ git worktree add ../parallel-workspace-2 feature-branch-2
 
 ### Environment Troubleshooting & Recovery
 - **Pixi Environment Issues**: Diagnose and fix pixi/conda environment corruption
-  - Run `p3 debug` and `p3 ready` for environment health checks
+  - Run `p3 reset` and `p3 ready` for environment health checks
   - Clear cache with `rm -rf .pixi/envs` and reinitialize if needed
   - Handle Python architecture conflicts on macOS systems
 - **Dependency Resolution**: Fix missing or broken Python packages
@@ -149,8 +149,8 @@ When p3 commands fail, follow this systematic approach:
 
 1. **Environment Health Check**:
    ```bash
-   ./p3 debug               # Check overall system status
-   ./p3 ready          # Verify environment integrity
+   ./p3 reset               # Check overall system status and reset if needed
+   ./p3 ready               # Verify environment integrity
    which python3            # Confirm Python availability
    ```
 
@@ -163,7 +163,7 @@ When p3 commands fail, follow this systematic approach:
 3. **Environment Recovery** (if corrupted):
    ```bash
    rm -rf .pixi/envs        # Clear corrupted environment
-   ./p3 debug               # Force environment rebuild
+   ./p3 reset               # Force environment rebuild
    ```
 
 4. **Dependency Resolution**:
@@ -178,7 +178,7 @@ When p3 commands fail, follow this systematic approach:
 
 ### Recovery Success Criteria
 Before proceeding with original task:
-- ✅ `./p3 debug` returns success
+- ✅ `./p3 reset` returns success
 - ✅ Basic git commands work (git status, git branch)
 - ✅ Python environment responds correctly
 - ✅ Required p3 subcommands are functional

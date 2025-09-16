@@ -32,10 +32,9 @@ infra/p3/
 2. **`p3 check [scope]`** - Code validation (format, lint, basic tests)
 3. **`p3 test [scope]`** - Comprehensive end-to-end testing
 4. **`p3 ship "title" issue`** - PR creation with testing validation
-5. **`p3 debug`** - System diagnostics and troubleshooting
-6. **`p3 reset`** - System reset and recovery
-7. **`p3 build [scope]`** - Dataset generation and processing
-8. **`p3 version [level]`** - Version management and information
+5. **`p3 reset`** - System reset and recovery
+6. **`p3 build [scope]`** - Dataset generation and processing
+7. **`p3 version [level]`** - Version management and information
 
 ### Scope System
 - **f2**: 2 companies, 2-5min (development, PR validation)
@@ -87,7 +86,7 @@ p3 ship "Title" 123         # infra/git/ release management
 ### System Administration
 ```bash
 # Diagnostics and troubleshooting
-p3 debug                    # infra/system/env_status.py integration
+p3 reset                    # infra/system/env_status.py integration
 
 # System maintenance
 p3 reset                    # Complete system reset and recovery
