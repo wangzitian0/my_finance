@@ -56,11 +56,7 @@
 
 ### ⚙️ Technical Standards
 - [ ] Code quality and best practices
-- [ ] **Two-layer modularity compliance**:
-  - [ ] L1 directory structure: infra/, common/, web/, api/
-  - [ ] L2 submodules: functional grouping within L1
-  - [ ] No circular dependencies between modules
-  - [ ] Clear separation of concerns
+- [ ] **Modular architecture**: L1/L2 structure, no cross-module deps, use common/core
 - [ ] TypeScript usage for new features
 - [ ] Proper error handling and validation
 - [ ] Existing code pattern consistency

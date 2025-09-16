@@ -38,31 +38,27 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           direct_prompt: |
-            **POST-MERGE ANALYSIS & ISSUE GENERATION**
+            **POST-MERGE ISSUE CREATION**
 
-            Analyze recent merge to main branch and create GitHub issues for improvement opportunities found.
+            Review merged changes and create GitHub issues for outstanding work items found.
 
-            **Analysis Focus:**
-            1. **Recent Changes Review** - Last 5-10 commits for technical debt, missing tests, documentation gaps
-            2. **CLAUDE.md Compliance Check** - P3 workflow, SSOT patterns, modular file placement
-            3. **Issue Creation** - Generate actionable GitHub issues with proper labels and priorities
+            **Focus Areas (same as PR review):**
+            1. **CLAUDE.md Checklist Violations** - Any non-compliant patterns merged
+            2. **Incomplete Requirements** - TODOs, missing tests, documentation gaps
+            3. **Technical Debt** - Code quality improvements needed
 
             **Create Issues For:**
-            - TODO comments found in code
-            - Missing error handling patterns
-            - Documentation update needs
+            - TODO comments requiring follow-up
+            - Missing error handling or validation
             - Test coverage gaps
+            - Documentation updates needed
             - Performance optimization opportunities
-            - Configuration inconsistencies
-            - SSOT I/O compliance violations
 
-            **Issue Format:**
-            - Descriptive action-oriented titles
-            - Link to specific files/lines when relevant
-            - Add labels: technical-debt, performance, documentation, testing
+            **Issue Requirements:**
+            - Link to specific files/lines
             - Reference this post-merge analysis
-
-            Generate 3-5 focused, actionable issues from the analysis.
+            - Labels: technical-debt, testing, documentation, performance
+            - Actionable titles starting with verbs
 
           use_sticky_comment: false
         env:
