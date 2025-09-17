@@ -12,8 +12,8 @@ from pathlib import Path
 
 def import_ci_module():
     """Import the CI validation module"""
-    # Updated path to reflect the new location
-    ci_path = Path(__file__).parent.parent / "scripts" / "config" / "ci_m7_validation.py"
+    # Updated path to reflect the new L1/L2 structure (Issue #283)
+    ci_path = Path(__file__).parent.parent / "infra" / "scripts" / "config" / "ci_m7_validation.py"
     spec = importlib.util.spec_from_file_location("ci_m7_validation", str(ci_path))
     ci_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(ci_module)
