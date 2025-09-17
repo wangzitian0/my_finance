@@ -90,10 +90,13 @@ class TestConfigManager:
         DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="etl/stock_m7.yml"),
         DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="etl/stock_n100.yml"),
         DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="etl/stock_v3k.yml"),
-
         # Functional aliases - reuse existing configurations
-        DatasetTier.TEST: TestConfig(tier=DatasetTier.TEST, config_file="etl/stock_f2.yml"),  # Reuse F2
-        DatasetTier.PERF: TestConfig(tier=DatasetTier.PERF, config_file="etl/stock_m7.yml"),  # Reuse M7
+        DatasetTier.TEST: TestConfig(
+            tier=DatasetTier.TEST, config_file="etl/stock_f2.yml"
+        ),  # Reuse F2
+        DatasetTier.PERF: TestConfig(
+            tier=DatasetTier.PERF, config_file="etl/stock_m7.yml"
+        ),  # Reuse M7
     }
 
     def __init__(self, base_path: str = None):
