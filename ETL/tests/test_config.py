@@ -85,11 +85,15 @@ class TestConfigManager:
     """Manages test configurations for different dataset tiers"""
 
     CONFIG_MAP = {
-        # Primary four-tier system
-        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="list_fast_2.yml"),
-        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="list_magnificent_7.yml"),
-        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="list_nasdaq_100.yml"),
-        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="list_vti_3500.yml"),
+        # Primary four-tier system - reuse ETL configurations
+        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="etl/stock_f2.yml"),
+        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="etl/stock_m7.yml"),
+        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="etl/stock_n100.yml"),
+        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="etl/stock_v3k.yml"),
+
+        # Functional aliases - reuse existing configurations
+        DatasetTier.TEST: TestConfig(tier=DatasetTier.TEST, config_file="etl/stock_f2.yml"),  # Reuse F2
+        DatasetTier.PERF: TestConfig(tier=DatasetTier.PERF, config_file="etl/stock_m7.yml"),  # Reuse M7
     }
 
     def __init__(self, base_path: str = None):

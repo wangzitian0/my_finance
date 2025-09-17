@@ -6,14 +6,8 @@ This directory contains the modular configuration system for the My Finance DCF 
 
 The configuration system supports **P3 CLI integration** and **three orthogonal ETL dimensions** that can be combined dynamically at runtime:
 
-### 📁 P3 CLI Dataset Configurations (Root Level)
-**Direct P3 CLI integration** - Stock lists accessible via DatasetTier enum and functional aliases:
-
-**Stock Lists** (P3 CLI accessible):
-- `list_fast_2.yml` - F2 tier: 2 companies (CI testing, alias: TEST)
-- `list_magnificent_7.yml` - M7 tier: 7 companies (performance testing, alias: PERF)
-- `list_nasdaq_100.yml` - N100 tier: 100 companies (validation testing)
-- `list_vti_3500.yml` - V3K tier: 3,485 companies (production)
+### 📁 P3 CLI & ETL Unified Configuration System
+**Single source configuration** - All stock lists in `etl/` directory with DatasetTier integration:
 
 ### 📁 ETL Configuration Directory (`etl/`)
 **Centralized ETL configuration system** - Detailed ETL configurations in the `etl/` subdirectory:
@@ -36,9 +30,9 @@ The configuration system supports **P3 CLI integration** and **three orthogonal 
 
 **P3 CLI Integration** - Direct command access:
 ```bash
-p3 test f2        # Uses list_fast_2.yml (alias: TEST)
-p3 test perf      # Uses list_magnificent_7.yml (alias: PERF)
-p3 build n100     # Uses list_nasdaq_100.yml
+p3 test f2        # Uses etl/stock_f2.yml (alias: TEST)
+p3 test perf      # Uses etl/stock_m7.yml (alias: PERF)
+p3 build n100     # Uses etl/stock_n100.yml
 p3 ship "Title" 123  # Auto-detects appropriate test configuration
 ```
 
@@ -47,9 +41,9 @@ p3 ship "Title" 123  # Auto-detects appropriate test configuration
 from ETL.tests.test_config import DatasetTier, TestConfigManager
 
 manager = TestConfigManager()
-f2_config = manager.get_config(DatasetTier.F2)     # list_fast_2.yml
-test_config = manager.get_config(DatasetTier.TEST) # Same as F2
-perf_config = manager.get_config(DatasetTier.PERF) # list_magnificent_7.yml
+f2_config = manager.get_config(DatasetTier.F2)     # etl/stock_f2.yml
+test_config = manager.get_config(DatasetTier.TEST) # Same as F2 - reuses etl/stock_f2.yml
+perf_config = manager.get_config(DatasetTier.PERF) # Reuses etl/stock_m7.yml
 ```
 
 **ETL Runtime Configuration Building**:

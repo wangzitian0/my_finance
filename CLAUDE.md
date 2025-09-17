@@ -55,6 +55,7 @@
 - [ ] **System Architecture**: RAG/DCF integration, database patterns, API consistency, performance
 - [ ] **Security & Testing**: Financial platform security, test coverage requirements
 - [ ] **English-only standard**: All technical content in English
+- [ ] **Temporary Script Cleanup**: Remove one-time scripts (e.g., migration, setup scripts) - only commit if essential for future use
 
 ### Phase 5: Completion & PR ✅
 **Objective**: Complete code commit and successfully create PR

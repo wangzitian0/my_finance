@@ -16,11 +16,11 @@
 
 ### **`config/`** - Centralized Configuration Management
 **Purpose**: Centralized configuration management (SSOT)
-- **P3 CLI Stock Lists**: Direct P3 command integration (list_fast_2.yml, list_magnificent_7.yml)
-- **ETL Stock Lists**: Orthogonal company collections (f2, m7, n100, v3k)
+- **ETL Stock Lists**: Orthogonal company collections (etl/stock_f2.yml, etl/stock_m7.yml, etc.)
 - **Data Sources**: Independent API configurations (yfinance, sec_edgar)
 - **LLM Configurations**: Model settings and prompt templates
 - **System Settings**: Directory structure and performance parameters
+- **Testing Variables**: Use `test_only_xxx` prefix for test-specific variables within existing config files (minimize test-only variables)
 
 ### **`templates/`** - Analysis Prompts and Configurations
 **Purpose**: Analysis prompts and LLM configurations
@@ -652,13 +652,13 @@ common/
 ├── orthogonal_config.py    # Orthogonal configuration system
 ├── config/                 # Configuration files
 │   ├── directory_structure.yml  # SSOT directory config
-│   ├── list_fast_2.yml         # P3 CLI: F2 tier (2 companies, CI testing)
-│   ├── list_magnificent_7.yml  # P3 CLI: M7 tier (7 companies, performance)
-│   ├── stock_lists/           # Orthogonal stock list configurations
-│   │   ├── f2.yml            # 2 companies (development)
-│   │   ├── m7.yml            # 7 companies (standard testing)
-│   │   ├── n100.yml          # 101 companies (validation, generated)
-│   │   └── v3k.yml           # 3,485 companies (production, generated)
+│   ├── etl/                   # ETL-specific configurations (primary source)
+│   │   ├── stock_f2.yml      # 2 companies (development, reused by TEST alias)
+│   │   ├── stock_m7.yml      # 7 companies (standard testing, reused by PERF alias)
+│   │   ├── stock_n100.yml    # 101 companies (validation, generated)
+│   │   ├── stock_v3k.yml     # 3,485 companies (production, generated)
+│   │   ├── source_yfinance.yml  # Yahoo Finance API config
+│   │   └── source_sec_edgar.yml # SEC Edgar API config
 │   ├── data_sources/         # Orthogonal data source configurations
 │   │   ├── yfinance.yml      # Yahoo Finance API config
 │   │   └── sec_edgar.yml     # SEC Edgar API config
