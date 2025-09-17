@@ -127,13 +127,24 @@ jobs:
 
           ---
 
-          @claude Please analyze this merge for outstanding work items and create GitHub issues for any significant findings:
+          @claude **🔍 POST-MERGE ANALYSIS REQUEST - Commit: ${{ github.sha }}**
+
+          Analyzing post-merge changes for PR #${{ steps.pr_info.outputs.pr_number }} merged into main branch.
+
+          Please review the merged code changes and create GitHub issues for any significant findings:
           - TODO/FIXME comments needing follow-up
           - Incomplete implementations or missing error handling
           - Missing tests or documentation
           - Technical debt or performance concerns
+          - Code quality issues that need attention
 
-          Use priority labels: 🔴 Critical, 🟡 Important, 🟢 Minor
+          **Action Required:**
+          Create GitHub issues with appropriate priority labels:
+          - 🔴 **Critical**: Security/bugs requiring immediate attention
+          - 🟡 **Important**: Quality/debt requiring timely resolution
+          - 🟢 **Minor**: Improvements for future consideration
+
+          Focus on actionable items that improve code quality and maintainability.
           EOF
           )
 
