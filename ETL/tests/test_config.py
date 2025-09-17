@@ -95,6 +95,7 @@ class TestConfigManager:
     def __init__(self, base_path: str = None):
         if base_path is None:
             # Use directory_manager to get correct config path
+            self.base_path = directory_manager.root_path
             self.config_dir = directory_manager.get_config_path()
         else:
             self.base_path = Path(base_path)
@@ -157,15 +158,15 @@ class TestConfigManager:
         return results
 
     def get_data_paths(self, tier: DatasetTier) -> Dict[str, Path]:
-        """Get data paths for specified tier"""
-        base_data_path = self.base_path / "data"
+        """Get data paths for specified tier using build_data structure"""
+        build_data_path = self.base_path / "build_data"
 
         return {
-            "extract": base_data_path / "stage_01_extract",
-            "transform": base_data_path / "stage_02_transform",
-            "load": base_data_path / "stage_03_load",
-            "build": base_data_path / "build",
-            "reports": base_data_path / "reports",
+            "raw": build_data_path / "stage_00_raw",
+            "extract": build_data_path / "stage_01_daily_delta",
+            "transform": build_data_path / "stage_04_query_results",
+            "build": build_data_path,
+            "reports": build_data_path / "reports",
             "config": self.config_dir / self.get_config(tier).config_file,
         }
 
