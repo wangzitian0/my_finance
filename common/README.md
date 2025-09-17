@@ -3,51 +3,56 @@
 **L1 Module**: Cross-module shared resources and system infrastructure
 **Business Purpose**: Provide unified directory management, configuration, and shared utilities for all system components
 
+**Issue #284**: Simplified to 5 essential L2 modules with no root-level files
 **Issue #122**: Complete refactoring of the common lib with DRY/SSOT principles, five-layer data architecture, and storage backend abstraction.
 
-## L2 Component Architecture
+## L2 Component Architecture (5 Essential Modules)
 
-### **`core/`** - System Core Infrastructure
-**Purpose**: Directory manager, config manager, storage backends
-- **DirectoryManager**: SSOT for all file path management with backend abstraction
-- **ConfigManager**: Unified configuration management with automatic discovery
-- **StorageManager**: Backend abstraction for local and cloud storage
-- **LogManager**: Unified logging system with structured output
-
-### **`config/`** - Centralized Configuration Management
+### **`config/`** - All Configuration Management
 **Purpose**: Centralized configuration management (SSOT)
-- **Stock Lists**: Orthogonal company collections (f2, m7, n100, v3k)
-- **Data Sources**: Independent API configurations (yfinance, sec_edgar)
+- **ETL Configuration**: ETL loader and stock list configurations (from `etl_loader.py`)
 - **LLM Configurations**: Model settings and prompt templates
 - **System Settings**: Directory structure and performance parameters
+- **Agent Configurations**: Agent-specific settings and workflows
 
-### **`templates/`** - Analysis Prompts and Configurations
-**Purpose**: Analysis prompts and LLM configurations
-- **Financial Analysis**: DCF, valuation, and investment prompts
-- **Report Generation**: Executive summary and dashboard templates
-- **Graph-RAG**: Retrieval and reasoning prompt templates
-- **Compliance**: Regulatory reporting and SEC filing templates
+### **`io/`** - File I/O and Storage Operations
+**Purpose**: Unified file operations and storage abstraction
+- **DirectoryManager**: SSOT for all file path management (`directory.py`)
+- **StorageManager**: Backend abstraction for local/cloud storage (`storage.py`)
+- **FileOperations**: Common file I/O utilities (`files.py`)
 
-### **`tools/`** - Shared Utility Functions
-**Purpose**: Shared utility functions and helpers
-- **Data Processing**: JSON, CSV, and file format utilities
-- **Financial Calculations**: Common financial mathematics
-- **Text Processing**: Document parsing and cleaning utilities
-- **API Clients**: Reusable HTTP and database clients
+### **`data/`** - Data Processing and Validation
+**Purpose**: Data models, schemas, and processing utilities
+- **Data Processing**: JSON, CSV, and format utilities (`processing.py`)
+- **Schemas**: Financial data models and validation (`schemas.py`)
+- **Validation**: Data integrity and type validation (`validation.py`)
 
-### **`database/`** - Database Connection and Query Utilities
-**Purpose**: Database connection and query utilities
-- **Neo4j Integration**: Graph database connection management
-- **Query Builders**: Cypher query construction and optimization
-- **Connection Pooling**: Database connection lifecycle management
-- **Migration Tools**: Schema updates and data migration utilities
+### **`system/`** - System Utilities
+**Purpose**: Core system functionality and monitoring
+- **Logging**: Unified logging system (`logging.py` - from `logger.py`)
+- **Monitoring**: System metrics and health checks (`monitoring.py`)
+- **Progress**: Progress tracking and reporting (`progress.py`)
 
-### **`schemas/`** - Data Models and Validation
-**Purpose**: Data models and validation schemas
-- **Financial Data**: Stock, filing, and metrics data models
-- **Graph Schema**: Neo4j node and relationship definitions
-- **API Schemas**: Request/response validation models
-- **Configuration Schema**: YAML/JSON configuration validation
+### **`ml/`** - ML/AI Utilities and Templates
+**Purpose**: Machine learning and AI support components
+- **Fallback**: ML fallback implementations (`fallback.py`)
+- **Templates**: Analysis prompts and configurations (`templates.py`)
+- **Prompts**: Prompt management and optimization (`prompts.py`)
+
+## Migration Notes
+
+### Relocated Components (Issue #284)
+- `common/etl_loader.py` → `common/config/etl/loader.py`
+- `common/logger.py` → `common/system/logging.py`
+- `common/core/directory_manager.py` → `common/io/directory.py`
+- `common/core/storage_manager.py` → `common/io/storage.py`
+- `common/utils/ml_fallback.py` → `common/ml/fallback.py`
+- `common/agents/` → `infra/agents/` (moved to appropriate L1 module)
+- `common/database/` → `ETL/database/` (ETL-specific functionality)
+- `common/tests/` → `tests/common/` (proper test location)
+
+### Legacy Support
+The `core/` directory remains for backward compatibility but delegates to the new structure. All new code should use the 5 essential L2 modules directly.
 
 ### **`types/`** - Type Definitions and Interfaces
 **Purpose**: Type definitions and interfaces

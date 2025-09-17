@@ -4,30 +4,48 @@
 Common module for shared utilities and configurations.
 This module provides centralized access to common functionality used across the entire project.
 
-Issue #122: Five-Layer Data Architecture Implementation
-Issue #184: Core library restructuring with focused components
+Issue #284: Simplified L1 directory structure with 5 essential L2 modules
+- Optimized common module to 5 essential L2 sub-modules
+- No scattered files in common root directory
+- Clean organization with exactly 5 L2 modules
 
-- Unified directory management with SSOT principles
-- Storage backend abstraction for cloud migration
-- Comprehensive configuration management system
-- Legacy path mapping for backward compatibility
-- DRY architecture eliminating hardcoded paths
+Simplified Modular Structure (5 L2 Modules):
+- config/: ALL configuration management (includes etl/)
+- io/: File I/O and storage operations
+- data/: Data processing and validation
+- system/: System utilities (logging, monitoring, progress)
+- ml/: ML/AI utilities and templates
 
-New Modular Structure:
-- core/: Core system components (DirectoryManager, ConfigManager, StorageManager)
-- agents/: Agent operations and HRBP management
-- build/: Build tracking, quality reporting, and metadata management
-- monitoring/: Execution monitoring and dashboard components
-- schemas/: Data schema definitions
-- utils/: Organized utility modules (I/O, logging, data processing, etc.)
-- legacy/: Deprecated components for backward compatibility
-- tests/: Comprehensive test structure
+Legacy modules maintained for compatibility:
+- core/: Core system components (legacy paths)
+- build/: Build tracking and metadata management
+- utils/: Utility modules (legacy paths)
+- schemas/: Data schema definitions (legacy paths)
 """
 
-# Build and quality modules
+# === 5 ESSENTIAL L2 MODULES ===
+
+# Build and quality modules (maintained)
 from .build.build_tracker import BuildTracker
 from .build.metadata_manager import MetadataManager
 from .build.quality_reporter import QualityReporter, setup_quality_reporter
+
+# 1. Configuration Management (config/)
+from .config.etl import (
+    DataSourceConfig,
+    ETLConfigLoader,
+    RuntimeETLConfig,
+    ScenarioConfig,
+    StockListConfig,
+    build_etl_config,
+    etl_loader,
+    list_available_configs,
+    load_data_source,
+    load_scenario,
+    load_stock_list,
+)
+
+# Legacy core components (maintained for backward compatibility)
 from .core.config_manager import (
     ConfigManager,
     ConfigSchema,
@@ -40,27 +58,8 @@ from .core.config_manager import (
     reload_configs,
 )
 
-# Core components
-from .core.directory_manager import (
-    DataLayer,
-    DirectoryManager,
-    StorageBackend,
-    directory_manager,
-    ensure_data_structure,
-    get_build_path,
-    get_config_path,
-    get_data_path,
-    get_source_path,
-)
-from .core.storage_manager import (
-    LocalFilesystemBackend,
-    StorageBackendInterface,
-    StorageManager,
-    create_storage_manager_from_config,
-)
-
-# Schema modules
-from .schemas.graph_rag_schema import (
+# 3. Data Processing and Validation (data/)
+from .data import (
     DEFAULT_EMBEDDING_CONFIG,
     MAGNIFICENT_7_CIKS,
     MAGNIFICENT_7_TICKERS,
@@ -77,8 +76,7 @@ from .schemas.graph_rag_schema import (
     SemanticSearchResult,
     StockNode,
     VectorEmbeddingConfig,
-)
-from .utils.data_processing import (
+    check_data_completeness,
     convert_timestamps_to_iso,
     deep_merge_dicts,
     filter_companies_by_criteria,
@@ -86,13 +84,74 @@ from .utils.data_processing import (
     normalize_ticker_symbol,
     safe_json_serialize,
     validate_company_data,
+    validate_company_list,
+    validate_financial_data,
+    validate_json_structure,
+    validate_ticker_symbol,
 )
-from .utils.id_generation import Snowflake, generate_snowflake_id, generate_snowflake_str
-from .utils.io_operations import is_file_recent, sanitize_data, suppress_third_party_logs
 
-# Utility modules
-from .utils.logging_setup import setup_logger
-from .utils.progress_tracking import create_progress_bar, get_global_progress_tracker
+# 2. I/O Operations (io/)
+from .io import (
+    DataLayer,
+    DirectoryManager,
+    LocalFilesystemBackend,
+    StorageBackend,
+    StorageBackendInterface,
+    StorageManager,
+    create_storage_manager_from_config,
+    directory_manager,
+    ensure_data_structure,
+    get_build_path,
+    get_config_path,
+    get_data_path,
+    get_source_path,
+    is_file_recent,
+    sanitize_data,
+    suppress_third_party_logs,
+)
+
+# 5. ML/AI Utilities (ml/)
+from .ml import (
+    NUMPY_AVAILABLE,
+    FallbackEmbeddings,
+    FallbackLLM,
+    FallbackRetrieval,
+    PromptManager,
+    PromptType,
+    TemplateManager,
+    get_dcf_valuation_prompt,
+    get_financial_analysis_prompt,
+    get_investment_recommendation_prompt,
+    get_sec_filing_prompt,
+    get_template,
+    list_templates,
+    prompt_manager,
+    render_template,
+    template_manager,
+)
+
+# 4. System Utilities (system/)
+from .system import (
+    DefaultRequestLogIDFilter,
+    PerformanceTimer,
+    ProgressTracker,
+    StreamToLogger,
+    SystemMonitor,
+    create_progress_bar,
+    get_global_progress_tracker,
+    get_monitoring_summary,
+    get_system_metrics,
+    setup_legacy_logger,
+    setup_logger,
+    start_system_monitoring,
+    stop_system_monitoring,
+)
+
+# Utility modules (legacy compatibility)
+from .utils.id_generation import Snowflake, generate_snowflake_id, generate_snowflake_str
+
+# === LEGACY MODULE COMPATIBILITY ===
+
 
 # Legacy imports for backward compatibility
 try:
@@ -105,58 +164,53 @@ except ImportError:
 from .core.compatibility import get_legacy_data_path
 
 # Version information
-__version__ = "2.1.0"  # Incremented for restructuring
-__version_info__ = (2, 1, 0)
+__version__ = "3.0.0"  # Major version for 5-module restructuring
+__version_info__ = (3, 0, 0)
 
 __all__ = [
-    # Core directory management
+    # === 5 ESSENTIAL L2 MODULES ===
+    # 1. Configuration Management (config/)
+    "ETLConfigLoader",
+    "RuntimeETLConfig",
+    "ScenarioConfig",
+    "StockListConfig",
+    "DataSourceConfig",
+    "build_etl_config",
+    "etl_loader",
+    "list_available_configs",
+    "load_data_source",
+    "load_scenario",
+    "load_stock_list",
+    # 2. I/O Operations (io/)
     "DirectoryManager",
     "DataLayer",
     "StorageBackend",
+    "StorageManager",
+    "StorageBackendInterface",
+    "LocalFilesystemBackend",
+    "create_storage_manager_from_config",
     "directory_manager",
     "get_data_path",
     "get_config_path",
     "get_build_path",
     "get_source_path",
     "ensure_data_structure",
-    # Configuration management
-    "ConfigManager",
-    "ConfigType",
-    "ConfigSchema",
-    "config_manager",
-    "get_config",
-    "get_company_list",
-    "get_llm_config",
-    "get_data_source_config",
-    "reload_configs",
-    # Storage management
-    "StorageManager",
-    "StorageBackendInterface",
-    "LocalFilesystemBackend",
-    "create_storage_manager_from_config",
-    # Utility functions
-    "setup_logger",
-    "suppress_third_party_logs",
     "is_file_recent",
     "sanitize_data",
-    "Snowflake",
-    "generate_snowflake_id",
-    "generate_snowflake_str",
-    "create_progress_bar",
-    "get_global_progress_tracker",
-    "normalize_ticker_symbol",
-    "validate_company_data",
-    "merge_company_lists",
-    "filter_companies_by_criteria",
+    "suppress_third_party_logs",
+    # 3. Data Processing and Validation (data/)
     "convert_timestamps_to_iso",
-    "safe_json_serialize",
     "deep_merge_dicts",
-    # System modules
-    "BuildTracker",
-    "QualityReporter",
-    "setup_quality_reporter",
-    "MetadataManager",
-    # Graph RAG schema
+    "filter_companies_by_criteria",
+    "merge_company_lists",
+    "normalize_ticker_symbol",
+    "safe_json_serialize",
+    "validate_company_data",
+    "check_data_completeness",
+    "validate_company_list",
+    "validate_financial_data",
+    "validate_json_structure",
+    "validate_ticker_symbol",
     "QueryIntent",
     "DocumentType",
     "VectorEmbeddingConfig",
@@ -173,6 +227,57 @@ __all__ = [
     "MAGNIFICENT_7_TICKERS",
     "MAGNIFICENT_7_CIKS",
     "DEFAULT_EMBEDDING_CONFIG",
+    # 4. System Utilities (system/)
+    "DefaultRequestLogIDFilter",
+    "StreamToLogger",
+    "setup_legacy_logger",
+    "setup_logger",
+    "SystemMonitor",
+    "PerformanceTimer",
+    "start_system_monitoring",
+    "stop_system_monitoring",
+    "get_system_metrics",
+    "get_monitoring_summary",
+    "ProgressTracker",
+    "create_progress_bar",
+    "get_global_progress_tracker",
+    # 5. ML/AI Utilities (ml/)
+    "FallbackEmbeddings",
+    "FallbackLLM",
+    "FallbackRetrieval",
+    "NUMPY_AVAILABLE",
+    "PromptManager",
+    "PromptType",
+    "prompt_manager",
+    "get_financial_analysis_prompt",
+    "get_dcf_valuation_prompt",
+    "get_sec_filing_prompt",
+    "get_investment_recommendation_prompt",
+    "TemplateManager",
+    "template_manager",
+    "get_template",
+    "render_template",
+    "list_templates",
+    # === LEGACY MODULE COMPATIBILITY ===
+    # Legacy configuration management
+    "ConfigManager",
+    "ConfigType",
+    "ConfigSchema",
+    "config_manager",
+    "get_config",
+    "get_company_list",
+    "get_llm_config",
+    "get_data_source_config",
+    "reload_configs",
+    # Build and quality modules
+    "BuildTracker",
+    "QualityReporter",
+    "setup_quality_reporter",
+    "MetadataManager",
+    # Utility modules (legacy)
+    "Snowflake",
+    "generate_snowflake_id",
+    "generate_snowflake_str",
     # Legacy compatibility
     "data_access",
     "get_legacy_data_path",
