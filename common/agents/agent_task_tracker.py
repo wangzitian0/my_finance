@@ -13,6 +13,11 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+# Configure SQLite3 datetime handling for Python 3.12+ compatibility
+# This prevents DeprecationWarning about default datetime adapter
+sqlite3.register_adapter(datetime, lambda dt: dt.isoformat())
+sqlite3.register_converter("datetime", lambda s: datetime.fromisoformat(s.decode()))
+
 from ..monitoring.execution_monitor import ErrorCategory, ExecutionLog, ExecutionResult
 
 
