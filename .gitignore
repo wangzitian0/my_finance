@@ -1,8 +1,80 @@
-# Build and cache directories
+# ==============================================================================
+# BUILD DATA MANAGEMENT
+# ==============================================================================
+# Track structure only, not content for build data directories
+
+build_data/stage_00_raw/*
+!build_data/stage_00_raw/.gitkeep
+!build_data/stage_00_raw/*/
+build_data/stage_00_raw/*/*
+!build_data/stage_00_raw/*/.gitkeep
+
+build_data/stage_01_daily_delta/*
+!build_data/stage_01_daily_delta/.gitkeep
+!build_data/stage_01_daily_delta/*/
+build_data/stage_01_daily_delta/*/*
+!build_data/stage_01_daily_delta/*/.gitkeep
+
+build_data/stage_02_daily_index/*
+!build_data/stage_02_daily_index/.gitkeep
+!build_data/stage_02_daily_index/*/
+build_data/stage_02_daily_index/*/*
+!build_data/stage_02_daily_index/*/.gitkeep
+
+build_data/stage_03_graph_rag/*
+!build_data/stage_03_graph_rag/.gitkeep
+!build_data/stage_03_graph_rag/*/
+build_data/stage_03_graph_rag/*/*
+!build_data/stage_03_graph_rag/*/.gitkeep
+
+build_data/stage_04_query_results/*
+!build_data/stage_04_query_results/.gitkeep
+!build_data/stage_04_query_results/*/
+build_data/stage_04_query_results/*/*
+!build_data/stage_04_query_results/*/.gitkeep
+
+# Build quality reports - temporary artifacts
+build_data/quality_reports/
+build_data/logs/
+
+# Dynamic symlinks
+common/latest_build
+data
+
+# ==============================================================================
+# LLM CONFIG ARTIFACTS
+# ==============================================================================
+# LLM temporary artifacts in config
+common/config/llm/responses/*.md
+common/config/llm/responses/*.json
+!common/config/llm/responses/.gitkeep
+
+common/config/llm/thinking_process/*.txt
+!common/config/llm/thinking_process/.gitkeep
+
+common/config/llm/semantic_results/*.json
+!common/config/llm/semantic_results/.gitkeep
+
+# ==============================================================================
+# DEVELOPMENT FILES
+# ==============================================================================
+# Local development environment
+.webui_secret_key
+.env.local
+.env.development
+
+# ==============================================================================
+# PYTHON STANDARD
+# ==============================================================================
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -16,66 +88,157 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# PyTorch model files
-*.pth
-*.pt
+# PyInstaller
+*.manifest
+*.spec
 
-# Environment and IDE
-.env
-.venv
-venv/
-ENV/
-env/
-.ide/
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Testing
-.coverage
+# Unit test / coverage reports
 htmlcov/
 .tox/
-.pytest_cache/
+.nox/
+.coverage
+.coverage.*
 .cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
 
-# macOS
-.DS_Store
+# Translations
+*.mo
+*.pot
 
-# System and logs
+# Django stuff:
 *.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+# .python-version
+
+# pipenv
+#Pipfile.lock
+
+# UV
+#uv.lock
+
+# poetry
+#poetry.lock
+
+# pdm
+.pdm.toml
+.pdm-python
+.pdm-build/
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#.idea/
+
+# PyPI configuration file
+.pypirc
+
+# ==============================================================================
+# LOG FILES
+# ==============================================================================
+# All log files - comprehensive exclusion
+*.log
+*_logs*.json
+*_logs*.txt
+execution_logs*.json
+execution_logs*.txt
+claude_hooks*.json
+claude_hooks*.txt
+
+# Log directories
 logs/
-log/
+**/logs/
 
-# Build data - managed by DataLayer
-build_data/logs/
-build_data/cache/
-build_data/tmp/
+# Prevent log files in config directories (SSOT compliance)
+common/config/**/execution_logs*.json
+common/config/**/execution_logs*.txt
+common/config/**/*_logs*.json
+common/config/**/*_logs*.txt
+common/config/**/claude_hooks*.json
+common/config/**/claude_hooks*.txt
 
-# Test-generated directories (should not be tracked)
-common/data/
-common/latest_build
-
-# Neo4j database files
-neo4j/data/
-neo4j/logs/
-neo4j/conf/
-
-# Local configuration overrides
-local_config.yaml
-*.local.yaml
-
-# Docker and containers
-docker-compose.override.yml
-
-# Configuration files moved to proper locations
-.coveragerc
-.pre-commit-config.yaml
-
-# Files marked for removal (Issue #282)
-CHANGELOG.md
+# ==============================================================================
+# TOOLS
+# ==============================================================================
+.aider*

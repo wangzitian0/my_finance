@@ -195,7 +195,7 @@ Development tools, deployment, and system operations.
 - `deployment/` - Ansible, Kubernetes, and deployment automation
 
 ### Supporting Directories
-- **`tests/`** - Integration and end-to-end testing framework
+- **`tests/`** - Testing framework across all modules (includes pytest.ini configuration)
 - **`build_data/`** - Local artifacts and generated outputs
 
 ## Testing Architecture
@@ -286,11 +286,37 @@ SEC Edgar → Document Parser → Embeddings → Vector Search → DCF
 - Analysis engines under **quant-research-agent**
 - Quality assurance under **dev-quality-agent**
 
+## Testing Architecture
+
+**Modular Testing Approach**:
+- **Unit Tests**: Located within each module (`module/tests/`)
+  - Example: `common/tests/`, `infra/tests/`, `ETL/tests/`
+  - Fast, isolated testing of module internals
+  - Run with module-specific test commands
+
+- **Integration Tests**: Centralized in root `tests/` directory
+  - Cross-module interaction testing
+  - End-to-end workflow validation
+  - System-level integration verification
+  - Run with `p3 test` commands
+
+**Test Organization**:
+```
+module/
+├── src/            # Module source code
+├── tests/          # Module unit tests
+└── README.md       # Module documentation
+
+tests/              # Root integration tests only
+├── integration/    # Cross-module tests
+├── e2e/           # End-to-end tests
+└── README.md      # Integration test documentation
+```
+
 ## Documentation
 
 **Business Modules**: [ETL Pipeline](ETL/README.md), [Graph-RAG Engine](engine/README.md), [Strategy Evaluation](evaluation/README.md)
-**Infrastructure**: [Common Utilities](common/README.md), [Infrastructure](infra/README.md), [Testing](tests/README.md)
-**Configuration**: [Config Management](infra/config/README.md) - Centralized configuration files
+**Infrastructure**: [Common Utilities](common/README.md), [Infrastructure](infra/README.md), [Integration Tests](tests/README.md)
 **Migration**: [Scripts-to-Infra Migration](MIGRATION_SUMMARY.md) - Modular architecture implementation
 **Governance**: [CLAUDE.md](CLAUDE.md) - Company policies and agent responsibilities
 
