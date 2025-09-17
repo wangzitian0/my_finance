@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write  # Need write permission to create commit comments
+      contents: write
       issues: write
-      pull-requests: read
+      pull-requests: write  # Need write permission to comment on PRs
 
     steps:
       - name: Checkout repository
