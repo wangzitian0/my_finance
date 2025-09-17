@@ -105,7 +105,7 @@ class TestP3CLIDelegation(unittest.TestCase):
             "stop": "python infra/system/workflow_stop.py",
             "reset": "python infra/system/workflow_reset.py",
             "check": "python infra/development/workflow_check.py",
-            "test": "python scripts/utilities/run_test.py",
+            "test": "python infra/scripts/utilities/run_test.py",
             "ship": "python infra/workflows/pr_creation.py",
             "build": "python ETL/build_dataset.py",
             "version": "version_command",
@@ -143,7 +143,7 @@ class TestP3CLIDelegation(unittest.TestCase):
             # Read and verify delegation content
             with open(root_p3_path, "r") as f:
                 content = f.read()
-                self.assertIn("infra/p3/p3.py", content)
+                self.assertIn("from infra.p3.p3 import main", content)
 
     @patch("os.chdir")
     @patch("subprocess.run")
@@ -231,10 +231,14 @@ class TestP3CLIFunctionality(unittest.TestCase):
         """Test handling of invalid commands."""
         cli = P3CLI()
 
-        with patch("builtins.print") as mock_print:
-            cli.run("invalid_command", [])
+        # Mock sys.exit to prevent actual exit
+        mock_exit.side_effect = SystemExit(1)
 
-            # Should print error and exit
+        with patch("builtins.print") as mock_print:
+            with self.assertRaises(SystemExit):
+                cli.run("invalid_command", [])
+
+            # Should print error message
             mock_print.assert_called()
             mock_exit.assert_called_with(1)
 
@@ -243,10 +247,14 @@ class TestP3CLIFunctionality(unittest.TestCase):
         cli = P3CLI()
 
         with patch("sys.exit") as mock_exit, patch("builtins.print") as mock_print:
-            # Ship command without arguments should fail
-            cli.run("ship", [])
-            mock_exit.assert_called_with(1)
+            # Mock sys.exit to prevent actual exit
+            mock_exit.side_effect = SystemExit(1)
 
+            with self.assertRaises(SystemExit):
+                # Ship command without arguments should fail
+                cli.run("ship", [])
+
+            mock_exit.assert_called_with(1)
             # Should print usage information
             mock_print.assert_called()
 

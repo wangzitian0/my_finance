@@ -36,8 +36,8 @@ def test_dataset_tier_enum():
         assert DatasetTier.N100.value == "n100"
         assert DatasetTier.V3K.value == "v3k"
 
-        # Test legacy aliases
-        assert DatasetTier.TEST.value == "test"
+        # Test primary tier
+        assert DatasetTier.F2.value == "f2"
         assert DatasetTier.NASDAQ100.value == "nasdaq100"
         assert DatasetTier.VTI.value == "vti"
 
@@ -88,9 +88,9 @@ def test_build_dataset_arg_parsing():
         for input_tier, expected_output in test_cases:
             # This tests the logic without actually running build_dataset
             tier_enum = DatasetTier(input_tier)
-            if input_tier == "test":
+            if input_tier == "f2":
                 # Should map to F2
-                assert tier_enum == DatasetTier.TEST
+                assert tier_enum == DatasetTier.F2
             elif input_tier == "nasdaq100":
                 # Should map to N100
                 assert tier_enum == DatasetTier.NASDAQ100

@@ -28,6 +28,14 @@ class DatasetTier(Enum):
     N100 = "n100"  # NASDAQ 100 (validation testing)
     V3K = "v3k"  # VTI 3500+ (production testing)
 
+    # Functional aliases for specific use cases
+    TEST = "f2"  # Alias for CI and regular testing
+    PERF = "m7"  # Alias for performance and cost testing
+
+    # Legacy aliases for backward compatibility
+    NASDAQ100 = "n100"  # Legacy alias for N100
+    VTI = "v3k"  # Legacy alias for V3K
+
 
 @dataclass
 class TestConfig:
@@ -77,16 +85,24 @@ class TestConfigManager:
     """Manages test configurations for different dataset tiers"""
 
     CONFIG_MAP = {
-        # Primary four-tier system
-        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="list_fast_2.yml"),
-        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="list_magnificent_7.yml"),
-        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="list_nasdaq_100.yml"),
-        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="list_vti_3500.yml"),
+        # Primary four-tier system - reuse ETL configurations
+        DatasetTier.F2: TestConfig(tier=DatasetTier.F2, config_file="etl/stock_f2.yml"),
+        DatasetTier.M7: TestConfig(tier=DatasetTier.M7, config_file="etl/stock_m7.yml"),
+        DatasetTier.N100: TestConfig(tier=DatasetTier.N100, config_file="etl/stock_n100.yml"),
+        DatasetTier.V3K: TestConfig(tier=DatasetTier.V3K, config_file="etl/stock_v3k.yml"),
+        # Functional aliases - reuse existing configurations
+        DatasetTier.TEST: TestConfig(
+            tier=DatasetTier.TEST, config_file="etl/stock_f2.yml"
+        ),  # Reuse F2
+        DatasetTier.PERF: TestConfig(
+            tier=DatasetTier.PERF, config_file="etl/stock_m7.yml"
+        ),  # Reuse M7
     }
 
     def __init__(self, base_path: str = None):
         if base_path is None:
             # Use directory_manager to get correct config path
+            self.base_path = directory_manager.root_path
             self.config_dir = directory_manager.get_config_path()
         else:
             self.base_path = Path(base_path)
@@ -149,15 +165,15 @@ class TestConfigManager:
         return results
 
     def get_data_paths(self, tier: DatasetTier) -> Dict[str, Path]:
-        """Get data paths for specified tier"""
-        base_data_path = self.base_path / "data"
+        """Get data paths for specified tier using build_data structure"""
+        build_data_path = self.base_path / "build_data"
 
         return {
-            "extract": base_data_path / "stage_01_extract",
-            "transform": base_data_path / "stage_02_transform",
-            "load": base_data_path / "stage_03_load",
-            "build": base_data_path / "build",
-            "reports": base_data_path / "reports",
+            "raw": build_data_path / "stage_00_raw",
+            "extract": build_data_path / "stage_01_daily_delta",
+            "transform": build_data_path / "stage_04_query_results",
+            "build": build_data_path,
+            "reports": build_data_path / "reports",
             "config": self.config_dir / self.get_config(tier).config_file,
         }
 

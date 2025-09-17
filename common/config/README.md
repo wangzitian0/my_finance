@@ -2,14 +2,17 @@
 
 This directory contains the modular configuration system for the My Finance DCF Analysis Tool. The architecture has been modernized with **Issue #278** to use centralized ETL configuration with three orthogonal dimensions.
 
-## 🎯 Current Architecture (Post Issue #278)
+## 🎯 Current Architecture (Post Issue #278 + #111)
 
-The configuration system is now organized around **three orthogonal dimensions** that can be combined dynamically at runtime:
+The configuration system supports **P3 CLI integration** and **three orthogonal ETL dimensions** that can be combined dynamically at runtime:
+
+### 📁 P3 CLI & ETL Unified Configuration System
+**Single source configuration** - All stock lists in `etl/` directory with DatasetTier integration:
 
 ### 📁 ETL Configuration Directory (`etl/`)
-**Centralized configuration system** - All ETL configurations are now managed in the `etl/` subdirectory with flattened naming:
+**Centralized ETL configuration system** - Detailed ETL configurations in the `etl/` subdirectory:
 
-**Stock Lists** (Which companies to process):
+**ETL Stock Lists** (ETL pipeline specific):
 - `stock_f2.yml` - Fast-2 development test dataset (2 companies)
 - `stock_m7.yml` - Magnificent 7 technology companies (7 companies)
 - `stock_n100.yml` - NASDAQ-100 index companies (~100 companies)
@@ -23,9 +26,27 @@ The configuration system is now organized around **three orthogonal dimensions**
 - `scenario_dev.yml` - Development environment settings
 - `scenario_prod.yml` - Production environment settings
 
-### 🔄 Runtime Configuration Building
-Configurations are combined dynamically using the centralized ETL loader:
+### 🔄 Configuration Integration
 
+**P3 CLI Integration** - Direct command access:
+```bash
+p3 test f2        # Uses etl/stock_f2.yml (alias: TEST)
+p3 test perf      # Uses etl/stock_m7.yml (alias: PERF)
+p3 build n100     # Uses etl/stock_n100.yml
+p3 ship "Title" 123  # Auto-detects appropriate test configuration
+```
+
+**Python DatasetTier Integration**:
+```python
+from ETL.tests.test_config import DatasetTier, TestConfigManager
+
+manager = TestConfigManager()
+f2_config = manager.get_config(DatasetTier.F2)     # etl/stock_f2.yml
+test_config = manager.get_config(DatasetTier.TEST) # Same as F2 - reuses etl/stock_f2.yml
+perf_config = manager.get_config(DatasetTier.PERF) # Reuses etl/stock_m7.yml
+```
+
+**ETL Runtime Configuration Building**:
 ```python
 from common.etl_loader import build_etl_config
 

@@ -7,39 +7,69 @@
 **CRITICAL**: Complete these 5 phases before any task execution:
 
 ### Phase 1: Foundation ✅
+**Objective**: Understand project environment and task requirements
+**Completion Standard**: Complete understanding of task, architecture, policies, and tool selection
+**Self-Modification**: If not fully understood, continue studying until clear
+
 - [ ] Read CLAUDE.md (this file) - company policies
-- [ ] Read README.md files - project architecture (layered directory approach: current directory and subdirectories, scope applies to current directory and all child directories)
+- [ ] Read README.md files - project architecture (layered directory approach)
 - [ ] Identify task complexity: simple/multi-step/multi-domain
-- [ ] Think like an engineer: reuse existing patterns, avoid bypassing core processes
+- [ ] Select appropriate tools: Direct tools vs agent-coordinator vs p3 commands
+- [ ] **Engineering mindset**: Reuse existing patterns, avoid bypassing core processes
 - [ ] **NEVER BYPASS P3 SHIP FAILURES**: Always fix root causes, never create workarounds
 
-### Phase 2: Tool Selection ✅  
-- [ ] Simple read/analysis → Direct tools (Read, Grep, Glob)
-- [ ] Git operations → `p3` commands (NEVER direct git for PR creation)
-- [ ] Complex workflows → Route through `agent-coordinator`
-- [ ] Infrastructure setup → Route through `infra-ops-agent` for P3 CLI and environment issues
+### Phase 2: Task Breakdown ✅
+**Objective**: Create clear and executable implementation plan
+**Completion Standard**: Specific TodoWrite task list with clear execution steps
+**Self-Modification**: If plan is unclear or not executable, re-analyze and break down
 
-### Phase 3: Workflow Validation ✅
-- [ ] Direct execution: Only single-step read operations
-- [ ] Agent-coordinator: All complex, multi-step, or multi-domain tasks
-- [ ] P3 commands: All PR creation (`p3 ship "title" ISSUE_NUM`)
+- [ ] Analyze task scope and dependencies
+- [ ] Create TodoWrite task list with specific, actionable items
+- [ ] Plan execution sequence and milestone checkpoints
+- [ ] Identify potential risks and mitigation strategies
+- [ ] Route complex workflows through `agent-coordinator`
+- [ ] Validate task scope ≤5 days, create GitHub issue if needed
+
+### Phase 3: Implementation & Unit Testing ✅
+**Objective**: Implement functionality and ensure code correctness
+**Completion Standard**: All functionality implemented, unit tests pass, code runs correctly
+**Self-Modification**: If errors or test failures occur, fix code until all tests pass
+
+- [ ] **Migrate TodoWrite tasks to GitHub issue todo list** for persistent tracking
+- [ ] Execute implementation tasks using GitHub issue as progress tracker
+- [ ] Write and run unit tests for new functionality
+- [ ] Fix bugs and errors as they arise, document solutions in GitHub issue
+- [ ] Mark GitHub issue tasks as completed upon successful implementation
+- [ ] Self-validate functionality meets requirements
+- [ ] **Update GitHub issue with test results and validation status**
+- [ ] **No progression until all unit tests pass and GitHub issue reflects completion**
 
 ### Phase 4: Quality Assurance ✅
-- [ ] Issue linked and scoped (≤5 days)
-- [ ] GitHub issue exists for context preservation
-- [ ] English-only standard maintained
-- [ ] **File placement validation**: Check that new files are in correct L1/L2 directories, avoid root directory placement unless essential
+**Objective**: Ensure code quality and architectural compliance
+**Completion Standard**: Pass all quality checks and policy validation
+**Self-Modification**: If standards not met, modify code/architecture until fully compliant
+
+- [ ] **File placement validation**: Correct L1/L2 directories, avoid root placement
 - [ ] **CLAUDE.md Policy Compliance**: P3 workflow, SSOT enforcement, configuration centralization
-- [ ] **Technical Standards**: Code quality, two-layer modularity, TypeScript usage, error handling
+- [ ] **Technical Standards**: Code quality, modular architecture, TypeScript usage, error handling
 - [ ] **System Architecture**: RAG/DCF integration, database patterns, API consistency, performance
-- [ ] **Security & Testing**: Financial platform security, test coverage, documentation updates
+- [ ] **Security & Testing**: Financial platform security, test coverage requirements
+- [ ] **English-only standard**: All technical content in English
+- [ ] **Temporary Script Cleanup**: Remove one-time scripts (e.g., migration, setup scripts) - only commit if essential for future use
 
 ### Phase 5: Completion & PR ✅
-- [ ] Task completion verified
-- [ ] Self-validation executed
-- [ ] **README REVIEW**: Review and update README.md files in directories with modified files + hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy)
+**Objective**: Complete code commit and successfully create PR
+**Completion Standard**: PR created successfully, CI passes, all process validation passes
+**Self-Modification**: If any step fails, fix issues until PR is successfully created
+
+- [ ] **CODE COMMIT**: Commit all changes with clear commit messages
+- [ ] **SYNC MAIN**: Rebase against main branch (`git fetch origin main && git rebase origin/main`)
+- [ ] **README REVIEW**: **MANDATORY** - Review and update ALL README.md files in directories containing modified files + perform hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy). Every code change must be reflected in corresponding directory documentation.
+- [ ] **FINAL COMMIT**: Commit documentation updates if any README changes were made
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
-- [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
+- [ ] **Self-validation**: Verify `p3 ship` completed successfully with all tests passing
+- [ ] **Policy compliance**: Verify no checklist protection violations occurred
+- [ ] **CI SUCCESS**: Ensure PR passes all automated checks
 
 ---
 
