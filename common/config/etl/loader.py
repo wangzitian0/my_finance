@@ -21,17 +21,8 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 import yaml
 
-# Add common to path and import directory_manager with fallback
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-try:
-    from core.directory_manager import directory_manager
-except ImportError:
-    # Fallback directory manager if not available
-    class FallbackDirectoryManager:
-        def get_config_path(self):
-            return Path(__file__).parent.parent.parent / "config"
-
-    directory_manager = FallbackDirectoryManager()
+# Import directory_manager using SSOT standard
+from common.core.directory_manager import directory_manager
 
 
 @dataclass
