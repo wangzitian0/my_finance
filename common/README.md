@@ -16,7 +16,8 @@
 
 ### **`config/`** - Centralized Configuration Management
 **Purpose**: Centralized configuration management (SSOT)
-- **Stock Lists**: Orthogonal company collections (f2, m7, n100, v3k)
+- **P3 CLI Stock Lists**: Direct P3 command integration (list_fast_2.yml, list_magnificent_7.yml)
+- **ETL Stock Lists**: Orthogonal company collections (f2, m7, n100, v3k)
 - **Data Sources**: Independent API configurations (yfinance, sec_edgar)
 - **LLM Configurations**: Model settings and prompt templates
 - **System Settings**: Directory structure and performance parameters
@@ -651,6 +652,8 @@ common/
 ├── orthogonal_config.py    # Orthogonal configuration system
 ├── config/                 # Configuration files
 │   ├── directory_structure.yml  # SSOT directory config
+│   ├── list_fast_2.yml         # P3 CLI: F2 tier (2 companies, CI testing)
+│   ├── list_magnificent_7.yml  # P3 CLI: M7 tier (7 companies, performance)
 │   ├── stock_lists/           # Orthogonal stock list configurations
 │   │   ├── f2.yml            # 2 companies (development)
 │   │   ├── m7.yml            # 7 companies (standard testing)

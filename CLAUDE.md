@@ -6,10 +6,10 @@
 
 **CRITICAL**: Complete these 5 phases before any task execution:
 
-### Phase 1: 基建 (Foundation) ✅
-**目标**: 理解项目环境和任务要求
-**完成标准**: 完全理解任务、架构、政策和工具选择
-**自修改**: 如未完全理解，继续研读直到清晰
+### Phase 1: Foundation ✅
+**Objective**: Understand project environment and task requirements
+**Completion Standard**: Complete understanding of task, architecture, policies, and tool selection
+**Self-Modification**: If not fully understood, continue studying until clear
 
 - [ ] Read CLAUDE.md (this file) - company policies
 - [ ] Read README.md files - project architecture (layered directory approach)
@@ -18,10 +18,10 @@
 - [ ] **Engineering mindset**: Reuse existing patterns, avoid bypassing core processes
 - [ ] **NEVER BYPASS P3 SHIP FAILURES**: Always fix root causes, never create workarounds
 
-### Phase 2: 任务拆解 (Task Breakdown) ✅
-**目标**: 制定清晰可执行的实施计划
-**完成标准**: 有具体的TodoWrite任务列表和明确的执行步骤
-**自修改**: 如计划不清晰或不可执行，重新分析和拆解
+### Phase 2: Task Breakdown ✅
+**Objective**: Create clear and executable implementation plan
+**Completion Standard**: Specific TodoWrite task list with clear execution steps
+**Self-Modification**: If plan is unclear or not executable, re-analyze and break down
 
 - [ ] Analyze task scope and dependencies
 - [ ] Create TodoWrite task list with specific, actionable items
@@ -30,10 +30,10 @@
 - [ ] Route complex workflows through `agent-coordinator`
 - [ ] Validate task scope ≤5 days, create GitHub issue if needed
 
-### Phase 3: 实现和自我单测 (Implementation & Unit Testing) ✅
-**目标**: 实现功能并确保代码正确性
-**完成标准**: 所有功能实现完成，单元测试通过，代码可运行
-**自修改**: 如有错误或测试失败，修复代码直到所有测试通过
+### Phase 3: Implementation & Unit Testing ✅
+**Objective**: Implement functionality and ensure code correctness
+**Completion Standard**: All functionality implemented, unit tests pass, code runs correctly
+**Self-Modification**: If errors or test failures occur, fix code until all tests pass
 
 - [ ] **Migrate TodoWrite tasks to GitHub issue todo list** for persistent tracking
 - [ ] Execute implementation tasks using GitHub issue as progress tracker
@@ -44,10 +44,10 @@
 - [ ] **Update GitHub issue with test results and validation status**
 - [ ] **No progression until all unit tests pass and GitHub issue reflects completion**
 
-### Phase 4: 整体质量检查 (Quality Assurance) ✅
-**目标**: 确保代码质量和架构合规
-**完成标准**: 通过所有质量检查和政策验证
-**自修改**: 如不符合标准，修改代码/架构直到全部合规
+### Phase 4: Quality Assurance ✅
+**Objective**: Ensure code quality and architectural compliance
+**Completion Standard**: Pass all quality checks and policy validation
+**Self-Modification**: If standards not met, modify code/architecture until fully compliant
 
 - [ ] **File placement validation**: Correct L1/L2 directories, avoid root placement
 - [ ] **CLAUDE.md Policy Compliance**: P3 workflow, SSOT enforcement, configuration centralization
@@ -56,14 +56,14 @@
 - [ ] **Security & Testing**: Financial platform security, test coverage requirements
 - [ ] **English-only standard**: All technical content in English
 
-### Phase 5: 完成和发PR (Completion & PR) ✅
-**目标**: 完成代码提交并成功创建PR
-**完成标准**: PR创建成功，CI通过，所有流程验证通过
-**自修改**: 如任何步骤失败，修复问题直到PR成功创建
+### Phase 5: Completion & PR ✅
+**Objective**: Complete code commit and successfully create PR
+**Completion Standard**: PR created successfully, CI passes, all process validation passes
+**Self-Modification**: If any step fails, fix issues until PR is successfully created
 
 - [ ] **CODE COMMIT**: Commit all changes with clear commit messages
 - [ ] **SYNC MAIN**: Rebase against main branch (`git fetch origin main && git rebase origin/main`)
-- [ ] **README REVIEW**: Update README.md files in modified directories + hierarchical review
+- [ ] **README REVIEW**: **MANDATORY** - Review and update ALL README.md files in directories containing modified files + perform hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy). Every code change must be reflected in corresponding directory documentation.
 - [ ] **FINAL COMMIT**: Commit documentation updates if any README changes were made
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
 - [ ] **Self-validation**: Verify `p3 ship` completed successfully with all tests passing
