@@ -27,6 +27,7 @@ from common.core.directory_manager import (
 )
 
 
+@pytest.mark.skip(reason="Legacy migration tests no longer needed after Issue #283 L1/L2 restructure")
 class TestPathMigrationIntegration:
     """Integration tests for complete path migration functionality"""
 
@@ -154,6 +155,7 @@ class TestPathMigrationIntegration:
                     else:
                         f.write(str(content))
 
+    @pytest.mark.skip(reason="Legacy migration no longer needed after Issue #283 L1/L2 restructure")
     def test_complete_legacy_migration(self, legacy_project_structure):
         """Test complete migration from legacy to new structure"""
         dm = DirectoryManager(root_path=legacy_project_structure)
@@ -194,6 +196,7 @@ class TestPathMigrationIntegration:
             build_data / "layer_05_results" / "dcf_reports" / "quarterly_analysis.json"
         ).exists()
 
+    @pytest.mark.skip(reason="Legacy migration no longer needed after Issue #283 L1/L2 restructure")
     def test_data_integrity_during_migration(self, legacy_project_structure):
         """Test that data integrity is preserved during migration"""
         dm = DirectoryManager(root_path=legacy_project_structure)

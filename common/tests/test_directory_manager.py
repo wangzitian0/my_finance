@@ -27,11 +27,11 @@ class TestDataLayer:
 
     def test_data_layer_values(self):
         """Test that DataLayer enum has correct values"""
-        assert DataLayer.RAW_DATA.value == "layer_01_raw"
-        assert DataLayer.DAILY_DELTA.value == "layer_02_delta"
-        assert DataLayer.DAILY_INDEX.value == "layer_03_index"
-        assert DataLayer.GRAPH_RAG.value == "layer_04_rag"
-        assert DataLayer.QUERY_RESULTS.value == "layer_05_results"
+        assert DataLayer.RAW_DATA.value == "stage_00_raw"
+        assert DataLayer.DAILY_DELTA.value == "stage_01_daily_delta"
+        assert DataLayer.DAILY_INDEX.value == "stage_02_daily_index"
+        assert DataLayer.GRAPH_RAG.value == "stage_03_graph_rag"
+        assert DataLayer.QUERY_RESULTS.value == "stage_04_query_results"
 
 
 class TestDirectoryManager:
@@ -72,18 +72,18 @@ class TestDirectoryManager:
     def test_get_layer_path(self, directory_manager):
         """Test get_layer_path method"""
         raw_path = directory_manager.get_layer_path(DataLayer.RAW_DATA)
-        assert raw_path.name == "layer_01_raw"
+        assert raw_path.name == "stage_00_raw"
 
         # Test with partition
         partitioned_path = directory_manager.get_layer_path(DataLayer.RAW_DATA, "20250821")
         assert partitioned_path.parts[-1] == "20250821"
-        assert partitioned_path.parts[-2] == "layer_01_raw"
+        assert partitioned_path.parts[-2] == "stage_00_raw"
 
     def test_get_subdir_path(self, directory_manager):
         """Test get_subdir_path method"""
         sec_path = directory_manager.get_subdir_path(DataLayer.RAW_DATA, "sec-edgar")
         assert sec_path.parts[-1] == "sec-edgar"
-        assert sec_path.parts[-2] == "layer_01_raw"
+        assert sec_path.parts[-2] == "stage_00_raw"
 
         # Test with partition
         partitioned_sec_path = directory_manager.get_subdir_path(
@@ -91,7 +91,7 @@ class TestDirectoryManager:
         )
         assert partitioned_sec_path.parts[-1] == "sec-edgar"
         assert partitioned_sec_path.parts[-2] == "20250821"
-        assert partitioned_sec_path.parts[-3] == "layer_01_raw"
+        assert partitioned_sec_path.parts[-3] == "stage_00_raw"
 
     def test_get_config_path(self, directory_manager):
         """Test get_config_path method"""
@@ -113,7 +113,7 @@ class TestDirectoryManager:
         """Test get_build_path method"""
         # Test default build path
         build_path = directory_manager.get_build_path()
-        assert "layer_05_results" in str(build_path)
+        assert "stage_04_query_results" in str(build_path)
 
         # Test with timestamp
         timestamped_path = directory_manager.get_build_path("20250821_120000")
@@ -121,19 +121,19 @@ class TestDirectoryManager:
 
         # Test with branch
         branch_path = directory_manager.get_build_path(branch="feature-test")
-        assert "layer_05_results_feature-test" in str(branch_path)
+        assert "stage_04_query_results_feature-test" in str(branch_path)
 
     def test_get_source_path(self, directory_manager):
         """Test get_source_path method"""
         # Test basic source path
         sec_path = directory_manager.get_source_path("sec-edgar")
         assert sec_path.parts[-1] == "sec-edgar"
-        assert sec_path.parts[-2] == "layer_01_raw"
+        assert sec_path.parts[-2] == "stage_00_raw"
 
         # Test with different layer
         processed_path = directory_manager.get_source_path("sec-edgar", DataLayer.DAILY_INDEX)
         assert processed_path.parts[-1] == "sec-edgar"
-        assert processed_path.parts[-2] == "layer_03_index"
+        assert processed_path.parts[-2] == "stage_02_daily_index"
 
         # Test with date partition
         dated_path = directory_manager.get_source_path("sec-edgar", date_partition="20250821")
@@ -159,7 +159,7 @@ class TestDirectoryManager:
         assert directory_manager.map_legacy_path("stage_00_original") == DataLayer.RAW_DATA
         assert directory_manager.map_legacy_path("stage_99_build") == DataLayer.QUERY_RESULTS
 
-        # Test legacy layer mapping
+        # Test legacy layer mapping (old layer names should still map correctly)
         assert directory_manager.map_legacy_path("layer_01_raw") == DataLayer.RAW_DATA
         assert directory_manager.map_legacy_path("layer_05_results") == DataLayer.QUERY_RESULTS
 
