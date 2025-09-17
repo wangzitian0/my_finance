@@ -27,7 +27,9 @@ from common.core.directory_manager import (
 )
 
 
-@pytest.mark.skip(reason="Legacy migration tests no longer needed after Issue #283 L1/L2 restructure")
+@pytest.mark.skip(
+    reason="Legacy migration tests no longer needed after Issue #283 L1/L2 restructure"
+)
 class TestPathMigrationIntegration:
     """Integration tests for complete path migration functionality"""
 
