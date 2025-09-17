@@ -47,6 +47,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Direct prompt for automated review (no @claude mention needed)
           direct_prompt: |
+            **🔍 AUTOMATED PR CODE REVIEW - PR #${{ github.event.pull_request.number }}**
+
+            Reviewing pull request: "${{ github.event.pull_request.title }}" by @${{ github.event.pull_request.user.login }}
+
             **Check PR against CLAUDE.md checklist:**
 
             **1. Checklist Violations (report only if found):**
