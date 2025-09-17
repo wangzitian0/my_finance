@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: read
+      contents: write  # Need write permission to create commit comments
       issues: write
       pull-requests: read
 
@@ -31,6 +31,8 @@ jobs:
         uses: prefix-dev/setup-pixi@v0.8.1
         with:
           pixi-version: v0.50.2
+          cache: true  # Enable caching for better performance
+          cache-write: ${{ github.event_name != 'pull_request' }}  # Only write cache on main branch
 
       - name: Install Test Dependencies
         run: |
@@ -65,8 +67,13 @@ jobs:
           TESTS_PASSED=true
           TEST_SUMMARY=""
 
-          # Unit tests
-          if pixi run python -m pytest common/tests/unit/ --tb=short --cov=common --cov-fail-under=43; then
+          # Unit tests with warnings suppression for known issues
+          if pixi run python -m pytest common/tests/unit/ \
+            --tb=short \
+            --cov=common \
+            --cov-fail-under=43 \
+            --disable-warnings \
+            -q; then
             TEST_SUMMARY="$TEST_SUMMARY\n- ✅ Unit Tests: Passed"
           else
             TEST_SUMMARY="$TEST_SUMMARY\n- ❌ Unit Tests: Failed"
