@@ -140,17 +140,22 @@ jobs:
           EOF
           )
 
-          ISSUE_URL=$(gh issue create \
+          # Create the issue and capture output
+          gh issue create \
             --title "$ISSUE_TITLE" \
             --body "$ISSUE_BODY" \
             --label "post-merge-analysis,automation" \
-            --assignee "${{ steps.pr_info.outputs.commit_author }}" \
-            --json url \
-            --jq .url)
+            --assignee "${{ steps.pr_info.outputs.commit_author }}" > issue_creation_output.txt
 
+          # Get the issue URL from the output
+          ISSUE_URL=$(cat issue_creation_output.txt)
           ISSUE_NUMBER=$(echo $ISSUE_URL | sed 's/.*\/issues\///')
+
           echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+
+          # Clean up
+          rm -f issue_creation_output.txt
 
       - name: Create PR Status Comment
         if: always()
