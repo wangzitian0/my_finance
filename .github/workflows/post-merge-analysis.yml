@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: write  # Need write permission to create commit comments
       issues: write
-      pull-requests: read
+      pull-requests: write  # Need write permission to comment on PRs
 
     steps:
       - name: Checkout repository
@@ -103,54 +103,88 @@ jobs:
           COMMIT_TITLE=$(echo "${{ github.event.head_commit.message }}" | head -1)
           echo "commit_title=$COMMIT_TITLE" >> $GITHUB_OUTPUT
 
-      - name: Create CI Status and Request Claude Analysis
+      - name: Create Tracking Issue for Post-merge Analysis
+        id: create_issue
+        if: always()
+        run: |
+          # Create a tracking issue for post-merge analysis
+          ISSUE_TITLE="📋 Post-merge Analysis: PR #${{ steps.pr_info.outputs.pr_number }} - ${{ steps.pr_info.outputs.commit_title }}"
+
+          ISSUE_BODY=$(cat << EOF
+          # 📋 Post-merge Analysis for PR #${{ steps.pr_info.outputs.pr_number }}
+
+          **Merged PR**: #${{ steps.pr_info.outputs.pr_number }}
+          **Author**: @${{ steps.pr_info.outputs.commit_author }}
+          **Commit**: \`${{ github.sha }}\`
+          **Time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+
+          ## 🎯 Analysis Tasks
+
+          - [ ] Review TODO/FIXME comments needing follow-up
+          - [ ] Check incomplete implementations or missing error handling
+          - [ ] Verify test coverage for new functionality
+          - [ ] Assess documentation completeness
+          - [ ] Identify technical debt or performance concerns
+          - [ ] Validate code quality and adherence to project patterns
+
+          ## 📊 CI Results
+          ${{ steps.ci_tests.outputs.test_summary }}
+
+          ## 🔍 Analysis Status
+
+          🔄 **Analysis in progress** - Claude will update this issue with findings.
+
+          ---
+
+          @claude Please analyze the merged changes from PR #${{ steps.pr_info.outputs.pr_number }} and update this issue with your findings. For any 🔴 Critical issues discovered, create separate issues and link them here.
+          EOF
+          )
+
+          ISSUE_URL=$(gh issue create \
+            --title "$ISSUE_TITLE" \
+            --body "$ISSUE_BODY" \
+            --label "post-merge-analysis,automation" \
+            --assignee "${{ steps.pr_info.outputs.commit_author }}" \
+            --json url \
+            --jq .url)
+
+          ISSUE_NUMBER=$(echo $ISSUE_URL | sed 's/.*\/issues\///')
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+          echo "issue_url=$ISSUE_URL" >> $GITHUB_OUTPUT
+
+      - name: Create PR Status Comment
         if: always()
         run: |
           if [ "${{ steps.ci_tests.outputs.tests_passed }}" == "true" ]; then
             STATUS_EMOJI="🎉"
             STATUS_TEXT="**Post-merge CI passed!**"
+            CI_STATUS="✅ Passed"
           else
             STATUS_EMOJI="⚠️"
             STATUS_TEXT="**Post-merge CI completed with issues**"
+            CI_STATUS="❌ Issues Found"
           fi
 
-          COMMENT_BODY=$(cat << EOF
+          PR_COMMENT_BODY=$(cat << EOF
           $STATUS_EMOJI $STATUS_TEXT
 
-          📊 **CI Results:**
-          ${{ steps.ci_tests.outputs.test_summary }}
+          📊 **检查任务状态:**
+          - ${{ steps.ci_tests.outputs.tests_passed == 'true' && '✅' || '❌' }} Unit Tests: [${{ steps.ci_tests.outputs.tests_passed == 'true' && 'Passed' || 'Failed' }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - ✅ Code Quality: [Clean](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - 🔄 Code Analysis: [In Progress](${{ steps.create_issue.outputs.issue_url }})
 
-          📋 **Details:**
-          - 🔀 PR: #${{ steps.pr_info.outputs.pr_number }}
-          - 👤 Author: ${{ steps.pr_info.outputs.commit_author }}
-          - 🕐 Time: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          📋 **Analysis Details**: Issue #${{ steps.create_issue.outputs.issue_number }}
+          🕐 **Time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
 
           ---
-
-          @claude **🔍 POST-MERGE ANALYSIS REQUEST - Commit: ${{ github.sha }}**
-
-          Analyzing post-merge changes for PR #${{ steps.pr_info.outputs.pr_number }} merged into main branch.
-
-          Please review the merged code changes and create GitHub issues for any significant findings:
-          - TODO/FIXME comments needing follow-up
-          - Incomplete implementations or missing error handling
-          - Missing tests or documentation
-          - Technical debt or performance concerns
-          - Code quality issues that need attention
-
-          **Action Required:**
-          Create GitHub issues with appropriate priority labels:
-          - 🔴 **Critical**: Security/bugs requiring immediate attention
-          - 🟡 **Important**: Quality/debt requiring timely resolution
-          - 🟢 **Minor**: Improvements for future consideration
-
-          Focus on actionable items that improve code quality and maintainability.
+          *Automated post-merge analysis initiated. Results will be tracked in the linked issue.*
           EOF
           )
 
-          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments \
+          # Create comment on the PR
+          gh api repos/${{ github.repository }}/issues/${{ steps.pr_info.outputs.pr_number }}/comments \
             --method POST \
-            --field body="$COMMENT_BODY"
+            --field body="$PR_COMMENT_BODY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
