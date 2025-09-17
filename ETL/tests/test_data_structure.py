@@ -68,16 +68,16 @@ class TestDataStructure:
         manager = TestConfigManager()
         results = manager.validate_config_files()
 
-        # At least test and m7 configs should exist
+        # At least f2 and m7 configs should exist
         assert (
-            results[DatasetTier.TEST] or results[DatasetTier.M7]
+            results[DatasetTier.F2] or results[DatasetTier.M7]
         ), "At least one config file should exist for testing"
 
     def test_data_paths_accessible(self):
         """Test that data paths are accessible for each tier"""
         manager = TestConfigManager()
 
-        for tier in [DatasetTier.TEST, DatasetTier.M7]:  # Test main tiers
+        for tier in [DatasetTier.F2, DatasetTier.M7]:  # Test main tiers
             paths = manager.get_data_paths(tier)
 
             # Extract and build paths should exist
