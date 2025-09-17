@@ -8,6 +8,7 @@ import os
 import shutil
 from pathlib import Path
 
+
 def migrate_data_structure():
     """Migrate data structure for P3 workflow"""
     print("🔄 Starting data structure migration...")
@@ -21,7 +22,7 @@ def migrate_data_structure():
         "build_data/stage_00_raw",
         "build_data/stage_01_daily_delta",
         "build_data/stage_04_query_results",
-        "common/config"
+        "common/config",
     ]
 
     for directory in directories:
@@ -29,6 +30,7 @@ def migrate_data_structure():
         print(f"✅ Created directory: {directory}")
 
     print("✅ Data structure migration completed")
+
 
 if __name__ == "__main__":
     migrate_data_structure()
