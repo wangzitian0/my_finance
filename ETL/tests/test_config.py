@@ -28,8 +28,11 @@ class DatasetTier(Enum):
     N100 = "n100"  # NASDAQ 100 (validation testing)
     V3K = "v3k"  # VTI 3500+ (production testing)
 
+    # Functional aliases for specific use cases
+    TEST = "f2"  # Alias for CI and regular testing
+    PERF = "m7"  # Alias for performance and cost testing
+
     # Legacy aliases for backward compatibility
-    TEST = "f2"  # Legacy alias for F2
     NASDAQ100 = "n100"  # Legacy alias for N100
     VTI = "v3k"  # Legacy alias for V3K
 
