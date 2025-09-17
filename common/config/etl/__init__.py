@@ -1,23 +1,13 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Legacy ETL Configuration Loader (MOVED)
-This file has been moved to common/config/etl/loader.py (Issue #284)
+ETL Configuration Module
+Centralized ETL configuration management and loading system.
 
-For backward compatibility, this file re-exports all functionality from the new location.
+Moved from common/etl_loader.py (Issue #284)
 """
 
-import warnings
-
-# Issue deprecation warning
-warnings.warn(
-    "common.etl_loader is deprecated. Use 'from common.config.etl import ...' instead. "
-    "This module will be removed in version 4.0.0",
-    DeprecationWarning,
-    stacklevel=2,
-)
-
-# Re-export all functionality from new location
-from .config.etl.loader import (
+from .loader import (
     DataSourceConfig,
     ETLConfigLoader,
     RuntimeETLConfig,
