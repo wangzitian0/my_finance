@@ -105,7 +105,7 @@ class TestP3CLIDelegation(unittest.TestCase):
             "stop": "python infra/system/workflow_stop.py",
             "reset": "python infra/system/workflow_reset.py",
             "check": "python infra/development/workflow_check.py",
-            "test": "python scripts/utilities/run_test.py",
+            "test": "python infra/scripts/utilities/run_test.py",
             "ship": "python infra/workflows/pr_creation.py",
             "build": "python ETL/build_dataset.py",
             "version": "version_command",

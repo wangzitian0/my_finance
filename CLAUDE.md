@@ -6,40 +6,69 @@
 
 **CRITICAL**: Complete these 5 phases before any task execution:
 
-### Phase 1: Foundation ✅
+### Phase 1: 基建 (Foundation) ✅
+**目标**: 理解项目环境和任务要求
+**完成标准**: 完全理解任务、架构、政策和工具选择
+**自修改**: 如未完全理解，继续研读直到清晰
+
 - [ ] Read CLAUDE.md (this file) - company policies
-- [ ] Read README.md files - project architecture (layered directory approach: current directory and subdirectories, scope applies to current directory and all child directories)
+- [ ] Read README.md files - project architecture (layered directory approach)
 - [ ] Identify task complexity: simple/multi-step/multi-domain
-- [ ] Think like an engineer: reuse existing patterns, avoid bypassing core processes
+- [ ] Select appropriate tools: Direct tools vs agent-coordinator vs p3 commands
+- [ ] **Engineering mindset**: Reuse existing patterns, avoid bypassing core processes
 - [ ] **NEVER BYPASS P3 SHIP FAILURES**: Always fix root causes, never create workarounds
 
-### Phase 2: Tool Selection ✅  
-- [ ] Simple read/analysis → Direct tools (Read, Grep, Glob)
-- [ ] Git operations → `p3` commands (NEVER direct git for PR creation)
-- [ ] Complex workflows → Route through `agent-coordinator`
-- [ ] Infrastructure setup → Route through `infra-ops-agent` for P3 CLI and environment issues
+### Phase 2: 任务拆解 (Task Breakdown) ✅
+**目标**: 制定清晰可执行的实施计划
+**完成标准**: 有具体的TodoWrite任务列表和明确的执行步骤
+**自修改**: 如计划不清晰或不可执行，重新分析和拆解
 
-### Phase 3: Workflow Validation ✅
-- [ ] Direct execution: Only single-step read operations
-- [ ] Agent-coordinator: All complex, multi-step, or multi-domain tasks
-- [ ] P3 commands: All PR creation (`p3 ship "title" ISSUE_NUM`)
+- [ ] Analyze task scope and dependencies
+- [ ] Create TodoWrite task list with specific, actionable items
+- [ ] Plan execution sequence and milestone checkpoints
+- [ ] Identify potential risks and mitigation strategies
+- [ ] Route complex workflows through `agent-coordinator`
+- [ ] Validate task scope ≤5 days, create GitHub issue if needed
 
-### Phase 4: Quality Assurance ✅
-- [ ] Issue linked and scoped (≤5 days)
-- [ ] GitHub issue exists for context preservation
-- [ ] English-only standard maintained
-- [ ] **File placement validation**: Check that new files are in correct L1/L2 directories, avoid root directory placement unless essential
+### Phase 3: 实现和自我单测 (Implementation & Unit Testing) ✅
+**目标**: 实现功能并确保代码正确性
+**完成标准**: 所有功能实现完成，单元测试通过，代码可运行
+**自修改**: 如有错误或测试失败，修复代码直到所有测试通过
+
+- [ ] **Migrate TodoWrite tasks to GitHub issue todo list** for persistent tracking
+- [ ] Execute implementation tasks using GitHub issue as progress tracker
+- [ ] Write and run unit tests for new functionality
+- [ ] Fix bugs and errors as they arise, document solutions in GitHub issue
+- [ ] Mark GitHub issue tasks as completed upon successful implementation
+- [ ] Self-validate functionality meets requirements
+- [ ] **Update GitHub issue with test results and validation status**
+- [ ] **No progression until all unit tests pass and GitHub issue reflects completion**
+
+### Phase 4: 整体质量检查 (Quality Assurance) ✅
+**目标**: 确保代码质量和架构合规
+**完成标准**: 通过所有质量检查和政策验证
+**自修改**: 如不符合标准，修改代码/架构直到全部合规
+
+- [ ] **File placement validation**: Correct L1/L2 directories, avoid root placement
 - [ ] **CLAUDE.md Policy Compliance**: P3 workflow, SSOT enforcement, configuration centralization
-- [ ] **Technical Standards**: Code quality, two-layer modularity, TypeScript usage, error handling
+- [ ] **Technical Standards**: Code quality, modular architecture, TypeScript usage, error handling
 - [ ] **System Architecture**: RAG/DCF integration, database patterns, API consistency, performance
-- [ ] **Security & Testing**: Financial platform security, test coverage, documentation updates
+- [ ] **Security & Testing**: Financial platform security, test coverage requirements
+- [ ] **English-only standard**: All technical content in English
 
-### Phase 5: Completion & PR ✅
-- [ ] Task completion verified
-- [ ] Self-validation executed
-- [ ] **README REVIEW**: Review and update README.md files in directories with modified files + hierarchical review from modified directories up to root directory (may require updating multiple README.md files in the path hierarchy)
+### Phase 5: 完成和发PR (Completion & PR) ✅
+**目标**: 完成代码提交并成功创建PR
+**完成标准**: PR创建成功，CI通过，所有流程验证通过
+**自修改**: 如任何步骤失败，修复问题直到PR成功创建
+
+- [ ] **CODE COMMIT**: Commit all changes with clear commit messages
+- [ ] **SYNC MAIN**: Rebase against main branch (`git fetch origin main && git rebase origin/main`)
+- [ ] **README REVIEW**: Update README.md files in modified directories + hierarchical review
+- [ ] **FINAL COMMIT**: Commit documentation updates if any README changes were made
 - [ ] **MANDATORY PR creation**: Route DIRECTLY to `git-ops-agent` with `p3 ship` workflow
-- [ ] **Policy compliance**: Verify no checklist protection violations occurred during task execution
+- [ ] **Self-validation**: Verify `p3 ship` completed successfully with all tests passing
+- [ ] **Policy compliance**: Verify no checklist protection violations occurred
+- [ ] **CI SUCCESS**: Ensure PR passes all automated checks
 
 ---
 
